@@ -1,7 +1,7 @@
 """
 Girl Magic Odds Tracker ✨
 Tab 1 = Odds + Tricks
-Tab 2 = Batters + Pitchers
+Tab 2 = Batters + Pitchers (first real stats layer)
 """
 
 import streamlit as st
@@ -11,6 +11,7 @@ import sqlite3
 from datetime import datetime, date
 from pathlib import Path
 from collections import defaultdict
+import time
 
 st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="💖", layout="wide", initial_sidebar_state="expanded")
 
@@ -23,6 +24,7 @@ st.markdown("""
     span[data-baseweb="tag"] { background-color: #db2777 !important; }
     .hot-card { background: linear-gradient(90deg, #831843, #4c1d95); border: 2px solid #f472b6; border-radius: 12px; padding: 14px 18px; margin: 10px 0; color: #fdf2f8; }
     .matchup-card { background: #2d1b3d; border: 1px solid #c084fc; border-radius: 10px; padding: 12px 16px; margin: 8px 0; color: #fce7f3; }
+    .batter-card { background: #1f0f2e; border: 1px solid #a855f7; border-radius: 8px; padding: 10px 14px; margin: 6px 0; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -142,6 +144,43 @@ def fetch_probable_pitchers():
         return pitchers
     except: return {}
 
+def search_player_id(name):
+    """Try to find MLB player ID by name (basic search)."""
+    try:
+        # Simple search endpoint
+        url = f"https://statsapi.mlb.com/api/v1/people/search?names={name}&sportIds=1"
+        r = requests.get(url, timeout=8)
+        if r.status_code == 200:
+            data = r.json()
+            people = data.get("people", [])
+            if people:
+                return people[0].get("id"), people[0].get("fullName")
+    except:
+        pass
+    return None, None
+
+def get_basic_batter_stats(player_id):
+    """Pull basic season hitting stats."""
+    if not player_id: return None
+    try:
+        season = date.today().year
+        url = f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats?stats=season&group=hitting&season={season}"
+        r = requests.get(url, timeout=8)
+        if r.status_code == 200:
+            data = r.json()
+            splits = data.get("stats", [{}])[0].get("splits", [])
+            if splits:
+                stat = splits[0].get("stat", {})
+                return {
+                    "avg": stat.get("avg", "-"),
+                    "hr": stat.get("homeRuns", "-"),
+                    "ops": stat.get("ops", "-"),
+                    "ab": stat.get("atBats", "-"),
+                }
+    except:
+        pass
+    return None
+
 def build_hot_list(df):
     scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "matchup": ""})
     props = df[
@@ -151,7 +190,6 @@ def build_hot_list(df):
     ].copy()
     if props.empty: return []
 
-    # BetMGM Same Odds
     mgm = props[props["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
     for (market, price), group in mgm.groupby(["market", "price"]):
         players = list(group["description"].unique())
@@ -162,7 +200,6 @@ def build_hot_list(df):
             scores[key]["players"].update(players)
             scores[key]["matchup"] = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}"
 
-    # BetMGM 25/50/75
     for _, row in mgm.iterrows():
         last = last_two_digits(row["price"])
         if last in (25, 50, 75):
@@ -172,7 +209,6 @@ def build_hot_list(df):
             scores[p]["players"].add(p)
             scores[p]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
 
-    # Bet365 +850
     for _, row in props[props["bookmaker"].str.lower().str.contains("bet365", na=False)].iterrows():
         try:
             if abs(int(row["price"])) == 850:
@@ -183,7 +219,6 @@ def build_hot_list(df):
                 scores[p]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
         except: pass
 
-    # DK ending 10
     for _, row in props[props["bookmaker"].str.lower().str.contains("draftkings|dk", na=False)].iterrows():
         if last_two_digits(row["price"]) == 10:
             p = row["description"]
@@ -192,7 +227,6 @@ def build_hot_list(df):
             scores[p]["players"].add(p)
             scores[p]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
 
-    # Name matching
     for _, group in props.groupby("market"):
         players = list(group["description"].unique())
         matchup = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}" if len(group) else ""
@@ -248,7 +282,6 @@ def main():
         line_mode = st.radio("Lines", ["Only 1 (lowest)", "All lines"], index=0)
         max_hot = st.slider("Max items", 3, 15, 8)
 
-    # Load games
     if st.button("Load Games 💫", type="primary"):
         st.session_state["events"] = fetch_events(api_key, sport_key)
 
@@ -261,7 +294,7 @@ def main():
     st.dataframe(pd.DataFrame(game_rows)[["Away", "Home", "Start"]], use_container_width=True, hide_index=True)
 
     options = {f"{r['Away']} @ {r['Home']}": r["id"] for r in game_rows}
-    chosen = st.multiselect("Select games to analyze", list(options.keys()))
+    chosen = st.multiselect("Select games", list(options.keys()))
 
     if st.button("Fetch Selected Games 💖", type="primary") and chosen:
         all_records = []
@@ -284,21 +317,17 @@ def main():
     pitchers = fetch_probable_pitchers()
     chosen_games = st.session_state.get("chosen_games", [])
 
-    # ========== TWO TABS ==========
     tab1, tab2 = st.tabs(["🎯 Odds + Tricks", "⚾ Batters + Pitchers"])
 
-    # ----- TAB 1: Odds + Tricks -----
     with tab1:
         st.subheader("Odds Tricks & Best Pairs")
         if not records:
-            st.info("Fetch some games first")
+            st.info("Fetch games first")
         else:
             df = pd.DataFrame(records)
-            df = df[df["outcome"].str.lower() == "over"]  # Only Overs
-
+            df = df[df["outcome"].str.lower() == "over"]
             if line_mode == "Only 1 (lowest)" and "point" in df.columns:
                 df = df.sort_values("point").groupby(["description", "market", "bookmaker"], dropna=False).first().reset_index()
-
             hot = build_hot_list(df)[:max_hot]
             if hot:
                 for item in hot:
@@ -307,40 +336,45 @@ def main():
                     st.markdown(f'<div class="hot-card"><b>{item["label"]}</b> [{tag}] Score: {item["score"]}<br><small>{item.get("matchup","")}</small><br>{reasons}</div>', unsafe_allow_html=True)
             else:
                 st.caption("No strong pairs on BetMGM / DraftKings / Bet365 yet.")
-
             st.markdown("---")
             show = df[["home_team", "away_team", "bookmaker", "market", "description", "price", "point"]].copy()
             show["price"] = show["price"].apply(format_odds)
             show = show.rename(columns={"description": "Player", "price": "Odds", "point": "Line"})
             st.dataframe(show, use_container_width=True, height=350)
 
-    # ----- TAB 2: Batters + Pitchers -----
     with tab2:
-        st.subheader("Batters + Pitchers Matchup")
+        st.subheader("Batters + Pitchers")
         if not chosen_games:
-            st.info("Fetch some games first")
+            st.info("Fetch games first")
         else:
             for g in chosen_games:
                 info = pitchers.get(g, {"away": "TBD", "home": "TBD"})
-                st.markdown(f'<div class="matchup-card"><b>{g}</b><br>Away SP: {info["away"]}<br>Home SP: {info["home"]}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="matchup-card"><b>{g}</b><br>Away SP: <b>{info["away"]}</b><br>Home SP: <b>{info["home"]}</b></div>', unsafe_allow_html=True)
 
-                # List batters that appeared in the odds for this game
                 if records:
                     df = pd.DataFrame(records)
                     game_batters = df[
                         ((df["away_team"] + " @ " + df["home_team"]) == g) &
                         (df["description"].notna())
-                    ]["description"].unique()
-                    if len(game_batters) > 0:
-                        st.write("**Batters in props:**")
-                        st.write(", ".join(sorted(game_batters)))
+                    ]["description"].unique().tolist()
+
+                    if game_batters:
+                        st.write("**Batters in props + basic stats:**")
+                        for batter in sorted(game_batters)[:12]:  # limit to avoid too many API calls
+                            pid, fullname = search_player_id(batter)
+                            stats = get_basic_batter_stats(pid) if pid else None
+                            if stats:
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br>AVG {stats["avg"]} | HR {stats["hr"]} | OPS {stats["ops"]} | AB {stats["ab"]}</div>', unsafe_allow_html=True)
+                            else:
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>Stats not found yet</small></div>', unsafe_allow_html=True)
+                            time.sleep(0.15)  # be nice to the free API
                     else:
-                        st.caption("No batter names found in the odds data for this game.")
+                        st.caption("No batter names found for this game.")
                 st.markdown("---")
 
-            st.info("Next step: real platoon / exit velo / good-spot notes will go here under each batter.")
+            st.info("Next: platoon splits (vs L/R) and home/away will be added under each batter.")
 
-    st.caption("💖 Girl Magic • Tab 1 = Odds Tricks • Tab 2 = Batters + Pitchers")
+    st.caption("💖 Girl Magic • Tab 1 = Odds Tricks • Tab 2 = Batters + Pitchers (first stats layer)")
 
 if __name__ == "__main__":
     main()
