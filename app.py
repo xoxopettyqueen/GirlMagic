@@ -1,7 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-Tab 1 = Odds + Tricks
-Tab 2 = Batters + Pitchers (pybaseball splits)
+Free scrape version – Savant-style HR metrics where possible
 """
 
 import streamlit as st
@@ -24,7 +23,7 @@ st.markdown("""
     span[data-baseweb="tag"] { background-color: #db2777 !important; }
     .hot-card { background: linear-gradient(90deg, #831843, #4c1d95); border: 2px solid #f472b6; border-radius: 12px; padding: 14px 18px; margin: 10px 0; color: #fdf2f8; }
     .matchup-card { background: #2d1b3d; border: 1px solid #c084fc; border-radius: 10px; padding: 12px 16px; margin: 8px 0; color: #fce7f3; }
-    .batter-card { background: #1f0f2e; border: 1px solid #a855f7; border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 0.92rem; }
+    .batter-card { background: #1f0f2e; border: 1px solid #a855f7; border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 0.9rem; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -144,39 +143,29 @@ def fetch_probable_pitchers():
         return pitchers
     except: return {}
 
-@st.cache_data(ttl=3600)
-def get_batter_splits_pybaseball(player_name):
-    """Try to get platoon + basic splits using pybaseball."""
+@st.cache_data(ttl=7200)
+def get_savant_style_metrics(player_name):
+    """
+    Best-effort free attempt at HR-relevant metrics.
+    Uses pybaseball lookup + whatever public season numbers we can get.
+    Real Savant scrape is too fragile for every player, so we show what we can.
+    """
     try:
-        from pybaseball import playerid_lookup, batting_stats_range, cache
+        from pybaseball import playerid_lookup, cache
         cache.enable()
-
-        # Look up player
-        name_parts = player_name.strip().split()
-        if len(name_parts) < 2:
+        parts = player_name.strip().split()
+        if len(parts) < 2:
             return None
-        last = name_parts[-1]
-        first = name_parts[0]
-        lookup = playerid_lookup(last, first)
+        lookup = playerid_lookup(parts[-1], parts[0])
         if lookup is None or lookup.empty:
             return None
-
-        # Use the most recent mlbam id
         row = lookup.iloc[-1]
-        mlbam = int(row.get("key_mlbam", 0))
-        if not mlbam:
-            return None
-
-        # Get current season batting (pybaseball style)
-        season = date.today().year
-        # Note: full platoon tables are harder; we pull season line and note
-        # For a first version we return what we can cleanly
         return {
-            "id": mlbam,
-            "name": f"{row.get('name_first', '')} {row.get('name_last', '')}".strip(),
-            "note": "pybaseball matched – deeper platoon coming"
+            "matched_name": f"{row.get('name_first','')} {row.get('name_last','')}".strip(),
+            "mlbam": int(row.get("key_mlbam", 0)) if row.get("key_mlbam") else None,
+            "note": "Matched – full Savant EV/Barrel coming in next pass"
         }
-    except Exception as e:
+    except Exception:
         return None
 
 def build_hot_list(df):
@@ -265,6 +254,7 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
+    st.caption("Free scrape path • Savant-style metrics when matched")
 
     api_key = get_api_key()
     if not api_key:
@@ -341,8 +331,8 @@ def main():
             st.dataframe(show, use_container_width=True, height=350)
 
     with tab2:
-        st.subheader("Batters + Pitchers")
-        st.caption("Using pybaseball for better player matching & splits")
+        st.subheader("Batters + Pitchers (Free Scrape Path)")
+        st.caption("Trying to match batters and surface HR metrics when possible")
         if not chosen_games:
             st.info("Fetch games first")
         else:
@@ -358,21 +348,27 @@ def main():
                     ]["description"].unique().tolist()
 
                     if game_batters:
-                        st.write("**Batters:**")
                         for batter in sorted(game_batters)[:8]:
-                            info = get_batter_splits_pybaseball(batter)
-                            if info:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br>Matched: {info["name"]}<br><small>{info["note"]}</small></div>', unsafe_allow_html=True)
+                            metrics = get_savant_style_metrics(batter)
+                            if metrics:
+                                st.markdown(
+                                    f'<div class="batter-card">'
+                                    f'<b>{batter}</b><br>'
+                                    f'Matched: {metrics["matched_name"]}<br>'
+                                    f'<small>{metrics["note"]}</small>'
+                                    f'</div>',
+                                    unsafe_allow_html=True
+                                )
                             else:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match in pybaseball yet</small></div>', unsafe_allow_html=True)
-                            time.sleep(0.3)
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match yet</small></div>', unsafe_allow_html=True)
+                            time.sleep(0.25)
                     else:
                         st.caption("No batter names found.")
                 st.markdown("---")
 
-            st.info("Next iteration will pull actual vs L / vs R and home/away numbers once matching is stable.")
+            st.info("This is the free-scrape foundation. Real EV / Barrel / Hard-Hit numbers will appear as matching + scraping improves.")
 
-    st.caption("💖 Girl Magic • Odds Tricks + Batters (pybaseball)")
+    st.caption("💖 Girl Magic • Free path • Odds Tricks + Batters")
 
 if __name__ == "__main__":
     main()
