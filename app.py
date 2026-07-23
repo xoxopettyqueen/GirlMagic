@@ -1,6 +1,6 @@
 """
-Personal Sportsbook Odds Tracker
-Supports main lines + Player Props
+Girl Magic Odds Tracker ✨
+Pink / Purple theme + pattern flags
 """
 
 import streamlit as st
@@ -9,13 +9,45 @@ import requests
 import sqlite3
 from datetime import datetime
 from pathlib import Path
+from collections import defaultdict
 
 st.set_page_config(
-    page_title="Odds Tracker",
-    page_icon="📊",
+    page_title="Girl Magic Odds ✨",
+    page_icon="💖",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+st.markdown("""
+<style>
+    .stApp {
+        background: linear-gradient(135deg, #1a0a1f 0%, #2d1b3d 40%, #1f0f2e 100%);
+        color: #fce7f3;
+    }
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #2a1435 0%, #1c0d24 100%);
+        border-right: 1px solid #a855f7;
+    }
+    h1, h2, h3 { color: #f9a8d4 !important; }
+    .stButton > button {
+        background: linear-gradient(90deg, #ec4899, #a855f7) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+    }
+    span[data-baseweb="tag"] { background-color: #db2777 !important; }
+    .flag-box {
+        background: linear-gradient(90deg, #4c1d95, #831843);
+        border: 1px solid #f472b6;
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin: 8px 0;
+        color: #fdf2f8;
+    }
+    .flag-title { color: #fbcfe8; font-weight: 700; }
+</style>
+""", unsafe_allow_html=True)
 
 DB_PATH = Path("odds_data.db")
 API_BASE = "https://api.the-odds-api.com/v4"
@@ -31,331 +63,212 @@ SPORTS = {
 }
 
 PLAYER_PROP_MARKETS = {
-    "NBA": [
-        "player_points", "player_rebounds", "player_assists",
-        "player_threes", "player_blocks", "player_steals",
-        "player_points_rebounds_assists", "player_points_rebounds",
-        "player_points_assists", "player_rebounds_assists"
-    ],
-    "NFL": [
-        "player_pass_yds", "player_pass_tds", "player_pass_completions",
-        "player_rush_yds", "player_rush_tds", "player_receptions",
-        "player_reception_yds", "player_reception_tds",
-        "player_anytime_td", "player_1st_td", "player_pass_interceptions"
-    ],
-       "MLB": [
-        "batter_home_runs",
-        "batter_hits",
-        "batter_total_bases",
-        "batter_rbis",
-        "batter_runs_scored",
-        "batter_strikeouts",
-        "batter_stolen_bases",
-        "batter_hits_runs_rbis",
-        "pitcher_strikeouts",
-        "pitcher_hits_allowed",
-        "pitcher_walks",
-        "pitcher_earned_runs",
-    ],
-    "NHL": [
-        "player_points", "player_goals", "player_assists",
-        "player_shots_on_goal", "player_blocked_shots"
-    ],
-    "NCAAF": [
-        "player_pass_yds", "player_rush_yds", "player_reception_yds",
-        "player_anytime_td", "player_pass_tds"
-    ],
-    "NCAAB": [
-        "player_points", "player_rebounds", "player_assists", "player_threes"
-    ],
+    "NBA": ["player_points", "player_rebounds", "player_assists", "player_threes", "player_blocks", "player_steals"],
+    "NFL": ["player_pass_yds", "player_pass_tds", "player_rush_yds", "player_rush_tds", "player_receptions", "player_reception_yds", "player_anytime_td"],
+    "MLB": ["batter_home_runs", "batter_hits", "batter_total_bases", "batter_rbis", "batter_runs_scored", "batter_strikeouts", "pitcher_strikeouts"],
+    "NHL": ["player_points", "player_goals", "player_assists"],
+    "NCAAF": ["player_pass_yds", "player_rush_yds", "player_anytime_td"],
+    "NCAAB": ["player_points", "player_rebounds", "player_assists"],
 }
 
-
 def init_db():
-    """Always recreate the table so schema stays correct."""
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS odds_snapshots")
-    c.execute("""
-        CREATE TABLE odds_snapshots (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT NOT NULL,
-            sport_key TEXT,
-            event_id TEXT,
-            commence_time TEXT,
-            home_team TEXT,
-            away_team TEXT,
-            bookmaker TEXT,
-            market TEXT,
-            outcome TEXT,
-            description TEXT,
-            price REAL,
-            point REAL,
-            last_update TEXT
-        )
-    """)
+    c.execute("""CREATE TABLE odds_snapshots (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT NOT NULL, sport_key TEXT,
+        event_id TEXT, commence_time TEXT, home_team TEXT, away_team TEXT,
+        bookmaker TEXT, market TEXT, outcome TEXT, description TEXT,
+        price REAL, point REAL, last_update TEXT)""")
     conn.commit()
     conn.close()
 
-
-def save_odds_to_db(records: list, sport_key: str):
-    if not records:
-        return 0
+def save_odds_to_db(records, sport_key):
+    if not records: return 0
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     now = datetime.utcnow().isoformat()
-    rows = []
-    for r in records:
-        rows.append((
-            now,
-            sport_key,
-            r.get("event_id"),
-            r.get("commence_time"),
-            r.get("home_team"),
-            r.get("away_team"),
-            r.get("bookmaker"),
-            r.get("market"),
-            r.get("outcome"),
-            r.get("description"),
-            r.get("price"),
-            r.get("point"),
-            r.get("last_update"),
-        ))
-    c.executemany("""
-        INSERT INTO odds_snapshots
-        (timestamp, sport_key, event_id, commence_time, home_team, away_team,
-         bookmaker, market, outcome, description, price, point, last_update)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, rows)
+    rows = [(now, sport_key, r.get("event_id"), r.get("commence_time"), r.get("home_team"), r.get("away_team"),
+             r.get("bookmaker"), r.get("market"), r.get("outcome"), r.get("description"),
+             r.get("price"), r.get("point"), r.get("last_update")) for r in records]
+    c.executemany("INSERT INTO odds_snapshots (timestamp, sport_key, event_id, commence_time, home_team, away_team, bookmaker, market, outcome, description, price, point, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
     conn.commit()
     conn.close()
     return len(rows)
 
-
 def get_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
     if not key:
-        key = st.sidebar.text_input("Odds API Key", type="password")
+        key = st.sidebar.text_input("Odds API Key 🔑", type="password")
     return key
 
-
-def fetch_events(api_key: str, sport_key: str):
-    url = f"{API_BASE}/sports/{sport_key}/events"
+def fetch_events(api_key, sport_key):
     try:
-        r = requests.get(url, params={"apiKey": api_key}, timeout=15)
+        r = requests.get(f"{API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
         r.raise_for_status()
         return r.json()
     except Exception as e:
         st.error(f"Error loading games: {e}")
         return []
 
-
-def fetch_event_odds(api_key: str, sport_key: str, event_id: str, markets: str):
-    url = f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds"
-    params = {
-        "apiKey": api_key,
-        "regions": REGIONS,
-        "markets": markets,
-        "oddsFormat": "american",
-        "dateFormat": "iso",
-    }
+def fetch_event_odds(api_key, sport_key, event_id, markets):
+    params = {"apiKey": api_key, "regions": REGIONS, "markets": markets, "oddsFormat": "american", "dateFormat": "iso"}
     try:
-        r = requests.get(url, params=params, timeout=20)
+        r = requests.get(f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds", params=params, timeout=20)
         r.raise_for_status()
         return r.json()
-    except requests.exceptions.HTTPError as e:
-        st.warning(f"Could not fetch this game (HTTP {r.status_code}). Try different markets.")
-        return None
-    except Exception as e:
-        st.warning(f"Could not fetch this game: {e}")
+    except Exception:
+        st.warning("Could not fetch this game. Try different markets.")
         return None
 
-
-def flatten_event_odds(event_data: dict) -> list:
-    if not event_data:
-        return []
+def flatten_event_odds(event_data):
+    if not event_data: return []
     records = []
-    event_id = event_data.get("id")
-    home = event_data.get("home_team")
-    away = event_data.get("away_team")
-    commence = event_data.get("commence_time")
-
     for book in event_data.get("bookmakers", []):
-        book_key = book.get("key")
-        last_update = book.get("last_update")
         for market in book.get("markets", []):
-            market_key = market.get("key")
             for outcome in market.get("outcomes", []):
                 records.append({
-                    "event_id": event_id,
-                    "commence_time": commence,
-                    "home_team": home,
-                    "away_team": away,
-                    "bookmaker": book_key,
-                    "market": market_key,
+                    "event_id": event_data.get("id"),
+                    "commence_time": event_data.get("commence_time"),
+                    "home_team": event_data.get("home_team"),
+                    "away_team": event_data.get("away_team"),
+                    "bookmaker": book.get("key"),
+                    "market": market.get("key"),
                     "outcome": outcome.get("name"),
                     "description": outcome.get("description"),
                     "price": outcome.get("price"),
                     "point": outcome.get("point"),
-                    "last_update": last_update,
+                    "last_update": book.get("last_update"),
                 })
     return records
 
-
 def format_odds(price):
-    if price is None:
-        return "-"
-    try:
-        return f"{int(price):+d}"
-    except Exception:
-        return str(price)
+    if price is None: return "-"
+    try: return f"{int(price):+d}"
+    except: return str(price)
 
+def last_two_digits(price):
+    try: return abs(int(price)) % 100
+    except: return None
+
+def find_same_odds_flags(df):
+    flags = []
+    props = df[df["description"].notna() & (df["description"] != "")].copy()
+    if props.empty: return flags
+    for team_col in ["home_team", "away_team"]:
+        for (team, market, price), group in props.groupby([team_col, "market", "price"]):
+            players = list(group["description"].unique())
+            if len(players) >= 2:
+                flags.append({"team": team, "market": market, "odds": format_odds(price), "players": players})
+    return flags
+
+def find_betmgm_ending_flags(df):
+    flags = []
+    mgm = df[df["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
+    for _, row in mgm.iterrows():
+        last = last_two_digits(row["price"])
+        if last in (25, 50, 75):
+            flags.append({
+                "player": row.get("description") or row.get("outcome"),
+                "odds": format_odds(row["price"]),
+                "ending": last,
+                "market": row["market"]
+            })
+    return flags
+
+def find_name_letter_matches(df):
+    flags = []
+    props = df[df["description"].notna() & (df["description"] != "")].copy()
+    if props.empty: return flags
+    for team_col in ["home_team", "away_team"]:
+        for team, group in props.groupby(team_col):
+            by_letter = defaultdict(list)
+            for p in group["description"].unique():
+                if p: by_letter[p[0].upper()].append(p)
+            for letter, names in by_letter.items():
+                if len(names) >= 2:
+                    flags.append({"team": team, "letter": letter, "players": names})
+    return flags
 
 def main():
     init_db()
-
-    st.title("📊 Personal Odds + Player Props Tracker")
-    st.caption("Private use only • Data from The Odds API")
+    st.title("💖 Girl Magic Odds Tracker ✨")
+    st.caption("Private • Pink & Purple • Pattern hunting")
 
     api_key = get_api_key()
     if not api_key:
-        st.warning("Add your API key in **Manage app → Secrets** (or type it in the sidebar).")
+        st.warning("Add your API key in Manage app → Secrets.")
         st.stop()
 
     with st.sidebar:
-        st.header("Settings")
+        st.header("✨ Settings")
         sport_name = st.selectbox("Sport", list(SPORTS.keys()))
         sport_key = SPORTS[sport_name]
-
         st.markdown("---")
-        st.markdown("**What to fetch**")
         want_main = st.checkbox("Main lines (ML / Spread / Total)", value=True)
         want_props = st.checkbox("Player Props", value=False)
-
         prop_list = PLAYER_PROP_MARKETS.get(sport_name, [])
-        selected_props = []
-        if want_props and prop_list:
-            selected_props = st.multiselect(
-                "Which player props?",
-                options=prop_list,
-                default=prop_list[:3]
-            )
+        selected_props = st.multiselect("Which player props?", prop_list, default=prop_list[:3]) if want_props and prop_list else []
+        st.markdown("---")
+        show_same_odds = st.checkbox("Same odds on same team", value=True)
+        show_betmgm = st.checkbox("BetMGM ending 25/50/75", value=True)
+        show_name_match = st.checkbox("Matching first letters", value=True)
 
-    # ---- 1. Load games ----
-    st.subheader("1. Upcoming Games")
-    if st.button("Load Games", type="primary"):
-        with st.spinner("Loading games..."):
-            events = fetch_events(api_key, sport_key)
-            st.session_state["events"] = events
+    st.subheader("1️⃣ Upcoming Games")
+    if st.button("Load Games 💫", type="primary"):
+        with st.spinner("Loading..."):
+            st.session_state["events"] = fetch_events(api_key, sport_key)
             st.session_state["sport_key"] = sport_key
-            st.session_state["sport_name"] = sport_name
 
     events = st.session_state.get("events", [])
     if not events:
-        st.info("Click **Load Games** first.")
+        st.info("Click **Load Games 💫** first.")
         st.stop()
 
-    game_rows = []
-    for e in events:
-        game_rows.append({
-            "id": e["id"],
-            "Away": e.get("away_team"),
-            "Home": e.get("home_team"),
-            "Start (UTC)": (e.get("commence_time") or "")[:16].replace("T", " "),
-        })
-    st.dataframe(
-        pd.DataFrame(game_rows)[["Away", "Home", "Start (UTC)"]],
-        use_container_width=True,
-        hide_index=True
-    )
+    game_rows = [{"id": e["id"], "Away": e.get("away_team"), "Home": e.get("home_team"), "Start": (e.get("commence_time") or "")[:16].replace("T", " ")} for e in events]
+    st.dataframe(pd.DataFrame(game_rows)[["Away", "Home", "Start"]], use_container_width=True, hide_index=True)
 
-    # ---- 2. Fetch ----
-    st.subheader("2. Fetch Odds / Player Props")
-
+    st.subheader("2️⃣ Fetch Odds")
     options = {f"{r['Away']} @ {r['Home']}": r["id"] for r in game_rows}
-    chosen_labels = st.multiselect("Select one or more games", list(options.keys()))
-
-    fetch_clicked = st.button("Fetch Selected Games", type="primary")
-
-    if fetch_clicked and chosen_labels:
+    chosen = st.multiselect("Select games", list(options.keys()))
+    if st.button("Fetch Selected Games 💖", type="primary") and chosen:
         all_records = []
-        progress = st.progress(0)
-        status = st.empty()
-
-        markets = []
-        if want_main:
-            markets.extend(["h2h", "spreads", "totals"])
-        if want_props and selected_props:
-            markets.extend(selected_props)
-
+        markets = (["h2h", "spreads", "totals"] if want_main else []) + selected_props
         if not markets:
-            st.warning("Select at least one type of market (Main lines or Player Props).")
+            st.warning("Select at least one market type.")
             st.stop()
-
-        markets_str = ",".join(markets)
-
-        for i, label in enumerate(chosen_labels):
-            event_id = options[label]
-            status.write(f"Fetching {label} ...")
-            data = fetch_event_odds(api_key, sport_key, event_id, markets_str)
-            records = flatten_event_odds(data)
-            all_records.extend(records)
-            progress.progress((i + 1) / len(chosen_labels))
-
+        progress = st.progress(0)
+        for i, label in enumerate(chosen):
+            data = fetch_event_odds(api_key, sport_key, options[label], ",".join(markets))
+            all_records.extend(flatten_event_odds(data))
+            progress.progress((i+1)/len(chosen))
         if all_records:
-            n = save_odds_to_db(all_records, sport_key)
-            st.success(f"Saved {n} odds rows")
+            st.success(f"Saved {save_odds_to_db(all_records, sport_key)} rows ✨")
             st.session_state["last_records"] = all_records
         else:
-            st.warning("No odds returned. Try Main lines only, or different games.")
+            st.warning("No odds returned.")
 
-    # ---- Results ----
     records = st.session_state.get("last_records", [])
     if records:
-        st.subheader("Results")
+        st.subheader("3️⃣ Results + Flags")
         df = pd.DataFrame(records)
 
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            books = st.multiselect("Filter Books", sorted(df["bookmaker"].dropna().unique()), default=[])
-        with c2:
-            mkts = st.multiselect("Filter Markets", sorted(df["market"].dropna().unique()), default=[])
-        with c3:
-            players = sorted([x for x in df["description"].dropna().unique() if x])
-            player_filter = st.multiselect("Filter Players", players, default=[])
+        if show_same_odds:
+            for f in find_same_odds_flags(df):
+                st.markdown(f'<div class="flag-box"><div class="flag-title">⚡ Same Odds Trick</div>{f["team"]} • {f["market"]} • {f["odds"]}<br>Players: <b>{" + ".join(f["players"])}</b></div>', unsafe_allow_html=True)
+        if show_betmgm:
+            for f in find_betmgm_ending_flags(df):
+                st.markdown(f'<div class="flag-box"><div class="flag-title">🎯 BetMGM Ending {f["ending"]}</div>{f["player"]} • {f["odds"]} • {f["market"]}</div>', unsafe_allow_html=True)
+        if show_name_match:
+            for f in find_name_letter_matches(df):
+                st.markdown(f'<div class="flag-box"><div class="flag-title">🔤 Matching Letter “{f["letter"]}”</div>{f["team"]}<br>Players: <b>{" + ".join(f["players"])}</b></div>', unsafe_allow_html=True)
 
-        filtered = df.copy()
-        if books:
-            filtered = filtered[filtered["bookmaker"].isin(books)]
-        if mkts:
-            filtered = filtered[filtered["market"].isin(mkts)]
-        if player_filter:
-            filtered = filtered[filtered["description"].isin(player_filter)]
-
-        show = filtered[["home_team", "away_team", "bookmaker", "market", "description", "outcome", "price", "point"]].copy()
+        show = df[["home_team", "away_team", "bookmaker", "market", "description", "outcome", "price", "point"]].copy()
         show["price"] = show["price"].apply(format_odds)
-        show = show.rename(columns={
-            "description": "Player",
-            "outcome": "Side",
-            "price": "Odds",
-            "point": "Line"
-        })
-        st.dataframe(show, use_container_width=True, height=500)
+        show = show.rename(columns={"description": "Player", "outcome": "Side", "price": "Odds", "point": "Line"})
+        st.dataframe(show, use_container_width=True, height=400)
 
-        st.markdown("#### Best available prices")
-        if not filtered.empty:
-            best = (
-                filtered.groupby(["market", "description", "outcome", "point"], dropna=False)["price"]
-                .max()
-                .reset_index()
-                .sort_values(["market", "description"])
-            )
-            best["price"] = best["price"].apply(format_odds)
-            st.dataframe(best, use_container_width=True)
-
-    st.divider()
-    st.caption("Personal use only • Start with Main lines only if props give errors")
-
+    st.caption("💖 Girl Magic • Personal use only")
 
 if __name__ == "__main__":
     main()
