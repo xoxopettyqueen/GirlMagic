@@ -1,14 +1,13 @@
 """
 Girl Magic Odds ✨
 For the girls only • Our tricks
-Name patterns = different teams (with Gonzalez/Gonzales-style exception)
+Name patterns prefer different teams but still show same-team options
 """
 
 import streamlit as st
 import pandas as pd
 import requests
 from collections import defaultdict
-from difflib import SequenceMatcher
 
 st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="💖", layout="wide")
 
@@ -54,20 +53,6 @@ def get_initials(name):
     parts = str(name).strip().split()
     if len(parts) < 2: return None, None
     return parts[0][0].upper(), parts[-1][0].upper()
-
-def similar_last_name(n1, n2):
-    """Allow Gonzalez / Gonzales style matches"""
-    p1 = str(n1).split()
-    p2 = str(n2).split()
-    if len(p1) < 2 or len(p2) < 2:
-        return False
-    last1 = p1[-1].lower()
-    last2 = p2[-1].lower()
-    if last1 == last2:
-        return True
-    # Very close spelling (Gonzalez vs Gonzales)
-    ratio = SequenceMatcher(None, last1, last2).ratio()
-    return ratio >= 0.85
 
 def fetch_events(api_key):
     try:
@@ -217,22 +202,15 @@ def run_flags(df):
                     "css": "fd"
                 })
 
-    # ========== NAME PATTERNS ==========
+    # ========== NAME PATTERNS (prefer different teams, but still show same-team) ==========
     player_events = defaultdict(set)
     for _, row in df.iterrows():
         player_events[row["player"]].add(row["event"])
 
     players = list(df["player"].dropna().unique())
 
-    def different_teams(p1, p2):
+    def is_different_teams(p1, p2):
         return len(player_events[p1] & player_events[p2]) == 0
-
-    def allow_pair(p1, p2):
-        # Always allow if different teams
-        if different_teams(p1, p2):
-            return True
-        # Exception: very similar last names (Gonzalez / Gonzales)
-        return similar_last_name(p1, p2)
 
     # Same Initials
     init_map = defaultdict(list)
@@ -243,14 +221,16 @@ def run_flags(df):
     for k, names in init_map.items():
         for i, p1 in enumerate(names):
             for p2 in names[i+1:]:
-                if allow_pair(p1, p2):
-                    results.append({
-                        "type": "same_init",
-                        "label": f"{p1} + {p2}",
-                        "reason": f"Same initials {k}",
-                        "event": "",
-                        "css": "name"
-                    })
+                same = not is_different_teams(p1, p2)
+                tag = " (same team)" if same else " (different teams)"
+                results.append({
+                    "type": "same_init",
+                    "label": f"{p1} + {p2}",
+                    "reason": f"Same initials {k}{tag}",
+                    "event": "",
+                    "css": "name",
+                    "prefer": 0 if same else 1   # different teams first
+                })
 
     # Cross Initials
     for i, p1 in enumerate(players):
@@ -258,16 +238,19 @@ def run_flags(df):
         if not l1: continue
         for p2 in players[i+1:]:
             f2, _ = get_initials(p2)
-            if f2 and l1 == f2 and allow_pair(p1, p2):
+            if f2 and l1 == f2:
+                same = not is_different_teams(p1, p2)
+                tag = " (same team)" if same else " (different teams)"
                 results.append({
                     "type": "cross",
                     "label": f"{p1} + {p2}",
-                    "reason": f"Cross initial ({l1})",
+                    "reason": f"Cross initial ({l1}){tag}",
                     "event": "",
-                    "css": "name"
+                    "css": "name",
+                    "prefer": 0 if same else 1
                 })
 
-    # Same Last Name (includes Gonzalez/Gonzales exception)
+    # Same Last Name
     last_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -276,14 +259,16 @@ def run_flags(df):
     for last, names in last_map.items():
         for i, p1 in enumerate(names):
             for p2 in names[i+1:]:
-                if allow_pair(p1, p2):
-                    results.append({
-                        "type": "last",
-                        "label": f"{p1} + {p2}",
-                        "reason": f"Same last name ({last.title()})",
-                        "event": "",
-                        "css": "name"
-                    })
+                same = not is_different_teams(p1, p2)
+                tag = " (same team)" if same else " (different teams)"
+                results.append({
+                    "type": "last",
+                    "label": f"{p1} + {p2}",
+                    "reason": f"Same last name ({last.title()}){tag}",
+                    "event": "",
+                    "css": "name",
+                    "prefer": 0 if same else 1
+                })
 
     # Same First Name
     first_map = defaultdict(list)
@@ -294,15 +279,19 @@ def run_flags(df):
     for first, names in first_map.items():
         for i, p1 in enumerate(names):
             for p2 in names[i+1:]:
-                if allow_pair(p1, p2):
-                    results.append({
-                        "type": "first",
-                        "label": f"{p1} + {p2}",
-                        "reason": f"Same first name ({first.title()})",
-                        "event": "",
-                        "css": "name"
-                    })
+                same = not is_different_teams(p1, p2)
+                tag = " (same team)" if same else " (different teams)"
+                results.append({
+                    "type": "first",
+                    "label": f"{p1} + {p2}",
+                    "reason": f"Same first name ({first.title()}){tag}",
+                    "event": "",
+                    "css": "name",
+                    "prefer": 0 if same else 1
+                })
 
+    # Sort so different-team pairs appear first
+    results = sorted(results, key=lambda x: x.get("prefer", 1), reverse=True)
     return results
 
 def main():
@@ -407,8 +396,7 @@ Same player has 25/50/75 endings across different books.
 FanDuel props ≥ +500 that end in 10, 30, 60, 70, or 90.
 
 **💅 Same Initials / 🔄 Cross Initials / 👩‍👧 Same Last Name / 👯 Same First Name**  
-Prefer different teams.  
-Exception allowed for very similar last names (Gonzalez / Gonzales style) even on the same team.
+Prefer different teams, but same-team pairs are still shown so you have the option.
         """)
 
     st.caption("💖 Girl Magic • For the girls only • Our tricks")
