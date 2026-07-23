@@ -1,12 +1,10 @@
 """
-Girl Magic – SportsGameOdds DEBUG version
-Just to see the raw response
+Girl Magic – Forced Debug
+Shows raw text + length so we can see what’s coming back
 """
 
 import streamlit as st
-import pandas as pd
 import requests
-import json
 
 st.set_page_config(page_title="Girl Magic Debug", page_icon="💖", layout="wide")
 
@@ -26,39 +24,40 @@ API_BASE = "https://api.sportsgameodds.com/v2"
 def get_api_key():
     key = st.secrets.get("SGO_API_KEY", "")
     if not key:
-        key = st.sidebar.text_input("SportsGameOdds API Key", type="password")
+        key = st.sidebar.text_input("SportsGameOdds API Key", type="password", value="45f0d5c343e08038b9c867e3f8663649")
     return key
 
 def main():
-    st.title("💖 Girl Magic – Debug Mode")
-    st.caption("Showing raw SportsGameOdds response")
+    st.title("💖 Forced Debug Mode")
+    st.write("This will show the raw response text so we can see what’s actually coming back.")
 
     api_key = get_api_key()
     if not api_key:
-        st.warning("Add your key")
+        st.warning("No key")
         st.stop()
 
-    if st.button("Fetch Raw MLB Data 💫", type="primary"):
+    if st.button("Force Fetch 💫", type="primary"):
         params = {
             "apiKey": api_key,
             "leagueID": "MLB",
             "oddsAvailable": "true",
-            "limit": 5
+            "limit": 3
         }
-        try:
-            r = requests.get(f"{API_BASE}/events", params=params, timeout=25)
-            st.write(f"**Status code:** {r.status_code}")
-            st.write(f"**Headers:** {dict(r.headers)}")
 
-            try:
-                data = r.json()
-                st.success("Got JSON response")
-                st.json(data)          # ← this shows the full structure
-            except:
-                st.write("Raw text:")
-                st.code(r.text[:3000])
+        try:
+            r = requests.get(f"{API_BASE}/events", params=params, timeout=30)
+            st.write(f"**Status:** {r.status_code}")
+            st.write(f"**Response length:** {len(r.text)} characters")
+
+            # Always show the first 4000 characters of the raw response
+            st.subheader("Raw Response (first 4000 chars)")
+            st.code(r.text[:4000], language="json")
+
+            if len(r.text) > 4000:
+                st.write(f"... (truncated, total {len(r.text)} characters)")
+
         except Exception as e:
-            st.error(f"Request failed: {e}")
+            st.error(f"Request completely failed: {e}")
 
 if __name__ == "__main__":
     main()
