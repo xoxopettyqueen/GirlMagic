@@ -1,6 +1,6 @@
 """
 Girl Magic Odds ✨
-Clean • Simple • Ready for the girls
+Clean + Same First Name added
 """
 
 import streamlit as st
@@ -16,10 +16,6 @@ st.markdown("""
         background: linear-gradient(135deg, #1a0a1f 0%, #2d1b3d 50%, #1f0f2e 100%);
         color: #fce7f3;
     }
-    section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #2a1435, #1c0d24);
-        border-right: 1px solid #a855f7;
-    }
     h1, h2, h3 { color: #f9a8d4 !important; }
     .stButton > button {
         background: linear-gradient(90deg, #ec4899, #a855f7) !important;
@@ -27,7 +23,6 @@ st.markdown("""
         border: none !important;
         border-radius: 12px !important;
         font-weight: 600 !important;
-        padding: 0.6rem 1.4rem !important;
     }
     .card {
         background: #2a1435;
@@ -110,7 +105,6 @@ def flatten(data):
 def run_flags(df):
     if df.empty: return []
 
-    # Only lowest line (0.5 / 1)
     if "point" in df.columns:
         df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
@@ -141,7 +135,7 @@ def run_flags(df):
                     "css": "mgm"
                 })
 
-    # Exact matching odds (same player across books)
+    # Exact matching odds
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -155,7 +149,7 @@ def run_flags(df):
                 "css": "match"
             })
 
-    # Matching 25/50/75 only
+    # Matching 25/50/75
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -173,7 +167,7 @@ def run_flags(df):
                     "css": "digit"
                 })
 
-    # Name patterns
+    # ===== NAME PATTERNS =====
     players = list(df["player"].dropna().unique())
 
     # Same initials
@@ -181,7 +175,7 @@ def run_flags(df):
     for p in players:
         f, l = get_initials(p)
         if f and l:
-            init_map[f+l].append(p)
+            init_map[f + l].append(p)
     for k, names in init_map.items():
         if len(names) >= 2:
             results.append({
@@ -223,18 +217,33 @@ def run_flags(df):
                 "css": "name"
             })
 
+    # Same first name  ← NEW
+    first_map = defaultdict(list)
+    for p in players:
+        parts = str(p).split()
+        if parts:
+            first_map[parts[0].lower()].append(p)
+    for first, names in first_map.items():
+        if len(names) >= 2:
+            results.append({
+                "type": "first",
+                "label": " + ".join(sorted(names)),
+                "reason": f"Same first name ({first.title()})",
+                "event": "",
+                "css": "name"
+            })
+
     return results
 
 def main():
     st.title("💖 Girl Magic Odds")
-    st.caption("Simple • Clean • Ready for the girls")
+    st.caption("Clean • Simple • Ready for the girls")
 
     api_key = get_api_key()
     if not api_key:
         st.warning("Add your Odds API key in Secrets")
         st.stop()
 
-    # Load games
     if st.button("① Load Games", type="primary"):
         st.session_state["events"] = fetch_events(api_key)
 
@@ -243,11 +252,9 @@ def main():
         st.info("Click **Load Games** to start")
         st.stop()
 
-    # Select games
     options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
     chosen = st.multiselect("② Select games", list(options.keys()))
 
-    # Fetch
     if st.button("③ Fetch Odds", type="primary") and chosen:
         all_rows = []
         progress = st.progress(0)
@@ -257,7 +264,6 @@ def main():
             progress.progress((i + 1) / len(chosen))
 
         if all_rows:
-            # Keep only lowest line
             df = pd.DataFrame(all_rows)
             df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
             st.session_state["odds"] = df.to_dict("records")
@@ -269,7 +275,6 @@ def main():
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     results = run_flags(df) if not df.empty else []
 
-    # ===== CLEAN SECTIONS =====
     def show_section(title, typ):
         st.subheader(title)
         items = [r for r in results if r["type"] == typ]
@@ -291,6 +296,7 @@ def main():
     show_section("💅 Same Initials", "same_init")
     show_section("🔄 Cross Initials", "cross")
     show_section("👩‍👧 Same Last Name", "last")
+    show_section("👯 Same First Name", "first")   # ← NEW SECTION
 
     st.caption("💖 Girl Magic • Made for you & the girls")
 
