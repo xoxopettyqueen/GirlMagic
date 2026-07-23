@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Tighter cards • Less scrolling • Better glossary
+Tighter cards • Clearer +EV language
 """
 
 import streamlit as st
@@ -188,28 +188,6 @@ def last_two(p):
     try: return abs(int(p)) % 100
     except: return None
 
-def implied_prob(odds):
-    try:
-        odds = float(odds)
-        if odds > 0:
-            return 100 / (odds + 100)
-        else:
-            return abs(odds) / (abs(odds) + 100)
-    except:
-        return 0
-
-def calc_ev(best_odds, median_odds, stake=100):
-    try:
-        p_true = implied_prob(median_odds)
-        if best_odds > 0:
-            profit = stake * (best_odds / 100)
-        else:
-            profit = stake * (100 / abs(best_odds))
-        ev = (p_true * profit) - ((1 - p_true) * stake)
-        return round(ev, 2)
-    except:
-        return 0
-
 def get_initials(name):
     parts = str(name).strip().split()
     if len(parts) < 2: return None, None
@@ -384,16 +362,15 @@ def run_flags(df, previous_df=None):
         has_method = player in flagged_players
         methods = list(set(player_methods.get(player, [])))
         is_bet = has_edge and has_method
-        ev_dollars = calc_ev(best_price, median)
 
         if is_bet:
-            why = "Method + better price than most books"
+            why = "Has one of our methods AND the price is better than most books"
         elif has_method:
-            why = "Has method but price not better enough"
+            why = "Has a method but the price is not better than most books"
         elif has_edge:
-            why = "Price looks good but no method hit"
+            why = "Price looks better but none of our methods hit"
         else:
-            why = "No method + price not better"
+            why = "No method + price is not better than most books"
 
         ev_board.append({
             "player": player,
@@ -401,7 +378,6 @@ def run_flags(df, previous_df=None):
             "best_book": best_book,
             "median": median,
             "edge": edge,
-            "ev_dollars": ev_dollars,
             "books": ", ".join(books),
             "event": group["event"].iloc[0],
             "is_bet": is_bet,
@@ -538,14 +514,14 @@ def main():
         "📖 Glossary"
     ])
 
-    # ========== +EV BOARD (compact grid) ==========
+    # ========== +EV BOARD ==========
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 Boss Bitch Picks</div>', unsafe_allow_html=True)
+        st.write("**Green = we like it.** **Gray = we skip it.** That’s it.")
 
         if not ev_board:
             st.info("Fetch some games first")
         else:
-            # Show in 2 columns
             cols = st.columns(2)
             for idx, item in enumerate(ev_board):
                 col = cols[idx % 2]
@@ -558,8 +534,8 @@ def main():
                         st.markdown(f'''
                         <div class="card bet grid-card">
                             <b>🟢 BET THIS</b> — <b>{item["player"]}</b><br>
-                            {format_odds(item["best_price"])} on {item["best_book"]} • Median {format_odds(item["median"])}<br>
-                            Edge +{int(item["edge"])} • EV ~${item["ev_dollars"]}<br>
+                            Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
+                            Most books: {format_odds(item["median"])}<br>
                             {tags_html}<br>
                             <small>{item["why"]}</small>
                         </div>''', unsafe_allow_html=True)
@@ -567,7 +543,8 @@ def main():
                         st.markdown(f'''
                         <div class="card skip grid-card">
                             <b>⚪ SKIP</b> — <b>{item["player"]}</b><br>
-                            {format_odds(item["best_price"])} on {item["best_book"]} • Median {format_odds(item["median"])}<br>
+                            Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
+                            Most books: {format_odds(item["median"])}<br>
                             {tags_html}<br>
                             <small>{item["why"]}</small>
                         </div>''', unsafe_allow_html=True)
@@ -581,7 +558,6 @@ def main():
                 st.info("None right now")
                 return
 
-            # 2-column grid
             cols = st.columns(2)
             for idx, r in enumerate(items):
                 col = cols[idx % 2]
@@ -612,31 +588,33 @@ def main():
     with tabs[13]:
         st.markdown('<div class="queen-banner">📖 Glossary</div>', unsafe_allow_html=True)
         st.markdown("""
+### Black & white rules
+
 **🟢 BET THIS**  
-Player has at least one of our Girl Magic methods **and** the best available price is meaningfully longer than the market median (edge ≥ +40 cents).
+Two things must be true at the same time:
+1. At least one of our Girl Magic methods hit
+2. The best price is clearly better than what most other books are offering
 
 **⚪ SKIP**  
-Either no method hit, or the price isn’t better enough than the rest of the books.
+Anything that does not meet both of the rules above.
 
-**Edge**  
-Difference between the best price and the median price across books.  
-Example: Best +550, median +480 → Edge = +70 cents.
+That’s the whole system.
 
-**EV on $100**  
-Rough expected value if you bet $100 at the best price, using the median as a proxy for true probability.
+---
 
-**Our core methods**
-- **DK 10** → DraftKings ending in 10
-- **MGM 00/25/50/75** → BetMGM classic endings (pairs or groups of 3+)
-- **Exact Match** → Identical price on the same player across different books
-- **MGM Exact** → Identical price on BetMGM for two or more players in the same game
-- **Matching Digits** → Same player shows 25/50/75 endings on multiple books
-- **FD Pattern** → FanDuel ≥ +500 ending in 10, 30, 60, 70 or 90
-- **Stuck** → Same exact price appears on 3+ books
-- **Wide** → One book is 150+ cents away from the median
-- **Name patterns** → Same/Cross initials or matching first/last names (only shown when the players already have a method)
+### What the methods mean
 
-The colored tags on every card show exactly which methods fired.
+- **DK 10** → DraftKings price ends in 10  
+- **MGM 00 / 25 / 50 / 75** → BetMGM classic endings (pairs or groups)  
+- **Exact Match** → Same exact price on different books  
+- **MGM Exact** → Same exact price on BetMGM for multiple players  
+- **Matching Digits** → Same player shows 25/50/75 on more than one book  
+- **FD Pattern** → FanDuel price is +500 or higher and ends in 10, 30, 60, 70 or 90  
+- **Stuck** → Same price showing on 3 or more books  
+- **Wide** → One book is way different from the rest  
+- **Name patterns** → Matching initials or names (only shown when a method already hit)
+
+The little colored tags on every card tell you exactly which methods fired.
         """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
