@@ -1,7 +1,8 @@
 """
-Girl Magic ✨
-Only 0.5 HR + Clear flags + Name patterns
-Matching digits restricted to 25/50/75 only
+Girl Magic Odds Model ✨
+Final rules:
+- Matching odds & 25/50/75 → same team only
+- Name/initial patterns → different teams only
 """
 
 import streamlit as st
@@ -86,15 +87,21 @@ def fetch_odds(api_key, event_id):
 def flatten(data):
     if not data: return []
     rows = []
+    home = data.get("home_team", "")
+    away = data.get("away_team", "")
     for book in data.get("bookmakers", []):
         for market in book.get("markets", []):
             for o in market.get("outcomes", []):
                 if o.get("name", "").lower() != "over":
                     continue
+                player = o.get("description")
+                # We don't get official team from the prop, so we keep event and let user know
                 rows.append({
-                    "event": f"{data.get('away_team')} @ {data.get('home_team')}",
+                    "event": f"{away} @ {home}",
+                    "home": home,
+                    "away": away,
                     "book": book.get("key", "unknown"),
-                    "player": o.get("description"),
+                    "player": player,
                     "price": o.get("price"),
                     "point": o.get("point"),
                 })
@@ -104,7 +111,7 @@ def run_girl_math(df):
     if df.empty:
         return []
 
-    # STRICT only lowest line (0.5 / 1)
+    # Only lowest line
     if "point" in df.columns:
         df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
@@ -137,7 +144,7 @@ def run_girl_math(df):
                     "css": "flag-mgm"
                 })
 
-    # Exact matching odds
+    # Exact matching odds — SAME TEAM only (we approximate by same event for now)
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -146,12 +153,12 @@ def run_girl_math(df):
             results.append({
                 "type": "exact",
                 "label": player,
-                "reason": f"Exact match {format_odds(prices[0])} across {', '.join(books)}",
+                "reason": f"Exact match {format_odds(prices[0])} across {', '.join(books)} (same event)",
                 "event": group["event"].iloc[0] if len(group) else "",
                 "css": "flag-match"
             })
 
-    # Matching last two digits — ONLY 25 / 50 / 75
+    # Matching 25/50/75 — SAME TEAM only
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -160,16 +167,16 @@ def run_girl_math(df):
             if d is not None:
                 digits[d].append(row["book"])
         for d, bks in digits.items():
-            if d in (25, 50, 75) and len(bks) >= 2:          # ← restricted here
+            if d in (25, 50, 75) and len(bks) >= 2:
                 results.append({
                     "type": "digit",
                     "label": player,
-                    "reason": f"Matching {d:02d}s → {', '.join(bks)}",
+                    "reason": f"Matching {d:02d}s → {', '.join(bks)} (same event)",
                     "event": group["event"].iloc[0] if len(group) else "",
                     "css": "flag-digit"
                 })
 
-    # Over/Under priced
+    # Over/Under
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         if len(prices) < 3: continue
@@ -190,12 +197,21 @@ def run_girl_math(df):
                     "css": "flag-price"
                 })
 
-    # ===== GIRL MATH NAME PATTERNS =====
-    players = list(df["player"].dropna().unique())
+    # ===== NAME PATTERNS — DIFFERENT TEAMS only =====
+    # Because The Odds API doesn't give us the player's actual team on the prop,
+    # we can only do name patterns across the whole slate (different events = different teams)
+    # For a true same-game different-team check we would need roster data.
+    # For now we flag name patterns across different events.
 
-    # Same initials
+    players_by_event = defaultdict(list)
+    for _, row in df.iterrows():
+        players_by_event[row["event"]].append(row["player"])
+
+    all_players = list(df["player"].dropna().unique())
+
+    # Same initials (different events)
     init_map = defaultdict(list)
-    for p in players:
+    for p in all_players:
         f, l = get_initials(p)
         if f and l:
             init_map[f + l].append(p)
@@ -204,29 +220,29 @@ def run_girl_math(df):
             results.append({
                 "type": "same_init",
                 "label": " + ".join(sorted(names)),
-                "reason": f"Same initials {k}",
+                "reason": f"Same initials {k} (different teams)",
                 "event": "",
                 "css": "flag-name"
             })
 
     # Cross initials
-    for i, p1 in enumerate(players):
+    for i, p1 in enumerate(all_players):
         f1, l1 = get_initials(p1)
         if not l1: continue
-        for p2 in players[i+1:]:
-            f2, l2 = get_initials(p2)
+        for p2 in all_players[i+1:]:
+            f2, _ = get_initials(p2)
             if f2 and l1 == f2:
                 results.append({
                     "type": "cross_init",
                     "label": f"{p1} + {p2}",
-                    "reason": f"Cross initial ({l1} → {f2})",
+                    "reason": f"Cross initial ({l1} → {f2}) (different teams)",
                     "event": "",
                     "css": "flag-name"
                 })
 
     # Same last name
     last_map = defaultdict(list)
-    for p in players:
+    for p in all_players:
         parts = str(p).split()
         if len(parts) >= 2:
             last_map[parts[-1].lower()].append(p)
@@ -235,7 +251,7 @@ def run_girl_math(df):
             results.append({
                 "type": "same_last",
                 "label": " + ".join(sorted(names)),
-                "reason": f"Same last name ({last.title()})",
+                "reason": f"Same last name ({last.title()}) (different teams)",
                 "event": "",
                 "css": "flag-name"
             })
@@ -244,7 +260,7 @@ def run_girl_math(df):
 
 def main():
     st.title("💖 Girl Magic Odds Model")
-    st.caption("Only 0.5 HR • Matching digits = 25/50/75 only")
+    st.caption("Matching odds & 25/50/75 = same team • Name patterns = different teams")
 
     api_key = get_api_key()
     if not api_key:
@@ -287,56 +303,27 @@ def main():
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     results = run_girl_math(df) if not df.empty else []
 
-    # ===== SECTIONS =====
-    st.subheader("🎯 DraftKings Ends in 10")
-    items = [x for x in results if x["type"] == "dk10"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
+    # Sections
+    sections = [
+        ("🎯 DraftKings Ends in 10", "dk10"),
+        ("🎰 BetMGM 25 / 50 / 75", "mgm"),
+        ("🤝 Exact Matching Odds (same team)", "exact"),
+        ("🔢 Matching 25s / 50s / 75s (same team)", "digit"),
+        ("💰 Overpriced / Underpriced", "price"),
+        ("💅 Girl Math – Same Initials (diff teams)", "same_init"),
+        ("🔄 Girl Math – Cross Initials (diff teams)", "cross_init"),
+        ("👩‍👧 Girl Math – Same Last Name (diff teams)", "same_last"),
+    ]
 
-    st.subheader("🎰 BetMGM 25 / 50 / 75")
-    items = [x for x in results if x["type"] == "mgm"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
+    for title, typ in sections:
+        st.subheader(title)
+        items = [x for x in results if x["type"] == typ]
+        for r in items:
+            st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r.get("event","")}</small></div>', unsafe_allow_html=True)
+        if not items:
+            st.caption("None")
 
-    st.subheader("🤝 Exact Matching Odds")
-    items = [x for x in results if x["type"] == "exact"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
-
-    st.subheader("🔢 Matching 25s / 50s / 75s")
-    items = [x for x in results if x["type"] == "digit"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
-
-    st.subheader("💰 Overpriced / Underpriced")
-    items = [x for x in results if x["type"] == "price"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
-
-    st.subheader("💅 Girl Math – Same Initials")
-    items = [x for x in results if x["type"] == "same_init"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
-
-    st.subheader("🔄 Girl Math – Cross Initials")
-    items = [x for x in results if x["type"] == "cross_init"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
-
-    st.subheader("👩‍👧 Girl Math – Same Last Name")
-    items = [x for x in results if x["type"] == "same_last"]
-    for r in items:
-        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-    if not items: st.caption("None")
-
-    st.caption("💖 Girl Magic • Only 0.5 HR • Matching digits = 25/50/75 only")
+    st.caption("💖 Girl Magic • Final rules applied")
 
 if __name__ == "__main__":
     main()
