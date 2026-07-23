@@ -1,7 +1,6 @@
 """
 Girl Magic Odds Model ✨
-Powered by SharpAPI
-Clean odds tricks + Girl Math only
+Powered by SharpAPI – fixed version
 """
 
 import streamlit as st
@@ -63,65 +62,120 @@ def fetch_odds(api_key, league="mlb"):
     try:
         r = requests.get(f"{API_BASE}/odds", params={"league": league}, headers=headers, timeout=20)
         if r.status_code != 200:
-            st.warning(f"SharpAPI status {r.status_code}: {r.text[:200]}")
+            st.warning(f"SharpAPI {r.status_code}: {r.text[:250]}")
             return []
         data = r.json()
         return data if isinstance(data, list) else data.get("data", data.get("odds", []))
     except Exception as e:
-        st.error(f"Error: {e}")
+        st.error(f"Fetch error: {e}")
         return []
 
 def normalize_sharp_data(raw):
-    """Turn SharpAPI response into a clean list of rows"""
     rows = []
-    if not raw: return rows
+    if not raw:
+        return rows
 
-    # SharpAPI response shapes can vary – handle common patterns
     items = raw if isinstance(raw, list) else [raw]
 
     for item in items:
-        # Try to extract event + book + market + outcome structure
-        event_name = item.get("event_name") or item.get("name") or f"{item.get('away_team', '')} @ {item.get('home_team', '')}"
-        books = item.get("bookmakers", item.get("odds", item.get("sportsbooks", [])))
+        event_name = (
+            item.get("event_name")
+            or item.get("name")
+            or f"{item.get('away_team', '')} @ {item.get('home_team', '')}".strip(" @")
+            or "Unknown Event"
+        )
+
+        # Try several common shapes
+        books = (
+            item.get("bookmakers")
+            or item.get("odds")
+            or item.get("sportsbooks")
+            or item.get("books")
+            or []
+        )
 
         if isinstance(books, dict):
             books = [{"book": k, **v} for k, v in books.items()]
 
-        for book_data in books if isinstance(books, list) else []:
-            book_name = book_data.get("book") or book_data.get("sportsbook") or book_data.get("key") or book_data.get("name")
-            markets = book_data.get("markets", book_data.get("outcomes", [book_data]))
+        if not isinstance(books, list):
+            books = [books] if books else []
 
-            for market in markets if isinstance(markets, list) else [markets]:
-                market_key = market.get("key") or market.get("market") or market.get("name") or "player_prop"
+        for book_data in books:
+            if not isinstance(book_data, dict):
+                continue
+
+            book_name = (
+                book_data.get("book")
+                or book_data.get("sportsbook")
+                or book_data.get("key")
+                or book_data.get("name")
+                or "unknown"
+            )
+
+            markets = (
+                book_data.get("markets")
+                or book_data.get("outcomes")
+                or [book_data]
+            )
+
+            if not isinstance(markets, list):
+                markets = [markets]
+
+            for market in markets:
+                if not isinstance(market, dict):
+                    continue
+
+                market_key = (
+                    market.get("key")
+                    or market.get("market")
+                    or market.get("name")
+                    or "prop"
+                )
+
                 outcomes = market.get("outcomes", [market])
+                if not isinstance(outcomes, list):
+                    outcomes = [outcomes]
 
-                for o in outcomes if isinstance(outcomes, list) else [outcomes]:
-                    player = o.get("description") or o.get("player") or o.get("name") or o.get("participant")
+                for o in outcomes:
+                    if not isinstance(o, dict):
+                        continue
+
+                    player = (
+                        o.get("description")
+                        or o.get("player")
+                        or o.get("name")
+                        or o.get("participant")
+                    )
                     price = o.get("price") or o.get("odds") or o.get("american")
                     point = o.get("point") or o.get("line")
 
                     if player and price is not None:
                         rows.append({
                             "event": event_name,
-                            "book": str(book_name).lower() if book_name else "unknown",
-                            "market": str(market_key).lower() if market_key else "prop",
-                            "player": player,
+                            "book": str(book_name).lower(),
+                            "market": str(market_key).lower(),
+                            "player": str(player),
                             "price": price,
                             "point": point,
                         })
     return rows
 
-# ============================================================
-# GIRL MATH ENGINE
-# ============================================================
 def run_girl_math(df):
-    if df.empty: return []
+    if df.empty:
+        return []
+
+    # Make sure required columns exist
+    for col in ["player", "book", "price", "event"]:
+        if col not in df.columns:
+            df[col] = ""
 
     scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "event": ""})
 
     # Digit & book-specific flags
     for _, row in df.iterrows():
         p = row["player"]
+        if not p:
+            continue
         price = row["price"]
         book = str(row["book"]).lower()
         event = row.get("event", "")
@@ -148,54 +202,66 @@ def run_girl_math(df):
                     scores[p]["reasons"].append("Bet365 +850 Club")
                     scores[p]["players"].add(p)
                     scores[p]["event"] = event
-            except: pass
+            except:
+                pass
 
     # Exact match + matching digits
-    for (player, point), group in df.groupby(["player", "point"], dropna=False):
-        if len(group) < 2: continue
-        prices = group["price"].dropna().tolist()
-        books = group["book"].tolist()
-        event = group["event"].iloc[0] if len(group) else ""
+    if "player" in df.columns and "point" in df.columns:
+        for (player, point), group in df.groupby(["player", "point"], dropna=False):
+            if len(group) < 2:
+                continue
+            prices = group["price"].dropna().tolist()
+            books = group["book"].tolist()
+            event = group["event"].iloc[0] if "event" in group.columns and len(group) else ""
 
-        if len(set(prices)) == 1:
-            scores[player]["score"] += 5
-            scores[player]["reasons"].append(f"Exact match {format_odds(prices[0])} across {', '.join(books)}")
-            scores[player]["players"].add(player)
-            scores[player]["event"] = event
-        else:
-            digits = defaultdict(list)
-            for i, pr in enumerate(prices):
-                d = last_two(pr)
-                if d is not None: digits[d].append(books[i])
-            for d, bks in digits.items():
-                if len(bks) >= 2:
-                    scores[player]["score"] += 4
-                    scores[player]["reasons"].append(f"Matching digits ({d:02d}) – {', '.join(bks)}")
-                    scores[player]["players"].add(player)
-                    scores[player]["event"] = event
+            if len(set(prices)) == 1:
+                scores[player]["score"] += 5
+                scores[player]["reasons"].append(f"Exact match {format_odds(prices[0])} across {', '.join(books)}")
+                scores[player]["players"].add(player)
+                scores[player]["event"] = event
+            else:
+                digits = defaultdict(list)
+                for i, pr in enumerate(prices):
+                    d = last_two(pr)
+                    if d is not None:
+                        digits[d].append(books[i])
+                for d, bks in digits.items():
+                    if len(bks) >= 2:
+                        scores[player]["score"] += 4
+                        scores[player]["reasons"].append(f"Matching digits ({d:02d}) – {', '.join(bks)}")
+                        scores[player]["players"].add(player)
+                        scores[player]["event"] = event
 
     # Over / Under priced
-    for (player, point), group in df.groupby(["player", "point"], dropna=False):
-        prices = group["price"].dropna().tolist()
-        if len(prices) < 3: continue
-        try: med = statistics.median(prices)
-        except: continue
-        for _, row in group.iterrows():
-            if row["price"] is None: continue
-            diff = row["price"] - med
-            if abs(diff) >= 100:
-                label = "Underpriced" if diff > 0 else "Overpriced"
-                scores[player]["score"] += 2
-                scores[player]["reasons"].append(f"{label} on {row['book']} ({format_odds(row['price'])} vs {format_odds(med)})")
-                scores[player]["players"].add(player)
-                scores[player]["event"] = row.get("event", "")
+    if "player" in df.columns and "point" in df.columns:
+        for (player, point), group in df.groupby(["player", "point"], dropna=False):
+            prices = group["price"].dropna().tolist()
+            if len(prices) < 3:
+                continue
+            try:
+                med = statistics.median(prices)
+            except:
+                continue
+            for _, row in group.iterrows():
+                if row["price"] is None:
+                    continue
+                diff = row["price"] - med
+                if abs(diff) >= 100:
+                    label = "Underpriced" if diff > 0 else "Overpriced"
+                    scores[player]["score"] += 2
+                    scores[player]["reasons"].append(
+                        f"{label} on {row['book']} ({format_odds(row['price'])} vs {format_odds(med)})"
+                    )
+                    scores[player]["players"].add(player)
+                    scores[player]["event"] = row.get("event", "")
 
     # Name / Initial patterns
-    players = list(df["player"].dropna().unique())
+    players = list(df["player"].dropna().unique()) if "player" in df.columns else []
     init_map = defaultdict(list)
     for p in players:
         f, l = get_initials(p)
-        if f and l: init_map[f + l].append(p)
+        if f and l:
+            init_map[f + l].append(p)
     for k, names in init_map.items():
         if len(names) >= 2:
             key = " + ".join(sorted(names))
@@ -205,8 +271,9 @@ def run_girl_math(df):
 
     for i, p1 in enumerate(players):
         f1, l1 = get_initials(p1)
-        if not l1: continue
-        for p2 in players[i+1:]:
+        if not l1:
+            continue
+        for p2 in players[i + 1:]:
             f2, _ = get_initials(p2)
             if f2 and l1 == f2:
                 key = " + ".join(sorted([p1, p2]))
@@ -216,7 +283,8 @@ def run_girl_math(df):
 
     results = []
     for key, data in scores.items():
-        if data["score"] <= 0: continue
+        if data["score"] <= 0:
+            continue
         is_pair = " + " in key
         results.append({
             "label": key,
@@ -227,16 +295,13 @@ def run_girl_math(df):
         })
     return sorted(results, key=lambda x: x["score"], reverse=True)
 
-# ============================================================
-# APP
-# ============================================================
 def main():
     st.title("💖 Girl Magic Odds Model")
     st.caption("Powered by SharpAPI • Pure odds tricks")
 
     api_key = get_api_key()
     if not api_key:
-        st.warning("Add your SharpAPI key")
+        st.warning("Add your SharpAPI key in Secrets or the sidebar")
         st.stop()
 
     with st.sidebar:
@@ -258,7 +323,7 @@ def main():
                 else:
                     st.warning("Preferred books not present in this response")
             else:
-                st.warning("No usable odds returned. Check the raw response or free-tier limits.")
+                st.warning("No usable odds returned. The free tier may be limited or the response shape is different.")
 
     odds = st.session_state.get("odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
