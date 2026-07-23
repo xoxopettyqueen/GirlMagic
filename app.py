@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Tighter cards • Clearer +EV language
+MGM = same team only + sticky pair/group logic
 """
 
 import streamlit as st
@@ -129,6 +129,12 @@ st.markdown("""
         border: 1px solid #34d399;
     }
 
+    .tag-gold {
+        background: #422006;
+        color: #fcd34d;
+        border: 1px solid #f59e0b;
+    }
+
     .queen-banner {
         display: inline-block;
         background: linear-gradient(90deg, #db2777, #9333ea);
@@ -243,7 +249,22 @@ def run_flags(df, previous_df=None):
     flagged_players = set()
     player_methods = defaultdict(list)
 
-    # DraftKings Ends in 10
+    # Track previous MGM groups so we can mark "sticky" players
+    previous_mgm_groups = set()
+    if previous_df is not None and not previous_df.empty:
+        prev_mgm = previous_df[previous_df["book"].str.lower().str.contains("betmgm|mgm", na=False)]
+        for event, event_group in prev_mgm.groupby("event"):
+            ending_groups = defaultdict(list)
+            for _, row in event_group.iterrows():
+                d = last_two(row["price"])
+                if d in (0, 25, 50, 75):
+                    ending_groups[d].append(row["player"])
+            for d, players in ending_groups.items():
+                names = tuple(sorted(set(players)))
+                if len(names) >= 2:
+                    previous_mgm_groups.add((event, d, names))
+
+    # ========== DraftKings Ends in 10 ==========
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
             if last_two(row["price"]) == 10:
@@ -251,23 +272,38 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(row["player"])
                 player_methods[row["player"]].append("DK 10")
 
-    # BetMGM Classic Endings
+    # ========== BetMGM Classic Endings (SAME TEAM ONLY) ==========
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
+
     for event, event_group in mgm_df.groupby("event"):
         ending_groups = defaultdict(list)
         for _, row in event_group.iterrows():
             d = last_two(row["price"])
             if d in (0, 25, 50, 75):
                 ending_groups[d].append(row["player"])
+
         for d, players in ending_groups.items():
             names = sorted(set(players))
             if len(names) >= 2:
-                results.append({"type": "mgm", "label": " + ".join(names), "reason": f"MGM {'Pair' if len(names)==2 else 'Group'} ends in {d:02d}", "event": event, "css": "mgm", "methods": [f"MGM {d:02d}"]})
+                # Check if this exact group existed in the previous fetch
+                is_sticky = (event, d, tuple(names)) in previous_mgm_groups
+                sticky_tag = " • STAYED IN GROUP" if is_sticky else ""
+
+                results.append({
+                    "type": "mgm",
+                    "label": " + ".join(names),
+                    "reason": f"MGM {'Pair' if len(names)==2 else 'Group of '+str(len(names))} ends in {d:02d}{sticky_tag}",
+                    "event": event,
+                    "css": "mgm",
+                    "methods": [f"MGM {d:02d}"] + (["Sticky"] if is_sticky else [])
+                })
                 for n in names:
                     flagged_players.add(n)
                     player_methods[n].append(f"MGM {d:02d}")
+                    if is_sticky:
+                        player_methods[n].append("Sticky")
 
-    # Exact Matching Odds
+    # ========== Exact Matching Odds ==========
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -277,17 +313,24 @@ def run_flags(df, previous_df=None):
             flagged_players.add(player)
             player_methods[player].append("Exact Match")
 
-    # MGM Exact Match
+    # ========== MGM Exact Match (SAME TEAM / SAME GAME ONLY) ==========
     for event, event_group in mgm_df.groupby("event"):
         for price, price_group in event_group.groupby("price"):
             players = sorted(price_group["player"].unique().tolist())
             if len(players) >= 2:
-                results.append({"type": "mgm_exact", "label": " + ".join(players), "reason": f"MGM Exact {format_odds(price)} ({len(players)} players)", "event": event, "css": "mgm", "methods": ["MGM Exact"]})
+                results.append({
+                    "type": "mgm_exact",
+                    "label": " + ".join(players),
+                    "reason": f"MGM Exact {format_odds(price)} ({len(players)} players)",
+                    "event": event,
+                    "css": "mgm",
+                    "methods": ["MGM Exact"]
+                })
                 for p in players:
                     flagged_players.add(p)
                     player_methods[p].append("MGM Exact")
 
-    # Matching 25/50/75
+    # ========== Matching 25/50/75 ==========
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -301,7 +344,7 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(player)
                 player_methods[player].append(f"Match {d}")
 
-    # FanDuel Patterns
+    # ========== FanDuel Patterns ==========
     for _, row in df.iterrows():
         if "fanduel" in str(row["book"]).lower():
             price = abs(int(row["price"])) if row["price"] else 0
@@ -311,7 +354,7 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(row["player"])
                 player_methods[row["player"]].append("FD Pattern")
 
-    # Line Signals
+    # ========== Line Signals ==========
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         books = group["book"].tolist()
@@ -330,7 +373,7 @@ def run_flags(df, previous_df=None):
         except:
             pass
 
-    # Historical
+    # ========== Historical Movement ==========
     if previous_df is not None and not previous_df.empty:
         prev_lookup = {(row["player"], row["book"]): row["price"] for _, row in previous_df.iterrows()}
         for _, row in df.iterrows():
@@ -343,7 +386,7 @@ def run_flags(df, previous_df=None):
                     flagged_players.add(row["player"])
                     player_methods[row["player"]].append("Moved")
 
-    # +EV Board
+    # ========== +EV Board ==========
     ev_board = []
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
@@ -514,10 +557,10 @@ def main():
         "📖 Glossary"
     ])
 
-    # ========== +EV BOARD ==========
+    # +EV Board
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Green = we like it.** **Gray = we skip it.** That’s it.")
+        st.write("**Green = we like it.** **Gray = we skip it.**")
 
         if not ev_board:
             st.info("Fetch some games first")
@@ -526,7 +569,7 @@ def main():
             for idx, item in enumerate(ev_board):
                 col = cols[idx % 2]
                 with col:
-                    tags_html = "".join([f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:3]])
+                    tags_html = "".join([f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:4]])
                     if not item["methods"]:
                         tags_html = '<span class="tag">No methods</span>'
 
@@ -572,13 +615,13 @@ def main():
                         <br><small>{r.get("event","")}</small>
                     </div>''', unsafe_allow_html=True)
 
-    show_tab(tabs[1], "dk", "🎯 DraftKings Ends in 10", "DK prices ending in 10 (+210, +310, etc.)")
-    show_tab(tabs[2], "mgm", "🎰 BetMGM Classic", "Two+ players same team with MGM 00/25/50/75 endings")
+    show_tab(tabs[1], "dk", "🎯 DraftKings Ends in 10", "DK prices ending in 10")
+    show_tab(tabs[2], "mgm", "🎰 BetMGM Classic (Same Team Only)", "Two+ players on the same team with MGM 00/25/50/75. Sticky = stayed in the group.")
     show_tab(tabs[3], "match", "🤝 Exact Matching Odds", "Same exact price on the same player across books")
-    show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact Match", "Same exact price on BetMGM for multiple players")
+    show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact Match (Same Game)", "Same exact price on BetMGM for multiple players in the same game")
     show_tab(tabs[5], "digit", "🔢 Matching 25/50/75", "Same player has 25/50/75 endings on different books")
     show_tab(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel +500+ ending in 10/30/60/70/90")
-    show_tab(tabs[7], "signal", "📈 Line Signals", "Stuck numbers or one book way off the others")
+    show_tab(tabs[7], "signal", "📈 Line Signals", "Stuck numbers or one book way off")
     show_tab(tabs[8], "hist", "⏳ Price Movement", "Price changed since last fetch")
     show_tab(tabs[9], "same_init", "💅 Same Initials", "Same first + last initial (already has a method)")
     show_tab(tabs[10], "cross", "🔄 Cross Initials", "Last initial of one = first initial of another")
@@ -591,30 +634,34 @@ def main():
 ### Black & white rules
 
 **🟢 BET THIS**  
-Two things must be true at the same time:
+Two things must both be true:
 1. At least one of our Girl Magic methods hit
 2. The best price is clearly better than what most other books are offering
 
 **⚪ SKIP**  
-Anything that does not meet both of the rules above.
-
-That’s the whole system.
+Everything else.
 
 ---
 
-### What the methods mean
+### MGM Rules (important)
 
-- **DK 10** → DraftKings price ends in 10  
-- **MGM 00 / 25 / 50 / 75** → BetMGM classic endings (pairs or groups)  
-- **Exact Match** → Same exact price on different books  
-- **MGM Exact** → Same exact price on BetMGM for multiple players  
-- **Matching Digits** → Same player shows 25/50/75 on more than one book  
-- **FD Pattern** → FanDuel price is +500 or higher and ends in 10, 30, 60, 70 or 90  
-- **Stuck** → Same price showing on 3 or more books  
-- **Wide** → One book is way different from the rest  
-- **Name patterns** → Matching initials or names (only shown when a method already hit)
+- **MGM methods only count for players on the same team**
+- If a player **stays in a pair or group** across fetches, he gets the **Sticky** tag  
+  → That player is the one more likely to go
 
-The little colored tags on every card tell you exactly which methods fired.
+---
+
+### All methods
+
+- **DK 10** → DraftKings ends in 10  
+- **MGM 00/25/50/75** → Same-team pairs or groups on BetMGM  
+- **Sticky** → Player stayed in the same MGM pair/group  
+- **Exact Match** → Same price on different books  
+- **MGM Exact** → Same price on BetMGM for multiple players in the same game  
+- **Matching Digits** → 25/50/75 across books  
+- **FD Pattern** → FanDuel +500+ with special endings  
+- **Stuck / Wide** → Line signals  
+- **Name patterns** → Only shown when a method already hit
         """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
