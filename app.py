@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 For the girls only • Our tricks
-Name patterns prefer different teams but still show same-team options
+Name patterns only qualify if they also hit an odds method
 """
 
 import streamlit as st
@@ -101,8 +101,9 @@ def run_flags(df):
         df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
     results = []
+    flagged_players = set()   # players who hit any odds method
 
-    # DraftKings Ends in 10
+    # ========== 1. DraftKings Ends in 10 ==========
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
             if last_two(row["price"]) == 10:
@@ -113,8 +114,9 @@ def run_flags(df):
                     "event": row["event"],
                     "css": "dk"
                 })
+                flagged_players.add(row["player"])
 
-    # BetMGM Classic Endings
+    # ========== 2. BetMGM Classic Endings ==========
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
 
     for event, event_group in mgm_df.groupby("event"):
@@ -126,24 +128,17 @@ def run_flags(df):
 
         for d, players in ending_groups.items():
             names = sorted(set(players))
-            if len(names) == 2:
+            if len(names) >= 2:
                 results.append({
                     "type": "mgm",
                     "label": " + ".join(names),
-                    "reason": f"BetMGM Pair Match ends in {d:02d}",
+                    "reason": f"BetMGM {'Pair' if len(names)==2 else 'Group of '+str(len(names))} ends in {d:02d}",
                     "event": event,
                     "css": "mgm"
                 })
-            elif len(names) >= 3:
-                results.append({
-                    "type": "mgm",
-                    "label": " + ".join(names),
-                    "reason": f"BetMGM Group of {len(names)} ends in {d:02d}",
-                    "event": event,
-                    "css": "mgm"
-                })
+                flagged_players.update(names)
 
-    # Exact Matching Odds
+    # ========== 3. Exact Matching Odds ==========
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -156,8 +151,9 @@ def run_flags(df):
                 "event": group["event"].iloc[0],
                 "css": "match"
             })
+            flagged_players.add(player)
 
-    # MGM Exact Match
+    # ========== 4. MGM Exact Match ==========
     for event, event_group in mgm_df.groupby("event"):
         for price, price_group in event_group.groupby("price"):
             players = sorted(price_group["player"].unique().tolist())
@@ -169,8 +165,9 @@ def run_flags(df):
                     "event": event,
                     "css": "mgm"
                 })
+                flagged_players.update(players)
 
-    # Matching 25/50/75 Across Books
+    # ========== 5. Matching 25/50/75 Across Books ==========
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -187,8 +184,9 @@ def run_flags(df):
                     "event": group["event"].iloc[0],
                     "css": "digit"
                 })
+                flagged_players.add(player)
 
-    # FanDuel Patterns
+    # ========== 6. FanDuel Patterns ==========
     for _, row in df.iterrows():
         if "fanduel" in str(row["book"]).lower():
             price = abs(int(row["price"])) if row["price"] else 0
@@ -201,8 +199,9 @@ def run_flags(df):
                     "event": row["event"],
                     "css": "fd"
                 })
+                flagged_players.add(row["player"])
 
-    # ========== NAME PATTERNS (prefer different teams, but still show same-team) ==========
+    # ========== 7–10. NAME PATTERNS (only if player already hit an odds method) ==========
     player_events = defaultdict(set)
     for _, row in df.iterrows():
         player_events[row["player"]].add(row["event"])
@@ -211,6 +210,9 @@ def run_flags(df):
 
     def is_different_teams(p1, p2):
         return len(player_events[p1] & player_events[p2]) == 0
+
+    def both_flagged(p1, p2):
+        return p1 in flagged_players and p2 in flagged_players
 
     # Same Initials
     init_map = defaultdict(list)
@@ -221,16 +223,16 @@ def run_flags(df):
     for k, names in init_map.items():
         for i, p1 in enumerate(names):
             for p2 in names[i+1:]:
-                same = not is_different_teams(p1, p2)
-                tag = " (same team)" if same else " (different teams)"
-                results.append({
-                    "type": "same_init",
-                    "label": f"{p1} + {p2}",
-                    "reason": f"Same initials {k}{tag}",
-                    "event": "",
-                    "css": "name",
-                    "prefer": 0 if same else 1   # different teams first
-                })
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = " (same team)" if same else " (different teams)"
+                    results.append({
+                        "type": "same_init",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same initials {k}{tag}",
+                        "event": "",
+                        "css": "name"
+                    })
 
     # Cross Initials
     for i, p1 in enumerate(players):
@@ -238,7 +240,7 @@ def run_flags(df):
         if not l1: continue
         for p2 in players[i+1:]:
             f2, _ = get_initials(p2)
-            if f2 and l1 == f2:
+            if f2 and l1 == f2 and both_flagged(p1, p2):
                 same = not is_different_teams(p1, p2)
                 tag = " (same team)" if same else " (different teams)"
                 results.append({
@@ -246,8 +248,7 @@ def run_flags(df):
                     "label": f"{p1} + {p2}",
                     "reason": f"Cross initial ({l1}){tag}",
                     "event": "",
-                    "css": "name",
-                    "prefer": 0 if same else 1
+                    "css": "name"
                 })
 
     # Same Last Name
@@ -259,16 +260,16 @@ def run_flags(df):
     for last, names in last_map.items():
         for i, p1 in enumerate(names):
             for p2 in names[i+1:]:
-                same = not is_different_teams(p1, p2)
-                tag = " (same team)" if same else " (different teams)"
-                results.append({
-                    "type": "last",
-                    "label": f"{p1} + {p2}",
-                    "reason": f"Same last name ({last.title()}){tag}",
-                    "event": "",
-                    "css": "name",
-                    "prefer": 0 if same else 1
-                })
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = " (same team)" if same else " (different teams)"
+                    results.append({
+                        "type": "last",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same last name ({last.title()}){tag}",
+                        "event": "",
+                        "css": "name"
+                    })
 
     # Same First Name
     first_map = defaultdict(list)
@@ -279,19 +280,17 @@ def run_flags(df):
     for first, names in first_map.items():
         for i, p1 in enumerate(names):
             for p2 in names[i+1:]:
-                same = not is_different_teams(p1, p2)
-                tag = " (same team)" if same else " (different teams)"
-                results.append({
-                    "type": "first",
-                    "label": f"{p1} + {p2}",
-                    "reason": f"Same first name ({first.title()}){tag}",
-                    "event": "",
-                    "css": "name",
-                    "prefer": 0 if same else 1
-                })
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = " (same team)" if same else " (different teams)"
+                    results.append({
+                        "type": "first",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same first name ({first.title()}){tag}",
+                        "event": "",
+                        "css": "name"
+                    })
 
-    # Sort so different-team pairs appear first
-    results = sorted(results, key=lambda x: x.get("prefer", 1), reverse=True)
     return results
 
 def main():
@@ -377,11 +376,10 @@ def main():
         st.subheader("📖 Girl Magic Glossary")
         st.markdown("""
 **🎯 DraftKings Ends in 10**  
-Any DK prop ending in 10. Solo flag only.
+Any DK prop ending in 10.
 
 **🎰 BetMGM Classic Endings**  
-- Pair Match: two players, same team, same ending (00/25/50/75)  
-- Group of Three: three+ players, same team, same ending
+Pair or group of 3+ players on the same team with matching 00/25/50/75 endings.
 
 **🤝 Exact Matching Odds**  
 Exact same price on the same player across any books.
@@ -396,7 +394,8 @@ Same player has 25/50/75 endings across different books.
 FanDuel props ≥ +500 that end in 10, 30, 60, 70, or 90.
 
 **💅 Same Initials / 🔄 Cross Initials / 👩‍👧 Same Last Name / 👯 Same First Name**  
-Prefer different teams, but same-team pairs are still shown so you have the option.
+Only shown if **both players already hit at least one odds method**.  
+Labeled (different teams) or (same team) so you have the option.
         """)
 
     st.caption("💖 Girl Magic • For the girls only • Our tricks")
