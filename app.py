@@ -1,7 +1,7 @@
 """
 Girl Magic Odds Tracker ✨
-LOCKED to BetMGM • DraftKings • Bet365 only
-+ Out-of-Order odds trick
+Batters focused • Probable pitchers as context
+Locked to BetMGM • DraftKings • Bet365
 """
 
 import streamlit as st
@@ -50,9 +50,10 @@ st.markdown("""
         background: #2d1b3d;
         border: 1px solid #c084fc;
         border-radius: 10px;
-        padding: 10px 14px;
-        margin: 6px 0;
+        padding: 8px 12px;
+        margin: 4px 0;
         color: #fce7f3;
+        font-size: 0.9rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -60,8 +61,6 @@ st.markdown("""
 DB_PATH = Path("odds_data.db")
 API_BASE = "https://api.the-odds-api.com/v4"
 REGIONS = "us,us2"
-
-# ONLY these three books
 PREFERRED_BOOKS = ["betmgm", "draftkings", "bet365"]
 
 SPORTS = {
@@ -203,7 +202,7 @@ def build_hot_list(df):
     if props.empty:
         return []
 
-    # 1. BetMGM Same Odds
+    # BetMGM Same Odds
     mgm = props[props["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
     for (market, price), group in mgm.groupby(["market", "price"]):
         players = list(group["description"].unique())
@@ -217,7 +216,7 @@ def build_hot_list(df):
             scores[key]["market"] = market
             scores[key]["matchup"] = matchup
 
-    # 2. Bet365 +850
+    # Bet365 +850
     bet365 = props[props["bookmaker"].str.lower().str.contains("bet365", na=False)]
     for _, row in bet365.iterrows():
         try:
@@ -234,7 +233,7 @@ def build_hot_list(df):
         except:
             pass
 
-    # 3. DraftKings ending 10
+    # DraftKings ending 10
     dk = props[props["bookmaker"].str.lower().str.contains("draftkings|dk", na=False)]
     for _, row in dk.iterrows():
         if last_two_digits(row["price"]) == 10:
@@ -248,7 +247,7 @@ def build_hot_list(df):
                 scores[key]["market"] = row["market"]
                 scores[key]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
 
-    # 4. Out-of-Order Odds
+    # Out-of-Order
     for (book, market), group in props.groupby(["bookmaker", "market"]):
         if len(group) < 3: continue
         group = group.copy()
@@ -256,7 +255,7 @@ def build_hot_list(df):
         sorted_group = group.sort_values("sort_price")
         players = sorted_group["description"].tolist()
         prices = sorted_group["price"].tolist()
-        for i in range(len(prices) - 1):
+        for i in range(len(prices)-1):
             if prices[i] > 0 and prices[i+1] < 0 and abs(prices[i] - prices[i+1]) > 400:
                 p1, p2 = players[i], players[i+1]
                 key = f"{p1} / {p2}"
@@ -265,7 +264,7 @@ def build_hot_list(df):
                 scores[key]["players"].update([p1, p2])
                 scores[key]["matchup"] = f"{sorted_group['away_team'].iloc[0]} @ {sorted_group['home_team'].iloc[0]}"
 
-    # 5. Name matching
+    # Name matching
     for _, group in props.groupby("market"):
         players = list(group["description"].unique())
         matchup = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}" if len(group) else ""
@@ -304,7 +303,7 @@ def build_hot_list(df):
                 scores[key]["matchup"] = matchup
 
         for i, p1 in enumerate(players):
-            first1, last1 = get_initials(p1)
+            _, last1 = get_initials(p1)
             if not last1: continue
             for p2 in players[i+1:]:
                 first2, _ = get_initials(p2)
@@ -332,7 +331,7 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("LOCKED to BetMGM • DraftKings • Bet365 only")
+    st.caption("Batters focused • Pitchers as context only • Locked to BetMGM / DK / Bet365")
 
     api_key = get_api_key()
     if not api_key:
@@ -344,38 +343,37 @@ def main():
         sport_name = st.selectbox("Sport", list(SPORTS.keys()))
         sport_key = SPORTS[sport_name]
         st.markdown("---")
-        want_main = st.checkbox("Main lines (ML / Spread / Total)", value=False)
+        want_main = st.checkbox("Main lines", value=False)
         want_props = st.checkbox("Player Props", value=True)
         prop_list = PLAYER_PROP_MARKETS.get(sport_name, [])
-        selected_props = st.multiselect("Which player props?", prop_list, default=["batter_home_runs"] if "batter_home_runs" in prop_list else prop_list[:2]) if want_props and prop_list else []
+        selected_props = st.multiselect("Props", prop_list, default=["batter_home_runs"] if "batter_home_runs" in prop_list else prop_list[:2]) if want_props and prop_list else []
         st.markdown("---")
-        line_mode = st.radio("Prop lines", ["Only 1 (lowest)", "All lines"], index=0)
-        max_hot = st.slider("Max Hot List items", 3, 12, 7)
+        line_mode = st.radio("Lines", ["Only 1 (lowest)", "All lines"], index=0)
+        max_hot = st.slider("Max Hot List", 3, 12, 7)
 
     pitchers = fetch_probable_pitchers()
 
-    st.subheader("1️⃣ Upcoming Games")
+    st.subheader("1️⃣ Games")
     if st.button("Load Games 💫", type="primary"):
         with st.spinner("Loading..."):
             st.session_state["events"] = fetch_events(api_key, sport_key)
-            st.session_state["sport_key"] = sport_key
 
     events = st.session_state.get("events", [])
     if not events:
-        st.info("Click **Load Games 💫** first.")
+        st.info("Click Load Games first.")
         st.stop()
 
     game_rows = [{"id": e["id"], "Away": e.get("away_team"), "Home": e.get("home_team"), "Start": (e.get("commence_time") or "")[:16].replace("T", " ")} for e in events]
     st.dataframe(pd.DataFrame(game_rows)[["Away", "Home", "Start"]], use_container_width=True, hide_index=True)
 
-    st.subheader("2️⃣ Fetch Odds")
+    st.subheader("2️⃣ Fetch")
     options = {f"{r['Away']} @ {r['Home']}": r["id"] for r in game_rows}
     chosen = st.multiselect("Select games", list(options.keys()))
     if st.button("Fetch Selected Games 💖", type="primary") and chosen:
         all_records = []
         markets = (["h2h", "spreads", "totals"] if want_main else []) + selected_props
         if not markets:
-            st.warning("Select at least one market type.")
+            st.warning("Select at least one market.")
             st.stop()
         progress = st.progress(0)
         for i, label in enumerate(chosen):
@@ -383,12 +381,12 @@ def main():
             all_records.extend(flatten_event_odds(data))
             progress.progress((i+1)/len(chosen))
         if all_records:
-            st.success(f"Saved {save_odds_to_db(all_records, sport_key)} rows ✨")
-            preferred_found = sorted(set(r["bookmaker"] for r in all_records if r.get("bookmaker") and is_preferred(r["bookmaker"])))
-            if preferred_found:
-                st.success(f"Preferred books found: {', '.join(preferred_found)}")
+            st.success(f"Saved {save_odds_to_db(all_records, sport_key)} rows")
+            preferred = sorted(set(r["bookmaker"] for r in all_records if is_preferred(r.get("bookmaker"))))
+            if preferred:
+                st.success(f"Preferred books: {', '.join(preferred)}")
             else:
-                st.warning("None of BetMGM / DraftKings / Bet365 were returned.")
+                st.warning("None of BetMGM / DraftKings / Bet365 returned.")
             st.session_state["last_records"] = all_records
             st.session_state["chosen_games"] = chosen
         else:
@@ -396,14 +394,16 @@ def main():
 
     records = st.session_state.get("last_records", [])
     if records:
-        st.subheader("3️⃣ Matchup + Hot List")
+        st.subheader("3️⃣ Context + Hot List")
+
+        # Small pitcher context
         chosen_games = st.session_state.get("chosen_games", [])
         if chosen_games and pitchers:
-            st.markdown("#### ⚾ Probable Pitchers")
-            for g in chosen_games:
-                info = pitchers.get(g)
-                if info:
-                    st.markdown(f'<div class="pitcher-box"><b>{g}</b><br>Away SP: {info["away_pitcher"]} | Home SP: {info["home_pitcher"]}</div>', unsafe_allow_html=True)
+            with st.expander("⚾ Probable Pitchers (context)", expanded=False):
+                for g in chosen_games:
+                    info = pitchers.get(g)
+                    if info:
+                        st.markdown(f'<div class="pitcher-box"><b>{g}</b><br>Away: {info["away_pitcher"]} | Home: {info["home_pitcher"]}</div>', unsafe_allow_html=True)
 
         df = pd.DataFrame(records)
         if line_mode == "Only 1 (lowest)" and "point" in df.columns:
@@ -411,10 +411,10 @@ def main():
 
         hot = build_hot_list(df)[:max_hot]
         if hot:
-            st.markdown("#### 🔥 Hot List")
+            st.markdown("#### 🔥 Hot List (Batters)")
             for item in hot:
                 reasons = " • ".join(item["reasons"])
-                st.markdown(f'<div class="hot-card"><b>{item["label"]}</b> &nbsp; <span style="color:#f9a8d4">Score: {item["score"]}</span><br><small>{item.get("matchup","")}</small><br><span style="color:#f9a8d4">{reasons}</span></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="hot-card"><b>{item["label"]}</b> &nbsp; Score: {item["score"]}<br><small>{item.get("matchup","")}</small><br>{reasons}</div>', unsafe_allow_html=True)
         else:
             st.caption("No strong combinations on BetMGM / DraftKings / Bet365 yet.")
 
@@ -424,7 +424,7 @@ def main():
         show = show.rename(columns={"description": "Player", "outcome": "Side", "price": "Odds", "point": "Line"})
         st.dataframe(show, use_container_width=True, height=400)
 
-    st.caption("💖 Girl Magic • Locked to BetMGM • DraftKings • Bet365")
+    st.caption("💖 Girl Magic • Batters focused")
 
 if __name__ == "__main__":
     main()
