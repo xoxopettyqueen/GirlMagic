@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 For the girls only • Our tricks
-+ Historical price tracking (session-based)
++ Live +EV Board (Bet this / Skip this)
 """
 
 import streamlit as st
@@ -33,6 +33,8 @@ st.markdown("""
     .name { border-left: 6px solid #f9a8d4; }
     .signal { border-left: 6px solid #34d399; }
     .hist { border-left: 6px solid #fbbf24; }
+    .bet { border-left: 6px solid #34d399; background: #1a2e22; }
+    .skip { border-left: 6px solid #6b7280; opacity: 0.75; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -99,14 +101,45 @@ def flatten(data):
     return rows
 
 def run_flags(df, previous_df=None):
-    if df.empty: return []
+    if df.empty: return [], []
 
     if "point" in df.columns:
         df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
     results = []
     flagged_players = set()
+    ev_board = []
 
+    # ========== BUILD +EV BOARD DATA ==========
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        prices = group["price"].dropna().tolist()
+        books = group["book"].tolist()
+        if len(prices) < 2: continue
+
+        best_price = max(prices)
+        best_book = books[prices.index(best_price)]
+        try:
+            median = statistics.median(prices)
+        except:
+            median = best_price
+
+        # Simple rule: if best is clearly longer than median → Bet this
+        is_bet = best_price >= median + 40   # needs at least +40 edge to be "Bet this"
+
+        ev_board.append({
+            "player": player,
+            "best_price": best_price,
+            "best_book": best_book,
+            "median": median,
+            "books": ", ".join(books),
+            "event": group["event"].iloc[0],
+            "is_bet": is_bet
+        })
+
+    # Sort: Bet this first
+    ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["best_price"]))
+
+    # ========== ORIGINAL FLAGS ==========
     # 1. DraftKings Ends in 10
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
@@ -169,7 +202,7 @@ def run_flags(df, previous_df=None):
                 })
                 flagged_players.update(players)
 
-    # 5. Matching 25/50/75 Across Books
+    # 5. Matching 25/50/75
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -203,13 +236,12 @@ def run_flags(df, previous_df=None):
                 })
                 flagged_players.add(row["player"])
 
-    # 7. Line Signals (Stuck + Wide Disagreement)
+    # 7. Line Signals
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         books = group["book"].tolist()
         if len(prices) < 3: continue
-
-        if len(set(prices)) == 1 and len(prices) >= 3:
+        if len(set(prices)) == 1:
             results.append({
                 "type": "signal",
                 "label": player,
@@ -218,7 +250,6 @@ def run_flags(df, previous_df=None):
                 "css": "signal"
             })
             flagged_players.add(player)
-
         try:
             med = statistics.median(prices)
             for i, pr in enumerate(prices):
@@ -234,14 +265,12 @@ def run_flags(df, previous_df=None):
         except:
             pass
 
-    # ========== 8. HISTORICAL PRICE TRACKING ==========
+    # 8. Historical Movement
     if previous_df is not None and not previous_df.empty:
-        # Create lookup of previous prices
         prev_lookup = {}
         for _, row in previous_df.iterrows():
             key = (row["player"], row["book"])
             prev_lookup[key] = row["price"]
-
         for _, row in df.iterrows():
             key = (row["player"], row["book"])
             if key in prev_lookup:
@@ -262,7 +291,6 @@ def run_flags(df, previous_df=None):
     player_events = defaultdict(set)
     for _, row in df.iterrows():
         player_events[row["player"]].add(row["event"])
-
     players = list(df["player"].dropna().unique())
 
     def is_different_teams(p1, p2):
@@ -271,7 +299,6 @@ def run_flags(df, previous_df=None):
     def both_flagged(p1, p2):
         return p1 in flagged_players and p2 in flagged_players
 
-    # Same Initials
     init_map = defaultdict(list)
     for p in players:
         f, l = get_initials(p)
@@ -291,7 +318,6 @@ def run_flags(df, previous_df=None):
                         "css": "name"
                     })
 
-    # Cross Initials
     for i, p1 in enumerate(players):
         _, l1 = get_initials(p1)
         if not l1: continue
@@ -308,7 +334,6 @@ def run_flags(df, previous_df=None):
                     "css": "name"
                 })
 
-    # Same Last Name
     last_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -328,7 +353,6 @@ def run_flags(df, previous_df=None):
                         "css": "name"
                     })
 
-    # Same First Name
     first_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -348,7 +372,7 @@ def run_flags(df, previous_df=None):
                         "css": "name"
                     })
 
-    return results
+    return results, ev_board
 
 def main():
     st.title("💖 Girl Magic Odds")
@@ -382,13 +406,11 @@ def main():
             df = pd.DataFrame(all_rows)
             df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
-            # Save previous for historical comparison
             if "odds" in st.session_state:
                 st.session_state["previous_odds"] = st.session_state["odds"]
             st.session_state["odds"] = df.to_dict("records")
             st.session_state["last_fetch_time"] = datetime.now().strftime("%I:%M %p")
-
-            st.success(f"Loaded {len(df)} props (Only 0.5/1 HR) • {st.session_state['last_fetch_time']}")
+            st.success(f"Loaded {len(df)} props • {st.session_state['last_fetch_time']}")
         else:
             st.warning("No odds returned for these games")
 
@@ -397,9 +419,10 @@ def main():
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     prev_df = pd.DataFrame(previous) if previous else None
 
-    results = run_flags(df, prev_df) if not df.empty else []
+    results, ev_board = run_flags(df, prev_df) if not df.empty else ([], [])
 
     tabs = st.tabs([
+        "🐝 Live +EV Board",
         "🎯 DK Ends in 10",
         "🎰 MGM Classic Endings",
         "🤝 Exact Match",
@@ -415,6 +438,38 @@ def main():
         "📖 Glossary"
     ])
 
+    # ========== +EV BOARD TAB ==========
+    with tabs[0]:
+        st.subheader("🐝 Live +EV Board")
+        st.caption("Simple rule: Best odds clearly longer than the median = Bet this")
+
+        if not ev_board:
+            st.info("Fetch some games first")
+        else:
+            for item in ev_board:
+                if item["is_bet"]:
+                    st.markdown(
+                        f'<div class="card bet">'
+                        f'<b>🟢 BET THIS</b><br><br>'
+                        f'<b>{item["player"]}</b><br>'
+                        f'Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>'
+                        f'Median: {format_odds(item["median"])}<br>'
+                        f'Why: Longer than the market<br>'
+                        f'<small>{item["books"]} • {item["event"]}</small></div>',
+                        unsafe_allow_html=True
+                    )
+                else:
+                    st.markdown(
+                        f'<div class="card skip">'
+                        f'<b>⚪ SKIP</b><br><br>'
+                        f'<b>{item["player"]}</b><br>'
+                        f'Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>'
+                        f'Median: {format_odds(item["median"])}<br>'
+                        f'Why: No real edge<br>'
+                        f'<small>{item["books"]} • {item["event"]}</small></div>',
+                        unsafe_allow_html=True
+                    )
+
     def show_tab(tab, typ):
         with tab:
             items = [r for r in results if r["type"] == typ]
@@ -429,22 +484,26 @@ def main():
                     unsafe_allow_html=True
                 )
 
-    show_tab(tabs[0], "dk")
-    show_tab(tabs[1], "mgm")
-    show_tab(tabs[2], "match")
-    show_tab(tabs[3], "mgm_exact")
-    show_tab(tabs[4], "digit")
-    show_tab(tabs[5], "fd")
-    show_tab(tabs[6], "signal")
-    show_tab(tabs[7], "hist")          # ← Price Movement tab
-    show_tab(tabs[8], "same_init")
-    show_tab(tabs[9], "cross")
-    show_tab(tabs[10], "last")
-    show_tab(tabs[11], "first")
+    show_tab(tabs[1], "dk")
+    show_tab(tabs[2], "mgm")
+    show_tab(tabs[3], "match")
+    show_tab(tabs[4], "mgm_exact")
+    show_tab(tabs[5], "digit")
+    show_tab(tabs[6], "fd")
+    show_tab(tabs[7], "signal")
+    show_tab(tabs[8], "hist")
+    show_tab(tabs[9], "same_init")
+    show_tab(tabs[10], "cross")
+    show_tab(tabs[11], "last")
+    show_tab(tabs[12], "first")
 
-    with tabs[12]:
+    with tabs[13]:
         st.subheader("📖 Girl Magic Glossary")
         st.markdown("""
+**🐝 Live +EV Board**  
+Simple rule: if the best available odds are clearly longer than the median of the other books → **Bet this**.  
+Otherwise → **Skip**.
+
 **🎯 DraftKings Ends in 10**  
 Any DK prop ending in 10.
 
@@ -464,14 +523,12 @@ Same player has 25/50/75 endings across different books.
 FanDuel props ≥ +500 ending in 10, 30, 60, 70, or 90.
 
 **📈 Line Signals**  
-- Stuck Number: Exact same price on 3+ books  
-- Wide Disagreement: One book 150+ away from the median
+Stuck Number or Wide Disagreement.
 
 **⏳ Price Movement**  
-Shows how the price changed since your last fetch  
-(↑ got longer / ↓ got shorter)
+Shows how the price changed since your last fetch.
 
-**💅 Same Initials / 🔄 Cross Initials / 👩‍👧 Same Last Name / 👯 Same First Name**  
+**Name Patterns**  
 Only shown if both players already hit an odds method.
         """)
 
