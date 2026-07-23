@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-NFL • NBA • MLB only + your exact tricks
+More books + clearer matchups + your tricks
 """
 
 import streamlit as st
@@ -51,7 +51,7 @@ st.markdown("""
 
 DB_PATH = Path("odds_data.db")
 API_BASE = "https://api.the-odds-api.com/v4"
-REGIONS = "us"
+REGIONS = "us,us2"          # ← changed to get more books
 
 SPORTS = {
     "NFL": "americanfootball_nfl",
@@ -106,13 +106,19 @@ def fetch_events(api_key, sport_key):
         return []
 
 def fetch_event_odds(api_key, sport_key, event_id, markets):
-    params = {"apiKey": api_key, "regions": REGIONS, "markets": markets, "oddsFormat": "american", "dateFormat": "iso"}
+    params = {
+        "apiKey": api_key,
+        "regions": REGIONS,
+        "markets": markets,
+        "oddsFormat": "american",
+        "dateFormat": "iso",
+    }
     try:
         r = requests.get(f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds", params=params, timeout=20)
         r.raise_for_status()
         return r.json()
-    except Exception:
-        st.warning("Could not fetch this game. Try different markets.")
+    except Exception as e:
+        st.warning(f"Could not fetch this game: {e}")
         return None
 
 def flatten_event_odds(event_data):
@@ -153,25 +159,27 @@ def get_initials(name):
     return first, last
 
 def build_hot_list(df):
-    scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "odds": None, "market": None})
+    scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "odds": None, "market": None, "matchup": ""})
 
     props = df[df["description"].notna() & (df["description"] != "")].copy()
     if props.empty:
         return []
 
-    # 1. Same Odds Trick — BetMGM ONLY
+    # Same Odds — BetMGM only
     mgm = props[props["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
     for (market, price), group in mgm.groupby(["market", "price"]):
         players = list(group["description"].unique())
         if len(players) >= 2:
             key = " + ".join(sorted(players))
+            matchup = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}"
             scores[key]["score"] += 4
             scores[key]["reasons"].append(f"BetMGM Same Odds {format_odds(price)}")
             scores[key]["players"].update(players)
             scores[key]["odds"] = format_odds(price)
             scores[key]["market"] = market
+            scores[key]["matchup"] = matchup
 
-    # 2. Bet365 +850
+    # Bet365 +850
     bet365 = props[props["bookmaker"].str.lower().str.contains("bet365", na=False)]
     for _, row in bet365.iterrows():
         try:
@@ -184,10 +192,11 @@ def build_hot_list(df):
                     scores[key]["players"].add(player)
                     scores[key]["odds"] = format_odds(row["price"])
                     scores[key]["market"] = row["market"]
+                    scores[key]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
         except:
             pass
 
-    # 3. DraftKings ending in 10
+    # DraftKings ending 10
     dk = props[props["bookmaker"].str.lower().str.contains("draftkings|dk", na=False)]
     for _, row in dk.iterrows():
         if last_two_digits(row["price"]) == 10:
@@ -199,10 +208,12 @@ def build_hot_list(df):
                 scores[key]["players"].add(player)
                 scores[key]["odds"] = format_odds(row["price"])
                 scores[key]["market"] = row["market"]
+                scores[key]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
 
-    # 4. Name matching
+    # Name matching
     for _, group in props.groupby("market"):
         players = list(group["description"].unique())
+        matchup = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}" if len(group) else ""
 
         # Exact name
         name_counts = defaultdict(list)
@@ -213,6 +224,7 @@ def build_hot_list(df):
                 scores[name]["score"] += 4
                 scores[name]["reasons"].append("Exact same name")
                 scores[name]["players"].add(name)
+                scores[name]["matchup"] = matchup
 
         # Full initials
         initials_map = defaultdict(list)
@@ -226,6 +238,7 @@ def build_hot_list(df):
                 scores[key]["score"] += 3
                 scores[key]["reasons"].append(f"Same initials {key_init}")
                 scores[key]["players"].update(names)
+                scores[key]["matchup"] = matchup
 
         # First letter
         first_map = defaultdict(list)
@@ -239,8 +252,9 @@ def build_hot_list(df):
                 scores[key]["score"] += 1
                 scores[key]["reasons"].append(f"Same first letter {letter}")
                 scores[key]["players"].update(names)
+                scores[key]["matchup"] = matchup
 
-        # Cross initial (last of A == first of B)
+        # Cross initial
         for i, p1 in enumerate(players):
             first1, last1 = get_initials(p1)
             if not last1: continue
@@ -251,6 +265,7 @@ def build_hot_list(df):
                     scores[key]["score"] += 2
                     scores[key]["reasons"].append(f"Cross initial ({last1})")
                     scores[key]["players"].update([p1, p2])
+                    scores[key]["matchup"] = matchup
 
     hot = []
     for key, data in scores.items():
@@ -261,7 +276,8 @@ def build_hot_list(df):
                 "reasons": list(set(data["reasons"])),
                 "players": list(data["players"]),
                 "odds": data["odds"],
-                "market": data["market"]
+                "market": data["market"],
+                "matchup": data["matchup"]
             })
 
     return sorted(hot, key=lambda x: x["score"], reverse=True)
@@ -269,7 +285,7 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("NFL • NBA • MLB only • Your exact tricks")
+    st.caption("NFL • NBA • MLB • More books requested")
 
     api_key = get_api_key()
     if not api_key:
@@ -319,6 +335,9 @@ def main():
             progress.progress((i+1)/len(chosen))
         if all_records:
             st.success(f"Saved {save_odds_to_db(all_records, sport_key)} rows ✨")
+            # Show which books we actually got
+            books = sorted(set(r["bookmaker"] for r in all_records if r.get("bookmaker")))
+            st.info(f"Books returned: {', '.join(books)}")
             st.session_state["last_records"] = all_records
         else:
             st.warning("No odds returned.")
@@ -337,9 +356,11 @@ def main():
         if hot:
             for item in hot:
                 reasons = " • ".join(item["reasons"])
+                matchup = item.get("matchup", "")
                 st.markdown(
                     f'<div class="hot-card">'
                     f'<b>{item["label"]}</b> &nbsp; <span style="color:#f9a8d4">Score: {item["score"]}</span><br>'
+                    f'<small>{matchup}</small><br>'
                     f'<span class="flag-reason">{reasons}</span>'
                     f'</div>',
                     unsafe_allow_html=True
