@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-Free version – attempts real EV / Hard Hit / Barrel metrics
+Uses your uploaded Statcast CSVs for real EV / Barrel / Hard Hit
 """
 
 import streamlit as st
@@ -38,6 +38,84 @@ PLAYER_PROP_MARKETS = {
     "NFL": ["player_pass_yds", "player_rush_yds", "player_receptions", "player_reception_yds", "player_anytime_td"],
     "MLB": ["batter_home_runs", "batter_hits", "batter_total_bases", "batter_rbis", "batter_runs_scored", "batter_strikeouts"],
 }
+
+# ---------- Load your Statcast CSVs ----------
+@st.cache_data
+def load_statcast_files():
+    hitters = None
+    exit_velo = None
+    pitchers = None
+
+    # Hitter advanced metrics
+    for name in ["stats.csv", "stats (1).csv"]:
+        p = Path(name)
+        if p.exists():
+            try:
+                df = pd.read_csv(p)
+                if "barrel_batted_rate" in df.columns or "hard_hit_percent" in df.columns:
+                    hitters = df
+                    break
+            except: pass
+
+    # Exit velocity detailed
+    for name in ["exit_velocity.csv", "exit_velocity (1).csv"]:
+        p = Path(name)
+        if p.exists():
+            try:
+                df = pd.read_csv(p)
+                if "avg_hit_speed" in df.columns or "brl_percent" in df.columns:
+                    exit_velo = df
+                    break
+            except: pass
+
+    return hitters, exit_velo
+
+def normalize_name(name):
+    if not name: return ""
+    name = str(name).lower().strip()
+    # handle "Last, First" format from Savant
+    if "," in name:
+        parts = [p.strip() for p in name.split(",")]
+        if len(parts) == 2:
+            return f"{parts[1]} {parts[0]}"
+    return name
+
+def find_player_metrics(player_name, hitters_df, exit_df):
+    if hitters_df is None and exit_df is None:
+        return None
+
+    target = normalize_name(player_name)
+    result = {"matched": None}
+
+    # Try hitters advanced file first
+    if hitters_df is not None:
+        for _, row in hitters_df.iterrows():
+            savant_name = normalize_name(row.get("last_name, first_name", ""))
+            if target in savant_name or savant_name in target or target.split()[-1] in savant_name:
+                result["matched"] = savant_name
+                result["barrel"] = row.get("barrel_batted_rate", "-")
+                result["hard_hit"] = row.get("hard_hit_percent", "-")
+                result["best_speed"] = row.get("avg_best_speed", "-")
+                result["hyper_speed"] = row.get("avg_hyper_speed", "-")
+                result["sweet_spot"] = row.get("sweet_spot_percent", "-")
+                result["xwoba"] = row.get("xwoba", "-")
+                result["woba"] = row.get("woba", "-")
+                break
+
+    # Overlay detailed exit velo if available
+    if exit_df is not None:
+        for _, row in exit_df.iterrows():
+            savant_name = normalize_name(row.get("last_name, first_name", ""))
+            if target in savant_name or savant_name in target or target.split()[-1] in savant_name:
+                result["matched"] = result.get("matched") or savant_name
+                result["avg_ev"] = row.get("avg_hit_speed", "-")
+                result["max_ev"] = row.get("max_hit_speed", "-")
+                result["ev50"] = row.get("ev50", "-")
+                result["brl_percent"] = row.get("brl_percent", result.get("barrel", "-"))
+                result["hard_hit"] = row.get("ev95percent", result.get("hard_hit", "-"))
+                break
+
+    return result if result.get("matched") else None
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
@@ -143,56 +221,6 @@ def fetch_probable_pitchers():
         return pitchers
     except: return {}
 
-@st.cache_data(ttl=7200)
-def get_hr_metrics(player_name):
-    """
-    Best-effort free metrics relevant to home runs.
-    Uses pybaseball for ID + whatever public season numbers are available.
-    """
-    try:
-        from pybaseball import playerid_lookup, batting_stats, cache
-        cache.enable()
-
-        parts = player_name.strip().split()
-        if len(parts) < 2:
-            return None
-
-        lookup = playerid_lookup(parts[-1], parts[0])
-        if lookup is None or lookup.empty:
-            return None
-
-        row = lookup.iloc[-1]
-        matched = f"{row.get('name_first', '')} {row.get('name_last', '')}".strip()
-        mlbam = row.get("key_mlbam")
-
-        # Try current season batting stats (pybaseball)
-        season = date.today().year
-        try:
-            stats = batting_stats(season, season, qual=1)
-            if stats is not None and not stats.empty:
-                # fuzzy match on name
-                player_stats = stats[stats["Name"].str.contains(parts[-1], case=False, na=False)]
-                if not player_stats.empty:
-                    p = player_stats.iloc[0]
-                    return {
-                        "matched": matched,
-                        "avg": p.get("AVG", "-"),
-                        "hr": p.get("HR", "-"),
-                        "ops": p.get("OPS", "-"),
-                        "iso": p.get("ISO", "-"),
-                        "note": "Season stats (EV/Barrel still limited on free)"
-                    }
-        except:
-            pass
-
-        return {
-            "matched": matched,
-            "avg": "-", "hr": "-", "ops": "-", "iso": "-",
-            "note": "Matched but detailed metrics not available"
-        }
-    except Exception:
-        return None
-
 def build_hot_list(df):
     scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "matchup": ""})
     props = df[
@@ -279,7 +307,13 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("Free path – attempting real HR metrics")
+    st.caption("Using your uploaded Statcast CSVs")
+
+    hitters_df, exit_df = load_statcast_files()
+    if hitters_df is not None:
+        st.sidebar.success(f"Loaded hitter stats: {len(hitters_df)} players")
+    if exit_df is not None:
+        st.sidebar.success(f"Loaded exit velo: {len(exit_df)} players")
 
     api_key = get_api_key()
     if not api_key:
@@ -356,8 +390,7 @@ def main():
             st.dataframe(show, use_container_width=True, height=350)
 
     with tab2:
-        st.subheader("Batters + Pitchers")
-        st.caption("Attempting Exit Velo / Hard Hit / Barrel style metrics (free)")
+        st.subheader("Batters + Pitchers (Real Statcast)")
         if not chosen_games:
             st.info("Fetch games first")
         else:
@@ -373,27 +406,27 @@ def main():
                     ]["description"].unique().tolist()
 
                     if game_batters:
-                        for batter in sorted(game_batters)[:8]:
-                            metrics = get_hr_metrics(batter)
+                        for batter in sorted(game_batters)[:10]:
+                            metrics = find_player_metrics(batter, hitters_df, exit_df)
                             if metrics:
                                 st.markdown(
                                     f'<div class="batter-card">'
-                                    f'<b>{batter}</b> → {metrics["matched"]}<br>'
-                                    f'AVG {metrics["avg"]} | HR {metrics["hr"]} | OPS {metrics["ops"]} | ISO {metrics["iso"]}<br>'
-                                    f'<small>{metrics["note"]}</small>'
+                                    f'<b>{batter}</b> → {metrics.get("matched","")}<br>'
+                                    f'Barrel {metrics.get("barrel", metrics.get("brl_percent","-"))}% | '
+                                    f'Hard Hit {metrics.get("hard_hit","-")}% | '
+                                    f'Avg EV {metrics.get("avg_ev", metrics.get("best_speed","-"))} | '
+                                    f'Max EV {metrics.get("max_ev","-")}<br>'
+                                    f'Sweet Spot {metrics.get("sweet_spot","-")}% | xwOBA {metrics.get("xwoba","-")}'
                                     f'</div>',
                                     unsafe_allow_html=True
                                 )
                             else:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match</small></div>', unsafe_allow_html=True)
-                            time.sleep(0.3)
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match in your CSVs</small></div>', unsafe_allow_html=True)
                     else:
                         st.caption("No batter names found.")
                 st.markdown("---")
 
-            st.info("True Exit Velo / Barrel % from Savant is still limited on pure free sources. This is the best stable free version right now.")
-
-    st.caption("💖 Girl Magic • Free path")
+    st.caption("💖 Girl Magic • Using your uploaded Statcast files")
 
 if __name__ == "__main__":
     main()
