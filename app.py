@@ -331,7 +331,8 @@ Books are copying each other or sitting on the same number.
 Different books landing on the same 25, 50, or 75 ending for the same player.
 
 **💅 Same Initials**  
-Players who share the same first + last initial (e.g. Mike Trout & Matt Olson = MO).
+Players who share the same first + last initial
+(e.g. two players both with initials DS)
 
 **🔄 Cross Initials**  
 One player’s last initial matches another player’s first initial.
