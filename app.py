@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
-Boss Bitch Edition • HBIC Energy
-Me & my girls • We rolling
+Boss Bitch • HBIC • Me & My Girls We Rolling
+Super simple language for everyone
 """
 
 import streamlit as st
@@ -47,8 +47,17 @@ st.markdown("""
         letter-spacing: 2px;
         text-transform: uppercase;
         margin-top: -6px;
-        margin-bottom: 28px;
-        opacity: 0.95;
+        margin-bottom: 20px;
+    }
+
+    .how-to {
+        background: #1c0f2b;
+        border: 1px solid #f472b6;
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        line-height: 1.5;
     }
 
     .stButton > button {
@@ -58,7 +67,6 @@ st.markdown("""
         border-radius: 14px !important;
         font-weight: 700 !important;
         padding: 0.75rem 1.7rem !important;
-        letter-spacing: 0.5px;
         box-shadow: 0 4px 18px rgba(219, 39, 119, 0.45);
     }
 
@@ -113,7 +121,6 @@ st.markdown("""
         padding: 4px 11px;
         border-radius: 20px;
         margin: 3px 4px 3px 0;
-        letter-spacing: 0.4px;
         border: 1px solid #a855f7;
     }
 
@@ -121,12 +128,6 @@ st.markdown("""
         background: #064e3b;
         color: #6ee7b7;
         border: 1px solid #34d399;
-    }
-
-    .tag-gold {
-        background: #422006;
-        color: #fcd34d;
-        border: 1px solid #f59e0b;
     }
 
     .queen-banner {
@@ -183,6 +184,28 @@ def format_odds(p):
 def last_two(p):
     try: return abs(int(p)) % 100
     except: return None
+
+def implied_prob(odds):
+    try:
+        odds = float(odds)
+        if odds > 0:
+            return 100 / (odds + 100)
+        else:
+            return abs(odds) / (abs(odds) + 100)
+    except:
+        return 0
+
+def calc_ev(best_odds, median_odds, stake=100):
+    try:
+        p_true = implied_prob(median_odds)
+        if best_odds > 0:
+            profit = stake * (best_odds / 100)
+        else:
+            profit = stake * (100 / abs(best_odds))
+        ev = (p_true * profit) - ((1 - p_true) * stake)
+        return round(ev, 2)
+    except:
+        return 0
 
 def get_initials(name):
     parts = str(name).strip().split()
@@ -339,36 +362,53 @@ def run_flags(df, previous_df=None):
                     flagged_players.add(row["player"])
                     player_methods[row["player"]].append("Moved")
 
-    # +EV Board
+    # +EV Board with real numbers
     ev_board = []
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         books = group["book"].tolist()
         if len(prices) < 2: continue
+
         best_price = max(prices)
         best_book = books[prices.index(best_price)]
-        try: median = statistics.median(prices)
-        except: median = best_price
-        has_edge = best_price >= median + 40
+        try:
+            median = statistics.median(prices)
+        except:
+            median = best_price
+
+        edge = best_price - median
+        has_edge = edge >= 40
         has_method = player in flagged_players
         methods = list(set(player_methods.get(player, [])))
         is_bet = has_edge and has_method
 
+        # Simple EV on $100
+        ev_dollars = calc_ev(best_price, median)
+
         if is_bet:
-            why = f"Matches: {', '.join(methods[:3])} + real edge"
+            why = f"Has Girl Magic method + the price is better than most books"
         elif has_method:
-            why = f"Has method ({', '.join(methods[:2])}) but no real edge"
+            why = "Has a Girl Magic method but the price is not better enough"
         elif has_edge:
-            why = "Has edge but zero Girl Magic methods"
+            why = "Price looks good but no Girl Magic method hit"
         else:
-            why = "No edge + no methods"
+            why = "No special method and the price is not better than other books"
 
         ev_board.append({
-            "player": player, "best_price": best_price, "best_book": best_book,
-            "median": median, "books": ", ".join(books), "event": group["event"].iloc[0],
-            "is_bet": is_bet, "why": why, "methods": methods
+            "player": player,
+            "best_price": best_price,
+            "best_book": best_book,
+            "median": median,
+            "edge": edge,
+            "ev_dollars": ev_dollars,
+            "books": ", ".join(books),
+            "event": group["event"].iloc[0],
+            "is_bet": is_bet,
+            "why": why,
+            "methods": methods
         })
-    ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["best_price"]))
+
+    ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["edge"]))
 
     # Name patterns
     player_events = defaultdict(set)
@@ -391,7 +431,7 @@ def run_flags(df, previous_df=None):
             for p2 in names[i+1:]:
                 if both_flagged(p1, p2):
                     same = not is_different_teams(p1, p2)
-                    tag = "same team" if same else "diff teams"
+                    tag = "same team" if same else "different teams"
                     results.append({"type": "same_init", "label": f"{p1} + {p2}", "reason": f"Same initials {k} ({tag})", "event": "", "css": "name", "methods": ["Same Init"]})
 
     for i, p1 in enumerate(players):
@@ -401,7 +441,7 @@ def run_flags(df, previous_df=None):
             f2, _ = get_initials(p2)
             if f2 and l1 == f2 and both_flagged(p1, p2):
                 same = not is_different_teams(p1, p2)
-                tag = "same team" if same else "diff teams"
+                tag = "same team" if same else "different teams"
                 results.append({"type": "cross", "label": f"{p1} + {p2}", "reason": f"Cross initial ({l1}) ({tag})", "event": "", "css": "name", "methods": ["Cross Init"]})
 
     last_map = defaultdict(list)
@@ -413,7 +453,7 @@ def run_flags(df, previous_df=None):
             for p2 in names[i+1:]:
                 if both_flagged(p1, p2):
                     same = not is_different_teams(p1, p2)
-                    tag = "same team" if same else "diff teams"
+                    tag = "same team" if same else "different teams"
                     results.append({"type": "last", "label": f"{p1} + {p2}", "reason": f"Same last name ({last.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same Last"]})
 
     first_map = defaultdict(list)
@@ -425,7 +465,7 @@ def run_flags(df, previous_df=None):
             for p2 in names[i+1:]:
                 if both_flagged(p1, p2):
                     same = not is_different_teams(p1, p2)
-                    tag = "same team" if same else "diff teams"
+                    tag = "same team" if same else "different teams"
                     results.append({"type": "first", "label": f"{p1} + {p2}", "reason": f"Same first name ({first.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same First"]})
 
     return results, ev_board
@@ -433,6 +473,18 @@ def run_flags(df, previous_df=None):
 def main():
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
+
+    # Super simple how-to box
+    st.markdown("""
+    <div class="how-to">
+        <b>How to use this (super easy):</b><br>
+        1. Click <b>Load Games</b><br>
+        2. Pick the games you want<br>
+        3. Click <b>Fetch Odds</b><br>
+        4. Look at the first tab — green cards are the ones we like<br><br>
+        <b>Green = Bet this</b> | <b>Gray = Skip</b>
+    </div>
+    """, unsafe_allow_html=True)
 
     api_key = get_api_key()
     if not api_key:
@@ -466,7 +518,7 @@ def main():
             st.session_state["last_fetch_time"] = datetime.now().strftime("%I:%M %p")
             st.success(f"Loaded {len(df)} props • {st.session_state['last_fetch_time']}")
         else:
-            st.warning("No odds returned")
+            st.warning("No odds returned for these games")
 
     odds = st.session_state.get("odds", [])
     previous = st.session_state.get("previous_odds", [])
@@ -488,45 +540,51 @@ def main():
         "🔄 Cross Initials",
         "👩‍👧 Same Last",
         "👯 Same First",
-        "📖 Glossary"
+        "📖 What Everything Means"
     ])
 
-    # +EV Board
+    # ========== +EV BOARD ==========
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.caption("Only says Bet this when it has Girl Magic method + real edge")
+        st.write("Only green cards are the ones we actually like. Gray ones we skip.")
 
         if not ev_board:
             st.info("Fetch some games first")
         else:
             for item in ev_board:
                 tags_html = "".join([f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:4]])
+                if not item["methods"]:
+                    tags_html = '<span class="tag">No methods</span>'
+
                 if item["is_bet"]:
                     st.markdown(f'''
                     <div class="card bet">
                         <b>🟢 BET THIS</b><br><br>
-                        <b style="font-size:1.2rem">{item["player"]}</b><br>
-                        Best: <b>{format_odds(item["best_price"])}</b> on {item["best_book"]}<br>
-                        Median: {format_odds(item["median"])}<br>
-                        <div style="margin:8px 0">{tags_html}</div>
-                        <b>Why:</b> {item["why"]}<br>
+                        <b style="font-size:1.25rem">{item["player"]}</b><br><br>
+                        Best price: <b>{format_odds(item["best_price"])}</b> on {item["best_book"]}<br>
+                        Most books are around: {format_odds(item["median"])}<br>
+                        Edge: <b>+{int(item["edge"])} cents</b><br>
+                        Rough EV on $100: <b>${item["ev_dollars"]}</b><br>
+                        <div style="margin:10px 0">{tags_html}</div>
+                        <b>Why we like it:</b> {item["why"]}<br>
                         <small>{item["books"]} • {item["event"]}</small>
                     </div>''', unsafe_allow_html=True)
                 else:
                     st.markdown(f'''
                     <div class="card skip">
                         <b>⚪ SKIP</b><br><br>
-                        <b>{item["player"]}</b><br>
-                        Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
-                        Median: {format_odds(item["median"])}<br>
-                        <div style="margin:8px 0">{tags_html if item["methods"] else '<span class="tag">No methods</span>'}</div>
-                        <b>Why not:</b> {item["why"]}<br>
+                        <b>{item["player"]}</b><br><br>
+                        Best price: {format_odds(item["best_price"])} on {item["best_book"]}<br>
+                        Most books are around: {format_odds(item["median"])}<br>
+                        <div style="margin:10px 0">{tags_html}</div>
+                        <b>Why we skip:</b> {item["why"]}<br>
                         <small>{item["books"]} • {item["event"]}</small>
                     </div>''', unsafe_allow_html=True)
 
-    def show_tab(tab, typ, banner):
+    def show_tab(tab, typ, banner, simple_explain):
         with tab:
             st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
+            st.write(simple_explain)
             items = [r for r in results if r["type"] == typ]
             if not items:
                 st.info("None right now")
@@ -542,27 +600,73 @@ def main():
                     <small>{r.get("event","")}</small>
                 </div>''', unsafe_allow_html=True)
 
-    show_tab(tabs[1], "dk", "🎯 DraftKings 10s")
-    show_tab(tabs[2], "mgm", "🎰 MGM Classic")
-    show_tab(tabs[3], "match", "🤝 Exact Matches")
-    show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact")
-    show_tab(tabs[5], "digit", "🔢 Matching Digits")
-    show_tab(tabs[6], "fd", "💙 FanDuel Patterns")
-    show_tab(tabs[7], "signal", "📈 Line Signals")
-    show_tab(tabs[8], "hist", "⏳ Price Movement")
-    show_tab(tabs[9], "same_init", "💅 Same Initials")
-    show_tab(tabs[10], "cross", "🔄 Cross Initials")
-    show_tab(tabs[11], "last", "👩‍👧 Same Last Name")
-    show_tab(tabs[12], "first", "👯 Same First Name")
+    show_tab(tabs[1], "dk", "🎯 DraftKings Ends in 10",
+             "When DraftKings prices a player ending in 10 (like +210, +310, +410). We watch these.")
+
+    show_tab(tabs[2], "mgm", "🎰 BetMGM Classic Endings",
+             "When two or more players on the same team have MGM odds ending in 00, 25, 50, or 75.")
+
+    show_tab(tabs[3], "match", "🤝 Exact Matching Odds",
+             "When different books have the exact same price on the same player.")
+
+    show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact Match",
+             "When BetMGM has the exact same price on two or more players in the same game.")
+
+    show_tab(tabs[5], "digit", "🔢 Matching 25 / 50 / 75",
+             "When the same player has odds ending in 25, 50, or 75 across different books.")
+
+    show_tab(tabs[6], "fd", "💙 FanDuel Patterns",
+             "FanDuel props that are +500 or higher and end in 10, 30, 60, 70, or 90.")
+
+    show_tab(tabs[7], "signal", "📈 Line Signals",
+             "Stuck Number = same price on 3+ books. Wide Disagreement = one book is way different.")
+
+    show_tab(tabs[8], "hist", "⏳ Price Movement",
+             "Shows if the price went up or down since the last time you clicked Fetch Odds.")
+
+    show_tab(tabs[9], "same_init", "💅 Same Initials",
+             "Players who share the same first + last initial (and already hit a method).")
+
+    show_tab(tabs[10], "cross", "🔄 Cross Initials",
+             "One player’s last initial matches another player’s first initial.")
+
+    show_tab(tabs[11], "last", "👩‍👧 Same Last Name",
+             "Players who share the same last name.")
+
+    show_tab(tabs[12], "first", "👯 Same First Name",
+             "Players who share the same first name.")
 
     with tabs[13]:
-        st.markdown('<div class="queen-banner">📖 The Rules</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">📖 What Everything Means</div>', unsafe_allow_html=True)
         st.markdown("""
-**🐝 Live +EV Board**  
-Only says **Bet this** when the player has both a Girl Magic method **and** real edge.  
-Shows exact tags of which methods hit.
+### Super simple explanations
 
-**All other tabs** show the specific method with tags so you know exactly why it flagged.
+**🟢 BET THIS**  
+We like this one. It has one of our special patterns **and** the price is better than most other books.
+
+**⚪ SKIP**  
+We pass. Either no special pattern or the price isn’t good enough.
+
+**Edge**  
+How much better the best price is compared to what most books are offering.  
+Example: Best is +550, most books are +480 → Edge is +70 cents.
+
+**EV on $100**  
+Rough idea of how much we expect to make (or lose) if we bet $100 many times at this price.
+
+**The colored tags**  
+Show exactly which of our Girl Magic methods the player hit.
+
+---
+
+**Our main methods:**
+- **DK 10** → DraftKings ends in 10
+- **MGM 00/25/50/75** → BetMGM classic endings
+- **Exact Match** → Same price on different books
+- **MGM Exact** → Same price on BetMGM for multiple players
+- **FD Pattern** → FanDuel +500 or higher with special endings
+- **Stuck** → Same price on 3 or more books
+- **Name patterns** → Matching initials or names (only shown if the player already hit another method)
         """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
