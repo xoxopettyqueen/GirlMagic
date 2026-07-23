@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-Specific odds tricks + name matching + Hot List
+NFL • NBA • MLB only + your exact tricks
 """
 
 import streamlit as st
@@ -57,18 +57,12 @@ SPORTS = {
     "NFL": "americanfootball_nfl",
     "NBA": "basketball_nba",
     "MLB": "baseball_mlb",
-    "NHL": "icehockey_nhl",
-    "NCAAF": "americanfootball_ncaaf",
-    "NCAAB": "basketball_ncaab",
 }
 
 PLAYER_PROP_MARKETS = {
     "NBA": ["player_points", "player_rebounds", "player_assists", "player_threes", "player_blocks", "player_steals"],
     "NFL": ["player_pass_yds", "player_pass_tds", "player_rush_yds", "player_rush_tds", "player_receptions", "player_reception_yds", "player_anytime_td"],
     "MLB": ["batter_home_runs", "batter_hits", "batter_total_bases", "batter_rbis", "batter_runs_scored", "batter_strikeouts", "pitcher_strikeouts"],
-    "NHL": ["player_points", "player_goals", "player_assists"],
-    "NCAAF": ["player_pass_yds", "player_rush_yds", "player_anytime_td"],
-    "NCAAB": ["player_points", "player_rebounds", "player_assists"],
 }
 
 def init_db():
@@ -165,7 +159,7 @@ def build_hot_list(df):
     if props.empty:
         return []
 
-    # ---------- 1. Same Odds Trick (BetMGM ONLY) ----------
+    # 1. Same Odds Trick — BetMGM ONLY
     mgm = props[props["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
     for (market, price), group in mgm.groupby(["market", "price"]):
         players = list(group["description"].unique())
@@ -177,23 +171,8 @@ def build_hot_list(df):
             scores[key]["odds"] = format_odds(price)
             scores[key]["market"] = market
 
-    # ---------- 2. Bet365 +850 Trick ----------
-    bet365 = props[props["bookmaker"].str.lower().str.contains("bet365|williamhill", na=False)]
-    for _, row in bet365.iterrows():
-        price = row["price"]
-        if price is not None and (abs(int(price)) == 850 or last_two_digits(price) == 50 and abs(int(price)) > 800):
-            # treat exact 850 or strong 850-style
-            if abs(int(price)) == 850:
-                player = row.get("description") or row.get("outcome")
-                if player:
-                    key = player
-                    scores[key]["score"] += 3
-                    scores[key]["reasons"].append("Bet365 +850")
-                    scores[key]["players"].add(player)
-                    scores[key]["odds"] = format_odds(price)
-                    scores[key]["market"] = row["market"]
-
-    # cleaner exact 850
+    # 2. Bet365 +850
+    bet365 = props[props["bookmaker"].str.lower().str.contains("bet365", na=False)]
     for _, row in bet365.iterrows():
         try:
             if abs(int(row["price"])) == 850:
@@ -208,11 +187,10 @@ def build_hot_list(df):
         except:
             pass
 
-    # ---------- 3. DraftKings ending in 10 ----------
+    # 3. DraftKings ending in 10
     dk = props[props["bookmaker"].str.lower().str.contains("draftkings|dk", na=False)]
     for _, row in dk.iterrows():
-        last = last_two_digits(row["price"])
-        if last == 10:
+        if last_two_digits(row["price"]) == 10:
             player = row.get("description") or row.get("outcome")
             if player:
                 key = player
@@ -222,11 +200,11 @@ def build_hot_list(df):
                 scores[key]["odds"] = format_odds(row["price"])
                 scores[key]["market"] = row["market"]
 
-    # ---------- 4. Name matching ----------
+    # 4. Name matching
     for _, group in props.groupby("market"):
         players = list(group["description"].unique())
 
-        # Exact same name
+        # Exact name
         name_counts = defaultdict(list)
         for p in players:
             name_counts[p].append(p)
@@ -236,7 +214,7 @@ def build_hot_list(df):
                 scores[name]["reasons"].append("Exact same name")
                 scores[name]["players"].add(name)
 
-        # Full initials (first + last)
+        # Full initials
         initials_map = defaultdict(list)
         for p in players:
             first, last = get_initials(p)
@@ -262,19 +240,18 @@ def build_hot_list(df):
                 scores[key]["reasons"].append(f"Same first letter {letter}")
                 scores[key]["players"].update(names)
 
-        # Cross initial: last of A == first of B
+        # Cross initial (last of A == first of B)
         for i, p1 in enumerate(players):
             first1, last1 = get_initials(p1)
             if not last1: continue
             for p2 in players[i+1:]:
-                first2, last2 = get_initials(p2)
+                first2, _ = get_initials(p2)
                 if first2 and last1 == first2:
                     key = " + ".join(sorted([p1, p2]))
                     scores[key]["score"] += 2
                     scores[key]["reasons"].append(f"Cross initial ({last1})")
                     scores[key]["players"].update([p1, p2])
 
-    # Build ranked list
     hot = []
     for key, data in scores.items():
         if data["score"] > 0:
@@ -292,7 +269,7 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("Private • Pink & Purple • Your exact tricks")
+    st.caption("NFL • NBA • MLB only • Your exact tricks")
 
     api_key = get_api_key()
     if not api_key:
@@ -308,7 +285,6 @@ def main():
         want_props = st.checkbox("Player Props", value=False)
         prop_list = PLAYER_PROP_MARKETS.get(sport_name, [])
         selected_props = st.multiselect("Which player props?", prop_list, default=prop_list[:3]) if want_props and prop_list else []
-
         st.markdown("---")
         line_mode = st.radio("Prop lines", ["Only 1 (lowest)", "All lines"], index=0)
         max_hot = st.slider("Max Hot List items", 3, 12, 7)
