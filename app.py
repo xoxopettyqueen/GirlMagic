@@ -1,6 +1,6 @@
 """
 Girl Magic Odds ✨
-Final clean version – Tabs + Glossary
+Final – DK ends in 10 + 00, MGM 00/25/50/75
 """
 
 import streamlit as st
@@ -110,32 +110,33 @@ def run_flags(df):
 
     results = []
 
-    # DraftKings ends in 10
+    # DraftKings ends in 10 or 00
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
-            if last_two(row["price"]) == 10:
+            last = last_two(row["price"])
+            if last in (0, 10):          # ← 00 and 10
                 results.append({
                     "type": "dk",
                     "label": row["player"],
-                    "reason": f"DraftKings ends in 10 → {format_odds(row['price'])}",
+                    "reason": f"DraftKings ends in {last:02d} → {format_odds(row['price'])}",
                     "event": row["event"],
                     "css": "dk"
                 })
 
-    # BetMGM 25/50/75
+    # BetMGM 00 / 25 / 50 / 75
     for _, row in df.iterrows():
         if "betmgm" in str(row["book"]).lower():
             last = last_two(row["price"])
-            if last in (25, 50, 75):
+            if last in (0, 25, 50, 75):
                 results.append({
                     "type": "mgm",
                     "label": row["player"],
-                    "reason": f"BetMGM ends in {last} → {format_odds(row['price'])}",
+                    "reason": f"BetMGM ends in {last:02d} → {format_odds(row['price'])}",
                     "event": row["event"],
                     "css": "mgm"
                 })
 
-    # Exact matching odds
+    # Exact matching odds (any books)
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -149,7 +150,41 @@ def run_flags(df):
                 "css": "match"
             })
 
-    # Matching 25/50/75
+    # ========== BETMGM EXACT MATCH / GROUPS ==========
+    mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
+
+    for event, event_group in mgm_df.groupby("event"):
+        # Exact price groups
+        for price, price_group in event_group.groupby("price"):
+            players = sorted(price_group["player"].unique().tolist())
+            if len(players) >= 2:
+                results.append({
+                    "type": "mgm_exact",
+                    "label": " + ".join(players),
+                    "reason": f"BetMGM Exact Match {format_odds(price)} ({len(players)} players)",
+                    "event": event,
+                    "css": "mgm"
+                })
+
+        # 00/25/50/75 ending groups
+        ending_groups = defaultdict(list)
+        for _, row in event_group.iterrows():
+            d = last_two(row["price"])
+            if d in (0, 25, 50, 75):
+                ending_groups[d].append(row["player"])
+
+        for d, players in ending_groups.items():
+            unique_players = sorted(set(players))
+            if len(unique_players) >= 2:
+                results.append({
+                    "type": "mgm_exact",
+                    "label": " + ".join(unique_players),
+                    "reason": f"BetMGM {d:02d}s group ({len(unique_players)} players)",
+                    "event": event,
+                    "css": "mgm"
+                })
+
+    # Matching 25/50/75 across books
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -276,10 +311,11 @@ def main():
     results = run_flags(df) if not df.empty else []
 
     # ========== TABS ==========
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
-        "🎯 DK Ends in 10",
-        "🎰 MGM 25/50/75",
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
+        "🎯 DK 00/10",
+        "🎰 MGM 00/25/50/75",
         "🤝 Exact Match",
+        "⭐ MGM Exact Match",
         "🔢 Matching 25/50/75",
         "💅 Same Initials",
         "🔄 Cross Initials",
@@ -305,34 +341,34 @@ def main():
     show_tab(tab1, "dk")
     show_tab(tab2, "mgm")
     show_tab(tab3, "match")
-    show_tab(tab4, "digit")
-    show_tab(tab5, "same_init")
-    show_tab(tab6, "cross")
-    show_tab(tab7, "last")
-    show_tab(tab8, "first")
+    show_tab(tab4, "mgm_exact")
+    show_tab(tab5, "digit")
+    show_tab(tab6, "same_init")
+    show_tab(tab7, "cross")
+    show_tab(tab8, "last")
+    show_tab(tab9, "first")
 
-    # Glossary tab
-    with tab9:
+    with tab10:
         st.subheader("📖 Girl Magic Glossary")
         st.markdown("""
-**🎯 DraftKings Ends in 10**  
-DraftKings often prices props at +110, +210, +310, etc.  
-This is one of their common “tier” endings.
+**🎯 DraftKings 00 / 10**  
+DraftKings endings in 00 (the live 1100s, 2100s, etc.) and 10.
 
-**🎰 BetMGM 25 / 50 / 75**  
-BetMGM loves endings in 25, 50, and 75.  
-These are classic MGM template prices and often group players together.
+**🎰 BetMGM 00 / 25 / 50 / 75**  
+BetMGM classic endings.
 
 **🤝 Exact Matching Odds**  
-When two or more books have the *exact same* price on the same player.  
-Books are copying each other or sitting on the same number.
+Two or more books have the exact same price on the same player.
+
+**⭐ MGM Exact Match**  
+Two or more players on the same game share the exact same price (or same 00/25/50/75 ending) on BetMGM.  
+Shows pairs and groups of 3+.
 
 **🔢 Matching 25s / 50s / 75s**  
-Different books landing on the same 25, 50, or 75 ending for the same player.
+Different books landing on the same 25, 50, or 75 ending.
 
 **💅 Same Initials**  
-Players who share the same first + last initial
-(e.g. two players both with initials DS)
+Players who share the same first + last initial.
 
 **🔄 Cross Initials**  
 One player’s last initial matches another player’s first initial.
