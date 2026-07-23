@@ -1,6 +1,6 @@
 """
-Petty’s Odds-Tricks System
-Strict rules – no ambiguity
+Girl Magic Odds ✨
+For the girls only • Our tricks
 """
 
 import streamlit as st
@@ -96,13 +96,12 @@ def flatten(data):
 def run_flags(df):
     if df.empty: return []
 
-    # Only lowest line
     if "point" in df.columns:
         df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
     results = []
 
-    # ========== 1. DraftKings Ends in 10 ==========
+    # DraftKings Ends in 10
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
             if last_two(row["price"]) == 10:
@@ -114,28 +113,19 @@ def run_flags(df):
                     "css": "dk"
                 })
 
-    # ========== 2. BetMGM Classic Endings (Pair first, then Group of 3) ==========
+    # BetMGM Classic Endings (Pair first, then Group of 3)
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
 
     for event, event_group in mgm_df.groupby("event"):
-        # Group by ending
         ending_groups = defaultdict(list)
         for _, row in event_group.iterrows():
             d = last_two(row["price"])
             if d in (0, 25, 50, 75):
-                ending_groups[d].append({
-                    "player": row["player"],
-                    "price": row["price"]
-                })
+                ending_groups[d].append(row["player"])
 
         for d, players in ending_groups.items():
-            unique = {}
-            for p in players:
-                unique[p["player"]] = p["price"]
-            names = sorted(unique.keys())
-
+            names = sorted(set(players))
             if len(names) == 2:
-                # Pair Match (primary)
                 results.append({
                     "type": "mgm",
                     "label": " + ".join(names),
@@ -144,7 +134,6 @@ def run_flags(df):
                     "css": "mgm"
                 })
             elif len(names) >= 3:
-                # Group of Three (fallback)
                 results.append({
                     "type": "mgm",
                     "label": " + ".join(names),
@@ -153,7 +142,7 @@ def run_flags(df):
                     "css": "mgm"
                 })
 
-    # ========== 3. Exact Matching Odds (Any Book) ==========
+    # Exact Matching Odds (Any Book)
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -167,7 +156,7 @@ def run_flags(df):
                 "css": "match"
             })
 
-    # ========== 4. MGM Exact Match (separate) ==========
+    # MGM Exact Match
     for event, event_group in mgm_df.groupby("event"):
         for price, price_group in event_group.groupby("price"):
             players = sorted(price_group["player"].unique().tolist())
@@ -180,7 +169,7 @@ def run_flags(df):
                     "css": "mgm"
                 })
 
-    # ========== 5. Matching 25/50/75 Across Books ==========
+    # Matching 25/50/75 Across Books
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -198,7 +187,7 @@ def run_flags(df):
                     "css": "digit"
                 })
 
-    # ========== 6. FanDuel Pattern Endings (≥ +500, ends in 10/30/60/70/90) ==========
+    # FanDuel Patterns (≥ +500, ends in 10/30/60/70/90)
     for _, row in df.iterrows():
         if "fanduel" in str(row["book"]).lower():
             price = abs(int(row["price"])) if row["price"] else 0
@@ -212,10 +201,9 @@ def run_flags(df):
                     "css": "fd"
                 })
 
-    # ========== 7–10. Name Patterns ==========
+    # Name Patterns
     players = list(df["player"].dropna().unique())
 
-    # Same Initials
     init_map = defaultdict(list)
     for p in players:
         f, l = get_initials(p)
@@ -231,7 +219,6 @@ def run_flags(df):
                 "css": "name"
             })
 
-    # Cross Initials
     for i, p1 in enumerate(players):
         _, l1 = get_initials(p1)
         if not l1: continue
@@ -246,7 +233,6 @@ def run_flags(df):
                     "css": "name"
                 })
 
-    # Same Last Name
     last_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -262,7 +248,6 @@ def run_flags(df):
                 "css": "name"
             })
 
-    # Same First Name
     first_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -282,7 +267,7 @@ def run_flags(df):
 
 def main():
     st.title("💖 Girl Magic Odds")
-    st.caption("Petty’s Odds-Tricks System – Strict Rules")
+    st.caption("For the girls only • Our tricks")
 
     api_key = get_api_key()
     if not api_key:
@@ -323,7 +308,7 @@ def main():
     tabs = st.tabs([
         "🎯 DK Ends in 10",
         "🎰 MGM Classic Endings",
-        "🤝 Exact Match (Any Book)",
+        "🤝 Exact Match",
         "⭐ MGM Exact Match",
         "🔢 Matching 25/50/75",
         "💙 FanDuel Patterns",
@@ -360,14 +345,14 @@ def main():
     show_tab(tabs[9], "first")
 
     with tabs[10]:
-        st.subheader("📖 Petty’s Odds-Tricks Glossary")
+        st.subheader("📖 Girl Magic Glossary")
         st.markdown("""
 **🎯 DraftKings Ends in 10**  
 Any DK prop ending in 10. Solo flag only.
 
 **🎰 BetMGM Classic Endings**  
-- Pair Match (primary): two players, same team, same ending (00/25/50/75)  
-- Group of Three (fallback): three+ players, same team, same ending
+- Pair Match: two players, same team, same ending (00/25/50/75)  
+- Group of Three: three+ players, same team, same ending
 
 **🤝 Exact Matching Odds**  
 Exact same price on the same player across any books.
@@ -394,7 +379,7 @@ Exact same last name.
 Exact same first name.
         """)
 
-    st.caption("💖 Girl Magic • Petty’s Odds-Tricks System")
+    st.caption("💖 Girl Magic • For the girls only • Our tricks")
 
 if __name__ == "__main__":
     main()
