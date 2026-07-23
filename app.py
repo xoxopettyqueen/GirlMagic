@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-More books + clearer matchups + your tricks
+LOCKED to FanDuel • DraftKings • BetMGM • Bet365 only
 """
 
 import streamlit as st
@@ -51,7 +51,10 @@ st.markdown("""
 
 DB_PATH = Path("odds_data.db")
 API_BASE = "https://api.the-odds-api.com/v4"
-REGIONS = "us,us2"          # ← changed to get more books
+REGIONS = "us,us2"
+
+# Only these four books matter
+PREFERRED_BOOKS = ["fanduel", "draftkings", "betmgm", "bet365"]
 
 SPORTS = {
     "NFL": "americanfootball_nfl",
@@ -158,14 +161,25 @@ def get_initials(name):
     last = parts[-1][0].upper() if len(parts) > 1 else None
     return first, last
 
+def is_preferred(book):
+    if not book: return False
+    b = book.lower()
+    return any(p in b for p in PREFERRED_BOOKS)
+
 def build_hot_list(df):
     scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "odds": None, "market": None, "matchup": ""})
 
-    props = df[df["description"].notna() & (df["description"] != "")].copy()
+    # Only keep preferred books
+    props = df[
+        (df["description"].notna()) & 
+        (df["description"] != "") & 
+        (df["bookmaker"].apply(is_preferred))
+    ].copy()
+
     if props.empty:
         return []
 
-    # Same Odds — BetMGM only
+    # 1. Same Odds — BetMGM only
     mgm = props[props["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
     for (market, price), group in mgm.groupby(["market", "price"]):
         players = list(group["description"].unique())
@@ -179,7 +193,7 @@ def build_hot_list(df):
             scores[key]["market"] = market
             scores[key]["matchup"] = matchup
 
-    # Bet365 +850
+    # 2. Bet365 +850
     bet365 = props[props["bookmaker"].str.lower().str.contains("bet365", na=False)]
     for _, row in bet365.iterrows():
         try:
@@ -196,7 +210,7 @@ def build_hot_list(df):
         except:
             pass
 
-    # DraftKings ending 10
+    # 3. DraftKings ending in 10
     dk = props[props["bookmaker"].str.lower().str.contains("draftkings|dk", na=False)]
     for _, row in dk.iterrows():
         if last_two_digits(row["price"]) == 10:
@@ -210,7 +224,7 @@ def build_hot_list(df):
                 scores[key]["market"] = row["market"]
                 scores[key]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
 
-    # Name matching
+    # 4. Name matching (only on the four preferred books)
     for _, group in props.groupby("market"):
         players = list(group["description"].unique())
         matchup = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}" if len(group) else ""
@@ -285,7 +299,7 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("NFL • NBA • MLB • More books requested")
+    st.caption("LOCKED to FanDuel • DraftKings • BetMGM • Bet365 only")
 
     api_key = get_api_key()
     if not api_key:
@@ -335,16 +349,22 @@ def main():
             progress.progress((i+1)/len(chosen))
         if all_records:
             st.success(f"Saved {save_odds_to_db(all_records, sport_key)} rows ✨")
-            # Show which books we actually got
-            books = sorted(set(r["bookmaker"] for r in all_records if r.get("bookmaker")))
-            st.info(f"Books returned: {', '.join(books)}")
+            # Show preferred books that actually came back
+            preferred_found = sorted(set(
+                r["bookmaker"] for r in all_records 
+                if r.get("bookmaker") and is_preferred(r["bookmaker"])
+            ))
+            if preferred_found:
+                st.success(f"Preferred books found: {', '.join(preferred_found)}")
+            else:
+                st.warning("None of your four preferred books (FanDuel / DK / BetMGM / Bet365) were returned for these props.")
             st.session_state["last_records"] = all_records
         else:
             st.warning("No odds returned.")
 
     records = st.session_state.get("last_records", [])
     if records:
-        st.subheader("3️⃣ Hot List")
+        st.subheader("3️⃣ Hot List (Preferred books only)")
         df = pd.DataFrame(records)
 
         if line_mode == "Only 1 (lowest)" and "point" in df.columns:
@@ -366,15 +386,16 @@ def main():
                     unsafe_allow_html=True
                 )
         else:
-            st.caption("No strong combinations found with your tricks yet.")
+            st.caption("No strong combinations found on FanDuel / DraftKings / BetMGM / Bet365 yet.")
 
         st.markdown("---")
+        # Still show the full table so you can see what came back
         show = df[["home_team", "away_team", "bookmaker", "market", "description", "outcome", "price", "point"]].copy()
         show["price"] = show["price"].apply(format_odds)
         show = show.rename(columns={"description": "Player", "outcome": "Side", "price": "Odds", "point": "Line"})
         st.dataframe(show, use_container_width=True, height=400)
 
-    st.caption("💖 Girl Magic • Personal use only")
+    st.caption("💖 Girl Magic • Locked to FanDuel • DK • BetMGM • Bet365")
 
 if __name__ == "__main__":
     main()
