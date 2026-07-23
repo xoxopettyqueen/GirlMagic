@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 For the girls only • Our tricks
-+ Live +EV Board (Bet this / Skip this)
++EV Board only says Bet this when it also hits a Girl Magic method
 """
 
 import streamlit as st
@@ -76,6 +76,474 @@ def fetch_odds(api_key, event_id):
         "markets": "batter_home_runs",
         "oddsFormat": "american"
     }
+    try:
+        r = requests.get(f"{API_BASE}/sports/baseball_mlb/events/{event_id}/odds", params=params, timeout=20)
+        if r.status_code != 200: return None
+        return r.json()
+    except:
+        return None
+
+def flatten(data):
+    if not data: return []
+    rows = []
+    event = f"{data.get('away_team')} @ {data.get('home_team')}"
+    for book in data.get("bookmakers", []):
+        for market in book.get("markets", []):
+            for o in market.get("outcomes", []):
+                if o.get("name", "").lower() != "over": continue
+                rows.append({
+                    "event": event,
+                    "book": book.get("key", ""),
+                    "player": o.get("description"),
+                    "price": o.get("price"),
+                    "point": o.get("point"),
+                })
+    return rows
+
+def run_flags(df, previous_df=None):
+    if df.empty: return [], []
+
+    if "point" in df.columns:
+        df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
+
+    results = []
+    flagged_players = set()          # players that hit a Girl Magic method
+    player_methods = defaultdict(list)  # which methods they hit
+
+    # ========== 1. DraftKings Ends in 10 ==========
+    for _, row in df.iterrows():
+        if "draftkings" in str(row["book"]).lower():
+            if last_two(row["price"]) == 10:
+                results.append({
+                    "type": "dk",
+                    "label": row["player"],
+                    "reason": f"DraftKings ends in 10 → {format_odds(row['price'])}",
+                    "event": row["event"],
+                    "css": "dk"
+                })
+                flagged_players.add(row["player"])
+                player_methods[row["player"]].append("DK Ends in 10")
+
+    # ========== 2. BetMGM Classic Endings ==========
+    mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
+    for event, event_group in mgm_df.groupby("event"):
+        ending_groups = defaultdict(list)
+        for _, row in event_group.iterrows():
+            d = last_two(row["price"])
+            if d in (0, 25, 50, 75):
+                ending_groups[d].append(row["player"])
+        for d, players in ending_groups.items():
+            names = sorted(set(players))
+            if len(names) >= 2:
+                results.append({
+                    "type": "mgm",
+                    "label": " + ".join(names),
+                    "reason": f"BetMGM {'Pair' if len(names)==2 else 'Group of '+str(len(names))} ends in {d:02d}",
+                    "event": event,
+                    "css": "mgm"
+                })
+                for n in names:
+                    flagged_players.add(n)
+                    player_methods[n].append(f"MGM {d:02d}s")
+
+    # ========== 3. Exact Matching Odds ==========
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        if len(group) < 2: continue
+        prices = group["price"].dropna().tolist()
+        books = group["book"].tolist()
+        if len(set(prices)) == 1:
+            results.append({
+                "type": "match",
+                "label": player,
+                "reason": f"Exact match {format_odds(prices[0])} → {', '.join(books)}",
+                "event": group["event"].iloc[0],
+                "css": "match"
+            })
+            flagged_players.add(player)
+            player_methods[player].append("Exact Match")
+
+    # ========== 4. MGM Exact Match ==========
+    for event, event_group in mgm_df.groupby("event"):
+        for price, price_group in event_group.groupby("price"):
+            players = sorted(price_group["player"].unique().tolist())
+            if len(players) >= 2:
+                results.append({
+                    "type": "mgm_exact",
+                    "label": " + ".join(players),
+                    "reason": f"BetMGM Exact Match {format_odds(price)} ({len(players)} players)",
+                    "event": event,
+                    "css": "mgm"
+                })
+                for p in players:
+                    flagged_players.add(p)
+                    player_methods[p].append("MGM Exact Match")
+
+    # ========== 5. Matching 25/50/75 ==========
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        if len(group) < 2: continue
+        digits = defaultdict(list)
+        for _, row in group.iterrows():
+            d = last_two(row["price"])
+            if d in (25, 50, 75):
+                digits[d].append(row["book"])
+        for d, bks in digits.items():
+            if len(set(bks)) >= 2:
+                results.append({
+                    "type": "digit",
+                    "label": player,
+                    "reason": f"Matching {d}s across books → {', '.join(set(bks))}",
+                    "event": group["event"].iloc[0],
+                    "css": "digit"
+                })
+                flagged_players.add(player)
+                player_methods[player].append(f"Matching {d}s")
+
+    # ========== 6. FanDuel Patterns ==========
+    for _, row in df.iterrows():
+        if "fanduel" in str(row["book"]).lower():
+            price = abs(int(row["price"])) if row["price"] else 0
+            last = last_two(row["price"])
+            if price >= 500 and last in (10, 30, 60, 70, 90):
+                results.append({
+                    "type": "fd",
+                    "label": row["player"],
+                    "reason": f"FanDuel ≥+500 ends in {last:02d} → {format_odds(row['price'])}",
+                    "event": row["event"],
+                    "css": "fd"
+                })
+                flagged_players.add(row["player"])
+                player_methods[row["player"]].append("FanDuel Pattern")
+
+    # ========== 7. Line Signals ==========
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        prices = group["price"].dropna().tolist()
+        books = group["book"].tolist()
+        if len(prices) < 3: continue
+        if len(set(prices)) == 1:
+            results.append({
+                "type": "signal",
+                "label": player,
+                "reason": f"Stuck Number {format_odds(prices[0])} on {len(prices)} books",
+                "event": group["event"].iloc[0],
+                "css": "signal"
+            })
+            flagged_players.add(player)
+            player_methods[player].append("Stuck Number")
+        try:
+            med = statistics.median(prices)
+            for i, pr in enumerate(prices):
+                if abs(pr - med) >= 150:
+                    results.append({
+                        "type": "signal",
+                        "label": player,
+                        "reason": f"Wide Disagreement on {books[i]}",
+                        "event": group["event"].iloc[0],
+                        "css": "signal"
+                    })
+                    flagged_players.add(player)
+                    player_methods[player].append("Wide Disagreement")
+        except:
+            pass
+
+    # ========== 8. Historical Movement ==========
+    if previous_df is not None and not previous_df.empty:
+        prev_lookup = {}
+        for _, row in previous_df.iterrows():
+            key = (row["player"], row["book"])
+            prev_lookup[key] = row["price"]
+        for _, row in df.iterrows():
+            key = (row["player"], row["book"])
+            if key in prev_lookup:
+                old = prev_lookup[key]
+                new = row["price"]
+                if old is not None and new is not None and old != new:
+                    direction = "↑ got longer" if new > old else "↓ got shorter"
+                    results.append({
+                        "type": "hist",
+                        "label": row["player"],
+                        "reason": f"{row['book']}: {format_odds(old)} → {format_odds(new)} {direction}",
+                        "event": row["event"],
+                        "css": "hist"
+                    })
+                    flagged_players.add(row["player"])
+                    player_methods[row["player"]].append("Price Moved")
+
+    # ========== BUILD +EV BOARD (only Bet this if also flagged) ==========
+    ev_board = []
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        prices = group["price"].dropna().tolist()
+        books = group["book"].tolist()
+        if len(prices) < 2: continue
+
+        best_price = max(prices)
+        best_book = books[prices.index(best_price)]
+        try:
+            median = statistics.median(prices)
+        except:
+            median = best_price
+
+        has_edge = best_price >= median + 40
+        has_method = player in flagged_players
+        methods = player_methods.get(player, [])
+
+        # ONLY Bet this if it has BOTH edge AND a Girl Magic method
+        is_bet = has_edge and has_method
+
+        reason = ""
+        if is_bet:
+            reason = f"Girl Magic + Edge • {', '.join(methods[:2])}"
+        elif has_method and not has_edge:
+            reason = "Has method but no real edge"
+        elif has_edge and not has_method:
+            reason = "Has edge but no Girl Magic method"
+        else:
+            reason = "No edge + no method"
+
+        ev_board.append({
+            "player": player,
+            "best_price": best_price,
+            "best_book": best_book,
+            "median": median,
+            "books": ", ".join(books),
+            "event": group["event"].iloc[0],
+            "is_bet": is_bet,
+            "reason": reason
+        })
+
+    ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["best_price"]))
+
+    # Name patterns (only if both flagged)
+    player_events = defaultdict(set)
+    for _, row in df.iterrows():
+        player_events[row["player"]].add(row["event"])
+    players = list(df["player"].dropna().unique())
+
+    def is_different_teams(p1, p2):
+        return len(player_events[p1] & player_events[p2]) == 0
+
+    def both_flagged(p1, p2):
+        return p1 in flagged_players and p2 in flagged_players
+
+    init_map = defaultdict(list)
+    for p in players:
+        f, l = get_initials(p)
+        if f and l:
+            init_map[f + l].append(p)
+    for k, names in init_map.items():
+        for i, p1 in enumerate(names):
+            for p2 in names[i+1:]:
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = " (same team)" if same else " (different teams)"
+                    results.append({
+                        "type": "same_init",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same initials {k}{tag}",
+                        "event": "",
+                        "css": "name"
+                    })
+
+    for i, p1 in enumerate(players):
+        _, l1 = get_initials(p1)
+        if not l1: continue
+        for p2 in players[i+1:]:
+            f2, _ = get_initials(p2)
+            if f2 and l1 == f2 and both_flagged(p1, p2):
+                same = not is_different_teams(p1, p2)
+                tag = " (same team)" if same else " (different teams)"
+                results.append({
+                    "type": "cross",
+                    "label": f"{p1} + {p2}",
+                    "reason": f"Cross initial ({l1}){tag}",
+                    "event": "",
+                    "css": "name"
+                })
+
+    last_map = defaultdict(list)
+    for p in players:
+        parts = str(p).split()
+        if len(parts) >= 2:
+            last_map[parts[-1].lower()].append(p)
+    for last, names in last_map.items():
+        for i, p1 in enumerate(names):
+            for p2 in names[i+1:]:
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = " (same team)" if same else " (different teams)"
+                    results.append({
+                        "type": "last",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same last name ({last.title()}){tag}",
+                        "event": "",
+                        "css": "name"
+                    })
+
+    first_map = defaultdict(list)
+    for p in players:
+        parts = str(p).split()
+        if parts:
+            first_map[parts[0].lower()].append(p)
+    for first, names in first_map.items():
+        for i, p1 in enumerate(names):
+            for p2 in names[i+1:]:
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = " (same team)" if same else " (different teams)"
+                    results.append({
+                        "type": "first",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same first name ({first.title()}){tag}",
+                        "event": "",
+                        "css": "name"
+                    })
+
+    return results, ev_board
+
+def main():
+    st.title("💖 Girl Magic Odds")
+    st.caption("For the girls only • Our tricks")
+
+    api_key = get_api_key()
+    if not api_key:
+        st.warning("Add your Odds API key in Secrets")
+        st.stop()
+
+    if st.button("① Load Games", type="primary"):
+        st.session_state["events"] = fetch_events(api_key)
+
+    events = st.session_state.get("events", [])
+    if not events:
+        st.info("Click **Load Games** to start")
+        st.stop()
+
+    options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
+    chosen = st.multiselect("② Select games", list(options.keys()))
+
+    if st.button("③ Fetch Odds", type="primary") and chosen:
+        all_rows = []
+        progress = st.progress(0)
+        for i, label in enumerate(chosen):
+            data = fetch_odds(api_key, options[label])
+            all_rows.extend(flatten(data))
+            progress.progress((i + 1) / len(chosen))
+
+        if all_rows:
+            df = pd.DataFrame(all_rows)
+            df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
+            if "odds" in st.session_state:
+                st.session_state["previous_odds"] = st.session_state["odds"]
+            st.session_state["odds"] = df.to_dict("records")
+            st.session_state["last_fetch_time"] = datetime.now().strftime("%I:%M %p")
+            st.success(f"Loaded {len(df)} props • {st.session_state['last_fetch_time']}")
+        else:
+            st.warning("No odds returned for these games")
+
+    odds = st.session_state.get("odds", [])
+    previous = st.session_state.get("previous_odds", [])
+    df = pd.DataFrame(odds) if odds else pd.DataFrame()
+    prev_df = pd.DataFrame(previous) if previous else None
+
+    results, ev_board = run_flags(df, prev_df) if not df.empty else ([], [])
+
+    tabs = st.tabs([
+        "🐝 Live +EV Board",
+        "🎯 DK Ends in 10",
+        "🎰 MGM Classic Endings",
+        "🤝 Exact Match",
+        "⭐ MGM Exact Match",
+        "🔢 Matching 25/50/75",
+        "💙 FanDuel Patterns",
+        "📈 Line Signals",
+        "⏳ Price Movement",
+        "💅 Same Initials",
+        "🔄 Cross Initials",
+        "👩‍👧 Same Last Name",
+        "👯 Same First Name",
+        "📖 Glossary"
+    ])
+
+    # ========== +EV BOARD ==========
+    with tabs[0]:
+        st.subheader("🐝 Live +EV Board")
+        st.caption("Only says Bet this when it has Girl Magic method + real edge")
+
+        if not ev_board:
+            st.info("Fetch some games first")
+        else:
+            for item in ev_board:
+                if item["is_bet"]:
+                    st.markdown(
+                        f'<div class="card bet">'
+                        f'<b>🟢 BET THIS</b><br><br>'
+                        f'<b>{item["player"]}</b><br>'
+                        f'Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>'
+                        f'Median: {format_odds(item["median"])}<br>'
+                        f'Why: {item["reason"]}<br>'
+                        f'<small>{item["books"]} • {item["event"]}</small></div>',
+                        unsafe_allow_html=True
+                    )
+                else:
+                    st.markdown(
+                        f'<div class="card skip">'
+                        f'<b>⚪ SKIP</b><br><br>'
+                        f'<b>{item["player"]}</b><br>'
+                        f'Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>'
+                        f'Median: {format_odds(item["median"])}<br>'
+                        f'Why: {item["reason"]}<br>'
+                        f'<small>{item["books"]} • {item["event"]}</small></div>',
+                        unsafe_allow_html=True
+                    )
+
+    def show_tab(tab, typ):
+        with tab:
+            items = [r for r in results if r["type"] == typ]
+            if not items:
+                st.info("None right now")
+                return
+            for r in items:
+                st.markdown(
+                    f'<div class="card {r["css"]}">'
+                    f'<b>{r["label"]}</b><br>{r["reason"]}<br>'
+                    f'<small>{r.get("event","")}</small></div>',
+                    unsafe_allow_html=True
+                )
+
+    show_tab(tabs[1], "dk")
+    show_tab(tabs[2], "mgm")
+    show_tab(tabs[3], "match")
+    show_tab(tabs[4], "mgm_exact")
+    show_tab(tabs[5], "digit")
+    show_tab(tabs[6], "fd")
+    show_tab(tabs[7], "signal")
+    show_tab(tabs[8], "hist")
+    show_tab(tabs[9], "same_init")
+    show_tab(tabs[10], "cross")
+    show_tab(tabs[11], "last")
+    show_tab(tabs[12], "first")
+
+    with tabs[13]:
+        st.subheader("📖 Girl Magic Glossary")
+        st.markdown("""
+**🐝 Live +EV Board**  
+Only says **Bet this** when the player has **both**:
+1. Real edge (longer than median)
+2. At least one Girl Magic method
+
+**🎯 DraftKings Ends in 10**  
+**🎰 BetMGM Classic Endings**  
+**🤝 Exact Matching Odds**  
+**⭐ MGM Exact Match**  
+**🔢 Matching 25/50/75**  
+**💙 FanDuel Patterns**  
+**📈 Line Signals**  
+**⏳ Price Movement**  
+**Name Patterns** (only if both players already hit a method)
+        """)
+
+    st.caption("💖 Girl Magic • For the girls only • Our tricks")
+
+if __name__ == "__main__":
+    main()    }
     try:
         r = requests.get(f"{API_BASE}/sports/baseball_mlb/events/{event_id}/odds", params=params, timeout=20)
         if r.status_code != 200: return None
