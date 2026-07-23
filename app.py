@@ -43,10 +43,19 @@ PLAYER_PROP_MARKETS = {
         "player_reception_yds", "player_reception_tds",
         "player_anytime_td", "player_1st_td", "player_pass_interceptions"
     ],
-    "MLB": [
-        "player_hits", "player_total_bases", "player_rbis",
-        "player_runs_scored", "player_strikeouts",
-        "player_stolen_bases", "player_hits_runs_rbis"
+       "MLB": [
+        "batter_home_runs",
+        "batter_hits",
+        "batter_total_bases",
+        "batter_rbis",
+        "batter_runs_scored",
+        "batter_strikeouts",
+        "batter_stolen_bases",
+        "batter_hits_runs_rbis",
+        "pitcher_strikeouts",
+        "pitcher_hits_allowed",
+        "pitcher_walks",
+        "pitcher_earned_runs",
     ],
     "NHL": [
         "player_points", "player_goals", "player_assists",
