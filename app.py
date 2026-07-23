@@ -252,4 +252,5 @@ def is_preferred(book):
 
 def fetch_probable_pitchers():
     today = date.today().strftime("%Y-%m-%d")
-    url = f"https://statsapi.mlb.com/api/v1/schedule
+   url = f"https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={today}&hydrate=probablePitcher"
+
