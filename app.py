@@ -1,8 +1,3 @@
-"""
-Girl Magic Odds Tracker ✨
-+ Petty's Launch List tab
-"""
-
 import streamlit as st
 import pandas as pd
 import requests
@@ -10,9 +5,13 @@ import sqlite3
 from datetime import datetime, date
 from pathlib import Path
 from collections import defaultdict
-import time
 
-st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="💖", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(
+    page_title="Girl Magic Odds ✨",
+    page_icon="💖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 st.markdown("""
 <style>
@@ -30,10 +29,14 @@ st.markdown("""
 
 DB_PATH = Path("odds_data.db")
 API_BASE = "https://api.the-odds-api.com/v4"
-REGIONS = "us,us2"
-PREFERRED_BOOKS = ["betmgm", "draftkings", "bet365"]
+PREFERRED_BOOKS = ["betmgm", "draftkings", "bet365", "fanduel", "caesars", "pointsbet", "espn"]
 
-SPORTS = {"NFL": "americanfootball_nfl", "NBA": "basketball_nba", "MLB": "baseball_mlb"}
+SPORTS = {
+    "NFL": "americanfootball_nfl",
+    "NBA": "basketball_nba",
+    "MLB": "baseball_mlb"
+}
+
 PLAYER_PROP_MARKETS = {
     "NBA": ["player_points", "player_rebounds", "player_assists", "player_threes"],
     "NFL": ["player_pass_yds", "player_rush_yds", "player_receptions", "player_reception_yds", "player_anytime_td"],
@@ -52,7 +55,8 @@ def load_statcast_files():
                 if "barrel_batted_rate" in df.columns or "hard_hit_percent" in df.columns:
                     hitters = df
                     break
-            except: pass
+            except:
+                pass
     for name in ["exit_velocity.csv", "exit_velocity (1).csv"]:
         p = Path(name)
         if p.exists():
@@ -61,11 +65,13 @@ def load_statcast_files():
                 if "avg_hit_speed" in df.columns or "brl_percent" in df.columns:
                     exit_velo = df
                     break
-            except: pass
+            except:
+                pass
     return hitters, exit_velo
 
 def normalize_name(name):
-    if not name: return ""
+    if not name:
+        return ""
     name = str(name).lower().strip()
     if "," in name:
         parts = [p.strip() for p in name.split(",")]
@@ -114,26 +120,50 @@ def init_db():
     conn.close()
 
 def save_odds_to_db(records, sport_key):
-    if not records: return 0
+    if not records:
+        return 0
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     now = datetime.utcnow().isoformat()
-    rows = [(now, sport_key, r.get("event_id"), r.get("commence_time"), r.get("home_team"), r.get("away_team"),
-             r.get("bookmaker"), r.get("market"), r.get("outcome"), r.get("description"),
-             r.get("price"), r.get("point"), r.get("last_update")) for r in records]
-    c.executemany("INSERT INTO odds_snapshots (timestamp, sport_key, event_id, commence_time, home_team, away_team, bookmaker, market, outcome, description, price, point, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
+    rows = [
+        (
+            now,
+            sport_key,
+            r.get("event_id"),
+            r.get("commence_time"),
+            r.get("home_team"),
+            r.get("away_team"),
+            r.get("bookmaker"),
+            r.get("market"),
+            r.get("outcome"),
+            r.get("description"),
+            r.get("price"),
+            r.get("point"),
+            r.get("last_update"),
+        )
+        for r in records
+    ]
+    c.executemany(
+        "INSERT INTO odds_snapshots (timestamp, sport_key, event_id, commence_time, home_team, away_team, bookmaker, market, outcome, description, price, point, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        rows,
+    )
     conn.commit()
     conn.close()
     return len(rows)
 
 def get_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
-    if not key: key = st.sidebar.text_input("Odds API Key 🔑", type="password")
+    if not key:
+        key = st.sidebar.text_input("Odds API Key 🔑", type="password")
     return key
 
 def fetch_events(api_key, sport_key):
     try:
-        r = requests.get(f"{API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
+        r = requests.get(
+            f"{API_BASE}/sports/{sport_key}/events",
+            params={"apiKey": api_key},
+            timeout=15,
+        )
         r.raise_for_status()
         return r.json()
     except Exception as e:
@@ -141,308 +171,85 @@ def fetch_events(api_key, sport_key):
         return []
 
 def fetch_event_odds(api_key, sport_key, event_id, markets):
-    params = {"apiKey": api_key, "regions": REGIONS, "markets": markets, "oddsFormat": "american", "dateFormat": "iso"}
+    params = {
+        "apiKey": api_key,
+        "regions": "us",
+        "markets": markets,
+        "oddsFormat": "american",
+        "dateFormat": "iso",
+    }
     try:
-        r = requests.get(f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds", params=params, timeout=20)
+        r = requests.get(
+            f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds",
+            params=params,
+            timeout=20,
+        )
         r.raise_for_status()
-        return r.json()
+        data = r.json()
+
+        main_books = ["fanduel", "draftkings", "betmgm", "caesars", "pointsbet", "espn"]
+        data["bookmakers"] = [
+            b
+            for b in data.get("bookmakers", [])
+            if b.get("key", "").lower() in main_books
+        ]
+
+        return data
     except Exception as e:
         st.warning(f"Could not fetch: {e}")
         return None
 
 def flatten_event_odds(event_data):
-    if not event_data: return []
+    if not event_data:
+        return []
     records = []
     for book in event_data.get("bookmakers", []):
         for market in book.get("markets", []):
             for outcome in market.get("outcomes", []):
-                records.append({
-                    "event_id": event_data.get("id"), "commence_time": event_data.get("commence_time"),
-                    "home_team": event_data.get("home_team"), "away_team": event_data.get("away_team"),
-                    "bookmaker": book.get("key"), "market": market.get("key"),
-                    "outcome": outcome.get("name"), "description": outcome.get("description"),
-                    "price": outcome.get("price"), "point": outcome.get("point"),
-                    "last_update": book.get("last_update"),
-                })
+                records.append(
+                    {
+                        "event_id": event_data.get("id"),
+                        "commence_time": event_data.get("commence_time"),
+                        "home_team": event_data.get("home_team"),
+                        "away_team": event_data.get("away_team"),
+                        "bookmaker": book.get("key"),
+                        "market": market.get("key"),
+                        "outcome": outcome.get("name"),
+                        "description": outcome.get("description"),
+                        "price": outcome.get("price"),
+                        "point": outcome.get("point"),
+                        "last_update": book.get("last_update"),
+                    }
+                )
     return records
 
 def format_odds(price):
-    if price is None: return "-"
-    try: return f"{int(price):+d}"
-    except: return str(price)
+    if price is None:
+        return "-"
+    try:
+        return f"{int(price):+d}"
+    except:
+        return str(price)
 
 def last_two_digits(price):
-    try: return abs(int(price)) % 100
-    except: return None
+    try:
+        return abs(int(price)) % 100
+    except:
+        return None
 
 def get_initials(name):
     parts = str(name).strip().split()
-    if not parts: return None, None
+    if not parts:
+        return None, None
     first = parts[0][0].upper() if parts[0] else None
     last = parts[-1][0].upper() if len(parts) > 1 else None
     return first, last
 
 def is_preferred(book):
-    if not book: return False
+    if not book:
+        return False
     return any(p in book.lower() for p in PREFERRED_BOOKS)
 
 def fetch_probable_pitchers():
     today = date.today().strftime("%Y-%m-%d")
-    url = f"https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={today}&hydrate=probablePitcher"
-    try:
-        r = requests.get(url, timeout=10)
-        r.raise_for_status()
-        data = r.json()
-        pitchers = {}
-        for d in data.get("dates", []):
-            for g in d.get("games", []):
-                teams = g.get("teams", {})
-                away_name = teams.get("away", {}).get("team", {}).get("name", "")
-                home_name = teams.get("home", {}).get("team", {}).get("name", "")
-                away_p = teams.get("away", {}).get("probablePitcher", {}).get("fullName", "TBD")
-                home_p = teams.get("home", {}).get("probablePitcher", {}).get("fullName", "TBD")
-                pitchers[f"{away_name} @ {home_name}"] = {"away": away_p, "home": home_p}
-        return pitchers
-    except: return {}
-
-def build_hot_list(df):
-    scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "matchup": ""})
-    props = df[
-        (df["description"].notna()) & (df["description"] != "") &
-        (df["bookmaker"].apply(is_preferred)) &
-        (df["outcome"].str.lower() == "over")
-    ].copy()
-    if props.empty: return []
-
-    mgm = props[props["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
-    for (market, price), group in mgm.groupby(["market", "price"]):
-        players = list(group["description"].unique())
-        if len(players) >= 2:
-            key = " + ".join(sorted(players))
-            scores[key]["score"] += 5
-            scores[key]["reasons"].append(f"BetMGM Same Odds {format_odds(price)}")
-            scores[key]["players"].update(players)
-            scores[key]["matchup"] = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}"
-
-    for _, row in mgm.iterrows():
-        last = last_two_digits(row["price"])
-        if last in (25, 50, 75):
-            p = row["description"]
-            scores[p]["score"] += 3
-            scores[p]["reasons"].append(f"BetMGM ends in {last}")
-            scores[p]["players"].add(p)
-            scores[p]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
-
-    for _, row in props[props["bookmaker"].str.lower().str.contains("bet365", na=False)].iterrows():
-        try:
-            if abs(int(row["price"])) == 850:
-                p = row["description"]
-                scores[p]["score"] += 3
-                scores[p]["reasons"].append("Bet365 +850")
-                scores[p]["players"].add(p)
-                scores[p]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
-        except: pass
-
-    for _, row in props[props["bookmaker"].str.lower().str.contains("draftkings|dk", na=False)].iterrows():
-        if last_two_digits(row["price"]) == 10:
-            p = row["description"]
-            scores[p]["score"] += 3
-            scores[p]["reasons"].append("DraftKings ends in 10")
-            scores[p]["players"].add(p)
-            scores[p]["matchup"] = f"{row['away_team']} @ {row['home_team']}"
-
-    for _, group in props.groupby("market"):
-        players = list(group["description"].unique())
-        matchup = f"{group['away_team'].iloc[0]} @ {group['home_team'].iloc[0]}" if len(group) else ""
-        initials_map = defaultdict(list)
-        for p in players:
-            f, l = get_initials(p)
-            if f and l: initials_map[f+l].append(p)
-        for k, names in initials_map.items():
-            if len(names) >= 2:
-                key = " + ".join(sorted(names))
-                scores[key]["score"] += 4
-                scores[key]["reasons"].append(f"Same initials {k}")
-                scores[key]["players"].update(names)
-                scores[key]["matchup"] = matchup
-        for i, p1 in enumerate(players):
-            _, last1 = get_initials(p1)
-            if not last1: continue
-            for p2 in players[i+1:]:
-                first2, _ = get_initials(p2)
-                if first2 and last1 == first2:
-                    key = " + ".join(sorted([p1, p2]))
-                    scores[key]["score"] += 3
-                    scores[key]["reasons"].append(f"Cross initial ({last1})")
-                    scores[key]["players"].update([p1, p2])
-                    scores[key]["matchup"] = matchup
-
-    hot = []
-    for key, data in scores.items():
-        if data["score"] > 0:
-            is_pair = " + " in key or " / " in key
-            hot.append({
-                "label": key, "score": data["score"] + (2 if is_pair else 0),
-                "reasons": list(set(data["reasons"])), "players": list(data["players"]),
-                "matchup": data["matchup"], "is_pair": is_pair
-            })
-    return sorted(hot, key=lambda x: (x["is_pair"], x["score"]), reverse=True)
-
-def main():
-    init_db()
-    st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("Odds Tricks + Batters + Petty's Launch List")
-
-    hitters_df, exit_df = load_statcast_files()
-
-    api_key = get_api_key()
-    if not api_key:
-        st.warning("Add API key in Manage app → Secrets")
-        st.stop()
-
-    with st.sidebar:
-        st.header("✨ Settings")
-        sport_name = st.selectbox("Sport", list(SPORTS.keys()))
-        sport_key = SPORTS[sport_name]
-        prop_list = PLAYER_PROP_MARKETS.get(sport_name, [])
-        selected_props = st.multiselect("Props", prop_list, default=["batter_home_runs"] if "batter_home_runs" in prop_list else prop_list[:2])
-        line_mode = st.radio("Lines", ["Only 1 (lowest)", "All lines"], index=0)
-        max_hot = st.slider("Max items", 3, 15, 8)
-
-    if st.button("Load Games 💫", type="primary"):
-        st.session_state["events"] = fetch_events(api_key, sport_key)
-
-    events = st.session_state.get("events", [])
-    if not events:
-        st.info("Click **Load Games** first")
-        st.stop()
-
-    game_rows = [{"id": e["id"], "Away": e.get("away_team"), "Home": e.get("home_team"), "Start": (e.get("commence_time") or "")[:16].replace("T", " ")} for e in events]
-    st.dataframe(pd.DataFrame(game_rows)[["Away", "Home", "Start"]], use_container_width=True, hide_index=True)
-
-    options = {f"{r['Away']} @ {r['Home']}": r["id"] for r in game_rows}
-    chosen = st.multiselect("Select games", list(options.keys()))
-
-    if st.button("Fetch Selected Games 💖", type="primary") and chosen:
-        all_records = []
-        progress = st.progress(0)
-        for i, label in enumerate(chosen):
-            data = fetch_event_odds(api_key, sport_key, options[label], ",".join(selected_props))
-            all_records.extend(flatten_event_odds(data))
-            progress.progress((i+1)/len(chosen))
-        if all_records:
-            st.success(f"Saved {save_odds_to_db(all_records, sport_key)} rows")
-            preferred = sorted(set(r["bookmaker"] for r in all_records if is_preferred(r.get("bookmaker"))))
-            if preferred: st.success(f"Preferred books: {', '.join(preferred)}")
-            else: st.warning("None of BetMGM / DraftKings / Bet365 returned")
-            st.session_state["last_records"] = all_records
-            st.session_state["chosen_games"] = chosen
-        else:
-            st.warning("No odds returned")
-
-    records = st.session_state.get("last_records", [])
-    pitchers = fetch_probable_pitchers()
-    chosen_games = st.session_state.get("chosen_games", [])
-
-    tab1, tab2, tab3 = st.tabs(["🎯 Odds + Tricks", "⚾ Batters + Pitchers", "🚀 Petty's Launch List"])
-
-    with tab1:
-        st.subheader("Odds Tricks & Best Pairs")
-        if not records:
-            st.info("Fetch games first")
-        else:
-            df = pd.DataFrame(records)
-            df = df[df["outcome"].str.lower() == "over"]
-            if line_mode == "Only 1 (lowest)" and "point" in df.columns:
-                df = df.sort_values("point").groupby(["description", "market", "bookmaker"], dropna=False).first().reset_index()
-            hot = build_hot_list(df)[:max_hot]
-            if hot:
-                for item in hot:
-                    reasons = " • ".join(item["reasons"])
-                    tag = "PAIR" if item["is_pair"] else "SINGLE"
-                    st.markdown(f'<div class="hot-card"><b>{item["label"]}</b> [{tag}] Score: {item["score"]}<br><small>{item.get("matchup","")}</small><br>{reasons}</div>', unsafe_allow_html=True)
-            else:
-                st.caption("No strong pairs on BetMGM / DraftKings / Bet365 yet.")
-            st.markdown("---")
-            show = df[["home_team", "away_team", "bookmaker", "market", "description", "price", "point"]].copy()
-            show["price"] = show["price"].apply(format_odds)
-            show = show.rename(columns={"description": "Player", "price": "Odds", "point": "Line"})
-            st.dataframe(show, use_container_width=True, height=350)
-
-    with tab2:
-        st.subheader("Batters + Pitchers")
-        if not chosen_games:
-            st.info("Fetch games first")
-        else:
-            for g in chosen_games:
-                info = pitchers.get(g, {"away": "TBD", "home": "TBD"})
-                st.markdown(f'<div class="matchup-card"><b>{g}</b><br>Away SP: <b>{info["away"]}</b><br>Home SP: <b>{info["home"]}</b></div>', unsafe_allow_html=True)
-                if records:
-                    df = pd.DataFrame(records)
-                    game_batters = df[((df["away_team"] + " @ " + df["home_team"]) == g) & (df["description"].notna())]["description"].unique().tolist()
-                    if game_batters:
-                        for batter in sorted(game_batters)[:8]:
-                            metrics = find_player_metrics(batter, hitters_df, exit_df)
-                            if metrics:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b> → {metrics.get("matched","")}<br>Barrel {metrics.get("barrel", metrics.get("brl_percent","-"))}% | Hard Hit {metrics.get("hard_hit","-")}% | Avg EV {metrics.get("avg_ev", metrics.get("best_speed","-"))}</div>', unsafe_allow_html=True)
-                            else:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match</small></div>', unsafe_allow_html=True)
-                st.markdown("---")
-
-    with tab3:
-        st.subheader("🚀 Petty's Launch List")
-        st.caption("Drop your CSVs or use the ones already loaded. This ranks the best HR targets.")
-
-        # Simple ranking from the loaded Statcast files
-        if hitters_df is not None or exit_df is not None:
-            st.write("**Top HR Candidates (from your uploaded files)**")
-
-            candidates = []
-            source = exit_df if exit_df is not None else hitters_df
-            if source is not None:
-                for _, row in source.iterrows():
-                    name = row.get("last_name, first_name", "")
-                    try:
-                        ev = float(row.get("avg_hit_speed", row.get("avg_best_speed", 0)) or 0)
-                        hh = float(row.get("ev95percent", row.get("hard_hit_percent", 0)) or 0)
-                        brl = float(row.get("brl_percent", row.get("barrel_batted_rate", 0)) or 0)
-                        score = (ev * 0.4) + (hh * 0.35) + (brl * 0.25)
-                        candidates.append({
-                            "name": name,
-                            "ev": round(ev, 1),
-                            "hh": round(hh, 1),
-                            "brl": round(brl, 1),
-                            "score": round(score, 1)
-                        })
-                    except:
-                        continue
-
-            candidates = sorted(candidates, key=lambda x: x["score"], reverse=True)[:25]
-
-            for i, c in enumerate(candidates, 1):
-                note = ""
-                if c["ev"] >= 92:
-                    note = "EV NUCLEAR"
-                elif c["brl"] >= 12:
-                    note = "Barrel monster"
-                elif c["hh"] >= 45:
-                    note = "Hard-hit heavy"
-
-                st.markdown(
-                    f'<div class="launch-card">'
-                    f'<b>{i}. {c["name"]}</b><br>'
-                    f'{c["ev"]} EV | {c["hh"]} HH% | {c["brl"]} Barrel%<br>'
-                    f'<small>{note}</small>'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
-        else:
-            st.info("Upload your batter Statcast CSVs (stats.csv / exit_velocity.csv) into the repo to power this list.")
-
-        st.markdown("---")
-        st.write("**Next upgrade:** Add pitcher HR/9 + park factors so the list becomes game-by-game like your manual version.")
-
-    st.caption("💖 Girl Magic • Odds + Batters + Petty's Launch List")
-
-if __name__ == "__main__":
-    main()
+    url = f"https://statsapi.mlb.com/api/v1/schedule
