@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+*.pyc
+.env
+odds_data.db
+.streamlit/
+*.log
+.DS_Store
