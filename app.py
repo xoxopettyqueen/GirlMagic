@@ -1,12 +1,14 @@
 """
 Girl Magic Odds ✨
 For the girls only • Our tricks
+Name patterns = different teams (with Gonzalez/Gonzales-style exception)
 """
 
 import streamlit as st
 import pandas as pd
 import requests
 from collections import defaultdict
+from difflib import SequenceMatcher
 
 st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="💖", layout="wide")
 
@@ -52,6 +54,20 @@ def get_initials(name):
     parts = str(name).strip().split()
     if len(parts) < 2: return None, None
     return parts[0][0].upper(), parts[-1][0].upper()
+
+def similar_last_name(n1, n2):
+    """Allow Gonzalez / Gonzales style matches"""
+    p1 = str(n1).split()
+    p2 = str(n2).split()
+    if len(p1) < 2 or len(p2) < 2:
+        return False
+    last1 = p1[-1].lower()
+    last2 = p2[-1].lower()
+    if last1 == last2:
+        return True
+    # Very close spelling (Gonzalez vs Gonzales)
+    ratio = SequenceMatcher(None, last1, last2).ratio()
+    return ratio >= 0.85
 
 def fetch_events(api_key):
     try:
@@ -113,7 +129,7 @@ def run_flags(df):
                     "css": "dk"
                 })
 
-    # BetMGM Classic Endings (Pair first, then Group of 3)
+    # BetMGM Classic Endings
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
 
     for event, event_group in mgm_df.groupby("event"):
@@ -142,7 +158,7 @@ def run_flags(df):
                     "css": "mgm"
                 })
 
-    # Exact Matching Odds (Any Book)
+    # Exact Matching Odds
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -187,7 +203,7 @@ def run_flags(df):
                     "css": "digit"
                 })
 
-    # FanDuel Patterns (≥ +500, ends in 10/30/60/70/90)
+    # FanDuel Patterns
     for _, row in df.iterrows():
         if "fanduel" in str(row["book"]).lower():
             price = abs(int(row["price"])) if row["price"] else 0
@@ -201,30 +217,48 @@ def run_flags(df):
                     "css": "fd"
                 })
 
-    # Name Patterns
+    # ========== NAME PATTERNS ==========
+    player_events = defaultdict(set)
+    for _, row in df.iterrows():
+        player_events[row["player"]].add(row["event"])
+
     players = list(df["player"].dropna().unique())
 
+    def different_teams(p1, p2):
+        return len(player_events[p1] & player_events[p2]) == 0
+
+    def allow_pair(p1, p2):
+        # Always allow if different teams
+        if different_teams(p1, p2):
+            return True
+        # Exception: very similar last names (Gonzalez / Gonzales)
+        return similar_last_name(p1, p2)
+
+    # Same Initials
     init_map = defaultdict(list)
     for p in players:
         f, l = get_initials(p)
         if f and l:
             init_map[f + l].append(p)
     for k, names in init_map.items():
-        if len(names) >= 2:
-            results.append({
-                "type": "same_init",
-                "label": " + ".join(sorted(names)),
-                "reason": f"Same initials {k}",
-                "event": "",
-                "css": "name"
-            })
+        for i, p1 in enumerate(names):
+            for p2 in names[i+1:]:
+                if allow_pair(p1, p2):
+                    results.append({
+                        "type": "same_init",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same initials {k}",
+                        "event": "",
+                        "css": "name"
+                    })
 
+    # Cross Initials
     for i, p1 in enumerate(players):
         _, l1 = get_initials(p1)
         if not l1: continue
         for p2 in players[i+1:]:
             f2, _ = get_initials(p2)
-            if f2 and l1 == f2:
+            if f2 and l1 == f2 and allow_pair(p1, p2):
                 results.append({
                     "type": "cross",
                     "label": f"{p1} + {p2}",
@@ -233,35 +267,41 @@ def run_flags(df):
                     "css": "name"
                 })
 
+    # Same Last Name (includes Gonzalez/Gonzales exception)
     last_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
         if len(parts) >= 2:
             last_map[parts[-1].lower()].append(p)
     for last, names in last_map.items():
-        if len(names) >= 2:
-            results.append({
-                "type": "last",
-                "label": " + ".join(sorted(names)),
-                "reason": f"Same last name ({last.title()})",
-                "event": "",
-                "css": "name"
-            })
+        for i, p1 in enumerate(names):
+            for p2 in names[i+1:]:
+                if allow_pair(p1, p2):
+                    results.append({
+                        "type": "last",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same last name ({last.title()})",
+                        "event": "",
+                        "css": "name"
+                    })
 
+    # Same First Name
     first_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
         if parts:
             first_map[parts[0].lower()].append(p)
     for first, names in first_map.items():
-        if len(names) >= 2:
-            results.append({
-                "type": "first",
-                "label": " + ".join(sorted(names)),
-                "reason": f"Same first name ({first.title()})",
-                "event": "",
-                "css": "name"
-            })
+        for i, p1 in enumerate(names):
+            for p2 in names[i+1:]:
+                if allow_pair(p1, p2):
+                    results.append({
+                        "type": "first",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same first name ({first.title()})",
+                        "event": "",
+                        "css": "name"
+                    })
 
     return results
 
@@ -366,17 +406,9 @@ Same player has 25/50/75 endings across different books.
 **💙 FanDuel Patterns**  
 FanDuel props ≥ +500 that end in 10, 30, 60, 70, or 90.
 
-**💅 Same Initials**  
-Same first + last initial.
-
-**🔄 Cross Initials**  
-One player’s last initial = another player’s first initial.
-
-**👩‍👧 Same Last Name**  
-Exact same last name.
-
-**👯 Same First Name**  
-Exact same first name.
+**💅 Same Initials / 🔄 Cross Initials / 👩‍👧 Same Last Name / 👯 Same First Name**  
+Prefer different teams.  
+Exception allowed for very similar last names (Gonzalez / Gonzales style) even on the same team.
         """)
 
     st.caption("💖 Girl Magic • For the girls only • Our tricks")
