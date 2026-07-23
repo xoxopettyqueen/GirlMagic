@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-Pink / Purple + smarter flags + line filter
+Pink / Purple + Hot List scoring + safer flags
 """
 
 import streamlit as st
@@ -47,6 +47,14 @@ st.markdown("""
     }
     .flag-title { color: #fbcfe8; font-weight: 700; }
     .flag-reason { font-size: 0.85rem; color: #f9a8d4; margin-top: 4px; }
+    .hot-card {
+        background: linear-gradient(90deg, #831843, #4c1d95);
+        border: 2px solid #f472b6;
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin: 10px 0;
+        color: #fdf2f8;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -152,100 +160,102 @@ def last_two_digits(price):
     try: return abs(int(price)) % 100
     except: return None
 
-def find_same_odds_flags(df):
-    flags = []
-    props = df[df["description"].notna() & (df["description"] != "")].copy()
-    if props.empty: return flags
-    for team_col in ["home_team", "away_team"]:
-        for (team, market, price), group in props.groupby([team_col, "market", "price"]):
-            players = list(group["description"].unique())
-            if len(players) >= 2:
-                flags.append({
-                    "priority": 2,
-                    "team": team,
-                    "label": f"⚡ Same Odds Trick ({format_odds(price)})",
-                    "reason": f"Both players on {team} have identical {market} odds of {format_odds(price)}",
-                    "players": players
-                })
-    return flags
+def get_initials(name):
+    parts = str(name).strip().split()
+    if not parts: return None, None
+    first = parts[0][0].upper() if parts[0] else None
+    last = parts[-1][0].upper() if len(parts) > 1 else None
+    return first, last
 
-def find_betmgm_ending_flags(df):
-    flags = []
-    mgm = df[df["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
+def build_hot_list(df):
+    """Score players and pairs based on multiple signals."""
+    scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "odds": None, "market": None})
+
+    props = df[df["description"].notna() & (df["description"] != "")].copy()
+    if props.empty:
+        return []
+
+    # 1. Same odds pairs
+    for (market, price), group in props.groupby(["market", "price"]):
+        players = list(group["description"].unique())
+        if len(players) >= 2:
+            key = " + ".join(sorted(players))
+            scores[key]["score"] += 3
+            scores[key]["reasons"].append(f"Same odds {format_odds(price)}")
+            scores[key]["players"].update(players)
+            scores[key]["odds"] = format_odds(price)
+            scores[key]["market"] = market
+
+    # 2. Name / initials matches
+    for _, group in props.groupby("market"):
+        players = list(group["description"].unique())
+
+        # Exact name
+        name_counts = defaultdict(list)
+        for p in players:
+            name_counts[p].append(p)
+        for name, lst in name_counts.items():
+            if len(lst) >= 2:
+                key = name
+                scores[key]["score"] += 4
+                scores[key]["reasons"].append("Exact same name")
+                scores[key]["players"].add(name)
+
+        # Full initials
+        initials_map = defaultdict(list)
+        for p in players:
+            first, last = get_initials(p)
+            if first and last:
+                initials_map[first + last].append(p)
+        for key_init, names in initials_map.items():
+            if len(names) >= 2:
+                key = " + ".join(sorted(names))
+                scores[key]["score"] += 3
+                scores[key]["reasons"].append(f"Same initials {key_init}")
+                scores[key]["players"].update(names)
+
+        # First letter
+        first_map = defaultdict(list)
+        for p in players:
+            first, _ = get_initials(p)
+            if first:
+                first_map[first].append(p)
+        for letter, names in first_map.items():
+            if len(names) >= 2:
+                key = " + ".join(sorted(names))
+                scores[key]["score"] += 1
+                scores[key]["reasons"].append(f"Same first letter {letter}")
+                scores[key]["players"].update(names)
+
+    # 3. BetMGM 25/50/75
+    mgm = props[props["bookmaker"].str.lower().str.contains("betmgm|mgm", na=False)]
     for _, row in mgm.iterrows():
         last = last_two_digits(row["price"])
         if last in (25, 50, 75):
-            flags.append({
-                "priority": 1,
-                "team": row.get("home_team") or "",
-                "label": f"🎯 BetMGM Ending {last}",
-                "reason": f"BetMGM odds end in {last} — your signal number",
-                "players": [row.get("description") or row.get("outcome")]
+            player = row.get("description") or row.get("outcome")
+            if player:
+                key = player
+                scores[key]["score"] += 2
+                scores[key]["reasons"].append(f"BetMGM ends in {last}")
+                scores[key]["players"].add(player)
+                scores[key]["odds"] = format_odds(row["price"])
+                scores[key]["market"] = row["market"]
+
+    # Build final ranked list
+    hot = []
+    for key, data in scores.items():
+        if data["score"] > 0:
+            hot.append({
+                "label": key,
+                "score": data["score"],
+                "reasons": list(set(data["reasons"])),
+                "players": list(data["players"]),
+                "odds": data["odds"],
+                "market": data["market"]
             })
-    return flags
 
-def find_name_letter_matches(df):
-    flags = []
-    props = df[df["description"].notna() & (df["description"] != "")].copy()
-    if props.empty: return flags
-
-    def get_initials(name):
-        parts = str(name).strip().split()
-        if not parts: return None, None
-        first = parts[0][0].upper() if parts[0] else None
-        last = parts[-1][0].upper() if len(parts) > 1 else None
-        return first, last
-
-    for team_col in ["home_team", "away_team"]:
-        for team, group in props.groupby(team_col):
-            players = list(group["description"].unique())
-
-            # Exact same name
-            name_counts = defaultdict(list)
-            for p in players:
-                name_counts[p].append(p)
-            for name, lst in name_counts.items():
-                if len(lst) >= 2:
-                    flags.append({
-                        "priority": 1,
-                        "team": team,
-                        "label": f'Exact name "{name}"',
-                        "reason": "Exact same player name appears multiple times",
-                        "players": lst
-                    })
-
-            # Same first + last initial
-            initials_map = defaultdict(list)
-            for p in players:
-                first, last = get_initials(p)
-                if first and last:
-                    initials_map[first + last].append(p)
-            for key, names in initials_map.items():
-                if len(names) >= 2:
-                    flags.append({
-                        "priority": 2,
-                        "team": team,
-                        "label": f"Same initials “{key}”",
-                        "reason": f"Players share the same first + last initial ({key})",
-                        "players": names
-                    })
-
-            # Same first letter only (lowest priority)
-            first_map = defaultdict(list)
-            for p in players:
-                first, _ = get_initials(p)
-                if first:
-                    first_map[first].append(p)
-            for letter, names in first_map.items():
-                if len(names) >= 2:
-                    flags.append({
-                        "priority": 3,
-                        "team": team,
-                        "label": f"Matching first letter “{letter}”",
-                        "reason": f"Players start with the same letter ({letter})",
-                        "players": names
-                    })
-    return flags
+    hot = sorted(hot, key=lambda x: x["score"], reverse=True)
+    return hot
 
 def main():
     init_db()
@@ -268,22 +278,11 @@ def main():
         selected_props = st.multiselect("Which player props?", prop_list, default=prop_list[:3]) if want_props and prop_list else []
 
         st.markdown("---")
-        st.markdown("**Line Filter (for props)**")
-        line_mode = st.radio(
-            "Which prop lines to keep?",
-            ["Only 1 (lowest line)", "All lines", "Custom"],
-            index=0,
-            help="For home runs this means only the 1 HR line by default"
-        )
-        custom_line = None
-        if line_mode == "Custom":
-            custom_line = st.number_input("Keep only this point value", value=0.5, step=0.5)
+        st.markdown("**Line Filter**")
+        line_mode = st.radio("Prop lines", ["Only 1 (lowest)", "All lines"], index=0)
 
         st.markdown("---")
-        show_same_odds = st.checkbox("Same odds on same team", value=True)
-        show_betmgm = st.checkbox("BetMGM ending 25/50/75", value=True)
-        show_name_match = st.checkbox("Matching names / initials", value=True)
-        max_flags = st.slider("Max flags to show", 3, 15, 8)
+        max_hot = st.slider("Max Hot List items", 3, 12, 6)
 
     st.subheader("1️⃣ Upcoming Games")
     if st.button("Load Games 💫", type="primary"):
@@ -321,43 +320,30 @@ def main():
 
     records = st.session_state.get("last_records", [])
     if records:
-        st.subheader("3️⃣ Results + Flags")
+        st.subheader("3️⃣ Hot List + Results")
         df = pd.DataFrame(records)
 
-        # ----- Line filter -----
-        if line_mode == "Only 1 (lowest line)" and "point" in df.columns:
-            # Keep only the lowest point per player+market (usually 0.5 = 1 HR)
+        # Line filter - keep lowest point only
+        if line_mode == "Only 1 (lowest)" and "point" in df.columns:
             df = df.sort_values("point").groupby(
                 ["description", "market", "bookmaker", "outcome"], dropna=False
             ).first().reset_index()
-        elif line_mode == "Custom" and custom_line is not None:
-            df = df[df["point"] == custom_line]
 
-        # ----- Collect & prioritize flags -----
-        all_flags = []
-        if show_same_odds:
-            all_flags.extend(find_same_odds_flags(df))
-        if show_betmgm:
-            all_flags.extend(find_betmgm_ending_flags(df))
-        if show_name_match:
-            all_flags.extend(find_name_letter_matches(df))
-
-        # Sort by priority (1 = best) and limit
-        all_flags = sorted(all_flags, key=lambda x: x.get("priority", 9))[:max_flags]
-
-        if all_flags:
-            for f in all_flags:
-                players_str = " + ".join([str(p) for p in f["players"] if p])
+        # ----- HOT LIST -----
+        hot = build_hot_list(df)[:max_hot]
+        if hot:
+            st.markdown("### 🔥 Hot List (strongest combinations)")
+            for item in hot:
+                reasons = " • ".join(item["reasons"])
                 st.markdown(
-                    f'<div class="flag-box">'
-                    f'<div class="flag-title">{f["label"]}</div>'
-                    f'{f["team"]}<br>Players: <b>{players_str}</b>'
-                    f'<div class="flag-reason">{f.get("reason", "")}</div>'
+                    f'<div class="hot-card">'
+                    f'<b>{item["label"]}</b> &nbsp; <span style="color:#f9a8d4">Score: {item["score"]}</span><br>'
+                    f'{reasons}'
                     f'</div>',
                     unsafe_allow_html=True
                 )
         else:
-            st.caption("No pattern flags found with current filters.")
+            st.caption("No strong combinations found yet.")
 
         st.markdown("---")
         show = df[["home_team", "away_team", "bookmaker", "market", "description", "outcome", "price", "point"]].copy()
