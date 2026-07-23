@@ -1,6 +1,6 @@
 """
 Girl Magic Odds ✨
-Final – DK ends in 10 + 00, MGM 00/25/50/75
+Final + Simple FanDuel Section
 """
 
 import streamlit as st
@@ -37,11 +37,19 @@ st.markdown("""
     .match { border-left: 6px solid #f472b6; }
     .digit { border-left: 6px solid #a855f7; }
     .name { border-left: 6px solid #f9a8d4; }
+    .fd { border-left: 6px solid #1493ff; }
 </style>
 """, unsafe_allow_html=True)
 
 API_BASE = "https://api.the-odds-api.com/v4"
 REGIONS = "us,us2"
+
+# FanDuel historical numbers that have higher win % than loss %
+FD_GOOD_NUMBERS = {
+    100, 110, 220, 240, 270, 310, 320, 340, 370, 390,
+    410, 420, 470, 490, 510, 520, 550, 560, 630, 680,
+    750, 830, 870, 950
+}
 
 def get_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -110,15 +118,14 @@ def run_flags(df):
 
     results = []
 
-    # DraftKings ends in 10 or 00
+    # DraftKings ends in 10 ONLY
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
-            last = last_two(row["price"])
-            if last in (0, 10):          # ← 00 and 10
+            if last_two(row["price"]) == 10:
                 results.append({
                     "type": "dk",
                     "label": row["player"],
-                    "reason": f"DraftKings ends in {last:02d} → {format_odds(row['price'])}",
+                    "reason": f"DraftKings ends in 10 → {format_odds(row['price'])}",
                     "event": row["event"],
                     "css": "dk"
                 })
@@ -136,7 +143,7 @@ def run_flags(df):
                     "css": "mgm"
                 })
 
-    # Exact matching odds (any books)
+    # Exact matching odds
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -150,11 +157,9 @@ def run_flags(df):
                 "css": "match"
             })
 
-    # ========== BETMGM EXACT MATCH / GROUPS ==========
+    # BetMGM Exact Match / Groups
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
-
     for event, event_group in mgm_df.groupby("event"):
-        # Exact price groups
         for price, price_group in event_group.groupby("price"):
             players = sorted(price_group["player"].unique().tolist())
             if len(players) >= 2:
@@ -166,13 +171,11 @@ def run_flags(df):
                     "css": "mgm"
                 })
 
-        # 00/25/50/75 ending groups
         ending_groups = defaultdict(list)
         for _, row in event_group.iterrows():
             d = last_two(row["price"])
             if d in (0, 25, 50, 75):
                 ending_groups[d].append(row["player"])
-
         for d, players in ending_groups.items():
             unique_players = sorted(set(players))
             if len(unique_players) >= 2:
@@ -202,10 +205,43 @@ def run_flags(df):
                     "css": "digit"
                 })
 
+    # ========== FANDuel SECTION ==========
+    for _, row in df.iterrows():
+        if "fanduel" in str(row["book"]).lower():
+            price = abs(int(row["price"])) if row["price"] else None
+            if price is None: continue
+
+            # +550 special
+            if price == 550:
+                results.append({
+                    "type": "fd",
+                    "label": row["player"],
+                    "reason": f"FanDuel +550 (historically ~24% hit rate)",
+                    "event": row["event"],
+                    "css": "fd"
+                })
+            # Good historical numbers
+            elif price in FD_GOOD_NUMBERS:
+                results.append({
+                    "type": "fd",
+                    "label": row["player"],
+                    "reason": f"FanDuel {format_odds(row['price'])} (historical higher win % number)",
+                    "event": row["event"],
+                    "css": "fd"
+                })
+            # +500 and lower (your starting range)
+            elif 280 <= price <= 500:
+                results.append({
+                    "type": "fd",
+                    "label": row["player"],
+                    "reason": f"FanDuel {format_odds(row['price'])} (in your +500 & lower range)",
+                    "event": row["event"],
+                    "css": "fd"
+                })
+
     # Name patterns
     players = list(df["player"].dropna().unique())
 
-    # Same initials
     init_map = defaultdict(list)
     for p in players:
         f, l = get_initials(p)
@@ -221,7 +257,6 @@ def run_flags(df):
                 "css": "name"
             })
 
-    # Cross initials
     for i, p1 in enumerate(players):
         _, l1 = get_initials(p1)
         if not l1: continue
@@ -236,7 +271,6 @@ def run_flags(df):
                     "css": "name"
                 })
 
-    # Same last name
     last_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -252,7 +286,6 @@ def run_flags(df):
                 "css": "name"
             })
 
-    # Same first name
     first_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -311,12 +344,13 @@ def main():
     results = run_flags(df) if not df.empty else []
 
     # ========== TABS ==========
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
-        "🎯 DK 00/10",
+    tabs = st.tabs([
+        "🎯 DK Ends in 10",
         "🎰 MGM 00/25/50/75",
         "🤝 Exact Match",
         "⭐ MGM Exact Match",
         "🔢 Matching 25/50/75",
+        "💙 FanDuel",
         "💅 Same Initials",
         "🔄 Cross Initials",
         "👩‍👧 Same Last Name",
@@ -338,21 +372,22 @@ def main():
                     unsafe_allow_html=True
                 )
 
-    show_tab(tab1, "dk")
-    show_tab(tab2, "mgm")
-    show_tab(tab3, "match")
-    show_tab(tab4, "mgm_exact")
-    show_tab(tab5, "digit")
-    show_tab(tab6, "same_init")
-    show_tab(tab7, "cross")
-    show_tab(tab8, "last")
-    show_tab(tab9, "first")
+    show_tab(tabs[0], "dk")
+    show_tab(tabs[1], "mgm")
+    show_tab(tabs[2], "match")
+    show_tab(tabs[3], "mgm_exact")
+    show_tab(tabs[4], "digit")
+    show_tab(tabs[5], "fd")          # ← FanDuel tab
+    show_tab(tabs[6], "same_init")
+    show_tab(tabs[7], "cross")
+    show_tab(tabs[8], "last")
+    show_tab(tabs[9], "first")
 
-    with tab10:
+    with tabs[10]:
         st.subheader("📖 Girl Magic Glossary")
         st.markdown("""
-**🎯 DraftKings 00 / 10**  
-DraftKings endings in 00 (the live 1100s, 2100s, etc.) and 10.
+**🎯 DraftKings Ends in 10**  
+DraftKings pregame endings in 10.
 
 **🎰 BetMGM 00 / 25 / 50 / 75**  
 BetMGM classic endings.
@@ -361,11 +396,15 @@ BetMGM classic endings.
 Two or more books have the exact same price on the same player.
 
 **⭐ MGM Exact Match**  
-Two or more players on the same game share the exact same price (or same 00/25/50/75 ending) on BetMGM.  
-Shows pairs and groups of 3+.
+Two or more players on the same game share the exact same price (or same 00/25/50/75 ending) on BetMGM.
 
 **🔢 Matching 25s / 50s / 75s**  
 Different books landing on the same 25, 50, or 75 ending.
+
+**💙 FanDuel**  
+- +550 historically hits ~24%  
+- Flags the historical higher win % numbers  
+- Flags players in your preferred +500 & lower range
 
 **💅 Same Initials**  
 Players who share the same first + last initial.
