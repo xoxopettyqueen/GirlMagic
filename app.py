@@ -1,6 +1,7 @@
 """
-Girl Magic Odds Model ✨
-The Odds API – All books + Full Girl Math
+Girl Magic ✨
+Only 0.5 HR + Clear flags + Name patterns
+Matching digits restricted to 25/50/75 only
 """
 
 import streamlit as st
@@ -24,17 +25,17 @@ st.markdown("""
         background: #2a1435; border: 1px solid #f472b6; border-radius: 12px;
         padding: 14px 18px; margin: 10px 0; color: #fdf2f8;
     }
-    .score-badge { color: #f9a8d4; font-weight: 700; }
+    .flag-dk { border-left: 5px solid #00a3e0; }
+    .flag-mgm { border-left: 5px solid #c4a35a; }
+    .flag-match { border-left: 5px solid #f472b6; }
+    .flag-digit { border-left: 5px solid #a855f7; }
+    .flag-price { border-left: 5px solid #34d399; }
+    .flag-name { border-left: 5px solid #f9a8d4; }
 </style>
 """, unsafe_allow_html=True)
 
 API_BASE = "https://api.the-odds-api.com/v4"
 REGIONS = "us,us2"
-
-MARKETS = [
-    "batter_home_runs", "batter_hits", "batter_total_bases",
-    "batter_rbis", "batter_runs_scored", "batter_strikeouts"
-]
 
 def get_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -67,11 +68,11 @@ def fetch_events(api_key):
         st.error(f"Events error: {e}")
         return []
 
-def fetch_odds(api_key, event_id, markets):
+def fetch_odds(api_key, event_id):
     params = {
         "apiKey": api_key,
         "regions": REGIONS,
-        "markets": ",".join(markets),
+        "markets": "batter_home_runs",
         "oddsFormat": "american"
     }
     try:
@@ -93,7 +94,6 @@ def flatten(data):
                 rows.append({
                     "event": f"{data.get('away_team')} @ {data.get('home_team')}",
                     "book": book.get("key", "unknown"),
-                    "market": market.get("key"),
                     "player": o.get("description"),
                     "price": o.get("price"),
                     "point": o.get("point"),
@@ -101,127 +101,155 @@ def flatten(data):
     return rows
 
 def run_girl_math(df):
-    if df.empty: return []
+    if df.empty:
+        return []
 
-    # Keep only lowest line (Only 1 HR)
+    # STRICT only lowest line (0.5 / 1)
     if "point" in df.columns:
-        df = df.sort_values("point").groupby(["player", "market", "book"], dropna=False).first().reset_index()
+        df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
-    scores = defaultdict(lambda: {"score": 0, "reasons": [], "event": ""})
+    results = []
 
+    # DraftKings ends in 10
     for _, row in df.iterrows():
-        p = row["player"]
-        if not p: continue
-        price = row["price"]
         book = str(row["book"]).lower()
-        event = row.get("event", "")
-        last = last_two(price)
-
-        if "betmgm" in book or "mgm" in book:
-            if last in (25, 50, 75):
-                scores[p]["score"] += 3
-                scores[p]["reasons"].append(f"BetMGM ends in {last}")
-                scores[p]["event"] = event
-
         if "draftkings" in book or "dk" in book:
-            if last == 10:
-                scores[p]["score"] += 3
-                scores[p]["reasons"].append("DraftKings ends in 10")
-                scores[p]["event"] = event
+            if last_two(row["price"]) == 10:
+                results.append({
+                    "type": "dk10",
+                    "label": row["player"],
+                    "reason": f"DraftKings ends in 10 → {format_odds(row['price'])}",
+                    "event": row.get("event", ""),
+                    "css": "flag-dk"
+                })
 
-        if "bet365" in book:
-            try:
-                if abs(int(price)) == 850:
-                    scores[p]["score"] += 3
-                    scores[p]["reasons"].append("Bet365 +850 Club")
-                    scores[p]["event"] = event
-            except: pass
+    # BetMGM 25/50/75
+    for _, row in df.iterrows():
+        book = str(row["book"]).lower()
+        if "betmgm" in book or "mgm" in book:
+            last = last_two(row["price"])
+            if last in (25, 50, 75):
+                results.append({
+                    "type": "mgm",
+                    "label": row["player"],
+                    "reason": f"BetMGM ends in {last} → {format_odds(row['price'])}",
+                    "event": row.get("event", ""),
+                    "css": "flag-mgm"
+                })
 
-    # Exact match + matching digits
+    # Exact matching odds
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
         books = group["book"].tolist()
-        event = group["event"].iloc[0] if len(group) else ""
-
         if len(set(prices)) == 1:
-            scores[player]["score"] += 5
-            scores[player]["reasons"].append(f"Exact match {format_odds(prices[0])} across {', '.join(books)}")
-            scores[player]["event"] = event
-        else:
-            digits = defaultdict(list)
-            for i, pr in enumerate(prices):
-                d = last_two(pr)
-                if d is not None: digits[d].append(books[i])
-            for d, bks in digits.items():
-                if len(bks) >= 2:
-                    scores[player]["score"] += 4
-                    scores[player]["reasons"].append(f"Matching digits ({d:02d}) – {', '.join(bks)}")
-                    scores[player]["event"] = event
+            results.append({
+                "type": "exact",
+                "label": player,
+                "reason": f"Exact match {format_odds(prices[0])} across {', '.join(books)}",
+                "event": group["event"].iloc[0] if len(group) else "",
+                "css": "flag-match"
+            })
 
-    # Over / Under priced
+    # Matching last two digits — ONLY 25 / 50 / 75
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        if len(group) < 2: continue
+        digits = defaultdict(list)
+        for _, row in group.iterrows():
+            d = last_two(row["price"])
+            if d is not None:
+                digits[d].append(row["book"])
+        for d, bks in digits.items():
+            if d in (25, 50, 75) and len(bks) >= 2:          # ← restricted here
+                results.append({
+                    "type": "digit",
+                    "label": player,
+                    "reason": f"Matching {d:02d}s → {', '.join(bks)}",
+                    "event": group["event"].iloc[0] if len(group) else "",
+                    "css": "flag-digit"
+                })
+
+    # Over/Under priced
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         if len(prices) < 3: continue
-        try: med = statistics.median(prices)
-        except: continue
+        try:
+            med = statistics.median(prices)
+        except:
+            continue
         for _, row in group.iterrows():
             if row["price"] is None: continue
             diff = row["price"] - med
             if abs(diff) >= 100:
                 label = "Underpriced" if diff > 0 else "Overpriced"
-                scores[player]["score"] += 2
-                scores[player]["reasons"].append(f"{label} on {row['book']} ({format_odds(row['price'])} vs {format_odds(med)})")
-                scores[player]["event"] = row.get("event", "")
+                results.append({
+                    "type": "price",
+                    "label": player,
+                    "reason": f"{label} on {row['book']} ({format_odds(row['price'])} vs med {format_odds(med)})",
+                    "event": row.get("event", ""),
+                    "css": "flag-price"
+                })
 
-    # Initials
+    # ===== GIRL MATH NAME PATTERNS =====
     players = list(df["player"].dropna().unique())
+
+    # Same initials
     init_map = defaultdict(list)
     for p in players:
         f, l = get_initials(p)
-        if f and l: init_map[f+l].append(p)
+        if f and l:
+            init_map[f + l].append(p)
     for k, names in init_map.items():
         if len(names) >= 2:
-            key = " + ".join(sorted(names))
-            scores[key]["score"] += 3
-            scores[key]["reasons"].append(f"Same initials {k}")
+            results.append({
+                "type": "same_init",
+                "label": " + ".join(sorted(names)),
+                "reason": f"Same initials {k}",
+                "event": "",
+                "css": "flag-name"
+            })
 
+    # Cross initials
     for i, p1 in enumerate(players):
-        _, l1 = get_initials(p1)
+        f1, l1 = get_initials(p1)
         if not l1: continue
         for p2 in players[i+1:]:
-            f2, _ = get_initials(p2)
+            f2, l2 = get_initials(p2)
             if f2 and l1 == f2:
-                key = " + ".join(sorted([p1, p2]))
-                scores[key]["score"] += 3
-                scores[key]["reasons"].append(f"Cross initial ({l1})")
+                results.append({
+                    "type": "cross_init",
+                    "label": f"{p1} + {p2}",
+                    "reason": f"Cross initial ({l1} → {f2})",
+                    "event": "",
+                    "css": "flag-name"
+                })
 
-    results = []
-    for key, data in scores.items():
-        if data["score"] <= 0: continue
-        is_pair = " + " in key
-        results.append({
-            "label": key,
-            "score": data["score"] + (2 if is_pair else 0),
-            "reasons": list(set(data["reasons"])),
-            "event": data.get("event", ""),
-            "is_pair": is_pair
-        })
-    return sorted(results, key=lambda x: x["score"], reverse=True)
+    # Same last name
+    last_map = defaultdict(list)
+    for p in players:
+        parts = str(p).split()
+        if len(parts) >= 2:
+            last_map[parts[-1].lower()].append(p)
+    for last, names in last_map.items():
+        if len(names) >= 2:
+            results.append({
+                "type": "same_last",
+                "label": " + ".join(sorted(names)),
+                "reason": f"Same last name ({last.title()})",
+                "event": "",
+                "css": "flag-name"
+            })
+
+    return results
 
 def main():
     st.title("💖 Girl Magic Odds Model")
-    st.caption("The Odds API • All books • Full Girl Math")
+    st.caption("Only 0.5 HR • Matching digits = 25/50/75 only")
 
     api_key = get_api_key()
     if not api_key:
         st.warning("Add your Odds API key in Secrets")
         st.stop()
-
-    with st.sidebar:
-        st.header("Settings")
-        selected_markets = st.multiselect("Markets", MARKETS, default=["batter_home_runs"])
-        max_show = st.slider("Max results", 5, 40, 20)
 
     if st.button("Load MLB Games 💫", type="primary"):
         st.session_state["events"] = fetch_events(api_key)
@@ -238,65 +266,77 @@ def main():
         all_rows = []
         prog = st.progress(0)
         for i, label in enumerate(chosen):
-            data = fetch_odds(api_key, options[label], selected_markets)
+            data = fetch_odds(api_key, options[label])
             all_rows.extend(flatten(data))
             prog.progress((i+1)/len(chosen))
 
         if all_rows:
+            df_temp = pd.DataFrame(all_rows)
+            if "point" in df_temp.columns:
+                df_temp = df_temp.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
+                all_rows = df_temp.to_dict("records")
+
             books = sorted(set(r["book"] for r in all_rows))
-            st.success(f"Loaded {len(all_rows)} rows")
-            st.write("**Books returned:**", ", ".join(books))
+            st.success(f"Loaded {len(all_rows)} rows (Only 0.5/1 HR)")
+            st.write("**Books:**", ", ".join(books))
             st.session_state["odds"] = all_rows
         else:
-            st.warning("No odds returned for these games/markets")
+            st.warning("No odds returned")
 
     odds = st.session_state.get("odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     results = run_girl_math(df) if not df.empty else []
 
-    tab1, tab2, tab3 = st.tabs(["💅 Odds Magic", "📊 Girl Math Flags", "👑 Queen of the Digits"])
+    # ===== SECTIONS =====
+    st.subheader("🎯 DraftKings Ends in 10")
+    items = [x for x in results if x["type"] == "dk10"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
 
-    with tab1:
-        st.subheader("💅 Odds Magic")
-        if not results:
-            st.info("Fetch some games")
-        else:
-            for r in results[:max_show]:
-                reasons = " • ".join(r["reasons"][:5])
-                st.markdown(
-                    f'<div class="magic-card">'
-                    f'<b>{r["label"]}</b> <span class="score-badge">Score {r["score"]}</span><br>'
-                    f'<small>{r.get("event","")}</small><br>{reasons}'
-                    f'</div>', unsafe_allow_html=True
-                )
+    st.subheader("🎰 BetMGM 25 / 50 / 75")
+    items = [x for x in results if x["type"] == "mgm"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
 
-    with tab2:
-        st.subheader("📊 All Flags")
-        if not results:
-            st.info("No flags yet")
-        else:
-            for r in results:
-                st.markdown(
-                    f'<div class="magic-card"><b>{r["label"]}</b> — {r["score"]}<br>{" • ".join(r["reasons"])}</div>',
-                    unsafe_allow_html=True
-                )
+    st.subheader("🤝 Exact Matching Odds")
+    items = [x for x in results if x["type"] == "exact"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
 
-    with tab3:
-        st.subheader("👑 Queen of the Digits")
-        digit_results = [r for r in results if any(
-            any(x in reason.lower() for x in ["digit", "ends in", "850", "exact match", "25", "50", "75", "10"])
-            for reason in r["reasons"]
-        )]
-        if not digit_results:
-            st.info("No digit patterns found")
-        else:
-            for r in digit_results:
-                st.markdown(
-                    f'<div class="magic-card"><b>{r["label"]}</b><br>{" • ".join(r["reasons"])}</div>',
-                    unsafe_allow_html=True
-                )
+    st.subheader("🔢 Matching 25s / 50s / 75s")
+    items = [x for x in results if x["type"] == "digit"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
 
-    st.caption("💖 Girl Magic × The Odds API")
+    st.subheader("💰 Overpriced / Underpriced")
+    items = [x for x in results if x["type"] == "price"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}<br><small>{r["event"]}</small></div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
+
+    st.subheader("💅 Girl Math – Same Initials")
+    items = [x for x in results if x["type"] == "same_init"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
+
+    st.subheader("🔄 Girl Math – Cross Initials")
+    items = [x for x in results if x["type"] == "cross_init"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
+
+    st.subheader("👩‍👧 Girl Math – Same Last Name")
+    items = [x for x in results if x["type"] == "same_last"]
+    for r in items:
+        st.markdown(f'<div class="magic-card {r["css"]}"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+    if not items: st.caption("None")
+
+    st.caption("💖 Girl Magic • Only 0.5 HR • Matching digits = 25/50/75 only")
 
 if __name__ == "__main__":
     main()
