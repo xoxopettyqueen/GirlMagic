@@ -1,5 +1,5 @@
 """
-Girl Magic Odds Model ✨
+Girl Magic  ✨
 Final rules:
 - Matching odds & 25/50/75 → same team only
 - Name/initial patterns → different teams only
