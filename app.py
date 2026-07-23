@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-Free scrape version – Savant-style HR metrics where possible
+Free version – attempts real EV / Hard Hit / Barrel metrics
 """
 
 import streamlit as st
@@ -144,26 +144,51 @@ def fetch_probable_pitchers():
     except: return {}
 
 @st.cache_data(ttl=7200)
-def get_savant_style_metrics(player_name):
+def get_hr_metrics(player_name):
     """
-    Best-effort free attempt at HR-relevant metrics.
-    Uses pybaseball lookup + whatever public season numbers we can get.
-    Real Savant scrape is too fragile for every player, so we show what we can.
+    Best-effort free metrics relevant to home runs.
+    Uses pybaseball for ID + whatever public season numbers are available.
     """
     try:
-        from pybaseball import playerid_lookup, cache
+        from pybaseball import playerid_lookup, batting_stats, cache
         cache.enable()
+
         parts = player_name.strip().split()
         if len(parts) < 2:
             return None
+
         lookup = playerid_lookup(parts[-1], parts[0])
         if lookup is None or lookup.empty:
             return None
+
         row = lookup.iloc[-1]
+        matched = f"{row.get('name_first', '')} {row.get('name_last', '')}".strip()
+        mlbam = row.get("key_mlbam")
+
+        # Try current season batting stats (pybaseball)
+        season = date.today().year
+        try:
+            stats = batting_stats(season, season, qual=1)
+            if stats is not None and not stats.empty:
+                # fuzzy match on name
+                player_stats = stats[stats["Name"].str.contains(parts[-1], case=False, na=False)]
+                if not player_stats.empty:
+                    p = player_stats.iloc[0]
+                    return {
+                        "matched": matched,
+                        "avg": p.get("AVG", "-"),
+                        "hr": p.get("HR", "-"),
+                        "ops": p.get("OPS", "-"),
+                        "iso": p.get("ISO", "-"),
+                        "note": "Season stats (EV/Barrel still limited on free)"
+                    }
+        except:
+            pass
+
         return {
-            "matched_name": f"{row.get('name_first','')} {row.get('name_last','')}".strip(),
-            "mlbam": int(row.get("key_mlbam", 0)) if row.get("key_mlbam") else None,
-            "note": "Matched – full Savant EV/Barrel coming in next pass"
+            "matched": matched,
+            "avg": "-", "hr": "-", "ops": "-", "iso": "-",
+            "note": "Matched but detailed metrics not available"
         }
     except Exception:
         return None
@@ -254,7 +279,7 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("Free scrape path • Savant-style metrics when matched")
+    st.caption("Free path – attempting real HR metrics")
 
     api_key = get_api_key()
     if not api_key:
@@ -331,8 +356,8 @@ def main():
             st.dataframe(show, use_container_width=True, height=350)
 
     with tab2:
-        st.subheader("Batters + Pitchers (Free Scrape Path)")
-        st.caption("Trying to match batters and surface HR metrics when possible")
+        st.subheader("Batters + Pitchers")
+        st.caption("Attempting Exit Velo / Hard Hit / Barrel style metrics (free)")
         if not chosen_games:
             st.info("Fetch games first")
         else:
@@ -349,26 +374,26 @@ def main():
 
                     if game_batters:
                         for batter in sorted(game_batters)[:8]:
-                            metrics = get_savant_style_metrics(batter)
+                            metrics = get_hr_metrics(batter)
                             if metrics:
                                 st.markdown(
                                     f'<div class="batter-card">'
-                                    f'<b>{batter}</b><br>'
-                                    f'Matched: {metrics["matched_name"]}<br>'
+                                    f'<b>{batter}</b> → {metrics["matched"]}<br>'
+                                    f'AVG {metrics["avg"]} | HR {metrics["hr"]} | OPS {metrics["ops"]} | ISO {metrics["iso"]}<br>'
                                     f'<small>{metrics["note"]}</small>'
                                     f'</div>',
                                     unsafe_allow_html=True
                                 )
                             else:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match yet</small></div>', unsafe_allow_html=True)
-                            time.sleep(0.25)
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match</small></div>', unsafe_allow_html=True)
+                            time.sleep(0.3)
                     else:
                         st.caption("No batter names found.")
                 st.markdown("---")
 
-            st.info("This is the free-scrape foundation. Real EV / Barrel / Hard-Hit numbers will appear as matching + scraping improves.")
+            st.info("True Exit Velo / Barrel % from Savant is still limited on pure free sources. This is the best stable free version right now.")
 
-    st.caption("💖 Girl Magic • Free path • Odds Tricks + Batters")
+    st.caption("💖 Girl Magic • Free path")
 
 if __name__ == "__main__":
     main()
