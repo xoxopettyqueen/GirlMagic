@@ -1,6 +1,7 @@
 """
 Girl Magic Odds Model ✨
-Powered by SharpAPI – fixed version
+Powered by SportsGameOdds
+Clean odds tricks + Girl Math only
 """
 
 import streamlit as st
@@ -28,13 +29,13 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-API_BASE = "https://api.sharpapi.io/api/v1"
+API_BASE = "https://api.sportsgameodds.com/v2"
 PREFERRED_BOOKS = ["fanduel", "draftkings", "betmgm", "bet365", "caesars", "williamhill"]
 
 def get_api_key():
-    key = st.secrets.get("SHARP_API_KEY", "")
+    key = st.secrets.get("SGO_API_KEY", "")
     if not key:
-        key = st.sidebar.text_input("SharpAPI Key 🔑", type="password")
+        key = st.sidebar.text_input("SportsGameOdds API Key 🔑", type="password")
     return key
 
 def is_preferred(book):
@@ -57,125 +58,104 @@ def get_initials(name):
     last = parts[-1][0].upper() if len(parts) > 1 else None
     return first, last
 
-def fetch_odds(api_key, league="mlb"):
-    headers = {"X-API-Key": api_key}
+def fetch_events(api_key):
+    """Fetch MLB events with odds"""
+    params = {
+        "apiKey": api_key,
+        "leagueID": "MLB",
+        "oddsAvailable": "true",
+        "limit": 15
+    }
     try:
-        r = requests.get(f"{API_BASE}/odds", params={"league": league}, headers=headers, timeout=20)
+        r = requests.get(f"{API_BASE}/events", params=params, timeout=25)
         if r.status_code != 200:
-            st.warning(f"SharpAPI {r.status_code}: {r.text[:250]}")
+            st.warning(f"SportsGameOdds {r.status_code}: {r.text[:300]}")
             return []
         data = r.json()
-        return data if isinstance(data, list) else data.get("data", data.get("odds", []))
+        return data.get("data", data) if isinstance(data, dict) else data
     except Exception as e:
-        st.error(f"Fetch error: {e}")
+        st.error(f"Error: {e}")
         return []
 
-def normalize_sharp_data(raw):
+def normalize_sgo_data(events):
+    """Flatten SportsGameOdds response into clean rows"""
     rows = []
-    if not raw:
+    if not events:
         return rows
 
-    items = raw if isinstance(raw, list) else [raw]
+    for event in events if isinstance(events, list) else [events]:
+        if not isinstance(event, dict):
+            continue
 
-    for item in items:
-        event_name = (
-            item.get("event_name")
-            or item.get("name")
-            or f"{item.get('away_team', '')} @ {item.get('home_team', '')}".strip(" @")
-            or "Unknown Event"
-        )
+        away = event.get("awayTeam", {}).get("name") or event.get("away_team") or event.get("teams", {}).get("away", {}).get("name") or ""
+        home = event.get("homeTeam", {}).get("name") or event.get("home_team") or event.get("teams", {}).get("home", {}).get("name") or ""
+        event_name = f"{away} @ {home}".strip(" @") or event.get("name") or "Unknown"
 
-        # Try several common shapes
-        books = (
-            item.get("bookmakers")
-            or item.get("odds")
-            or item.get("sportsbooks")
-            or item.get("books")
+        # Odds can be nested in different places
+        odds_list = (
+            event.get("odds")
+            or event.get("bookmakers")
+            or event.get("markets")
             or []
         )
 
-        if isinstance(books, dict):
-            books = [{"book": k, **v} for k, v in books.items()]
+        if isinstance(odds_list, dict):
+            odds_list = list(odds_list.values())
 
-        if not isinstance(books, list):
-            books = [books] if books else []
-
-        for book_data in books:
-            if not isinstance(book_data, dict):
+        for odd in odds_list if isinstance(odds_list, list) else []:
+            if not isinstance(odd, dict):
                 continue
 
-            book_name = (
-                book_data.get("book")
-                or book_data.get("sportsbook")
-                or book_data.get("key")
-                or book_data.get("name")
+            book = (
+                odd.get("bookmaker")
+                or odd.get("sportsbook")
+                or odd.get("book")
+                or odd.get("source")
                 or "unknown"
             )
 
-            markets = (
-                book_data.get("markets")
-                or book_data.get("outcomes")
-                or [book_data]
-            )
+            market = odd.get("marketName") or odd.get("market") or odd.get("betType") or "prop"
+            player = odd.get("playerName") or odd.get("player") or odd.get("participant") or odd.get("name")
+            price = odd.get("price") or odd.get("odds") or odd.get("americanOdds") or odd.get("american")
+            point = odd.get("line") or odd.get("point") or odd.get("handicap")
 
-            if not isinstance(markets, list):
-                markets = [markets]
+            # Sometimes outcomes are nested
+            outcomes = odd.get("outcomes") or odd.get("prices") or [odd]
+            if not isinstance(outcomes, list):
+                outcomes = [outcomes]
 
-            for market in markets:
-                if not isinstance(market, dict):
+            for o in outcomes:
+                if not isinstance(o, dict):
                     continue
+                p_name = o.get("playerName") or o.get("player") or o.get("name") or player
+                p_price = o.get("price") or o.get("odds") or o.get("american") or price
+                p_point = o.get("line") or o.get("point") or point
 
-                market_key = (
-                    market.get("key")
-                    or market.get("market")
-                    or market.get("name")
-                    or "prop"
-                )
+                if p_name and p_price is not None:
+                    rows.append({
+                        "event": event_name,
+                        "book": str(book).lower(),
+                        "market": str(market).lower(),
+                        "player": str(p_name),
+                        "price": p_price,
+                        "point": p_point,
+                    })
 
-                outcomes = market.get("outcomes", [market])
-                if not isinstance(outcomes, list):
-                    outcomes = [outcomes]
-
-                for o in outcomes:
-                    if not isinstance(o, dict):
-                        continue
-
-                    player = (
-                        o.get("description")
-                        or o.get("player")
-                        or o.get("name")
-                        or o.get("participant")
-                    )
-                    price = o.get("price") or o.get("odds") or o.get("american")
-                    point = o.get("point") or o.get("line")
-
-                    if player and price is not None:
-                        rows.append({
-                            "event": event_name,
-                            "book": str(book_name).lower(),
-                            "market": str(market_key).lower(),
-                            "player": str(player),
-                            "price": price,
-                            "point": point,
-                        })
     return rows
 
 def run_girl_math(df):
     if df.empty:
         return []
 
-    # Make sure required columns exist
     for col in ["player", "book", "price", "event"]:
         if col not in df.columns:
             df[col] = ""
 
     scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "event": ""})
 
-    # Digit & book-specific flags
     for _, row in df.iterrows():
         p = row["player"]
-        if not p:
-            continue
+        if not p: continue
         price = row["price"]
         book = str(row["book"]).lower()
         event = row.get("event", "")
@@ -202,14 +182,12 @@ def run_girl_math(df):
                     scores[p]["reasons"].append("Bet365 +850 Club")
                     scores[p]["players"].add(p)
                     scores[p]["event"] = event
-            except:
-                pass
+            except: pass
 
-    # Exact match + matching digits
-    if "player" in df.columns and "point" in df.columns:
+    # Exact + matching digits
+    if "player" in df.columns:
         for (player, point), group in df.groupby(["player", "point"], dropna=False):
-            if len(group) < 2:
-                continue
+            if len(group) < 2: continue
             prices = group["price"].dropna().tolist()
             books = group["book"].tolist()
             event = group["event"].iloc[0] if "event" in group.columns and len(group) else ""
@@ -223,8 +201,7 @@ def run_girl_math(df):
                 digits = defaultdict(list)
                 for i, pr in enumerate(prices):
                     d = last_two(pr)
-                    if d is not None:
-                        digits[d].append(books[i])
+                    if d is not None: digits[d].append(books[i])
                 for d, bks in digits.items():
                     if len(bks) >= 2:
                         scores[player]["score"] += 4
@@ -232,36 +209,29 @@ def run_girl_math(df):
                         scores[player]["players"].add(player)
                         scores[player]["event"] = event
 
-    # Over / Under priced
-    if "player" in df.columns and "point" in df.columns:
+    # Over/Under
+    if "player" in df.columns:
         for (player, point), group in df.groupby(["player", "point"], dropna=False):
             prices = group["price"].dropna().tolist()
-            if len(prices) < 3:
-                continue
-            try:
-                med = statistics.median(prices)
-            except:
-                continue
+            if len(prices) < 3: continue
+            try: med = statistics.median(prices)
+            except: continue
             for _, row in group.iterrows():
-                if row["price"] is None:
-                    continue
+                if row["price"] is None: continue
                 diff = row["price"] - med
                 if abs(diff) >= 100:
                     label = "Underpriced" if diff > 0 else "Overpriced"
                     scores[player]["score"] += 2
-                    scores[player]["reasons"].append(
-                        f"{label} on {row['book']} ({format_odds(row['price'])} vs {format_odds(med)})"
-                    )
+                    scores[player]["reasons"].append(f"{label} on {row['book']} ({format_odds(row['price'])} vs {format_odds(med)})")
                     scores[player]["players"].add(player)
                     scores[player]["event"] = row.get("event", "")
 
-    # Name / Initial patterns
+    # Initials
     players = list(df["player"].dropna().unique()) if "player" in df.columns else []
     init_map = defaultdict(list)
     for p in players:
         f, l = get_initials(p)
-        if f and l:
-            init_map[f + l].append(p)
+        if f and l: init_map[f+l].append(p)
     for k, names in init_map.items():
         if len(names) >= 2:
             key = " + ".join(sorted(names))
@@ -270,10 +240,9 @@ def run_girl_math(df):
             scores[key]["players"].update(names)
 
     for i, p1 in enumerate(players):
-        f1, l1 = get_initials(p1)
-        if not l1:
-            continue
-        for p2 in players[i + 1:]:
+        _, l1 = get_initials(p1)
+        if not l1: continue
+        for p2 in players[i+1:]:
             f2, _ = get_initials(p2)
             if f2 and l1 == f2:
                 key = " + ".join(sorted([p1, p2]))
@@ -283,8 +252,7 @@ def run_girl_math(df):
 
     results = []
     for key, data in scores.items():
-        if data["score"] <= 0:
-            continue
+        if data["score"] <= 0: continue
         is_pair = " + " in key
         results.append({
             "label": key,
@@ -297,37 +265,36 @@ def run_girl_math(df):
 
 def main():
     st.title("💖 Girl Magic Odds Model")
-    st.caption("Powered by SharpAPI • Pure odds tricks")
+    st.caption("Powered by SportsGameOdds • Pure odds tricks")
 
     api_key = get_api_key()
     if not api_key:
-        st.warning("Add your SharpAPI key in Secrets or the sidebar")
+        st.warning("Add your SportsGameOdds API key")
         st.stop()
 
     with st.sidebar:
         st.header("Settings")
         max_show = st.slider("Max results", 5, 40, 20)
 
-    if st.button("Fetch MLB Odds from SharpAPI 💫", type="primary"):
-        with st.spinner("Pulling from SharpAPI..."):
-            raw = fetch_odds(api_key, league="mlb")
-            rows = normalize_sharp_data(raw)
+    if st.button("Fetch MLB Odds 💫", type="primary"):
+        with st.spinner("Pulling from SportsGameOdds..."):
+            events = fetch_events(api_key)
+            rows = normalize_sgo_data(events)
             st.session_state["odds"] = rows
             if rows:
                 books = sorted(set(r["book"] for r in rows))
                 st.success(f"Loaded {len(rows)} rows")
-                st.write("**Books returned:**", ", ".join(books))
+                st.write("**Books returned:**", ", ".join(books) if books else "none")
                 preferred = [b for b in books if is_preferred(b)]
                 if preferred:
                     st.success(f"Preferred books found: {', '.join(preferred)}")
                 else:
-                    st.warning("Preferred books not present in this response")
+                    st.warning("Preferred books not present")
             else:
-                st.warning("No usable odds returned. The free tier may be limited or the response shape is different.")
+                st.warning("No usable odds returned. Free tier may be limited or response shape different.")
 
     odds = st.session_state.get("odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
-
     results = run_girl_math(df) if not df.empty else []
 
     tab1, tab2, tab3 = st.tabs(["💅 Odds Magic", "📊 Girl Math Flags", "👑 Queen of the Digits"])
@@ -335,7 +302,7 @@ def main():
     with tab1:
         st.subheader("💅 Odds Magic")
         if not results:
-            st.info("Click the fetch button above")
+            st.info("Click the fetch button")
         else:
             for r in results[:max_show]:
                 reasons = " • ".join(r["reasons"][:5])
@@ -372,7 +339,7 @@ def main():
                     unsafe_allow_html=True
                 )
 
-    st.caption("💖 Girl Magic × SharpAPI")
+    st.caption("💖 Girl Magic × SportsGameOdds")
 
 if __name__ == "__main__":
     main()
