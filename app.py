@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-Full fixed version – tabs restored + flag system
+Full upgraded version – main books + CSV loading + all tabs
 """
 
 import streamlit as st
@@ -23,6 +23,8 @@ st.markdown("""
     .flag-card { background: #2a1435; border: 1px solid #f472b6; border-radius: 10px; padding: 12px 16px; margin: 8px 0; }
     .alert-card { background: linear-gradient(90deg, #831843, #4c1d95); border: 2px solid #f472b6; border-radius: 12px; padding: 14px 18px; margin: 10px 0; }
     .matchup-card { background: #2d1b3d; border: 1px solid #c084fc; border-radius: 10px; padding: 12px 16px; margin: 8px 0; }
+    .batter-card { background: #1f0f2e; border: 1px solid #a855f7; border-radius: 8px; padding: 10px 14px; margin: 6px 0; }
+    .launch-card { background: #2a1435; border: 1px solid #f472b6; border-radius: 10px; padding: 12px 16px; margin: 8px 0; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -30,10 +32,8 @@ DB_PATH = Path("odds_data.db")
 API_BASE = "https://api.the-odds-api.com/v4"
 REGIONS = "us,us2"
 
-PREFERRED_BOOKS = [
-    "fanduel", "draftkings", "betmgm", "williamhill_us",
-    "betrivers", "fanatics", "espnbet", "hardrockbet", "ballybet", "bet365"
-]
+# Main books you specifically requested
+PREFERRED_BOOKS = ["fanduel", "draftkings", "betmgm", "williamhill_us", "bet365"]
 
 SPORTS = {"NFL": "americanfootball_nfl", "NBA": "basketball_nba", "MLB": "baseball_mlb"}
 PLAYER_PROP_MARKETS = {
@@ -42,6 +42,85 @@ PLAYER_PROP_MARKETS = {
     "MLB": ["batter_home_runs", "batter_hits", "batter_total_bases", "batter_rbis", "batter_runs_scored", "batter_strikeouts"],
 }
 
+# ============================================================
+# CSV LOADING
+# ============================================================
+@st.cache_data
+def load_statcast_files():
+    hitters = None
+    exit_velo = None
+
+    # Hitter advanced metrics
+    for name in ["stats.csv", "stats (1).csv"]:
+        p = Path(name)
+        if p.exists():
+            try:
+                df = pd.read_csv(p)
+                if "barrel_batted_rate" in df.columns or "hard_hit_percent" in df.columns:
+                    hitters = df
+                    break
+            except Exception:
+                pass
+
+    # Exit velocity detailed
+    for name in ["exit_velocity.csv", "exit_velocity (1).csv"]:
+        p = Path(name)
+        if p.exists():
+            try:
+                df = pd.read_csv(p)
+                if "avg_hit_speed" in df.columns or "brl_percent" in df.columns:
+                    exit_velo = df
+                    break
+            except Exception:
+                pass
+
+    return hitters, exit_velo
+
+def normalize_name(name):
+    if not name:
+        return ""
+    name = str(name).lower().strip()
+    if "," in name:
+        parts = [p.strip() for p in name.split(",")]
+        if len(parts) == 2:
+            return f"{parts[1]} {parts[0]}"
+    return name
+
+def find_player_metrics(player_name, hitters_df, exit_df):
+    if hitters_df is None and exit_df is None:
+        return None
+
+    target = normalize_name(player_name)
+    result = {"matched": None}
+
+    if hitters_df is not None:
+        for _, row in hitters_df.iterrows():
+            savant_name = normalize_name(row.get("last_name, first_name", ""))
+            if target in savant_name or savant_name in target or (target.split() and target.split()[-1] in savant_name):
+                result["matched"] = savant_name
+                result["barrel"] = row.get("barrel_batted_rate", "-")
+                result["hard_hit"] = row.get("hard_hit_percent", "-")
+                result["best_speed"] = row.get("avg_best_speed", "-")
+                result["sweet_spot"] = row.get("sweet_spot_percent", "-")
+                result["xwoba"] = row.get("xwoba", "-")
+                break
+
+    if exit_df is not None:
+        for _, row in exit_df.iterrows():
+            savant_name = normalize_name(row.get("last_name, first_name", ""))
+            if target in savant_name or savant_name in target or (target.split() and target.split()[-1] in savant_name):
+                result["matched"] = result.get("matched") or savant_name
+                result["avg_ev"] = row.get("avg_hit_speed", "-")
+                result["max_ev"] = row.get("max_hit_speed", "-")
+                result["brl_percent"] = row.get("brl_percent", result.get("barrel", "-"))
+                result["hard_hit"] = row.get("ev95percent", result.get("hard_hit", "-"))
+                break
+
+    return result if result.get("matched") else None
+
+# ============================================================
+# API + HELPERS
+# ============================================================
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -55,7 +134,8 @@ def init_db():
     conn.close()
 
 def save_odds_to_db(records, sport_key):
-    if not records: return 0
+    if not records:
+        return 0
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     now = datetime.utcnow().isoformat()
@@ -74,17 +154,23 @@ def get_api_key():
     return key
 
 def is_preferred(book):
-    if not book: return False
+    if not book:
+        return False
     return any(p in book.lower() for p in PREFERRED_BOOKS)
 
 def format_odds(price):
-    if price is None: return "-"
-    try: return f"{int(price):+d}"
-    except: return str(price)
+    if price is None:
+        return "-"
+    try:
+        return f"{int(price):+d}"
+    except:
+        return str(price)
 
 def last_two_digits(price):
-    try: return abs(int(price)) % 100
-    except: return None
+    try:
+        return abs(int(price)) % 100
+    except:
+        return None
 
 def fetch_events(api_key, sport_key):
     try:
@@ -106,15 +192,16 @@ def fetch_event_odds(api_key, sport_key, event_id, markets):
     try:
         r = requests.get(f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds", params=params, timeout=25)
         if r.status_code != 200:
-            st.warning(f"API status {r.status_code}: {r.text[:200]}")
+            st.warning(f"API {r.status_code}: {r.text[:180]}")
             return None
         return r.json()
     except Exception as e:
-        st.warning(f"Odds fetch error: {e}")
+        st.warning(f"Odds error: {e}")
         return None
 
 def flatten_event_odds(event_data):
-    if not event_data: return []
+    if not event_data:
+        return [], set()
     records = []
     books_found = set()
     for book in event_data.get("bookmakers", []):
@@ -136,17 +223,22 @@ def flatten_event_odds(event_data):
                 })
     return records, books_found
 
-# ---------- FLAG FUNCTIONS ----------
+# ============================================================
+# FLAG LOGIC
+# ============================================================
 def flag_matching_digits(df):
     flags = []
     props = df[df["description"].notna() & (df["description"] != "")].copy()
-    if props.empty: return flags
+    if props.empty:
+        return flags
 
     for (market, desc, point), group in props.groupby(["market", "description", "point"], dropna=False):
-        if len(group) < 2: continue
+        if len(group) < 2:
+            continue
         prices = group["price"].dropna().tolist()
         books = group["bookmaker"].tolist()
-        if len(prices) < 2: continue
+        if len(prices) < 2:
+            continue
 
         if len(set(prices)) == 1:
             flags.append({
@@ -173,17 +265,21 @@ def flag_matching_digits(df):
 def flag_over_under_priced(df, threshold=0.18):
     flags = []
     props = df[df["description"].notna() & (df["description"] != "")].copy()
-    if props.empty: return flags
+    if props.empty:
+        return flags
 
     for (market, desc, point), group in props.groupby(["market", "description", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
-        if len(prices) < 3: continue
+        if len(prices) < 3:
+            continue
         try:
             median = statistics.median(prices)
-        except: continue
+        except:
+            continue
 
         for _, row in group.iterrows():
-            if row["price"] is None: continue
+            if row["price"] is None:
+                continue
             diff = (row["price"] - median) / abs(median) if median != 0 else 0
             if abs(diff) >= threshold:
                 if row["price"] > 0:
@@ -193,7 +289,7 @@ def flag_over_under_priced(df, threshold=0.18):
                 flags.append({
                     "player": desc, "book": row["bookmaker"],
                     "odds": format_odds(row["price"]), "median": format_odds(median),
-                    "diff_pct": round(abs(diff)*100, 1), "label": label,
+                    "diff_pct": round(abs(diff) * 100, 1), "label": label,
                     "market": market, "line": point
                 })
     return flags
@@ -201,10 +297,12 @@ def flag_over_under_priced(df, threshold=0.18):
 def flag_out_of_place(df, line_threshold=1.0, odds_threshold=150):
     flags = []
     props = df[df["description"].notna() & (df["description"] != "")].copy()
-    if props.empty: return flags
+    if props.empty:
+        return flags
 
     for (market, desc), group in props.groupby(["market", "description"]):
-        if len(group) < 3: continue
+        if len(group) < 3:
+            continue
         points = group["point"].dropna().tolist()
         prices = group["price"].dropna().tolist()
 
@@ -220,7 +318,8 @@ def flag_out_of_place(df, line_threshold=1.0, odds_threshold=150):
                             "group_value": f"median {med_point}",
                             "reason": "out-of-place line"
                         })
-            except: pass
+            except:
+                pass
 
         if prices and len(set(prices)) > 1:
             try:
@@ -234,12 +333,22 @@ def flag_out_of_place(df, line_threshold=1.0, odds_threshold=150):
                             "group_value": format_odds(med_price),
                             "reason": "out-of-place odds"
                         })
-            except: pass
+            except:
+                pass
     return flags
 
+# ============================================================
+# MAIN
+# ============================================================
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
+
+    hitters_df, exit_df = load_statcast_files()
+    if hitters_df is not None:
+        st.sidebar.success(f"Hitter CSV loaded ({len(hitters_df)} rows)")
+    if exit_df is not None:
+        st.sidebar.success(f"Exit Velo CSV loaded ({len(exit_df)} rows)")
 
     api_key = get_api_key()
     if not api_key:
@@ -286,87 +395,126 @@ def main():
             st.write(f"**Books returned by API:** {', '.join(sorted(all_books)) if all_books else 'none'}")
             preferred = [b for b in all_books if is_preferred(b)]
             if preferred:
-                st.success(f"Preferred books found: {', '.join(preferred)}")
+                st.success(f"Main books found: {', '.join(preferred)}")
             else:
-                st.warning("None of the preferred books returned for these props")
+                st.warning("None of FanDuel / DraftKings / BetMGM / Caesars / Bet365 returned")
             st.session_state["last_records"] = all_records
             st.session_state["chosen_games"] = chosen
         else:
-            st.warning("No odds returned from The Odds API for the selected games/markets. Try different games or check if the props are open.")
+            st.warning("No odds returned from The Odds API for the selected games/markets.")
 
     records = st.session_state.get("last_records", [])
     chosen_games = st.session_state.get("chosen_games", [])
 
     # ===================== TABS =====================
-    tab1, tab2, tab3 = st.tabs(["🎯 Odds + Tricks", "⚾ Batters + Pitchers", "🚀 Petty's Launch List"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "👑 Queen of the Digits",
+        "💎 Girl Magic Value Plays",
+        "😈 Overpriced Kings",
+        "🕵️ Book Shenanigans",
+        "⚾ Batters + Pitchers",
+        "🚀 Petty's Launch List"
+    ])
+
+    df = pd.DataFrame(records) if records else pd.DataFrame()
+
+    matching = flag_matching_digits(df)[:max_items] if not df.empty else []
+    priced = flag_over_under_priced(df)[:max_items] if not df.empty else []
+    suspicious = flag_out_of_place(df)[:max_items] if not df.empty else []
+    overpriced = [p for p in priced if p["label"] == "overpriced"]
+    underpriced = [p for p in priced if p["label"] == "underpriced"]
 
     with tab1:
-        st.subheader("Odds + Flag System")
-        if not records:
-            st.info("Fetch some games first")
+        st.subheader("👑 Queen of the Digits")
+        if matching:
+            for m in matching:
+                st.markdown(f'<div class="flag-card"><b>{m["player"]}</b><br>{m["odds"]} • {m["books"]}<br><small>{m["reason"]}</small></div>', unsafe_allow_html=True)
         else:
-            df = pd.DataFrame(records)
-
-            matching = flag_matching_digits(df)[:max_items]
-            priced = flag_over_under_priced(df)[:max_items]
-            suspicious = flag_out_of_place(df)[:max_items]
-
-            overpriced = [p for p in priced if p["label"] == "overpriced"]
-            underpriced = [p for p in priced if p["label"] == "underpriced"]
-
-            st.markdown(f'<div class="alert-card"><b>Petty Alerts</b><br>'
-                        f'{len(matching)} matching digits • {len(underpriced)} underpriced • '
-                        f'{len(overpriced)} overpriced • {len(suspicious)} suspicious</div>', unsafe_allow_html=True)
-
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown("### 👑 Queen of the Digits")
-                if matching:
-                    for m in matching:
-                        st.markdown(f'<div class="flag-card"><b>{m["player"]}</b><br>{m["odds"]} • {m["books"]}<br><small>{m["reason"]}</small></div>', unsafe_allow_html=True)
-                else:
-                    st.caption("No matching digit patterns")
-
-                st.markdown("### 💎 Girl Magic Value Plays")
-                if underpriced:
-                    for u in underpriced:
-                        st.markdown(f'<div class="flag-card"><b>{u["player"]}</b><br>{u["book"]}: {u["odds"]} (med {u["median"]}) +{u["diff_pct"]}%</div>', unsafe_allow_html=True)
-                else:
-                    st.caption("No underpriced plays")
-
-            with col2:
-                st.markdown("### 🕵️ Book Shenanigans")
-                if suspicious:
-                    for s in suspicious:
-                        st.markdown(f'<div class="flag-card"><b>{s["player"]}</b><br>{s["outlier_book"]} → {s["outlier_value"]} vs {s["group_value"]}</div>', unsafe_allow_html=True)
-                else:
-                    st.caption("No major disagreements")
-
-                st.markdown("### 😈 Overpriced Kings")
-                if overpriced:
-                    for o in overpriced:
-                        st.markdown(f'<div class="flag-card"><b>{o["player"]}</b><br>{o["book"]}: {o["odds"]} (med {o["median"]})</div>', unsafe_allow_html=True)
-                else:
-                    st.caption("No overpriced kings")
-
-            st.markdown("---")
-            st.write("**Raw odds table**")
-            show = df[["home_team", "away_team", "bookmaker", "market", "description", "price", "point"]].copy()
-            show["price"] = show["price"].apply(format_odds)
-            st.dataframe(show, use_container_width=True, height=300)
+            st.info("No matching digit patterns yet. Fetch games first.")
 
     with tab2:
-        st.subheader("Batters + Pitchers")
-        st.info("This tab will show matchup + Statcast metrics once odds are loaded and CSVs are present.")
-        if chosen_games:
-            for g in chosen_games:
-                st.markdown(f'<div class="matchup-card"><b>{g}</b></div>', unsafe_allow_html=True)
+        st.subheader("💎 Girl Magic Value Plays (Underpriced)")
+        if underpriced:
+            for u in underpriced:
+                st.markdown(f'<div class="flag-card"><b>{u["player"]}</b><br>{u["book"]}: {u["odds"]} (median {u["median"]}) +{u["diff_pct"]}%</div>', unsafe_allow_html=True)
+        else:
+            st.info("No underpriced plays found yet.")
 
     with tab3:
-        st.subheader("🚀 Petty's Launch List")
-        st.info("Ranked HR candidates will appear here once your Statcast CSVs are loaded in the repo.")
+        st.subheader("😈 Overpriced Kings")
+        if overpriced:
+            for o in overpriced:
+                st.markdown(f'<div class="flag-card"><b>{o["player"]}</b><br>{o["book"]}: {o["odds"]} (median {o["median"]})</div>', unsafe_allow_html=True)
+        else:
+            st.info("No overpriced kings found yet.")
 
-    st.caption("💖 Girl Magic • Tabs restored • Flag system active")
+    with tab4:
+        st.subheader("🕵️ Book Shenanigans / Suspicious Props")
+        if suspicious:
+            for s in suspicious:
+                st.markdown(f'<div class="flag-card"><b>{s["player"]}</b><br>{s["outlier_book"]} → {s["outlier_value"]} vs {s["group_value"]}<br><small>{s["reason"]}</small></div>', unsafe_allow_html=True)
+        else:
+            st.info("No suspicious props detected yet.")
+
+    with tab5:
+        st.subheader("⚾ Batters + Pitchers")
+        if not chosen_games:
+            st.info("Fetch some games first.")
+        else:
+            for g in chosen_games:
+                st.markdown(f'<div class="matchup-card"><b>{g}</b></div>', unsafe_allow_html=True)
+                if records:
+                    game_batters = df[((df["away_team"] + " @ " + df["home_team"]) == g) & (df["description"].notna())]["description"].unique().tolist()
+                    if game_batters:
+                        for batter in sorted(game_batters)[:10]:
+                            metrics = find_player_metrics(batter, hitters_df, exit_df)
+                            if metrics:
+                                st.markdown(
+                                    f'<div class="batter-card"><b>{batter}</b> → {metrics.get("matched","")}<br>'
+                                    f'Barrel {metrics.get("barrel", metrics.get("brl_percent","-"))}% | '
+                                    f'Hard Hit {metrics.get("hard_hit","-")}% | '
+                                    f'Avg EV {metrics.get("avg_ev", metrics.get("best_speed","-"))}</div>',
+                                    unsafe_allow_html=True
+                                )
+                            else:
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match in CSVs</small></div>', unsafe_allow_html=True)
+                    else:
+                        st.caption("No batter names found for this game.")
+
+    with tab6:
+        st.subheader("🚀 Petty's Launch List")
+        if hitters_df is None and exit_df is None:
+            st.info("Upload your Statcast CSVs (stats.csv / exit_velocity.csv) to power this list.")
+        else:
+            candidates = []
+            source = exit_df if exit_df is not None else hitters_df
+            if source is not None:
+                for _, row in source.iterrows():
+                    name = row.get("last_name, first_name", "")
+                    try:
+                        ev = float(row.get("avg_hit_speed", row.get("avg_best_speed", 0)) or 0)
+                        hh = float(row.get("ev95percent", row.get("hard_hit_percent", 0)) or 0)
+                        brl = float(row.get("brl_percent", row.get("barrel_batted_rate", 0)) or 0)
+                        score = (ev * 0.4) + (hh * 0.35) + (brl * 0.25)
+                        candidates.append({
+                            "name": name,
+                            "ev": round(ev, 1),
+                            "hh": round(hh, 1),
+                            "brl": round(brl, 1),
+                            "score": round(score, 1)
+                        })
+                    except:
+                        continue
+            candidates = sorted(candidates, key=lambda x: x["score"], reverse=True)[:20]
+            for i, c in enumerate(candidates, 1):
+                note = "EV NUCLEAR" if c["ev"] >= 92 else ("Barrel monster" if c["brl"] >= 12 else ("Hard-hit heavy" if c["hh"] >= 45 else ""))
+                st.markdown(
+                    f'<div class="launch-card"><b>{i}. {c["name"]}</b><br>'
+                    f'{c["ev"]} EV | {c["hh"]} HH% | {c["brl"]} Barrel%<br><small>{note}</small></div>',
+                    unsafe_allow_html=True
+                )
+
+    st.caption("💖 Girl Magic • Main books filter • CSV matching • All tabs active")
 
 if __name__ == "__main__":
     main()
