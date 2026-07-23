@@ -1,13 +1,14 @@
 """
 Girl Magic Odds ✨
 For the girls only • Our tricks
-Name patterns only qualify if they also hit an odds method
++ Stuck Number & Wide Disagreement signals
 """
 
 import streamlit as st
 import pandas as pd
 import requests
 from collections import defaultdict
+import statistics
 
 st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="💖", layout="wide")
 
@@ -29,6 +30,7 @@ st.markdown("""
     .digit { border-left: 6px solid #a855f7; }
     .fd { border-left: 6px solid #1493ff; }
     .name { border-left: 6px solid #f9a8d4; }
+    .signal { border-left: 6px solid #34d399; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -101,9 +103,9 @@ def run_flags(df):
         df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
     results = []
-    flagged_players = set()   # players who hit any odds method
+    flagged_players = set()
 
-    # ========== 1. DraftKings Ends in 10 ==========
+    # 1. DraftKings Ends in 10
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
             if last_two(row["price"]) == 10:
@@ -116,16 +118,14 @@ def run_flags(df):
                 })
                 flagged_players.add(row["player"])
 
-    # ========== 2. BetMGM Classic Endings ==========
+    # 2. BetMGM Classic Endings
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
-
     for event, event_group in mgm_df.groupby("event"):
         ending_groups = defaultdict(list)
         for _, row in event_group.iterrows():
             d = last_two(row["price"])
             if d in (0, 25, 50, 75):
                 ending_groups[d].append(row["player"])
-
         for d, players in ending_groups.items():
             names = sorted(set(players))
             if len(names) >= 2:
@@ -138,7 +138,7 @@ def run_flags(df):
                 })
                 flagged_players.update(names)
 
-    # ========== 3. Exact Matching Odds ==========
+    # 3. Exact Matching Odds
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -153,7 +153,7 @@ def run_flags(df):
             })
             flagged_players.add(player)
 
-    # ========== 4. MGM Exact Match ==========
+    # 4. MGM Exact Match
     for event, event_group in mgm_df.groupby("event"):
         for price, price_group in event_group.groupby("price"):
             players = sorted(price_group["player"].unique().tolist())
@@ -167,7 +167,7 @@ def run_flags(df):
                 })
                 flagged_players.update(players)
 
-    # ========== 5. Matching 25/50/75 Across Books ==========
+    # 5. Matching 25/50/75 Across Books
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -186,7 +186,7 @@ def run_flags(df):
                 })
                 flagged_players.add(player)
 
-    # ========== 6. FanDuel Patterns ==========
+    # 6. FanDuel Patterns
     for _, row in df.iterrows():
         if "fanduel" in str(row["book"]).lower():
             price = abs(int(row["price"])) if row["price"] else 0
@@ -201,7 +201,40 @@ def run_flags(df):
                 })
                 flagged_players.add(row["player"])
 
-    # ========== 7–10. NAME PATTERNS (only if player already hit an odds method) ==========
+    # ========== NEW: LINE SIGNALS ==========
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        prices = group["price"].dropna().tolist()
+        books = group["book"].tolist()
+        if len(prices) < 3: continue
+
+        # Stuck Number = exact same price on 3+ books
+        if len(set(prices)) == 1 and len(prices) >= 3:
+            results.append({
+                "type": "signal",
+                "label": player,
+                "reason": f"Stuck Number {format_odds(prices[0])} on {len(prices)} books → {', '.join(books)}",
+                "event": group["event"].iloc[0],
+                "css": "signal"
+            })
+            flagged_players.add(player)
+
+        # Wide Disagreement = one book 150+ away from median
+        try:
+            med = statistics.median(prices)
+            for i, pr in enumerate(prices):
+                if abs(pr - med) >= 150:
+                    results.append({
+                        "type": "signal",
+                        "label": player,
+                        "reason": f"Wide Disagreement on {books[i]} ({format_odds(pr)} vs median {format_odds(med)})",
+                        "event": group["event"].iloc[0],
+                        "css": "signal"
+                    })
+                    flagged_players.add(player)
+        except:
+            pass
+
+    # ========== NAME PATTERNS (only if both players already flagged) ==========
     player_events = defaultdict(set)
     for _, row in df.iterrows():
         player_events[row["player"]].add(row["event"])
@@ -340,6 +373,7 @@ def main():
         "⭐ MGM Exact Match",
         "🔢 Matching 25/50/75",
         "💙 FanDuel Patterns",
+        "📈 Line Signals",
         "💅 Same Initials",
         "🔄 Cross Initials",
         "👩‍👧 Same Last Name",
@@ -367,19 +401,20 @@ def main():
     show_tab(tabs[3], "mgm_exact")
     show_tab(tabs[4], "digit")
     show_tab(tabs[5], "fd")
-    show_tab(tabs[6], "same_init")
-    show_tab(tabs[7], "cross")
-    show_tab(tabs[8], "last")
-    show_tab(tabs[9], "first")
+    show_tab(tabs[6], "signal")      # ← new Line Signals tab
+    show_tab(tabs[7], "same_init")
+    show_tab(tabs[8], "cross")
+    show_tab(tabs[9], "last")
+    show_tab(tabs[10], "first")
 
-    with tabs[10]:
+    with tabs[11]:
         st.subheader("📖 Girl Magic Glossary")
         st.markdown("""
 **🎯 DraftKings Ends in 10**  
 Any DK prop ending in 10.
 
 **🎰 BetMGM Classic Endings**  
-Pair or group of 3+ players on the same team with matching 00/25/50/75 endings.
+Pair or group of 3+ on the same team with matching 00/25/50/75 endings.
 
 **🤝 Exact Matching Odds**  
 Exact same price on the same player across any books.
@@ -391,11 +426,15 @@ Exact same price on BetMGM for two or more players in the same game.
 Same player has 25/50/75 endings across different books.
 
 **💙 FanDuel Patterns**  
-FanDuel props ≥ +500 that end in 10, 30, 60, 70, or 90.
+FanDuel props ≥ +500 ending in 10, 30, 60, 70, or 90.
+
+**📈 Line Signals**  
+- **Stuck Number**: Exact same price on 3+ books (number is being held)  
+- **Wide Disagreement**: One book is 150+ away from the median (possible recent move)
 
 **💅 Same Initials / 🔄 Cross Initials / 👩‍👧 Same Last Name / 👯 Same First Name**  
-Only shown if **both players already hit at least one odds method**.  
-Labeled (different teams) or (same team) so you have the option.
+Only shown if both players already hit an odds method.  
+Labeled (different teams) or (same team).
         """)
 
     st.caption("💖 Girl Magic • For the girls only • Our tricks")
