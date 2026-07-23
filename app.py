@@ -1,6 +1,6 @@
 """
 Girl Magic Odds ✨
-Clean + Same First Name added
+Final clean version – Tabs + Glossary
 """
 
 import streamlit as st
@@ -167,7 +167,7 @@ def run_flags(df):
                     "css": "digit"
                 })
 
-    # ===== NAME PATTERNS =====
+    # Name patterns
     players = list(df["player"].dropna().unique())
 
     # Same initials
@@ -217,7 +217,7 @@ def run_flags(df):
                 "css": "name"
             })
 
-    # Same first name  ← NEW
+    # Same first name
     first_map = defaultdict(list)
     for p in players:
         parts = str(p).split()
@@ -275,28 +275,73 @@ def main():
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     results = run_flags(df) if not df.empty else []
 
-    def show_section(title, typ):
-        st.subheader(title)
-        items = [r for r in results if r["type"] == typ]
-        if not items:
-            st.caption("None right now")
-            return
-        for r in items:
-            st.markdown(
-                f'<div class="card {r["css"]}">'
-                f'<b>{r["label"]}</b><br>{r["reason"]}<br>'
-                f'<small>{r.get("event","")}</small></div>',
-                unsafe_allow_html=True
-            )
+    # ========== TABS ==========
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
+        "🎯 DK Ends in 10",
+        "🎰 MGM 25/50/75",
+        "🤝 Exact Match",
+        "🔢 Matching 25/50/75",
+        "💅 Same Initials",
+        "🔄 Cross Initials",
+        "👩‍👧 Same Last Name",
+        "👯 Same First Name",
+        "📖 Glossary"
+    ])
 
-    show_section("🎯 DraftKings Ends in 10", "dk")
-    show_section("🎰 BetMGM 25 / 50 / 75", "mgm")
-    show_section("🤝 Exact Matching Odds", "match")
-    show_section("🔢 Matching 25s / 50s / 75s", "digit")
-    show_section("💅 Same Initials", "same_init")
-    show_section("🔄 Cross Initials", "cross")
-    show_section("👩‍👧 Same Last Name", "last")
-    show_section("👯 Same First Name", "first")   # ← NEW SECTION
+    def show_tab(tab, typ):
+        with tab:
+            items = [r for r in results if r["type"] == typ]
+            if not items:
+                st.info("None right now")
+                return
+            for r in items:
+                st.markdown(
+                    f'<div class="card {r["css"]}">'
+                    f'<b>{r["label"]}</b><br>{r["reason"]}<br>'
+                    f'<small>{r.get("event","")}</small></div>',
+                    unsafe_allow_html=True
+                )
+
+    show_tab(tab1, "dk")
+    show_tab(tab2, "mgm")
+    show_tab(tab3, "match")
+    show_tab(tab4, "digit")
+    show_tab(tab5, "same_init")
+    show_tab(tab6, "cross")
+    show_tab(tab7, "last")
+    show_tab(tab8, "first")
+
+    # Glossary tab
+    with tab9:
+        st.subheader("📖 Girl Magic Glossary")
+        st.markdown("""
+**🎯 DraftKings Ends in 10**  
+DraftKings often prices props at +110, +210, +310, etc.  
+This is one of their common “tier” endings.
+
+**🎰 BetMGM 25 / 50 / 75**  
+BetMGM loves endings in 25, 50, and 75.  
+These are classic MGM template prices and often group players together.
+
+**🤝 Exact Matching Odds**  
+When two or more books have the *exact same* price on the same player.  
+Books are copying each other or sitting on the same number.
+
+**🔢 Matching 25s / 50s / 75s**  
+Different books landing on the same 25, 50, or 75 ending for the same player.
+
+**💅 Same Initials**  
+Players who share the same first + last initial (e.g. Mike Trout & Matt Olson = MO).
+
+**🔄 Cross Initials**  
+One player’s last initial matches another player’s first initial.
+
+**👩‍👧 Same Last Name**  
+Players who share a last name.
+
+**👯 Same First Name**  
+Players who share a first name.
+        """)
 
     st.caption("💖 Girl Magic • Made for you & the girls")
 
