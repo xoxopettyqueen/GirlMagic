@@ -1,23 +1,16 @@
 """
 Personal Sportsbook Odds Tracker
-Built for private use only.
-Tracks live odds + historical line movement patterns.
+Supports main lines + Player Props
 """
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import requests
 import sqlite3
-import os
 from datetime import datetime, timedelta
 from pathlib import Path
-import json
 
-# -------------------------------------------------
-# Config
-# -------------------------------------------------
 st.set_page_config(
     page_title="Odds Tracker",
     page_icon="📊",
@@ -27,8 +20,8 @@ st.set_page_config(
 
 DB_PATH = Path("odds_data.db")
 API_BASE = "https://api.the-odds-api.com/v4"
+REGIONS = "us"
 
-# Popular sports keys from The Odds API
 SPORTS = {
     "NFL": "americanfootball_nfl",
     "NBA": "basketball_nba",
@@ -36,22 +29,40 @@ SPORTS = {
     "NHL": "icehockey_nhl",
     "NCAAF": "americanfootball_ncaaf",
     "NCAAB": "basketball_ncaab",
-    "Soccer - EPL": "soccer_epl",
-    "Soccer - MLS": "soccer_usa_mls",
-    "UFC / MMA": "mma_mixed_martial_arts",
 }
 
-MARKETS = {
-    "Moneyline (h2h)": "h2h",
-    "Spreads": "spreads",
-    "Totals (Over/Under)": "totals",
+# Common player prop markets (The Odds API keys)
+PLAYER_PROP_MARKETS = {
+    "NBA": [
+        "player_points", "player_rebounds", "player_assists",
+        "player_threes", "player_blocks", "player_steals",
+        "player_points_rebounds_assists", "player_points_rebounds",
+        "player_points_assists", "player_rebounds_assists"
+    ],
+    "NFL": [
+        "player_pass_yds", "player_pass_tds", "player_pass_completions",
+        "player_rush_yds", "player_rush_tds", "player_receptions",
+        "player_reception_yds", "player_reception_tds",
+        "player_anytime_td", "player_1st_td", "player_pass_interceptions"
+    ],
+    "MLB": [
+        "player_hits", "player_total_bases", "player_rbis",
+        "player_runs_scored", "player_strikeouts", "player_home_runs",
+        "player_stolen_bases", "player_hits_runs_rbis"
+    ],
+    "NHL": [
+        "player_points", "player_goals", "player_assists",
+        "player_shots_on_goal", "player_blocked_shots"
+    ],
+    "NCAAF": [
+        "player_pass_yds", "player_rush_yds", "player_reception_yds",
+        "player_anytime_td", "player_pass_tds"
+    ],
+    "NCAAB": [
+        "player_points", "player_rebounds", "player_assists", "player_threes"
+    ],
 }
 
-REGIONS = "us"  # us, uk, eu, au
-
-# -------------------------------------------------
-# Database helpers
-# -------------------------------------------------
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -67,103 +78,67 @@ def init_db():
             bookmaker TEXT,
             market TEXT,
             outcome TEXT,
+            description TEXT,
             price REAL,
             point REAL,
             last_update TEXT
         )
     """)
-    c.execute("""
-        CREATE INDEX IF NOT EXISTS idx_event_time 
-        ON odds_snapshots(event_id, timestamp)
-    """)
     conn.commit()
     conn.close()
 
 
-def save_odds_to_db(odds_data: list, sport_key: str):
-    """Save a list of odds records to SQLite."""
-    if not odds_data:
+def save_odds_to_db(records: list, sport_key: str):
+    if not records:
         return 0
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     now = datetime.utcnow().isoformat()
     rows = []
-    for item in odds_data:
+    for r in records:
         rows.append((
-            now,
-            sport_key,
-            item.get("event_id"),
-            item.get("commence_time"),
-            item.get("home_team"),
-            item.get("away_team"),
-            item.get("bookmaker"),
-            item.get("market"),
-            item.get("outcome"),
-            item.get("price"),
-            item.get("point"),
-            item.get("last_update"),
+            now, sport_key,
+            r.get("event_id"), r.get("commence_time"),
+            r.get("home_team"), r.get("away_team"),
+            r.get("bookmaker"), r.get("market"),
+            r.get("outcome"), r.get("description"),
+            r.get("price"), r.get("point"), r.get("last_update")
         ))
     c.executemany("""
-        INSERT INTO odds_snapshots 
+        INSERT INTO odds_snapshots
         (timestamp, sport_key, event_id, commence_time, home_team, away_team,
-         bookmaker, market, outcome, price, point, last_update)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         bookmaker, market, outcome, description, price, point, last_update)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, rows)
     conn.commit()
     conn.close()
     return len(rows)
 
 
-def load_historical(event_id: str = None, hours: int = 48) -> pd.DataFrame:
-    """Load recent historical snapshots."""
-    conn = sqlite3.connect(DB_PATH)
-    cutoff = (datetime.utcnow() - timedelta(hours=hours)).isoformat()
-    if event_id:
-        query = """
-            SELECT * FROM odds_snapshots 
-            WHERE event_id = ? AND timestamp >= ?
-            ORDER BY timestamp
-        """
-        df = pd.read_sql_query(query, conn, params=(event_id, cutoff))
-    else:
-        query = """
-            SELECT * FROM odds_snapshots 
-            WHERE timestamp >= ?
-            ORDER BY timestamp DESC
-            LIMIT 5000
-        """
-        df = pd.read_sql_query(query, conn, params=(cutoff,))
-    conn.close()
-    return df
+def get_api_key():
+    # Prefer secrets, fall back to sidebar
+    key = st.secrets.get("ODDS_API_KEY", "")
+    if not key:
+        key = st.sidebar.text_input("Odds API Key", type="password")
+    return key
 
 
-def get_latest_snapshot() -> pd.DataFrame:
-    """Get the most recent snapshot of all odds."""
-    conn = sqlite3.connect(DB_PATH)
-    # Get the latest timestamp first
-    latest = pd.read_sql_query(
-        "SELECT MAX(timestamp) as ts FROM odds_snapshots", conn
-    )
-    if latest.empty or latest["ts"].iloc[0] is None:
-        conn.close()
-        return pd.DataFrame()
-    ts = latest["ts"].iloc[0]
-    df = pd.read_sql_query(
-        "SELECT * FROM odds_snapshots WHERE timestamp = ?", conn, params=(ts,)
-    )
-    conn.close()
-    return df
+def fetch_events(api_key: str, sport_key: str):
+    """Get list of upcoming events (no odds yet)."""
+    url = f"{API_BASE}/sports/{sport_key}/events"
+    params = {"apiKey": api_key}
+    try:
+        r = requests.get(url, params=params, timeout=15)
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:
+        st.error(f"Error fetching events: {e}")
+        return []
 
 
-# -------------------------------------------------
-# API helpers
-# -------------------------------------------------
-def fetch_odds(api_key: str, sport_key: str, markets: str = "h2h,spreads,totals") -> list:
-    """
-    Fetch current odds from The Odds API.
-    Returns a flattened list of records ready for the database.
-    """
-    url = f"{API_BASE}/sports/{sport_key}/odds"
+def fetch_event_odds(api_key: str, sport_key: str, event_id: str, markets: str):
+    """Fetch odds (including player props) for one specific event."""
+    url = f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds"
     params = {
         "apiKey": api_key,
         "regions": REGIONS,
@@ -172,269 +147,196 @@ def fetch_odds(api_key: str, sport_key: str, markets: str = "h2h,spreads,totals"
         "dateFormat": "iso",
     }
     try:
-        resp = requests.get(url, params=params, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
+        r = requests.get(url, params=params, timeout=20)
+        r.raise_for_status()
+        return r.json()
     except Exception as e:
-        st.error(f"API error: {e}")
-        return []
-
-    records = []
-    for event in data:
-        event_id = event.get("id")
-        home = event.get("home_team")
-        away = event.get("away_team")
-        commence = event.get("commence_time")
-        for book in event.get("bookmakers", []):
-            book_key = book.get("key")
-            last_update = book.get("last_update")
-            for market in book.get("markets", []):
-                market_key = market.get("key")
-                for outcome in market.get("outcomes", []):
-                    records.append({
-                        "event_id": event_id,
-                        "commence_time": commence,
-                        "home_team": home,
-                        "away_team": away,
-                        "bookmaker": book_key,
-                        "market": market_key,
-                        "outcome": outcome.get("name"),
-                        "price": outcome.get("price"),
-                        "point": outcome.get("point"),
-                        "last_update": last_update,
-                    })
-    return records
-
-
-def get_remaining_requests(api_key: str) -> dict:
-    """Check remaining API quota (from response headers ideally, but we can call sports list)."""
-    url = f"{API_BASE}/sports"
-    try:
-        resp = requests.get(url, params={"apiKey": api_key}, timeout=10)
-        remaining = resp.headers.get("x-requests-remaining", "unknown")
-        used = resp.headers.get("x-requests-used", "unknown")
-        return {"remaining": remaining, "used": used}
-    except Exception:
-        return {"remaining": "?", "used": "?"}
-
-
-# -------------------------------------------------
-# UI Helpers
-# -------------------------------------------------
-def american_to_decimal(american: float) -> float:
-    if american is None:
+        st.warning(f"Could not fetch props for event: {e}")
         return None
-    if american > 0:
-        return round(1 + american / 100, 3)
-    else:
-        return round(1 + 100 / abs(american), 3)
+
+
+def flatten_event_odds(event_data: dict) -> list:
+    """Turn the event odds response into flat rows."""
+    if not event_data:
+        return []
+    records = []
+    event_id = event_data.get("id")
+    home = event_data.get("home_team")
+    away = event_data.get("away_team")
+    commence = event_data.get("commence_time")
+
+    for book in event_data.get("bookmakers", []):
+        book_key = book.get("key")
+        last_update = book.get("last_update")
+        for market in book.get("markets", []):
+            market_key = market.get("key")
+            for outcome in market.get("outcomes", []):
+                records.append({
+                    "event_id": event_id,
+                    "commence_time": commence,
+                    "home_team": home,
+                    "away_team": away,
+                    "bookmaker": book_key,
+                    "market": market_key,
+                    "outcome": outcome.get("name"),
+                    "description": outcome.get("description"),  # player name for props
+                    "price": outcome.get("price"),
+                    "point": outcome.get("point"),
+                    "last_update": last_update,
+                })
+    return records
 
 
 def format_odds(price):
     if price is None:
         return "-"
-    return f"{int(price):+d}" if price == int(price) else f"{price:+.1f}"
+    try:
+        return f"{int(price):+d}"
+    except:
+        return str(price)
 
 
-# -------------------------------------------------
-# Main App
-# -------------------------------------------------
 def main():
     init_db()
 
-    st.title("📊 Personal Odds Tracker")
-    st.caption("Private dashboard for sportsbook odds & line movement patterns")
+    st.title("📊 Personal Odds + Player Props Tracker")
+    st.caption("Private use only • Data from The Odds API")
+
+    api_key = get_api_key()
+    if not api_key:
+        st.warning("Add your API key in **Manage app → Secrets** or type it in the sidebar.")
+        st.stop()
 
     # Sidebar
     with st.sidebar:
-        st.header("⚙️ Settings")
-        api_key = st.text_input(
-            "The Odds API Key",
-            type="password",
-            help="Get a free key at https://the-odds-api.com (500 credits/month free)"
-        )
-
+        st.header("Settings")
         sport_name = st.selectbox("Sport", list(SPORTS.keys()))
         sport_key = SPORTS[sport_name]
 
-        selected_markets = st.multiselect(
-            "Markets",
-            options=list(MARKETS.keys()),
-            default=["Moneyline (h2h)", "Spreads"]
-        )
-        market_keys = ",".join([MARKETS[m] for m in selected_markets]) if selected_markets else "h2h"
-
-        auto_refresh = st.checkbox("Show refresh button", value=True)
-
-        st.divider()
-        st.markdown("### How to use")
-        st.markdown("""
-        1. Paste your free API key  
-        2. Choose sport & markets  
-        3. Click **Fetch & Save Odds**  
-        4. Explore current lines + historical movement  
-        """)
         st.markdown("---")
-        st.caption("Data is stored locally in `odds_data.db`")
+        st.markdown("**What to fetch**")
+        want_main = st.checkbox("Main lines (ML / Spread / Total)", value=True)
+        want_props = st.checkbox("Player Props", value=True)
 
-    # ---- Fetch Section ----
-    col1, col2, col3 = st.columns([2, 1, 1])
-    with col1:
-        fetch_btn = st.button("🔄 Fetch & Save Current Odds", type="primary", use_container_width=True)
-    with col2:
-        if api_key:
-            quota = get_remaining_requests(api_key)
-            st.metric("API Credits Left", quota.get("remaining", "?"))
-    with col3:
-        st.metric("DB File", "odds_data.db" if DB_PATH.exists() else "Not created")
-
-    if fetch_btn:
-        if not api_key:
-            st.warning("Please enter your The Odds API key in the sidebar.")
+        prop_list = PLAYER_PROP_MARKETS.get(sport_name, [])
+        if want_props and prop_list:
+            selected_props = st.multiselect(
+                "Which player props?",
+                options=prop_list,
+                default=prop_list[:4]  # first few by default
+            )
         else:
-            with st.spinner(f"Fetching {sport_name} odds..."):
-                records = fetch_odds(api_key, sport_key, market_keys)
-                if records:
-                    n = save_odds_to_db(records, sport_key)
-                    st.success(f"Saved {n} odds rows for {sport_name}")
-                else:
-                    st.warning("No odds returned. Check sport key or API quota.")
+            selected_props = []
 
-    st.divider()
+    # ---- Step 1: Load games ----
+    st.subheader("1. Upcoming Games")
+    if st.button("Load Games", type="primary"):
+        with st.spinner("Loading games..."):
+            events = fetch_events(api_key, sport_key)
+            st.session_state["events"] = events
+            st.session_state["sport_key"] = sport_key
+            st.session_state["sport_name"] = sport_name
 
-    # ---- Current Odds Table ----
-    st.subheader("📈 Latest Odds Snapshot")
-    latest = get_latest_snapshot()
+    events = st.session_state.get("events", [])
+    if not events:
+        st.info("Click **Load Games** to see upcoming matchups.")
+        st.stop()
 
-    if latest.empty:
-        st.info("No data yet. Click **Fetch & Save Current Odds** to get started.")
-        # Show a small demo with mock data so the UI isn't empty
-        st.markdown("#### Demo preview (mock data)")
-        mock = pd.DataFrame([
-            {"home_team": "Chiefs", "away_team": "Bills", "bookmaker": "draftkings", "market": "h2h", "outcome": "Chiefs", "price": -150},
-            {"home_team": "Chiefs", "away_team": "Bills", "bookmaker": "fanduel", "market": "h2h", "outcome": "Chiefs", "price": -145},
-            {"home_team": "Chiefs", "away_team": "Bills", "bookmaker": "betmgm", "market": "h2h", "outcome": "Chiefs", "price": -155},
-            {"home_team": "Chiefs", "away_team": "Bills", "bookmaker": "draftkings", "market": "h2h", "outcome": "Bills", "price": +130},
-            {"home_team": "Chiefs", "away_team": "Bills", "bookmaker": "fanduel", "market": "h2h", "outcome": "Bills", "price": +125},
-        ])
-        st.dataframe(mock, use_container_width=True)
-    else:
-        # Clean view
-        display_cols = ["home_team", "away_team", "bookmaker", "market", "outcome", "price", "point", "commence_time"]
-        available = [c for c in display_cols if c in latest.columns]
-        df_view = latest[available].copy()
-        df_view["price"] = df_view["price"].apply(format_odds)
+    # Show games in a nice table
+    game_rows = []
+    for e in events:
+        game_rows.append({
+            "id": e["id"],
+            "Away": e.get("away_team"),
+            "Home": e.get("home_team"),
+            "Start (UTC)": e.get("commence_time", "")[:16].replace("T", " "),
+        })
+    games_df = pd.DataFrame(game_rows)
+    st.dataframe(games_df[["Away", "Home", "Start (UTC)"]], use_container_width=True, hide_index=True)
+
+    # ---- Step 2: Select games & fetch odds ----
+    st.subheader("2. Fetch Odds / Player Props")
+
+    options = {f"{r['Away']} @ {r['Home']}": r["id"] for r in game_rows}
+    chosen_labels = st.multiselect("Select one or more games", list(options.keys()))
+
+    if st.button("Fetch Selected Games", type="primary") and chosen_labels:
+        all_records = []
+        progress = st.progress(0)
+        status = st.empty()
+
+        markets = []
+        if want_main:
+            markets.extend(["h2h", "spreads", "totals"])
+        if want_props and selected_props:
+            markets.extend(selected_props)
+        markets_str = ",".join(markets)
+
+        for i, label in enumerate(chosen_labels):
+            event_id = options[label]
+            status.write(f"Fetching {label} ...")
+            data = fetch_event_odds(api_key, sport_key, event_id, markets_str)
+            records = flatten_event_odds(data)
+            all_records.extend(records)
+            progress.progress((i + 1) / len(chosen_labels))
+
+        if all_records:
+            n = save_odds_to_db(all_records, sport_key)
+            st.success(f"Saved {n} odds rows")
+            st.session_state["last_records"] = all_records
+        else:
+            st.warning("No odds returned. Try different markets or check your remaining credits.")
+
+    # ---- Display results ----
+    records = st.session_state.get("last_records", [])
+    if records:
+        st.subheader("Results")
+        df = pd.DataFrame(records)
 
         # Filters
-        fcol1, fcol2, fcol3 = st.columns(3)
-        with fcol1:
-            teams = sorted(set(df_view["home_team"].tolist() + df_view["away_team"].tolist()))
-            team_filter = st.multiselect("Filter teams", teams, default=[])
-        with fcol2:
-            books = sorted(df_view["bookmaker"].unique())
-            book_filter = st.multiselect("Filter books", books, default=[])
-        with fcol3:
-            mkts = sorted(df_view["market"].unique())
-            mkt_filter = st.multiselect("Filter markets", mkts, default=[])
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            books = st.multiselect("Books", sorted(df["bookmaker"].unique()), default=[])
+        with c2:
+            mkts = st.multiselect("Markets", sorted(df["market"].unique()), default=[])
+        with c3:
+            # For props, filter by player name
+            players = sorted([x for x in df["description"].dropna().unique() if x])
+            player_filter = st.multiselect("Players", players, default=[])
 
-        filtered = df_view.copy()
-        if team_filter:
-            filtered = filtered[
-                filtered["home_team"].isin(team_filter) | filtered["away_team"].isin(team_filter)
-            ]
-        if book_filter:
-            filtered = filtered[filtered["bookmaker"].isin(book_filter)]
-        if mkt_filter:
-            filtered = filtered[filtered["market"].isin(mkt_filter)]
+        filtered = df.copy()
+        if books:
+            filtered = filtered[filtered["bookmaker"].isin(books)]
+        if mkts:
+            filtered = filtered[filtered["market"].isin(mkts)]
+        if player_filter:
+            filtered = filtered[filtered["description"].isin(player_filter)]
 
-        st.dataframe(
-            filtered.sort_values(["home_team", "market", "bookmaker"]),
-            use_container_width=True,
-            height=400
-        )
+        # Nice display columns
+        show = filtered[["home_team", "away_team", "bookmaker", "market", "description", "outcome", "price", "point"]].copy()
+        show["price"] = show["price"].apply(format_odds)
+        show = show.rename(columns={
+            "description": "Player",
+            "outcome": "Side",
+            "price": "Odds",
+            "point": "Line"
+        })
+        st.dataframe(show, use_container_width=True, height=500)
 
-        # Best odds highlight
-        st.markdown("#### 🏆 Best available prices (Moneyline)")
-        ml = latest[latest["market"] == "h2h"].copy()
-        if not ml.empty:
+        # Quick best odds for a selected prop
+        st.markdown("#### Best available prices")
+        if not filtered.empty:
             best = (
-                ml.groupby(["home_team", "away_team", "outcome"])["price"]
+                filtered.groupby(["market", "description", "outcome", "point"])["price"]
                 .max()
                 .reset_index()
-                .sort_values(["home_team", "outcome"])
+                .sort_values(["market", "description"])
             )
             best["price"] = best["price"].apply(format_odds)
             st.dataframe(best, use_container_width=True)
 
-    # ---- Line Movement / Patterns ----
     st.divider()
-    st.subheader("📉 Line Movement & Patterns")
-
-    hist = load_historical(hours=72)
-    if hist.empty:
-        st.info("No historical data yet. Fetch odds a few times over the day to see movement charts.")
-    else:
-        # Select an event
-        events = hist[["event_id", "home_team", "away_team"]].drop_duplicates()
-        event_options = {
-            f"{row.away_team} @ {row.home_team}": row.event_id
-            for _, row in events.iterrows()
-        }
-        if event_options:
-            chosen_label = st.selectbox("Select game for line movement", list(event_options.keys()))
-            chosen_id = event_options[chosen_label]
-
-            game_hist = hist[hist["event_id"] == chosen_id].copy()
-            game_hist["timestamp"] = pd.to_datetime(game_hist["timestamp"])
-
-            # Moneyline movement chart
-            ml_hist = game_hist[game_hist["market"] == "h2h"]
-            if not ml_hist.empty:
-                fig = px.line(
-                    ml_hist,
-                    x="timestamp",
-                    y="price",
-                    color="bookmaker",
-                    line_dash="outcome",
-                    title=f"Moneyline Movement – {chosen_label}",
-                    labels={"price": "American Odds", "timestamp": "Time"},
-                )
-                fig.update_layout(height=450, hovermode="x unified")
-                st.plotly_chart(fig, use_container_width=True)
-
-            # Spreads movement
-            sp_hist = game_hist[game_hist["market"] == "spreads"]
-            if not sp_hist.empty:
-                fig2 = px.line(
-                    sp_hist,
-                    x="timestamp",
-                    y="point",
-                    color="bookmaker",
-                    line_dash="outcome",
-                    title=f"Spread Movement – {chosen_label}",
-                    labels={"point": "Point Spread", "timestamp": "Time"},
-                )
-                fig2.update_layout(height=400, hovermode="x unified")
-                st.plotly_chart(fig2, use_container_width=True)
-
-            # Simple pattern stats
-            st.markdown("#### Quick Pattern Stats")
-            if not ml_hist.empty:
-                open_prices = ml_hist.sort_values("timestamp").groupby(["bookmaker", "outcome"]).first()["price"]
-                close_prices = ml_hist.sort_values("timestamp").groupby(["bookmaker", "outcome"]).last()["price"]
-                move = (close_prices - open_prices).reset_index()
-                move.columns = ["bookmaker", "outcome", "price_move"]
-                move["direction"] = move["price_move"].apply(
-                    lambda x: "🔴 Shortened" if x < 0 else ("🟢 Drifted" if x > 0 else "—")
-                )
-                st.dataframe(move, use_container_width=True)
-
-    # Footer
-    st.divider()
-    st.caption(
-        "Built for personal use only • Data from The Odds API • "
-        "Store your API key securely • Never share this dashboard publicly if your key is embedded"
-    )
+    st.caption("Personal use only • Credits are used per market per game when fetching props")
 
 
 if __name__ == "__main__":
