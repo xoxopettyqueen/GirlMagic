@@ -1,7 +1,7 @@
 """
 Girl Magic Odds Tracker ✨
 Tab 1 = Odds + Tricks
-Tab 2 = Batters + Pitchers (first real stats layer)
+Tab 2 = Batters + Pitchers (with platoon splits)
 """
 
 import streamlit as st
@@ -24,7 +24,7 @@ st.markdown("""
     span[data-baseweb="tag"] { background-color: #db2777 !important; }
     .hot-card { background: linear-gradient(90deg, #831843, #4c1d95); border: 2px solid #f472b6; border-radius: 12px; padding: 14px 18px; margin: 10px 0; color: #fdf2f8; }
     .matchup-card { background: #2d1b3d; border: 1px solid #c084fc; border-radius: 10px; padding: 12px 16px; margin: 8px 0; color: #fce7f3; }
-    .batter-card { background: #1f0f2e; border: 1px solid #a855f7; border-radius: 8px; padding: 10px 14px; margin: 6px 0; }
+    .batter-card { background: #1f0f2e; border: 1px solid #a855f7; border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 0.95rem; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -145,41 +145,50 @@ def fetch_probable_pitchers():
     except: return {}
 
 def search_player_id(name):
-    """Try to find MLB player ID by name (basic search)."""
     try:
-        # Simple search endpoint
         url = f"https://statsapi.mlb.com/api/v1/people/search?names={name}&sportIds=1"
         r = requests.get(url, timeout=8)
         if r.status_code == 200:
-            data = r.json()
-            people = data.get("people", [])
+            people = r.json().get("people", [])
             if people:
                 return people[0].get("id"), people[0].get("fullName")
-    except:
-        pass
+    except: pass
     return None, None
 
-def get_basic_batter_stats(player_id):
-    """Pull basic season hitting stats."""
+def get_batter_stats_with_platoon(player_id):
+    """Basic season stats + attempt at vs L / vs R."""
     if not player_id: return None
+    result = {"avg": "-", "hr": "-", "ops": "-", "vs_l": "-", "vs_r": "-"}
+    season = date.today().year
     try:
-        season = date.today().year
+        # Overall
         url = f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats?stats=season&group=hitting&season={season}"
         r = requests.get(url, timeout=8)
         if r.status_code == 200:
-            data = r.json()
-            splits = data.get("stats", [{}])[0].get("splits", [])
+            splits = r.json().get("stats", [{}])[0].get("splits", [])
             if splits:
                 stat = splits[0].get("stat", {})
-                return {
-                    "avg": stat.get("avg", "-"),
-                    "hr": stat.get("homeRuns", "-"),
-                    "ops": stat.get("ops", "-"),
-                    "ab": stat.get("atBats", "-"),
-                }
-    except:
-        pass
-    return None
+                result["avg"] = stat.get("avg", "-")
+                result["hr"] = stat.get("homeRuns", "-")
+                result["ops"] = stat.get("ops", "-")
+    except: pass
+
+    # Try platoon (vs L / vs R) - using sitCodes
+    try:
+        url = f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats?stats=season&group=hitting&season={season}&sitCodes=vl,vr"
+        r = requests.get(url, timeout=8)
+        if r.status_code == 200:
+            for split in r.json().get("stats", [{}])[0].get("splits", []):
+                code = split.get("split", {}).get("code", "")
+                stat = split.get("stat", {})
+                ops = stat.get("ops", "-")
+                if code == "vl":
+                    result["vs_l"] = ops
+                elif code == "vr":
+                    result["vs_r"] = ops
+    except: pass
+
+    return result
 
 def build_hot_list(df):
     scores = defaultdict(lambda: {"score": 0, "reasons": [], "players": set(), "matchup": ""})
@@ -343,7 +352,7 @@ def main():
             st.dataframe(show, use_container_width=True, height=350)
 
     with tab2:
-        st.subheader("Batters + Pitchers")
+        st.subheader("Batters + Pitchers (with Platoon)")
         if not chosen_games:
             st.info("Fetch games first")
         else:
@@ -359,22 +368,29 @@ def main():
                     ]["description"].unique().tolist()
 
                     if game_batters:
-                        st.write("**Batters in props + basic stats:**")
-                        for batter in sorted(game_batters)[:12]:  # limit to avoid too many API calls
-                            pid, fullname = search_player_id(batter)
-                            stats = get_basic_batter_stats(pid) if pid else None
+                        st.write("**Batters + Platoon Splits:**")
+                        for batter in sorted(game_batters)[:10]:
+                            pid, _ = search_player_id(batter)
+                            stats = get_batter_stats_with_platoon(pid) if pid else None
                             if stats:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br>AVG {stats["avg"]} | HR {stats["hr"]} | OPS {stats["ops"]} | AB {stats["ab"]}</div>', unsafe_allow_html=True)
+                                st.markdown(
+                                    f'<div class="batter-card">'
+                                    f'<b>{batter}</b><br>'
+                                    f'AVG {stats["avg"]} | HR {stats["hr"]} | OPS {stats["ops"]}<br>'
+                                    f'<b>vs LHP:</b> {stats["vs_l"]} &nbsp;|&nbsp; <b>vs RHP:</b> {stats["vs_r"]}'
+                                    f'</div>',
+                                    unsafe_allow_html=True
+                                )
                             else:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>Stats not found yet</small></div>', unsafe_allow_html=True)
-                            time.sleep(0.15)  # be nice to the free API
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>Stats not found</small></div>', unsafe_allow_html=True)
+                            time.sleep(0.2)
                     else:
                         st.caption("No batter names found for this game.")
                 st.markdown("---")
 
-            st.info("Next: platoon splits (vs L/R) and home/away will be added under each batter.")
+            st.caption("Platoon = vs LHP / vs RHP OPS when available from MLB Stats API")
 
-    st.caption("💖 Girl Magic • Tab 1 = Odds Tricks • Tab 2 = Batters + Pitchers (first stats layer)")
+    st.caption("💖 Girl Magic • Odds Tricks + Batters with Platoon")
 
 if __name__ == "__main__":
     main()
