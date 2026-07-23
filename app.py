@@ -1,6 +1,6 @@
 """
 Girl Magic Odds Tracker ✨
-Uses your uploaded Statcast CSVs for real EV / Barrel / Hard Hit
++ Petty's Launch List tab
 """
 
 import streamlit as st
@@ -24,6 +24,7 @@ st.markdown("""
     .hot-card { background: linear-gradient(90deg, #831843, #4c1d95); border: 2px solid #f472b6; border-radius: 12px; padding: 14px 18px; margin: 10px 0; color: #fdf2f8; }
     .matchup-card { background: #2d1b3d; border: 1px solid #c084fc; border-radius: 10px; padding: 12px 16px; margin: 8px 0; color: #fce7f3; }
     .batter-card { background: #1f0f2e; border: 1px solid #a855f7; border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 0.9rem; }
+    .launch-card { background: #2a1435; border: 1px solid #f472b6; border-radius: 10px; padding: 12px 16px; margin: 8px 0; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -39,14 +40,10 @@ PLAYER_PROP_MARKETS = {
     "MLB": ["batter_home_runs", "batter_hits", "batter_total_bases", "batter_rbis", "batter_runs_scored", "batter_strikeouts"],
 }
 
-# ---------- Load your Statcast CSVs ----------
 @st.cache_data
 def load_statcast_files():
     hitters = None
     exit_velo = None
-    pitchers = None
-
-    # Hitter advanced metrics
     for name in ["stats.csv", "stats (1).csv"]:
         p = Path(name)
         if p.exists():
@@ -56,8 +53,6 @@ def load_statcast_files():
                     hitters = df
                     break
             except: pass
-
-    # Exit velocity detailed
     for name in ["exit_velocity.csv", "exit_velocity (1).csv"]:
         p = Path(name)
         if p.exists():
@@ -67,13 +62,11 @@ def load_statcast_files():
                     exit_velo = df
                     break
             except: pass
-
     return hitters, exit_velo
 
 def normalize_name(name):
     if not name: return ""
     name = str(name).lower().strip()
-    # handle "Last, First" format from Savant
     if "," in name:
         parts = [p.strip() for p in name.split(",")]
         if len(parts) == 2:
@@ -83,38 +76,29 @@ def normalize_name(name):
 def find_player_metrics(player_name, hitters_df, exit_df):
     if hitters_df is None and exit_df is None:
         return None
-
     target = normalize_name(player_name)
     result = {"matched": None}
-
-    # Try hitters advanced file first
     if hitters_df is not None:
         for _, row in hitters_df.iterrows():
             savant_name = normalize_name(row.get("last_name, first_name", ""))
-            if target in savant_name or savant_name in target or target.split()[-1] in savant_name:
+            if target in savant_name or savant_name in target or (len(target.split()) > 0 and target.split()[-1] in savant_name):
                 result["matched"] = savant_name
                 result["barrel"] = row.get("barrel_batted_rate", "-")
                 result["hard_hit"] = row.get("hard_hit_percent", "-")
                 result["best_speed"] = row.get("avg_best_speed", "-")
-                result["hyper_speed"] = row.get("avg_hyper_speed", "-")
                 result["sweet_spot"] = row.get("sweet_spot_percent", "-")
                 result["xwoba"] = row.get("xwoba", "-")
-                result["woba"] = row.get("woba", "-")
                 break
-
-    # Overlay detailed exit velo if available
     if exit_df is not None:
         for _, row in exit_df.iterrows():
             savant_name = normalize_name(row.get("last_name, first_name", ""))
-            if target in savant_name or savant_name in target or target.split()[-1] in savant_name:
+            if target in savant_name or savant_name in target or (len(target.split()) > 0 and target.split()[-1] in savant_name):
                 result["matched"] = result.get("matched") or savant_name
                 result["avg_ev"] = row.get("avg_hit_speed", "-")
                 result["max_ev"] = row.get("max_hit_speed", "-")
-                result["ev50"] = row.get("ev50", "-")
                 result["brl_percent"] = row.get("brl_percent", result.get("barrel", "-"))
                 result["hard_hit"] = row.get("ev95percent", result.get("hard_hit", "-"))
                 break
-
     return result if result.get("matched") else None
 
 def init_db():
@@ -307,13 +291,9 @@ def build_hot_list(df):
 def main():
     init_db()
     st.title("💖 Girl Magic Odds Tracker ✨")
-    st.caption("Using your uploaded Statcast CSVs")
+    st.caption("Odds Tricks + Batters + Petty's Launch List")
 
     hitters_df, exit_df = load_statcast_files()
-    if hitters_df is not None:
-        st.sidebar.success(f"Loaded hitter stats: {len(hitters_df)} players")
-    if exit_df is not None:
-        st.sidebar.success(f"Loaded exit velo: {len(exit_df)} players")
 
     api_key = get_api_key()
     if not api_key:
@@ -364,7 +344,7 @@ def main():
     pitchers = fetch_probable_pitchers()
     chosen_games = st.session_state.get("chosen_games", [])
 
-    tab1, tab2 = st.tabs(["🎯 Odds + Tricks", "⚾ Batters + Pitchers"])
+    tab1, tab2, tab3 = st.tabs(["🎯 Odds + Tricks", "⚾ Batters + Pitchers", "🚀 Petty's Launch List"])
 
     with tab1:
         st.subheader("Odds Tricks & Best Pairs")
@@ -390,43 +370,79 @@ def main():
             st.dataframe(show, use_container_width=True, height=350)
 
     with tab2:
-        st.subheader("Batters + Pitchers (Real Statcast)")
+        st.subheader("Batters + Pitchers")
         if not chosen_games:
             st.info("Fetch games first")
         else:
             for g in chosen_games:
                 info = pitchers.get(g, {"away": "TBD", "home": "TBD"})
                 st.markdown(f'<div class="matchup-card"><b>{g}</b><br>Away SP: <b>{info["away"]}</b><br>Home SP: <b>{info["home"]}</b></div>', unsafe_allow_html=True)
-
                 if records:
                     df = pd.DataFrame(records)
-                    game_batters = df[
-                        ((df["away_team"] + " @ " + df["home_team"]) == g) &
-                        (df["description"].notna())
-                    ]["description"].unique().tolist()
-
+                    game_batters = df[((df["away_team"] + " @ " + df["home_team"]) == g) & (df["description"].notna())]["description"].unique().tolist()
                     if game_batters:
-                        for batter in sorted(game_batters)[:10]:
+                        for batter in sorted(game_batters)[:8]:
                             metrics = find_player_metrics(batter, hitters_df, exit_df)
                             if metrics:
-                                st.markdown(
-                                    f'<div class="batter-card">'
-                                    f'<b>{batter}</b> → {metrics.get("matched","")}<br>'
-                                    f'Barrel {metrics.get("barrel", metrics.get("brl_percent","-"))}% | '
-                                    f'Hard Hit {metrics.get("hard_hit","-")}% | '
-                                    f'Avg EV {metrics.get("avg_ev", metrics.get("best_speed","-"))} | '
-                                    f'Max EV {metrics.get("max_ev","-")}<br>'
-                                    f'Sweet Spot {metrics.get("sweet_spot","-")}% | xwOBA {metrics.get("xwoba","-")}'
-                                    f'</div>',
-                                    unsafe_allow_html=True
-                                )
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b> → {metrics.get("matched","")}<br>Barrel {metrics.get("barrel", metrics.get("brl_percent","-"))}% | Hard Hit {metrics.get("hard_hit","-")}% | Avg EV {metrics.get("avg_ev", metrics.get("best_speed","-"))}</div>', unsafe_allow_html=True)
                             else:
-                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match in your CSVs</small></div>', unsafe_allow_html=True)
-                    else:
-                        st.caption("No batter names found.")
+                                st.markdown(f'<div class="batter-card"><b>{batter}</b><br><small>No match</small></div>', unsafe_allow_html=True)
                 st.markdown("---")
 
-    st.caption("💖 Girl Magic • Using your uploaded Statcast files")
+    with tab3:
+        st.subheader("🚀 Petty's Launch List")
+        st.caption("Drop your CSVs or use the ones already loaded. This ranks the best HR targets.")
+
+        # Simple ranking from the loaded Statcast files
+        if hitters_df is not None or exit_df is not None:
+            st.write("**Top HR Candidates (from your uploaded files)**")
+
+            candidates = []
+            source = exit_df if exit_df is not None else hitters_df
+            if source is not None:
+                for _, row in source.iterrows():
+                    name = row.get("last_name, first_name", "")
+                    try:
+                        ev = float(row.get("avg_hit_speed", row.get("avg_best_speed", 0)) or 0)
+                        hh = float(row.get("ev95percent", row.get("hard_hit_percent", 0)) or 0)
+                        brl = float(row.get("brl_percent", row.get("barrel_batted_rate", 0)) or 0)
+                        score = (ev * 0.4) + (hh * 0.35) + (brl * 0.25)
+                        candidates.append({
+                            "name": name,
+                            "ev": round(ev, 1),
+                            "hh": round(hh, 1),
+                            "brl": round(brl, 1),
+                            "score": round(score, 1)
+                        })
+                    except:
+                        continue
+
+            candidates = sorted(candidates, key=lambda x: x["score"], reverse=True)[:25]
+
+            for i, c in enumerate(candidates, 1):
+                note = ""
+                if c["ev"] >= 92:
+                    note = "EV NUCLEAR"
+                elif c["brl"] >= 12:
+                    note = "Barrel monster"
+                elif c["hh"] >= 45:
+                    note = "Hard-hit heavy"
+
+                st.markdown(
+                    f'<div class="launch-card">'
+                    f'<b>{i}. {c["name"]}</b><br>'
+                    f'{c["ev"]} EV | {c["hh"]} HH% | {c["brl"]} Barrel%<br>'
+                    f'<small>{note}</small>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+        else:
+            st.info("Upload your batter Statcast CSVs (stats.csv / exit_velocity.csv) into the repo to power this list.")
+
+        st.markdown("---")
+        st.write("**Next upgrade:** Add pitcher HR/9 + park factors so the list becomes game-by-game like your manual version.")
+
+    st.caption("💖 Girl Magic • Odds + Batters + Petty's Launch List")
 
 if __name__ == "__main__":
     main()
