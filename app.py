@@ -179,15 +179,62 @@ def find_betmgm_ending_flags(df):
 def find_name_letter_matches(df):
     flags = []
     props = df[df["description"].notna() & (df["description"] != "")].copy()
-    if props.empty: return flags
+    if props.empty:
+        return flags
+
+    def get_initials(name):
+        parts = name.strip().split()
+        if not parts:
+            return None, None
+        first = parts[0][0].upper() if parts[0] else None
+        last = parts[-1][0].upper() if len(parts) > 1 else None
+        return first, last
+
     for team_col in ["home_team", "away_team"]:
         for team, group in props.groupby(team_col):
-            by_letter = defaultdict(list)
-            for p in group["description"].unique():
-                if p: by_letter[p[0].upper()].append(p)
-            for letter, names in by_letter.items():
+            players = list(group["description"].unique())
+
+            # 1. Exact same name
+            name_counts = defaultdict(list)
+            for p in players:
+                name_counts[p].append(p)
+            for name, lst in name_counts.items():
+                if len(lst) >= 2:
+                    flags.append({
+                        "team": team,
+                        "label": f'Exact name "{name}"',
+                        "players": lst
+                    })
+
+            # 2. Same first + last initial (JS, MJ, etc.)
+            initials_map = defaultdict(list)
+            for p in players:
+                first, last = get_initials(p)
+                if first and last:
+                    key = first + last
+                    initials_map[key].append(p)
+            for key, names in initials_map.items():
                 if len(names) >= 2:
-                    flags.append({"team": team, "letter": letter, "players": names})
+                    flags.append({
+                        "team": team,
+                        "label": f"Same initials “{key}”",
+                        "players": names
+                    })
+
+            # 3. Same first initial only
+            first_map = defaultdict(list)
+            for p in players:
+                first, _ = get_initials(p)
+                if first:
+                    first_map[first].append(p)
+            for letter, names in first_map.items():
+                if len(names) >= 2:
+                    flags.append({
+                        "team": team,
+                        "label": f"Matching first letter “{letter}”",
+                        "players": names
+                    })
+
     return flags
 
 def main():
@@ -212,7 +259,7 @@ def main():
         st.markdown("---")
         show_same_odds = st.checkbox("Same odds on same team", value=True)
         show_betmgm = st.checkbox("BetMGM ending 25/50/75", value=True)
-        show_name_match = st.checkbox("Matching first letters", value=True)
+        show_name_match = st.checkbox("Matching names / initials", value=True)
 
     st.subheader("1️⃣ Upcoming Games")
     if st.button("Load Games 💫", type="primary"):
@@ -256,12 +303,14 @@ def main():
         if show_same_odds:
             for f in find_same_odds_flags(df):
                 st.markdown(f'<div class="flag-box"><div class="flag-title">⚡ Same Odds Trick</div>{f["team"]} • {f["market"]} • {f["odds"]}<br>Players: <b>{" + ".join(f["players"])}</b></div>', unsafe_allow_html=True)
+
         if show_betmgm:
             for f in find_betmgm_ending_flags(df):
                 st.markdown(f'<div class="flag-box"><div class="flag-title">🎯 BetMGM Ending {f["ending"]}</div>{f["player"]} • {f["odds"]} • {f["market"]}</div>', unsafe_allow_html=True)
+
         if show_name_match:
             for f in find_name_letter_matches(df):
-                st.markdown(f'<div class="flag-box"><div class="flag-title">🔤 Matching Letter “{f["letter"]}”</div>{f["team"]}<br>Players: <b>{" + ".join(f["players"])}</b></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="flag-box"><div class="flag-title">🔤 {f["label"]}</div>{f["team"]}<br>Players: <b>{" + ".join(f["players"])}</b></div>', unsafe_allow_html=True)
 
         show = df[["home_team", "away_team", "bookmaker", "market", "description", "outcome", "price", "point"]].copy()
         show["price"] = show["price"].apply(format_odds)
