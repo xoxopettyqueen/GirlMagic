@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 For the girls only • Our tricks
-+ Stuck Number & Wide Disagreement signals
++ Historical price tracking (session-based)
 """
 
 import streamlit as st
@@ -9,6 +9,7 @@ import pandas as pd
 import requests
 from collections import defaultdict
 import statistics
+from datetime import datetime
 
 st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="💖", layout="wide")
 
@@ -31,6 +32,7 @@ st.markdown("""
     .fd { border-left: 6px solid #1493ff; }
     .name { border-left: 6px solid #f9a8d4; }
     .signal { border-left: 6px solid #34d399; }
+    .hist { border-left: 6px solid #fbbf24; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -96,7 +98,7 @@ def flatten(data):
                 })
     return rows
 
-def run_flags(df):
+def run_flags(df, previous_df=None):
     if df.empty: return []
 
     if "point" in df.columns:
@@ -201,24 +203,22 @@ def run_flags(df):
                 })
                 flagged_players.add(row["player"])
 
-    # ========== NEW: LINE SIGNALS ==========
+    # 7. Line Signals (Stuck + Wide Disagreement)
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         books = group["book"].tolist()
         if len(prices) < 3: continue
 
-        # Stuck Number = exact same price on 3+ books
         if len(set(prices)) == 1 and len(prices) >= 3:
             results.append({
                 "type": "signal",
                 "label": player,
-                "reason": f"Stuck Number {format_odds(prices[0])} on {len(prices)} books → {', '.join(books)}",
+                "reason": f"Stuck Number {format_odds(prices[0])} on {len(prices)} books",
                 "event": group["event"].iloc[0],
                 "css": "signal"
             })
             flagged_players.add(player)
 
-        # Wide Disagreement = one book 150+ away from median
         try:
             med = statistics.median(prices)
             for i, pr in enumerate(prices):
@@ -234,7 +234,31 @@ def run_flags(df):
         except:
             pass
 
-    # ========== NAME PATTERNS (only if both players already flagged) ==========
+    # ========== 8. HISTORICAL PRICE TRACKING ==========
+    if previous_df is not None and not previous_df.empty:
+        # Create lookup of previous prices
+        prev_lookup = {}
+        for _, row in previous_df.iterrows():
+            key = (row["player"], row["book"])
+            prev_lookup[key] = row["price"]
+
+        for _, row in df.iterrows():
+            key = (row["player"], row["book"])
+            if key in prev_lookup:
+                old = prev_lookup[key]
+                new = row["price"]
+                if old is not None and new is not None and old != new:
+                    direction = "↑ got longer" if new > old else "↓ got shorter"
+                    results.append({
+                        "type": "hist",
+                        "label": row["player"],
+                        "reason": f"{row['book']}: {format_odds(old)} → {format_odds(new)} {direction}",
+                        "event": row["event"],
+                        "css": "hist"
+                    })
+                    flagged_players.add(row["player"])
+
+    # Name patterns (only if both flagged)
     player_events = defaultdict(set)
     for _, row in df.iterrows():
         player_events[row["player"]].add(row["event"])
@@ -357,14 +381,23 @@ def main():
         if all_rows:
             df = pd.DataFrame(all_rows)
             df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
+
+            # Save previous for historical comparison
+            if "odds" in st.session_state:
+                st.session_state["previous_odds"] = st.session_state["odds"]
             st.session_state["odds"] = df.to_dict("records")
-            st.success(f"Loaded {len(df)} props (Only 0.5/1 HR)")
+            st.session_state["last_fetch_time"] = datetime.now().strftime("%I:%M %p")
+
+            st.success(f"Loaded {len(df)} props (Only 0.5/1 HR) • {st.session_state['last_fetch_time']}")
         else:
             st.warning("No odds returned for these games")
 
     odds = st.session_state.get("odds", [])
+    previous = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
-    results = run_flags(df) if not df.empty else []
+    prev_df = pd.DataFrame(previous) if previous else None
+
+    results = run_flags(df, prev_df) if not df.empty else []
 
     tabs = st.tabs([
         "🎯 DK Ends in 10",
@@ -374,6 +407,7 @@ def main():
         "🔢 Matching 25/50/75",
         "💙 FanDuel Patterns",
         "📈 Line Signals",
+        "⏳ Price Movement",
         "💅 Same Initials",
         "🔄 Cross Initials",
         "👩‍👧 Same Last Name",
@@ -401,13 +435,14 @@ def main():
     show_tab(tabs[3], "mgm_exact")
     show_tab(tabs[4], "digit")
     show_tab(tabs[5], "fd")
-    show_tab(tabs[6], "signal")      # ← new Line Signals tab
-    show_tab(tabs[7], "same_init")
-    show_tab(tabs[8], "cross")
-    show_tab(tabs[9], "last")
-    show_tab(tabs[10], "first")
+    show_tab(tabs[6], "signal")
+    show_tab(tabs[7], "hist")          # ← Price Movement tab
+    show_tab(tabs[8], "same_init")
+    show_tab(tabs[9], "cross")
+    show_tab(tabs[10], "last")
+    show_tab(tabs[11], "first")
 
-    with tabs[11]:
+    with tabs[12]:
         st.subheader("📖 Girl Magic Glossary")
         st.markdown("""
 **🎯 DraftKings Ends in 10**  
@@ -429,12 +464,15 @@ Same player has 25/50/75 endings across different books.
 FanDuel props ≥ +500 ending in 10, 30, 60, 70, or 90.
 
 **📈 Line Signals**  
-- **Stuck Number**: Exact same price on 3+ books (number is being held)  
-- **Wide Disagreement**: One book is 150+ away from the median (possible recent move)
+- Stuck Number: Exact same price on 3+ books  
+- Wide Disagreement: One book 150+ away from the median
+
+**⏳ Price Movement**  
+Shows how the price changed since your last fetch  
+(↑ got longer / ↓ got shorter)
 
 **💅 Same Initials / 🔄 Cross Initials / 👩‍👧 Same Last Name / 👯 Same First Name**  
-Only shown if both players already hit an odds method.  
-Labeled (different teams) or (same team).
+Only shown if both players already hit an odds method.
         """)
 
     st.caption("💖 Girl Magic • For the girls only • Our tricks")
