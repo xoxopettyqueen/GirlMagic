@@ -1,0 +1,2 @@
+# GirlMagic
+Odds tracking animal 
