@@ -769,7 +769,7 @@ def run_flags(df, previous_df=None):
 def main():
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
-    st.markdown('<p class="tagline">Where odds intuition meets Girl Magic.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="tagline">Where odds intuition meets petty precision.</p>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="how-to">
