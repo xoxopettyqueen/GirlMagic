@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Smaller cards + cleaned Glossary
+Readable fonts + tight padding
 """
 
 import streamlit as st
@@ -40,7 +40,7 @@ st.markdown("""
 
     .subtitle {
         color: #f9a8d4;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         font-weight: 600;
         letter-spacing: 1.5px;
         text-transform: uppercase;
@@ -54,7 +54,7 @@ st.markdown("""
         border-radius: 12px;
         padding: 10px 14px;
         margin-bottom: 14px;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         line-height: 1.4;
     }
 
@@ -64,9 +64,9 @@ st.markdown("""
         border: none !important;
         border-radius: 10px !important;
         font-weight: 700 !important;
-        padding: 0.5rem 1.2rem !important;
+        padding: 0.55rem 1.3rem !important;
         box-shadow: 0 3px 12px rgba(219, 39, 119, 0.4);
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
 
     .card {
@@ -79,7 +79,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         position: relative;
         height: 100%;
-        font-size: 0.88rem;
+        font-size: 0.95rem;
     }
 
     .card::before {
@@ -117,11 +117,11 @@ st.markdown("""
         display: inline-block;
         background: #3b0764;
         color: #f9a8d4;
-        font-size: 0.62rem;
+        font-size: 0.72rem;
         font-weight: 700;
-        padding: 2px 7px;
+        padding: 2px 8px;
         border-radius: 10px;
-        margin: 2px 2px 2px 0;
+        margin: 2px 3px 2px 0;
         border: 1px solid #a855f7;
     }
 
@@ -135,9 +135,9 @@ st.markdown("""
         display: inline-block;
         background: linear-gradient(90deg, #db2777, #9333ea);
         color: white;
-        font-size: 0.65rem;
+        font-size: 0.75rem;
         font-weight: 700;
-        padding: 3px 10px;
+        padding: 4px 12px;
         border-radius: 16px;
         letter-spacing: 1px;
         text-transform: uppercase;
@@ -150,8 +150,8 @@ st.markdown("""
         border-radius: 8px;
         color: #f9a8d4;
         font-weight: 600;
-        padding: 6px 10px;
-        font-size: 0.8rem;
+        padding: 7px 11px;
+        font-size: 0.85rem;
     }
     .stTabs [aria-selected="true"] {
         background: linear-gradient(90deg, #db2777, #9333ea) !important;
@@ -161,7 +161,7 @@ st.markdown("""
     .footer {
         text-align: center;
         color: #f9a8d4;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         margin-top: 30px;
         letter-spacing: 1px;
         opacity: 0.85;
@@ -690,7 +690,7 @@ def main():
     show_tab(tabs[11], "last", "👩‍👧 Same Last Name", "Players sharing a last name")
     show_tab(tabs[12], "first", "👯 Same First Name", "Players sharing a first name")
 
-    # ========== CLEANED GLOSSARY ==========
+    # Glossary
     with tabs[13]:
         st.markdown('<div class="queen-banner">📖 Glossary</div>', unsafe_allow_html=True)
 
@@ -723,7 +723,7 @@ def main():
 
         st.markdown('<div class="queen-banner">All Methods</div>', unsafe_allow_html=True)
 
-        methods_html = """
+        st.markdown("""
         <div class="card">
             <span class="tag">DK 10</span> DraftKings ends in 10<br>
             <span class="tag">MGM 00/25/50/75</span> Same-team pairs or groups<br>
@@ -736,8 +736,7 @@ def main():
             <span class="tag">Way different</span> One book is much higher or lower than the rest<br>
             <span class="tag">Name patterns</span> Only shown when a method already hit
         </div>
-        """
-        st.markdown(methods_html, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
