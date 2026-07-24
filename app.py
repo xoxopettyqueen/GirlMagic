@@ -8,8 +8,7 @@ import pandas as pd
 import requests
 from collections import defaultdict
 import statistics
-from datetime import datetime
-
+from datetime import datetime, timezone, timedelta
 
 st.set_page_config(
     page_title="Girl Magic Odds ✨",
@@ -277,8 +276,6 @@ def get_initials(name):
     return parts[0][0].upper(), parts[-1][0].upper()
 
 def now_az():
-    # Arizona is UTC-7 year-round (no daylight saving)
-    from datetime import timezone, timedelta
     az = timezone(timedelta(hours=-7))
     return datetime.now(az).strftime("%I:%M %p")
 
@@ -605,7 +602,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV
+    # +EV — only show if player has at least 1 method
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -621,6 +618,11 @@ def run_flags(df, previous_df=None):
         edge = best - med
         meths = list(set(methods_map.get(player, [])))
         method_count = len(meths)
+
+        # NO METHODS = DON'T SHOW AT ALL
+        if method_count < 1:
+            continue
+
         is_bet = (method_count >= METHODS_MIN) and (edge >= EDGE_MIN)
         conf, bars, level, css = get_confidence(meths, edge, is_bet)
         pri = 0
@@ -629,36 +631,38 @@ def run_flags(df, previous_df=None):
         if "Stayed in the group" in meths: pri += 10
         if "Same on 3+ books" in meths: pri += 8
         pri += method_count * 5 + min(edge / 10, 15)
+
         if is_bet:
             why = f"{method_count} methods hit + price is clearly better. This is the one."
         elif method_count >= METHODS_MIN:
             why = f"{method_count} methods hit, but the price isn’t better enough yet."
-        elif edge >= EDGE_MIN:
-            why = "Price looks better, but we need at least 2 methods."
         else:
-            why = "Not enough methods and not enough edge."
-        if method_count >= 1 or edge >= EDGE_MIN:
-            ev_board.append({
-                "player": player, "best_price": best, "best_book": best_book,
-                "median": med, "edge": edge, "is_bet": is_bet, "why": why,
-                "methods": meths, "priority": pri, "bars": bars,
-                "level": level, "css": css, "method_count": method_count
-            })
+            why = "Has a method, but needs at least 2 methods + real edge to bet."
+
+        ev_board.append({
+            "player": player, "best_price": best, "best_book": best_book,
+            "median": med, "edge": edge, "is_bet": is_bet, "why": why,
+            "methods": meths, "priority": pri, "bars": bars,
+            "level": level, "css": css, "method_count": method_count
+        })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-      # Name patterns — VERY tight: only real book methods count
+    # Name patterns — only real book methods count, need 2+
     CORE_METHODS = {
         "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
         "Match 25", "Match 50", "Match 75",
-        "MGM 00", "MGM 25", "MGM 50", "MGM 75",
         "Last one left", "Stayed in the group"
     }
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
+
     strong = set()
     for p, ms in methods_map.items():
-        core_hits = [m for m in set(ms) if m in CORE_METHODS or m.startswith("MGM ") or m.startswith("Match ") or m.startswith("Stayed 3")]
+        core_hits = []
+        for m in set(ms):
+            if m in CORE_METHODS or m.startswith("MGM ") or m.startswith("Match ") or m.startswith("Stayed 3"):
+                core_hits.append(m)
         if len(core_hits) >= 2:
             strong.add(p)
     players = list(strong)
@@ -835,7 +839,7 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Green = 2+ methods + real edge.** Everything else is skip.")
+        st.write("**Green = 2+ methods + real edge.** Only players with methods appear here.")
         if not ev_board:
             st.info("Fetch some games first.")
         else:
@@ -881,10 +885,10 @@ def main():
     show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
     show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
-    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Same first + last initial (only strong players).")
-    show(tabs[10], "cross", "🔄 Cross Initials — Connected", "One player’s last initial matches another’s first.")
-    show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Shared last name.")
-    show(tabs[12], "first", "👯 Same First Name — Twinsies", "Shared first name.")
+    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Only when both already have 2+ real book methods.")
+    show(tabs[10], "cross", "🔄 Cross Initials — Connected", "Only when both already have 2+ real book methods.")
+    show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Only when both already have 2+ real book methods.")
+    show(tabs[12], "first", "👯 Same First Name — Twinsies", "Only when both already have 2+ real book methods.")
 
     with tabs[13]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
@@ -896,7 +900,7 @@ def main():
         </div>
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
-            Less than 2 methods, or the price isn’t better enough yet. We pass.
+            Has methods, but not enough of them or the price isn’t better enough yet. We pass.
         </div>
         <div class="gloss-card">
             <b>🎯 DraftKings Ends in 10</b><br>
@@ -931,7 +935,7 @@ def main():
         </div>
         <div class="gloss-card">
             <b>💅 Same Initials / Cross / Same First / Same Last</b><br>
-            Name magic. Only shows when both players already have 2+ methods. Prefer different teams.
+            Name magic. Only shows when both players already have 2+ real book methods.
         </div>
         <div class="gloss-card">
             <b>Confidence Meter</b> — more filled bars = stronger mix of methods + edge.<br>
