@@ -1,7 +1,6 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling
-Design upgrade + same tight logic (2+ methods + edge ≥ 60)
 """
 
 import streamlit as st
@@ -10,6 +9,7 @@ import requests
 from collections import defaultdict
 import statistics
 from datetime import datetime
+import pytz
 
 st.set_page_config(
     page_title="Girl Magic Odds ✨",
@@ -34,18 +34,26 @@ st.markdown("""
         background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc, #f472b6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 2.5rem !important;
-        margin-bottom: 0 !important;
+        font-size: 2.6rem !important;
+        margin-bottom: 2px !important;
+        letter-spacing: -0.5px;
     }
 
     .subtitle {
         color: #f9a8d4;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         font-weight: 600;
-        letter-spacing: 1.8px;
+        letter-spacing: 1.6px;
         text-transform: uppercase;
-        margin-top: -6px;
+        margin-bottom: 4px;
+    }
+
+    .tagline {
+        color: #e9d5ff;
+        font-size: 0.88rem;
+        font-style: italic;
         margin-bottom: 16px;
+        opacity: 0.95;
     }
 
     .how-to {
@@ -94,25 +102,25 @@ st.markdown("""
     }
     .petty-box {
         flex: 1;
-        min-width: 120px;
+        min-width: 110px;
         background: #1a0f28;
         border: 1px solid #f472b6;
         border-radius: 12px;
-        padding: 12px 10px;
+        padding: 12px 8px;
         text-align: center;
         box-shadow: 0 0 12px rgba(244, 114, 182, 0.15);
     }
     .petty-num {
-        font-size: 1.7rem;
+        font-size: 1.65rem;
         font-weight: 800;
         color: #f9a8d4;
         line-height: 1.1;
     }
     .petty-label {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         color: #e9d5ff;
         margin-top: 4px;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.4px;
     }
 
     .card {
@@ -163,10 +171,6 @@ st.markdown("""
         border: 1px solid #a855f7;
     }
     .tag-green { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
-    .tag-dk { background: #052e16; color: #4ade80; border-color: #22c55e; }
-    .tag-fd { background: #0c1a3a; color: #60a5fa; border-color: #3b82f6; }
-    .tag-mgm { background: #3b2f0b; color: #fbbf24; border-color: #f59e0b; }
-    .tag-caesars { background: #3b0a0a; color: #f87171; border-color: #ef4444; }
 
     .queen-banner {
         display: inline-block;
@@ -207,10 +211,11 @@ st.markdown("""
     .footer {
         text-align: center;
         color: #f9a8d4;
-        font-size: 0.9rem;
-        margin-top: 32px;
-        letter-spacing: 1.2px;
-        opacity: 0.85;
+        font-size: 0.95rem;
+        margin-top: 36px;
+        letter-spacing: 1.1px;
+        opacity: 0.9;
+        padding-bottom: 20px;
     }
     .grid-card { margin-bottom: 7px; }
 
@@ -243,6 +248,7 @@ CORE_BOOKS = {
 
 EDGE_MIN = 60
 METHODS_MIN = 2
+AZ = pytz.timezone("America/Phoenix")
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -271,6 +277,9 @@ def get_initials(name):
         return None, None
     return parts[0][0].upper(), parts[-1][0].upper()
 
+def now_az():
+    return datetime.now(AZ).strftime("%I:%M %p")
+
 def get_confidence(methods, edge, is_bet):
     if not is_bet:
         return "Skip", 1, "low", "skip-card"
@@ -293,14 +302,6 @@ def make_meter(bars, level):
         html += f'<div class="meter-bar {filled}"></div>'
     html += '</div>'
     return html
-
-def book_tag(book):
-    b = str(book).lower()
-    if "draftkings" in b: return "tag-dk"
-    if "fanduel" in b: return "tag-fd"
-    if "betmgm" in b or "mgm" in b: return "tag-mgm"
-    if "caesars" in b or "williamhill" in b: return "tag-caesars"
-    return "tag"
 
 def fetch_events_oddsapi(api_key):
     try:
@@ -643,17 +644,15 @@ def run_flags(df, previous_df=None):
             })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # Name patterns
+    # Name patterns — TIGHT: only if BOTH already have 2+ methods
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
-    players = list(df["player"].dropna().unique())
+    strong = {p for p, ms in methods_map.items() if len(set(ms)) >= 2}
+    players = list(strong)
 
     def diff_team(a, b):
         return len(pev[a] & pev[b]) == 0
-
-    def both(a, b):
-        return a in flagged and b in flagged
 
     init_map = defaultdict(list)
     for p in players:
@@ -663,17 +662,16 @@ def run_flags(df, previous_df=None):
     for k, names in init_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if both(a, b):
-                    tag = "same team" if not diff_team(a, b) else "different teams"
-                    results.append({"type": "same_init", "label": f"{a} + {b}",
-                        "reason": f"Same initials {k} ({tag})", "event": "", "css": "name", "methods": ["Same Init"]})
+                tag = "same team" if not diff_team(a, b) else "different teams"
+                results.append({"type": "same_init", "label": f"{a} + {b}",
+                    "reason": f"Same initials {k} ({tag})", "event": "", "css": "name", "methods": ["Same Init"]})
 
     for i, a in enumerate(players):
         _, l1 = get_initials(a)
         if not l1: continue
         for b in players[i+1:]:
             f2, _ = get_initials(b)
-            if f2 and l1 == f2 and both(a, b):
+            if f2 and l1 == f2:
                 tag = "same team" if not diff_team(a, b) else "different teams"
                 results.append({"type": "cross", "label": f"{a} + {b}",
                     "reason": f"Cross initials ({l1}) ({tag})", "event": "", "css": "name", "methods": ["Cross Init"]})
@@ -686,10 +684,9 @@ def run_flags(df, previous_df=None):
     for last, names in last_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if both(a, b):
-                    tag = "same team" if not diff_team(a, b) else "different teams"
-                    results.append({"type": "last", "label": f"{a} + {b}",
-                        "reason": f"Same last name ({last.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same Last"]})
+                tag = "same team" if not diff_team(a, b) else "different teams"
+                results.append({"type": "last", "label": f"{a} + {b}",
+                    "reason": f"Same last name ({last.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same Last"]})
 
     first_map = defaultdict(list)
     for p in players:
@@ -699,16 +696,16 @@ def run_flags(df, previous_df=None):
     for first, names in first_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if both(a, b):
-                    tag = "same team" if not diff_team(a, b) else "different teams"
-                    results.append({"type": "first", "label": f"{a} + {b}",
-                        "reason": f"Same first name ({first.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same First"]})
+                tag = "same team" if not diff_team(a, b) else "different teams"
+                results.append({"type": "first", "label": f"{a} + {b}",
+                    "reason": f"Same first name ({first.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same First"]})
 
     return results, ev_board
 
 def main():
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
+    st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="how-to">
@@ -758,8 +755,8 @@ def main():
                 st.session_state["previous_odds"] = st.session_state["odds"]
             st.session_state["odds"] = df.to_dict("records")
             st.session_state["found_books"] = sorted(all_found & PREFERRED)
-            st.session_state["last_fetch_time"] = datetime.now().strftime("%I:%M %p")
-            st.success(f"Loaded {len(df)} props • {st.session_state['last_fetch_time']}")
+            st.session_state["last_fetch_time"] = now_az()
+            st.success(f"Loaded {len(df)} props • {st.session_state['last_fetch_time']} AZ")
         else:
             st.warning("No odds returned.")
 
@@ -780,7 +777,6 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     results, ev_board = run_flags(df, prev_df) if not df.empty else ([], [])
 
-    # Petty Alerts strip
     counts = {
         "dk": len([r for r in results if r["type"] == "dk"]),
         "mgm": len([r for r in results if r["type"] == "mgm"]),
@@ -873,7 +869,7 @@ def main():
     show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
     show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
-    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Same first + last initial.")
+    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Same first + last initial (only strong players).")
     show(tabs[10], "cross", "🔄 Cross Initials — Connected", "One player’s last initial matches another’s first.")
     show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Shared last name.")
     show(tabs[12], "first", "👯 Same First Name — Twinsies", "Shared first name.")
@@ -923,7 +919,7 @@ def main():
         </div>
         <div class="gloss-card">
             <b>💅 Same Initials / Cross / Same First / Same Last</b><br>
-            Name magic. Only counts when other methods already hit. Prefer different teams.
+            Name magic. Only shows when both players already have 2+ methods. Prefer different teams.
         </div>
         <div class="gloss-card">
             <b>Confidence Meter</b> — more filled bars = stronger mix of methods + edge.<br>
@@ -931,7 +927,7 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">👑 Girl Magic • Where intuition meets odds analytics.<br>Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
