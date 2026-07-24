@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Late deduped · RotoWire lineups · non-starters off The Board · selected games only
+What's Going Today banner · Late dedupe · RotoWire · non-starters off board
 """
 
 import streamlit as st
@@ -10,7 +10,7 @@ import requests
 import json
 import os
 import re
-from collections import defaultdict
+from collections import defaultdict, Counter
 import statistics
 from datetime import datetime, timezone, timedelta
 
@@ -41,10 +41,25 @@ st.markdown("""
     .warning-box { background: #3b0764; border: 2px solid #f472b6; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; font-size: 0.95rem; }
     .info-box { background: #1a0f28; border: 1px solid #a855f7; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.9rem; }
     .stButton > button { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; padding: 0.55rem 1.3rem !important; }
-    .petty-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .petty-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
     .petty-box { flex: 1; min-width: 70px; background: #1a0f28; border: 1px solid #f472b6; border-radius: 12px; padding: 10px 6px; text-align: center; }
     .petty-num { font-size: 1.35rem; font-weight: 800; color: #f9a8d4; line-height: 1.1; }
     .petty-label { font-size: 0.58rem; color: #e9d5ff; margin-top: 4px; }
+    .trends-today {
+        background: linear-gradient(135deg, #2a1040 0%, #1a0f28 50%, #3b0764 100%);
+        border: 1px solid #c084fc; border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+    }
+    .trends-today-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .trends-today-title { color: #f9a8d4; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.5px; }
+    .trends-today-sub { color: #e9d5ff; font-size: 0.72rem; opacity: 0.9; }
+    .trends-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .trend-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(0,0,0,0.35); border: 1px solid #a855f7; border-radius: 999px;
+        padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #fce7f3;
+    }
+    .trend-chip.hot { border-color: #f472b6; background: rgba(219, 39, 119, 0.25); }
+    .trend-chip .chip-count { color: #f9a8d4; font-weight: 900; }
     .card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #f472b6; border-radius: 12px; padding: 10px 12px; margin: 0; color: #fdf2f8; position: relative; height: 100%; font-size: 0.93rem; }
     .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: 12px 0 0 12px; background: #f472b6; }
     .bet { background: linear-gradient(155deg, #0c2418, #143d28) !important; border: 1px solid #34d399 !important; }
@@ -124,6 +139,8 @@ NOISE_METHODS = {
     "Shortening", "Lengthening", "Multi-book Lengthen",
 }
 
+CLASSIC_ENDINGS = {0, 10, 25, 50, 75}
+
 def is_bet365(book):
     b = str(book).lower()
     return "bet365" in b or b == "365"
@@ -201,6 +218,16 @@ def last_two(p):
     try: return abs(int(p)) % 100
     except: return None
 
+def book_label(b):
+    b = str(b or "").lower()
+    if "betmgm" in b or b == "mgm": return "MGM"
+    if "draftkings" in b or b == "dk": return "DK"
+    if "fanduel" in b or b == "fd": return "FD"
+    if "bet365" in b or b == "365": return "365"
+    if "hardrock" in b: return "HardRock"
+    if "caesars" in b: return "Caesars"
+    return b.title() if b else "—"
+
 def clean_name(name):
     name = str(name).strip()
     suffixes = {"jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"}
@@ -221,6 +248,9 @@ def clean_team(tid):
 
 def now_az():
     return datetime.now(timezone(timedelta(hours=-7))).strftime("%I:%M %p")
+
+def today_az():
+    return datetime.now(timezone(timedelta(hours=-7))).strftime("%Y-%m-%d")
 
 def now_utc_iso():
     return datetime.now(timezone.utc).isoformat()
@@ -264,7 +294,6 @@ def event_matches_chosen(ev, chosen):
     return False
 
 def name_in_lineup(player, lineup_names):
-    """True / False / None (unknown — no lineup data)."""
     if not lineup_names:
         return None
     cn = clean_name(player)
@@ -376,18 +405,22 @@ def save_results(rows):
 
 def log_bet_this(ev_board):
     rows = load_results()
-    today = datetime.now(timezone(timedelta(hours=-7))).strftime("%Y-%m-%d")
+    today = today_az()
     added = 0
     for item in ev_board:
         if not item.get("is_bet"):
             continue
         if any(r.get("date") == today and r.get("player") == item["player"] for r in rows):
             continue
+        price = item.get("best_price")
+        book = item.get("best_book", "")
+        ending = last_two(price)
         rows.append({
             "id": f"{today}_{item['player']}_{int(item['score'])}",
             "date": today, "time": now_az(), "player": item["player"],
             "score": item["score"], "edge": int(item["edge"]),
-            "best_price": item["best_price"], "best_book": item["best_book"],
+            "best_price": price, "best_book": book,
+            "ending": ending,
             "methods": item["methods"], "core": item.get("method_count", 0),
             "result": "PENDING",
         })
@@ -395,6 +428,84 @@ def log_bet_this(ev_board):
     if added:
         save_results(rows)
     return added
+
+def build_whats_going_today(rows):
+    """Aggregate HIT results for today → chips for endings / books."""
+    today = today_az()
+    todays = [r for r in rows if r.get("date") == today]
+    hits = [r for r in todays if r.get("result") == "HIT"]
+    graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
+    n_hits = len(hits)
+    n_graded = len(graded)
+
+    ending_counts = Counter()
+    book_ending = Counter()  # ("MGM", 75) etc.
+
+    for r in hits:
+        price = r.get("best_price")
+        book = r.get("best_book") or ""
+        ending = r.get("ending")
+        if ending is None and price is not None:
+            ending = last_two(price)
+        if ending is None:
+            continue
+        ending = int(ending)
+        bl = book_label(book)
+        if ending in CLASSIC_ENDINGS or ending in (0, 10, 25, 50, 75):
+            ending_counts[ending] += 1
+            book_ending[(bl, ending)] += 1
+        else:
+            ending_counts[ending] += 1
+            book_ending[(bl, ending)] += 1
+
+    chips = []
+    # Prefer book+ending for classics
+    for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: -x[1]):
+        if cnt < 1:
+            continue
+        if end in (25, 50, 75, 0, 10) or bl in ("MGM", "DK", "FD", "365"):
+            label = f"{bl} {end:02d}" if end is not None else bl
+            chips.append((label, cnt, True if end in (75, 25, 50, 0, 10) else False))
+    # Also pure ending totals if useful
+    for end, cnt in sorted(ending_counts.items(), key=lambda x: -x[1]):
+        if cnt < 1:
+            continue
+        pure = f"Ends {end:02d}"
+        if not any(c[0] == pure for c in chips):
+            # only add pure if not already covered heavily
+            if end in (75, 25, 50, 0, 10):
+                chips.append((pure, cnt, end == 75))
+
+    # de-dupe labels keep highest
+    seen = {}
+    for label, cnt, hot in chips:
+        if label not in seen or cnt > seen[label][0]:
+            seen[label] = (cnt, hot)
+    chips = [(lab, v[0], v[1]) for lab, v in seen.items()]
+    chips = sorted(chips, key=lambda x: (-x[1], x[0]))[:8]
+
+    return n_hits, n_graded, chips
+
+def render_whats_going_today():
+    rows = load_results()
+    n_hits, n_graded, chips = build_whats_going_today(rows)
+    chips_html = ""
+    if chips:
+        for label, cnt, hot in chips:
+            cls = "trend-chip hot" if hot or cnt >= 2 else "trend-chip"
+            chips_html += f'<span class="{cls}">{label}: <span class="chip-count">{cnt} HR</span></span>'
+    else:
+        chips_html = '<span class="trend-chip">No HITs graded yet today — mark Results as they go yard</span>'
+
+    st.markdown(f"""
+    <div class="trends-today">
+        <div class="trends-today-header">
+            <div class="trends-today-title">🔥 What's Going Today</div>
+            <div class="trends-today-sub">{n_hits} HR{"s" if n_hits != 1 else ""} of {n_graded} graded · slate-wide · what's hitting · not predictive</div>
+        </div>
+        <div class="trends-chips">{chips_html}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 def fetch_events_oddsapi(api_key):
     try:
@@ -560,7 +671,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     hist = st.session_state["presence_history"]
     phist = st.session_state["price_history"]
 
-    # ── Late Adds — ONE card per player ──
     if len(hist) >= 2:
         def norm(snap):
             out = set()
@@ -587,12 +697,11 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         for snap in hist[:max(1, len(hist)//3)]:
             early |= scoped(snap)
 
-        late_bucket = {}  # player -> {kind, books, event}
+        late_bucket = {}
 
         def add_late(player, book, event, kind):
             if player not in late_bucket:
                 late_bucket[player] = {"kind": kind, "books": [], "event": event}
-            # priority: Gone Missing / Just Appeared over Added Late
             pri = {"Gone Missing": 3, "Just Appeared": 2, "Added Late": 1}
             if pri.get(kind, 0) >= pri.get(late_bucket[player]["kind"], 0):
                 late_bucket[player]["kind"] = kind
@@ -619,7 +728,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             })
             methods_map[player].append(kind)
 
-    # ── RotoWire: on books but NOT in lineup ──
     if lineup_names:
         by_player_books = defaultdict(set)
         for _, r in df.iterrows():
@@ -647,9 +755,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         prev_snap, curr_snap = phist[-2], phist[-1]
         for key, curr_price in curr_snap.items():
             player, book = key
-            if player not in all_players_now:
+            if player not in all_players_now or key not in prev_snap:
                 continue
-            if key not in prev_snap: continue
             prev_price = prev_snap[key]
             delta = curr_price - prev_price
             if delta >= BIG_MOVE:
@@ -934,7 +1041,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if len(books) >= 2:
                 signal_bucket[player].append(f"Multi-book lengthen on {', '.join(books)}")
                 signal_methods[player].add("Multi-book Lengthen")
-                methods_map[player].append("Multi-book Lengthen")  # noise — not core
+                methods_map[player].append("Multi-book Lengthen")
         for player, books in down_by.items():
             if len(books) >= 2:
                 signal_bucket[player].append(f"Multi-book shorten on {', '.join(books)}")
@@ -948,7 +1055,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "event": "", "css": "signal", "methods": list(signal_methods[player]),
         })
 
-    # ── The Board — exclude Not in lineup when RotoWire loaded ──
     ev_board = []
     player_events = defaultdict(set)
     for _, r in df.iterrows():
@@ -956,7 +1062,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if lineup_names and name_in_lineup(player, lineup_names) is False:
-            continue  # not starting — off The Board
+            continue
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
         if len(prices) < 2: continue
@@ -1081,7 +1187,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 double_pairs.append((a, b, la + lb))
     for a, b, k in sorted(double_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "double_init", "label": f"{a} + {b}",
-            "reason": f"Double initials (different teams)", "event": "", "css": "name", "methods": ["Double Init"]})
+            "reason": "Double initials (different teams)", "event": "", "css": "name", "methods": ["Double Init"]})
 
     cross_pairs = []
     for i, a in enumerate(pool):
@@ -1141,10 +1247,13 @@ def main():
     lu_n = len(st.session_state.get("lineup_names", set()))
     st.markdown(f"""
     <div class="how-to">
-        📋 <b>RotoWire lineups</b> → non-starters off The Board · Late shows “Not in lineup”<br>
-        👻 Late = <b>one card per player</b> · History snaps: <b>{hist_n}</b> · Lineup names: <b>{lu_n}</b>
+        🔥 <b>What's Going Today</b> fills as you mark HIT on Results (endings + books)<br>
+        📋 RotoWire · non-starters off The Board · Late = one card per player · snaps: <b>{hist_n}</b>
     </div>
     """, unsafe_allow_html=True)
+
+    # ── What's Going Today (Results-driven) ──
+    render_whats_going_today()
 
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
@@ -1165,14 +1274,14 @@ def main():
             if names:
                 st.success(msg)
             else:
-                st.warning(msg or "No lineup names — check beautifulsoup4 / block")
+                st.warning(msg or "No lineup names")
 
     if st.session_state.get("lineup_msg") and st.session_state.get("lineup_names"):
         st.caption(f"Lineups: {st.session_state['lineup_msg']}")
 
     events = st.session_state.get("events", [])
     if not events:
-        st.info("Click **Load Games** to start. Also hit **RotoWire Lineups** so non-starters get filtered.")
+        st.info("Click **Load Games**. Grade HITs on Results to feed What's Going Today.")
         st.stop()
 
     options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
@@ -1198,12 +1307,9 @@ def main():
             st.session_state["last_fetch_time"] = now_az()
             st.session_state["last_selected"] = list(chosen)
             st.session_state["new_fetch"] = True
-            st.success(f"{'Auto-refreshed' if auto_fetch else 'Loaded'} {len(df)} props · {len(chosen)} game(s) · {st.session_state['last_fetch_time']} AZ")
+            st.success(f"{'Auto-refreshed' if auto_fetch else 'Loaded'} {len(df)} props · {len(chosen)} game(s)")
         else:
             st.warning("No 0.5 HR odds for the selected game(s).")
-
-    if st.session_state.get("last_fetch_time"):
-        st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ · History: {hist_n} · Lineups: {lu_n}")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -1244,7 +1350,6 @@ def main():
         "fd": len([r for r in results if r["type"] == "fd"]),
         "b365": len([r for r in results if r["type"] == "b365"]),
         "late": len([r for r in results if r["type"] == "late"]),
-        "trend": len(trend_good),
         "fallen": len(fallen),
         "bets": len([e for e in ev_board if e["is_bet"]]),
         "nolinup": len([r for r in results if "Not in lineup" in r.get("methods", [])]),
@@ -1272,11 +1377,9 @@ def main():
     ])
 
     with tabs[0]:
-        st.markdown('<div class="queen-banner">👑 The Board — Take It or Pass</div>', unsafe_allow_html=True)
-        if lu_n:
-            st.caption(f"Non-starters filtered via RotoWire ({lu_n} names). Ranked by Girl Magic Score.")
-        else:
-            st.caption("⚠️ Refresh RotoWire lineups so bench guys don’t clog The Board.")
+        st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
+        if not lu_n:
+            st.caption("⚠️ Refresh RotoWire so non-starters don’t clog The Board.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1318,16 +1421,16 @@ def main():
     show(tabs[2], "mgm", "🎰 BetMGM Magic", "Same-team pairs/groups.")
     show(tabs[3], "match", "🤝 Exact Match", "Same price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, same team.")
-    show(tabs[5], "digit", "🔢 Digits", "Pairs or groups of 3 · same team · 25/50/75.")
-    show(tabs[6], "fd", "💙 FanDuel (needs DK or MGM)", f"≥ +{FD_MIN} or +600 — only with DK/MGM.")
-    show(tabs[7], "b365", "💚 Bet365", "850s · pairs/groups 25/50/75 (no 00). Empty until API returns Bet365.")
+    show(tabs[5], "digit", "🔢 Digits", "Pairs/groups of 3 · same team · 25/50/75.")
+    show(tabs[6], "fd", "💙 FanDuel", f"≥ +{FD_MIN} or +600 with DK/MGM.")
+    show(tabs[7], "b365", "💚 Bet365", "850s · pairs 25/50/75 (no 00).")
 
     with tabs[8]:
-        st.markdown('<div class="queen-banner">📈 Signals — One Card Per Player</div>', unsafe_allow_html=True)
-        st.caption("Multi-book Lengthen is noise (does not help TAKE IT). Shorten still counts.")
+        st.markdown('<div class="queen-banner">📈 Signals</div>', unsafe_allow_html=True)
+        st.caption("Multi-book Lengthen = noise. Shorten still counts.")
         items = [r for r in results if r["type"] == "signal"]
         if not items:
-            st.info("None right now.")
+            st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(items):
@@ -1336,63 +1439,52 @@ def main():
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     with tabs[9]:
-        st.markdown('<div class="queen-banner">⏳ Movement (500+ · selected games)</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">⏳ Movement</div>', unsafe_allow_html=True)
         ups = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"]
         downs = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"]
         col_up, col_down = st.columns(2)
         with col_up:
-            st.markdown("#### 🔴 Went UP")
+            st.markdown("#### 🔴 UP")
             if not ups: st.info("None.")
             else:
                 for r in ups:
-                    st.markdown(f'<div class="card up-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br><span class="tag tag-red">Went up</span></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card up-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
         with col_down:
-            st.markdown("#### 🟢 Went DOWN")
+            st.markdown("#### 🟢 DOWN")
             if not downs: st.info("None.")
             else:
                 for r in downs:
-                    st.markdown(f'<div class="card down-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br><span class="tag tag-green">Went down</span></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card down-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
 
     with tabs[10]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
-        st.markdown("#### 💚 FD under MGM · biggest gap first")
+        st.markdown("#### 💚 FD under MGM")
         if not fd_under: st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(fd_under):
                 with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
-        st.markdown("#### 💚 Bet365 higher than HardRock")
-        if not b365_hr: st.info("None (needs Bet365 in feed).")
+                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+        st.markdown("#### 💚 Bet365 > HardRock")
+        if not b365_hr: st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(b365_hr):
                 with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
-        if other_good:
-            st.markdown("#### 💚 Other")
-            cols = st.columns(2)
-            for idx, r in enumerate(other_good):
-                with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
         st.markdown("#### 🔴 Fade")
         if not trend_fade: st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(trend_fade):
                 with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
 
     with tabs[11]:
         st.markdown('<div class="queen-banner">👻 Late Adds</div>', unsafe_allow_html=True)
-        st.caption("One card per player · Not in lineup · In lineup missing books · scoped to selected games")
         items = [r for r in results if r["type"] == "late"]
         if not items:
-            st.info("None right now. Refresh RotoWire + fetch twice for presence changes.")
+            st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(items):
@@ -1402,17 +1494,15 @@ def main():
 
     with tabs[12]:
         st.markdown('<div class="queen-banner">💀 Fallen Off</div>', unsafe_allow_html=True)
-        st.caption("Only players from selected games.")
         if not fallen:
-            st.info("None yet.")
+            st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(fallen):
                 with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was score {r.get("old_score", 0)}<br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
 
-    show(tabs[13], "same_init", "💅 Same Initials", "Different teams · starters preferred.")
+    show(tabs[13], "same_init", "💅 Same Initials", "Different teams.")
     show(tabs[14], "double_init", "✨ Double Initials", "Different teams.")
     show(tabs[15], "cross", "🔄 Cross Initials", "Different teams.")
     show(tabs[16], "last", "👩‍👧 Same Last Name", "Different teams.")
@@ -1420,6 +1510,7 @@ def main():
 
     with tabs[18]:
         st.markdown('<div class="queen-banner">📊 Results Tracker</div>', unsafe_allow_html=True)
+        st.caption("Mark HIT when they go yard — feeds 🔥 What's Going Today (ending + book).")
         rows = load_results()
         pending = [r for r in rows if r.get("result") == "PENDING"]
         done = [r for r in rows if r.get("result") in ("HIT", "MISS")]
@@ -1450,47 +1541,63 @@ def main():
             st.markdown(" · ".join(lines))
         st.markdown("#### Pending")
         if not pending:
-            st.info("No pending picks.")
+            st.info("No pending — TAKE ITs auto-log here.")
         else:
             for r in reversed(pending[-40:]):
                 rid = r["id"]
-                st.markdown(f"**{r['player']}** · {r.get('date')} {r.get('time')} · score {r.get('score')}")
+                end = r.get("ending")
+                end_s = f" · ends {int(end):02d}" if end is not None else ""
+                st.markdown(
+                    f"**{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}"
+                    f"{end_s} · score {r.get('score')}"
+                )
                 st.caption(", ".join(r.get("methods", [])[:5]))
                 c1, c2, _ = st.columns([1, 1, 4])
                 with c1:
                     if st.button("🟢 HIT", key=f"hit_{rid}"):
                         for row in rows:
-                            if row["id"] == rid: row["result"] = "HIT"
+                            if row["id"] == rid:
+                                row["result"] = "HIT"
+                                if row.get("ending") is None and row.get("best_price") is not None:
+                                    row["ending"] = last_two(row["best_price"])
                         save_results(rows)
                         st.rerun()
                 with c2:
                     if st.button("🔴 MISS", key=f"miss_{rid}"):
                         for row in rows:
-                            if row["id"] == rid: row["result"] = "MISS"
+                            if row["id"] == rid:
+                                row["result"] = "MISS"
                         save_results(rows)
                         st.rerun()
         st.markdown("#### Recent graded")
         if not done:
-            st.info("None graded yet.")
+            st.info("None yet.")
         else:
             for r in reversed(done[-20:]):
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
-                st.markdown(f"{icon} **{r['player']}** · {r.get('date')} · score {r.get('score')}")
+                end = r.get("ending")
+                end_s = f" ends {int(end):02d}" if end is not None else ""
+                st.markdown(
+                    f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} "
+                    f"{book_label(r.get('best_book'))}{end_s}"
+                )
 
     with tabs[19]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        with st.expander("🟢 The Board + RotoWire", expanded=True):
+        with st.expander("🔥 What's Going Today", expanded=True):
             st.markdown("""
-**TAKE IT** = 2+ core · edge ≥ 60 · Over 0.5 HR · **and** (when lineups loaded) **in RotoWire lineup**.
+Not predictive — **descriptive only**.
 
-Click **Refresh RotoWire Lineups** so bench / scratched guys leave The Board and show under Late as **Not in lineup**.
+As you mark **HIT** on Results, we count **ending digits** (00 / 10 / 25 / 50 / **75**) and **book** (MGM, DK, FD, 365…).
+
+Example chips: `MGM 75: 3 HR` · `Ends 75: 4 HR`
+
+That’s how you see if today’s cash is clustering on classic MGM/365 endings like the @MLBHR +475s.
             """)
-        with st.expander("👻 Late Adds"):
-            st.markdown("One card per player. Just Appeared / Added Late / Gone Missing · Not in lineup · In lineup missing DK/FD/MGM.")
-        with st.expander("Core methods"):
-            st.markdown("DK 10 · MGM pairs/groups · Digits · Exact · FD with DK/MGM · Bet365 when available · Multi-book **Shorten** only.")
-        with st.expander("Noise (not TAKE IT)"):
-            st.markdown("Late tags · Not in lineup · **Multi-book Lengthen** · single-book moves · FADE.")
+        with st.expander("The Board + RotoWire"):
+            st.markdown("TAKE IT = 2+ core · edge ≥ 60 · in lineup when RotoWire loaded.")
+        with st.expander("Noise"):
+            st.markdown("Late tags · Not in lineup · **Multi-book Lengthen** · FADE.")
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
