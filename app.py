@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Locked to preferred books only (FD / DK / MGM / Hard Rock / Caesars)
+Tight filters • Clean glossary • Magic energy
 """
 
 import streamlit as st
@@ -149,13 +149,13 @@ st.markdown("""
         display: inline-block;
         background: linear-gradient(90deg, #db2777, #9333ea);
         color: white;
-        font-size: 0.75rem;
+        font-size: 0.78rem;
         font-weight: 700;
-        padding: 4px 12px;
+        padding: 5px 14px;
         border-radius: 16px;
         letter-spacing: 1px;
         text-transform: uppercase;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
 
     .meter {
@@ -200,6 +200,16 @@ st.markdown("""
     }
 
     .grid-card { margin-bottom: 6px; }
+
+    .gloss-card {
+        background: linear-gradient(155deg, #1c0f2b, #27143a);
+        border: 1px solid #a855f7;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        font-size: 0.92rem;
+        line-height: 1.45;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -207,7 +217,6 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 REGIONS = "us,us2"
 
-# Only these books are allowed
 PREFERRED = {
     "fanduel", "draftkings", "betmgm",
     "hardrockbet", "williamhill_us", "caesars"
@@ -218,6 +227,8 @@ CORE_BOOKS = {
     "draftkings": "DraftKings",
     "betmgm": "BetMGM"
 }
+
+EDGE_MIN = 60  # tighter — fewer random people
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -250,29 +261,22 @@ def get_confidence(methods, edge, is_bet):
     if not is_bet:
         return "Skip", 1, "low", "skip-card"
     score = 0
-    if "Last one left" in methods:
-        score += 4
-    if any("Stayed" in m and "times" in m for m in methods):
-        score += 3
-    if "Stayed in the group" in methods:
-        score += 2
-    if "Same on 3+ books" in methods:
-        score += 2
+    if "Last one left" in methods: score += 4
+    if any("Stayed" in m and "times" in m for m in methods): score += 3
+    if "Stayed in the group" in methods: score += 2
+    if "Same on 3+ books" in methods: score += 2
     score += min(len(methods), 3)
-    score += 1 if edge >= 70 else 0
-    if score >= 7:
-        return "High", 5, "high", "high"
-    elif score >= 5:
-        return "Strong", 4, "strong", "strong"
-    elif score >= 3:
-        return "Medium", 3, "medium", "medium"
-    else:
-        return "Low", 2, "low", "low"
+    score += 1 if edge >= 80 else 0
+    if score >= 7: return "High", 5, "high", "high"
+    if score >= 5: return "Strong", 4, "strong", "strong"
+    if score >= 3: return "Medium", 3, "medium", "medium"
+    return "Low", 2, "low", "low"
 
 def make_meter(bars, level):
     html = '<div class="meter">'
     for i in range(5):
-        html += f'<div class="meter-bar {"filled-"+level if i < bars else ""}"></div>'
+        filled = f"filled-{level}" if i < bars else ""
+        html += f'<div class="meter-bar {filled}"></div>'
     html += '</div>'
     return html
 
@@ -287,18 +291,11 @@ def fetch_events_oddsapi(api_key):
         return []
 
 def fetch_odds_oddsapi(api_key, event_id):
-    params = {
-        "apiKey": api_key,
-        "regions": REGIONS,
-        "markets": "batter_home_runs",
-        "oddsFormat": "american"
-    }
     try:
         r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events/{event_id}/odds",
-                         params=params, timeout=20)
-        if r.status_code != 200:
-            return None
-        return r.json()
+            params={"apiKey": api_key, "regions": REGIONS,
+                    "markets": "batter_home_runs", "oddsFormat": "american"}, timeout=20)
+        return r.json() if r.status_code == 200 else None
     except:
         return None
 
@@ -308,24 +305,19 @@ def flatten_oddsapi(data):
     rows, found = [], set()
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     for book in data.get("bookmakers", []):
-        book_key = book.get("key", "").lower()
-        found.add(book_key)
-        if book_key not in PREFERRED:
+        bk = book.get("key", "").lower()
+        found.add(bk)
+        if bk not in PREFERRED:
             continue
         for market in book.get("markets", []):
             for o in market.get("outcomes", []):
                 if o.get("name", "").lower() != "over":
                     continue
-                point = o.get("point")
-                if point is not None and float(point) > 0.5:
+                if o.get("point") is not None and float(o["point"]) > 0.5:
                     continue
                 rows.append({
-                    "event": event,
-                    "book": book_key,
-                    "player": o.get("description"),
-                    "price": o.get("price"),
-                    "point": 0.5,
-                    "source": "oddsapi"
+                    "event": event, "book": bk, "player": o.get("description"),
+                    "price": o.get("price"), "point": 0.5, "source": "oddsapi"
                 })
     return rows, found
 
@@ -333,10 +325,8 @@ def fetch_sgo_hr_props(sgo_key):
     rows, found = [], set()
     try:
         r = requests.get(f"{SGO_BASE}/events", params={
-            "apiKey": sgo_key,
-            "leagueID": "MLB",
-            "oddsAvailable": "true",
-            "limit": 25
+            "apiKey": sgo_key, "leagueID": "MLB",
+            "oddsAvailable": "true", "limit": 25
         }, timeout=25)
         if r.status_code != 200:
             return rows, found
@@ -356,47 +346,42 @@ def fetch_sgo_hr_props(sgo_key):
                 ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
                 if ou is not None and float(ou) > 0.5:
                     continue
-                player_id = odd_data.get("playerID") or odd_data.get("statEntityID")
-                if not player_id or player_id not in players_map:
+                pid = odd_data.get("playerID") or odd_data.get("statEntityID")
+                if not pid or pid not in players_map:
                     continue
-                player_name = players_map[player_id].get("name")
-                if not player_name:
+                pname = players_map[pid].get("name")
+                if not pname:
                     continue
-                for book_key, book_data in odd_data.get("byBookmaker", {}).items():
-                    if not book_data.get("available", True):
+                for bk, bd in odd_data.get("byBookmaker", {}).items():
+                    if not bd.get("available", True):
                         continue
-                    bk = book_key.lower()
-                    if bk not in PREFERRED:
+                    b = bk.lower()
+                    if b not in PREFERRED:
                         continue
-                    price = book_data.get("odds")
+                    price = bd.get("odds")
                     if price is None:
                         continue
                     try:
                         price = int(str(price).replace("+", ""))
                     except:
                         continue
-                    found.add(bk)
+                    found.add(b)
                     rows.append({
-                        "event": event_name,
-                        "book": bk,
-                        "player": player_name,
-                        "price": price,
-                        "point": 0.5,
-                        "source": "sgo"
+                        "event": event_name, "book": b, "player": pname,
+                        "price": price, "point": 0.5, "source": "sgo"
                     })
     except Exception as e:
         st.warning(f"SGO note: {e}")
     return rows, found
 
-def merge_odds(oddsapi_rows, sgo_rows):
-    combined = oddsapi_rows + sgo_rows
+def merge_odds(a, b):
+    combined = a + b
     if not combined:
         return pd.DataFrame()
     df = pd.DataFrame(combined)
     df["priority"] = df["source"].map({"oddsapi": 0, "sgo": 1})
     df = df.sort_values(["player", "book", "priority"]).drop_duplicates(
-        subset=["player", "book"], keep="first"
-    )
+        subset=["player", "book"], keep="first")
     return df.drop(columns=["priority", "source"], errors="ignore")
 
 def run_flags(df, previous_df=None):
@@ -404,10 +389,7 @@ def run_flags(df, previous_df=None):
         return [], []
 
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
-
-    results = []
-    flagged = set()
-    methods_map = defaultdict(list)
+    results, flagged, methods_map = [], set(), defaultdict(list)
 
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
@@ -432,7 +414,7 @@ def run_flags(df, previous_df=None):
             flagged.add(row["player"])
             methods_map[row["player"]].append("DK 10")
 
-    # MGM groups
+    # MGM
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)]
     if "mgm_history" not in st.session_state:
         st.session_state["mgm_history"] = []
@@ -449,8 +431,7 @@ def run_flags(df, previous_df=None):
     st.session_state["mgm_history"].append(current)
     st.session_state["mgm_history"] = st.session_state["mgm_history"][-8:]
 
-    mgm_stayed = defaultdict(int)
-    survivor = set()
+    mgm_stayed, survivor = defaultdict(int), set()
     h = st.session_state["mgm_history"]
     if len(h) >= 2:
         for snap in h:
@@ -478,8 +459,7 @@ def run_flags(df, previous_df=None):
             names = sorted(set(ps))
             if len(names) < 2:
                 continue
-            meth = [f"MGM {d:02d}"]
-            extra = []
+            meth, extra = [f"MGM {d:02d}"], []
             for n in names:
                 c = mgm_stayed.get(n, 0)
                 if c >= 3:
@@ -500,7 +480,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(n)
                 methods_map[n].extend(meth)
 
-    # Exact match
+    # Exact
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -524,7 +504,7 @@ def run_flags(df, previous_df=None):
                     flagged.add(n)
                     methods_map[n].append("MGM Exact")
 
-    # Matching 25/50/75
+    # Digits
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -541,7 +521,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(player)
                 methods_map[player].append(f"Match {d}")
 
-    # FanDuel patterns
+    # FanDuel
     for _, row in df.iterrows():
         if row["book"] == "fanduel":
             price = abs(int(row["price"])) if row["price"] else 0
@@ -553,7 +533,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("FD Pattern")
 
-    # Stayed the same
+    # Stayed
     for p, c in stayed.items():
         if c >= 2:
             lab = f"Stayed {c} times" if c >= 3 else "Stayed the same"
@@ -600,7 +580,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV
+    # +EV — tighter
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -615,30 +595,31 @@ def run_flags(df, previous_df=None):
             med = best
         edge = best - med
         meths = list(set(methods_map.get(player, [])))
-        is_bet = edge >= 50 and player in flagged
+        is_bet = edge >= EDGE_MIN and player in flagged and len(meths) > 0
         conf, bars, level, css = get_confidence(meths, edge, is_bet)
         pri = 0
         if "Last one left" in meths: pri += 30
         if any("Stayed" in m and "times" in m for m in meths): pri += 20
         if "Stayed in the group" in meths: pri += 10
         if "Same on 3+ books" in meths: pri += 8
-        pri += len(meths) + min(edge/10, 15)
+        pri += len(meths) + min(edge / 10, 15)
         if is_bet:
-            why = "Has one of our methods and the price is better than most books."
+            why = "Method hit + price is clearly better than most books."
         elif player in flagged:
-            why = "Has a method, but the price is not better than most books."
-        elif edge >= 50:
-            why = "Price looks better, but none of our methods hit."
+            why = "Method hit, but the price isn’t better enough yet."
         else:
-            why = "No method and the price is not better than most books."
-        ev_board.append({
-            "player": player, "best_price": best, "best_book": best_book,
-            "median": med, "edge": edge, "is_bet": is_bet, "why": why,
-            "methods": meths, "priority": pri, "bars": bars, "level": level, "css": css
-        })
+            why = "No strong method or not enough edge."
+        # only show people who at least have a method OR a real edge
+        if player in flagged or edge >= EDGE_MIN:
+            ev_board.append({
+                "player": player, "best_price": best, "best_book": best_book,
+                "median": med, "edge": edge, "is_bet": is_bet, "why": why,
+                "methods": meths, "priority": pri, "bars": bars,
+                "level": level, "css": css
+            })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # Name patterns
+    # Name patterns (only when already flagged)
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -654,7 +635,7 @@ def run_flags(df, previous_df=None):
     for p in players:
         f, l = get_initials(p)
         if f and l:
-            init_map[f+l].append(p)
+            init_map[f + l].append(p)
     for k, names in init_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
@@ -665,7 +646,8 @@ def run_flags(df, previous_df=None):
 
     for i, a in enumerate(players):
         _, l1 = get_initials(a)
-        if not l1: continue
+        if not l1:
+            continue
         for b in players[i+1:]:
             f2, _ = get_initials(b)
             if f2 and l1 == f2 and both(a, b):
@@ -746,8 +728,8 @@ def main():
 
         if all_rows:
             df = merge_odds(
-                [r for r in all_rows if r.get("source")=="oddsapi"],
-                [r for r in all_rows if r.get("source")=="sgo"]
+                [r for r in all_rows if r.get("source") == "oddsapi"],
+                [r for r in all_rows if r.get("source") == "sgo"]
             )
             if "odds" in st.session_state:
                 st.session_state["previous_odds"] = st.session_state["odds"]
@@ -761,16 +743,13 @@ def main():
     found = st.session_state.get("found_books", [])
     if found:
         missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
-        present = [CORE_BOOKS[b] for b in CORE_BOOKS if b in found]
         st.markdown(f'<div class="info-box"><b>Books in use:</b> {", ".join(found)}</div>', unsafe_allow_html=True)
         if missing:
             st.markdown(f'''
             <div class="warning-box">
                 ⚠️ <b>Still missing:</b> {", ".join(missing)}<br>
-                MGM methods won’t fire until BetMGM appears (higher plan needed).
+                MGM usually drops later (often morning). Methods that need it will light up when it appears.
             </div>''', unsafe_allow_html=True)
-        else:
-            st.success(f"Core books present: {', '.join(present)}")
 
     odds = st.session_state.get("odds", [])
     prev = st.session_state.get("previous_odds", [])
@@ -785,8 +764,8 @@ def main():
     ])
 
     with tabs[0]:
-        st.markdown('<div class="queen-banner">👑 Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Green = we like it.** **Gray = we skip it.**")
+        st.markdown('<div class="queen-banner">👑 I Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
+        st.write("**Green = we like it.** **Gray = we skip it.** Only the strong ones make it here.")
         if not ev_board:
             st.info("Fetch some games first.")
         else:
@@ -823,32 +802,53 @@ def main():
                         <br><small>{r.get("event","")}</small>
                     </div>''', unsafe_allow_html=True)
 
-    show(tabs[1], "dk", "🎯 DraftKings Ends in 10", "DraftKings prices ending in 10.")
-    show(tabs[2], "mgm", "🎰 BetMGM (Same Team Only)", "Needs BetMGM data. Will light up when MGM appears.")
-    show(tabs[3], "match", "🤝 Exact Matching Odds", "Same exact price across books.")
-    show(tabs[4], "mgm_exact", "⭐ MGM Exact Match", "Same exact price on BetMGM.")
-    show(tabs[5], "digit", "🔢 Matching 25/50/75", "25/50/75 endings across books.")
-    show(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel ≥ +500 ending in 10/30/60/70/90.")
-    show(tabs[7], "signal", "📈 Signals", "Stayed the same • Same on 3+ books • Way different.")
-    show(tabs[8], "hist", "⏳ Price Movement", "Price moved since last fetch.")
-    show(tabs[9], "same_init", "💅 Same Initials", "Same first+last initial.")
-    show(tabs[10], "cross", "🔄 Cross Initials", "Last initial matches another’s first.")
-    show(tabs[11], "last", "👩‍👧 Same Last Name", "Shared last name.")
-    show(tabs[12], "first", "👯 Same First Name", "Shared first name.")
+    show(tabs[1], "dk", "🎯 DraftKings 10s — I See You", "DK prices ending in 10. One of our favorites.")
+    show(tabs[2], "mgm", "🎰 BetMGM Magic — Same Team Only", "Pairs & groups. Look for Stayed in the group / Last one left. Usually posts in the morning.")
+    show(tabs[3], "match", "🤝 Exact Match — Books Agree", "Same exact price across books. They know something.")
+    show(tabs[4], "mgm_exact", "⭐ MGM Exact — Locked In", "Same exact price on BetMGM for multiple guys.")
+    show(tabs[5], "digit", "🔢 Matching Digits — 25 / 50 / 75", "Same player showing those endings on different books.")
+    show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 30 / 60 / 70 / 90.")
+    show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
+    show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last time we pulled.")
+    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Same first + last initial (only when a method already hit).")
+    show(tabs[10], "cross", "🔄 Cross Initials — Connected", "One player’s last initial matches another’s first.")
+    show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Shared last name.")
+    show(tabs[12], "first", "👯 Same First Name — Twinsies", "Shared first name.")
 
     with tabs[13]:
-        st.markdown('<div class="queen-banner">📖 Glossary</div>', unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown('<div class="card bet"><b>🟢 BET THIS</b><br>Has a method <b>and</b> better price than most books.</div>', unsafe_allow_html=True)
-        with c2:
-            st.markdown('<div class="card skip"><b>⚪ SKIP</b><br>No method or price not better than most books.</div>', unsafe_allow_html=True)
-        st.markdown("---")
+        st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
+
         st.markdown("""
-        <div class="card mgm">
-            <b>Stayed in the group</b> → Still in the same MGM pair/group<br>
-            <b>Stayed 3 times</b> → On 3 different fetches<br>
-            <b>Last one left</b> → Started in a bigger group and is still there
+        <div class="gloss-card">
+            <b>🟢 BET THIS</b><br>
+            Has one of our methods <b>and</b> the price is better than most books by a clear amount.<br>
+            These are the ones we actually want.
+        </div>
+        <div class="gloss-card">
+            <b>⚪ SKIP</b><br>
+            Either no real method hit, or the price isn’t better enough yet.<br>
+            We pass.
+        </div>
+        <div class="gloss-card">
+            <b>Stayed in the group</b><br>
+            This player is still inside the same BetMGM pair or group across pulls.
+        </div>
+        <div class="gloss-card">
+            <b>Stayed 3 times</b><br>
+            Showed up on three different fetches. The books keep him in that spot.
+        </div>
+        <div class="gloss-card">
+            <b>Last one left</b><br>
+            Started in a bigger MGM group and is still standing. Strong signal.
+        </div>
+        <div class="gloss-card">
+            <b>DK 10 / FD Pattern / Exact Match / Matching Digits</b><br>
+            These are the core book tricks we track every day.
+        </div>
+        <div class="gloss-card">
+            <b>Confidence meter</b><br>
+            More filled bars = stronger combination of methods + edge.<br>
+            High / Strong / Medium / Low.
         </div>
         """, unsafe_allow_html=True)
 
