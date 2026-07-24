@@ -1178,25 +1178,66 @@ def main():
                 for r in downs:
                     st.markdown(f'<div class="card down-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br><span class="tag tag-green">Went down</span></div>', unsafe_allow_html=True)
 
-    with tabs[10]:
+        with tabs[10]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
-        st.caption("💚 FD under MGM + Bet365 > HardRock · biggest gap first")
-        st.markdown("#### 💚 Worth a look")
-        if not trend_good: st.info("None right now.")
+
+        fd_under = [r for r in trend_good if "FD under MGM" in r.get("methods", [])]
+        b365_hr = [r for r in trend_good if "B365 > HardRock" in r.get("methods", [])]
+        # any other good trends (if added later)
+        other_good = [r for r in trend_good
+                      if "FD under MGM" not in r.get("methods", [])
+                      and "B365 > HardRock" not in r.get("methods", [])]
+
+        st.markdown("#### 💚 FD under MGM (10–100 pts) · biggest gap first")
+        if not fd_under:
+            st.info("None right now.")
         else:
             cols = st.columns(2)
-            for idx, r in enumerate(trend_good):
+            for idx, r in enumerate(fd_under):
                 with cols[idx % 2]:
                     tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+                    st.markdown(
+                        f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>',
+                        unsafe_allow_html=True,
+                    )
+
+        st.markdown("#### 💚 Bet365 higher than HardRock")
+        st.caption("365 price longer than Hard Rock on the same player — your preferred compare.")
+        if not b365_hr:
+            st.info("None right now. (Needs both Bet365 and HardRock on the player.)")
+        else:
+            cols = st.columns(2)
+            for idx, r in enumerate(b365_hr):
+                with cols[idx % 2]:
+                    tags = render_method_tags(r.get("methods", []))
+                    st.markdown(
+                        f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>',
+                        unsafe_allow_html=True,
+                    )
+
+        if other_good:
+            st.markdown("#### 💚 Other")
+            cols = st.columns(2)
+            for idx, r in enumerate(other_good):
+                with cols[idx % 2]:
+                    tags = render_method_tags(r.get("methods", []))
+                    st.markdown(
+                        f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>',
+                        unsafe_allow_html=True,
+                    )
+
         st.markdown("#### 🔴 Fade")
-        if not trend_fade: st.info("None right now.")
+        if not trend_fade:
+            st.info("None right now.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(trend_fade):
                 with cols[idx % 2]:
                     tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+                    st.markdown(
+                        f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>',
+                        unsafe_allow_html=True,
+                    )
 
     with tabs[11]:
         st.markdown('<div class="queen-banner">👻 Late Adds</div>', unsafe_allow_html=True)
