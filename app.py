@@ -916,7 +916,7 @@ def main():
     show(tabs[14], "last", "👩‍👧 Same Last Name", f"3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
     show(tabs[15], "first", "👯 Same First Name", f"3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
 
-        with tabs[16]:
+    with tabs[16]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
         st.markdown(f"""
         <div class="gloss-card">
