@@ -2,7 +2,7 @@
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
 ONLY 0.5 (1 HR) lines — no 2+/3+
-Auto-refetch every 30 min + persistent history file
+Auto-refetch every 30 min + persistent history + tight name magic (max 50/tab)
 """
 
 import streamlit as st
@@ -86,12 +86,13 @@ METHODS_MIN = 2
 OUTLIER_GAP = 150
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
+NAME_MAX_PAIRS = 50  # max pairs shown per name tab
 
-STRONG_METHODS = {
+# Personal strong flags only (NOT "in an MGM group")
+PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
     "Match 25", "Match 50", "Match 75",
-    "Last one left", "Stayed in the group",
-    "Multi-book Shorten", "Multi-book Lengthen", "Same on 3+ books"
+    "Last one left", "Multi-book Shorten", "Multi-book Lengthen", "Same on 3+ books"
 }
 
 NOISE_METHODS = {
@@ -111,11 +112,11 @@ def is_core_method(m):
 def count_core_methods(meths):
     return len([m for m in set(meths) if is_core_method(m)])
 
-def has_strong(meths):
+def has_personal_strong(meths):
     for m in meths:
-        if m in STRONG_METHODS:
+        if m in PERSONAL_STRONG:
             return True
-        if m.startswith("MGM ") or m.startswith("Match ") or m.startswith("Stayed in group"):
+        if m.startswith("Match "):
             return True
     return False
 
@@ -168,9 +169,9 @@ def smart_best(prices, books):
     paired = sorted(zip(prices, books), key=lambda x: x[0], reverse=True)
     best_p, best_b = paired[0]
     if len(paired) >= 2:
-        second_p, _ = paired[1]
+        second_p, second_b = paired[1]
         if best_p - second_p >= OUTLIER_GAP:
-            return second_p, paired[1][1]
+            return second_p, second_b
     return best_p, best_b
 
 def get_confidence(methods, edge, is_bet):
@@ -197,7 +198,6 @@ def make_meter(bars, level):
     html += '</div>'
     return html
 
-# ── Persistent history (survives refresh / reopen until app rebuild) ──
 def load_history():
     if not os.path.exists(HISTORY_FILE):
         return
@@ -208,18 +208,15 @@ def load_history():
         if saved_at:
             age = datetime.now(timezone.utc) - datetime.fromisoformat(saved_at)
             if age > timedelta(hours=HISTORY_MAX_AGE_HOURS):
-                return  # too old — new slate day
-        # price_history: list of dicts with string keys "player||book"
+                return
         ph = []
         for snap in data.get("price_history", []):
             ph.append({tuple(k.split("||", 1)): v for k, v in snap.items()})
         st.session_state["price_history"] = ph[-8:]
-        # presence: list of sets of (player, book)
         pr = []
         for snap in data.get("presence_history", []):
             pr.append({tuple(x) for x in snap})
         st.session_state["presence_history"] = pr[-12:]
-        # mgm
         mh = []
         for snap in data.get("mgm_history", []):
             restored = []
@@ -598,7 +595,6 @@ def run_flags(df, previous_df=None):
                     "event": row["event"], "css": "hist", "methods": ["Price moved"]})
                 methods_map[row["player"]].append("Price moved")
 
-    # persist after this pull
     save_history()
 
     ev_board = []
@@ -640,7 +636,7 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # ── Name magic (tight) ───────────────────────────────────
+    # ── Name magic (strict + max 50 per type) ─────────────────
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -648,71 +644,88 @@ def run_flags(df, previous_df=None):
     def diff_team(a, b):
         return len(pev[a] & pev[b]) == 0
 
-    # both need 3+ core AND at least one has a strong method
-    strong_pool = []
+    # Both need 3+ core AND both need a personal strong flag
+    pool = []
     for p, ms in methods_map.items():
-        if count_core_methods(ms) >= NAME_METHODS_MIN and has_strong(ms):
-            strong_pool.append(p)
+        if count_core_methods(ms) >= NAME_METHODS_MIN and has_personal_strong(ms):
+            pool.append(p)
 
-    # Same Init — prefer different teams
+    def add_pairs(typ, pairs, method_label, reason_fn):
+        # pairs = list of (a, b) already filtered to different teams
+        # sort by combined core strength roughly alphabetically then cap
+        pairs = sorted(pairs, key=lambda x: (x[0], x[1]))[:NAME_MAX_PAIRS]
+        for a, b in pairs:
+            results.append({
+                "type": typ, "label": f"{a} + {b}",
+                "reason": reason_fn(a, b),
+                "event": "", "css": "name", "methods": [method_label]
+            })
+
+    # Same Init — different teams only, max 50
     init_map = defaultdict(list)
-    for p in strong_pool:
+    for p in pool:
         f, l = get_initials(p)
         if f and l:
             init_map[f + l].append(p)
+    init_pairs = []
     for k, names in init_map.items():
-        pairs = []
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                pairs.append((a, b, diff_team(a, b)))
-        pairs.sort(key=lambda x: (not x[2], x[0]))  # different teams first
-        for a, b, is_diff in pairs:
-            tag = "different teams" if is_diff else "same team"
-            results.append({"type": "same_init", "label": f"{a} + {b}",
-                "reason": f"Same initials {k} ({tag})", "event": "", "css": "name", "methods": ["Same Init"]})
+                if diff_team(a, b):
+                    init_pairs.append((a, b, k))
+    init_pairs = sorted(init_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
+    for a, b, k in init_pairs:
+        results.append({"type": "same_init", "label": f"{a} + {b}",
+            "reason": f"Same initials {k} (different teams)", "event": "", "css": "name", "methods": ["Same Init"]})
 
-    # Cross Init — prefer different teams
-    for i, a in enumerate(strong_pool):
+    # Cross Init — different teams only, max 50
+    cross_pairs = []
+    for i, a in enumerate(pool):
         _, l1 = get_initials(a)
         if not l1:
             continue
-        for b in strong_pool[i+1:]:
+        for b in pool[i+1:]:
             f2, _ = get_initials(b)
-            if f2 and l1 == f2:
-                is_diff = diff_team(a, b)
-                tag = "different teams" if is_diff else "same team"
-                results.append({"type": "cross", "label": f"{a} + {b}",
-                    "reason": f"Cross initials ({l1}) ({tag})", "event": "", "css": "name", "methods": ["Cross Init"]})
+            if f2 and l1 == f2 and diff_team(a, b):
+                cross_pairs.append((a, b, l1))
+    cross_pairs = sorted(cross_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
+    for a, b, letter in cross_pairs:
+        results.append({"type": "cross", "label": f"{a} + {b}",
+            "reason": f"Cross initials ({letter}) (different teams)", "event": "", "css": "name", "methods": ["Cross Init"]})
 
-    # Same Last — DIFFERENT TEAMS ONLY
+    # Same Last — different teams only, max 50
     last_map = defaultdict(list)
-    for p in strong_pool:
+    for p in pool:
         parts = clean_name(p).split()
         if len(parts) >= 2:
             last_map[parts[-1].lower()].append(p)
+    last_pairs = []
     for last, names in last_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if not diff_team(a, b):
-                    continue
-                results.append({"type": "last", "label": f"{a} + {b}",
-                    "reason": f"Same last name ({last.title()}) (different teams)",
-                    "event": "", "css": "name", "methods": ["Same Last"]})
+                if diff_team(a, b):
+                    last_pairs.append((a, b, last))
+    last_pairs = sorted(last_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
+    for a, b, last in last_pairs:
+        results.append({"type": "last", "label": f"{a} + {b}",
+            "reason": f"Same last name ({last.title()}) (different teams)", "event": "", "css": "name", "methods": ["Same Last"]})
 
-    # Same First — DIFFERENT TEAMS ONLY
+    # Same First — different teams only, max 50
     first_map = defaultdict(list)
-    for p in strong_pool:
+    for p in pool:
         parts = clean_name(p).split()
         if parts:
             first_map[parts[0].lower()].append(p)
+    first_pairs = []
     for first, names in first_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if not diff_team(a, b):
-                    continue
-                results.append({"type": "first", "label": f"{a} + {b}",
-                    "reason": f"Same first name ({first.title()}) (different teams)",
-                    "event": "", "css": "name", "methods": ["Same First"]})
+                if diff_team(a, b):
+                    first_pairs.append((a, b, first))
+    first_pairs = sorted(first_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
+    for a, b, first in first_pairs:
+        results.append({"type": "first", "label": f"{a} + {b}",
+            "reason": f"Same first name ({first.title()}) (different teams)", "event": "", "css": "name", "methods": ["Same First"]})
 
     return results, ev_board
 
@@ -737,7 +750,7 @@ def main():
         👑 <b>The Code</b> → BET THIS only when <b>2+ core methods</b> hit <b>and</b> edge ≥ 60<br>
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer) — no 2+ / 3+ lines<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
-        🔄 <b>Auto</b> → Refetches every {REFRESH_MINUTES} min while tab is open · History snaps: <b>{hist_n}</b>
+        🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min while open · History snaps: <b>{hist_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
@@ -782,7 +795,7 @@ def main():
             st.session_state["found_books"] = sorted(found)
             st.session_state["last_fetch_time"] = now_az()
             msg = "Auto-refreshed" if auto_fetch else "Loaded"
-            st.success(f"{msg} {len(df)} props (0.5 HR only) • {st.session_state['last_fetch_time']} AZ · History: {len(st.session_state.get('price_history', []))} snaps")
+            st.success(f"{msg} {len(df)} props · {st.session_state['last_fetch_time']} AZ · History: {len(st.session_state.get('price_history', []))} snaps")
         else:
             st.warning("No 0.5 HR odds returned.")
 
@@ -798,7 +811,7 @@ def main():
             st.markdown(f'''
             <div class="warning-box">
                 ⚠️ <b>Still missing:</b> {", ".join(missing)}<br>
-                MGM usually drops later (often morning). Methods that need it will light up when it appears.
+                MGM usually drops later (often morning).
             </div>''', unsafe_allow_html=True)
 
     odds = st.session_state.get("odds", [])
@@ -886,24 +899,26 @@ def main():
     show(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel ≥ +400 ending in 10 / 20 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals", "Same on 3+ books only.")
     show(tabs[8], "hist", "⏳ Price Movement", "Line moved since last pull.")
-    show(tabs[9], "trend", "📉 Trends — Movement Only",
-         "Shortening / Lengthening only. Needs 2+ history snaps.")
-    show(tabs[10], "late", "👻 Late Adds — FD / DK / MGM Only",
-         "Just Appeared / Added Late / Gone Missing. Needs 2+ history snaps.")
-    show(tabs[11], "same_init", "💅 Same Initials", "Both need 3+ core + strong method. Prefer different teams.")
-    show(tabs[12], "cross", "🔄 Cross Initials", "Both need 3+ core + strong method. Prefer different teams.")
-    show(tabs[13], "last", "👩‍👧 Same Last Name", "Both need 3+ core + strong method. Different teams only.")
-    show(tabs[14], "first", "👯 Same First Name", "Both need 3+ core + strong method. Different teams only.")
+    show(tabs[9], "trend", "📉 Trends — Movement Only", "Shortening / Lengthening. Needs 2+ history snaps.")
+    show(tabs[10], "late", "👻 Late Adds — FD / DK / MGM Only", "Just Appeared / Added Late / Gone Missing. Needs 2+ snaps.")
+    show(tabs[11], "same_init", "💅 Same Initials", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
+    show(tabs[12], "cross", "🔄 Cross Initials", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
+    show(tabs[13], "last", "👩‍👧 Same Last Name", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
+    show(tabs[14], "first", "👯 Same First Name", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
 
     with tabs[15]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
-        st.markdown("""
+        st.markdown(f"""
         <div class="gloss-card"><b>🟢 BET THIS</b><br>2+ core methods and edge ≥ 60. Overnight noise does not count.</div>
         <div class="gloss-card"><b>Core methods</b><br>DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 · MGM 00/25/50/75 · Stayed in the group · Last one left · Same on 3+ books · Multi-book Shorten / Lengthen</div>
         <div class="gloss-card"><b>Noise (do not count)</b><br>Just Appeared · Added Late · Gone Missing · Stuck · single-book Shortening/Lengthening · Price moved</div>
         <div class="gloss-card"><b>Edge</b><br>Best real price − median. Best ignores a lone 150+ outlier. Need 60+.</div>
-        <div class="gloss-card"><b>💅 Name Magic</b><br>Both players need <b>3+ core methods</b> and at least one strong method (DK 10 / MGM / FD Pattern / Exact / etc).<br>Same First / Same Last = <b>different teams only</b>. Same Init / Cross prefer different teams.</div>
-        <div class="gloss-card"><b>History</b><br>Price / presence / MGM snaps save to a file so Trends and Late Adds work across refreshes (clears after ~18 hours for a new slate day).</div>
+        <div class="gloss-card"><b>💅 Name Magic</b><br>
+            Both players need <b>3+ core methods</b> and a <b>personal strong</b> flag (DK 10, FD Pattern, Exact Match, Match 25/50/75, Last one left, Multi-book Shorten/Lengthen — not “just in an MGM group”).<br>
+            <b>Different teams only</b> for all name types.<br>
+            Max <b>{NAME_MAX_PAIRS}</b> pairs per name tab.
+        </div>
+        <div class="gloss-card"><b>History</b><br>Snaps save to a file so Trends / Late Adds work across refreshes (clears after ~18 hours).</div>
         <div class="gloss-card"><b>🔄 Auto-refresh</b><br>Every 30 min while this tab is open.</div>
         """, unsafe_allow_html=True)
 
