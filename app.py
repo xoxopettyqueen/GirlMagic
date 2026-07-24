@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-History snaps ONLY on real fetch · Trends biggest gap first · Team · Results
+The Board (not fake EV) · Color tags · Full expander Glossary · History on fetch only
 """
 
 import streamlit as st
@@ -50,6 +50,12 @@ st.markdown("""
     .tag { display: inline-block; background: #3b0764; color: #f9a8d4; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin: 2px 3px 2px 0; border: 1px solid #a855f7; }
     .tag-green { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
     .tag-red { background: #450a0a; color: #fca5a5; border-color: #f87171; }
+    .tag-dk { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
+    .tag-mgm { background: #422006; color: #fcd34d; border-color: #f59e0b; }
+    .tag-fd { background: #1e3a5f; color: #93c5fd; border-color: #3b82f6; }
+    .tag-match { background: #4c1d95; color: #e9d5ff; border-color: #a855f7; }
+    .tag-signal { background: #831843; color: #fbcfe8; border-color: #f472b6; }
+    .tag-strong { background: #14532d; color: #bbf7d0; border-color: #22c55e; font-weight: 800; }
     .queen-banner { display: inline-block; background: linear-gradient(90deg, #db2777, #9333ea); color: white; font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 16px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
     .meter { display: flex; gap: 3px; margin: 4px 0 6px 0; }
     .meter-bar { height: 6px; width: 18px; border-radius: 3px; background: #374151; }
@@ -119,6 +125,29 @@ def has_dk_or_mgm(meths):
         if m.startswith("MGM") or m in ("Last one left", "Stayed in the group") or "Stayed in group" in m:
             return True
     return False
+
+def method_tag_class(m):
+    m = str(m)
+    if m == "DK 10" or m.startswith("DK"):
+        return "tag-dk"
+    if m.startswith("MGM") or m == "Last one left" or m == "Stayed in the group" or "Stayed in group" in m:
+        return "tag-mgm"
+    if m.startswith("FD"):
+        return "tag-fd"
+    if m in ("Exact Match", "MGM Exact") or m.startswith("Match "):
+        return "tag-match"
+    if "Multi-book" in m or m == "Same on 3+ books":
+        return "tag-strong"
+    if m.startswith("Same ending") or m.startswith("Outlier") or m.startswith("Stuck"):
+        return "tag-signal"
+    return ""
+
+def render_method_tags(methods, limit=6):
+    parts = []
+    for m in list(methods)[:limit]:
+        cls = method_tag_class(m)
+        parts.append(f'<span class="tag {cls}">{m}</span>')
+    return "".join(parts)
 
 def girl_magic_score(core_count, edge, methods):
     method_pts = min(core_count, 5) * 10
@@ -261,15 +290,10 @@ def log_bet_this(ev_board):
             continue
         rows.append({
             "id": f"{today}_{item['player']}_{int(item['score'])}",
-            "date": today,
-            "time": now_az(),
-            "player": item["player"],
-            "score": item["score"],
-            "edge": int(item["edge"]),
-            "best_price": item["best_price"],
-            "best_book": item["best_book"],
-            "methods": item["methods"],
-            "core": item.get("method_count", 0),
+            "date": today, "time": now_az(), "player": item["player"],
+            "score": item["score"], "edge": int(item["edge"]),
+            "best_price": item["best_price"], "best_book": item["best_book"],
+            "methods": item["methods"], "core": item.get("method_count", 0),
             "result": "PENDING",
         })
         added += 1
@@ -396,7 +420,6 @@ def build_team_map(df):
     return tm
 
 def run_flags(df, previous_df=None, record_history=True):
-    """record_history=True only on real Fetch/Auto-refresh — not every tab click."""
     if df.empty: return [], [], []
 
     if "team" not in df.columns:
@@ -418,7 +441,6 @@ def run_flags(df, previous_df=None, record_history=True):
     current_presence = {(r["player"], r["book"]) for _, r in df.iterrows() if r["book"] in LATE_BOOKS}
     current_prices = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
 
-    # ── ONLY append history on real fetch ──
     if record_history:
         st.session_state["presence_history"].append(current_presence)
         st.session_state["presence_history"] = st.session_state["presence_history"][-12:]
@@ -428,7 +450,6 @@ def run_flags(df, previous_df=None, record_history=True):
     hist = st.session_state["presence_history"]
     phist = st.session_state["price_history"]
 
-    # Late Adds — compare last two presence snaps
     if len(hist) >= 2:
         early = set()
         for snap in hist[:max(1, len(hist)//3)]:
@@ -530,7 +551,6 @@ def run_flags(df, previous_df=None, record_history=True):
             methods_map[row["player"]].append("DK 10")
 
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
-
     current_mgm = []
     if not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any():
         for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
@@ -757,7 +777,6 @@ def run_flags(df, previous_df=None, record_history=True):
         } for item in ev_board
     }
 
-    # Fallen Off — compare to previous fetch's +EV board
     prev_ev = st.session_state.get("prev_ev", {})
     fallen = []
     for player, old in prev_ev.items():
@@ -786,7 +805,6 @@ def run_flags(df, previous_df=None, record_history=True):
         })
         results.append(fallen[-1])
 
-    # Only update prev_ev + save history on real fetch
     if record_history:
         st.session_state["prev_ev"] = current_ev
         save_history(prev_ev=current_ev)
@@ -889,9 +907,9 @@ def main():
     hist_n = len(st.session_state.get("price_history", []))
     st.markdown(f"""
     <div class="how-to">
-        👑 <b>The Code</b> → BET THIS = 2+ core · edge ≥ 60 · 0.5 HR<br>
-        👻 Late Adds / 💀 Fallen Off need <b>2 real fetches</b> (snaps only on Fetch / Auto)<br>
-        📉 Trends FD-under-MGM · biggest gap first · History snaps: <b>{hist_n}</b>
+        👑 <b>The Board</b> → green = take it · gray = pass · ranked by Girl Magic Score<br>
+        👻 Late / Fallen need <b>2 real fetches</b> · History snaps: <b>{hist_n}</b><br>
+        📖 Glossary has full beginner-friendly rules (expand each section)
     </div>
     """, unsafe_allow_html=True)
 
@@ -930,13 +948,13 @@ def main():
             st.session_state["odds"] = df.to_dict("records")
             st.session_state["found_books"] = sorted(found)
             st.session_state["last_fetch_time"] = now_az()
-            st.session_state["new_fetch"] = True  # only real fetches write history
-            st.success(f"{'Auto-refreshed' if auto_fetch else 'Loaded'} {len(df)} props · {st.session_state['last_fetch_time']} AZ · snaps: {len(st.session_state.get('price_history', []))+1}")
+            st.session_state["new_fetch"] = True
+            st.success(f"{'Auto-refreshed' if auto_fetch else 'Loaded'} {len(df)} props · {st.session_state['last_fetch_time']} AZ")
         else:
             st.warning("No 0.5 HR odds returned.")
 
     if st.session_state.get("last_fetch_time"):
-        st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ · History: {hist_n} snaps (need 2+ for Late/Fallen)")
+        st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ · History: {hist_n} snaps")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -949,8 +967,6 @@ def main():
     prev = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     prev_df = pd.DataFrame(prev) if prev else None
-
-    # Only record history on real fetch
     new_fetch = st.session_state.pop("new_fetch", False)
     results, ev_board, fallen = (
         run_flags(df, prev_df, record_history=new_fetch) if not df.empty else ([], [], [])
@@ -961,8 +977,7 @@ def main():
 
     trend_good = sorted(
         [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"],
-        key=lambda r: r.get("gap", 0),
-        reverse=True,
+        key=lambda r: r.get("gap", 0), reverse=True,
     )
     trend_fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
 
@@ -991,7 +1006,7 @@ def main():
     """, unsafe_allow_html=True)
 
     tabs = st.tabs([
-        "🐝 +EV Board", "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
+        "👑 The Board", "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
         "🔢 Digits", "💙 FanDuel", "📈 Signals", "⏳ Movement",
         "📉 Trends", "👻 Late Adds", "💀 Fallen Off",
         "💅 Same Init", "✨ Double Init", "🔄 Cross", "👩‍👧 Last Name", "👯 First Name",
@@ -999,17 +1014,18 @@ def main():
     ])
 
     with tabs[0]:
-        st.markdown('<div class="queen-banner">👑 We Cracked The Code — Ranked by Score</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">👑 The Board — Take It or Pass</div>', unsafe_allow_html=True)
+        st.caption("Not a pure EV calculator. Ranked by Girl Magic Score (methods + edge + bonuses). Green tags = methods that hit.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
             cols = st.columns(2)
             for idx, item in enumerate(ev_board):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:5]) or ""
+                    tags = render_method_tags(item["methods"])
                     meter = make_meter(item["bars"], item["level"])
                     cls = "bet" if item["is_bet"] else "skip"
-                    label = "🟢 BET THIS" if item["is_bet"] else "⚪ SKIP"
+                    label = "🟢 TAKE IT" if item["is_bet"] else "⚪ PASS"
                     team = item.get("team") or ""
                     team_line = f" · {team}" if team else ""
                     st.markdown(f'''
@@ -1034,7 +1050,7 @@ def main():
             cols = st.columns(2)
             for idx, r in enumerate(items):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("methods", []))
+                    tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     show(tabs[1], "dk", "🎯 DraftKings 10s", "DK ends in 10.")
@@ -1053,7 +1069,7 @@ def main():
             cols = st.columns(2)
             for idx, r in enumerate(items):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("methods", []))
+                    tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     with tabs[8]:
@@ -1083,7 +1099,7 @@ def main():
             cols = st.columns(2)
             for idx, r in enumerate(trend_good):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag tag-green">{m}</span>' for m in r.get("methods", []))
+                    tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
         st.markdown("#### 🔴 Fade")
         if not trend_fade: st.info("None right now.")
@@ -1091,36 +1107,36 @@ def main():
             cols = st.columns(2)
             for idx, r in enumerate(trend_fade):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag tag-red">{m}</span>' for m in r.get("methods", []))
+                    tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     with tabs[10]:
         st.markdown('<div class="queen-banner">👻 Late Adds</div>', unsafe_allow_html=True)
-        st.caption(f"Needs 2+ real fetches · current snaps: {hist_n}")
+        st.caption(f"Needs 2+ real fetches · snaps: {hist_n}")
         items = [r for r in results if r["type"] == "late"]
         if hist_n < 2:
-            st.warning("Fetch at least twice (or wait for auto-refresh) so presence snaps can compare.")
+            st.warning("Fetch at least twice so presence snaps can compare.")
         if not items:
             st.info("None right now.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(items):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("methods", []))
+                    tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     with tabs[11]:
         st.markdown('<div class="queen-banner">💀 Fallen Off</div>', unsafe_allow_html=True)
-        st.caption("Was on +EV last real fetch, gone this fetch.")
+        st.caption("Was on The Board last real fetch, gone this fetch.")
         if hist_n < 2:
-            st.warning("Needs a previous fetch with an +EV board to compare against.")
+            st.warning("Needs a previous fetch with a board to compare.")
         if not fallen:
             st.info("None yet.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(fallen):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag tag-red">{m}</span>' for m in r.get("methods", []))
+                    tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was score {r.get("old_score", 0)}<br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     show(tabs[12], "same_init", "💅 Same Initials", "Different teams · 3+ core + strong.")
@@ -1188,6 +1204,7 @@ def main():
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
                 st.markdown(f"{icon} **{r['player']}** · {r.get('date')} · score {r.get('score')}")
 
+    # ── FULL BEGINNER GLOSSARY (expanders — do not strip) ──
     with tabs[18]:
         st.markdown('<div class="queen-banner">📖 The Code — Learn The Tricks</div>', unsafe_allow_html=True)
         st.markdown("""
@@ -1198,19 +1215,26 @@ def main():
         """, unsafe_allow_html=True)
 
         st.markdown("### 1. The board in 30 seconds")
-        with st.expander("🟢 BET THIS vs ⚪ SKIP — what should I actually bet?", expanded=True):
+        with st.expander("🟢 TAKE IT vs ⚪ PASS — what should I actually bet?", expanded=True):
             st.markdown("""
-**BET THIS** = the only plays the group is supposed to take.
+**TAKE IT** (BET THIS) = the only plays the group is supposed to take.
 
 To qualify:
 - At least **2 core methods** hit on that player  
 - **Edge pts 60 or higher** (best real price vs the pack)  
 - Market is **Over 0.5 HR** only (1 homer — not 2+ lines)
 
-**SKIP** = has 2+ core methods but edge is still under 60. Close, we pass.
+**PASS** (SKIP) = has 2+ core methods but edge is still under 60. Close, we pass.
 
-**Girl Magic Score (0–100)** ranks the +EV board (high → low).  
+**Girl Magic Score (0–100)** ranks The Board (high → low).  
 More core methods + bigger edge + bonuses (like *Last one left*) = higher score.
+
+**Tag colors on the board**
+- 🟢 Green = DraftKings  
+- 🟡 Gold = BetMGM / stayed / last one left  
+- 🔵 Blue = FanDuel  
+- 🟣 Purple = Exact / digit matches  
+- Bright green = multi-book strength  
             """)
 
         with st.expander("📊 Edge pts — what does that number mean?"):
@@ -1221,7 +1245,7 @@ Example: best book +700, most books around +550 → edge pts = **150**.
 
 - We ignore a single crazy longshot outlier (150+ longer than everyone else)  
 - Edge can be over 100 — it’s **odds points**, not a grade out of 100  
-- Need **60+** for BET THIS  
+- Need **60+** for TAKE IT  
             """)
 
         st.markdown("### 2. Core methods (count toward the 2+ rule)")
@@ -1273,7 +1297,7 @@ All signals for a player live on **one card**:
         st.markdown("### 3. Noise (shows on tabs — does NOT count toward 2+)")
         with st.expander("What is “noise”?"):
             st.markdown("""
-These can still be useful to *look at*, but they **do not** help a play become BET THIS by themselves:
+These can still be useful to *look at*, but they **do not** help a play become TAKE IT by themselves:
 
 - Just Appeared / Added Late / Gone Missing  
 - Single-book price moved  
@@ -1309,7 +1333,7 @@ Sorted **biggest gap first** (100 → 10).
 - **Added Late** — missing earlier, just showed up  
 - **Gone Missing** — was there, now gone  
 
-**Fallen Off** — was on the +EV board last real fetch, not on it this fetch.  
+**Fallen Off** — was on The Board last real fetch, not on it this fetch.  
 Tags can include: Was BET THIS, Lost core methods, Only 1 book left, Line gone.
 
 **Need 2+ real fetches** before these tabs can fill. Watch “History: X snaps” under the buttons.
@@ -1342,7 +1366,7 @@ Last one left · Multi-book Shorten/Lengthen · Same on 3+ books
         st.markdown("### 6. Results — learning what works")
         with st.expander("📊 Results tab"):
             st.markdown("""
-Every **BET THIS** auto-logs here.
+Every **TAKE IT** auto-logs here.
 
 After the games, mark **HIT** (1+ HR) or **MISS** (0 HR).
 
@@ -1359,7 +1383,7 @@ That’s how we tighten the code over time — not vibes, receipts.
 1. **Load Games**  
 2. Select the games you care about  
 3. **Fetch Odds**  
-4. Check **+EV Board** — green **BET THIS** first  
+4. Open **The Board** — green **TAKE IT** first  
 5. Use method tabs (DK / MGM / FD / etc.) to see *why*  
 6. After games → **Results** → mark HIT/MISS  
 
