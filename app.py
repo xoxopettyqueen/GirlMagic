@@ -646,11 +646,21 @@ def run_flags(df, previous_df=None):
             })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # Name patterns — TIGHT: only if BOTH already have 2+ methods
+      # Name patterns — VERY tight: only real book methods count
+    CORE_METHODS = {
+        "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
+        "Match 25", "Match 50", "Match 75",
+        "MGM 00", "MGM 25", "MGM 50", "MGM 75",
+        "Last one left", "Stayed in the group"
+    }
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
-    strong = {p for p, ms in methods_map.items() if len(set(ms)) >= 2}
+    strong = set()
+    for p, ms in methods_map.items():
+        core_hits = [m for m in set(ms) if m in CORE_METHODS or m.startswith("MGM ") or m.startswith("Match ") or m.startswith("Stayed 3")]
+        if len(core_hits) >= 2:
+            strong.add(p)
     players = list(strong)
 
     def diff_team(a, b):
