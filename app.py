@@ -259,6 +259,7 @@ CORE_BOOKS = {
 
 EDGE_MIN = 60
 METHODS_MIN = 2
+OUTLIER_GAP = 150
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -299,6 +300,21 @@ def get_initials(name):
 def now_az():
     az = timezone(timedelta(hours=-7))
     return datetime.now(az).strftime("%I:%M %p")
+
+def smart_best(prices, books):
+    """
+    Longest price that is not a lone outlier.
+    If the top price is more than OUTLIER_GAP above the second, use the second.
+    """
+    if not prices:
+        return None, None
+    paired = sorted(zip(prices, books), key=lambda x: x[0], reverse=True)
+    best_p, best_b = paired[0]
+    if len(paired) >= 2:
+        second_p, second_b = paired[1]
+        if best_p - second_p >= OUTLIER_GAP:
+            return second_p, second_b
+    return best_p, best_b
 
 def get_confidence(methods, edge, is_bet):
     if not is_bet:
@@ -660,14 +676,16 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("Price moved")
 
+    # +EV Board — only players with 2+ methods
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
         if len(prices) < 2:
             continue
-        best = max(prices)
-        best_book = books[prices.index(best)]
+        best, best_book = smart_best(prices, books)
+        if best is None:
+            continue
         try:
             med = statistics.median(prices)
         except:
@@ -675,9 +693,12 @@ def run_flags(df, previous_df=None):
         edge = best - med
         meths = list(set(methods_map.get(player, [])))
         method_count = len(meths)
-        if method_count < 1:
+
+        # Only show if 2+ methods
+        if method_count < METHODS_MIN:
             continue
-        is_bet = (method_count >= METHODS_MIN) and (edge >= EDGE_MIN)
+
+        is_bet = edge >= EDGE_MIN
         conf, bars, level, css = get_confidence(meths, edge, is_bet)
         pri = 0
         if "Last one left" in meths: pri += 30
@@ -686,12 +707,12 @@ def run_flags(df, previous_df=None):
         if "Same on 3+ books" in meths: pri += 8
         if "Just Appeared" in meths or "Added Late" in meths: pri += 6
         pri += method_count * 5 + min(edge / 10, 15)
+
         if is_bet:
-            why = f"{method_count} methods hit + price is clearly better. This is the one."
-        elif method_count >= METHODS_MIN:
-            why = f"{method_count} methods hit, but the price isn’t better enough yet."
+            why = f"{method_count} methods hit + edge {int(edge)}. This is the one."
         else:
-            why = "Has a method, but needs at least 2 methods + real edge to bet."
+            why = f"{method_count} methods hit, but edge is only {int(edge)} (need {EDGE_MIN}+)."
+
         ev_board.append({
             "player": player, "best_price": best, "best_book": best_book,
             "median": med, "edge": edge, "is_bet": is_bet, "why": why,
@@ -769,7 +790,7 @@ def run_flags(df, previous_df=None):
 def main():
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
-    st.markdown('<p class="tagline">Where odds intuition meets petty precision.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="how-to">
@@ -893,9 +914,9 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Green = 2+ methods + real edge.** Only 0.5 HR (1 homer) lines. Only players with methods appear.")
+        st.write("**Only players with 2+ methods.** Green = edge ≥ 60. Gray = methods hit but edge still short.")
         if not ev_board:
-            st.info("Fetch some games first.")
+            st.info("Fetch some games first. Only 2+ method plays appear here.")
         else:
             cols = st.columns(2)
             for idx, item in enumerate(ev_board):
@@ -909,7 +930,7 @@ def main():
                         <b>{label}</b> — <b>{item["player"]}</b><br>{meter}
                         Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
                         Most books: {format_odds(item["median"])}<br>
-                        Methods: {item.get("method_count", 0)}<br>
+                        Edge: {int(item["edge"])} · Methods: {item.get("method_count", 0)}<br>
                         {tags}<br><small>{item["why"]}</small>
                     </div>''', unsafe_allow_html=True)
 
@@ -951,13 +972,22 @@ def main():
         st.markdown("""
         <div class="gloss-card">
             <b>🟢 BET THIS</b><br>
-            At least <b>2 different methods</b> hit <b>and</b> the best price is clearly better than the rest of the books (edge of 60 or more).<br>
-            These are the only ones we actually take. Everything else is noise. Only 0.5 HR (1 homer) lines.
+            At least <b>2 different methods</b> hit <b>and</b> edge is 60 or higher.<br>
+            These are the only ones we actually take. Only 0.5 HR (1 homer) lines.
         </div>
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
-            Has one or more methods, but not enough of them — or the price isn’t better enough yet.<br>
-            We pass. No forcing it.
+            Has 2+ methods, but the edge is still under 60.<br>
+            Close — not quite there yet. We pass.
+        </div>
+        <div class="gloss-card">
+            <b>Edge</b><br>
+            How much better the best real price is compared to the middle of the books.<br>
+            Formula: <b>Best price − Median price</b>.<br>
+            • Best = longest price that is <b>not</b> a lone outlier (if one book is 150+ longer than everyone else, we ignore that book for “best”).<br>
+            • Median = the middle price across all books we have for that player.<br>
+            We need edge of <b>60 or higher</b> before we say BET THIS.<br>
+            Example: best +700, median +550 → edge = 150 → good.
         </div>
         <div class="gloss-card">
             <b>🎯 DK 10</b><br>
@@ -967,17 +997,17 @@ def main():
         <div class="gloss-card">
             <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
             BetMGM prices ending in 00, 25, 50, or 75 on the <b>same team</b>.<br>
-            We look for pairs first (2 players), then groups of three if no pair exists.
+            Pairs first (2 players), then groups of three if no pair exists.
         </div>
         <div class="gloss-card">
             <b>Stayed in the group</b><br>
-            This player is still inside the same BetMGM pair or group after multiple pulls.<br>
+            Still inside the same BetMGM pair or group after multiple pulls.<br>
             The book keeps putting them there on purpose.
         </div>
         <div class="gloss-card">
             <b>Stayed 3 times / Stayed 4 times</b><br>
             Showed up in that same MGM spot on 3+ different fetches.<br>
-            Even stronger than a one-time group.
+            Stronger than a one-time group.
         </div>
         <div class="gloss-card">
             <b>Last one left</b><br>
@@ -986,89 +1016,56 @@ def main():
         </div>
         <div class="gloss-card">
             <b>⭐ MGM Exact</b><br>
-            Two or more players on BetMGM have the <b>exact same price</b> (same team).<br>
-            Different from the classic endings — this is the full number matching.
+            Two or more players on BetMGM have the <b>exact same price</b> (same team).
         </div>
         <div class="gloss-card">
             <b>🤝 Exact Match</b><br>
-            Two or more books have the exact same price on the same player.<br>
-            When books agree that hard, we pay attention.
+            Two or more books have the exact same price on the same player.
         </div>
         <div class="gloss-card">
             <b>🔢 Match 25 / Match 50 / Match 75</b><br>
-            The same player shows a 25, 50, or 75 ending on more than one book.<br>
-            Different books using the same “template” number.
+            Same player shows a 25, 50, or 75 ending on more than one book.
         </div>
         <div class="gloss-card">
             <b>💙 FD Pattern</b><br>
-            FanDuel price is +400 or higher and ends in 10, 20, 30, 60, 70, or 90.<br>
-            These longer-shot patterns are ones we watch closely.
+            FanDuel price is +400 or higher and ends in 10, 20, 30, 60, 70, or 90.
         </div>
         <div class="gloss-card">
             <b>Same on 3+ books</b><br>
-            Three or more books have the identical price on this player.<br>
-            Strong agreement across the board.
+            Three or more books have the identical price on this player.
         </div>
         <div class="gloss-card">
             <b>Way different</b><br>
-            One book is an outlier — 150+ away from the middle of the other books.<br>
-            Something is off on that book.
+            One book is an outlier — 150+ away from the middle of the other books.
         </div>
         <div class="gloss-card">
             <b>Stayed the same</b><br>
-            This player’s price did not move across multiple fetches.<br>
-            The line is stuck.
+            Price did not move across multiple fetches. The line is stuck.
         </div>
         <div class="gloss-card">
             <b>Price moved</b><br>
-            The line went up or down since the last pull.<br>
-            Direction matters — we note both.
+            The line went up or down since the last pull.
         </div>
         <div class="gloss-card">
             <b>Just Appeared</b><br>
-            Player is on a book right now but was not on the previous pull.<br>
-            New to the board this fetch.
+            On a book right now but was not on the previous pull.
         </div>
         <div class="gloss-card">
             <b>Added Late</b><br>
-            Was missing earlier in the day and just showed up on a book.<br>
-            Late add — pay attention.
+            Was missing earlier in the day and just showed up.
         </div>
         <div class="gloss-card">
             <b>Gone Missing</b><br>
-            Was on a book earlier and disappeared on the latest pull.<br>
-            Worth noting when it happens.
+            Was on a book earlier and disappeared on the latest pull.
         </div>
         <div class="gloss-card">
-            <b>💅 Same Init</b><br>
-            Two players share the same first letter + same last letter (example: Marcus Morris & Matt McLain = MM).<br>
-            Only counts when both already have 2+ real book methods. Prefer different teams. Jr. is ignored.
-        </div>
-        <div class="gloss-card">
-            <b>🔄 Cross Init</b><br>
-            One player’s last initial matches the other player’s first initial.<br>
-            Only counts when both already have 2+ real book methods. Prefer different teams.
-        </div>
-        <div class="gloss-card">
-            <b>👩‍👧 Same Last</b><br>
-            Two players share the exact same last name.<br>
-            Only counts when both already have 2+ real book methods.
-        </div>
-        <div class="gloss-card">
-            <b>👯 Same First</b><br>
-            Two players share the exact same first name.<br>
-            Only counts when both already have 2+ real book methods.
+            <b>💅 Same Init / 🔄 Cross Init / 👩‍�� Same Last / 👯 Same First</b><br>
+            Name magic. Only counts when both players already have 2+ real book methods.<br>
+            Prefer different teams. Jr. / Sr. / II / III are ignored.
         </div>
         <div class="gloss-card">
             <b>Confidence Meter</b><br>
-            The little bars under each card.<br>
-            More filled bars = stronger mix of methods + edge.<br>
-            Levels: High / Strong / Medium / Low.
-        </div>
-        <div class="gloss-card">
-            <b>Edge</b><br>
-            How much better the best price is compared to the middle of the books.<br>
-            We require edge of 60 or higher before we will say BET THIS.
+            The little bars under each card. More filled = stronger mix of methods + edge.
         </div>
         """, unsafe_allow_html=True)
 
