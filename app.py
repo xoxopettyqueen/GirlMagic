@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-FD only with DK/MGM · Movement Up=red Down=green · Double Initials
+Movement 500+ only · Signals one card per player · FD needs DK/MGM · Double Init
 """
 
 import streamlit as st
@@ -85,6 +85,7 @@ NAME_MAX_PAIRS = 50
 BIG_MOVE = 100
 MOVE_MIN = 40
 FD_MIN = 500
+MOVE_PRICE_MIN = 500
 
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
@@ -333,6 +334,9 @@ def run_flags(df, previous_df=None):
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
+    # collect signal lines per player, emit one card later
+    signal_bucket = defaultdict(list)
+    signal_methods = defaultdict(set)
 
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
@@ -411,7 +415,7 @@ def run_flags(df, previous_df=None):
                 "event": "", "css": "hist", "methods": ["FADE · FD highest"]
             })
 
-    # Movement — track direction for split columns
+    # Movement — 500+ only · Up red / Down green
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
         player_up = defaultdict(list)
@@ -420,6 +424,8 @@ def run_flags(df, previous_df=None):
             player, book = key
             if key not in prev_snap: continue
             prev_price = prev_snap[key]
+            if abs(prev_price) < MOVE_PRICE_MIN and abs(curr_price) < MOVE_PRICE_MIN:
+                continue
             delta = curr_price - prev_price
             if abs(delta) < MOVE_MIN: continue
             line = f"{book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(abs(delta))} pts)"
@@ -518,7 +524,6 @@ def run_flags(df, previous_df=None):
                     "event": event, "css": "mgm", "methods": ["MGM Exact"]})
                 for n in names: methods_map[n].append("MGM Exact")
 
-    # Digits = player pairs/groups sharing 25/50/75
     for event, g in df.groupby("event"):
         ends = defaultdict(list)
         for _, r in g.iterrows():
@@ -537,7 +542,6 @@ def run_flags(df, previous_df=None):
             for n in names:
                 methods_map[n].append(f"Match {d}")
 
-    # FanDuel — only if player also has DK 10 or MGM trick
     for _, row in df.iterrows():
         if row["book"] != "fanduel":
             continue
@@ -561,15 +565,14 @@ def run_flags(df, previous_df=None):
             })
             methods_map[player].append("FD Pattern")
 
-    # Signals
+    # ── SIGNALS collected per player, one card later ──
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
         if len(prices) < 2: continue
         if len(prices) >= 3 and len(set(prices)) == 1:
-            results.append({"type": "signal", "label": player,
-                "reason": f"Same price on {len(prices)} books → {format_odds(prices[0])}",
-                "event": g["event"].iloc[0], "css": "signal", "methods": ["Same on 3+ books"]})
+            signal_bucket[player].append(f"Same price on {len(prices)} books → {format_odds(prices[0])}")
+            signal_methods[player].add("Same on 3+ books")
             methods_map[player].append("Same on 3+ books")
         dig_books = defaultdict(list)
         for _, r in g.iterrows():
@@ -578,9 +581,8 @@ def run_flags(df, previous_df=None):
                 dig_books[d].append(r["book"])
         for d, bks in dig_books.items():
             if len(set(bks)) >= 3:
-                results.append({"type": "signal", "label": player,
-                    "reason": f"Same ending {d} on {len(set(bks))} books",
-                    "event": g["event"].iloc[0], "css": "signal", "methods": [f"Same ending {d}"]})
+                signal_bucket[player].append(f"Same ending {d} on {len(set(bks))} books")
+                signal_methods[player].add(f"Same ending {d}")
                 methods_map[player].append(f"Same ending {d}")
         if len(prices) >= 3:
             for i, (p, b) in enumerate(zip(prices, books)):
@@ -588,9 +590,8 @@ def run_flags(df, previous_df=None):
                 try: med_rest = statistics.median(rest)
                 except Exception: continue
                 if p - med_rest >= OUTLIER_GAP:
-                    results.append({"type": "signal", "label": player,
-                        "reason": f"One higher: {b} at {format_odds(p)} · pack {format_odds(med_rest)}",
-                        "event": g["event"].iloc[0], "css": "signal", "methods": ["Outlier higher"]})
+                    signal_bucket[player].append(f"One higher: {b} at {format_odds(p)} · pack {format_odds(med_rest)}")
+                    signal_methods[player].add("Outlier higher")
                     methods_map[player].append("Outlier higher")
 
     if len(phist) >= 3:
@@ -598,9 +599,8 @@ def run_flags(df, previous_df=None):
             player, book = key
             vals = [snap[key] for snap in phist[-4:] if key in snap]
             if len(vals) >= 3 and len(set(vals)) == 1:
-                results.append({"type": "signal", "label": player,
-                    "reason": f"Stuck on {book} at {format_odds(vals[0])} across {len(vals)} snaps",
-                    "event": "", "css": "signal", "methods": ["Stuck price"]})
+                signal_bucket[player].append(f"Stuck on {book} at {format_odds(vals[0])} across {len(vals)} snaps")
+                signal_methods[player].add("Stuck price")
                 methods_map[player].append("Stuck price")
 
     if len(phist) >= 2:
@@ -615,16 +615,27 @@ def run_flags(df, previous_df=None):
             else: down_by[player].append(book)
         for player, books in up_by.items():
             if len(books) >= 2:
-                results.append({"type": "signal", "label": player,
-                    "reason": f"Multi-book lengthen on {', '.join(books)}",
-                    "event": "", "css": "signal", "methods": ["Multi-book Lengthen"]})
+                signal_bucket[player].append(f"Multi-book lengthen on {', '.join(books)}")
+                signal_methods[player].add("Multi-book Lengthen")
                 methods_map[player].append("Multi-book Lengthen")
         for player, books in down_by.items():
             if len(books) >= 2:
-                results.append({"type": "signal", "label": player,
-                    "reason": f"Multi-book shorten on {', '.join(books)}",
-                    "event": "", "css": "signal", "methods": ["Multi-book Shorten"]})
+                signal_bucket[player].append(f"Multi-book shorten on {', '.join(books)}")
+                signal_methods[player].add("Multi-book Shorten")
                 methods_map[player].append("Multi-book Shorten")
+
+    # one signal card per player
+    for player in sorted(signal_bucket.keys()):
+        lines = signal_bucket[player]
+        meths = list(signal_methods[player])
+        results.append({
+            "type": "signal",
+            "label": player,
+            "reason": "<br>".join(lines),
+            "event": "",
+            "css": "signal",
+            "methods": meths,
+        })
 
     # +EV
     ev_board = []
@@ -692,7 +703,6 @@ def run_flags(df, previous_df=None):
     st.session_state["prev_ev"] = current_ev
     save_history(prev_ev=current_ev)
 
-    # Name magic
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -703,7 +713,6 @@ def run_flags(df, previous_df=None):
     pool = [p for p, ms in methods_map.items()
             if count_core_methods(ms) >= NAME_METHODS_MIN and has_personal_strong(ms)]
 
-    # Same Initials (TT + TT)
     init_map = defaultdict(list)
     for p in pool:
         f, l = get_initials(p)
@@ -717,7 +726,6 @@ def run_flags(df, previous_df=None):
         results.append({"type": "same_init", "label": f"{a} + {b}",
             "reason": f"Same initials {k} (different teams)", "event": "", "css": "name", "methods": ["Same Init"]})
 
-    # Double Initials — first letter == last letter (TT, SS, HH)
     double_pool = []
     for p in pool:
         f, l = get_initials(p)
@@ -733,7 +741,6 @@ def run_flags(df, previous_df=None):
             "reason": f"Double initials {k[0]}{k[0]} + {k[1]}{k[1]} (different teams)",
             "event": "", "css": "name", "methods": ["Double Init"]})
 
-    # Cross Initials — last of A == first of B
     cross_pairs = []
     for i, a in enumerate(pool):
         _, l1 = get_initials(a)
@@ -794,8 +801,8 @@ def main():
         👑 <b>The Code</b> → BET THIS = 2+ core methods <b>and</b> edge pts ≥ 60<br>
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer)<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
-        🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History snaps: <b>{hist_n}</b><br>
-        💙 <b>FD</b> → only if also DK 10 or MGM · Movement: Up=red · Down=green
+        🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History: <b>{hist_n}</b><br>
+        💙 FD needs DK/MGM · Movement 500+ only · Signals one card per player
     </div>
     """, unsafe_allow_html=True)
 
@@ -932,11 +939,29 @@ def main():
     show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, multiple guys.")
     show(tabs[5], "digit", "🔢 Digits — Pairs & Groups", "2+ players sharing ending 25 / 50 / 75.")
     show(tabs[6], "fd", "💙 FanDuel (needs DK or MGM)", f"≥ +{FD_MIN} endings or exact +600 — only if also DK 10 or MGM.")
-    show(tabs[7], "signal", "📈 Signals", "Same on 3+ · One book higher · Stuck · Multi-book direction.")
+
+    # Signals — already one card per player from run_flags
+    with tabs[7]:
+        st.markdown('<div class="queen-banner">📈 Signals — One Card Per Player</div>', unsafe_allow_html=True)
+        st.caption("All signals for that player listed under one card.")
+        items = [r for r in results if r["type"] == "signal"]
+        if not items:
+            st.info("None right now.")
+        else:
+            cols = st.columns(2)
+            for idx, r in enumerate(items):
+                with cols[idx % 2]:
+                    tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("methods", []))
+                    st.markdown(f'''
+                    <div class="card grid-card">
+                        <b>{r["label"]}</b><br>
+                        {r["reason"]}<br>
+                        {tags}
+                    </div>''', unsafe_allow_html=True)
 
     with tabs[8]:
-        st.markdown('<div class="queen-banner">⏳ Movement</div>', unsafe_allow_html=True)
-        st.caption(f"Shared history · ≥ {MOVE_MIN} pts · Up = red · Down = green")
+        st.markdown('<div class="queen-banner">⏳ Movement (500+ only)</div>', unsafe_allow_html=True)
+        st.caption(f"Shared history · price ≥ {MOVE_PRICE_MIN} · move ≥ {MOVE_MIN} pts · Up = red · Down = green")
         ups = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"]
         downs = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"]
         col_up, col_down = st.columns(2)
@@ -1003,9 +1028,9 @@ def main():
                         {r["reason"]}<br>{tags}<br><small>Had: {old_tags or "—"}</small>
                     </div>''', unsafe_allow_html=True)
 
-    show(tabs[12], "same_init", "💅 Same Initials", "Same first+last initials (e.g. Trea Turner + Tyler Tolbert = TT). Different teams.")
-    show(tabs[13], "double_init", "✨ Double Initials", "First letter = last letter (TT, SS, HH). e.g. Trea Turner, Spencer Steer, Heriberto Hernandez. Different teams.")
-    show(tabs[14], "cross", "🔄 Cross Initials", "Last initial of one = first initial of the other. Different teams.")
+    show(tabs[12], "same_init", "💅 Same Initials", "Same first+last initials (e.g. TT + TT). Different teams · 3+ core + strong.")
+    show(tabs[13], "double_init", "✨ Double Initials", "First = last letter (TT, SS, HH). Different teams · 3+ core + strong.")
+    show(tabs[14], "cross", "🔄 Cross Initials", "Last of one = first of the other. Different teams · 3+ core + strong.")
     show(tabs[15], "last", "👩‍👧 Same Last Name", f"Different teams · max {NAME_MAX_PAIRS}")
     show(tabs[16], "first", "👯 Same First Name", f"Different teams · max {NAME_MAX_PAIRS}")
 
@@ -1017,30 +1042,22 @@ def main():
         </div>
         <div class="gloss-card">
             <b>💙 FanDuel</b><br>
-            ≥ +{FD_MIN} ending 10/20/30/60/70/90 · or exact +600<br>
-            <b>Only shown if that player also has DK 10 or a BetMGM trick</b>
+            ≥ +{FD_MIN} endings or exact +600<br>
+            <b>Only if that player also has DK 10 or a BetMGM trick</b>
         </div>
         <div class="gloss-card">
             <b>⏳ Movement</b><br>
-            Left = <span style="color:#f87171">🔴 Went UP</span> · Right = <span style="color:#34d399">🟢 Went DOWN</span><br>
-            ≥ {MOVE_MIN} pts · shared history
+            🔴 UP (left) · 🟢 DOWN (right)<br>
+            Only <b>{MOVE_PRICE_MIN}+</b> prices · move ≥ {MOVE_MIN} pts
         </div>
         <div class="gloss-card">
-            <b>💅 Same Init</b> — same first+last initials (TT + TT)<br>
-            <b>✨ Double Init</b> — first letter = last letter (TT, SS, HH)<br>
-            <b>🔄 Cross</b> — last of one = first of the other<br>
-            All: 3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}
+            <b>📈 Signals</b><br>
+            <b>One card per player</b> — all their signals listed under them
         </div>
         <div class="gloss-card">
-            <b>🔢 Digits</b> — pair/group of players sharing 25/50/75 (like MGM)
-        </div>
-        <div class="gloss-card">
-            <b>📈 Signals</b> — same on 3+ · one book higher than pack · stuck · multi-book direction
-        </div>
-        <div class="gloss-card">
-            <b>Core methods</b> — DK 10 · FD Pattern · FD 600 · Exact · MGM Exact ·
-            Match 25/50/75 · MGM groups · Stayed in group · Last one left ·
-            Same on 3+ · Multi-book Shorten/Lengthen
+            <b>💅 Name Magic</b><br>
+            Both need 3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}<br>
+            Same Init · Double Init · Cross · Same first/last
         </div>
         """, unsafe_allow_html=True)
 
