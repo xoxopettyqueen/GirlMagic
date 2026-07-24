@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Clear sticky names + general sticky + smaller cards
+Smaller cards + cleaned Glossary
 """
 
 import streamlit as st
@@ -34,7 +34,7 @@ st.markdown("""
         background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 2.5rem !important;
+        font-size: 2.4rem !important;
         margin-bottom: 0 !important;
     }
 
@@ -73,7 +73,7 @@ st.markdown("""
         background: linear-gradient(155deg, #1c0f2b, #27143a);
         border: 1px solid #f472b6;
         border-radius: 12px;
-        padding: 10px 13px;
+        padding: 8px 12px;
         margin: 0;
         color: #fdf2f8;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -168,7 +168,7 @@ st.markdown("""
     }
 
     .grid-card {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -245,11 +245,10 @@ def run_flags(df, previous_df=None):
     flagged_players = set()
     player_methods = defaultdict(list)
 
-    # ========== HISTORY FOR STAYED-IN-GROUP ==========
+    # History for "Stayed the same"
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
 
-    # Current snapshot of player → price per book
     current_snap = {}
     for _, row in df.iterrows():
         key = (row["player"], row["book"])
@@ -258,7 +257,6 @@ def run_flags(df, previous_df=None):
     st.session_state["price_history"].append(current_snap)
     st.session_state["price_history"] = st.session_state["price_history"][-8:]
 
-    # Count how many times a player kept the same price on the same book
     stayed_count = defaultdict(int)
     history = st.session_state["price_history"]
     if len(history) >= 2:
@@ -267,9 +265,9 @@ def run_flags(df, previous_df=None):
             curr = history[i]
             for key in curr:
                 if key in prev and prev[key] == curr[key]:
-                    stayed_count[key[0]] += 1   # count by player
+                    stayed_count[key[0]] += 1
 
-    # ========== DraftKings Ends in 10 ==========
+    # DraftKings Ends in 10
     for _, row in df.iterrows():
         if "draftkings" in str(row["book"]).lower():
             if last_two(row["price"]) == 10:
@@ -277,10 +275,9 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(row["player"])
                 player_methods[row["player"]].append("DK 10")
 
-    # ========== BetMGM Classic (SAME TEAM ONLY) ==========
+    # BetMGM Classic (Same Team Only)
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
 
-    # MGM group history
     if "mgm_history" not in st.session_state:
         st.session_state["mgm_history"] = []
 
@@ -360,7 +357,7 @@ def run_flags(df, previous_df=None):
                     flagged_players.add(n)
                     player_methods[n].extend(methods)
 
-    # ========== Exact Matching Odds ==========
+    # Exact Matching Odds
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         prices = group["price"].dropna().tolist()
@@ -370,7 +367,7 @@ def run_flags(df, previous_df=None):
             flagged_players.add(player)
             player_methods[player].append("Exact Match")
 
-    # ========== MGM Exact Match ==========
+    # MGM Exact Match
     for event, event_group in mgm_df.groupby("event"):
         for price, price_group in event_group.groupby("price"):
             players = sorted(price_group["player"].unique().tolist())
@@ -380,7 +377,7 @@ def run_flags(df, previous_df=None):
                     flagged_players.add(p)
                     player_methods[p].append("MGM Exact")
 
-    # ========== Matching 25/50/75 ==========
+    # Matching 25/50/75
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         if len(group) < 2: continue
         digits = defaultdict(list)
@@ -394,7 +391,7 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(player)
                 player_methods[player].append(f"Match {d}")
 
-    # ========== FanDuel Patterns ==========
+    # FanDuel Patterns
     for _, row in df.iterrows():
         if "fanduel" in str(row["book"]).lower():
             price = abs(int(row["price"])) if row["price"] else 0
@@ -404,7 +401,7 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(row["player"])
                 player_methods[row["player"]].append("FD Pattern")
 
-    # ========== General "Stayed the same" (any book) ==========
+    # General "Stayed the same"
     for player, cnt in stayed_count.items():
         if cnt >= 2:
             label = f"Stayed {cnt} times" if cnt >= 3 else "Stayed the same"
@@ -419,7 +416,7 @@ def run_flags(df, previous_df=None):
             flagged_players.add(player)
             player_methods[player].append(label)
 
-    # ========== Line Signals ==========
+    # Line Signals
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         books = group["book"].tolist()
@@ -438,7 +435,7 @@ def run_flags(df, previous_df=None):
         except:
             pass
 
-    # ========== Historical Movement ==========
+    # Historical Movement
     if previous_df is not None and not previous_df.empty:
         prev_lookup = {(row["player"], row["book"]): row["price"] for _, row in previous_df.iterrows()}
         for _, row in df.iterrows():
@@ -451,7 +448,7 @@ def run_flags(df, previous_df=None):
                     flagged_players.add(row["player"])
                     player_methods[row["player"]].append("Price moved")
 
-    # ========== +EV Board ==========
+    # +EV Board
     ev_board = []
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
@@ -623,6 +620,7 @@ def main():
         "📖 Glossary"
     ])
 
+    # +EV Board
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 Boss Bitch Picks</div>', unsafe_allow_html=True)
         st.write("**Green = we like it.** **Gray = we skip it.**")
@@ -692,34 +690,54 @@ def main():
     show_tab(tabs[11], "last", "👩‍👧 Same Last Name", "Players sharing a last name")
     show_tab(tabs[12], "first", "👯 Same First Name", "Players sharing a first name")
 
+    # ========== CLEANED GLOSSARY ==========
     with tabs[13]:
         st.markdown('<div class="queen-banner">📖 Glossary</div>', unsafe_allow_html=True)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            <div class="card bet">
+                <b>🟢 BET THIS</b><br>
+                Has one of our methods <b>AND</b> the price is better than most other books.
+            </div>
+            """, unsafe_allow_html=True)
+        with col2:
+            st.markdown("""
+            <div class="card skip">
+                <b>⚪ SKIP</b><br>
+                Either no method hit, or the price is not better than most other books.
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("---")
+
+        st.markdown('<div class="queen-banner">MGM Clear Names</div>', unsafe_allow_html=True)
         st.markdown("""
-**🟢 BET THIS**  
-Has one of our methods **and** the price is better than most other books.
+        <div class="card mgm">
+            <b>Stayed in the group</b> → Still in the same MGM pair/group<br>
+            <b>Stayed 3 times</b> → Appeared in the group on 3 different fetches<br>
+            <b>Last one left</b> → Started in a bigger group and is still there
+        </div>
+        """, unsafe_allow_html=True)
 
-**⚪ SKIP**  
-Either no method hit, or the price is not better than most other books.
+        st.markdown('<div class="queen-banner">All Methods</div>', unsafe_allow_html=True)
 
----
-
-**MGM clear names**
-- **Stayed in the group** → Still in the same MGM pair/group
-- **Stayed 3 times** → Appeared in the group on 3 different fetches
-- **Last one left** → Started in a bigger group and is still there
-
-**Other methods**
-- **DK 10** → DraftKings ends in 10  
-- **MGM 00/25/50/75** → Same-team pairs or groups  
-- **Exact Match** → Same price on different books  
-- **MGM Exact** → Same price on BetMGM for multiple players  
-- **Matching Digits** → 25/50/75 across books  
-- **FD Pattern** → FanDuel +500+ special endings  
-- **Stayed the same** → Price did not change across fetches (any book)  
-- **Same on 3+ books** → Exact same price on three or more books  
-- **Way different** → One book is much higher or lower than the rest  
-- **Name patterns** → Only shown when a method already hit
-        """)
+        methods_html = """
+        <div class="card">
+            <span class="tag">DK 10</span> DraftKings ends in 10<br>
+            <span class="tag">MGM 00/25/50/75</span> Same-team pairs or groups<br>
+            <span class="tag">Exact Match</span> Same price on different books<br>
+            <span class="tag">MGM Exact</span> Same price on BetMGM for multiple players<br>
+            <span class="tag">Matching Digits</span> 25/50/75 across books<br>
+            <span class="tag">FD Pattern</span> FanDuel +500+ special endings<br>
+            <span class="tag">Stayed the same</span> Price did not change across fetches<br>
+            <span class="tag">Same on 3+ books</span> Exact same price on three or more books<br>
+            <span class="tag">Way different</span> One book is much higher or lower than the rest<br>
+            <span class="tag">Name patterns</span> Only shown when a method already hit
+        </div>
+        """
+        st.markdown(methods_html, unsafe_allow_html=True)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
