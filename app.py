@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Confidence meters + dynamic gradients
+Fixed syntax + confidence meters + dynamic gradients
 """
 
 import streamlit as st
@@ -214,7 +214,6 @@ def get_initials(name):
     return parts[0][0].upper(), parts[-1][0].upper()
 
 def get_confidence(methods, edge, is_bet):
-    """Return level, bars, css class"""
     if not is_bet:
         return "Skip", 1, "low", "skip-card"
 
@@ -544,7 +543,7 @@ def run_flags(df, previous_df=None):
         except:
             pass
 
-    # Historical Movement
+    # Historical Movement (FIXED f-string)
     if previous_df is not None and not previous_df.empty:
         prev_lookup = {(row["player"], row["book"]): row["price"] for _, row in previous_df.iterrows()}
         for _, row in df.iterrows():
@@ -556,4 +555,160 @@ def run_flags(df, previous_df=None):
                     results.append({
                         "type": "hist",
                         "label": row["player"],
-                        "reason": f"{row['book']}: {format_odds(old)} → {format_odds(new)}
+                        "reason": f"{row['book']}: {format_odds(old)} → {format_odds(new)} ({direction})",
+                        "event": row["event"],
+                        "css": "hist",
+                        "methods": ["Price moved"]
+                    })
+                    flagged_players.add(row["player"])
+                    player_methods[row["player"]].append("Price moved")
+
+    # +EV Board (edge +50)
+    ev_board = []
+    for (player, point), group in df.groupby(["player", "point"], dropna=False):
+        prices = group["price"].dropna().tolist()
+        books = group["book"].tolist()
+        if len(prices) < 2:
+            continue
+
+        best_price = max(prices)
+        best_book = books[prices.index(best_price)]
+        try:
+            median = statistics.median(prices)
+        except:
+            median = best_price
+
+        edge = best_price - median
+        has_edge = edge >= 50
+        has_method = player in flagged_players
+        methods = list(set(player_methods.get(player, [])))
+        is_bet = has_edge and has_method
+
+        conf_label, bars, level, css = get_confidence(methods, edge, is_bet)
+
+        priority = 0
+        if "Last one left" in methods:
+            priority += 30
+        if any("Stayed" in m and "times" in m for m in methods):
+            priority += 20
+        if "Stayed in the group" in methods:
+            priority += 10
+        if "Same on 3+ books" in methods:
+            priority += 8
+        priority += len(methods)
+        priority += min(edge / 10, 15)
+
+        if is_bet:
+            why = "Has one of our methods and the price is better than most books."
+        elif has_method:
+            why = "Has a method, but the price is not better than most books."
+        elif has_edge:
+            why = "Price looks better, but none of our methods hit."
+        else:
+            why = "No method and the price is not better than most books."
+
+        ev_board.append({
+            "player": player,
+            "best_price": best_price,
+            "best_book": best_book,
+            "median": median,
+            "edge": edge,
+            "books": ", ".join(books),
+            "event": group["event"].iloc[0],
+            "is_bet": is_bet,
+            "why": why,
+            "methods": methods,
+            "priority": priority,
+            "conf_label": conf_label,
+            "bars": bars,
+            "level": level,
+            "css": css
+        })
+
+    ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
+
+    # Name patterns
+    player_events = defaultdict(set)
+    for _, row in df.iterrows():
+        player_events[row["player"]].add(row["event"])
+    players = list(df["player"].dropna().unique())
+
+    def is_different_teams(p1, p2):
+        return len(player_events[p1] & player_events[p2]) == 0
+
+    def both_flagged(p1, p2):
+        return p1 in flagged_players and p2 in flagged_players
+
+    init_map = defaultdict(list)
+    for p in players:
+        f, l = get_initials(p)
+        if f and l:
+            init_map[f + l].append(p)
+    for k, names in init_map.items():
+        for i, p1 in enumerate(names):
+            for p2 in names[i + 1:]:
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = "same team" if same else "different teams"
+                    results.append({
+                        "type": "same_init",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same initials {k} ({tag})",
+                        "event": "",
+                        "css": "name",
+                        "methods": ["Same Init"]
+                    })
+
+    for i, p1 in enumerate(players):
+        _, l1 = get_initials(p1)
+        if not l1:
+            continue
+        for p2 in players[i + 1:]:
+            f2, _ = get_initials(p2)
+            if f2 and l1 == f2 and both_flagged(p1, p2):
+                same = not is_different_teams(p1, p2)
+                tag = "same team" if same else "different teams"
+                results.append({
+                    "type": "cross",
+                    "label": f"{p1} + {p2}",
+                    "reason": f"Cross initials ({l1}) ({tag})",
+                    "event": "",
+                    "css": "name",
+                    "methods": ["Cross Init"]
+                })
+
+    last_map = defaultdict(list)
+    for p in players:
+        parts = str(p).split()
+        if len(parts) >= 2:
+            last_map[parts[-1].lower()].append(p)
+    for last, names in last_map.items():
+        for i, p1 in enumerate(names):
+            for p2 in names[i + 1:]:
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = "same team" if same else "different teams"
+                    results.append({
+                        "type": "last",
+                        "label": f"{p1} + {p2}",
+                        "reason": f"Same last name ({last.title()}) ({tag})",
+                        "event": "",
+                        "css": "name",
+                        "methods": ["Same Last"]
+                    })
+
+    first_map = defaultdict(list)
+    for p in players:
+        parts = str(p).split()
+        if parts:
+            first_map[parts[0].lower()].append(p)
+    for first, names in first_map.items():
+        for i, p1 in enumerate(names):
+            for p2 in names[i + 1:]:
+                if both_flagged(p1, p2):
+                    same = not is_different_teams(p1, p2)
+                    tag = "same team" if same else "different teams"
+                    results.append({
+                        "type": "first",
+                        "label": f"{p1} + {p2}",
+                       
