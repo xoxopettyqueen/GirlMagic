@@ -101,7 +101,7 @@ st.markdown("""
     }
     .petty-box {
         flex: 1;
-        min-width: 110px;
+        min-width: 100px;
         background: #1a0f28;
         border: 1px solid #f472b6;
         border-radius: 12px;
@@ -110,13 +110,13 @@ st.markdown("""
         box-shadow: 0 0 12px rgba(244, 114, 182, 0.15);
     }
     .petty-num {
-        font-size: 1.65rem;
+        font-size: 1.55rem;
         font-weight: 800;
         color: #f9a8d4;
         line-height: 1.1;
     }
     .petty-label {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         color: #e9d5ff;
         margin-top: 4px;
         letter-spacing: 0.4px;
@@ -199,8 +199,8 @@ st.markdown("""
         border-radius: 8px;
         color: #f9a8d4;
         font-weight: 600;
-        padding: 7px 11px;
-        font-size: 0.84rem;
+        padding: 7px 10px;
+        font-size: 0.82rem;
     }
     .stTabs [aria-selected="true"] {
         background: linear-gradient(90deg, #db2777, #9333ea) !important;
@@ -270,7 +270,6 @@ def last_two(p):
         return None
 
 def clean_name(name):
-    """Strip Jr / Sr / II / III / IV so they don't mess up name matching."""
     name = str(name).strip()
     suffixes = {"jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"}
     parts = name.split()
@@ -423,6 +422,65 @@ def run_flags(df, previous_df=None):
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, flagged, methods_map = [], set(), defaultdict(list)
 
+    # ── Presence history for Late Adds ────────────────────────
+    if "presence_history" not in st.session_state:
+        st.session_state["presence_history"] = []
+    current_presence = set()
+    for _, r in df.iterrows():
+        current_presence.add((r["player"], r["book"]))
+    st.session_state["presence_history"].append(current_presence)
+    st.session_state["presence_history"] = st.session_state["presence_history"][-12:]
+
+    hist = st.session_state["presence_history"]
+    if len(hist) >= 2:
+        early = set()
+        for snap in hist[:max(1, len(hist)//3)]:
+            early |= snap
+        latest = hist[-1]
+        previous = hist[-2] if len(hist) >= 2 else set()
+
+        # Just appeared (in latest, not in previous)
+        for player, book in latest - previous:
+            results.append({
+                "type": "late",
+                "label": player,
+                "reason": f"Just appeared on {book}",
+                "event": "",
+                "css": "hist",
+                "methods": ["Just Appeared"]
+            })
+            flagged.add(player)
+            methods_map[player].append("Just Appeared")
+
+        # Added late (in latest, never in early window)
+        for player, book in latest - early:
+            if (player, book) in previous:  # already caught by Just Appeared if brand new
+                continue
+            results.append({
+                "type": "late",
+                "label": player,
+                "reason": f"Added late on {book} (was missing earlier today)",
+                "event": "",
+                "css": "hist",
+                "methods": ["Added Late"]
+            })
+            flagged.add(player)
+            methods_map[player].append("Added Late")
+
+        # Gone missing (was in previous, not in latest)
+        for player, book in previous - latest:
+            results.append({
+                "type": "late",
+                "label": player,
+                "reason": f"Gone missing from {book}",
+                "event": "",
+                "css": "hist",
+                "methods": ["Gone Missing"]
+            })
+            flagged.add(player)
+            methods_map[player].append("Gone Missing")
+
+    # Price history
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
@@ -430,11 +488,11 @@ def run_flags(df, previous_df=None):
     st.session_state["price_history"] = st.session_state["price_history"][-8:]
 
     stayed = defaultdict(int)
-    hist = st.session_state["price_history"]
-    if len(hist) >= 2:
-        for i in range(1, len(hist)):
-            for key in hist[i]:
-                if key in hist[i-1] and hist[i-1][key] == hist[i][key]:
+    phist = st.session_state["price_history"]
+    if len(phist) >= 2:
+        for i in range(1, len(phist)):
+            for key in phist[i]:
+                if key in phist[i-1] and phist[i-1][key] == phist[i][key]:
                     stayed[key[0]] += 1
 
     # DK 10
@@ -553,7 +611,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(player)
                 methods_map[player].append(f"Match {d}")
 
-    # FanDuel ≥ +400 ending in 10 / 20 / 30 / 60 / 70 / 90
+    # FanDuel ≥ +400
     for _, row in df.iterrows():
         if row["book"] == "fanduel":
             price = abs(int(row["price"])) if row["price"] else 0
@@ -612,7 +670,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV — only show if player has at least 1 method
+    # +EV
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -628,10 +686,8 @@ def run_flags(df, previous_df=None):
         edge = best - med
         meths = list(set(methods_map.get(player, [])))
         method_count = len(meths)
-
         if method_count < 1:
             continue
-
         is_bet = (method_count >= METHODS_MIN) and (edge >= EDGE_MIN)
         conf, bars, level, css = get_confidence(meths, edge, is_bet)
         pri = 0
@@ -639,15 +695,14 @@ def run_flags(df, previous_df=None):
         if any("Stayed" in m and "times" in m for m in meths): pri += 20
         if "Stayed in the group" in meths: pri += 10
         if "Same on 3+ books" in meths: pri += 8
+        if "Just Appeared" in meths or "Added Late" in meths: pri += 6
         pri += method_count * 5 + min(edge / 10, 15)
-
         if is_bet:
             why = f"{method_count} methods hit + price is clearly better. This is the one."
         elif method_count >= METHODS_MIN:
             why = f"{method_count} methods hit, but the price isn’t better enough yet."
         else:
             why = "Has a method, but needs at least 2 methods + real edge to bet."
-
         ev_board.append({
             "player": player, "best_price": best, "best_book": best_book,
             "median": med, "edge": edge, "is_bet": is_bet, "why": why,
@@ -656,7 +711,7 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # Name patterns — only real book methods, need 2+, ignore Jr/Sr
+    # Name patterns
     CORE_METHODS = {
         "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
         "Match 25", "Match 50", "Match 75",
@@ -665,13 +720,9 @@ def run_flags(df, previous_df=None):
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
-
     strong = set()
     for p, ms in methods_map.items():
-        core_hits = []
-        for m in set(ms):
-            if m in CORE_METHODS or m.startswith("MGM ") or m.startswith("Match ") or m.startswith("Stayed 3"):
-                core_hits.append(m)
+        core_hits = [m for m in set(ms) if m in CORE_METHODS or m.startswith("MGM ") or m.startswith("Match ") or m.startswith("Stayed 3")]
         if len(core_hits) >= 2:
             strong.add(p)
     players = list(strong)
@@ -808,6 +859,7 @@ def main():
         "match": len([r for r in results if r["type"] == "match"]),
         "fd": len([r for r in results if r["type"] == "fd"]),
         "name": len([r for r in results if r["type"] in ("same_init", "cross", "last", "first")]),
+        "late": len([r for r in results if r["type"] == "late"]),
         "bets": len([e for e in ev_board if e["is_bet"]])
     }
 
@@ -837,13 +889,17 @@ def main():
             <div class="petty-num">{counts['name']}</div>
             <div class="petty-label">💅 Name Magic</div>
         </div>
+        <div class="petty-box">
+            <div class="petty-num">{counts['late']}</div>
+            <div class="petty-label">👻 Late Adds</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
     tabs = st.tabs([
         "🐝 +EV Board", "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
         "🔢 Digits", "💙 FanDuel", "📈 Signals", "⏳ Movement",
-        "💅 Initials", "🔄 Cross", "👩‍👧 Last Name", "👯 First Name", "📖 Glossary"
+        "👻 Late Adds", "💅 Initials", "🔄 Cross", "👩‍👧 Last Name", "👯 First Name", "📖 Glossary"
     ])
 
     with tabs[0]:
@@ -874,7 +930,7 @@ def main():
             st.caption(explain)
             items = [r for r in results if r["type"] == typ]
             if not items:
-                st.info("None right now.")
+                st.info("None right now. Keep fetching throughout the day — this builds over time.")
                 return
             cols = st.columns(2)
             for idx, r in enumerate(items):
@@ -894,12 +950,14 @@ def main():
     show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +400 ending in 10 / 20 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
     show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
-    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Only when both already have 2+ real book methods. Jr. is ignored.")
-    show(tabs[10], "cross", "🔄 Cross Initials — Connected", "Only when both already have 2+ real book methods. Jr. is ignored.")
-    show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Only when both already have 2+ real book methods. Jr. is ignored.")
-    show(tabs[12], "first", "👯 Same First Name — Twinsies", "Only when both already have 2+ real book methods.")
+    show(tabs[9], "late", "👻 Late Adds / Missing — Watch Who Shows Up",
+         "Just Appeared = new on a book this pull. Added Late = missing earlier, now here. Gone Missing = was there, now gone. Needs multiple fetches to work.")
+    show(tabs[10], "same_init", "💅 Same Initials — Name Magic", "Only when both already have 2+ real book methods. Jr. is ignored.")
+    show(tabs[11], "cross", "🔄 Cross Initials — Connected", "Only when both already have 2+ real book methods. Jr. is ignored.")
+    show(tabs[12], "last", "👩‍👧 Same Last Name — Family Ties", "Only when both already have 2+ real book methods. Jr. is ignored.")
+    show(tabs[13], "first", "👯 Same First Name — Twinsies", "Only when both already have 2+ real book methods.")
 
-    with tabs[13]:
+    with tabs[14]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="gloss-card">
@@ -943,9 +1001,16 @@ def main():
             <b>⏳ Price Movement</b> — the line moved up or down since the last pull.
         </div>
         <div class="gloss-card">
+            <b>👻 Late Adds / Missing</b><br>
+            • <b>Just Appeared</b> — player is on a book right now but wasn’t on the previous pull<br>
+            • <b>Added Late</b> — was missing earlier in the day, just showed up<br>
+            • <b>Gone Missing</b> — was on a book earlier and disappeared<br>
+            Needs multiple fetches throughout the day to build the picture.
+        </div>
+        <div class="gloss-card">
             <b>💅 Same Initials / Cross / Same First / Same Last</b><br>
             Name magic. Only shows when both players already have 2+ real book methods.<br>
-            “Jr.” / “Sr.” / “II” / “III” are ignored so they don’t break matches.
+            “Jr.” / “Sr.” / “II” / “III” are ignored.
         </div>
         <div class="gloss-card">
             <b>Confidence Meter</b> — more filled bars = stronger mix of methods + edge.<br>
