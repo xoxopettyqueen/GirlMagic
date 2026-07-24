@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-ONLY 0.5 HR · Score 0–100 · Tight Trends · Fallen Off
+ONLY 0.5 HR · Score 0–100 · Tight Trends · Fallen Off · Movement grouped by player
 """
 
 import streamlit as st
@@ -80,7 +80,7 @@ OUTLIER_GAP = 150
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
-BIG_MOVE = 100  # pts
+BIG_MOVE = 100
 
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
@@ -321,7 +321,6 @@ def run_flags(df, previous_df=None):
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
 
-    # presence / late adds
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
     current_presence = {(r["player"], r["book"]) for _, r in df.iterrows() if r["book"] in LATE_BOOKS}
@@ -348,7 +347,6 @@ def run_flags(df, previous_df=None):
                             "event": "", "css": "hist", "methods": ["Gone Missing"]})
             methods_map[player].append("Gone Missing")
 
-    # ── TIGHT TRENDS ──────────────────────────────────────────
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
@@ -364,24 +362,19 @@ def run_flags(df, previous_df=None):
                 continue
             prev_price = prev_snap[key]
             delta = curr_price - prev_price
-
-            # Shot way up (lengthen ≥ 100) → FADE
             if delta >= BIG_MOVE:
                 results.append({
                     "type": "trend", "trend_kind": "fade", "label": player,
                     "reason": f"🔴 Shot way up on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} (+{int(delta)})",
                     "event": "", "css": "hist", "methods": ["FADE · Shot way up"]
                 })
-            # Drop more than 100 → FADE
             elif delta <= -BIG_MOVE:
                 results.append({
                     "type": "trend", "trend_kind": "fade", "label": player,
                     "reason": f"🔴 Dropped >100 on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(delta)})",
                     "event": "", "css": "hist", "methods": ["FADE · Drop >100"]
                 })
-            # smaller moves not listed (noise)
 
-    # Cross-book structure (current snapshot only)
     for player, g in df.groupby("player"):
         by_book = {r["book"]: r["price"] for _, r in g.iterrows()}
         fd = by_book.get("fanduel")
@@ -391,18 +384,14 @@ def run_flags(df, previous_df=None):
                 mgm = v
                 break
         others = [v for b, v in by_book.items() if b != "fanduel"]
-
-        # 💚 FD 10–100 under MGM
         if fd is not None and mgm is not None:
-            gap = mgm - fd  # positive if FD is lower (shorter) than MGM
+            gap = mgm - fd
             if 10 <= gap <= 100:
                 results.append({
                     "type": "trend", "trend_kind": "good", "label": player,
                     "reason": f"💚 FD under MGM by {int(gap)} pts · FD {format_odds(fd)} · MGM {format_odds(mgm)}",
                     "event": "", "css": "hist", "methods": ["FD under MGM"]
                 })
-
-        # 🔴 FD higher than all other books
         if fd is not None and others and fd > max(others):
             results.append({
                 "type": "trend", "trend_kind": "fade", "label": player,
@@ -410,7 +399,6 @@ def run_flags(df, previous_df=None):
                 "event": "", "css": "hist", "methods": ["FADE · FD highest"]
             })
 
-    # DK / MGM / Exact / Digits / FD / Signals (unchanged core)
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -520,18 +508,28 @@ def run_flags(df, previous_df=None):
                 "event": g["event"].iloc[0], "css": "signal", "methods": ["Same on 3+ books"]})
             methods_map[player].append("Same on 3+ books")
 
+    # Movement — ONE card per player, all books under them
     if previous_df is not None and not previous_df.empty:
         prev = {(r["player"], r["book"]): r["price"] for _, r in previous_df.iterrows()}
+        player_moves = defaultdict(list)
         for _, row in df.iterrows():
             key = (row["player"], row["book"])
             if key in prev and prev[key] != row["price"]:
                 direction = "went up" if row["price"] > prev[key] else "went down"
-                results.append({"type": "hist", "label": row["player"],
-                    "reason": f"{row['book']}: {format_odds(prev[key])} → {format_odds(row['price'])} ({direction})",
-                    "event": row["event"], "css": "hist", "methods": ["Price moved"]})
+                player_moves[row["player"]].append(
+                    f"{row['book']}: {format_odds(prev[key])} → {format_odds(row['price'])} ({direction})"
+                )
                 methods_map[row["player"]].append("Price moved")
+        for player, moves in sorted(player_moves.items()):
+            results.append({
+                "type": "hist",
+                "label": player,
+                "reason": "<br>".join(moves),
+                "event": "",
+                "css": "hist",
+                "methods": ["Price moved"],
+            })
 
-    # +EV board
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -560,7 +558,6 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["score"], -x["edge"]))
 
-    # Fallen Off
     current_ev = {
         item["player"]: {
             "methods": item["methods"], "edge": item["edge"],
@@ -598,7 +595,6 @@ def run_flags(df, previous_df=None):
     st.session_state["prev_ev"] = current_ev
     save_history(prev_ev=current_ev)
 
-    # Name magic
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -821,12 +817,28 @@ def main():
     show(tabs[5], "digit", "🔢 Matching Digits", "25 / 50 / 75 across books.")
     show(tabs[6], "fd", "💙 FanDuel Patterns", "≥ +400 ending 10/20/30/60/70/90.")
     show(tabs[7], "signal", "📈 Signals", "Same on 3+ books.")
-    show(tabs[8], "hist", "⏳ Movement", "Raw price moves (display only).")
+
+    # Movement — one card per player (already grouped in run_flags)
+    with tabs[8]:
+        st.markdown('<div class="queen-banner">⏳ Movement — One Card Per Player</div>', unsafe_allow_html=True)
+        st.caption("All book moves for that player on one card. Needs 2+ fetches.")
+        items = [r for r in results if r["type"] == "hist"]
+        if not items:
+            st.info("None right now.")
+        else:
+            cols = st.columns(2)
+            for idx, r in enumerate(items):
+                with cols[idx % 2]:
+                    st.markdown(f'''
+                    <div class="card grid-card">
+                        <b>{r["label"]}</b><br>
+                        {r["reason"]}<br>
+                        <span class="tag">Price moved</span>
+                    </div>''', unsafe_allow_html=True)
 
     with tabs[9]:
         st.markdown('<div class="queen-banner">📉 Trends — Tight Rules</div>', unsafe_allow_html=True)
-        st.caption("💚 Worth a look = FD 10–100 under MGM · 🔴 Fade = shot up ≥100, drop >100, or FD highest of all books")
-
+        st.caption("💚 Worth a look = FD 10–100 under MGM · 🔴 Fade = shot up ≥100, drop >100, or FD highest")
         st.markdown("#### 💚 Worth a look")
         if not trend_good:
             st.info("None right now.")
@@ -836,7 +848,6 @@ def main():
                 with cols[idx % 2]:
                     tags = "".join(f'<span class="tag tag-green">{m}</span>' for m in r.get("methods", []))
                     st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
-
         st.markdown("#### 🔴 Fade")
         if not trend_fade:
             st.info("None right now.")
@@ -915,6 +926,10 @@ def main():
             • Dropped more than 100 pts<br>
             • FanDuel is the <b>highest</b> of all books<br><br>
             Tiny single-book moves are ignored.
+        </div>
+        <div class="gloss-card">
+            <b>⏳ Movement</b><br>
+            One card per player. All book moves listed under their name.
         </div>
         <div class="gloss-card">
             <b>Core methods</b> (count toward 2+)<br><br>
