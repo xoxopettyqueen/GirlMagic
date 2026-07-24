@@ -422,21 +422,51 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
     all_rows, all_found = [], set()
     for label in chosen_labels:
         eid = options.get(label)
-        if not eid: continue
+        if not eid:
+            continue
         data = fetch_odds_oddsapi(odds_key, eid)
         rows, found = flatten_oddsapi(data)
         all_rows.extend(rows)
         all_found.update(found)
+
     sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
     all_rows.extend(sgo_rows)
     all_found.update(sgo_found)
-    if not all_rows: return None, set()
+
+    if not all_rows:
+        return None, set()
+
     df = merge_odds(
         [r for r in all_rows if r.get("source") == "oddsapi"],
-        [r for r in all_rows if r.get("source") == "sgo"]
+        [r for r in all_rows if r.get("source") == "sgo"],
     )
-    return df, all_found & PREFERRED | {x for x in all_found if is_bet365(x)}
 
+    # ── ONLY selected games ──
+    if chosen_labels and not df.empty and "event" in df.columns:
+        chosen = set(chosen_labels)
+        df = df[df["event"].isin(chosen)].copy()
+        # soft match if names differ slightly (e.g. Athletics vs Oakland Athletics)
+        if df.empty:
+            def matches(ev):
+                ev_l = str(ev).lower()
+                for c in chosen:
+                    c_l = c.lower()
+                    # both sides of "@" appear in the other string
+                    parts = [p.strip() for p in c_l.split("@")]
+                    if len(parts) == 2 and parts[0] in ev_l and parts[1] in ev_l:
+                        return True
+                    parts = [p.strip() for p in ev_l.split("@")]
+                    if len(parts) == 2 and parts[0] in c_l and parts[1] in c_l:
+                        return True
+                return False
+            df = merge_odds(
+                [r for r in all_rows if r.get("source") == "oddsapi"],
+                [r for r in all_rows if r.get("source") == "sgo"],
+            )
+            df = df[df["event"].apply(matches)].copy()
+
+    found = all_found & PREFERRED | {x for x in all_found if is_bet365(x)}
+    return df, found
 def build_team_map(df):
     tm = {}
     for _, r in df.iterrows():
