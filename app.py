@@ -237,7 +237,7 @@ REGIONS = "us,us2"
 
 PREFERRED = {
     "fanduel", "draftkings", "betmgm",
-    "hardrockbet", "williamhill_us", "caesars"
+    "hardrockbet", "caesars"
 }
 
 CORE_BOOKS = {
