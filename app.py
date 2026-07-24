@@ -1188,7 +1188,7 @@ def main():
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
                 st.markdown(f"{icon} **{r['player']}** · {r.get('date')} · score {r.get('score')}")
 
-        with tabs[18]:
+    with tabs[18]:
         st.markdown('<div class="queen-banner">📖 The Code — Learn The Tricks</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
