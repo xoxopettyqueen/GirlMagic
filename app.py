@@ -57,14 +57,25 @@ st.markdown("""
     }
 
     .how-to {
-        background: #1a0f28;
+        background: linear-gradient(135deg, #1a0f28 0%, #2a1040 100%);
         border: 1px solid #f472b6;
-        border-radius: 12px;
-        padding: 11px 15px;
-        margin-bottom: 14px;
-        font-size: 0.9rem;
-        line-height: 1.45;
+        border-radius: 14px;
+        padding: 14px 18px;
+        margin-bottom: 16px;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        box-shadow: 0 0 18px rgba(244, 114, 182, 0.12);
+        position: relative;
+        overflow: hidden;
     }
+    .how-to::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 4px; height: 100%;
+        background: linear-gradient(180deg, #f472b6, #c084fc);
+    }
+    .how-to b { color: #f9a8d4; }
 
     .warning-box {
         background: #3b0764;
@@ -346,7 +357,6 @@ def flatten_oddsapi(data):
             for o in market.get("outcomes", []):
                 if o.get("name", "").lower() != "over":
                     continue
-                # STRICT: must be exactly 0.5
                 pt = o.get("point")
                 if pt is None or abs(float(pt) - 0.5) > 0.01:
                     continue
@@ -379,7 +389,6 @@ def fetch_sgo_hr_props(sgo_key):
                     continue
                 if "ou-over" not in odd_id and "-over" not in odd_id:
                     continue
-                # STRICT: must be exactly 0.5
                 ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
                 if ou is None or abs(float(ou) - 0.5) > 0.01:
                     continue
@@ -428,7 +437,6 @@ def run_flags(df, previous_df=None):
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, flagged, methods_map = [], set(), defaultdict(list)
 
-    # Presence history for Late Adds
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
     current_presence = set()
@@ -474,7 +482,6 @@ def run_flags(df, previous_df=None):
             flagged.add(player)
             methods_map[player].append("Gone Missing")
 
-    # Price history
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
@@ -489,7 +496,6 @@ def run_flags(df, previous_df=None):
                 if key in phist[i-1] and phist[i-1][key] == phist[i][key]:
                     stayed[key[0]] += 1
 
-    # DK 10
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -498,7 +504,6 @@ def run_flags(df, previous_df=None):
             flagged.add(row["player"])
             methods_map[row["player"]].append("DK 10")
 
-    # MGM
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)]
     if "mgm_history" not in st.session_state:
         st.session_state["mgm_history"] = []
@@ -564,7 +569,6 @@ def run_flags(df, previous_df=None):
                 flagged.add(n)
                 methods_map[n].extend(meth)
 
-    # Exact
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -576,7 +580,6 @@ def run_flags(df, previous_df=None):
             flagged.add(player)
             methods_map[player].append("Exact Match")
 
-    # MGM Exact
     for event, g in mgm.groupby("event"):
         for price, pg in g.groupby("price"):
             names = sorted(pg["player"].unique())
@@ -588,7 +591,6 @@ def run_flags(df, previous_df=None):
                     flagged.add(n)
                     methods_map[n].append("MGM Exact")
 
-    # Digits
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -605,7 +607,6 @@ def run_flags(df, previous_df=None):
                 flagged.add(player)
                 methods_map[player].append(f"Match {d}")
 
-    # FanDuel ≥ +400
     for _, row in df.iterrows():
         if row["book"] == "fanduel":
             price = abs(int(row["price"])) if row["price"] else 0
@@ -617,7 +618,6 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("FD Pattern")
 
-    # Stayed
     for p, c in stayed.items():
         if c >= 2:
             lab = f"Stayed {c} times" if c >= 3 else "Stayed the same"
@@ -627,7 +627,6 @@ def run_flags(df, previous_df=None):
             flagged.add(p)
             methods_map[p].append(lab)
 
-    # Line signals
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
@@ -651,7 +650,6 @@ def run_flags(df, previous_df=None):
         except:
             pass
 
-    # Movement
     if previous_df is not None and not previous_df.empty:
         prev = {(r["player"], r["book"]): r["price"] for _, r in previous_df.iterrows()}
         for _, row in df.iterrows():
@@ -664,7 +662,6 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -705,7 +702,6 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # Name patterns
     CORE_METHODS = {
         "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
         "Match 25", "Match 50", "Match 75",
@@ -774,14 +770,14 @@ def run_flags(df, previous_df=None):
 
 def main():
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
-    st.markdown('<p class="subtitle">Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
-    st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
+    st.markdown('<p class="tagline">Where odds intuition meets Girl Magic.</p>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="how-to">
-        <b>The rule:</b> We only say <b>BET THIS</b> when <b>2 or more methods</b> hit <b>and</b> the price is clearly better (edge ≥ 60).<br>
-        <b>Market:</b> Over 0.5 Home Runs only (1 HR) — no 2+ / 3+ lines.<br>
-        <b>Books:</b> FanDuel • DraftKings • BetMGM • Hard Rock • Caesars
+        👑 <b>The Code</b> → BET THIS only when <b>2+ methods</b> hit <b>and</b> edge ≥ 60<br>
+        🎯 <b>Market</b> → Over 0.5 HR only (1 homer) — no 2+ / 3+ lines<br>
+        💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars
     </div>
     """, unsafe_allow_html=True)
 
