@@ -86,7 +86,6 @@ st.markdown("""
         box-shadow: 0 3px 14px rgba(219, 39, 119, 0.45);
     }
 
-    /* Petty Alerts strip */
     .petty-row {
         display: flex;
         gap: 10px;
@@ -781,7 +780,7 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     results, ev_board = run_flags(df, prev_df) if not df.empty else ([], [])
 
-    # ─── PETTY ALERTS STRIP ───────────────────────────────────
+    # Petty Alerts strip
     counts = {
         "dk": len([r for r in results if r["type"] == "dk"]),
         "mgm": len([r for r in results if r["type"] == "mgm"]),
@@ -827,7 +826,7 @@ def main():
     ])
 
     with tabs[0]:
-        st.markdown('<div class="queen-banner">👑 I Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
         st.write("**Green = 2+ methods + real edge.** Everything else is skip.")
         if not ev_board:
             st.info("Fetch some games first.")
