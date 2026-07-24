@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Team tracking · Results log (HIT/MISS) · Digits pair/group of 3 same team
+Trends FD-under-MGM sorted biggest gap first · Team tracking · Results
 """
 
 import streamlit as st
@@ -165,14 +165,10 @@ def get_initials(name):
 
 def clean_team(tid):
     if not tid: return ""
-    t = str(tid).replace("_MLB", "").replace("_", " ").strip()
-    return t
+    return str(tid).replace("_MLB", "").replace("_", " ").strip()
 
 def now_az():
     return datetime.now(timezone(timedelta(hours=-7))).strftime("%I:%M %p")
-
-def now_az_full():
-    return datetime.now(timezone(timedelta(hours=-7))).strftime("%Y-%m-%d %I:%M %p")
 
 def now_utc_iso():
     return datetime.now(timezone.utc).isoformat()
@@ -255,17 +251,12 @@ def save_results(rows):
         pass
 
 def log_bet_this(ev_board):
-    """Append new BET THIS picks if not already logged today for that player."""
     rows = load_results()
     today = datetime.now(timezone(timedelta(hours=-7))).strftime("%Y-%m-%d")
-    existing = {(r.get("date"), r.get("player")) for r in rows if r.get("result") in (None, "", "PENDING")}
-    existing |= {(r.get("date"), r.get("player")) for r in rows}
     added = 0
     for item in ev_board:
         if not item.get("is_bet"):
             continue
-        key = (today, item["player"])
-        # skip if already logged today
         if any(r.get("date") == today and r.get("player") == item["player"] for r in rows):
             continue
         rows.append({
@@ -368,10 +359,8 @@ def merge_odds(a, b):
     combined = a + b
     if not combined: return pd.DataFrame()
     df = pd.DataFrame(combined)
-    # prefer oddsapi price, but keep team from sgo when available
     df["priority"] = df["source"].map({"oddsapi": 0, "sgo": 1})
     df = df.sort_values(["player", "book", "priority"])
-    # fill team: if oddsapi row has no team, take from sgo same player
     team_map = {}
     for _, r in df.iterrows():
         if r.get("team"):
@@ -462,13 +451,13 @@ def run_flags(df, previous_df=None):
                 results.append({
                     "type": "trend", "trend_kind": "fade", "label": player,
                     "reason": f"🔴 Shot way up on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} (+{int(delta)})",
-                    "event": "", "css": "hist", "methods": ["FADE · Shot way up"]
+                    "event": "", "css": "hist", "methods": ["FADE · Shot way up"], "gap": abs(int(delta)),
                 })
             elif delta <= -BIG_MOVE:
                 results.append({
                     "type": "trend", "trend_kind": "fade", "label": player,
                     "reason": f"🔴 Dropped >100 on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(delta)})",
-                    "event": "", "css": "hist", "methods": ["FADE · Drop >100"]
+                    "event": "", "css": "hist", "methods": ["FADE · Drop >100"], "gap": abs(int(delta)),
                 })
 
     for player, g in df.groupby("player"):
@@ -486,13 +475,14 @@ def run_flags(df, previous_df=None):
                 results.append({
                     "type": "trend", "trend_kind": "good", "label": player,
                     "reason": f"💚 FD under MGM by {int(gap)} pts · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}",
-                    "event": "", "css": "hist", "methods": ["FD under MGM"]
+                    "event": "", "css": "hist", "methods": ["FD under MGM"],
+                    "gap": int(gap),
                 })
         if fd is not None and others and fd > max(others):
             results.append({
                 "type": "trend", "trend_kind": "fade", "label": player,
                 "reason": f"🔴 FD highest of all books · FD {format_odds(fd)} · others max {format_odds(max(others))}",
-                "event": "", "css": "hist", "methods": ["FADE · FD highest"]
+                "event": "", "css": "hist", "methods": ["FADE · FD highest"], "gap": 0,
             })
 
     if len(phist) >= 2:
@@ -536,11 +526,8 @@ def run_flags(df, previous_df=None):
     if "mgm_history" not in st.session_state:
         st.session_state["mgm_history"] = []
 
-    # group by event + team when team known
     current = []
-    group_key_cols = ["event"]
     if mgm["team"].astype(str).str.len().gt(0).any():
-        # use team when present: group event+team
         for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
             team = team if isinstance(team, str) else ""
             ends = defaultdict(list)
@@ -579,7 +566,6 @@ def run_flags(df, previous_df=None):
         for g in h[-1]: late.update(g["players"])
         survivor = early & late
 
-    # emit MGM cards from current groups (same team when team set)
     for grp in current:
         names = sorted(grp["players"])
         if len(names) < 2: continue
@@ -621,7 +607,6 @@ def run_flags(df, previous_df=None):
                     "event": event, "css": "mgm", "methods": ["MGM Exact"]})
                 for n in names: methods_map[n].append("MGM Exact")
 
-    # DIGITS — pairs or groups of 3 only · same team (BetMGM)
     for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
         ends = defaultdict(list)
         for _, r in g.iterrows():
@@ -635,12 +620,9 @@ def run_flags(df, previous_df=None):
             kind = "pair" if len(names) == 2 else "group of 3"
             tnote = f" · {team}" if team else " · same team"
             results.append({
-                "type": "digit",
-                "label": " + ".join(names),
+                "type": "digit", "label": " + ".join(names),
                 "reason": f"Digit {kind} ends in {d}{tnote}",
-                "event": event,
-                "css": "digit",
-                "methods": [f"Match {d}"],
+                "event": event, "css": "digit", "methods": [f"Match {d}"],
             })
             for n in names:
                 methods_map[n].append(f"Match {d}")
@@ -799,7 +781,6 @@ def run_flags(df, previous_df=None):
     st.session_state["prev_ev"] = current_ev
     save_history(prev_ev=current_ev)
 
-    # Name magic — real different teams when team known
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -808,7 +789,6 @@ def run_flags(df, previous_df=None):
         ta, tb = team_map.get(a, ""), team_map.get(b, "")
         if ta and tb:
             return ta != tb
-        # fallback: not in same game
         return len(pev[a] & pev[b]) == 0
 
     pool = [p for p, ms in methods_map.items()
@@ -900,9 +880,9 @@ def main():
     st.markdown(f"""
     <div class="how-to">
         👑 <b>The Code</b> → BET THIS = 2+ core methods <b>and</b> edge pts ≥ 60<br>
-        🎯 <b>Market</b> → Over 0.5 HR only · Team-aware MGM / Digits / Names<br>
-        📊 <b>Results</b> → Log BET THIS · mark HIT / MISS · see method hit rates<br>
-        🔄 Auto every {REFRESH_MINUTES} min · History snaps: <b>{hist_n}</b>
+        🎯 Over 0.5 HR · Team-aware MGM / Digits / Names<br>
+        📊 Results tab · Trends FD-under-MGM sorted <b>biggest gap first</b><br>
+        🔄 Auto every {REFRESH_MINUTES} min · History: <b>{hist_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
@@ -961,11 +941,15 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     results, ev_board, fallen = run_flags(df, prev_df) if not df.empty else ([], [], [])
 
-    # log BET THIS for results tracking
     if ev_board:
         log_bet_this(ev_board)
 
-    trend_good = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"]
+    # Trends: biggest FD-under-MGM gap first
+    trend_good = sorted(
+        [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"],
+        key=lambda r: r.get("gap", 0),
+        reverse=True,
+    )
     trend_fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
 
     counts = {
@@ -1002,7 +986,7 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Ranked by Score</div>', unsafe_allow_html=True)
-        st.caption("Sorted high → low. BET THIS auto-logs to Results tab.")
+        st.caption("Sorted high → low. BET THIS auto-logs to Results.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1079,8 +1063,10 @@ def main():
 
     with tabs[9]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
+        st.caption("💚 FD under MGM sorted biggest gap first (100 → 10)")
         st.markdown("#### 💚 Worth a look")
-        if not trend_good: st.info("None right now.")
+        if not trend_good:
+            st.info("None right now.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(trend_good):
@@ -1088,7 +1074,8 @@ def main():
                     tags = "".join(f'<span class="tag tag-green">{m}</span>' for m in r.get("methods", []))
                     st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
         st.markdown("#### 🔴 Fade")
-        if not trend_fade: st.info("None right now.")
+        if not trend_fade:
+            st.info("None right now.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(trend_fade):
@@ -1114,19 +1101,16 @@ def main():
     show(tabs[15], "last", "👩‍👧 Same Last Name", "Different teams.")
     show(tabs[16], "first", "👯 Same First Name", "Different teams.")
 
-    # ── RESULTS TAB ──
     with tabs[17]:
         st.markdown('<div class="queen-banner">📊 Results Tracker</div>', unsafe_allow_html=True)
-        st.caption("BET THIS picks auto-log here. Mark HIT or MISS after the games. Use hit rates to tighten methods.")
+        st.caption("BET THIS auto-logs. Mark HIT / MISS after games.")
         rows = load_results()
         pending = [r for r in rows if r.get("result") == "PENDING"]
         done = [r for r in rows if r.get("result") in ("HIT", "MISS")]
-
         hits = sum(1 for r in done if r["result"] == "HIT")
         misses = sum(1 for r in done if r["result"] == "MISS")
         total_done = hits + misses
         rate = (hits / total_done * 100) if total_done else 0
-
         st.markdown(f"""
         <div class="petty-row">
             <div class="petty-box"><div class="petty-num">{len(pending)}</div><div class="petty-label">⏳ PENDING</div></div>
@@ -1135,8 +1119,6 @@ def main():
             <div class="petty-box"><div class="petty-num">{rate:.0f}%</div><div class="petty-label">HIT RATE</div></div>
         </div>
         """, unsafe_allow_html=True)
-
-        # method breakdown
         method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
         for r in done:
             for m in r.get("methods", []):
@@ -1152,19 +1134,17 @@ def main():
                 pct = s["hit"] / t * 100 if t else 0
                 lines.append(f"**{m}**: {s['hit']}/{t} ({pct:.0f}%)")
             st.markdown(" · ".join(lines))
-
-        st.markdown("#### Pending — mark after the game")
+        st.markdown("#### Pending")
         if not pending:
-            st.info("No pending picks. Fetch odds so BET THIS can log.")
+            st.info("No pending picks.")
         else:
             for r in reversed(pending[-40:]):
                 rid = r["id"]
-                tags = ", ".join(r.get("methods", [])[:5])
                 st.markdown(
                     f"**{r['player']}** · {r.get('date')} {r.get('time')} · "
                     f"score {r.get('score')} · edge {r.get('edge')} · {format_odds(r.get('best_price'))} {r.get('best_book')}"
                 )
-                st.caption(tags)
+                st.caption(", ".join(r.get("methods", [])[:5]))
                 c1, c2, c3 = st.columns([1, 1, 4])
                 with c1:
                     if st.button("🟢 HIT", key=f"hit_{rid}"):
@@ -1180,61 +1160,37 @@ def main():
                                 row["result"] = "MISS"
                         save_results(rows)
                         st.rerun()
-
         st.markdown("#### Recent graded")
         if not done:
             st.info("None graded yet.")
         else:
             for r in reversed(done[-20:]):
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
-                st.markdown(
-                    f"{icon} **{r['player']}** · {r.get('date')} · "
-                    f"score {r.get('score')} · {', '.join(r.get('methods', [])[:4])}"
-                )
+                st.markdown(f"{icon} **{r['player']}** · {r.get('date')} · score {r.get('score')} · {', '.join(r.get('methods', [])[:4])}")
 
     with tabs[18]:
-        st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown(f"""
         <div class="gloss-card">
-            <b>🟢 BET THIS</b><br>
-            2+ core methods · Edge pts ≥ 60 · Over 0.5 HR only<br>
-            Auto-logs to the <b>Results</b> tab
+            <b>🟢 BET THIS</b> — 2+ core · edge ≥ 60 · 0.5 HR · auto-logs to Results
         </div>
         <div class="gloss-card">
-            <b>📊 Results tracker</b><br>
-            • BET THIS picks log automatically<br>
-            • Mark <b>HIT</b> or <b>MISS</b> after the game<br>
-            • See overall hit rate + per-method hit rates<br>
-            • Use that to tighten weak methods
+            <b>📉 Trends 💚</b> — FD 10–100 under MGM · sorted <b>biggest gap first</b>
         </div>
         <div class="gloss-card">
-            <b>Team tracking</b><br>
-            • SGO supplies team when available<br>
-            • MGM / Digits group by <b>same team</b><br>
-            • Name magic requires <b>different teams</b>
+            <b>Team tracking</b> — MGM/Digits same team · Name magic different teams
         </div>
         <div class="gloss-card">
-            <b>🔢 Digits</b><br>
-            Pairs or groups of 3 only · same team · 25/50/75
+            <b>🔢 Digits</b> — pairs or groups of 3 only · same team · 25/50/75
         </div>
         <div class="gloss-card">
-            <b>💙 FanDuel</b><br>
-            ≥ +{FD_MIN} endings or exact +600 · only with DK 10 or MGM
+            <b>💙 FanDuel</b> — ≥ +{FD_MIN} or +600 · only with DK 10 or MGM
         </div>
         <div class="gloss-card">
-            <b>⏳ Movement</b> — 500+ only · 🔴 UP / 🟢 DOWN · ≥ {MOVE_MIN} pts
+            <b>⏳ Movement</b> — 500+ only · 🔴 UP / 🟢 DOWN
         </div>
         <div class="gloss-card">
-            <b>📈 Signals</b> — one card per player
-        </div>
-        <div class="gloss-card">
-            <b>Core methods</b><br>
-            DK 10 · FD Pattern · FD 600 · Exact · MGM Exact · Match 25/50/75 ·
-            MGM groups · Stayed in group · Last one left · Same on 3+ · Multi-book Shorten/Lengthen
-        </div>
-        <div class="gloss-card">
-            <b>Name Magic</b><br>
-            Both need 3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}
+            <b>📊 Results</b> — mark HIT/MISS · method hit rates after the slate
         </div>
         """, unsafe_allow_html=True)
 
