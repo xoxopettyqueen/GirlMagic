@@ -1178,7 +1178,7 @@ def main():
                 for r in downs:
                     st.markdown(f'<div class="card down-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br><span class="tag tag-green">Went down</span></div>', unsafe_allow_html=True)
 
-        with tabs[10]:
+    with tabs[10]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
 
         fd_under = [r for r in trend_good if "FD under MGM" in r.get("methods", [])]
