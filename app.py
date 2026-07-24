@@ -2,12 +2,14 @@
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
 ONLY 0.5 (1 HR) lines — no 2+/3+
-Auto-refetch every 30 min while the tab is open
+Auto-refetch every 30 min + persistent history file
 """
 
 import streamlit as st
 import pandas as pd
 import requests
+import json
+import os
 from collections import defaultdict
 import statistics
 from datetime import datetime, timezone, timedelta
@@ -28,253 +30,73 @@ st.set_page_config(
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
-
-    .stApp {
-        background: linear-gradient(165deg, #0a0410 0%, #160a22 40%, #1f0b30 100%);
-        color: #fce7f3;
-        font-family: 'Inter', sans-serif;
-    }
-
-    h1 {
-        font-family: 'Playfair Display', serif !important;
-        font-weight: 900 !important;
-        background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc, #f472b6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 2.6rem !important;
-        margin-bottom: 2px !important;
-        letter-spacing: -0.5px;
-    }
-
-    .subtitle {
-        color: #f9a8d4;
-        font-size: 0.92rem;
-        font-weight: 600;
-        letter-spacing: 1.6px;
-        text-transform: uppercase;
-        margin-bottom: 4px;
-    }
-
-    .tagline {
-        color: #e9d5ff;
-        font-size: 0.88rem;
-        font-style: italic;
-        margin-bottom: 16px;
-        opacity: 0.95;
-    }
-
-    .how-to {
-        background: linear-gradient(135deg, #1a0f28 0%, #2a1040 100%);
-        border: 1px solid #f472b6;
-        border-radius: 14px;
-        padding: 14px 18px;
-        margin-bottom: 16px;
-        font-size: 0.88rem;
-        line-height: 1.5;
-        box-shadow: 0 0 18px rgba(244, 114, 182, 0.12);
-        position: relative;
-        overflow: hidden;
-    }
-    .how-to::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0;
-        width: 4px; height: 100%;
-        background: linear-gradient(180deg, #f472b6, #c084fc);
-    }
+    .stApp { background: linear-gradient(165deg, #0a0410 0%, #160a22 40%, #1f0b30 100%); color: #fce7f3; font-family: 'Inter', sans-serif; }
+    h1 { font-family: 'Playfair Display', serif !important; font-weight: 900 !important; background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.6rem !important; margin-bottom: 2px !important; letter-spacing: -0.5px; }
+    .subtitle { color: #f9a8d4; font-size: 0.92rem; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 4px; }
+    .tagline { color: #e9d5ff; font-size: 0.88rem; font-style: italic; margin-bottom: 16px; opacity: 0.95; }
+    .how-to { background: linear-gradient(135deg, #1a0f28 0%, #2a1040 100%); border: 1px solid #f472b6; border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.88rem; line-height: 1.5; box-shadow: 0 0 18px rgba(244, 114, 182, 0.12); position: relative; overflow: hidden; }
+    .how-to::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #f472b6, #c084fc); }
     .how-to b { color: #f9a8d4; }
-
-    .warning-box {
-        background: #3b0764;
-        border: 2px solid #f472b6;
-        border-radius: 12px;
-        padding: 12px 16px;
-        margin-bottom: 14px;
-        font-size: 0.95rem;
-    }
-
-    .info-box {
-        background: #1a0f28;
-        border: 1px solid #a855f7;
-        border-radius: 12px;
-        padding: 10px 14px;
-        margin-bottom: 12px;
-        font-size: 0.9rem;
-    }
-
-    .stButton > button {
-        background: linear-gradient(90deg, #db2777, #9333ea) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 10px !important;
-        font-weight: 700 !important;
-        padding: 0.55rem 1.3rem !important;
-        box-shadow: 0 3px 14px rgba(219, 39, 119, 0.45);
-    }
-
-    .petty-row {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-bottom: 18px;
-    }
-    .petty-box {
-        flex: 1;
-        min-width: 90px;
-        background: #1a0f28;
-        border: 1px solid #f472b6;
-        border-radius: 12px;
-        padding: 12px 8px;
-        text-align: center;
-        box-shadow: 0 0 12px rgba(244, 114, 182, 0.15);
-    }
-    .petty-num {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #f9a8d4;
-        line-height: 1.1;
-    }
-    .petty-label {
-        font-size: 0.65rem;
-        color: #e9d5ff;
-        margin-top: 4px;
-        letter-spacing: 0.3px;
-    }
-
-    .card {
-        background: linear-gradient(155deg, #1a0f28, #251438);
-        border: 1px solid #f472b6;
-        border-radius: 12px;
-        padding: 9px 12px;
-        margin: 0;
-        color: #fdf2f8;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-        position: relative;
-        height: 100%;
-        font-size: 0.93rem;
-    }
-    .card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0;
-        width: 4px; height: 100%;
-        border-radius: 12px 0 0 12px;
-    }
+    .warning-box { background: #3b0764; border: 2px solid #f472b6; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; font-size: 0.95rem; }
+    .info-box { background: #1a0f28; border: 1px solid #a855f7; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.9rem; }
+    .stButton > button { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; padding: 0.55rem 1.3rem !important; box-shadow: 0 3px 14px rgba(219, 39, 119, 0.45); }
+    .petty-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .petty-box { flex: 1; min-width: 90px; background: #1a0f28; border: 1px solid #f472b6; border-radius: 12px; padding: 12px 8px; text-align: center; box-shadow: 0 0 12px rgba(244, 114, 182, 0.15); }
+    .petty-num { font-size: 1.5rem; font-weight: 800; color: #f9a8d4; line-height: 1.1; }
+    .petty-label { font-size: 0.65rem; color: #e9d5ff; margin-top: 4px; letter-spacing: 0.3px; }
+    .card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #f472b6; border-radius: 12px; padding: 9px 12px; margin: 0; color: #fdf2f8; box-shadow: 0 4px 14px rgba(0,0,0,0.35); position: relative; height: 100%; font-size: 0.93rem; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: 12px 0 0 12px; }
     .high::before { background: linear-gradient(180deg, #f472b6, #c026d3); }
     .strong::before { background: linear-gradient(180deg, #e879f9, #a855f7); }
     .medium::before { background: linear-gradient(180deg, #c084fc, #7c3aed); }
     .low::before { background: #6b7280; }
     .skip-card::before { background: #4b5563; }
-
-    .bet {
-        background: linear-gradient(155deg, #0c2418, #143d28) !important;
-        border: 1px solid #34d399 !important;
-        box-shadow: 0 0 16px rgba(52, 211, 153, 0.28);
-    }
-    .skip {
-        background: #14101c !important;
-        border: 1px solid #4b5563 !important;
-        opacity: 0.78;
-    }
-
-    .tag {
-        display: inline-block;
-        background: #3b0764;
-        color: #f9a8d4;
-        font-size: 0.7rem;
-        font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 10px;
-        margin: 2px 3px 2px 0;
-        border: 1px solid #a855f7;
-    }
+    .bet { background: linear-gradient(155deg, #0c2418, #143d28) !important; border: 1px solid #34d399 !important; box-shadow: 0 0 16px rgba(52, 211, 153, 0.28); }
+    .skip { background: #14101c !important; border: 1px solid #4b5563 !important; opacity: 0.78; }
+    .tag { display: inline-block; background: #3b0764; color: #f9a8d4; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin: 2px 3px 2px 0; border: 1px solid #a855f7; }
     .tag-green { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
-
-    .queen-banner {
-        display: inline-block;
-        background: linear-gradient(90deg, #db2777, #9333ea);
-        color: white;
-        font-size: 0.78rem;
-        font-weight: 700;
-        padding: 5px 14px;
-        border-radius: 16px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 10px;
-    }
-
+    .queen-banner { display: inline-block; background: linear-gradient(90deg, #db2777, #9333ea); color: white; font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 16px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
     .meter { display: flex; gap: 3px; margin: 4px 0 6px 0; }
-    .meter-bar {
-        height: 6px; width: 18px; border-radius: 3px; background: #374151;
-    }
+    .meter-bar { height: 6px; width: 18px; border-radius: 3px; background: #374151; }
     .meter-bar.filled-high { background: linear-gradient(90deg, #f472b6, #c026d3); }
     .meter-bar.filled-strong { background: linear-gradient(90deg, #e879f9, #a855f7); }
     .meter-bar.filled-medium { background: linear-gradient(90deg, #c084fc, #7c3aed); }
     .meter-bar.filled-low { background: #6b7280; }
-
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] {
-        background: #1a0f28;
-        border-radius: 8px;
-        color: #f9a8d4;
-        font-weight: 600;
-        padding: 7px 9px;
-        font-size: 0.8rem;
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(90deg, #db2777, #9333ea) !important;
-        color: white !important;
-    }
-
-    .footer {
-        text-align: center;
-        color: #f9a8d4;
-        font-size: 0.95rem;
-        margin-top: 36px;
-        letter-spacing: 1.1px;
-        opacity: 0.9;
-        padding-bottom: 20px;
-    }
+    .stTabs [data-baseweb="tab"] { background: #1a0f28; border-radius: 8px; color: #f9a8d4; font-weight: 600; padding: 7px 9px; font-size: 0.8rem; }
+    .stTabs [aria-selected="true"] { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; }
+    .footer { text-align: center; color: #f9a8d4; font-size: 0.95rem; margin-top: 36px; letter-spacing: 1.1px; opacity: 0.9; padding-bottom: 20px; }
     .grid-card { margin-bottom: 7px; }
-
-    .gloss-card {
-        background: linear-gradient(155deg, #1a0f28, #251438);
-        border: 1px solid #a855f7;
-        border-radius: 12px;
-        padding: 12px 14px;
-        margin-bottom: 10px;
-        font-size: 0.92rem;
-        line-height: 1.45;
-    }
+    .gloss-card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #a855f7; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; font-size: 0.92rem; line-height: 1.45; }
 </style>
 """, unsafe_allow_html=True)
 
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 REGIONS = "us,us2"
+HISTORY_FILE = "girl_magic_history.json"
+HISTORY_MAX_AGE_HOURS = 18
 
-PREFERRED = {
-    "fanduel", "draftkings", "betmgm",
-    "hardrockbet", "caesars"
-}
-
-CORE_BOOKS = {
-    "fanduel": "FanDuel",
-    "draftkings": "DraftKings",
-    "betmgm": "BetMGM"
-}
-
+PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars"}
+CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
 
 EDGE_MIN = 60
 METHODS_MIN = 2
 OUTLIER_GAP = 150
 REFRESH_MINUTES = 30
+NAME_METHODS_MIN = 3
+
+STRONG_METHODS = {
+    "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
+    "Match 25", "Match 50", "Match 75",
+    "Last one left", "Stayed in the group",
+    "Multi-book Shorten", "Multi-book Lengthen", "Same on 3+ books"
+}
 
 NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing",
-    "Multi-book Stuck", "Price moved", "Stayed the same",
-    "Way different"
+    "Multi-book Stuck", "Price moved", "Stayed the same", "Way different"
 }
 
 def is_core_method(m):
@@ -288,6 +110,14 @@ def is_core_method(m):
 
 def count_core_methods(meths):
     return len([m for m in set(meths) if is_core_method(m)])
+
+def has_strong(meths):
+    for m in meths:
+        if m in STRONG_METHODS:
+            return True
+        if m.startswith("MGM ") or m.startswith("Match ") or m.startswith("Stayed in group"):
+            return True
+    return False
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -329,15 +159,18 @@ def now_az():
     az = timezone(timedelta(hours=-7))
     return datetime.now(az).strftime("%I:%M %p")
 
+def now_utc_iso():
+    return datetime.now(timezone.utc).isoformat()
+
 def smart_best(prices, books):
     if not prices:
         return None, None
     paired = sorted(zip(prices, books), key=lambda x: x[0], reverse=True)
     best_p, best_b = paired[0]
     if len(paired) >= 2:
-        second_p, second_b = paired[1]
+        second_p, _ = paired[1]
         if best_p - second_p >= OUTLIER_GAP:
-            return second_p, second_b
+            return second_p, paired[1][1]
     return best_p, best_b
 
 def get_confidence(methods, edge, is_bet):
@@ -363,6 +196,68 @@ def make_meter(bars, level):
         html += f'<div class="meter-bar {filled}"></div>'
     html += '</div>'
     return html
+
+# ── Persistent history (survives refresh / reopen until app rebuild) ──
+def load_history():
+    if not os.path.exists(HISTORY_FILE):
+        return
+    try:
+        with open(HISTORY_FILE, "r") as f:
+            data = json.load(f)
+        saved_at = data.get("saved_at")
+        if saved_at:
+            age = datetime.now(timezone.utc) - datetime.fromisoformat(saved_at)
+            if age > timedelta(hours=HISTORY_MAX_AGE_HOURS):
+                return  # too old — new slate day
+        # price_history: list of dicts with string keys "player||book"
+        ph = []
+        for snap in data.get("price_history", []):
+            ph.append({tuple(k.split("||", 1)): v for k, v in snap.items()})
+        st.session_state["price_history"] = ph[-8:]
+        # presence: list of sets of (player, book)
+        pr = []
+        for snap in data.get("presence_history", []):
+            pr.append({tuple(x) for x in snap})
+        st.session_state["presence_history"] = pr[-12:]
+        # mgm
+        mh = []
+        for snap in data.get("mgm_history", []):
+            restored = []
+            for g in snap:
+                restored.append({
+                    "event": g["event"],
+                    "ending": g["ending"],
+                    "players": frozenset(g["players"])
+                })
+            mh.append(restored)
+        st.session_state["mgm_history"] = mh[-8:]
+    except Exception:
+        pass
+
+def save_history():
+    try:
+        ph = []
+        for snap in st.session_state.get("price_history", []):
+            ph.append({f"{a}||{b}": v for (a, b), v in snap.items()})
+        pr = []
+        for snap in st.session_state.get("presence_history", []):
+            pr.append([[a, b] for a, b in snap])
+        mh = []
+        for snap in st.session_state.get("mgm_history", []):
+            mh.append([{
+                "event": g["event"],
+                "ending": g["ending"],
+                "players": list(g["players"])
+            } for g in snap])
+        with open(HISTORY_FILE, "w") as f:
+            json.dump({
+                "saved_at": now_utc_iso(),
+                "price_history": ph,
+                "presence_history": pr,
+                "mgm_history": mh
+            }, f)
+    except Exception:
+        pass
 
 def fetch_events_oddsapi(api_key):
     try:
@@ -470,7 +365,6 @@ def merge_odds(a, b):
     return df.drop(columns=["priority", "source"], errors="ignore")
 
 def do_fetch(odds_key, sgo_key, chosen_labels, options):
-    """Fetch odds for the given game labels. Returns (df, found_books) or (None, set())."""
     all_rows, all_found = [], set()
     for label in chosen_labels:
         eid = options.get(label)
@@ -704,6 +598,9 @@ def run_flags(df, previous_df=None):
                     "event": row["event"], "css": "hist", "methods": ["Price moved"]})
                 methods_map[row["player"]].append("Price moved")
 
+    # persist after this pull
+    save_history()
+
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -743,65 +640,87 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
+    # ── Name magic (tight) ───────────────────────────────────
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
-    strong = {p for p, ms in methods_map.items() if count_core_methods(ms) >= 2}
-    players = list(strong)
 
     def diff_team(a, b):
         return len(pev[a] & pev[b]) == 0
 
+    # both need 3+ core AND at least one has a strong method
+    strong_pool = []
+    for p, ms in methods_map.items():
+        if count_core_methods(ms) >= NAME_METHODS_MIN and has_strong(ms):
+            strong_pool.append(p)
+
+    # Same Init — prefer different teams
     init_map = defaultdict(list)
-    for p in players:
+    for p in strong_pool:
         f, l = get_initials(p)
         if f and l:
             init_map[f + l].append(p)
     for k, names in init_map.items():
+        pairs = []
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                tag = "same team" if not diff_team(a, b) else "different teams"
-                results.append({"type": "same_init", "label": f"{a} + {b}",
-                    "reason": f"Same initials {k} ({tag})", "event": "", "css": "name", "methods": ["Same Init"]})
+                pairs.append((a, b, diff_team(a, b)))
+        pairs.sort(key=lambda x: (not x[2], x[0]))  # different teams first
+        for a, b, is_diff in pairs:
+            tag = "different teams" if is_diff else "same team"
+            results.append({"type": "same_init", "label": f"{a} + {b}",
+                "reason": f"Same initials {k} ({tag})", "event": "", "css": "name", "methods": ["Same Init"]})
 
-    for i, a in enumerate(players):
+    # Cross Init — prefer different teams
+    for i, a in enumerate(strong_pool):
         _, l1 = get_initials(a)
-        if not l1: continue
-        for b in players[i+1:]:
+        if not l1:
+            continue
+        for b in strong_pool[i+1:]:
             f2, _ = get_initials(b)
             if f2 and l1 == f2:
-                tag = "same team" if not diff_team(a, b) else "different teams"
+                is_diff = diff_team(a, b)
+                tag = "different teams" if is_diff else "same team"
                 results.append({"type": "cross", "label": f"{a} + {b}",
                     "reason": f"Cross initials ({l1}) ({tag})", "event": "", "css": "name", "methods": ["Cross Init"]})
 
+    # Same Last — DIFFERENT TEAMS ONLY
     last_map = defaultdict(list)
-    for p in players:
+    for p in strong_pool:
         parts = clean_name(p).split()
         if len(parts) >= 2:
             last_map[parts[-1].lower()].append(p)
     for last, names in last_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                tag = "same team" if not diff_team(a, b) else "different teams"
+                if not diff_team(a, b):
+                    continue
                 results.append({"type": "last", "label": f"{a} + {b}",
-                    "reason": f"Same last name ({last.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same Last"]})
+                    "reason": f"Same last name ({last.title()}) (different teams)",
+                    "event": "", "css": "name", "methods": ["Same Last"]})
 
+    # Same First — DIFFERENT TEAMS ONLY
     first_map = defaultdict(list)
-    for p in players:
+    for p in strong_pool:
         parts = clean_name(p).split()
         if parts:
             first_map[parts[0].lower()].append(p)
     for first, names in first_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                tag = "same team" if not diff_team(a, b) else "different teams"
+                if not diff_team(a, b):
+                    continue
                 results.append({"type": "first", "label": f"{a} + {b}",
-                    "reason": f"Same first name ({first.title()}) ({tag})", "event": "", "css": "name", "methods": ["Same First"]})
+                    "reason": f"Same first name ({first.title()}) (different teams)",
+                    "event": "", "css": "name", "methods": ["Same First"]})
 
     return results, ev_board
 
 def main():
-    # Auto-refresh every 30 min while tab is open
+    if "history_loaded" not in st.session_state:
+        load_history()
+        st.session_state["history_loaded"] = True
+
     if HAS_AUTOREFRESH:
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     else:
@@ -812,12 +731,13 @@ def main():
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
 
+    hist_n = len(st.session_state.get("price_history", []))
     st.markdown(f"""
     <div class="how-to">
         👑 <b>The Code</b> → BET THIS only when <b>2+ core methods</b> hit <b>and</b> edge ≥ 60<br>
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer) — no 2+ / 3+ lines<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
-        🔄 <b>Auto</b> → Refetches every {REFRESH_MINUTES} min while this tab stays open
+        🔄 <b>Auto</b> → Refetches every {REFRESH_MINUTES} min while tab is open · History snaps: <b>{hist_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
@@ -836,15 +756,12 @@ def main():
         st.stop()
 
     options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
-    default_sel = st.session_state.get("selected_games", [])
-    # keep only labels that still exist
-    default_sel = [x for x in default_sel if x in options]
+    default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
     chosen = st.multiselect("② Select games", list(options.keys()), default=default_sel)
     st.session_state["selected_games"] = chosen
 
     manual_fetch = st.button("③ Fetch Odds", type="primary")
 
-    # Auto-fetch when refresh ticks and we already have games selected
     if "last_refresh_count" not in st.session_state:
         st.session_state["last_refresh_count"] = refresh_count
     auto_fetch = (
@@ -865,13 +782,13 @@ def main():
             st.session_state["found_books"] = sorted(found)
             st.session_state["last_fetch_time"] = now_az()
             msg = "Auto-refreshed" if auto_fetch else "Loaded"
-            st.success(f"{msg} {len(df)} props (0.5 HR only) • {st.session_state['last_fetch_time']} AZ")
+            st.success(f"{msg} {len(df)} props (0.5 HR only) • {st.session_state['last_fetch_time']} AZ · History: {len(st.session_state.get('price_history', []))} snaps")
         else:
             st.warning("No 0.5 HR odds returned.")
 
     last_t = st.session_state.get("last_fetch_time")
     if last_t:
-        st.caption(f"Last fetch: {last_t} AZ · Next auto-refresh ~ every {REFRESH_MINUTES} min while tab is open")
+        st.caption(f"Last fetch: {last_t} AZ · History snaps: {len(st.session_state.get('price_history', []))} · Auto every {REFRESH_MINUTES} min while open")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -925,7 +842,7 @@ def main():
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
         st.write("**Only 2+ core methods.** Overnight noise does not count.")
         if not ev_board:
-            st.info("Select games and fetch. Only core-method plays appear here.")
+            st.info("Select games and fetch.")
         else:
             cols = st.columns(2)
             for idx, item in enumerate(ev_board):
@@ -968,66 +885,26 @@ def main():
     show(tabs[5], "digit", "🔢 Matching Digits — 25 / 50 / 75", "Same player, those endings, on more than one book.")
     show(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel ≥ +400 ending in 10 / 20 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals", "Same on 3+ books only.")
-    show(tabs[8], "hist", "⏳ Price Movement", "Line moved since last pull (display only).")
+    show(tabs[8], "hist", "⏳ Price Movement", "Line moved since last pull.")
     show(tabs[9], "trend", "📉 Trends — Movement Only",
-         "Shortening / Lengthening only. Multi-book = same direction on 2+ books.")
+         "Shortening / Lengthening only. Needs 2+ history snaps.")
     show(tabs[10], "late", "👻 Late Adds — FD / DK / MGM Only",
-         "Just Appeared / Added Late / Gone Missing on FanDuel, DraftKings, or BetMGM only.")
-    show(tabs[11], "same_init", "💅 Same Initials", "Both need 2+ core methods. Jr. ignored.")
-    show(tabs[12], "cross", "🔄 Cross Initials", "Both need 2+ core methods. Jr. ignored.")
-    show(tabs[13], "last", "👩‍👧 Same Last Name", "Both need 2+ core methods. Jr. ignored.")
-    show(tabs[14], "first", "👯 Same First Name", "Both need 2+ core methods.")
+         "Just Appeared / Added Late / Gone Missing. Needs 2+ history snaps.")
+    show(tabs[11], "same_init", "💅 Same Initials", "Both need 3+ core + strong method. Prefer different teams.")
+    show(tabs[12], "cross", "🔄 Cross Initials", "Both need 3+ core + strong method. Prefer different teams.")
+    show(tabs[13], "last", "👩‍👧 Same Last Name", "Both need 3+ core + strong method. Different teams only.")
+    show(tabs[14], "first", "👯 Same First Name", "Both need 3+ core + strong method. Different teams only.")
 
     with tabs[15]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
         st.markdown("""
-        <div class="gloss-card">
-            <b>🟢 BET THIS</b><br>
-            At least <b>2 core methods</b> hit <b>and</b> edge is 60 or higher.<br>
-            Overnight noise does not count. Only 0.5 HR (1 homer) lines.
-        </div>
-        <div class="gloss-card">
-            <b>⚪ SKIP</b><br>
-            Has 2+ core methods, but edge is still under 60. Close — we pass.
-        </div>
-        <div class="gloss-card">
-            <b>Core methods</b> (count toward 2+)<br>
-            DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 ·
-            MGM 00/25/50/75 · Stayed in the group · Last one left ·
-            Same on 3+ books · Multi-book Shorten · Multi-book Lengthen
-        </div>
-        <div class="gloss-card">
-            <b>Noise</b> (tabs only — do not count toward 2+)<br>
-            Just Appeared · Added Late · Gone Missing · Stuck · Multi-book Stuck ·
-            single-book Shortening/Lengthening · generic “Stayed the same” · Price moved
-        </div>
-        <div class="gloss-card">
-            <b>Edge</b><br>
-            Best real price − median. Best ignores a lone 150+ outlier. Need 60+.
-        </div>
-        <div class="gloss-card">
-            <b>🎯 DK 10</b> — DraftKings ends in 10. Strong single-book tell.
-        </div>
-        <div class="gloss-card">
-            <b>🎰 MGM 00 / 25 / 50 / 75</b> — Same-team pairs/groups. Watch Stayed in the group / Last one left.
-        </div>
-        <div class="gloss-card">
-            <b>⭐ MGM Exact · 🤝 Exact Match · 🔢 Match 25/50/75 · 💙 FD Pattern</b><br>
-            Same as always — exact prices and FanDuel ≥ +400 pattern endings.
-        </div>
-        <div class="gloss-card">
-            <b>📉 Trends</b> — Shortening / Lengthening only (no stuck wall). Multi-book = 2+ books same direction.
-        </div>
-        <div class="gloss-card">
-            <b>👻 Late Adds</b> — FanDuel, DraftKings, BetMGM only.
-        </div>
-        <div class="gloss-card">
-            <b>💅 Name magic</b> — Same Init / Cross / Same First / Same Last.<br>
-            Both players need 2+ core methods. Jr. ignored.
-        </div>
-        <div class="gloss-card">
-            <b>🔄 Auto-refresh</b> — Every 30 minutes while this tab is open, selected games re-fetch automatically.
-        </div>
+        <div class="gloss-card"><b>🟢 BET THIS</b><br>2+ core methods and edge ≥ 60. Overnight noise does not count.</div>
+        <div class="gloss-card"><b>Core methods</b><br>DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 · MGM 00/25/50/75 · Stayed in the group · Last one left · Same on 3+ books · Multi-book Shorten / Lengthen</div>
+        <div class="gloss-card"><b>Noise (do not count)</b><br>Just Appeared · Added Late · Gone Missing · Stuck · single-book Shortening/Lengthening · Price moved</div>
+        <div class="gloss-card"><b>Edge</b><br>Best real price − median. Best ignores a lone 150+ outlier. Need 60+.</div>
+        <div class="gloss-card"><b>💅 Name Magic</b><br>Both players need <b>3+ core methods</b> and at least one strong method (DK 10 / MGM / FD Pattern / Exact / etc).<br>Same First / Same Last = <b>different teams only</b>. Same Init / Cross prefer different teams.</div>
+        <div class="gloss-card"><b>History</b><br>Price / presence / MGM snaps save to a file so Trends and Late Adds work across refreshes (clears after ~18 hours for a new slate day).</div>
+        <div class="gloss-card"><b>🔄 Auto-refresh</b><br>Every 30 min while this tab is open.</div>
         """, unsafe_allow_html=True)
 
     st.markdown('<div class="footer">👑 Girl Magic • Where intuition meets odds analytics.<br>Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
