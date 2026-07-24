@@ -2,6 +2,7 @@
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
 ONLY 0.5 (1 HR) lines — no 2+/3+
+Auto-refetch every 30 min while the tab is open
 """
 
 import streamlit as st
@@ -10,6 +11,12 @@ import requests
 from collections import defaultdict
 import statistics
 from datetime import datetime, timezone, timedelta
+
+try:
+    from streamlit_autorefresh import st_autorefresh
+    HAS_AUTOREFRESH = True
+except ImportError:
+    HAS_AUTOREFRESH = False
 
 st.set_page_config(
     page_title="Girl Magic Odds ✨",
@@ -257,14 +264,13 @@ CORE_BOOKS = {
     "betmgm": "BetMGM"
 }
 
-# Late Adds only care about these
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
 
 EDGE_MIN = 60
 METHODS_MIN = 2
 OUTLIER_GAP = 150
+REFRESH_MINUTES = 30
 
-# These never count toward the 2-method BET THIS rule
 NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing",
     "Multi-book Stuck", "Price moved", "Stayed the same",
@@ -275,10 +281,8 @@ def is_core_method(m):
     if m in NOISE_METHODS:
         return False
     if m.startswith("Shortening (") or m.startswith("Lengthening ("):
-        return False  # single-book trend = noise for counting
+        return False
     if m.startswith("Stayed ") and "times" in m and "group" not in m.lower():
-        # general price-stuck "Stayed 4 times" — noise overnight
-        # keep MGM "Stayed in the group" / "Stayed N times" from MGM block via different wording
         return False
     return True
 
@@ -342,8 +346,7 @@ def get_confidence(methods, edge, is_bet):
     score = 0
     if "Last one left" in methods: score += 4
     if "Stayed in the group" in methods: score += 2
-    if any(m.startswith("Stayed ") and "times" in m and "group" in m.lower() for m in methods):
-        score += 3
+    if any("Stayed in group" in m for m in methods): score += 3
     if "Same on 3+ books" in methods: score += 2
     if "Multi-book Shorten" in methods: score += 3
     score += min(count_core_methods(methods), 3)
@@ -466,6 +469,28 @@ def merge_odds(a, b):
         subset=["player", "book"], keep="first")
     return df.drop(columns=["priority", "source"], errors="ignore")
 
+def do_fetch(odds_key, sgo_key, chosen_labels, options):
+    """Fetch odds for the given game labels. Returns (df, found_books) or (None, set())."""
+    all_rows, all_found = [], set()
+    for label in chosen_labels:
+        eid = options.get(label)
+        if not eid:
+            continue
+        data = fetch_odds_oddsapi(odds_key, eid)
+        rows, found = flatten_oddsapi(data)
+        all_rows.extend(rows)
+        all_found.update(found)
+    sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
+    all_rows.extend(sgo_rows)
+    all_found.update(sgo_found)
+    if not all_rows:
+        return None, set()
+    df = merge_odds(
+        [r for r in all_rows if r.get("source") == "oddsapi"],
+        [r for r in all_rows if r.get("source") == "sgo"]
+    )
+    return df, all_found & PREFERRED
+
 def run_flags(df, previous_df=None):
     if df.empty:
         return [], []
@@ -473,7 +498,6 @@ def run_flags(df, previous_df=None):
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
 
-    # ── Presence (Late Adds) — CORE BOOKS ONLY ───────────────
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
     current_presence = set()
@@ -488,36 +512,22 @@ def run_flags(df, previous_df=None):
         early = set()
         for snap in hist[:max(1, len(hist)//3)]:
             early |= snap
-        latest = hist[-1]
-        previous = hist[-2]
-
+        latest, previous = hist[-1], hist[-2]
         for player, book in latest - previous:
-            results.append({
-                "type": "late", "label": player,
-                "reason": f"Just appeared on {book}",
-                "event": "", "css": "hist", "methods": ["Just Appeared"]
-            })
+            results.append({"type": "late", "label": player,
+                "reason": f"Just appeared on {book}", "event": "", "css": "hist", "methods": ["Just Appeared"]})
             methods_map[player].append("Just Appeared")
-
         for player, book in latest - early:
             if (player, book) in previous:
                 continue
-            results.append({
-                "type": "late", "label": player,
-                "reason": f"Added late on {book}",
-                "event": "", "css": "hist", "methods": ["Added Late"]
-            })
+            results.append({"type": "late", "label": player,
+                "reason": f"Added late on {book}", "event": "", "css": "hist", "methods": ["Added Late"]})
             methods_map[player].append("Added Late")
-
         for player, book in previous - latest:
-            results.append({
-                "type": "late", "label": player,
-                "reason": f"Gone missing from {book}",
-                "event": "", "css": "hist", "methods": ["Gone Missing"]
-            })
+            results.append({"type": "late", "label": player,
+                "reason": f"Gone missing from {book}", "event": "", "css": "hist", "methods": ["Gone Missing"]})
             methods_map[player].append("Gone Missing")
 
-    # ── Price history + TRENDS (movement only, no stuck) ─────
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
@@ -526,11 +536,9 @@ def run_flags(df, previous_df=None):
 
     phist = st.session_state["price_history"]
     if len(phist) >= 2:
-        prev_snap = phist[-2]
-        curr_snap = phist[-1]
+        prev_snap, curr_snap = phist[-2], phist[-1]
         shorten_by_player = defaultdict(list)
         lengthen_by_player = defaultdict(list)
-
         for key, curr_price in curr_snap.items():
             player, book = key
             if key not in prev_snap:
@@ -538,39 +546,29 @@ def run_flags(df, previous_df=None):
             prev_price = prev_snap[key]
             if curr_price < prev_price:
                 shorten_by_player[player].append(book)
-                results.append({
-                    "type": "trend", "label": player,
+                results.append({"type": "trend", "label": player,
                     "reason": f"Shortening on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}",
-                    "event": "", "css": "hist", "methods": [f"Shortening ({book})"]
-                })
+                    "event": "", "css": "hist", "methods": [f"Shortening ({book})"]})
                 methods_map[player].append(f"Shortening ({book})")
             elif curr_price > prev_price:
                 lengthen_by_player[player].append(book)
-                results.append({
-                    "type": "trend", "label": player,
+                results.append({"type": "trend", "label": player,
                     "reason": f"Lengthening on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}",
-                    "event": "", "css": "hist", "methods": [f"Lengthening ({book})"]
-                })
+                    "event": "", "css": "hist", "methods": [f"Lengthening ({book})"]})
                 methods_map[player].append(f"Lengthening ({book})")
-
         for player, books in shorten_by_player.items():
             if len(books) >= 2:
-                results.append({
-                    "type": "trend", "label": player,
+                results.append({"type": "trend", "label": player,
                     "reason": f"Shortening on {len(books)} books: {', '.join(books)}",
-                    "event": "", "css": "hist", "methods": ["Multi-book Shorten"]
-                })
+                    "event": "", "css": "hist", "methods": ["Multi-book Shorten"]})
                 methods_map[player].append("Multi-book Shorten")
         for player, books in lengthen_by_player.items():
             if len(books) >= 2:
-                results.append({
-                    "type": "trend", "label": player,
+                results.append({"type": "trend", "label": player,
                     "reason": f"Lengthening on {len(books)} books: {', '.join(books)}",
-                    "event": "", "css": "hist", "methods": ["Multi-book Lengthen"]
-                })
+                    "event": "", "css": "hist", "methods": ["Multi-book Lengthen"]})
                 methods_map[player].append("Multi-book Lengthen")
 
-    # DK 10
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -578,7 +576,6 @@ def run_flags(df, previous_df=None):
                 "event": row["event"], "css": "dk", "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
 
-    # MGM
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)]
     if "mgm_history" not in st.session_state:
         st.session_state["mgm_history"] = []
@@ -643,7 +640,6 @@ def run_flags(df, previous_df=None):
             for n in names:
                 methods_map[n].extend(meth)
 
-    # Exact
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -654,7 +650,6 @@ def run_flags(df, previous_df=None):
                 "event": g["event"].iloc[0], "css": "match", "methods": ["Exact Match"]})
             methods_map[player].append("Exact Match")
 
-    # MGM Exact
     for event, g in mgm.groupby("event"):
         for price, pg in g.groupby("price"):
             names = sorted(pg["player"].unique())
@@ -665,7 +660,6 @@ def run_flags(df, previous_df=None):
                 for n in names:
                     methods_map[n].append("MGM Exact")
 
-    # Digits
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -681,7 +675,6 @@ def run_flags(df, previous_df=None):
                     "event": g["event"].iloc[0], "css": "digit", "methods": [f"Match {d}"]})
                 methods_map[player].append(f"Match {d}")
 
-    # FanDuel
     for _, row in df.iterrows():
         if row["book"] == "fanduel":
             price = abs(int(row["price"])) if row["price"] else 0
@@ -692,7 +685,6 @@ def run_flags(df, previous_df=None):
                     "event": row["event"], "css": "fd", "methods": ["FD Pattern"]})
                 methods_map[row["player"]].append("FD Pattern")
 
-    # Same on 3+ books only (no "way different" as core)
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
         if len(prices) >= 3 and len(set(prices)) == 1:
@@ -701,7 +693,6 @@ def run_flags(df, previous_df=None):
                 "event": g["event"].iloc[0], "css": "signal", "methods": ["Same on 3+ books"]})
             methods_map[player].append("Same on 3+ books")
 
-    # Movement hist (display only, noise for counting)
     if previous_df is not None and not previous_df.empty:
         prev = {(r["player"], r["book"]): r["price"] for _, r in previous_df.iterrows()}
         for _, row in df.iterrows():
@@ -713,7 +704,6 @@ def run_flags(df, previous_df=None):
                     "event": row["event"], "css": "hist", "methods": ["Price moved"]})
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV — core methods only for the 2+ rule
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -741,11 +731,9 @@ def run_flags(df, previous_df=None):
         if "Same on 3+ books" in meths: pri += 8
         if "Multi-book Shorten" in meths: pri += 12
         pri += core_count * 5 + min(edge / 10, 15)
-        if is_bet:
-            why = f"{core_count} core methods + edge {int(edge)}. This is the one."
-        else:
-            why = f"{core_count} core methods, but edge is only {int(edge)} (need {EDGE_MIN}+)."
-        # show only core methods on cards for clarity
+        why = (f"{core_count} core methods + edge {int(edge)}. This is the one."
+               if is_bet else
+               f"{core_count} core methods, but edge is only {int(edge)} (need {EDGE_MIN}+).")
         display_meths = [m for m in meths if is_core_method(m)]
         ev_board.append({
             "player": player, "best_price": best, "best_book": best_book,
@@ -755,14 +743,10 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # Name magic — needs 2+ core methods
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
-    strong = set()
-    for p, ms in methods_map.items():
-        if count_core_methods(ms) >= 2:
-            strong.add(p)
+    strong = {p for p, ms in methods_map.items() if count_core_methods(ms) >= 2}
     players = list(strong)
 
     def diff_team(a, b):
@@ -817,15 +801,23 @@ def run_flags(df, previous_df=None):
     return results, ev_board
 
 def main():
+    # Auto-refresh every 30 min while tab is open
+    if HAS_AUTOREFRESH:
+        refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
+    else:
+        refresh_count = 0
+        st.caption("Add `streamlit-autorefresh` to requirements.txt for auto-fetch every 30 min.")
+
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
 
-    st.markdown("""
+    st.markdown(f"""
     <div class="how-to">
         👑 <b>The Code</b> → BET THIS only when <b>2+ core methods</b> hit <b>and</b> edge ≥ 60<br>
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer) — no 2+ / 3+ lines<br>
-        💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars
+        💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
+        🔄 <b>Auto</b> → Refetches every {REFRESH_MINUTES} min while this tab stays open
     </div>
     """, unsafe_allow_html=True)
 
@@ -844,36 +836,42 @@ def main():
         st.stop()
 
     options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
-    chosen = st.multiselect("② Select games", list(options.keys()))
+    default_sel = st.session_state.get("selected_games", [])
+    # keep only labels that still exist
+    default_sel = [x for x in default_sel if x in options]
+    chosen = st.multiselect("② Select games", list(options.keys()), default=default_sel)
+    st.session_state["selected_games"] = chosen
 
-    if st.button("③ Fetch Odds", type="primary") and chosen:
-        all_rows, all_found = [], set()
-        progress = st.progress(0)
-        for i, label in enumerate(chosen):
-            data = fetch_odds_oddsapi(odds_key, options[label])
-            rows, found = flatten_oddsapi(data)
-            all_rows.extend(rows)
-            all_found.update(found)
-            progress.progress((i+1)/(len(chosen)+1))
-        with st.spinner("Pulling Sports Game Odds backup…"):
-            sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
-            all_rows.extend(sgo_rows)
-            all_found.update(sgo_found)
-        progress.progress(1.0)
+    manual_fetch = st.button("③ Fetch Odds", type="primary")
 
-        if all_rows:
-            df = merge_odds(
-                [r for r in all_rows if r.get("source") == "oddsapi"],
-                [r for r in all_rows if r.get("source") == "sgo"]
-            )
+    # Auto-fetch when refresh ticks and we already have games selected
+    if "last_refresh_count" not in st.session_state:
+        st.session_state["last_refresh_count"] = refresh_count
+    auto_fetch = (
+        HAS_AUTOREFRESH
+        and refresh_count != st.session_state["last_refresh_count"]
+        and bool(chosen)
+    )
+    if auto_fetch:
+        st.session_state["last_refresh_count"] = refresh_count
+
+    if (manual_fetch or auto_fetch) and chosen:
+        with st.spinner("Fetching odds…" if manual_fetch else f"Auto-refresh ({REFRESH_MINUTES} min)…"):
+            df, found = do_fetch(odds_key, sgo_key, chosen, options)
+        if df is not None and not df.empty:
             if "odds" in st.session_state:
                 st.session_state["previous_odds"] = st.session_state["odds"]
             st.session_state["odds"] = df.to_dict("records")
-            st.session_state["found_books"] = sorted(all_found & PREFERRED)
+            st.session_state["found_books"] = sorted(found)
             st.session_state["last_fetch_time"] = now_az()
-            st.success(f"Loaded {len(df)} props (0.5 HR only) • {st.session_state['last_fetch_time']} AZ")
+            msg = "Auto-refreshed" if auto_fetch else "Loaded"
+            st.success(f"{msg} {len(df)} props (0.5 HR only) • {st.session_state['last_fetch_time']} AZ")
         else:
             st.warning("No 0.5 HR odds returned.")
+
+    last_t = st.session_state.get("last_fetch_time")
+    if last_t:
+        st.caption(f"Last fetch: {last_t} AZ · Next auto-refresh ~ every {REFRESH_MINUTES} min while tab is open")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -925,9 +923,9 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Only 2+ core methods.** Overnight noise (stuck / just appeared) does not count.")
+        st.write("**Only 2+ core methods.** Overnight noise does not count.")
         if not ev_board:
-            st.info("Fetch games. Only core-method plays appear here.")
+            st.info("Select games and fetch. Only core-method plays appear here.")
         else:
             cols = st.columns(2)
             for idx, item in enumerate(ev_board):
@@ -972,7 +970,7 @@ def main():
     show(tabs[7], "signal", "📈 Signals", "Same on 3+ books only.")
     show(tabs[8], "hist", "⏳ Price Movement", "Line moved since last pull (display only).")
     show(tabs[9], "trend", "📉 Trends — Movement Only",
-         "Shortening / Lengthening only. No stuck spam. Multi-book = same direction on 2+ books.")
+         "Shortening / Lengthening only. Multi-book = same direction on 2+ books.")
     show(tabs[10], "late", "👻 Late Adds — FD / DK / MGM Only",
          "Just Appeared / Added Late / Gone Missing on FanDuel, DraftKings, or BetMGM only.")
     show(tabs[11], "same_init", "💅 Same Initials", "Both need 2+ core methods. Jr. ignored.")
@@ -990,105 +988,45 @@ def main():
         </div>
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
-            Has 2+ core methods, but edge is still under 60.<br>
-            Close — not quite there yet. We pass.
+            Has 2+ core methods, but edge is still under 60. Close — we pass.
         </div>
         <div class="gloss-card">
-            <b>Core methods</b> (these count toward the 2+ rule)<br>
+            <b>Core methods</b> (count toward 2+)<br>
             DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 ·
             MGM 00/25/50/75 · Stayed in the group · Last one left ·
             Same on 3+ books · Multi-book Shorten · Multi-book Lengthen
         </div>
         <div class="gloss-card">
-            <b>Noise</b> (shown on tabs, but do <b>not</b> count toward 2+)<br>
+            <b>Noise</b> (tabs only — do not count toward 2+)<br>
             Just Appeared · Added Late · Gone Missing · Stuck · Multi-book Stuck ·
             single-book Shortening/Lengthening · generic “Stayed the same” · Price moved
         </div>
         <div class="gloss-card">
             <b>Edge</b><br>
-            How much better the best real price is vs the middle of the books.<br>
-            Formula: <b>Best price − Median price</b>.<br>
-            Best ignores a lone outlier (one book 150+ longer than the next).<br>
-            We need edge of <b>60 or higher</b> for BET THIS.<br>
-            Example: best +700, median +550 → edge = 150 → good.
+            Best real price − median. Best ignores a lone 150+ outlier. Need 60+.
         </div>
         <div class="gloss-card">
-            <b>🎯 DK 10</b><br>
-            DraftKings price ends in 10 (example: +110, +210, +310, +410, +510).<br>
-            One of our strongest single-book tells. No team requirement.
+            <b>🎯 DK 10</b> — DraftKings ends in 10. Strong single-book tell.
         </div>
         <div class="gloss-card">
-            <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
-            BetMGM prices ending in 00, 25, 50, or 75 on the <b>same team</b>.<br>
-            Pairs first (2 players), then groups of three if no pair exists.
+            <b>🎰 MGM 00 / 25 / 50 / 75</b> — Same-team pairs/groups. Watch Stayed in the group / Last one left.
         </div>
         <div class="gloss-card">
-            <b>Stayed in the group</b><br>
-            Still inside the same BetMGM pair or group after multiple pulls.<br>
-            The book keeps putting them there on purpose.
+            <b>⭐ MGM Exact · 🤝 Exact Match · 🔢 Match 25/50/75 · 💙 FD Pattern</b><br>
+            Same as always — exact prices and FanDuel ≥ +400 pattern endings.
         </div>
         <div class="gloss-card">
-            <b>Stayed in group 3x / 4x</b><br>
-            Showed up in that same MGM spot on 3+ different fetches.<br>
-            Stronger than a one-time group.
+            <b>📉 Trends</b> — Shortening / Lengthening only (no stuck wall). Multi-book = 2+ books same direction.
         </div>
         <div class="gloss-card">
-            <b>Last one left</b><br>
-            Started in a bigger MGM group and is the only one still standing.<br>
-            One of the strongest signals we track.
+            <b>👻 Late Adds</b> — FanDuel, DraftKings, BetMGM only.
         </div>
         <div class="gloss-card">
-            <b>⭐ MGM Exact</b><br>
-            Two or more players on BetMGM have the <b>exact same price</b> (same team).
+            <b>💅 Name magic</b> — Same Init / Cross / Same First / Same Last.<br>
+            Both players need 2+ core methods. Jr. ignored.
         </div>
         <div class="gloss-card">
-            <b>🤝 Exact Match</b><br>
-            Two or more books have the exact same price on the same player.
-        </div>
-        <div class="gloss-card">
-            <b>🔢 Match 25 / Match 50 / Match 75</b><br>
-            Same player shows a 25, 50, or 75 ending on more than one book.
-        </div>
-        <div class="gloss-card">
-            <b>💙 FD Pattern</b><br>
-            FanDuel price is +400 or higher and ends in 10, 20, 30, 60, 70, or 90.
-        </div>
-        <div class="gloss-card">
-            <b>Same on 3+ books</b><br>
-            Three or more books have the identical price on this player.
-        </div>
-        <div class="gloss-card">
-            <b>📉 Trends</b><br>
-            • <b>Shortening</b> — price went down on that book<br>
-            • <b>Lengthening</b> — price went up on that book<br>
-            • <b>Multi-book Shorten / Lengthen</b> — same direction on 2+ books<br>
-            No stuck spam. Needs multiple fetches.
-        </div>
-        <div class="gloss-card">
-            <b>👻 Late Adds</b><br>
-            • <b>Just Appeared</b> — on a book now, wasn’t on the last pull<br>
-            • <b>Added Late</b> — missing earlier, just showed up<br>
-            • <b>Gone Missing</b> — was there, now gone<br>
-            FanDuel, DraftKings, and BetMGM only.
-        </div>
-        <div class="gloss-card">
-            <b>💅 Same Init</b><br>
-            Same first letter + same last letter (example: Marcus Morris & Matt McLain = MM).<br>
-            Both need 2+ core methods. Prefer different teams. Jr. ignored.
-        </div>
-        <div class="gloss-card">
-            <b>🔄 Cross Init</b><br>
-            One player’s last initial matches the other player’s first initial.<br>
-            Both need 2+ core methods. Prefer different teams.
-        </div>
-        <div class="gloss-card">
-            <b>👩‍👧 Same Last / 👯 Same First</b><br>
-            Exact same last name or first name.<br>
-            Both need 2+ core methods. Jr. ignored.
-        </div>
-        <div class="gloss-card">
-            <b>Confidence Meter</b><br>
-            The little bars under each card. More filled = stronger mix of core methods + edge.
+            <b>🔄 Auto-refresh</b> — Every 30 minutes while this tab is open, selected games re-fetch automatically.
         </div>
         """, unsafe_allow_html=True)
 
