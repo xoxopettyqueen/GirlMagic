@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
-Boss Bitch • HBIC • Me & My Girls We Rolling
-Rule: BET THIS = 2+ methods + edge ≥ 60
+Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling
+Design upgrade + same tight logic (2+ methods + edge ≥ 60)
 """
 
 import streamlit as st
@@ -23,7 +23,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
 
     .stApp {
-        background: linear-gradient(165deg, #0c0414 0%, #1a0a28 45%, #2a0b3d 100%);
+        background: linear-gradient(165deg, #0a0410 0%, #160a22 40%, #1f0b30 100%);
         color: #fce7f3;
         font-family: 'Inter', sans-serif;
     }
@@ -31,10 +31,10 @@ st.markdown("""
     h1 {
         font-family: 'Playfair Display', serif !important;
         font-weight: 900 !important;
-        background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc);
+        background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc, #f472b6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 2.4rem !important;
+        font-size: 2.5rem !important;
         margin-bottom: 0 !important;
     }
 
@@ -42,20 +42,20 @@ st.markdown("""
         color: #f9a8d4;
         font-size: 0.95rem;
         font-weight: 600;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.8px;
         text-transform: uppercase;
-        margin-top: -4px;
-        margin-bottom: 14px;
+        margin-top: -6px;
+        margin-bottom: 16px;
     }
 
     .how-to {
-        background: #1c0f2b;
+        background: #1a0f28;
         border: 1px solid #f472b6;
         border-radius: 12px;
-        padding: 10px 14px;
+        padding: 11px 15px;
         margin-bottom: 14px;
         font-size: 0.9rem;
-        line-height: 1.4;
+        line-height: 1.45;
     }
 
     .warning-box {
@@ -63,17 +63,16 @@ st.markdown("""
         border: 2px solid #f472b6;
         border-radius: 12px;
         padding: 12px 16px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         font-size: 0.95rem;
-        color: #fce7f3;
     }
 
     .info-box {
-        background: #1c0f2b;
+        background: #1a0f28;
         border: 1px solid #a855f7;
         border-radius: 12px;
         padding: 10px 14px;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
         font-size: 0.9rem;
     }
 
@@ -84,23 +83,51 @@ st.markdown("""
         border-radius: 10px !important;
         font-weight: 700 !important;
         padding: 0.55rem 1.3rem !important;
-        box-shadow: 0 3px 12px rgba(219, 39, 119, 0.4);
-        font-size: 0.95rem;
+        box-shadow: 0 3px 14px rgba(219, 39, 119, 0.45);
+    }
+
+    /* Petty Alerts strip */
+    .petty-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+    .petty-box {
+        flex: 1;
+        min-width: 120px;
+        background: #1a0f28;
+        border: 1px solid #f472b6;
+        border-radius: 12px;
+        padding: 12px 10px;
+        text-align: center;
+        box-shadow: 0 0 12px rgba(244, 114, 182, 0.15);
+    }
+    .petty-num {
+        font-size: 1.7rem;
+        font-weight: 800;
+        color: #f9a8d4;
+        line-height: 1.1;
+    }
+    .petty-label {
+        font-size: 0.72rem;
+        color: #e9d5ff;
+        margin-top: 4px;
+        letter-spacing: 0.5px;
     }
 
     .card {
-        background: linear-gradient(155deg, #1c0f2b, #27143a);
+        background: linear-gradient(155deg, #1a0f28, #251438);
         border: 1px solid #f472b6;
         border-radius: 12px;
-        padding: 8px 12px;
+        padding: 9px 12px;
         margin: 0;
         color: #fdf2f8;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.35);
         position: relative;
         height: 100%;
-        font-size: 0.95rem;
+        font-size: 0.93rem;
     }
-
     .card::before {
         content: '';
         position: absolute;
@@ -108,7 +135,6 @@ st.markdown("""
         width: 4px; height: 100%;
         border-radius: 12px 0 0 12px;
     }
-
     .high::before { background: linear-gradient(180deg, #f472b6, #c026d3); }
     .strong::before { background: linear-gradient(180deg, #e879f9, #a855f7); }
     .medium::before { background: linear-gradient(180deg, #c084fc, #7c3aed); }
@@ -116,34 +142,32 @@ st.markdown("""
     .skip-card::before { background: #4b5563; }
 
     .bet {
-        background: linear-gradient(155deg, #0d2818, #163d28) !important;
+        background: linear-gradient(155deg, #0c2418, #143d28) !important;
         border: 1px solid #34d399 !important;
-        box-shadow: 0 0 14px rgba(52, 211, 153, 0.25);
+        box-shadow: 0 0 16px rgba(52, 211, 153, 0.28);
     }
-
     .skip {
-        background: #16101f !important;
+        background: #14101c !important;
         border: 1px solid #4b5563 !important;
-        opacity: 0.75;
+        opacity: 0.78;
     }
 
     .tag {
         display: inline-block;
         background: #3b0764;
         color: #f9a8d4;
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 700;
         padding: 2px 8px;
         border-radius: 10px;
         margin: 2px 3px 2px 0;
         border: 1px solid #a855f7;
     }
-
-    .tag-green {
-        background: #064e3b;
-        color: #6ee7b7;
-        border: 1px solid #34d399;
-    }
+    .tag-green { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
+    .tag-dk { background: #052e16; color: #4ade80; border-color: #22c55e; }
+    .tag-fd { background: #0c1a3a; color: #60a5fa; border-color: #3b82f6; }
+    .tag-mgm { background: #3b2f0b; color: #fbbf24; border-color: #f59e0b; }
+    .tag-caesars { background: #3b0a0a; color: #f87171; border-color: #ef4444; }
 
     .queen-banner {
         display: inline-block;
@@ -158,19 +182,10 @@ st.markdown("""
         margin-bottom: 10px;
     }
 
-    .meter {
-        display: flex;
-        gap: 3px;
-        margin: 4px 0 6px 0;
-    }
-
+    .meter { display: flex; gap: 3px; margin: 4px 0 6px 0; }
     .meter-bar {
-        height: 6px;
-        width: 18px;
-        border-radius: 3px;
-        background: #374151;
+        height: 6px; width: 18px; border-radius: 3px; background: #374151;
     }
-
     .meter-bar.filled-high { background: linear-gradient(90deg, #f472b6, #c026d3); }
     .meter-bar.filled-strong { background: linear-gradient(90deg, #e879f9, #a855f7); }
     .meter-bar.filled-medium { background: linear-gradient(90deg, #c084fc, #7c3aed); }
@@ -178,12 +193,12 @@ st.markdown("""
 
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
     .stTabs [data-baseweb="tab"] {
-        background: #1c0f2b;
+        background: #1a0f28;
         border-radius: 8px;
         color: #f9a8d4;
         font-weight: 600;
         padding: 7px 11px;
-        font-size: 0.85rem;
+        font-size: 0.84rem;
     }
     .stTabs [aria-selected="true"] {
         background: linear-gradient(90deg, #db2777, #9333ea) !important;
@@ -194,15 +209,14 @@ st.markdown("""
         text-align: center;
         color: #f9a8d4;
         font-size: 0.9rem;
-        margin-top: 30px;
-        letter-spacing: 1px;
+        margin-top: 32px;
+        letter-spacing: 1.2px;
         opacity: 0.85;
     }
-
-    .grid-card { margin-bottom: 6px; }
+    .grid-card { margin-bottom: 7px; }
 
     .gloss-card {
-        background: linear-gradient(155deg, #1c0f2b, #27143a);
+        background: linear-gradient(155deg, #1a0f28, #251438);
         border: 1px solid #a855f7;
         border-radius: 12px;
         padding: 12px 14px;
@@ -280,6 +294,14 @@ def make_meter(bars, level):
         html += f'<div class="meter-bar {filled}"></div>'
     html += '</div>'
     return html
+
+def book_tag(book):
+    b = str(book).lower()
+    if "draftkings" in b: return "tag-dk"
+    if "fanduel" in b: return "tag-fd"
+    if "betmgm" in b or "mgm" in b: return "tag-mgm"
+    if "caesars" in b or "williamhill" in b: return "tag-caesars"
+    return "tag"
 
 def fetch_events_oddsapi(api_key):
     try:
@@ -581,7 +603,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV — STRICT: 2+ methods AND edge ≥ 60
+    # +EV
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -597,9 +619,7 @@ def run_flags(df, previous_df=None):
         edge = best - med
         meths = list(set(methods_map.get(player, [])))
         method_count = len(meths)
-
         is_bet = (method_count >= METHODS_MIN) and (edge >= EDGE_MIN)
-
         conf, bars, level, css = get_confidence(meths, edge, is_bet)
         pri = 0
         if "Last one left" in meths: pri += 30
@@ -607,7 +627,6 @@ def run_flags(df, previous_df=None):
         if "Stayed in the group" in meths: pri += 10
         if "Same on 3+ books" in meths: pri += 8
         pri += method_count * 5 + min(edge / 10, 15)
-
         if is_bet:
             why = f"{method_count} methods hit + price is clearly better. This is the one."
         elif method_count >= METHODS_MIN:
@@ -616,7 +635,6 @@ def run_flags(df, previous_df=None):
             why = "Price looks better, but we need at least 2 methods."
         else:
             why = "Not enough methods and not enough edge."
-
         if method_count >= 1 or edge >= EDGE_MIN:
             ev_board.append({
                 "player": player, "best_price": best, "best_book": best_book,
@@ -624,7 +642,6 @@ def run_flags(df, previous_df=None):
                 "methods": meths, "priority": pri, "bars": bars,
                 "level": level, "css": css, "method_count": method_count
             })
-
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
     # Name patterns
@@ -654,8 +671,7 @@ def run_flags(df, previous_df=None):
 
     for i, a in enumerate(players):
         _, l1 = get_initials(a)
-        if not l1:
-            continue
+        if not l1: continue
         for b in players[i+1:]:
             f2, _ = get_initials(b)
             if f2 and l1 == f2 and both(a, b):
@@ -693,7 +709,7 @@ def run_flags(df, previous_df=None):
 
 def main():
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
-    st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="how-to">
@@ -765,6 +781,45 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     results, ev_board = run_flags(df, prev_df) if not df.empty else ([], [])
 
+    # ─── PETTY ALERTS STRIP ───────────────────────────────────
+    counts = {
+        "dk": len([r for r in results if r["type"] == "dk"]),
+        "mgm": len([r for r in results if r["type"] == "mgm"]),
+        "match": len([r for r in results if r["type"] == "match"]),
+        "fd": len([r for r in results if r["type"] == "fd"]),
+        "name": len([r for r in results if r["type"] in ("same_init", "cross", "last", "first")]),
+        "bets": len([e for e in ev_board if e["is_bet"]])
+    }
+
+    st.markdown(f"""
+    <div class="petty-row">
+        <div class="petty-box">
+            <div class="petty-num">{counts['bets']}</div>
+            <div class="petty-label">🟢 BET THIS</div>
+        </div>
+        <div class="petty-box">
+            <div class="petty-num">{counts['dk']}</div>
+            <div class="petty-label">🎯 DK 10s</div>
+        </div>
+        <div class="petty-box">
+            <div class="petty-num">{counts['mgm']}</div>
+            <div class="petty-label">🎰 MGM Groups</div>
+        </div>
+        <div class="petty-box">
+            <div class="petty-num">{counts['match']}</div>
+            <div class="petty-label">🤝 Exact Matches</div>
+        </div>
+        <div class="petty-box">
+            <div class="petty-num">{counts['fd']}</div>
+            <div class="petty-label">💙 FD Patterns</div>
+        </div>
+        <div class="petty-box">
+            <div class="petty-num">{counts['name']}</div>
+            <div class="petty-label">💅 Name Magic</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
     tabs = st.tabs([
         "🐝 +EV Board", "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
         "🔢 Digits", "💙 FanDuel", "📈 Signals", "⏳ Movement",
@@ -812,142 +867,72 @@ def main():
                     </div>''', unsafe_allow_html=True)
 
     show(tabs[1], "dk", "🎯 DraftKings 10s — I See You", "DK prices ending in 10.")
-    show(tabs[2], "mgm", "🎰 BetMGM Magic — Same Team Only", "Pairs & groups. Look for Stayed in the group / Last one left. Usually posts in the morning.")
+    show(tabs[2], "mgm", "🎰 BetMGM Magic — Same Team Only", "Pairs & groups. Look for Stayed in the group / Last one left.")
     show(tabs[3], "match", "🤝 Exact Match — Books Agree", "Same exact price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact — Locked In", "Same exact price on BetMGM for multiple guys.")
     show(tabs[5], "digit", "🔢 Matching Digits — 25 / 50 / 75", "Same player showing those endings on different books.")
     show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
     show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
-    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Same first + last initial (only when a method already hit).")
+    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Same first + last initial.")
     show(tabs[10], "cross", "🔄 Cross Initials — Connected", "One player’s last initial matches another’s first.")
     show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Shared last name.")
     show(tabs[12], "first", "👯 Same First Name — Twinsies", "Shared first name.")
 
     with tabs[13]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
-
         st.markdown("""
         <div class="gloss-card">
             <b>🟢 BET THIS</b><br>
             Needs <b>2 or more methods</b> <b>and</b> the price is clearly better than most books (edge of 60 or more).<br>
-            These are the only ones we actually take. Everything else is noise.
+            These are the only ones we actually take.
         </div>
-
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
-            Less than 2 methods, or the price isn’t better enough yet.<br>
-            We pass. No forcing it.
+            Less than 2 methods, or the price isn’t better enough yet. We pass.
         </div>
-
         <div class="gloss-card">
             <b>🎯 DraftKings Ends in 10</b><br>
-            Any DraftKings home-run price that ends in 10 (like +110, +210, +310, +410, +510).<br>
-            This is one of our strongest book-specific tells.
+            Any DK home-run price ending in 10 (+110, +210, +310, +410, +510…). One of our strongest tells.
         </div>
-
         <div class="gloss-card">
             <b>🎰 BetMGM Classic Endings (00 / 25 / 50 / 75)</b><br>
-            BetMGM loves these endings. We look for:<br>
-            • <b>Pairs</b> — two players on the same team with the same ending<br>
-            • <b>Groups of three</b> — three players on the same team with the same ending<br>
-            Pairs always beat groups. Same team only.
+            Same-team only. Pairs (2 players) beat groups of three. Look for the sticky signals below.
         </div>
-
         <div class="gloss-card">
-            <b>Stayed in the group</b><br>
-            This player is still inside the same BetMGM pair or group after multiple pulls.<br>
-            The book is keeping him there on purpose.
+            <b>Stayed in the group</b> — still in the same MGM pair/group across pulls.<br>
+            <b>Stayed 3 times</b> — showed up on three different fetches.<br>
+            <b>Last one left</b> — started in a bigger group and is still standing.
         </div>
-
         <div class="gloss-card">
-            <b>Stayed 3 times</b><br>
-            Showed up in that same spot on three different fetches.<br>
-            Even stronger. The books keep locking him in.
+            <b>🤝 Exact Match</b> — two or more books have the exact same price on the same player.
         </div>
-
         <div class="gloss-card">
-            <b>Last one left</b><br>
-            Started in a bigger MGM group and is the only one still standing.<br>
-            This is one of the strongest signals we track.
+            <b>⭐ MGM Exact</b> — multiple players on BetMGM share the exact same price (same team).
         </div>
-
         <div class="gloss-card">
-            <b>🤝 Exact Match</b><br>
-            Two or more books have the exact same price on the same player.<br>
-            When books agree that hard, we pay attention.
+            <b>🔢 Matching Digits</b> — same player shows 25 / 50 / 75 endings on more than one book.
         </div>
-
         <div class="gloss-card">
-            <b>⭐ MGM Exact</b><br>
-            Multiple players on BetMGM have the exact same price.<br>
-            Same-team only. Strong grouping signal.
+            <b>💙 FanDuel Patterns</b> — FD prices ≥ +500 that end in 10, 30, 60, 70, or 90.
         </div>
-
         <div class="gloss-card">
-            <b>🔢 Matching Digits (25 / 50 / 75)</b><br>
-            The same player shows a 25, 50, or 75 ending on more than one book.<br>
-            Different books using the same “template” number.
+            <b>📈 Signals</b> — Stayed the same • Same on 3+ books • Way different (outlier).
         </div>
-
         <div class="gloss-card">
-            <b>💙 FanDuel Patterns</b><br>
-            FanDuel prices that are +500 or higher and end in 10, 30, 60, 70, or 90.<br>
-            These long-shot patterns are ones we watch closely.
+            <b>⏳ Price Movement</b> — the line moved up or down since the last pull.
         </div>
-
         <div class="gloss-card">
-            <b>📈 Signals</b><br>
-            • <b>Stayed the same</b> — price didn’t move across pulls<br>
-            • <b>Same on 3+ books</b> — three or more books have the identical price<br>
-            • <b>Way different</b> — one book is an outlier (150+ away from the middle)
+            <b>💅 Same Initials / Cross / Same First / Same Last</b><br>
+            Name magic. Only counts when other methods already hit. Prefer different teams.
         </div>
-
         <div class="gloss-card">
-            <b>⏳ Price Movement</b><br>
-            The line moved up or down since the last time we pulled.<br>
-            Direction matters. We note both.
-        </div>
-
-        <div class="gloss-card">
-            <b>💅 Same Initials</b><br>
-            Two players share the same first letter and same last letter (example: Marcus Morris & Matt McLain = MM).<br>
-            Only counts when other methods already hit. Prefer different teams.
-        </div>
-
-        <div class="gloss-card">
-            <b>🔄 Cross Initials</b><br>
-            One player’s last initial matches the other player’s first initial.<br>
-            Only counts when other methods already hit. Prefer different teams.
-        </div>
-
-        <div class="gloss-card">
-            <b>👩‍👧 Same Last Name</b><br>
-            Two players share the exact same last name.<br>
-            Only counts when other methods already hit.
-        </div>
-
-        <div class="gloss-card">
-            <b>👯 Same First Name</b><br>
-            Two players share the exact same first name.<br>
-            Only counts when other methods already hit.
-        </div>
-
-        <div class="gloss-card">
-            <b>Confidence Meter</b><br>
-            The little bars under each card.<br>
-            More filled bars = stronger mix of methods + edge.<br>
-            Levels: High / Strong / Medium / Low.
-        </div>
-
-        <div class="gloss-card">
-            <b>Edge</b><br>
-            How much better the best price is compared to the middle of the books.<br>
-            We require edge of 60 or higher before we will say BET THIS.
+            <b>Confidence Meter</b> — more filled bars = stronger mix of methods + edge.<br>
+            <b>Edge</b> — how much better the best price is vs the middle of the books. We need 60+.
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
