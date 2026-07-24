@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-ONLY 0.5 HR · Score 0–100 · Tight Trends · Fallen Off · Movement grouped by player
+ONLY 0.5 HR · Score 0–100 · Tight Trends · Movement from history · FD ≥500 · Expanded Signals
 """
 
 import streamlit as st
@@ -81,6 +81,8 @@ REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
 BIG_MOVE = 100
+MOVE_MIN = 40          # Movement tab: ignore smaller moves
+FD_MIN = 500           # FanDuel pattern floor
 
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
@@ -98,6 +100,7 @@ def is_core_method(m):
     if m.startswith("Shortening (") or m.startswith("Lengthening ("): return False
     if m.startswith("Stayed ") and "times" in m and "group" not in m.lower(): return False
     if m.startswith("FADE") or m.startswith("FD under"): return False
+    if m.startswith("Outlier") or m.startswith("Stuck") or m.startswith("Same ending"): return False
     return True
 
 def count_core_methods(meths):
@@ -321,6 +324,7 @@ def run_flags(df, previous_df=None):
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
 
+    # presence / late
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
     current_presence = {(r["player"], r["book"]) for _, r in df.iterrows() if r["book"] in LATE_BOOKS}
@@ -347,19 +351,20 @@ def run_flags(df, previous_df=None):
                             "event": "", "css": "hist", "methods": ["Gone Missing"]})
             methods_map[player].append("Gone Missing")
 
+    # price history (shared by Trends + Movement)
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
     st.session_state["price_history"].append(snap)
     st.session_state["price_history"] = st.session_state["price_history"][-8:]
-
     phist = st.session_state["price_history"]
+
+    # ── TIGHT TRENDS ──
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
         for key, curr_price in curr_snap.items():
             player, book = key
-            if key not in prev_snap:
-                continue
+            if key not in prev_snap: continue
             prev_price = prev_snap[key]
             delta = curr_price - prev_price
             if delta >= BIG_MOVE:
@@ -399,6 +404,32 @@ def run_flags(df, previous_df=None):
                 "event": "", "css": "hist", "methods": ["FADE · FD highest"]
             })
 
+    # ── MOVEMENT from history (works on mobile + desktop) · ≥40 pts · one card per player ──
+    if len(phist) >= 2:
+        prev_snap, curr_snap = phist[-2], phist[-1]
+        player_moves = defaultdict(list)
+        for key, curr_price in curr_snap.items():
+            player, book = key
+            if key not in prev_snap: continue
+            prev_price = prev_snap[key]
+            delta = abs(curr_price - prev_price)
+            if delta < MOVE_MIN: continue
+            direction = "went up" if curr_price > prev_price else "went down"
+            player_moves[player].append(
+                f"{book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({direction}, {int(delta)} pts)"
+            )
+        for player, moves in sorted(player_moves.items()):
+            results.append({
+                "type": "hist",
+                "label": player,
+                "reason": "<br>".join(moves),
+                "event": "",
+                "css": "hist",
+                "methods": ["Price moved"],
+            })
+            methods_map[player].append("Price moved")
+
+    # DK
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -406,6 +437,7 @@ def run_flags(df, previous_df=None):
                 "event": row["event"], "css": "dk", "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
 
+    # MGM groups
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)]
     if "mgm_history" not in st.session_state:
         st.session_state["mgm_history"] = []
@@ -459,6 +491,7 @@ def run_flags(df, previous_df=None):
                 "reason": reason, "event": event, "css": "mgm", "methods": list(set(meth))})
             for n in names: methods_map[n].extend(meth)
 
+    # Exact match
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2: continue
         prices = g["price"].dropna().tolist()
@@ -468,6 +501,7 @@ def run_flags(df, previous_df=None):
                 "event": g["event"].iloc[0], "css": "match", "methods": ["Exact Match"]})
             methods_map[player].append("Exact Match")
 
+    # MGM exact
     for event, g in mgm.groupby("event"):
         for price, pg in g.groupby("price"):
             names = sorted(pg["player"].unique())
@@ -477,6 +511,7 @@ def run_flags(df, previous_df=None):
                     "event": event, "css": "mgm", "methods": ["MGM Exact"]})
                 for n in names: methods_map[n].append("MGM Exact")
 
+    # Matching digits
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2: continue
         digs = defaultdict(list)
@@ -490,46 +525,97 @@ def run_flags(df, previous_df=None):
                     "event": g["event"].iloc[0], "css": "digit", "methods": [f"Match {d}"]})
                 methods_map[player].append(f"Match {d}")
 
+    # FanDuel ≥ +500
     for _, row in df.iterrows():
         if row["book"] == "fanduel":
             price = abs(int(row["price"])) if row["price"] else 0
             last = last_two(row["price"])
-            if price >= 400 and last in (10, 20, 30, 60, 70, 90):
+            if price >= FD_MIN and last in (10, 20, 30, 60, 70, 90):
                 results.append({"type": "fd", "label": row["player"],
-                    "reason": f"FanDuel ≥ +400 ends in {last:02d} → {format_odds(row['price'])}",
+                    "reason": f"FanDuel ≥ +{FD_MIN} ends in {last:02d} → {format_odds(row['price'])}",
                     "event": row["event"], "css": "fd", "methods": ["FD Pattern"]})
                 methods_map[row["player"]].append("FD Pattern")
 
+    # ── EXPANDED SIGNALS ──
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
+        books = g["book"].tolist()
+        if len(prices) < 2:
+            continue
+
+        # Same exact price on 3+ books
         if len(prices) >= 3 and len(set(prices)) == 1:
             results.append({"type": "signal", "label": player,
-                "reason": f"Same price on {len(prices)} books",
+                "reason": f"Same price on {len(prices)} books → {format_odds(prices[0])}",
                 "event": g["event"].iloc[0], "css": "signal", "methods": ["Same on 3+ books"]})
             methods_map[player].append("Same on 3+ books")
 
-    # Movement — ONE card per player, all books under them
-    if previous_df is not None and not previous_df.empty:
-        prev = {(r["player"], r["book"]): r["price"] for _, r in previous_df.iterrows()}
-        player_moves = defaultdict(list)
-        for _, row in df.iterrows():
-            key = (row["player"], row["book"])
-            if key in prev and prev[key] != row["price"]:
-                direction = "went up" if row["price"] > prev[key] else "went down"
-                player_moves[row["player"]].append(
-                    f"{row['book']}: {format_odds(prev[key])} → {format_odds(row['price'])} ({direction})"
-                )
-                methods_map[row["player"]].append("Price moved")
-        for player, moves in sorted(player_moves.items()):
-            results.append({
-                "type": "hist",
-                "label": player,
-                "reason": "<br>".join(moves),
-                "event": "",
-                "css": "hist",
-                "methods": ["Price moved"],
-            })
+        # Same ending tier (25/50/75) on 3+ books
+        dig_books = defaultdict(list)
+        for _, r in g.iterrows():
+            d = last_two(r["price"])
+            if d in (25, 50, 75):
+                dig_books[d].append(r["book"])
+        for d, bks in dig_books.items():
+            if len(set(bks)) >= 3:
+                results.append({"type": "signal", "label": player,
+                    "reason": f"Same ending {d} on {len(set(bks))} books → {', '.join(set(bks))}",
+                    "event": g["event"].iloc[0], "css": "signal", "methods": [f"Same ending {d}"]})
+                methods_map[player].append(f"Same ending {d}")
 
+        # Outlier book (±150 from median of the rest)
+        if len(prices) >= 3:
+            for i, (p, b) in enumerate(zip(prices, books)):
+                rest = prices[:i] + prices[i+1:]
+                try:
+                    med_rest = statistics.median(rest)
+                except Exception:
+                    continue
+                if abs(p - med_rest) >= OUTLIER_GAP:
+                    results.append({"type": "signal", "label": player,
+                        "reason": f"Outlier on {b}: {format_odds(p)} vs pack median {format_odds(med_rest)}",
+                        "event": g["event"].iloc[0], "css": "signal", "methods": ["Outlier book"]})
+                    methods_map[player].append("Outlier book")
+
+    # Stuck price across 3+ history snaps
+    if len(phist) >= 3:
+        for key in phist[-1].keys():
+            player, book = key
+            vals = []
+            for snap in phist[-4:]:
+                if key in snap:
+                    vals.append(snap[key])
+            if len(vals) >= 3 and len(set(vals)) == 1:
+                results.append({"type": "signal", "label": player,
+                    "reason": f"Stuck on {book} at {format_odds(vals[0])} across {len(vals)} snaps",
+                    "event": "", "css": "signal", "methods": ["Stuck price"]})
+                methods_map[player].append("Stuck price")
+
+    # Multi-book same direction (2+ books, move ≥ MOVE_MIN)
+    if len(phist) >= 2:
+        prev_snap, curr_snap = phist[-2], phist[-1]
+        up_by, down_by = defaultdict(list), defaultdict(list)
+        for key, curr_price in curr_snap.items():
+            player, book = key
+            if key not in prev_snap: continue
+            delta = curr_price - prev_snap[key]
+            if abs(delta) < MOVE_MIN: continue
+            if delta > 0: up_by[player].append(book)
+            else: down_by[player].append(book)
+        for player, books in up_by.items():
+            if len(books) >= 2:
+                results.append({"type": "signal", "label": player,
+                    "reason": f"Multi-book lengthen on {', '.join(books)}",
+                    "event": "", "css": "signal", "methods": ["Multi-book Lengthen"]})
+                methods_map[player].append("Multi-book Lengthen")
+        for player, books in down_by.items():
+            if len(books) >= 2:
+                results.append({"type": "signal", "label": player,
+                    "reason": f"Multi-book shorten on {', '.join(books)}",
+                    "event": "", "css": "signal", "methods": ["Multi-book Shorten"]})
+                methods_map[player].append("Multi-book Shorten")
+
+    # +EV board
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -558,6 +644,7 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["score"], -x["edge"]))
 
+    # Fallen Off
     current_ev = {
         item["player"]: {
             "methods": item["methods"], "edge": item["edge"],
@@ -595,6 +682,7 @@ def run_flags(df, previous_df=None):
     st.session_state["prev_ev"] = current_ev
     save_history(prev_ev=current_ev)
 
+    # Name magic
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -679,7 +767,7 @@ def main():
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer)<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
         🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History snaps: <b>{hist_n}</b><br>
-        📊 <b>Score</b> → 0–100 · board sorted high → low
+        📊 <b>Score</b> → 0–100 · board sorted high → low · FD ≥ +{FD_MIN} · Moves ≥ {MOVE_MIN} pts
     </div>
     """, unsafe_allow_html=True)
 
@@ -815,16 +903,16 @@ def main():
     show(tabs[3], "match", "🤝 Exact Match", "Same price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, multiple guys.")
     show(tabs[5], "digit", "🔢 Matching Digits", "25 / 50 / 75 across books.")
-    show(tabs[6], "fd", "💙 FanDuel Patterns", "≥ +400 ending 10/20/30/60/70/90.")
-    show(tabs[7], "signal", "📈 Signals", "Same on 3+ books.")
+    show(tabs[6], "fd", "💙 FanDuel Patterns", f"≥ +{FD_MIN} ending 10/20/30/60/70/90.")
+    show(tabs[7], "signal", "📈 Signals",
+         "Same on 3+ books · Same ending tier on 3+ · Outlier book · Stuck price · Multi-book same direction.")
 
-    # Movement — one card per player (already grouped in run_flags)
     with tabs[8]:
         st.markdown('<div class="queen-banner">⏳ Movement — One Card Per Player</div>', unsafe_allow_html=True)
-        st.caption("All book moves for that player on one card. Needs 2+ fetches.")
+        st.caption(f"From shared history snaps (works on mobile). Only moves ≥ {MOVE_MIN} pts.")
         items = [r for r in results if r["type"] == "hist"]
         if not items:
-            st.info("None right now.")
+            st.info("None right now. Needs 2+ history snaps with moves ≥ 40 pts.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(items):
@@ -887,78 +975,48 @@ def main():
         st.markdown(f"""
         <div class="gloss-card">
             <b>🟢 BET THIS</b><br>
-            The only plays we actually take.<br><br>
-            • At least <b>2 core methods</b> hit<br>
-            • Edge pts <b>60 or higher</b><br>
-            • Overnight noise does <b>not</b> count<br>
-            • Over <b>0.5 HR only</b> (1 homer)
-        </div>
-        <div class="gloss-card">
-            <b>⚪ SKIP</b><br>
-            Close, but not quite.<br><br>
-            • Has 2+ core methods<br>
-            • Edge pts still under 60<br>
-            • We pass
+            • 2+ core methods<br>
+            • Edge pts ≥ 60<br>
+            • Over 0.5 HR only
         </div>
         <div class="gloss-card">
             <b>📊 Girl Magic Score (0–100)</b><br>
-            Rank on the +EV board. Higher = better.<br><br>
-            • Up to 50 from core method count<br>
-            • Up to 40 from edge pts (scaled)<br>
-            • Up to 10 from strong bonuses<br>
-            • Always capped at 100<br>
-            • Board sorted high → low
+            Methods + edge + bonuses. Board sorted high → low.
         </div>
         <div class="gloss-card">
             <b>Edge pts</b><br>
-            Best real price vs the pack.<br><br>
-            • Formula: <b>Best − Median</b><br>
-            • Best ignores a lone outlier (150+ longer than next)<br>
-            • Can be over 100 (odds points, not a grade)<br>
-            • Need <b>60+</b> for BET THIS
+            Best − Median. Can be over 100 (odds points). Need 60+ for BET THIS.
         </div>
         <div class="gloss-card">
-            <b>📉 Trends (tight)</b><br><br>
-            <b>💚 Worth a look</b><br>
-            • FanDuel is <b>10–100 pts under BetMGM</b><br><br>
-            <b>🔴 Fade</b><br>
-            • Shot way up (≥100 pts lengthen)<br>
-            • Dropped more than 100 pts<br>
-            • FanDuel is the <b>highest</b> of all books<br><br>
-            Tiny single-book moves are ignored.
+            <b>💙 FanDuel</b><br>
+            ≥ +{FD_MIN} ending in 10 / 20 / 30 / 60 / 70 / 90.
         </div>
         <div class="gloss-card">
             <b>⏳ Movement</b><br>
-            One card per player. All book moves listed under their name.
+            One card per player. From shared history (mobile + desktop).<br>
+            Only moves ≥ {MOVE_MIN} pts.
         </div>
         <div class="gloss-card">
-            <b>Core methods</b> (count toward 2+)<br><br>
-            • DK 10 · FD Pattern · Exact Match · MGM Exact<br>
-            • Match 25 / 50 / 75 · MGM 00 / 25 / 50 / 75<br>
-            • Stayed in the group · Last one left<br>
-            • Same on 3+ books · Multi-book Shorten / Lengthen
+            <b>📈 Signals</b><br>
+            • Same price on 3+ books<br>
+            • Same ending tier (25/50/75) on 3+ books<br>
+            • Outlier book (±150 vs pack)<br>
+            • Stuck price across 3+ snaps<br>
+            • Multi-book same direction (≥{MOVE_MIN} pts)
         </div>
         <div class="gloss-card">
-            <b>🎯 DK 10 · 🎰 MGM · ⭐ MGM Exact · 🤝 Exact · 🔢 Digits · 💙 FD Pattern</b><br>
-            Same rules as always. FD ≥ +400 ending 10/20/30/60/70/90.
+            <b>📉 Trends</b><br>
+            💚 FD 10–100 under MGM · 🔴 Shot up ≥100 / Drop >100 / FD highest
         </div>
         <div class="gloss-card">
-            <b>👻 Late Adds</b><br>
-            Just Appeared / Added Late / Gone Missing on FD, DK, MGM only.
+            <b>Core methods</b><br>
+            DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 ·
+            MGM groups · Stayed in group · Last one left · Same on 3+ books ·
+            Multi-book Shorten / Lengthen
         </div>
         <div class="gloss-card">
-            <b>💀 Fallen Off</b><br>
-            Was on +EV last pull, gone this pull.<br>
-            Tags: Was BET THIS · Lost core methods · Only 1 book left · Line gone.
-        </div>
-        <div class="gloss-card">
-            <b>💅 Name Magic</b><br>
-            Both need 3+ core + personal strong.<br>
-            Different teams only. Max {NAME_MAX_PAIRS} pairs per tab.
-        </div>
-        <div class="gloss-card">
-            <b>History / Auto</b><br>
-            Snaps save across refreshes (~18h). Auto every 30 min while tab is open.
+            <b>💀 Fallen Off · 👻 Late Adds · 💅 Name Magic</b><br>
+            Same rules as before. Name: 3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}.
         </div>
         """, unsafe_allow_html=True)
 
