@@ -980,28 +980,115 @@ def main():
     show(tabs[13], "last", "👩‍👧 Same Last Name", "Both need 2+ core methods. Jr. ignored.")
     show(tabs[14], "first", "👯 Same First Name", "Both need 2+ core methods.")
 
-    with tabs[15]:
-        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
+       with tabs[15]:
+        st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="gloss-card">
-            <b>🟢 BET THIS</b> — 2+ <b>core</b> methods and edge ≥ 60. Overnight noise does not count.
+            <b>🟢 BET THIS</b><br>
+            At least <b>2 core methods</b> hit <b>and</b> edge is 60 or higher.<br>
+            Overnight noise does not count. Only 0.5 HR (1 homer) lines.
         </div>
         <div class="gloss-card">
-            <b>Core methods</b> (count toward 2+): DK 10, FD Pattern, Exact Match, MGM Exact, Match 25/50/75,
-            MGM 00/25/50/75, Stayed in the group, Last one left, Same on 3+ books, Multi-book Shorten / Lengthen.
+            <b>⚪ SKIP</b><br>
+            Has 2+ core methods, but edge is still under 60.<br>
+            Close — not quite there yet. We pass.
         </div>
         <div class="gloss-card">
-            <b>Noise (do not count)</b>: Just Appeared, Added Late, Gone Missing, Stuck, Multi-book Stuck,
-            single-book Shortening/Lengthening, generic “Stayed the same”.
+            <b>Core methods</b> (these count toward the 2+ rule)<br>
+            DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 ·
+            MGM 00/25/50/75 · Stayed in the group · Last one left ·
+            Same on 3+ books · Multi-book Shorten · Multi-book Lengthen
         </div>
         <div class="gloss-card">
-            <b>Edge</b> = best real price − median. Best ignores a lone 150+ outlier. Need 60+.
+            <b>Noise</b> (shown on tabs, but do <b>not</b> count toward 2+)<br>
+            Just Appeared · Added Late · Gone Missing · Stuck · Multi-book Stuck ·
+            single-book Shortening/Lengthening · generic “Stayed the same” · Price moved
         </div>
         <div class="gloss-card">
-            <b>📉 Trends</b> — shortening / lengthening only (no stuck wall).
+            <b>Edge</b><br>
+            How much better the best real price is vs the middle of the books.<br>
+            Formula: <b>Best price − Median price</b>.<br>
+            Best ignores a lone outlier (one book 150+ longer than the next).<br>
+            We need edge of <b>60 or higher</b> for BET THIS.<br>
+            Example: best +700, median +550 → edge = 150 → good.
         </div>
         <div class="gloss-card">
-            <b>👻 Late Adds</b> — FanDuel, DraftKings, BetMGM only.
+            <b>🎯 DK 10</b><br>
+            DraftKings price ends in 10 (example: +110, +210, +310, +410, +510).<br>
+            One of our strongest single-book tells. No team requirement.
+        </div>
+        <div class="gloss-card">
+            <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
+            BetMGM prices ending in 00, 25, 50, or 75 on the <b>same team</b>.<br>
+            Pairs first (2 players), then groups of three if no pair exists.
+        </div>
+        <div class="gloss-card">
+            <b>Stayed in the group</b><br>
+            Still inside the same BetMGM pair or group after multiple pulls.<br>
+            The book keeps putting them there on purpose.
+        </div>
+        <div class="gloss-card">
+            <b>Stayed in group 3x / 4x</b><br>
+            Showed up in that same MGM spot on 3+ different fetches.<br>
+            Stronger than a one-time group.
+        </div>
+        <div class="gloss-card">
+            <b>Last one left</b><br>
+            Started in a bigger MGM group and is the only one still standing.<br>
+            One of the strongest signals we track.
+        </div>
+        <div class="gloss-card">
+            <b>⭐ MGM Exact</b><br>
+            Two or more players on BetMGM have the <b>exact same price</b> (same team).
+        </div>
+        <div class="gloss-card">
+            <b>🤝 Exact Match</b><br>
+            Two or more books have the exact same price on the same player.
+        </div>
+        <div class="gloss-card">
+            <b>🔢 Match 25 / Match 50 / Match 75</b><br>
+            Same player shows a 25, 50, or 75 ending on more than one book.
+        </div>
+        <div class="gloss-card">
+            <b>💙 FD Pattern</b><br>
+            FanDuel price is +400 or higher and ends in 10, 20, 30, 60, 70, or 90.
+        </div>
+        <div class="gloss-card">
+            <b>Same on 3+ books</b><br>
+            Three or more books have the identical price on this player.
+        </div>
+        <div class="gloss-card">
+            <b>📉 Trends</b><br>
+            • <b>Shortening</b> — price went down on that book<br>
+            • <b>Lengthening</b> — price went up on that book<br>
+            • <b>Multi-book Shorten / Lengthen</b> — same direction on 2+ books<br>
+            No stuck spam. Needs multiple fetches.
+        </div>
+        <div class="gloss-card">
+            <b>👻 Late Adds</b><br>
+            • <b>Just Appeared</b> — on a book now, wasn’t on the last pull<br>
+            • <b>Added Late</b> — missing earlier, just showed up<br>
+            • <b>Gone Missing</b> — was there, now gone<br>
+            FanDuel, DraftKings, and BetMGM only.
+        </div>
+        <div class="gloss-card">
+            <b>💅 Same Init</b><br>
+            Same first letter + same last letter (example: Marcus Morris & Matt McLain = MM).<br>
+            Both need 2+ core methods. Prefer different teams. Jr. ignored.
+        </div>
+        <div class="gloss-card">
+            <b>🔄 Cross Init</b><br>
+            One player’s last initial matches the other player’s first initial.<br>
+            Both need 2+ core methods. Prefer different teams.
+        </div>
+        <div class="gloss-card">
+            <b>👩‍👧 Same Last / 👯 Same First</b><br>
+            Exact same last name or first name.<br>
+            Both need 2+ core methods. Jr. ignored.
+        </div>
+        <div class="gloss-card">
+            <b>Confidence Meter</b><br>
+            The little bars under each card. More filled = stronger mix of core methods + edge.
         </div>
         """, unsafe_allow_html=True)
 
