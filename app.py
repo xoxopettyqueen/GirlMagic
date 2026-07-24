@@ -1,6 +1,6 @@
 """
 Girl Magic Odds ✨
-Boss Bitch • HBIC • Me & My Girls We Rolling
+Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling
 """
 
 import streamlit as st
@@ -269,8 +269,18 @@ def last_two(p):
     except:
         return None
 
+def clean_name(name):
+    """Strip Jr / Sr / II / III / IV so they don't mess up name matching."""
+    name = str(name).strip()
+    suffixes = {"jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"}
+    parts = name.split()
+    if parts and parts[-1].lower().rstrip(".") in suffixes:
+        parts = parts[:-1]
+    return " ".join(parts)
+
 def get_initials(name):
-    parts = str(name).strip().split()
+    name = clean_name(name)
+    parts = name.split()
     if len(parts) < 2:
         return None, None
     return parts[0][0].upper(), parts[-1][0].upper()
@@ -543,12 +553,12 @@ def run_flags(df, previous_df=None):
                 flagged.add(player)
                 methods_map[player].append(f"Match {d}")
 
-    # FanDuel
+    # FanDuel (now includes 20s)
     for _, row in df.iterrows():
         if row["book"] == "fanduel":
             price = abs(int(row["price"])) if row["price"] else 0
             last = last_two(row["price"])
-            if price >= 500 and last in (10, 30, 60, 70, 90):
+            if price >= 500 and last in (10, 20, 30, 60, 70, 90):
                 results.append({"type": "fd", "label": row["player"],
                     "reason": f"FanDuel ≥ +500 ends in {last:02d} → {format_odds(row['price'])}",
                     "event": row["event"], "css": "fd", "methods": ["FD Pattern"]})
@@ -619,7 +629,6 @@ def run_flags(df, previous_df=None):
         meths = list(set(methods_map.get(player, [])))
         method_count = len(meths)
 
-        # NO METHODS = DON'T SHOW AT ALL
         if method_count < 1:
             continue
 
@@ -647,7 +656,7 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # Name patterns — only real book methods count, need 2+
+    # Name patterns — only real book methods, need 2+, ignore Jr/Sr
     CORE_METHODS = {
         "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
         "Match 25", "Match 50", "Match 75",
@@ -694,7 +703,7 @@ def run_flags(df, previous_df=None):
 
     last_map = defaultdict(list)
     for p in players:
-        parts = str(p).split()
+        parts = clean_name(p).split()
         if len(parts) >= 2:
             last_map[parts[-1].lower()].append(p)
     for last, names in last_map.items():
@@ -706,7 +715,7 @@ def run_flags(df, previous_df=None):
 
     first_map = defaultdict(list)
     for p in players:
-        parts = str(p).split()
+        parts = clean_name(p).split()
         if parts:
             first_map[parts[0].lower()].append(p)
     for first, names in first_map.items():
@@ -882,12 +891,12 @@ def main():
     show(tabs[3], "match", "🤝 Exact Match — Books Agree", "Same exact price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact — Locked In", "Same exact price on BetMGM for multiple guys.")
     show(tabs[5], "digit", "🔢 Matching Digits — 25 / 50 / 75", "Same player showing those endings on different books.")
-    show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 30 / 60 / 70 / 90.")
+    show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 20 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
     show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
-    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Only when both already have 2+ real book methods.")
-    show(tabs[10], "cross", "🔄 Cross Initials — Connected", "Only when both already have 2+ real book methods.")
-    show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Only when both already have 2+ real book methods.")
+    show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Only when both already have 2+ real book methods. Jr. is ignored.")
+    show(tabs[10], "cross", "🔄 Cross Initials — Connected", "Only when both already have 2+ real book methods. Jr. is ignored.")
+    show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Only when both already have 2+ real book methods. Jr. is ignored.")
     show(tabs[12], "first", "👯 Same First Name — Twinsies", "Only when both already have 2+ real book methods.")
 
     with tabs[13]:
@@ -925,7 +934,7 @@ def main():
             <b>🔢 Matching Digits</b> — same player shows 25 / 50 / 75 endings on more than one book.
         </div>
         <div class="gloss-card">
-            <b>💙 FanDuel Patterns</b> — FD prices ≥ +500 that end in 10, 30, 60, 70, or 90.
+            <b>💙 FanDuel Patterns</b> — FD prices ≥ +500 that end in 10, 20, 30, 60, 70, or 90.
         </div>
         <div class="gloss-card">
             <b>📈 Signals</b> — Stayed the same • Same on 3+ books • Way different (outlier).
@@ -935,7 +944,8 @@ def main():
         </div>
         <div class="gloss-card">
             <b>💅 Same Initials / Cross / Same First / Same Last</b><br>
-            Name magic. Only shows when both players already have 2+ real book methods.
+            Name magic. Only shows when both players already have 2+ real book methods.<br>
+            “Jr.” / “Sr.” / “II” / “III” are ignored so they don’t break matches.
         </div>
         <div class="gloss-card">
             <b>Confidence Meter</b> — more filled bars = stronger mix of methods + edge.<br>
@@ -943,7 +953,7 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<div class="footer">👑 Girl Magic • Where intuition meets odds analytics.<br>Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">👑 Girl Magic • Where intuition meets odds analytics.<br>Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
