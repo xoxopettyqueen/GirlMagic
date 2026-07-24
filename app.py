@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Fixed syntax + confidence meters + dynamic gradients
+Pull ALL books from The Odds API + warn when core books are missing
 """
 
 import streamlit as st
@@ -56,6 +56,25 @@ st.markdown("""
         margin-bottom: 14px;
         font-size: 0.9rem;
         line-height: 1.4;
+    }
+
+    .warning-box {
+        background: #3b0764;
+        border: 2px solid #f472b6;
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+        color: #fce7f3;
+    }
+
+    .info-box {
+        background: #1c0f2b;
+        border: 1px solid #a855f7;
+        border-radius: 12px;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        font-size: 0.9rem;
     }
 
     .stButton > button {
@@ -189,6 +208,13 @@ st.markdown("""
 API_BASE = "https://api.the-odds-api.com/v4"
 REGIONS = "us,us2"
 
+# Core books our methods need
+CORE_BOOKS = {
+    "fanduel": "FanDuel",
+    "draftkings": "DraftKings",
+    "betmgm": "BetMGM"
+}
+
 def get_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
     if not key:
@@ -273,23 +299,31 @@ def fetch_odds(api_key, event_id):
         return None
 
 def flatten(data):
+    """Pull EVERY book the API returns"""
     if not data:
-        return []
+        return [], set()
     rows = []
+    found_books = set()
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     for book in data.get("bookmakers", []):
+        book_key = book.get("key", "").lower()
+        found_books.add(book_key)
         for market in book.get("markets", []):
             for o in market.get("outcomes", []):
                 if o.get("name", "").lower() != "over":
                     continue
+                # Only keep the lowest line (0.5 HR)
+                point = o.get("point")
+                if point is not None and point > 0.5:
+                    continue
                 rows.append({
                     "event": event,
-                    "book": book.get("key", ""),
+                    "book": book_key,
                     "player": o.get("description"),
                     "price": o.get("price"),
-                    "point": o.get("point"),
+                    "point": point,
                 })
-    return rows
+    return rows, found_books
 
 def run_flags(df, previous_df=None):
     if df.empty:
@@ -543,7 +577,7 @@ def run_flags(df, previous_df=None):
         except:
             pass
 
-    # Historical Movement (FIXED f-string)
+    # Historical Movement
     if previous_df is not None and not previous_df.empty:
         prev_lookup = {(row["player"], row["book"]): row["price"] for _, row in previous_df.iterrows()}
         for _, row in df.iterrows():
@@ -711,4 +745,229 @@ def run_flags(df, previous_df=None):
                     results.append({
                         "type": "first",
                         "label": f"{p1} + {p2}",
-                       
+                        "reason": f"Same first name ({first.title()}) ({tag})",
+                        "event": "",
+                        "css": "name",
+                        "methods": ["Same First"]
+                    })
+
+    return results, ev_board
+
+def main():
+    st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="how-to">
+        <b>Quick start:</b> Load Games → Select games → Fetch Odds → Green cards = the ones we like.<br>
+        <b>Tip:</b> Fetch a few times during the day so “Stayed in the group” and “Last one left” can appear.
+    </div>
+    """, unsafe_allow_html=True)
+
+    api_key = get_api_key()
+    if not api_key:
+        st.warning("Add your Odds API key in Secrets.")
+        st.stop()
+
+    if st.button("① Load Games", type="primary"):
+        st.session_state["events"] = fetch_events(api_key)
+
+    events = st.session_state.get("events", [])
+    if not events:
+        st.info("Click **Load Games** to start.")
+        st.stop()
+
+    options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
+    chosen = st.multiselect("② Select games", list(options.keys()))
+
+    if st.button("③ Fetch Odds", type="primary") and chosen:
+        all_rows = []
+        all_found_books = set()
+        progress = st.progress(0)
+        for i, label in enumerate(chosen):
+            data = fetch_odds(api_key, options[label])
+            rows, found = flatten(data)
+            all_rows.extend(rows)
+            all_found_books.update(found)
+            progress.progress((i + 1) / len(chosen))
+
+        if all_rows:
+            df = pd.DataFrame(all_rows)
+            df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
+            if "odds" in st.session_state:
+                st.session_state["previous_odds"] = st.session_state["odds"]
+            st.session_state["odds"] = df.to_dict("records")
+            st.session_state["found_books"] = sorted(all_found_books)
+            st.session_state["last_fetch_time"] = datetime.now().strftime("%I:%M %p")
+            st.success(f"Loaded {len(df)} props • {st.session_state['last_fetch_time']}")
+        else:
+            st.warning("No odds returned.")
+
+    # Show which books came back + warn about missing core books
+    found_books = st.session_state.get("found_books", [])
+    if found_books:
+        missing_core = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found_books]
+        present_core = [CORE_BOOKS[b] for b in CORE_BOOKS if b in found_books]
+
+        st.markdown(f"""
+        <div class="info-box">
+            <b>Books returned this pull:</b> {', '.join(found_books)}
+        </div>
+        """, unsafe_allow_html=True)
+
+        if missing_core:
+            st.markdown(f"""
+            <div class="warning-box">
+                ⚠️ <b>Missing core books:</b> {', '.join(missing_core)}<br>
+                Our main methods need FanDuel, DraftKings, and BetMGM.  
+                Without them the flags will be incomplete.
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.success(f"Core books present: {', '.join(present_core)}")
+
+    odds = st.session_state.get("odds", [])
+    previous = st.session_state.get("previous_odds", [])
+    df = pd.DataFrame(odds) if odds else pd.DataFrame()
+    prev_df = pd.DataFrame(previous) if previous else None
+    results, ev_board = run_flags(df, prev_df) if not df.empty else ([], [])
+
+    tabs = st.tabs([
+        "🐝 +EV Board",
+        "🎯 DK 10s",
+        "🎰 MGM",
+        "🤝 Exact",
+        "⭐ MGM Exact",
+        "🔢 Digits",
+        "💙 FanDuel",
+        "📈 Signals",
+        "⏳ Movement",
+        "💅 Initials",
+        "🔄 Cross",
+        "👩‍👧 Last Name",
+        "👯 First Name",
+        "📖 Glossary"
+    ])
+
+    with tabs[0]:
+        st.markdown('<div class="queen-banner">👑 Boss Bitch Picks</div>', unsafe_allow_html=True)
+        st.write("**Green = we like it.** **Gray = we skip it.**")
+
+        if not ev_board:
+            st.info("Fetch some games first.")
+        else:
+            cols = st.columns(2)
+            for idx, item in enumerate(ev_board):
+                col = cols[idx % 2]
+                with col:
+                    tags_html = "".join([f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:5]])
+                    if not item["methods"]:
+                        tags_html = '<span class="tag">No methods</span>'
+
+                    meter = make_meter(item["bars"], item["level"])
+
+                    if item["is_bet"]:
+                        st.markdown(f'''
+                        <div class="card bet grid-card {item["css"]}">
+                            <b>🟢 BET THIS</b> — <b>{item["player"]}</b><br>
+                            {meter}
+                            Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
+                            Most books: {format_odds(item["median"])}<br>
+                            {tags_html}<br>
+                            <small>{item["why"]}</small>
+                        </div>''', unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'''
+                        <div class="card skip grid-card">
+                            <b>⚪ SKIP</b> — <b>{item["player"]}</b><br>
+                            {meter}
+                            Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
+                            Most books: {format_odds(item["median"])}<br>
+                            {tags_html}<br>
+                            <small>{item["why"]}</small>
+                        </div>''', unsafe_allow_html=True)
+
+    def show_tab(tab, typ, banner, explain):
+        with tab:
+            st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
+            st.caption(explain)
+            items = [r for r in results if r["type"] == typ]
+            if not items:
+                st.info("None right now.")
+                return
+            cols = st.columns(2)
+            for idx, r in enumerate(items):
+                col = cols[idx % 2]
+                with col:
+                    methods = r.get("methods", [])
+                    tags = "".join([f'<span class="tag">{m}</span>' for m in methods])
+                    st.markdown(f'''
+                    <div class="card {r["css"]} grid-card">
+                        <b>{r["label"]}</b><br>
+                        {r["reason"]}<br>
+                        {tags}
+                        <br><small>{r.get("event", "")}</small>
+                    </div>''', unsafe_allow_html=True)
+
+    show_tab(tabs[1], "dk", "🎯 DraftKings Ends in 10", "DraftKings prices ending in 10.")
+    show_tab(tabs[2], "mgm", "🎰 BetMGM (Same Team Only)", "Same-team pairs and groups. Look for “Stayed in the group,” “Stayed 3 times,” and “Last one left.”")
+    show_tab(tabs[3], "match", "🤝 Exact Matching Odds", "Same exact price across different books.")
+    show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact Match", "Same exact price on BetMGM for multiple players in the same game.")
+    show_tab(tabs[5], "digit", "🔢 Matching 25/50/75", "Same player has 25, 50, or 75 endings on different books.")
+    show_tab(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel prices of +500 or higher that end in 10, 30, 60, 70, or 90.")
+    show_tab(tabs[7], "signal", "📈 Signals", "Stayed the same, Same on 3+ books, Way different.")
+    show_tab(tabs[8], "hist", "⏳ Price Movement", "Price went up or down since the last fetch.")
+    show_tab(tabs[9], "same_init", "💅 Same Initials", "Same first and last initial (only if a method already hit).")
+    show_tab(tabs[10], "cross", "🔄 Cross Initials", "One player’s last initial matches another player’s first initial.")
+    show_tab(tabs[11], "last", "👩‍👧 Same Last Name", "Players who share the same last name.")
+    show_tab(tabs[12], "first", "👯 Same First Name", "Players who share the same first name.")
+
+    with tabs[13]:
+        st.markdown('<div class="queen-banner">📖 Glossary</div>', unsafe_allow_html=True)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            <div class="card bet">
+                <b>🟢 BET THIS</b><br>
+                Has one of our methods <b>and</b> the price is better than most other books.
+            </div>
+            """, unsafe_allow_html=True)
+        with col2:
+            st.markdown("""
+            <div class="card skip">
+                <b>⚪ SKIP</b><br>
+                Either no method hit, or the price is not better than most other books.
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("---")
+        st.markdown('<div class="queen-banner">MGM Clear Names</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="card mgm">
+            <b>Stayed in the group</b> → Still in the same MGM pair or group<br>
+            <b>Stayed 3 times</b> → Appeared in the group on three different fetches<br>
+            <b>Last one left</b> → Started in a bigger group and is still there
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div class="queen-banner">All Methods</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="card">
+            <span class="tag">DK 10</span> DraftKings ends in 10<br>
+            <span class="tag">MGM 00/25/50/75</span> Same-team pairs or groups<br>
+            <span class="tag">Exact Match</span> Same price on different books<br>
+            <span class="tag">MGM Exact</span> Same price on BetMGM for multiple players<br>
+            <span class="tag">Matching Digits</span> 25/50/75 across books<br>
+            <span class="tag">FD Pattern</span> FanDuel +500 or higher with special endings<br>
+            <span class="tag">Stayed the same</span> Price did not change across fetches<br>
+            <span class="tag">Same on 3+ books</span> Exact same price on three or more books<br>
+            <span class="tag">Way different</span> One book is much higher or lower than the rest<br>
+            <span class="tag">Name patterns</span> Only shown when a method already hit
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    main()
