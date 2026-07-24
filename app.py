@@ -975,51 +975,223 @@ def main():
         st.markdown(f"""
         <div class="gloss-card">
             <b>🟢 BET THIS</b><br>
-            • 2+ core methods<br>
-            • Edge pts ≥ 60<br>
-            • Over 0.5 HR only
+            The only plays we actually take.<br><br>
+            • At least <b>2 core methods</b> hit<br>
+            • Edge pts <b>60 or higher</b><br>
+            • Overnight noise does <b>not</b> count<br>
+            • Over <b>0.5 HR only</b> (1 homer)
         </div>
+
+        <div class="gloss-card">
+            <b>⚪ SKIP</b><br>
+            Close, but not quite.<br><br>
+            • Has 2+ core methods<br>
+            • Edge pts still under 60<br>
+            • We pass
+        </div>
+
         <div class="gloss-card">
             <b>📊 Girl Magic Score (0–100)</b><br>
-            Methods + edge + bonuses. Board sorted high → low.
+            Rank on the +EV board. Higher = better.<br><br>
+            • Up to 50 from core method count<br>
+            • Up to 40 from edge pts (scaled)<br>
+            • Up to 10 from strong bonuses (Last one left, etc.)<br>
+            • Always capped at 100<br>
+            • Board sorted high → low
         </div>
+
         <div class="gloss-card">
             <b>Edge pts</b><br>
-            Best − Median. Can be over 100 (odds points). Need 60+ for BET THIS.
+            How much better the best real price is vs the pack.<br><br>
+            • Formula: <b>Best − Median</b><br>
+            • Best ignores a lone outlier (150+ longer than the next book)<br>
+            • Can be over 100 (odds points, not a grade)<br>
+            • Need <b>60+</b> for BET THIS<br>
+            • Example: best +700, median +550 → edge pts = 150
         </div>
+
         <div class="gloss-card">
-            <b>💙 FanDuel</b><br>
-            ≥ +{FD_MIN} ending in 10 / 20 / 30 / 60 / 70 / 90.
+            <b>Core methods</b> (count toward the 2+ rule)<br><br>
+            • DK 10<br>
+            • FD Pattern<br>
+            • Exact Match<br>
+            • MGM Exact<br>
+            • Match 25 / 50 / 75<br>
+            • MGM 00 / 25 / 50 / 75<br>
+            • Stayed in the group<br>
+            • Last one left<br>
+            • Same on 3+ books<br>
+            • Multi-book Shorten<br>
+            • Multi-book Lengthen
         </div>
+
         <div class="gloss-card">
-            <b>⏳ Movement</b><br>
-            One card per player. From shared history (mobile + desktop).<br>
-            Only moves ≥ {MOVE_MIN} pts.
+            <b>Noise</b> (tabs only — do <b>not</b> count toward 2+)<br><br>
+            • Just Appeared · Added Late · Gone Missing<br>
+            • Stuck · single-book Shortening / Lengthening<br>
+            • Price moved · FADE tags · FD under MGM (trend only)
         </div>
+
+        <div class="gloss-card">
+            <b>🎯 DK 10</b><br>
+            DraftKings price ends in 10.<br><br>
+            • Examples: +110, +210, +310, +410, +510<br>
+            • Strong single-book tell<br>
+            • No team requirement
+        </div>
+
+        <div class="gloss-card">
+            <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
+            BetMGM classic endings on the <b>same team</b>.<br><br>
+            • Valid endings: 00, 25, 50, 75<br>
+            • Pairs first (2 players)<br>
+            • Group of three if no pair exists
+        </div>
+
+        <div class="gloss-card">
+            <b>Stayed in the group</b><br>
+            Still inside the same BetMGM pair/group after multiple pulls.<br>
+            The book keeps putting them there on purpose.
+        </div>
+
+        <div class="gloss-card">
+            <b>Stayed in group 3x / 4x</b><br>
+            Same MGM spot on 3+ different fetches.<br>
+            Stronger than a one-time group.
+        </div>
+
+        <div class="gloss-card">
+            <b>Last one left</b><br>
+            Started in a bigger MGM group. Only one still standing.<br>
+            One of the strongest signals we track.
+        </div>
+
+        <div class="gloss-card">
+            <b>⭐ MGM Exact</b><br>
+            Two or more players on BetMGM share the <b>exact same price</b>. Same team.
+        </div>
+
+        <div class="gloss-card">
+            <b>🤝 Exact Match</b><br>
+            Two or more books have the exact same price on the same player.
+        </div>
+
+        <div class="gloss-card">
+            <b>🔢 Match 25 / 50 / 75</b><br>
+            Same player shows that ending on more than one book.
+        </div>
+
+        <div class="gloss-card">
+            <b>💙 FD Pattern</b><br>
+            FanDuel high-price pattern.<br><br>
+            • Price is <b>+{FD_MIN} or higher</b><br>
+            • Ends in 10, 20, 30, 60, 70, or 90
+        </div>
+
         <div class="gloss-card">
             <b>📈 Signals</b><br>
-            • Same price on 3+ books<br>
+            More than “same on 3+ books.” Includes:<br><br>
+            • Same exact price on 3+ books<br>
             • Same ending tier (25/50/75) on 3+ books<br>
-            • Outlier book (±150 vs pack)<br>
-            • Stuck price across 3+ snaps<br>
-            • Multi-book same direction (≥{MOVE_MIN} pts)
+            • Outlier book (±150 vs the pack)<br>
+            • Stuck price across 3+ history snaps<br>
+            • Multi-book same direction (2+ books, move ≥ {MOVE_MIN} pts)
         </div>
+
         <div class="gloss-card">
-            <b>📉 Trends</b><br>
-            💚 FD 10–100 under MGM · 🔴 Shot up ≥100 / Drop >100 / FD highest
+            <b>⏳ Movement</b><br>
+            One card per player. All books under their name.<br><br>
+            • From <b>shared history snaps</b> (works on mobile + desktop)<br>
+            • Only moves of <b>{MOVE_MIN} pts or more</b>
         </div>
+
         <div class="gloss-card">
-            <b>Core methods</b><br>
-            DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 ·
-            MGM groups · Stayed in group · Last one left · Same on 3+ books ·
-            Multi-book Shorten / Lengthen
+            <b>📉 Trends</b><br><br>
+            <b>💚 Worth a look</b><br>
+            • FanDuel is <b>10–100 pts under BetMGM</b><br><br>
+            <b>🔴 Fade</b><br>
+            • Shot way up (≥100 pts lengthen)<br>
+            • Dropped more than 100 pts<br>
+            • FanDuel is the <b>highest</b> of all books<br><br>
+            Tiny single-book moves are ignored.
         </div>
+
         <div class="gloss-card">
-            <b>💀 Fallen Off · 👻 Late Adds · 💅 Name Magic</b><br>
-            Same rules as before. Name: 3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}.
+            <b>👻 Late Adds</b><br>
+            Who showed up or disappeared on the books.<br><br>
+            • <b>Just Appeared</b> — on a book now, wasn’t on the last pull<br>
+            • <b>Added Late</b> — missing earlier, just showed up<br>
+            • <b>Gone Missing</b> — was there, now gone<br>
+            • FanDuel, DraftKings, and BetMGM only
+        </div>
+
+        <div class="gloss-card">
+            <b>💀 Fallen Off</b><br>
+            Was on the +EV board last pull. Not on it this pull.<br><br>
+            Reasons we tag when we can:<br>
+            • Was BET THIS<br>
+            • Lost core methods<br>
+            • Only 1 book left<br>
+            • Line gone / not on books<br>
+            • Needs 2+ fetches
+        </div>
+
+        <div class="gloss-card">
+            <b>💅 Same Init</b><br>
+            Same first letter + same last letter.<br><br>
+            • Example: Marcus Morris & Matt McLain = MM<br>
+            • Both need 3+ core methods<br>
+            • Both need a personal strong flag<br>
+            • Different teams only<br>
+            • Max {NAME_MAX_PAIRS} pairs
+        </div>
+
+        <div class="gloss-card">
+            <b>🔄 Cross Init</b><br>
+            One player’s last initial matches the other player’s first initial.<br><br>
+            • Both need 3+ core + personal strong<br>
+            • Different teams only<br>
+            • Max {NAME_MAX_PAIRS} pairs
+        </div>
+
+        <div class="gloss-card">
+            <b>👩‍👧 Same Last / 👯 Same First</b><br>
+            Exact same last name or first name.<br><br>
+            • Both need 3+ core + personal strong<br>
+            • Different teams only<br>
+            • Max {NAME_MAX_PAIRS} pairs
+        </div>
+
+        <div class="gloss-card">
+            <b>Personal strong</b> (for Name Magic)<br>
+            Counts as strong for name pairs:<br><br>
+            • DK 10 · FD Pattern · Exact Match<br>
+            • Match 25 / 50 / 75<br>
+            • Last one left<br>
+            • Multi-book Shorten / Lengthen<br>
+            • Same on 3+ books<br><br>
+            “Only in an MGM group” does <b>not</b> count as personal strong.
+        </div>
+
+        <div class="gloss-card">
+            <b>Confidence Meter</b><br>
+            The little bars under each +EV card.<br>
+            More filled = stronger mix of core methods + edge.
+        </div>
+
+        <div class="gloss-card">
+            <b>History</b><br>
+            Price / presence / MGM / +EV snaps save to a file.<br>
+            Trends, Late Adds, Movement, and Fallen Off work across refreshes and devices.<br>
+            Clears after ~18 hours (new slate day).
+        </div>
+
+        <div class="gloss-card">
+            <b>🔄 Auto-refresh</b><br>
+            Every 30 minutes while this tab is open.<br>
+            Selected games re-fetch automatically.
         </div>
         """, unsafe_allow_html=True)
-
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
