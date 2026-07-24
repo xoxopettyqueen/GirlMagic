@@ -948,64 +948,152 @@ def main():
     show(tabs[12], "last", "👩‍👧 Same Last Name — Family Ties", "Only when both already have 2+ real book methods. Jr. is ignored.")
     show(tabs[13], "first", "👯 Same First Name — Twinsies", "Only when both already have 2+ real book methods.")
 
-    with tabs[14]:
+        with tabs[14]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="gloss-card">
             <b>🟢 BET THIS</b><br>
-            Needs <b>2 or more methods</b> <b>and</b> the price is clearly better than most books (edge of 60 or more).<br>
-            These are the only ones we actually take. <b>Only 0.5 HR (1 homer) lines.</b>
+            At least <b>2 different methods</b> hit <b>and</b> the best price is clearly better than the rest of the books (edge of 60 or more).<br>
+            These are the only ones we actually take. Everything else is noise.
         </div>
+
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
-            Has methods, but not enough of them or the price isn’t better enough yet. We pass.
+            Has one or more methods, but not enough of them — or the price isn’t better enough yet.<br>
+            We pass. No forcing it.
         </div>
+
         <div class="gloss-card">
-            <b>🎯 DraftKings Ends in 10</b><br>
-            Any DK home-run price ending in 10 (+110, +210, +310, +410, +510…). One of our strongest tells.
+            <b>🎯 DK 10</b><br>
+            DraftKings price ends in 10 (example: +110, +210, +310, +410, +510).<br>
+            One of our strongest single-book tells. No team requirement.
         </div>
+
         <div class="gloss-card">
-            <b>🎰 BetMGM Classic Endings (00 / 25 / 50 / 75)</b><br>
-            Same-team only. Pairs (2 players) beat groups of three. Look for the sticky signals below.
+            <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
+            BetMGM prices ending in 00, 25, 50, or 75 on the <b>same team</b>.<br>
+            We look for pairs first (2 players), then groups of three if no pair exists.
         </div>
+
         <div class="gloss-card">
-            <b>Stayed in the group</b> — still in the same MGM pair/group across pulls.<br>
-            <b>Stayed 3 times</b> — showed up on three different fetches.<br>
-            <b>Last one left</b> — started in a bigger group and is still standing.
+            <b>Stayed in the group</b><br>
+            This player is still inside the same BetMGM pair or group after multiple pulls.<br>
+            The book keeps putting them there on purpose.
         </div>
+
         <div class="gloss-card">
-            <b>🤝 Exact Match</b> — two or more books have the exact same price on the same player.
+            <b>Stayed 3 times / Stayed 4 times</b><br>
+            Showed up in that same MGM spot on 3+ different fetches.<br>
+            Even stronger than a one-time group.
         </div>
+
         <div class="gloss-card">
-            <b>⭐ MGM Exact</b> — multiple players on BetMGM share the exact same price (same team).
+            <b>Last one left</b><br>
+            Started in a bigger MGM group and is the only one still standing.<br>
+            One of the strongest signals we track.
         </div>
+
         <div class="gloss-card">
-            <b>🔢 Matching Digits</b> — same player shows 25 / 50 / 75 endings on more than one book.
+            <b>⭐ MGM Exact</b><br>
+            Two or more players on BetMGM have the <b>exact same price</b> (same team).<br>
+            Different from the classic endings — this is the full number matching.
         </div>
+
         <div class="gloss-card">
-            <b>💙 FanDuel Patterns</b> — FD prices ≥ +400 that end in 10, 20, 30, 60, 70, or 90.
+            <b>🤝 Exact Match</b><br>
+            Two or more books have the exact same price on the same player.<br>
+            When books agree that hard, we pay attention.
         </div>
+
         <div class="gloss-card">
-            <b>📈 Signals</b> — Stayed the same • Same on 3+ books • Way different (outlier).
+            <b>🔢 Match 25 / Match 50 / Match 75</b><br>
+            The same player shows a 25, 50, or 75 ending on more than one book.<br>
+            Different books using the same “template” number.
         </div>
+
         <div class="gloss-card">
-            <b>⏳ Price Movement</b> — the line moved up or down since the last pull.
+            <b>💙 FD Pattern</b><br>
+            FanDuel price is +400 or higher and ends in 10, 20, 30, 60, 70, or 90.<br>
+            These longer-shot patterns are ones we watch closely.
         </div>
+
         <div class="gloss-card">
-            <b>👻 Late Adds / Missing</b><br>
-            • <b>Just Appeared</b> — player is on a book right now but wasn’t on the previous pull<br>
-            • <b>Added Late</b> — was missing earlier in the day, just showed up<br>
-            • <b>Gone Missing</b> — was on a book earlier and disappeared<br>
-            Needs multiple fetches throughout the day.
+            <b>Same on 3+ books</b><br>
+            Three or more books have the identical price on this player.<br>
+            Strong agreement across the board.
         </div>
+
         <div class="gloss-card">
-            <b>💅 Same Initials / Cross / Same First / Same Last</b><br>
-            Name magic. Only shows when both players already have 2+ real book methods.<br>
-            “Jr.” / “Sr.” / “II” / “III” are ignored.
+            <b>Way different</b><br>
+            One book is an outlier — 150+ away from the middle of the other books.<br>
+            Something is off on that book.
         </div>
+
         <div class="gloss-card">
-            <b>Confidence Meter</b> — more filled bars = stronger mix of methods + edge.<br>
-            <b>Edge</b> — how much better the best price is vs the middle of the books. We need 60+.
+            <b>Stayed the same</b><br>
+            This player’s price did not move across multiple fetches.<br>
+            The line is stuck.
+        </div>
+
+        <div class="gloss-card">
+            <b>Price moved</b><br>
+            The line went up or down since the last pull.<br>
+            Direction matters — we note both.
+        </div>
+
+        <div class="gloss-card">
+            <b>Just Appeared</b><br>
+            Player is on a book right now but was not on the previous pull.<br>
+            New to the board this fetch.
+        </div>
+
+        <div class="gloss-card">
+            <b>Added Late</b><br>
+            Was missing earlier in the day and just showed up on a book.<br>
+            Late add — pay attention.
+        </div>
+
+        <div class="gloss-card">
+            <b>Gone Missing</b><br>
+            Was on a book earlier and disappeared on the latest pull.<br>
+            Worth noting when it happens.
+        </div>
+
+        <div class="gloss-card">
+            <b>💅 Same Init</b><br>
+            Two players share the same first letter + same last letter (example: Marcus Morris & Matt McLain = MM).<br>
+            Only counts when both already have 2+ real book methods. Prefer different teams. Jr. is ignored.
+        </div>
+
+        <div class="gloss-card">
+            <b>🔄 Cross Init</b><br>
+            One player’s last initial matches the other player’s first initial.<br>
+            Only counts when both already have 2+ real book methods. Prefer different teams.
+        </div>
+
+        <div class="gloss-card">
+            <b>👩‍👧 Same Last</b><br>
+            Two players share the exact same last name.<br>
+            Only counts when both already have 2+ real book methods.
+        </div>
+
+        <div class="gloss-card">
+            <b>👯 Same First</b><br>
+            Two players share the exact same first name.<br>
+            Only counts when both already have 2+ real book methods.
+        </div>
+
+        <div class="gloss-card">
+            <b>Confidence Meter</b><br>
+            The little bars under each card.<br>
+            More filled bars = stronger mix of methods + edge.<br>
+            Levels: High / Strong / Medium / Low.
+        </div>
+
+        <div class="gloss-card">
+            <b>Edge</b><br>
+            How much better the best price is compared to the middle of the books.<br>
+            We require edge of 60 or higher before we will say BET THIS.
         </div>
         """, unsafe_allow_html=True)
 
