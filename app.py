@@ -1,6 +1,6 @@
 """
 Girl Magic Odds ✨
-Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling
+Boss Bitch • HBIC • Me & My Girls We Rolling
 """
 
 import streamlit as st
@@ -953,7 +953,7 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<div class="footer">👑 Girl Magic • Where intuition meets odds analytics.<br>Boss Bitch • HBIC • Petty Queen • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">👑 Girl Magic • Where intuition meets odds analytics.<br>Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
