@@ -1,6 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
+ONLY 0.5 (1 HR) lines — no 2+/3+
 """
 
 import streamlit as st
@@ -331,6 +332,7 @@ def fetch_odds_oddsapi(api_key, event_id):
         return None
 
 def flatten_oddsapi(data):
+    """ONLY keep exact 0.5 (1 HR) Over lines."""
     if not data:
         return [], set()
     rows, found = [], set()
@@ -344,7 +346,9 @@ def flatten_oddsapi(data):
             for o in market.get("outcomes", []):
                 if o.get("name", "").lower() != "over":
                     continue
-                if o.get("point") is not None and float(o["point"]) > 0.5:
+                # STRICT: must be exactly 0.5
+                pt = o.get("point")
+                if pt is None or abs(float(pt) - 0.5) > 0.01:
                     continue
                 rows.append({
                     "event": event, "book": bk, "player": o.get("description"),
@@ -353,6 +357,7 @@ def flatten_oddsapi(data):
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
+    """ONLY keep exact 0.5 (1 HR) Over lines."""
     rows, found = [], set()
     try:
         r = requests.get(f"{SGO_BASE}/events", params={
@@ -374,8 +379,9 @@ def fetch_sgo_hr_props(sgo_key):
                     continue
                 if "ou-over" not in odd_id and "-over" not in odd_id:
                     continue
+                # STRICT: must be exactly 0.5
                 ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
-                if ou is not None and float(ou) > 0.5:
+                if ou is None or abs(float(ou) - 0.5) > 0.01:
                     continue
                 pid = odd_data.get("playerID") or odd_data.get("statEntityID")
                 if not pid or pid not in players_map:
@@ -422,7 +428,7 @@ def run_flags(df, previous_df=None):
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, flagged, methods_map = [], set(), defaultdict(list)
 
-    # ── Presence history for Late Adds ────────────────────────
+    # Presence history for Late Adds
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
     current_presence = set()
@@ -439,43 +445,31 @@ def run_flags(df, previous_df=None):
         latest = hist[-1]
         previous = hist[-2] if len(hist) >= 2 else set()
 
-        # Just appeared (in latest, not in previous)
         for player, book in latest - previous:
             results.append({
-                "type": "late",
-                "label": player,
+                "type": "late", "label": player,
                 "reason": f"Just appeared on {book}",
-                "event": "",
-                "css": "hist",
-                "methods": ["Just Appeared"]
+                "event": "", "css": "hist", "methods": ["Just Appeared"]
             })
             flagged.add(player)
             methods_map[player].append("Just Appeared")
 
-        # Added late (in latest, never in early window)
         for player, book in latest - early:
-            if (player, book) in previous:  # already caught by Just Appeared if brand new
+            if (player, book) in previous:
                 continue
             results.append({
-                "type": "late",
-                "label": player,
+                "type": "late", "label": player,
                 "reason": f"Added late on {book} (was missing earlier today)",
-                "event": "",
-                "css": "hist",
-                "methods": ["Added Late"]
+                "event": "", "css": "hist", "methods": ["Added Late"]
             })
             flagged.add(player)
             methods_map[player].append("Added Late")
 
-        # Gone missing (was in previous, not in latest)
         for player, book in previous - latest:
             results.append({
-                "type": "late",
-                "label": player,
+                "type": "late", "label": player,
                 "reason": f"Gone missing from {book}",
-                "event": "",
-                "css": "hist",
-                "methods": ["Gone Missing"]
+                "event": "", "css": "hist", "methods": ["Gone Missing"]
             })
             flagged.add(player)
             methods_map[player].append("Gone Missing")
@@ -786,6 +780,7 @@ def main():
     st.markdown("""
     <div class="how-to">
         <b>The rule:</b> We only say <b>BET THIS</b> when <b>2 or more methods</b> hit <b>and</b> the price is clearly better (edge ≥ 60).<br>
+        <b>Market:</b> Over 0.5 Home Runs only (1 HR) — no 2+ / 3+ lines.<br>
         <b>Books:</b> FanDuel • DraftKings • BetMGM • Hard Rock • Caesars
     </div>
     """, unsafe_allow_html=True)
@@ -832,9 +827,9 @@ def main():
             st.session_state["odds"] = df.to_dict("records")
             st.session_state["found_books"] = sorted(all_found & PREFERRED)
             st.session_state["last_fetch_time"] = now_az()
-            st.success(f"Loaded {len(df)} props • {st.session_state['last_fetch_time']} AZ")
+            st.success(f"Loaded {len(df)} props (0.5 HR only) • {st.session_state['last_fetch_time']} AZ")
         else:
-            st.warning("No odds returned.")
+            st.warning("No 0.5 HR odds returned.")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -904,7 +899,7 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Green = 2+ methods + real edge.** Only players with methods appear here.")
+        st.write("**Green = 2+ methods + real edge.** Only 0.5 HR (1 homer) lines. Only players with methods appear.")
         if not ev_board:
             st.info("Fetch some games first.")
         else:
@@ -930,7 +925,7 @@ def main():
             st.caption(explain)
             items = [r for r in results if r["type"] == typ]
             if not items:
-                st.info("None right now. Keep fetching throughout the day — this builds over time.")
+                st.info("None right now.")
                 return
             cols = st.columns(2)
             for idx, r in enumerate(items):
@@ -951,7 +946,7 @@ def main():
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
     show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
     show(tabs[9], "late", "👻 Late Adds / Missing — Watch Who Shows Up",
-         "Just Appeared = new on a book this pull. Added Late = missing earlier, now here. Gone Missing = was there, now gone. Needs multiple fetches to work.")
+         "Just Appeared = new on a book this pull. Added Late = missing earlier, now here. Gone Missing = was there, now gone.")
     show(tabs[10], "same_init", "💅 Same Initials — Name Magic", "Only when both already have 2+ real book methods. Jr. is ignored.")
     show(tabs[11], "cross", "🔄 Cross Initials — Connected", "Only when both already have 2+ real book methods. Jr. is ignored.")
     show(tabs[12], "last", "👩‍👧 Same Last Name — Family Ties", "Only when both already have 2+ real book methods. Jr. is ignored.")
@@ -963,7 +958,7 @@ def main():
         <div class="gloss-card">
             <b>🟢 BET THIS</b><br>
             Needs <b>2 or more methods</b> <b>and</b> the price is clearly better than most books (edge of 60 or more).<br>
-            These are the only ones we actually take.
+            These are the only ones we actually take. <b>Only 0.5 HR (1 homer) lines.</b>
         </div>
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
@@ -1005,7 +1000,7 @@ def main():
             • <b>Just Appeared</b> — player is on a book right now but wasn’t on the previous pull<br>
             • <b>Added Late</b> — was missing earlier in the day, just showed up<br>
             • <b>Gone Missing</b> — was on a book earlier and disappeared<br>
-            Needs multiple fetches throughout the day to build the picture.
+            Needs multiple fetches throughout the day.
         </div>
         <div class="gloss-card">
             <b>💅 Same Initials / Cross / Same First / Same Last</b><br>
