@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Selected-games only · Late/Fallen scoped to those games · Bet365 ready · full glossary
+Late deduped · RotoWire lineups · non-starters off The Board · selected games only
 """
 
 import streamlit as st
@@ -9,6 +9,7 @@ import pandas as pd
 import requests
 import json
 import os
+import re
 from collections import defaultdict
 import statistics
 from datetime import datetime, timezone, timedelta
@@ -18,6 +19,12 @@ try:
     HAS_AUTOREFRESH = True
 except ImportError:
     HAS_AUTOREFRESH = False
+
+try:
+    from bs4 import BeautifulSoup
+    HAS_BS4 = True
+except ImportError:
+    HAS_BS4 = False
 
 st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="wide", initial_sidebar_state="collapsed")
 
@@ -78,6 +85,7 @@ REGIONS = "us,us2"
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 HISTORY_MAX_AGE_HOURS = 18
+ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 
 PREFERRED = {
     "fanduel", "draftkings", "betmgm", "hardrockbet", "caesars",
@@ -107,12 +115,13 @@ PERSONAL_STRONG = {
     "Match 25", "Match 50", "Match 75",
     "B365 850", "B365 Match 25", "B365 Match 50", "B365 Match 75",
     "B365 > HardRock",
-    "Last one left", "Multi-book Shorten", "Multi-book Lengthen", "Same on 3+ books"
+    "Last one left", "Multi-book Shorten", "Same on 3+ books",
 }
 NOISE_METHODS = {
-    "Just Appeared", "Added Late", "Gone Missing",
+    "Just Appeared", "Added Late", "Gone Missing", "Not in lineup",
+    "In lineup · missing books",
     "Multi-book Stuck", "Price moved", "Stayed the same", "Way different",
-    "Shortening", "Lengthening"
+    "Shortening", "Lengthening", "Multi-book Lengthen",
 }
 
 def is_bet365(book):
@@ -151,8 +160,9 @@ def method_tag_class(m):
     if m.startswith("FD"): return "tag-fd"
     if m.startswith("B365"): return "tag-b365"
     if m in ("Exact Match", "MGM Exact") or m.startswith("Match "): return "tag-match"
-    if "Multi-book" in m or m == "Same on 3+ books": return "tag-strong"
+    if "Multi-book Shorten" in m or m == "Same on 3+ books": return "tag-strong"
     if m.startswith("Same ending") or m.startswith("Outlier") or m.startswith("Stuck"): return "tag-signal"
+    if m == "Not in lineup": return "tag-red"
     return ""
 
 def render_method_tags(methods, limit=6):
@@ -238,7 +248,6 @@ def make_meter(bars, level):
     return html + '</div>'
 
 def event_matches_chosen(ev, chosen):
-    """True if event string matches any selected game label."""
     if not chosen:
         return True
     if ev in chosen:
@@ -254,6 +263,55 @@ def event_matches_chosen(ev, chosen):
             return True
     return False
 
+def name_in_lineup(player, lineup_names):
+    """True / False / None (unknown — no lineup data)."""
+    if not lineup_names:
+        return None
+    cn = clean_name(player)
+    if cn in lineup_names:
+        return True
+    parts = cn.split()
+    if len(parts) >= 2:
+        last = parts[-1].lower()
+        fi = parts[0][0].lower()
+        for ln in lineup_names:
+            lp = ln.split()
+            if len(lp) >= 2 and lp[-1].lower() == last and lp[0][0].lower() == fi:
+                return True
+    return False
+
+def fetch_rotowire_lineups():
+    if not HAS_BS4:
+        return set(), "Install beautifulsoup4 (add to requirements.txt)"
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+    }
+    try:
+        r = requests.get(ROTOWIRE_URL, headers=headers, timeout=25)
+        if r.status_code != 200:
+            return set(), f"RotoWire HTTP {r.status_code}"
+        soup = BeautifulSoup(r.content, "html.parser")
+        names = set()
+        for el in soup.select("div.lineup__player a, li.lineup__player a"):
+            t = el.get_text(strip=True)
+            if t and len(t.split()) >= 2:
+                names.add(clean_name(t))
+        if len(names) < 15:
+            for box in soup.select("div.lineup__box, div.lineup"):
+                for a in box.find_all("a", href=True):
+                    href = a.get("href") or ""
+                    if "player" not in href.lower() and "baseball" not in href.lower():
+                        continue
+                    t = a.get_text(strip=True)
+                    if t and len(t.split()) >= 2 and not re.search(r"\d", t):
+                        names.add(clean_name(t))
+        return names, f"RotoWire · {len(names)} lineup names"
+    except Exception as e:
+        return set(), f"RotoWire error: {e}"
+
 def load_history():
     if not os.path.exists(HISTORY_FILE): return
     try:
@@ -263,7 +321,6 @@ def load_history():
         if saved_at:
             age = datetime.now(timezone.utc) - datetime.fromisoformat(saved_at)
             if age > timedelta(hours=HISTORY_MAX_AGE_HOURS): return
-        # presence: list of [player, book, event]
         pr = []
         for snap in data.get("presence_history", []):
             s = set()
@@ -288,9 +345,7 @@ def load_history():
 def save_history(prev_ev=None):
     try:
         ph = [{f"{a}||{b}": v for (a, b), v in snap.items()} for snap in st.session_state.get("price_history", [])]
-        pr = []
-        for snap in st.session_state.get("presence_history", []):
-            pr.append([[a, b, e] for (a, b, e) in snap])
+        pr = [[[a, b, e] for (a, b, e) in snap] for snap in st.session_state.get("presence_history", [])]
         mh = [[{"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": list(g["players"])} for g in snap]
               for snap in st.session_state.get("mgm_history", [])]
         payload = {"saved_at": now_utc_iso(), "price_history": ph, "presence_history": pr, "mgm_history": mh}
@@ -453,7 +508,6 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         [r for r in all_rows if r.get("source") == "oddsapi"],
         [r for r in all_rows if r.get("source") == "sgo"],
     )
-    # ONLY selected games
     if chosen_labels and not df.empty and "event" in df.columns:
         mask = df["event"].apply(lambda e: event_matches_chosen(e, chosen_labels))
         df = df[mask].copy()
@@ -481,6 +535,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     signal_bucket = defaultdict(list)
     signal_methods = defaultdict(set)
     team_map = build_team_map(df)
+    lineup_names = st.session_state.get("lineup_names", set())
 
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
@@ -489,7 +544,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if "mgm_history" not in st.session_state:
         st.session_state["mgm_history"] = []
 
-    # Presence includes EVENT so one-game fetch doesn't mark the whole slate gone
     current_presence = {
         (r["player"], r["book"], r["event"])
         for _, r in df.iterrows()
@@ -506,10 +560,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     hist = st.session_state["presence_history"]
     phist = st.session_state["price_history"]
 
-    # ── Late Adds — only for events in THIS fetch ──
+    # ── Late Adds — ONE card per player ──
     if len(hist) >= 2:
-        latest, previous = hist[-1], hist[-2]
-        # normalize old 2-tuples if any
         def norm(snap):
             out = set()
             for item in snap:
@@ -518,43 +570,85 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 elif len(item) == 2:
                     out.add((item[0], item[1], ""))
             return out
-        latest, previous = norm(latest), norm(previous)
 
+        def scoped(snap):
+            s = set()
+            for p, b, e in norm(snap):
+                if e and selected and not event_matches_chosen(e, selected):
+                    continue
+                if not e and selected:
+                    continue
+                s.add((p, b, e))
+            return s
+
+        latest = scoped(hist[-1])
+        previous = scoped(hist[-2])
         early = set()
         for snap in hist[:max(1, len(hist)//3)]:
-            early |= norm(snap)
+            early |= scoped(snap)
+
+        late_bucket = {}  # player -> {kind, books, event}
+
+        def add_late(player, book, event, kind):
+            if player not in late_bucket:
+                late_bucket[player] = {"kind": kind, "books": [], "event": event}
+            # priority: Gone Missing / Just Appeared over Added Late
+            pri = {"Gone Missing": 3, "Just Appeared": 2, "Added Late": 1}
+            if pri.get(kind, 0) >= pri.get(late_bucket[player]["kind"], 0):
+                late_bucket[player]["kind"] = kind
+            late_bucket[player]["books"].append(book)
+            if event:
+                late_bucket[player]["event"] = event
 
         for player, book, event in latest - previous:
-            if event and selected and not event_matches_chosen(event, selected):
-                continue
-            results.append({"type": "late", "label": player, "reason": f"Just appeared on {book}",
-                            "event": event, "css": "hist", "methods": ["Just Appeared"]})
-            methods_map[player].append("Just Appeared")
-
+            add_late(player, book, event, "Just Appeared")
         for player, book, event in latest - early:
             if (player, book, event) in previous:
                 continue
-            if event and selected and not event_matches_chosen(event, selected):
-                continue
-            results.append({"type": "late", "label": player, "reason": f"Added late on {book}",
-                            "event": event, "css": "hist", "methods": ["Added Late"]})
-            methods_map[player].append("Added Late")
-
+            add_late(player, book, event, "Added Late")
         for player, book, event in previous - latest:
-            # ONLY gone missing if this event is in the games we just fetched
-            if event and selected and not event_matches_chosen(event, selected):
-                continue
-            if not event and selected:
-                # legacy 2-tuple with no event — skip when we have a scoped selection
-                continue
-            results.append({"type": "late", "label": player, "reason": f"Gone missing from {book}",
-                            "event": event or "", "css": "hist", "methods": ["Gone Missing"]})
-            methods_map[player].append("Gone Missing")
+            add_late(player, book, event, "Gone Missing")
+
+        for player, info in sorted(late_bucket.items()):
+            books = sorted(set(info["books"]))
+            kind = info["kind"]
+            results.append({
+                "type": "late", "label": player,
+                "reason": f"{kind} · {', '.join(books)}",
+                "event": info.get("event", ""), "css": "hist", "methods": [kind],
+            })
+            methods_map[player].append(kind)
+
+    # ── RotoWire: on books but NOT in lineup ──
+    if lineup_names:
+        by_player_books = defaultdict(set)
+        for _, r in df.iterrows():
+            by_player_books[r["player"]].add(r["book"])
+        for player in sorted(all_players_now):
+            status = name_in_lineup(player, lineup_names)
+            if status is False:
+                results.append({
+                    "type": "late", "label": player,
+                    "reason": "⚠️ On books but NOT in RotoWire lineup — likely not playing",
+                    "event": "", "css": "hist", "methods": ["Not in lineup"],
+                })
+                methods_map[player].append("Not in lineup")
+            elif status is True:
+                miss = [b for b in ("draftkings", "fanduel", "betmgm") if b not in by_player_books[player]]
+                if miss:
+                    results.append({
+                        "type": "late", "label": player,
+                        "reason": f"In lineup · missing props on {', '.join(miss)}",
+                        "event": "", "css": "hist", "methods": ["In lineup · missing books"],
+                    })
+                    methods_map[player].append("In lineup · missing books")
 
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
         for key, curr_price in curr_snap.items():
             player, book = key
+            if player not in all_players_now:
+                continue
             if key not in prev_snap: continue
             prev_price = prev_snap[key]
             delta = curr_price - prev_price
@@ -611,34 +705,25 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
-        player_up = defaultdict(list)
-        player_down = defaultdict(list)
+        player_up, player_down = defaultdict(list), defaultdict(list)
         for key, curr_price in curr_snap.items():
             player, book = key
-            if key not in prev_snap: continue
-            if player not in all_players_now:
-                continue  # other games
+            if player not in all_players_now or key not in prev_snap:
+                continue
             prev_price = prev_snap[key]
             if abs(prev_price) < MOVE_PRICE_MIN and abs(curr_price) < MOVE_PRICE_MIN:
                 continue
             delta = curr_price - prev_price
             if abs(delta) < MOVE_MIN: continue
             line = f"{book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(abs(delta))} pts)"
-            if delta > 0:
-                player_up[player].append(line)
-            else:
-                player_down[player].append(line)
+            (player_up if delta > 0 else player_down)[player].append(line)
         for player, moves in sorted(player_up.items()):
-            results.append({
-                "type": "hist", "move_dir": "up", "label": player,
-                "reason": "<br>".join(moves), "event": "", "css": "hist", "methods": ["Price moved"],
-            })
+            results.append({"type": "hist", "move_dir": "up", "label": player,
+                "reason": "<br>".join(moves), "event": "", "css": "hist", "methods": ["Price moved"]})
             methods_map[player].append("Price moved")
         for player, moves in sorted(player_down.items()):
-            results.append({
-                "type": "hist", "move_dir": "down", "label": player,
-                "reason": "<br>".join(moves), "event": "", "css": "hist", "methods": ["Price moved"],
-            })
+            results.append({"type": "hist", "move_dir": "down", "label": player,
+                "reason": "<br>".join(moves), "event": "", "css": "hist", "methods": ["Price moved"]})
             methods_map[player].append("Price moved")
 
     for _, row in df.iterrows():
@@ -653,19 +738,16 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             continue
         price = abs(int(row["price"])) if row["price"] is not None else 0
         if price == 850 or price % 1000 == 850:
-            results.append({
-                "type": "b365", "label": row["player"],
+            results.append({"type": "b365", "label": row["player"],
                 "reason": f"Bet365 850s → {format_odds(row['price'])}",
-                "event": row["event"], "css": "b365", "methods": ["B365 850"],
-            })
+                "event": row["event"], "css": "b365", "methods": ["B365 850"]})
             methods_map[row["player"]].append("B365 850")
 
     b365_df = df[df["book"] == "bet365"].copy()
     if not b365_df.empty:
         group_cols = ["event", "team"] if b365_df["team"].astype(str).str.len().gt(0).any() else ["event"]
         for keys, g in b365_df.groupby(group_cols, dropna=False):
-            if not isinstance(keys, tuple):
-                keys = (keys,)
+            if not isinstance(keys, tuple): keys = (keys,)
             event = keys[0]
             team = keys[1] if len(keys) > 1 else ""
             ends = defaultdict(list)
@@ -675,18 +757,14 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     ends[d].append(r["player"])
             for d, ps in ends.items():
                 names = sorted(set(ps))
-                if len(names) not in (2, 3):
-                    continue
+                if len(names) not in (2, 3): continue
                 kind = "pair" if len(names) == 2 else "group of 3"
                 tnote = f" · {team}" if team else " · same team"
                 meth = f"B365 Match {d}"
-                results.append({
-                    "type": "b365", "label": " + ".join(names),
+                results.append({"type": "b365", "label": " + ".join(names),
                     "reason": f"Bet365 {kind} ends in {d}{tnote}",
-                    "event": event, "css": "b365", "methods": [meth],
-                })
-                for n in names:
-                    methods_map[n].append(meth)
+                    "event": event, "css": "b365", "methods": [meth]})
+                for n in names: methods_map[n].append(meth)
 
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
     current_mgm = []
@@ -779,39 +857,29 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 ends[d].append(r["player"])
         for d, ps in ends.items():
             names = sorted(set(ps))
-            if len(names) not in (2, 3):
-                continue
+            if len(names) not in (2, 3): continue
             kind = "pair" if len(names) == 2 else "group of 3"
             tnote = f" · {team}" if team else " · same team"
-            results.append({
-                "type": "digit", "label": " + ".join(names),
+            results.append({"type": "digit", "label": " + ".join(names),
                 "reason": f"Digit {kind} ends in {d}{tnote}",
-                "event": event, "css": "digit", "methods": [f"Match {d}"],
-            })
-            for n in names:
-                methods_map[n].append(f"Match {d}")
+                "event": event, "css": "digit", "methods": [f"Match {d}"]})
+            for n in names: methods_map[n].append(f"Match {d}")
 
     for _, row in df.iterrows():
-        if row["book"] != "fanduel":
-            continue
+        if row["book"] != "fanduel": continue
         player = row["player"]
-        if not has_dk_or_mgm(methods_map.get(player, [])):
-            continue
+        if not has_dk_or_mgm(methods_map.get(player, [])): continue
         price = abs(int(row["price"])) if row["price"] else 0
         last = last_two(row["price"])
         if price == 600:
-            results.append({
-                "type": "fd", "label": player,
+            results.append({"type": "fd", "label": player,
                 "reason": f"FanDuel exact +600 (has DK/MGM) → {format_odds(row['price'])}",
-                "event": row["event"], "css": "fd", "methods": ["FD 600"],
-            })
+                "event": row["event"], "css": "fd", "methods": ["FD 600"]})
             methods_map[player].append("FD 600")
         if price >= FD_MIN and last in (10, 20, 30, 60, 70, 90):
-            results.append({
-                "type": "fd", "label": player,
+            results.append({"type": "fd", "label": player,
                 "reason": f"FanDuel ≥ +{FD_MIN} ends in {last:02d} (has DK/MGM) → {format_odds(row['price'])}",
-                "event": row["event"], "css": "fd", "methods": ["FD Pattern"],
-            })
+                "event": row["event"], "css": "fd", "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
 
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
@@ -845,8 +913,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if len(phist) >= 3:
         for key in phist[-1].keys():
             player, book = key
-            if player not in all_players_now:
-                continue
+            if player not in all_players_now: continue
             vals = [snap[key] for snap in phist[-4:] if key in snap]
             if len(vals) >= 3 and len(set(vals)) == 1:
                 signal_bucket[player].append(f"Stuck on {book} at {format_odds(vals[0])} across {len(vals)} snaps")
@@ -858,9 +925,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         up_by, down_by = defaultdict(list), defaultdict(list)
         for key, curr_price in curr_snap.items():
             player, book = key
-            if player not in all_players_now:
-                continue
-            if key not in prev_snap: continue
+            if player not in all_players_now or key not in prev_snap: continue
             delta = curr_price - prev_snap[key]
             if abs(delta) < MOVE_MIN: continue
             if delta > 0: up_by[player].append(book)
@@ -869,7 +934,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if len(books) >= 2:
                 signal_bucket[player].append(f"Multi-book lengthen on {', '.join(books)}")
                 signal_methods[player].add("Multi-book Lengthen")
-                methods_map[player].append("Multi-book Lengthen")
+                methods_map[player].append("Multi-book Lengthen")  # noise — not core
         for player, books in down_by.items():
             if len(books) >= 2:
                 signal_bucket[player].append(f"Multi-book shorten on {', '.join(books)}")
@@ -883,12 +948,15 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "event": "", "css": "signal", "methods": list(signal_methods[player]),
         })
 
+    # ── The Board — exclude Not in lineup when RotoWire loaded ──
     ev_board = []
     player_events = defaultdict(set)
     for _, r in df.iterrows():
         player_events[r["player"]].add(r["event"])
 
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
+        if lineup_names and name_in_lineup(player, lineup_names) is False:
+            continue  # not starting — off The Board
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
         if len(prices) < 2: continue
@@ -925,7 +993,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         } for item in ev_board
     }
 
-    # ── Fallen Off — only players in-scope for selected games ──
     prev_ev = st.session_state.get("prev_ev", {})
     prev_scope = set()
     if previous_df is not None and not previous_df.empty and "event" in previous_df.columns:
@@ -939,7 +1006,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     for player, old in prev_ev.items():
         if player in current_ev:
             continue
-        # skip if this player was only on games we did NOT fetch this time
         old_events = old.get("events") or []
         if selected and old_events:
             if not any(event_matches_chosen(e, selected) for e in old_events):
@@ -953,6 +1019,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         now_core = count_core_methods(now_meths)
         n_books = len(df[df["player"] == player]) if player in all_players_now else 0
         reasons = []
+        if lineup_names and name_in_lineup(player, lineup_names) is False:
+            reasons.append("Not in lineup")
         if player not in all_players_now:
             reasons.append("Line gone / not on books")
         elif n_books < 2:
@@ -989,6 +1057,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
     pool = [p for p, ms in methods_map.items()
             if count_core_methods(ms) >= NAME_METHODS_MIN and has_personal_strong(ms)]
+    if lineup_names:
+        pool = [p for p in pool if name_in_lineup(p, lineup_names) is not False]
 
     init_map = defaultdict(list)
     for p in pool:
@@ -1011,8 +1081,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 double_pairs.append((a, b, la + lb))
     for a, b, k in sorted(double_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "double_init", "label": f"{a} + {b}",
-            "reason": f"Double initials {k[0]}{k[0]} + {k[1]}{k[1]} (different teams)",
-            "event": "", "css": "name", "methods": ["Double Init"]})
+            "reason": f"Double initials (different teams)", "event": "", "css": "name", "methods": ["Double Init"]})
 
     cross_pairs = []
     for i, a in enumerate(pool):
@@ -1069,11 +1138,11 @@ def main():
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
 
     hist_n = len(st.session_state.get("price_history", []))
+    lu_n = len(st.session_state.get("lineup_names", set()))
     st.markdown(f"""
     <div class="how-to">
-        👑 <b>The Board</b> → TAKE IT / PASS · only games you select get fetched<br>
-        👻 Late / Fallen scoped to <b>those games only</b> (no more whole-slate freakouts)<br>
-        History snaps: <b>{hist_n}</b> · need 2+ real fetches for Late/Fallen
+        📋 <b>RotoWire lineups</b> → non-starters off The Board · Late shows “Not in lineup”<br>
+        👻 Late = <b>one card per player</b> · History snaps: <b>{hist_n}</b> · Lineup names: <b>{lu_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1083,12 +1152,27 @@ def main():
         st.warning("Add your The Odds API key.")
         st.stop()
 
-    if st.button("① Load Games", type="primary"):
-        st.session_state["events"] = fetch_events_oddsapi(odds_key)
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("① Load Games", type="primary"):
+            st.session_state["events"] = fetch_events_oddsapi(odds_key)
+    with c2:
+        if st.button("📋 Refresh RotoWire Lineups"):
+            with st.spinner("Pulling free RotoWire lineups…"):
+                names, msg = fetch_rotowire_lineups()
+                st.session_state["lineup_names"] = names
+                st.session_state["lineup_msg"] = msg
+            if names:
+                st.success(msg)
+            else:
+                st.warning(msg or "No lineup names — check beautifulsoup4 / block")
+
+    if st.session_state.get("lineup_msg") and st.session_state.get("lineup_names"):
+        st.caption(f"Lineups: {st.session_state['lineup_msg']}")
 
     events = st.session_state.get("events", [])
     if not events:
-        st.info("Click **Load Games** to start.")
+        st.info("Click **Load Games** to start. Also hit **RotoWire Lineups** so non-starters get filtered.")
         st.stop()
 
     options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
@@ -1119,7 +1203,7 @@ def main():
             st.warning("No 0.5 HR odds for the selected game(s).")
 
     if st.session_state.get("last_fetch_time"):
-        st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ · History: {hist_n} snaps · Games: {len(st.session_state.get('last_selected', []))}")
+        st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ · History: {hist_n} · Lineups: {lu_n}")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -1163,6 +1247,7 @@ def main():
         "trend": len(trend_good),
         "fallen": len(fallen),
         "bets": len([e for e in ev_board if e["is_bet"]]),
+        "nolinup": len([r for r in results if "Not in lineup" in r.get("methods", [])]),
     }
 
     st.markdown(f"""
@@ -1172,8 +1257,8 @@ def main():
         <div class="petty-box"><div class="petty-num">{counts['mgm']}</div><div class="petty-label">🎰 MGM</div></div>
         <div class="petty-box"><div class="petty-num">{counts['fd']}</div><div class="petty-label">💙 FD</div></div>
         <div class="petty-box"><div class="petty-num">{counts['b365']}</div><div class="petty-label">💚 Bet365</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['trend']}</div><div class="petty-label">💚 Trends</div></div>
         <div class="petty-box"><div class="petty-num">{counts['late']}</div><div class="petty-label">👻 Late</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['nolinup']}</div><div class="petty-label">⚠️ Not LU</div></div>
         <div class="petty-box"><div class="petty-num">{counts['fallen']}</div><div class="petty-label">💀 Fallen</div></div>
     </div>
     """, unsafe_allow_html=True)
@@ -1188,7 +1273,10 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 The Board — Take It or Pass</div>', unsafe_allow_html=True)
-        st.caption(f"Only selected game(s). Ranked by Girl Magic Score.")
+        if lu_n:
+            st.caption(f"Non-starters filtered via RotoWire ({lu_n} names). Ranked by Girl Magic Score.")
+        else:
+            st.caption("⚠️ Refresh RotoWire lineups so bench guys don’t clog The Board.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1228,7 +1316,7 @@ def main():
 
     show(tabs[1], "dk", "🎯 DraftKings 10s", "DK ends in 10.")
     show(tabs[2], "mgm", "🎰 BetMGM Magic", "Same-team pairs/groups.")
-    show(tabs[3], "match", "🤝 Exact Match", "Same price across books (includes Bet365 when present).")
+    show(tabs[3], "match", "🤝 Exact Match", "Same price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, same team.")
     show(tabs[5], "digit", "🔢 Digits", "Pairs or groups of 3 · same team · 25/50/75.")
     show(tabs[6], "fd", "💙 FanDuel (needs DK or MGM)", f"≥ +{FD_MIN} or +600 — only with DK/MGM.")
@@ -1236,6 +1324,7 @@ def main():
 
     with tabs[8]:
         st.markdown('<div class="queen-banner">📈 Signals — One Card Per Player</div>', unsafe_allow_html=True)
+        st.caption("Multi-book Lengthen is noise (does not help TAKE IT). Shorten still counts.")
         items = [r for r in results if r["type"] == "signal"]
         if not items:
             st.info("None right now.")
@@ -1247,7 +1336,7 @@ def main():
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     with tabs[9]:
-        st.markdown('<div class="queen-banner">⏳ Movement (500+ only · selected games)</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">⏳ Movement (500+ · selected games)</div>', unsafe_allow_html=True)
         ups = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"]
         downs = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"]
         col_up, col_down = st.columns(2)
@@ -1266,8 +1355,8 @@ def main():
 
     with tabs[10]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
-        st.markdown("#### 💚 FD under MGM (10–100) · biggest gap first")
-        if not fd_under: st.info("None right now.")
+        st.markdown("#### 💚 FD under MGM · biggest gap first")
+        if not fd_under: st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(fd_under):
@@ -1275,8 +1364,7 @@ def main():
                     tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
         st.markdown("#### 💚 Bet365 higher than HardRock")
-        st.caption("Needs both books on the player. Empty until Bet365 is in the feed.")
-        if not b365_hr: st.info("None right now.")
+        if not b365_hr: st.info("None (needs Bet365 in feed).")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(b365_hr):
@@ -1291,7 +1379,7 @@ def main():
                     tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
         st.markdown("#### 🔴 Fade")
-        if not trend_fade: st.info("None right now.")
+        if not trend_fade: st.info("None.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(trend_fade):
@@ -1301,12 +1389,10 @@ def main():
 
     with tabs[11]:
         st.markdown('<div class="queen-banner">👻 Late Adds</div>', unsafe_allow_html=True)
-        st.caption(f"Only for games you fetched · snaps: {hist_n}")
+        st.caption("One card per player · Not in lineup · In lineup missing books · scoped to selected games")
         items = [r for r in results if r["type"] == "late"]
-        if hist_n < 2:
-            st.warning("Fetch the same game(s) at least twice to compare.")
         if not items:
-            st.info("None right now.")
+            st.info("None right now. Refresh RotoWire + fetch twice for presence changes.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(items):
@@ -1316,9 +1402,7 @@ def main():
 
     with tabs[12]:
         st.markdown('<div class="queen-banner">💀 Fallen Off</div>', unsafe_allow_html=True)
-        st.caption("Only players from the games you selected — not the whole league.")
-        if hist_n < 2:
-            st.warning("Needs a previous fetch of these games to compare.")
+        st.caption("Only players from selected games.")
         if not fallen:
             st.info("None yet.")
         else:
@@ -1328,8 +1412,8 @@ def main():
                     tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was score {r.get("old_score", 0)}<br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
-    show(tabs[13], "same_init", "💅 Same Initials", "Different teams · 3+ core + strong.")
-    show(tabs[14], "double_init", "✨ Double Initials", "First=last letter · different teams.")
+    show(tabs[13], "same_init", "💅 Same Initials", "Different teams · starters preferred.")
+    show(tabs[14], "double_init", "✨ Double Initials", "Different teams.")
     show(tabs[15], "cross", "🔄 Cross Initials", "Different teams.")
     show(tabs[16], "last", "👩‍👧 Same Last Name", "Different teams.")
     show(tabs[17], "first", "👯 Same First Name", "Different teams.")
@@ -1370,7 +1454,7 @@ def main():
         else:
             for r in reversed(pending[-40:]):
                 rid = r["id"]
-                st.markdown(f"**{r['player']}** · {r.get('date')} {r.get('time')} · score {r.get('score')} · edge {r.get('edge')}")
+                st.markdown(f"**{r['player']}** · {r.get('date')} {r.get('time')} · score {r.get('score')}")
                 st.caption(", ".join(r.get("methods", [])[:5]))
                 c1, c2, _ = st.columns([1, 1, 4])
                 with c1:
@@ -1394,56 +1478,19 @@ def main():
                 st.markdown(f"{icon} **{r['player']}** · {r.get('date')} · score {r.get('score')}")
 
     with tabs[19]:
-        st.markdown('<div class="queen-banner">📖 The Code — Learn The Tricks</div>', unsafe_allow_html=True)
-        st.markdown("""
-        <div class="how-to">
-            <b>New here?</b> MLB <b>Over 0.5 HR</b> · pricing patterns. Expand sections for full rules.
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("### 1. The board")
-        with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
+        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
+        with st.expander("🟢 The Board + RotoWire", expanded=True):
             st.markdown("""
-**TAKE IT** = 2+ core methods **and** edge pts ≥ 60 **and** Over 0.5 HR.  
-**PASS** = 2+ core but edge under 60.  
-Score 0–100 ranks the board. **Only games you select are fetched.**
+**TAKE IT** = 2+ core · edge ≥ 60 · Over 0.5 HR · **and** (when lineups loaded) **in RotoWire lineup**.
+
+Click **Refresh RotoWire Lineups** so bench / scratched guys leave The Board and show under Late as **Not in lineup**.
             """)
-        with st.expander("📊 Edge pts"):
-            st.markdown("Best − median across books (big outliers ignored). Need **60+** for TAKE IT.")
-        st.markdown("### 2. Core methods")
-        with st.expander("🎯 DK 10s · 🎰 MGM · 🔢 Digits · 💙 FD"):
-            st.markdown(f"""
-**DK 10** · **MGM** same-team 00/25/50/75 pairs/groups · **Digits** pairs/groups of 3 · 25/50/75  
-**FD** ≥ +{FD_MIN} patterns or +600 — only with DK or MGM
-            """)
-        with st.expander("💚 Bet365"):
-            st.markdown("""
-**850s** · pairs/groups of 2–3 · **25/50/75 only (no 00)** · Exact Match includes 365  
-**B365 > HardRock** = own Trends section · core method  
-Empty until API returns Bet365.
-            """)
-        with st.expander("📈 Signals"):
-            st.markdown("One card per player · same on 3+ books · multi-book moves · etc.")
-        st.markdown("### 3. Noise")
-        with st.expander("Does not count toward 2+"):
-            st.markdown("Late/missing · single-book move · FADE · FD under MGM (support).")
-        st.markdown("### 4. Late / Fallen / Movement / Trends")
-        with st.expander("👻 Late · 💀 Fallen — scoped to selected games"):
-            st.markdown("""
-Fetching **one game** no longer marks the rest of the league as Gone Missing or Fallen Off.  
-Only players/events in **this fetch** are compared. Need 2+ fetches of those games.
-            """)
-        with st.expander("⏳ Movement · 📉 Trends"):
-            st.markdown(f"""
-Movement: **{MOVE_PRICE_MIN}+** · ≥ {MOVE_MIN} pts · 🔴 UP · 🟢 DOWN  
-Trends: FD under MGM · **Bet365 > HardRock** · Fade rules
-            """)
-        st.markdown("### 5. Name Magic · Results · How to run")
-        with st.expander("💅 Names"):
-            st.markdown(f"{NAME_METHODS_MIN}+ core + strong · different teams · max {NAME_MAX_PAIRS}.")
-        with st.expander("📊 Results"):
-            st.markdown("TAKE IT auto-logs · HIT/MISS · method hit rates.")
-        with st.expander("First-timers"):
-            st.markdown(f"Load → Select **only the games you want** → Fetch → The Board → Results after games. Auto every {REFRESH_MINUTES} min.")
+        with st.expander("👻 Late Adds"):
+            st.markdown("One card per player. Just Appeared / Added Late / Gone Missing · Not in lineup · In lineup missing DK/FD/MGM.")
+        with st.expander("Core methods"):
+            st.markdown("DK 10 · MGM pairs/groups · Digits · Exact · FD with DK/MGM · Bet365 when available · Multi-book **Shorten** only.")
+        with st.expander("Noise (not TAKE IT)"):
+            st.markdown("Late tags · Not in lineup · **Multi-book Lengthen** · single-book moves · FADE.")
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
