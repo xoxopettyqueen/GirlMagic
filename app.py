@@ -1,8 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-ONLY 0.5 (1 HR) lines — no 2+/3+
-+ Fallen Off tracking
+ONLY 0.5 (1 HR) · Girl Magic Score 0–100 · Fallen Off · History
 """
 
 import streamlit as st
@@ -20,34 +19,30 @@ try:
 except ImportError:
     HAS_AUTOREFRESH = False
 
-st.set_page_config(
-    page_title="Girl Magic Odds ✨",
-    page_icon="👑",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
+st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
     .stApp { background: linear-gradient(165deg, #0a0410 0%, #160a22 40%, #1f0b30 100%); color: #fce7f3; font-family: 'Inter', sans-serif; }
-    h1 { font-family: 'Playfair Display', serif !important; font-weight: 900 !important; background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.6rem !important; margin-bottom: 2px !important; letter-spacing: -0.5px; }
+    h1 { font-family: 'Playfair Display', serif !important; font-weight: 900 !important; background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.6rem !important; margin-bottom: 2px !important; }
     .subtitle { color: #f9a8d4; font-size: 0.92rem; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 4px; }
     .tagline { color: #e9d5ff; font-size: 0.88rem; font-style: italic; margin-bottom: 16px; opacity: 0.95; }
-    .how-to { background: linear-gradient(135deg, #1a0f28 0%, #2a1040 100%); border: 1px solid #f472b6; border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.88rem; line-height: 1.5; box-shadow: 0 0 18px rgba(244, 114, 182, 0.12); position: relative; overflow: hidden; }
+    .how-to { background: linear-gradient(135deg, #1a0f28 0%, #2a1040 100%); border: 1px solid #f472b6; border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.88rem; line-height: 1.5; position: relative; overflow: hidden; }
     .how-to::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #f472b6, #c084fc); }
     .how-to b { color: #f9a8d4; }
     .warning-box { background: #3b0764; border: 2px solid #f472b6; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; font-size: 0.95rem; }
     .info-box { background: #1a0f28; border: 1px solid #a855f7; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.9rem; }
-    .stButton > button { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; padding: 0.55rem 1.3rem !important; box-shadow: 0 3px 14px rgba(219, 39, 119, 0.45); }
+    .stButton > button { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; padding: 0.55rem 1.3rem !important; }
     .petty-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
-    .petty-box { flex: 1; min-width: 80px; background: #1a0f28; border: 1px solid #f472b6; border-radius: 12px; padding: 10px 6px; text-align: center; box-shadow: 0 0 12px rgba(244, 114, 182, 0.15); }
+    .petty-box { flex: 1; min-width: 80px; background: #1a0f28; border: 1px solid #f472b6; border-radius: 12px; padding: 10px 6px; text-align: center; }
     .petty-num { font-size: 1.4rem; font-weight: 800; color: #f9a8d4; line-height: 1.1; }
-    .petty-label { font-size: 0.6rem; color: #e9d5ff; margin-top: 4px; letter-spacing: 0.2px; }
-    .card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #f472b6; border-radius: 12px; padding: 9px 12px; margin: 0; color: #fdf2f8; box-shadow: 0 4px 14px rgba(0,0,0,0.35); position: relative; height: 100%; font-size: 0.93rem; }
+    .petty-label { font-size: 0.6rem; color: #e9d5ff; margin-top: 4px; }
+    .card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #f472b6; border-radius: 12px; padding: 10px 12px; margin: 0; color: #fdf2f8; position: relative; height: 100%; font-size: 0.93rem; }
     .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: 12px 0 0 12px; background: #f472b6; }
     .bet { background: linear-gradient(155deg, #0c2418, #143d28) !important; border: 1px solid #34d399 !important; }
-    .skip { background: #14101c !important; border: 1px solid #4b5563 !important; opacity: 0.78; }
+    .skip { background: #14101c !important; border: 1px solid #4b5563 !important; opacity: 0.8; }
+    .score-pill { display: inline-block; background: linear-gradient(90deg, #db2777, #9333ea); color: white; font-weight: 800; font-size: 0.95rem; padding: 2px 10px; border-radius: 12px; margin-left: 6px; }
     .tag { display: inline-block; background: #3b0764; color: #f9a8d4; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin: 2px 3px 2px 0; border: 1px solid #a855f7; }
     .tag-green { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
     .tag-red { background: #450a0a; color: #fca5a5; border-color: #f87171; }
@@ -61,7 +56,7 @@ st.markdown("""
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
     .stTabs [data-baseweb="tab"] { background: #1a0f28; border-radius: 8px; color: #f9a8d4; font-weight: 600; padding: 7px 8px; font-size: 0.78rem; }
     .stTabs [aria-selected="true"] { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; }
-    .footer { text-align: center; color: #f9a8d4; font-size: 0.95rem; margin-top: 36px; letter-spacing: 1.1px; opacity: 0.9; padding-bottom: 20px; }
+    .footer { text-align: center; color: #f9a8d4; font-size: 0.95rem; margin-top: 36px; opacity: 0.9; padding-bottom: 20px; }
     .grid-card { margin-bottom: 7px; }
     .gloss-card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #a855f7; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; font-size: 0.92rem; line-height: 1.45; }
 </style>
@@ -95,22 +90,31 @@ NOISE_METHODS = {
 }
 
 def is_core_method(m):
-    if m in NOISE_METHODS:
-        return False
-    if m.startswith("Shortening (") or m.startswith("Lengthening ("):
-        return False
-    if m.startswith("Stayed ") and "times" in m and "group" not in m.lower():
-        return False
+    if m in NOISE_METHODS: return False
+    if m.startswith("Shortening (") or m.startswith("Lengthening ("): return False
+    if m.startswith("Stayed ") and "times" in m and "group" not in m.lower(): return False
     return True
 
 def count_core_methods(meths):
     return len([m for m in set(meths) if is_core_method(m)])
 
 def has_personal_strong(meths):
-    for m in meths:
-        if m in PERSONAL_STRONG or m.startswith("Match "):
-            return True
-    return False
+    return any(m in PERSONAL_STRONG or m.startswith("Match ") for m in meths)
+
+def girl_magic_score(core_count, edge, methods):
+    """0–100 rank score. Edge pts can be 100+; score is always capped at 100."""
+    # Methods: up to 50 (10 pts each, max 5 counted for this bucket)
+    method_pts = min(core_count, 5) * 10
+    # Edge: scale so 60 → ~15, 120 → ~30, 180+ → 40
+    edge_pts = min(40, max(0, int((edge / 180) * 40)))
+    # Bonuses: up to 10
+    bonus = 0
+    if "Last one left" in methods: bonus += 5
+    if any("Stayed in group" in m or m == "Stayed in the group" for m in methods): bonus += 3
+    if "Multi-book Shorten" in methods: bonus += 3
+    if "Same on 3+ books" in methods: bonus += 2
+    bonus = min(10, bonus)
+    return min(100, method_pts + edge_pts + bonus)
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -122,16 +126,12 @@ def get_sgo_key():
     return st.secrets.get("SGO_API_KEY", "d5422e23cc05702bf95197f6a98ec8ce")
 
 def format_odds(p):
-    try:
-        return f"{int(p):+d}"
-    except:
-        return str(p)
+    try: return f"{int(p):+d}"
+    except: return str(p)
 
 def last_two(p):
-    try:
-        return abs(int(p)) % 100
-    except:
-        return None
+    try: return abs(int(p)) % 100
+    except: return None
 
 def clean_name(name):
     name = str(name).strip()
@@ -144,8 +144,7 @@ def clean_name(name):
 def get_initials(name):
     name = clean_name(name)
     parts = name.split()
-    if len(parts) < 2:
-        return None, None
+    if len(parts) < 2: return None, None
     return parts[0][0].upper(), parts[-1][0].upper()
 
 def now_az():
@@ -155,29 +154,19 @@ def now_utc_iso():
     return datetime.now(timezone.utc).isoformat()
 
 def smart_best(prices, books):
-    if not prices:
-        return None, None
+    if not prices: return None, None
     paired = sorted(zip(prices, books), key=lambda x: x[0], reverse=True)
     best_p, best_b = paired[0]
     if len(paired) >= 2 and best_p - paired[1][0] >= OUTLIER_GAP:
         return paired[1][0], paired[1][1]
     return best_p, best_b
 
-def get_confidence(methods, edge, is_bet):
-    if not is_bet:
-        return "Skip", 1, "low", "skip-card"
-    score = 0
-    if "Last one left" in methods: score += 4
-    if "Stayed in the group" in methods: score += 2
-    if any("Stayed in group" in m for m in methods): score += 3
-    if "Same on 3+ books" in methods: score += 2
-    if "Multi-book Shorten" in methods: score += 3
-    score += min(count_core_methods(methods), 3)
-    score += 1 if edge >= 80 else 0
-    if score >= 7: return "High", 5, "high", "high"
-    if score >= 5: return "Strong", 4, "strong", "strong"
-    if score >= 3: return "Medium", 3, "medium", "medium"
-    return "Low", 2, "low", "low"
+def get_confidence(score, is_bet):
+    if not is_bet: return "Skip", 1, "low"
+    if score >= 85: return "High", 5, "high"
+    if score >= 70: return "Strong", 4, "strong"
+    if score >= 55: return "Medium", 3, "medium"
+    return "Low", 2, "low"
 
 def make_meter(bars, level):
     html = '<div class="meter">'
@@ -188,16 +177,14 @@ def make_meter(bars, level):
     return html
 
 def load_history():
-    if not os.path.exists(HISTORY_FILE):
-        return
+    if not os.path.exists(HISTORY_FILE): return
     try:
         with open(HISTORY_FILE, "r") as f:
             data = json.load(f)
         saved_at = data.get("saved_at")
         if saved_at:
             age = datetime.now(timezone.utc) - datetime.fromisoformat(saved_at)
-            if age > timedelta(hours=HISTORY_MAX_AGE_HOURS):
-                return
+            if age > timedelta(hours=HISTORY_MAX_AGE_HOURS): return
         ph = [{tuple(k.split("||", 1)): v for k, v in snap.items()} for snap in data.get("price_history", [])]
         st.session_state["price_history"] = ph[-8:]
         pr = [{tuple(x) for x in snap} for snap in data.get("presence_history", [])]
@@ -206,7 +193,6 @@ def load_history():
         for snap in data.get("mgm_history", []):
             mh.append([{"event": g["event"], "ending": g["ending"], "players": frozenset(g["players"])} for g in snap])
         st.session_state["mgm_history"] = mh[-8:]
-        # previous EV snapshot
         if "prev_ev" in data:
             st.session_state["prev_ev"] = data["prev_ev"]
     except Exception:
@@ -218,12 +204,7 @@ def save_history(prev_ev=None):
         pr = [[[a, b] for a, b in snap] for snap in st.session_state.get("presence_history", [])]
         mh = [[{"event": g["event"], "ending": g["ending"], "players": list(g["players"])} for g in snap]
               for snap in st.session_state.get("mgm_history", [])]
-        payload = {
-            "saved_at": now_utc_iso(),
-            "price_history": ph,
-            "presence_history": pr,
-            "mgm_history": mh,
-        }
+        payload = {"saved_at": now_utc_iso(), "price_history": ph, "presence_history": pr, "mgm_history": mh}
         if prev_ev is not None:
             payload["prev_ev"] = prev_ev
         elif "prev_ev" in st.session_state:
@@ -235,8 +216,7 @@ def save_history(prev_ev=None):
 
 def fetch_events_oddsapi(api_key):
     try:
-        r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events",
-                         params={"apiKey": api_key}, timeout=15)
+        r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events", params={"apiKey": api_key}, timeout=15)
         r.raise_for_status()
         return r.json()
     except Exception as e:
@@ -246,33 +226,26 @@ def fetch_events_oddsapi(api_key):
 def fetch_odds_oddsapi(api_key, event_id):
     try:
         r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events/{event_id}/odds",
-            params={"apiKey": api_key, "regions": REGIONS,
-                    "markets": "batter_home_runs", "oddsFormat": "american"}, timeout=20)
+            params={"apiKey": api_key, "regions": REGIONS, "markets": "batter_home_runs", "oddsFormat": "american"}, timeout=20)
         return r.json() if r.status_code == 200 else None
     except:
         return None
 
 def flatten_oddsapi(data):
-    if not data:
-        return [], set()
+    if not data: return [], set()
     rows, found = [], set()
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     for book in data.get("bookmakers", []):
         bk = book.get("key", "").lower()
         found.add(bk)
-        if bk not in PREFERRED:
-            continue
+        if bk not in PREFERRED: continue
         for market in book.get("markets", []):
             for o in market.get("outcomes", []):
-                if o.get("name", "").lower() != "over":
-                    continue
+                if o.get("name", "").lower() != "over": continue
                 pt = o.get("point")
-                if pt is None or abs(float(pt) - 0.5) > 0.01:
-                    continue
-                rows.append({
-                    "event": event, "book": bk, "player": o.get("description"),
-                    "price": o.get("price"), "point": 0.5, "source": "oddsapi"
-                })
+                if pt is None or abs(float(pt) - 0.5) > 0.01: continue
+                rows.append({"event": event, "book": bk, "player": o.get("description"),
+                             "price": o.get("price"), "point": 0.5, "source": "oddsapi"})
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
@@ -281,68 +254,51 @@ def fetch_sgo_hr_props(sgo_key):
         r = requests.get(f"{SGO_BASE}/events", params={
             "apiKey": sgo_key, "leagueID": "MLB", "oddsAvailable": "true", "limit": 25
         }, timeout=25)
-        if r.status_code != 200:
-            return rows, found
+        if r.status_code != 200: return rows, found
         for ev in r.json().get("data", []):
-            if ev.get("status", {}).get("started"):
-                continue
+            if ev.get("status", {}).get("started"): continue
             teams = ev.get("teams", {})
             home = teams.get("home", {}).get("names", {}).get("long", "Home")
             away = teams.get("away", {}).get("names", {}).get("long", "Away")
             event_name = f"{away} @ {home}"
             players_map = ev.get("players", {})
             for odd_id, odd_data in ev.get("odds", {}).items():
-                if "batting_homeRuns" not in odd_id:
-                    continue
-                if "ou-over" not in odd_id and "-over" not in odd_id:
-                    continue
+                if "batting_homeRuns" not in odd_id: continue
+                if "ou-over" not in odd_id and "-over" not in odd_id: continue
                 ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
-                if ou is None or abs(float(ou) - 0.5) > 0.01:
-                    continue
+                if ou is None or abs(float(ou) - 0.5) > 0.01: continue
                 pid = odd_data.get("playerID") or odd_data.get("statEntityID")
-                if not pid or pid not in players_map:
-                    continue
+                if not pid or pid not in players_map: continue
                 pname = players_map[pid].get("name")
-                if not pname:
-                    continue
+                if not pname: continue
                 for bk, bd in odd_data.get("byBookmaker", {}).items():
-                    if not bd.get("available", True):
-                        continue
+                    if not bd.get("available", True): continue
                     b = bk.lower()
-                    if b not in PREFERRED:
-                        continue
+                    if b not in PREFERRED: continue
                     price = bd.get("odds")
-                    if price is None:
-                        continue
-                    try:
-                        price = int(str(price).replace("+", ""))
-                    except:
-                        continue
+                    if price is None: continue
+                    try: price = int(str(price).replace("+", ""))
+                    except: continue
                     found.add(b)
-                    rows.append({
-                        "event": event_name, "book": b, "player": pname,
-                        "price": price, "point": 0.5, "source": "sgo"
-                    })
+                    rows.append({"event": event_name, "book": b, "player": pname,
+                                 "price": price, "point": 0.5, "source": "sgo"})
     except Exception as e:
         st.warning(f"SGO note: {e}")
     return rows, found
 
 def merge_odds(a, b):
     combined = a + b
-    if not combined:
-        return pd.DataFrame()
+    if not combined: return pd.DataFrame()
     df = pd.DataFrame(combined)
     df["priority"] = df["source"].map({"oddsapi": 0, "sgo": 1})
-    df = df.sort_values(["player", "book", "priority"]).drop_duplicates(
-        subset=["player", "book"], keep="first")
+    df = df.sort_values(["player", "book", "priority"]).drop_duplicates(subset=["player", "book"], keep="first")
     return df.drop(columns=["priority", "source"], errors="ignore")
 
 def do_fetch(odds_key, sgo_key, chosen_labels, options):
     all_rows, all_found = [], set()
     for label in chosen_labels:
         eid = options.get(label)
-        if not eid:
-            continue
+        if not eid: continue
         data = fetch_odds_oddsapi(odds_key, eid)
         rows, found = flatten_oddsapi(data)
         all_rows.extend(rows)
@@ -350,8 +306,7 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
     sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
     all_rows.extend(sgo_rows)
     all_found.update(sgo_found)
-    if not all_rows:
-        return None, set()
+    if not all_rows: return None, set()
     df = merge_odds(
         [r for r in all_rows if r.get("source") == "oddsapi"],
         [r for r in all_rows if r.get("source") == "sgo"]
@@ -359,14 +314,12 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
     return df, all_found & PREFERRED
 
 def run_flags(df, previous_df=None):
-    if df.empty:
-        return [], [], []
+    if df.empty: return [], [], []
 
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
 
-    # presence
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
     current_presence = {(r["player"], r["book"]) for _, r in df.iterrows() if r["book"] in LATE_BOOKS}
@@ -384,8 +337,7 @@ def run_flags(df, previous_df=None):
                             "event": "", "css": "hist", "methods": ["Just Appeared"]})
             methods_map[player].append("Just Appeared")
         for player, book in latest - early:
-            if (player, book) in previous:
-                continue
+            if (player, book) in previous: continue
             results.append({"type": "late", "label": player, "reason": f"Added late on {book}",
                             "event": "", "css": "hist", "methods": ["Added Late"]})
             methods_map[player].append("Added Late")
@@ -394,7 +346,6 @@ def run_flags(df, previous_df=None):
                             "event": "", "css": "hist", "methods": ["Gone Missing"]})
             methods_map[player].append("Gone Missing")
 
-    # price trends
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
@@ -404,12 +355,10 @@ def run_flags(df, previous_df=None):
     phist = st.session_state["price_history"]
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
-        shorten_by_player = defaultdict(list)
-        lengthen_by_player = defaultdict(list)
+        shorten_by_player, lengthen_by_player = defaultdict(list), defaultdict(list)
         for key, curr_price in curr_snap.items():
             player, book = key
-            if key not in prev_snap:
-                continue
+            if key not in prev_snap: continue
             prev_price = prev_snap[key]
             if curr_price < prev_price:
                 shorten_by_player[player].append(book)
@@ -436,7 +385,6 @@ def run_flags(df, previous_df=None):
                     "event": "", "css": "hist", "methods": ["Multi-book Lengthen"]})
                 methods_map[player].append("Multi-book Lengthen")
 
-    # DK / MGM / Exact / Digits / FD / Signals (same as before)
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -465,29 +413,23 @@ def run_flags(df, previous_df=None):
     if len(h) >= 2:
         for snap in h:
             seen = set()
-            for g in snap:
-                seen.update(g["players"])
-            for p in seen:
-                mgm_stayed[p] += 1
+            for g in snap: seen.update(g["players"])
+            for p in seen: mgm_stayed[p] += 1
         early = set()
         for g in h[0]:
-            if len(g["players"]) >= 3:
-                early.update(g["players"])
+            if len(g["players"]) >= 3: early.update(g["players"])
         late = set()
-        for g in h[-1]:
-            late.update(g["players"])
+        for g in h[-1]: late.update(g["players"])
         survivor = early & late
 
     for event, g in mgm.groupby("event"):
         ends = defaultdict(list)
         for _, r in g.iterrows():
             d = last_two(r["price"])
-            if d in (0, 25, 50, 75):
-                ends[d].append(r["player"])
+            if d in (0, 25, 50, 75): ends[d].append(r["player"])
         for d, ps in ends.items():
             names = sorted(set(ps))
-            if len(names) < 2:
-                continue
+            if len(names) < 2: continue
             meth, extra = [f"MGM {d:02d}"], []
             for n in names:
                 c = mgm_stayed.get(n, 0)
@@ -498,16 +440,13 @@ def run_flags(df, previous_df=None):
                 if n in survivor:
                     meth.append("Last one left"); extra.append("Last one left")
             reason = f"MGM {'pair' if len(names)==2 else 'group of '+str(len(names))} ends in {d:02d}"
-            if extra:
-                reason += " • " + " + ".join(set(extra))
+            if extra: reason += " • " + " + ".join(set(extra))
             results.append({"type": "mgm", "label": " + ".join(names),
                 "reason": reason, "event": event, "css": "mgm", "methods": list(set(meth))})
-            for n in names:
-                methods_map[n].extend(meth)
+            for n in names: methods_map[n].extend(meth)
 
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
-        if len(g) < 2:
-            continue
+        if len(g) < 2: continue
         prices = g["price"].dropna().tolist()
         if len(set(prices)) == 1:
             results.append({"type": "match", "label": player,
@@ -522,17 +461,14 @@ def run_flags(df, previous_df=None):
                 results.append({"type": "mgm_exact", "label": " + ".join(names),
                     "reason": f"MGM Exact {format_odds(price)} ({len(names)} players)",
                     "event": event, "css": "mgm", "methods": ["MGM Exact"]})
-                for n in names:
-                    methods_map[n].append("MGM Exact")
+                for n in names: methods_map[n].append("MGM Exact")
 
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
-        if len(g) < 2:
-            continue
+        if len(g) < 2: continue
         digs = defaultdict(list)
         for _, r in g.iterrows():
             d = last_two(r["price"])
-            if d in (25, 50, 75):
-                digs[d].append(r["book"])
+            if d in (25, 50, 75): digs[d].append(r["book"])
         for d, bks in digs.items():
             if len(set(bks)) >= 2:
                 results.append({"type": "digit", "label": player,
@@ -569,62 +505,48 @@ def run_flags(df, previous_df=None):
                     "event": row["event"], "css": "hist", "methods": ["Price moved"]})
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV board
+    # +EV with Girl Magic Score
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
-        if len(prices) < 2:
-            continue
+        if len(prices) < 2: continue
         best, best_book = smart_best(prices, books)
-        if best is None:
-            continue
-        try:
-            med = statistics.median(prices)
-        except:
-            med = best
+        if best is None: continue
+        try: med = statistics.median(prices)
+        except: med = best
         edge = best - med
         meths = list(set(methods_map.get(player, [])))
         core_count = count_core_methods(meths)
-        if core_count < METHODS_MIN:
-            continue
+        if core_count < METHODS_MIN: continue
         is_bet = edge >= EDGE_MIN
-        conf, bars, level, css = get_confidence(meths, edge, is_bet)
-        pri = 0
-        if "Last one left" in meths: pri += 30
-        if "Stayed in the group" in meths: pri += 15
-        if any("Stayed in group" in m for m in meths): pri += 20
-        if "Same on 3+ books" in meths: pri += 8
-        if "Multi-book Shorten" in meths: pri += 12
-        pri += core_count * 5 + min(edge / 10, 15)
-        why = (f"{core_count} core methods + edge {int(edge)}. This is the one."
-               if is_bet else
-               f"{core_count} core methods, but edge is only {int(edge)} (need {EDGE_MIN}+).")
         display_meths = [m for m in meths if is_core_method(m)]
+        score = girl_magic_score(core_count, edge, display_meths)
+        conf, bars, level = get_confidence(score, is_bet)
+        if is_bet:
+            why = f"Score {score}/100 · {core_count} core · Edge pts {int(edge)}. This is the one."
+        else:
+            why = f"Score {score}/100 · {core_count} core · Edge pts {int(edge)} (need {EDGE_MIN}+)."
         ev_board.append({
             "player": player, "best_price": best, "best_book": best_book,
             "median": med, "edge": edge, "is_bet": is_bet, "why": why,
-            "methods": display_meths, "priority": pri, "bars": bars,
-            "level": level, "css": css, "method_count": core_count
+            "methods": display_meths, "score": score, "bars": bars,
+            "level": level, "method_count": core_count
         })
-    ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
+    # BET THIS first by score high→low, then SKIP by score high→low
+    ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["score"], -x["edge"]))
 
-    # ── Fallen Off: was on +EV last pull, not on this pull ──
+    # Fallen Off
     current_ev = {
         item["player"]: {
-            "methods": item["methods"],
-            "edge": item["edge"],
-            "is_bet": item["is_bet"],
-            "method_count": item["method_count"],
-        }
-        for item in ev_board
+            "methods": item["methods"], "edge": item["edge"],
+            "is_bet": item["is_bet"], "method_count": item["method_count"], "score": item["score"]
+        } for item in ev_board
     }
     prev_ev = st.session_state.get("prev_ev", {})
     fallen = []
     for player, old in prev_ev.items():
-        if player in current_ev:
-            continue
-        # diagnose why
+        if player in current_ev: continue
         now_meths = list(set(methods_map.get(player, [])))
         now_core = count_core_methods(now_meths)
         n_books = len(df[df["player"] == player]) if player in all_players_now else 0
@@ -636,29 +558,23 @@ def run_flags(df, previous_df=None):
         elif now_core < METHODS_MIN:
             reasons.append(f"Lost core methods ({now_core} left)")
             lost = set(old.get("methods", [])) - set(m for m in now_meths if is_core_method(m))
-            if lost:
-                reasons.append("Lost: " + ", ".join(list(lost)[:4]))
+            if lost: reasons.append("Lost: " + ", ".join(list(lost)[:4]))
         else:
             reasons.append("Dropped under filters")
-        if old.get("is_bet"):
-            reasons.insert(0, "Was BET THIS")
+        if old.get("is_bet"): reasons.insert(0, "Was BET THIS")
         fallen.append({
-            "type": "fallen",
-            "label": player,
-            "reason": " · ".join(reasons),
-            "event": "",
-            "css": "hist",
+            "type": "fallen", "label": player, "reason": " · ".join(reasons),
+            "event": "", "css": "hist",
             "methods": ["Fallen Off"] + (["Was BET THIS"] if old.get("is_bet") else []),
-            "old_methods": old.get("methods", []),
-            "old_edge": old.get("edge", 0),
+            "old_methods": old.get("methods", []), "old_edge": old.get("edge", 0),
+            "old_score": old.get("score", 0),
         })
         results.append(fallen[-1])
 
-    # save current EV as previous for next pull
     st.session_state["prev_ev"] = current_ev
     save_history(prev_ev=current_ev)
 
-    # Name magic (strict)
+    # Name magic
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -672,14 +588,12 @@ def run_flags(df, previous_df=None):
     init_map = defaultdict(list)
     for p in pool:
         f, l = get_initials(p)
-        if f and l:
-            init_map[f + l].append(p)
+        if f and l: init_map[f + l].append(p)
     init_pairs = []
     for k, names in init_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if diff_team(a, b):
-                    init_pairs.append((a, b, k))
+                if diff_team(a, b): init_pairs.append((a, b, k))
     for a, b, k in sorted(init_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "same_init", "label": f"{a} + {b}",
             "reason": f"Same initials {k} (different teams)", "event": "", "css": "name", "methods": ["Same Init"]})
@@ -687,8 +601,7 @@ def run_flags(df, previous_df=None):
     cross_pairs = []
     for i, a in enumerate(pool):
         _, l1 = get_initials(a)
-        if not l1:
-            continue
+        if not l1: continue
         for b in pool[i+1:]:
             f2, _ = get_initials(b)
             if f2 and l1 == f2 and diff_team(a, b):
@@ -700,14 +613,12 @@ def run_flags(df, previous_df=None):
     last_map = defaultdict(list)
     for p in pool:
         parts = clean_name(p).split()
-        if len(parts) >= 2:
-            last_map[parts[-1].lower()].append(p)
+        if len(parts) >= 2: last_map[parts[-1].lower()].append(p)
     last_pairs = []
     for last, names in last_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if diff_team(a, b):
-                    last_pairs.append((a, b, last))
+                if diff_team(a, b): last_pairs.append((a, b, last))
     for a, b, last in sorted(last_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "last", "label": f"{a} + {b}",
             "reason": f"Same last name ({last.title()}) (different teams)", "event": "", "css": "name", "methods": ["Same Last"]})
@@ -715,14 +626,12 @@ def run_flags(df, previous_df=None):
     first_map = defaultdict(list)
     for p in pool:
         parts = clean_name(p).split()
-        if parts:
-            first_map[parts[0].lower()].append(p)
+        if parts: first_map[parts[0].lower()].append(p)
     first_pairs = []
     for first, names in first_map.items():
         for i, a in enumerate(names):
             for b in names[i+1:]:
-                if diff_team(a, b):
-                    first_pairs.append((a, b, first))
+                if diff_team(a, b): first_pairs.append((a, b, first))
     for a, b, first in sorted(first_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "first", "label": f"{a} + {b}",
             "reason": f"Same first name ({first.title()}) (different teams)", "event": "", "css": "name", "methods": ["Same First"]})
@@ -746,10 +655,11 @@ def main():
     hist_n = len(st.session_state.get("price_history", []))
     st.markdown(f"""
     <div class="how-to">
-        👑 <b>The Code</b> → BET THIS only when <b>2+ core methods</b> hit <b>and</b> edge ≥ 60<br>
+        👑 <b>The Code</b> → BET THIS = 2+ core methods <b>and</b> edge pts ≥ 60<br>
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer)<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
-        🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History snaps: <b>{hist_n}</b>
+        🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History snaps: <b>{hist_n}</b><br>
+        📊 <b>Score</b> → 0–100 rank (methods + edge + bonuses). Board sorted high → low.
     </div>
     """, unsafe_allow_html=True)
 
@@ -773,7 +683,6 @@ def main():
     st.session_state["selected_games"] = chosen
 
     manual_fetch = st.button("③ Fetch Odds", type="primary")
-
     if "last_refresh_count" not in st.session_state:
         st.session_state["last_refresh_count"] = refresh_count
     auto_fetch = HAS_AUTOREFRESH and refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
@@ -812,7 +721,6 @@ def main():
     counts = {
         "dk": len([r for r in results if r["type"] == "dk"]),
         "mgm": len([r for r in results if r["type"] == "mgm"]),
-        "match": len([r for r in results if r["type"] == "match"]),
         "fd": len([r for r in results if r["type"] == "fd"]),
         "name": len([r for r in results if r["type"] in ("same_init", "cross", "last", "first")]),
         "late": len([r for r in results if r["type"] == "late"]),
@@ -842,7 +750,8 @@ def main():
     ])
 
     with tabs[0]:
-        st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">👑 We Cracked The Code — Ranked by Score</div>', unsafe_allow_html=True)
+        st.caption("Sorted high → low by Girl Magic Score (0–100). Edge pts = best − median (can be over 100).")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -855,10 +764,12 @@ def main():
                     label = "🟢 BET THIS" if item["is_bet"] else "⚪ SKIP"
                     st.markdown(f'''
                     <div class="card {cls} grid-card">
-                        <b>{label}</b> — <b>{item["player"]}</b><br>{meter}
+                        <b>{label}</b> — <b>{item["player"]}</b>
+                        <span class="score-pill">{item["score"]}</span><br>
+                        {meter}
                         Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
                         Most books: {format_odds(item["median"])}<br>
-                        Edge: {int(item["edge"])} · Core: {item.get("method_count", 0)}<br>
+                        <b>Edge pts:</b> {int(item["edge"])} · <b>Core:</b> {item.get("method_count", 0)}<br>
                         {tags}<br><small>{item["why"]}</small>
                     </div>''', unsafe_allow_html=True)
 
@@ -874,10 +785,7 @@ def main():
             for idx, r in enumerate(items):
                 with cols[idx % 2]:
                     tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("methods", []))
-                    st.markdown(f'''
-                    <div class="card grid-card">
-                        <b>{r["label"]}</b><br>{r["reason"]}<br>{tags}
-                    </div>''', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
     show(tabs[1], "dk", "🎯 DraftKings 10s", "DK ends in 10.")
     show(tabs[2], "mgm", "🎰 BetMGM Magic", "Same-team pairs/groups.")
@@ -892,23 +800,20 @@ def main():
 
     with tabs[11]:
         st.markdown('<div class="queen-banner">💀 Fallen Off — Was On +EV, Now Gone</div>', unsafe_allow_html=True)
-        st.caption("Players who were on the +EV board last pull and are not on it this pull. Needs 2+ fetches.")
+        st.caption("Needs 2+ fetches.")
         if not fallen:
-            st.info("None yet. Fetch twice and anyone who drops off the board will show here.")
+            st.info("None yet.")
         else:
             cols = st.columns(2)
             for idx, r in enumerate(fallen):
                 with cols[idx % 2]:
                     tags = "".join(f'<span class="tag tag-red">{m}</span>' for m in r.get("methods", []))
-                    old = r.get("old_methods", [])
-                    old_tags = "".join(f'<span class="tag">{m}</span>' for m in old[:4])
-                    edge_note = f" · was edge {int(r.get('old_edge', 0))}" if r.get("old_edge") else ""
+                    old_tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("old_methods", [])[:4])
+                    sc = r.get("old_score", 0)
                     st.markdown(f'''
                     <div class="card grid-card">
-                        <b>{r["label"]}</b>{edge_note}<br>
-                        {r["reason"]}<br>
-                        {tags}<br>
-                        <small>Had: {old_tags or "—"}</small>
+                        <b>{r["label"]}</b> · was score {sc}<br>
+                        {r["reason"]}<br>{tags}<br><small>Had: {old_tags or "—"}</small>
                     </div>''', unsafe_allow_html=True)
 
     show(tabs[12], "same_init", "💅 Same Initials", f"3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
@@ -923,203 +828,86 @@ def main():
             <b>🟢 BET THIS</b><br>
             The only plays we actually take.<br><br>
             • At least <b>2 core methods</b> hit<br>
-            • Edge is <b>60 or higher</b><br>
+            • Edge pts <b>60 or higher</b><br>
             • Overnight noise does <b>not</b> count<br>
             • Over <b>0.5 HR only</b> (1 homer)
         </div>
-
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
             Close, but not quite.<br><br>
             • Has 2+ core methods<br>
-            • Edge is still under 60<br>
+            • Edge pts still under 60<br>
             • We pass
         </div>
-
         <div class="gloss-card">
-            <b>Core methods</b><br>
-            These count toward the 2+ rule:<br><br>
-            • DK 10<br>
-            • FD Pattern<br>
-            • Exact Match<br>
-            • MGM Exact<br>
-            • Match 25 / 50 / 75<br>
-            • MGM 00 / 25 / 50 / 75<br>
-            • Stayed in the group<br>
-            • Last one left<br>
-            • Same on 3+ books<br>
-            • Multi-book Shorten<br>
-            • Multi-book Lengthen
+            <b>📊 Girl Magic Score (0–100)</b><br>
+            Rank on the +EV board. Higher = better.<br><br>
+            • Up to 50 from core method count<br>
+            • Up to 40 from edge pts (scaled)<br>
+            • Up to 10 from strong bonuses (Last one left, etc.)<br>
+            • Always capped at 100<br>
+            • Board sorted high → low
         </div>
-
         <div class="gloss-card">
-            <b>Noise</b><br>
-            Shows on tabs. Does <b>not</b> count toward 2+.<br><br>
-            • Just Appeared<br>
-            • Added Late<br>
-            • Gone Missing<br>
-            • Stuck / Multi-book Stuck<br>
-            • Single-book Shortening / Lengthening<br>
-            • Generic “Stayed the same”<br>
-            • Price moved
-        </div>
-
-        <div class="gloss-card">
-            <b>Edge</b><br>
+            <b>Edge pts</b><br>
             How much better the best real price is vs the pack.<br><br>
             • Formula: <b>Best − Median</b><br>
             • Best ignores a lone outlier (150+ longer than the next book)<br>
-            • Need <b>60 or higher</b> for BET THIS<br>
-            • Example: best +700, median +550 → edge = 150 → good
+            • Can be over 100 (that’s normal — it’s odds points, not a grade)<br>
+            • Need <b>60+</b> for BET THIS<br>
+            • Example: best +700, median +550 → edge pts = 150
         </div>
-
+        <div class="gloss-card">
+            <b>Core methods</b> (count toward 2+)<br><br>
+            • DK 10 · FD Pattern · Exact Match · MGM Exact<br>
+            • Match 25 / 50 / 75 · MGM 00 / 25 / 50 / 75<br>
+            • Stayed in the group · Last one left<br>
+            • Same on 3+ books · Multi-book Shorten / Lengthen
+        </div>
+        <div class="gloss-card">
+            <b>Noise</b> (tabs only — do not count toward 2+)<br><br>
+            • Just Appeared · Added Late · Gone Missing<br>
+            • Stuck · single-book Shortening / Lengthening · Price moved
+        </div>
         <div class="gloss-card">
             <b>🎯 DK 10</b><br>
-            DraftKings price ends in 10.<br><br>
-            • Examples: +110, +210, +310, +410, +510<br>
-            • One of our strongest single-book tells<br>
-            • No team requirement
+            DraftKings ends in 10 (+110, +210, +310…).<br>
+            Strong single-book tell. No team requirement.
         </div>
-
         <div class="gloss-card">
             <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
-            BetMGM classic endings on the <b>same team</b>.<br><br>
-            • Valid endings: 00, 25, 50, 75<br>
-            • Pairs first (2 players)<br>
-            • Group of three if no pair exists
+            Same-team pairs first, then groups of three.<br>
+            Watch Stayed in the group / Last one left.
         </div>
-
         <div class="gloss-card">
-            <b>Stayed in the group</b><br>
-            Still inside the same BetMGM pair or group after multiple pulls.<br><br>
-            • The book keeps putting them there on purpose
+            <b>⭐ MGM Exact · 🤝 Exact Match · 🔢 Match 25/50/75 · 💙 FD Pattern</b><br>
+            Exact prices across books / players. FD ≥ +400 ending 10/20/30/60/70/90.
         </div>
-
-        <div class="gloss-card">
-            <b>Stayed in group 3x / 4x</b><br>
-            Same MGM spot on 3+ different fetches.<br><br>
-            • Stronger than a one-time group
-        </div>
-
-        <div class="gloss-card">
-            <b>Last one left</b><br>
-            Started in a bigger MGM group. Only one still standing.<br><br>
-            • One of the strongest signals we track
-        </div>
-
-        <div class="gloss-card">
-            <b>⭐ MGM Exact</b><br>
-            Two or more players on BetMGM share the <b>exact same price</b>.<br><br>
-            • Same team
-        </div>
-
-        <div class="gloss-card">
-            <b>🤝 Exact Match</b><br>
-            Two or more books have the exact same price on the same player.
-        </div>
-
-        <div class="gloss-card">
-            <b>🔢 Match 25 / 50 / 75</b><br>
-            Same player shows that ending on more than one book.
-        </div>
-
-        <div class="gloss-card">
-            <b>💙 FD Pattern</b><br>
-            FanDuel high-price pattern.<br><br>
-            • Price is <b>+400 or higher</b><br>
-            • Ends in 10, 20, 30, 60, 70, or 90
-        </div>
-
-        <div class="gloss-card">
-            <b>Same on 3+ books</b><br>
-            Three or more books have the identical price on this player.
-        </div>
-
         <div class="gloss-card">
             <b>📉 Trends</b><br>
-            Line movement across fetches.<br><br>
-            • <b>Shortening</b> — price went down on that book<br>
-            • <b>Lengthening</b> — price went up on that book<br>
-            • <b>Multi-book Shorten / Lengthen</b> — same direction on 2+ books<br>
-            • No stuck spam<br>
-            • Needs multiple fetches
+            Shortening / Lengthening only. Multi-book = same direction on 2+ books.
         </div>
-
         <div class="gloss-card">
             <b>👻 Late Adds</b><br>
-            Who showed up or disappeared on the books.<br><br>
-            • <b>Just Appeared</b> — on a book now, wasn’t on the last pull<br>
-            • <b>Added Late</b> — missing earlier, just showed up<br>
-            • <b>Gone Missing</b> — was there, now gone<br>
-            • FanDuel, DraftKings, and BetMGM only
+            Just Appeared / Added Late / Gone Missing on FD, DK, MGM only.
         </div>
-
         <div class="gloss-card">
             <b>💀 Fallen Off</b><br>
-            Was on the +EV board last pull. Not on it this pull.<br><br>
-            Reasons we tag when we can:<br>
+            Was on +EV last pull, gone this pull.<br><br>
             • Was BET THIS<br>
             • Lost core methods<br>
             • Only 1 book left<br>
-            • Line gone / not on books<br>
-            • Needs 2+ fetches
+            • Line gone / not on books
         </div>
-
         <div class="gloss-card">
-            <b>💅 Same Init</b><br>
-            Same first letter + same last letter.<br><br>
-            • Example: Marcus Morris & Matt McLain = MM<br>
-            • Both need 3+ core methods<br>
-            • Both need a personal strong flag<br>
-            • Different teams only<br>
-            • Max {NAME_MAX_PAIRS} pairs
+            <b>💅 Name Magic</b><br>
+            Both need 3+ core + personal strong.<br>
+            Different teams only. Max {NAME_MAX_PAIRS} pairs per tab.<br>
+            “Only in an MGM group” is not personal strong.
         </div>
-
         <div class="gloss-card">
-            <b>🔄 Cross Init</b><br>
-            One player’s last initial matches the other player’s first initial.<br><br>
-            • Both need 3+ core + personal strong<br>
-            • Different teams only<br>
-            • Max {NAME_MAX_PAIRS} pairs
-        </div>
-
-        <div class="gloss-card">
-            <b>👩‍👧 Same Last / 👯 Same First</b><br>
-            Exact same last name or first name.<br><br>
-            • Both need 3+ core + personal strong<br>
-            • Different teams only<br>
-            • Max {NAME_MAX_PAIRS} pairs
-        </div>
-
-        <div class="gloss-card">
-            <b>Personal strong</b> (for Name Magic)<br>
-            Counts as strong for name pairs:<br><br>
-            • DK 10<br>
-            • FD Pattern<br>
-            • Exact Match<br>
-            • Match 25 / 50 / 75<br>
-            • Last one left<br>
-            • Multi-book Shorten / Lengthen<br>
-            • Same on 3+ books<br><br>
-            “Only in an MGM group” does <b>not</b> count as personal strong.
-        </div>
-
-        <div class="gloss-card">
-            <b>Confidence Meter</b><br>
-            The little bars under each card.<br><br>
-            • More filled = stronger mix of core methods + edge
-        </div>
-
-        <div class="gloss-card">
-            <b>History</b><br>
-            Snaps save so Trends, Late Adds, and Fallen Off work across refreshes.<br><br>
-            • Clears after ~18 hours (new slate day)
-        </div>
-
-        <div class="gloss-card">
-            <b>🔄 Auto-refresh</b><br>
-            Every 30 minutes while this tab is open.<br><br>
-            • Selected games re-fetch automatically
+            <b>History / Auto</b><br>
+            Snaps save across refreshes (~18h). Auto-fetch every 30 min while tab is open.
         </div>
         """, unsafe_allow_html=True)
 
