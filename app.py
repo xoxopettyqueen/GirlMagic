@@ -2,7 +2,7 @@
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
 ONLY 0.5 (1 HR) lines — no 2+/3+
-Auto-refetch every 30 min + persistent history + tight name magic (max 50/tab)
++ Fallen Off tracking
 """
 
 import streamlit as st
@@ -40,21 +40,17 @@ st.markdown("""
     .warning-box { background: #3b0764; border: 2px solid #f472b6; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; font-size: 0.95rem; }
     .info-box { background: #1a0f28; border: 1px solid #a855f7; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.9rem; }
     .stButton > button { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; padding: 0.55rem 1.3rem !important; box-shadow: 0 3px 14px rgba(219, 39, 119, 0.45); }
-    .petty-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
-    .petty-box { flex: 1; min-width: 90px; background: #1a0f28; border: 1px solid #f472b6; border-radius: 12px; padding: 12px 8px; text-align: center; box-shadow: 0 0 12px rgba(244, 114, 182, 0.15); }
-    .petty-num { font-size: 1.5rem; font-weight: 800; color: #f9a8d4; line-height: 1.1; }
-    .petty-label { font-size: 0.65rem; color: #e9d5ff; margin-top: 4px; letter-spacing: 0.3px; }
+    .petty-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .petty-box { flex: 1; min-width: 80px; background: #1a0f28; border: 1px solid #f472b6; border-radius: 12px; padding: 10px 6px; text-align: center; box-shadow: 0 0 12px rgba(244, 114, 182, 0.15); }
+    .petty-num { font-size: 1.4rem; font-weight: 800; color: #f9a8d4; line-height: 1.1; }
+    .petty-label { font-size: 0.6rem; color: #e9d5ff; margin-top: 4px; letter-spacing: 0.2px; }
     .card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #f472b6; border-radius: 12px; padding: 9px 12px; margin: 0; color: #fdf2f8; box-shadow: 0 4px 14px rgba(0,0,0,0.35); position: relative; height: 100%; font-size: 0.93rem; }
-    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: 12px 0 0 12px; }
-    .high::before { background: linear-gradient(180deg, #f472b6, #c026d3); }
-    .strong::before { background: linear-gradient(180deg, #e879f9, #a855f7); }
-    .medium::before { background: linear-gradient(180deg, #c084fc, #7c3aed); }
-    .low::before { background: #6b7280; }
-    .skip-card::before { background: #4b5563; }
-    .bet { background: linear-gradient(155deg, #0c2418, #143d28) !important; border: 1px solid #34d399 !important; box-shadow: 0 0 16px rgba(52, 211, 153, 0.28); }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: 12px 0 0 12px; background: #f472b6; }
+    .bet { background: linear-gradient(155deg, #0c2418, #143d28) !important; border: 1px solid #34d399 !important; }
     .skip { background: #14101c !important; border: 1px solid #4b5563 !important; opacity: 0.78; }
     .tag { display: inline-block; background: #3b0764; color: #f9a8d4; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin: 2px 3px 2px 0; border: 1px solid #a855f7; }
     .tag-green { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
+    .tag-red { background: #450a0a; color: #fca5a5; border-color: #f87171; }
     .queen-banner { display: inline-block; background: linear-gradient(90deg, #db2777, #9333ea); color: white; font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 16px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
     .meter { display: flex; gap: 3px; margin: 4px 0 6px 0; }
     .meter-bar { height: 6px; width: 18px; border-radius: 3px; background: #374151; }
@@ -63,7 +59,7 @@ st.markdown("""
     .meter-bar.filled-medium { background: linear-gradient(90deg, #c084fc, #7c3aed); }
     .meter-bar.filled-low { background: #6b7280; }
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] { background: #1a0f28; border-radius: 8px; color: #f9a8d4; font-weight: 600; padding: 7px 9px; font-size: 0.8rem; }
+    .stTabs [data-baseweb="tab"] { background: #1a0f28; border-radius: 8px; color: #f9a8d4; font-weight: 600; padding: 7px 8px; font-size: 0.78rem; }
     .stTabs [aria-selected="true"] { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; }
     .footer { text-align: center; color: #f9a8d4; font-size: 0.95rem; margin-top: 36px; letter-spacing: 1.1px; opacity: 0.9; padding-bottom: 20px; }
     .grid-card { margin-bottom: 7px; }
@@ -86,15 +82,13 @@ METHODS_MIN = 2
 OUTLIER_GAP = 150
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
-NAME_MAX_PAIRS = 50  # max pairs shown per name tab
+NAME_MAX_PAIRS = 50
 
-# Personal strong flags only (NOT "in an MGM group")
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
     "Match 25", "Match 50", "Match 75",
     "Last one left", "Multi-book Shorten", "Multi-book Lengthen", "Same on 3+ books"
 }
-
 NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing",
     "Multi-book Stuck", "Price moved", "Stayed the same", "Way different"
@@ -114,9 +108,7 @@ def count_core_methods(meths):
 
 def has_personal_strong(meths):
     for m in meths:
-        if m in PERSONAL_STRONG:
-            return True
-        if m.startswith("Match "):
+        if m in PERSONAL_STRONG or m.startswith("Match "):
             return True
     return False
 
@@ -157,8 +149,7 @@ def get_initials(name):
     return parts[0][0].upper(), parts[-1][0].upper()
 
 def now_az():
-    az = timezone(timedelta(hours=-7))
-    return datetime.now(az).strftime("%I:%M %p")
+    return datetime.now(timezone(timedelta(hours=-7))).strftime("%I:%M %p")
 
 def now_utc_iso():
     return datetime.now(timezone.utc).isoformat()
@@ -168,10 +159,8 @@ def smart_best(prices, books):
         return None, None
     paired = sorted(zip(prices, books), key=lambda x: x[0], reverse=True)
     best_p, best_b = paired[0]
-    if len(paired) >= 2:
-        second_p, second_b = paired[1]
-        if best_p - second_p >= OUTLIER_GAP:
-            return second_p, second_b
+    if len(paired) >= 2 and best_p - paired[1][0] >= OUTLIER_GAP:
+        return paired[1][0], paired[1][1]
     return best_p, best_b
 
 def get_confidence(methods, edge, is_bet):
@@ -209,50 +198,38 @@ def load_history():
             age = datetime.now(timezone.utc) - datetime.fromisoformat(saved_at)
             if age > timedelta(hours=HISTORY_MAX_AGE_HOURS):
                 return
-        ph = []
-        for snap in data.get("price_history", []):
-            ph.append({tuple(k.split("||", 1)): v for k, v in snap.items()})
+        ph = [{tuple(k.split("||", 1)): v for k, v in snap.items()} for snap in data.get("price_history", [])]
         st.session_state["price_history"] = ph[-8:]
-        pr = []
-        for snap in data.get("presence_history", []):
-            pr.append({tuple(x) for x in snap})
+        pr = [{tuple(x) for x in snap} for snap in data.get("presence_history", [])]
         st.session_state["presence_history"] = pr[-12:]
         mh = []
         for snap in data.get("mgm_history", []):
-            restored = []
-            for g in snap:
-                restored.append({
-                    "event": g["event"],
-                    "ending": g["ending"],
-                    "players": frozenset(g["players"])
-                })
-            mh.append(restored)
+            mh.append([{"event": g["event"], "ending": g["ending"], "players": frozenset(g["players"])} for g in snap])
         st.session_state["mgm_history"] = mh[-8:]
+        # previous EV snapshot
+        if "prev_ev" in data:
+            st.session_state["prev_ev"] = data["prev_ev"]
     except Exception:
         pass
 
-def save_history():
+def save_history(prev_ev=None):
     try:
-        ph = []
-        for snap in st.session_state.get("price_history", []):
-            ph.append({f"{a}||{b}": v for (a, b), v in snap.items()})
-        pr = []
-        for snap in st.session_state.get("presence_history", []):
-            pr.append([[a, b] for a, b in snap])
-        mh = []
-        for snap in st.session_state.get("mgm_history", []):
-            mh.append([{
-                "event": g["event"],
-                "ending": g["ending"],
-                "players": list(g["players"])
-            } for g in snap])
+        ph = [{f"{a}||{b}": v for (a, b), v in snap.items()} for snap in st.session_state.get("price_history", [])]
+        pr = [[[a, b] for a, b in snap] for snap in st.session_state.get("presence_history", [])]
+        mh = [[{"event": g["event"], "ending": g["ending"], "players": list(g["players"])} for g in snap]
+              for snap in st.session_state.get("mgm_history", [])]
+        payload = {
+            "saved_at": now_utc_iso(),
+            "price_history": ph,
+            "presence_history": pr,
+            "mgm_history": mh,
+        }
+        if prev_ev is not None:
+            payload["prev_ev"] = prev_ev
+        elif "prev_ev" in st.session_state:
+            payload["prev_ev"] = st.session_state["prev_ev"]
         with open(HISTORY_FILE, "w") as f:
-            json.dump({
-                "saved_at": now_utc_iso(),
-                "price_history": ph,
-                "presence_history": pr,
-                "mgm_history": mh
-            }, f)
+            json.dump(payload, f)
     except Exception:
         pass
 
@@ -302,8 +279,7 @@ def fetch_sgo_hr_props(sgo_key):
     rows, found = [], set()
     try:
         r = requests.get(f"{SGO_BASE}/events", params={
-            "apiKey": sgo_key, "leagueID": "MLB",
-            "oddsAvailable": "true", "limit": 25
+            "apiKey": sgo_key, "leagueID": "MLB", "oddsAvailable": "true", "limit": 25
         }, timeout=25)
         if r.status_code != 200:
             return rows, found
@@ -384,17 +360,16 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
 
 def run_flags(df, previous_df=None):
     if df.empty:
-        return [], []
+        return [], [], []
 
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
+    all_players_now = set(df["player"].unique())
 
+    # presence
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
-    current_presence = set()
-    for _, r in df.iterrows():
-        if r["book"] in LATE_BOOKS:
-            current_presence.add((r["player"], r["book"]))
+    current_presence = {(r["player"], r["book"]) for _, r in df.iterrows() if r["book"] in LATE_BOOKS}
     st.session_state["presence_history"].append(current_presence)
     st.session_state["presence_history"] = st.session_state["presence_history"][-12:]
 
@@ -405,20 +380,21 @@ def run_flags(df, previous_df=None):
             early |= snap
         latest, previous = hist[-1], hist[-2]
         for player, book in latest - previous:
-            results.append({"type": "late", "label": player,
-                "reason": f"Just appeared on {book}", "event": "", "css": "hist", "methods": ["Just Appeared"]})
+            results.append({"type": "late", "label": player, "reason": f"Just appeared on {book}",
+                            "event": "", "css": "hist", "methods": ["Just Appeared"]})
             methods_map[player].append("Just Appeared")
         for player, book in latest - early:
             if (player, book) in previous:
                 continue
-            results.append({"type": "late", "label": player,
-                "reason": f"Added late on {book}", "event": "", "css": "hist", "methods": ["Added Late"]})
+            results.append({"type": "late", "label": player, "reason": f"Added late on {book}",
+                            "event": "", "css": "hist", "methods": ["Added Late"]})
             methods_map[player].append("Added Late")
         for player, book in previous - latest:
-            results.append({"type": "late", "label": player,
-                "reason": f"Gone missing from {book}", "event": "", "css": "hist", "methods": ["Gone Missing"]})
+            results.append({"type": "late", "label": player, "reason": f"Gone missing from {book}",
+                            "event": "", "css": "hist", "methods": ["Gone Missing"]})
             methods_map[player].append("Gone Missing")
 
+    # price trends
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
@@ -460,6 +436,7 @@ def run_flags(df, previous_df=None):
                     "event": "", "css": "hist", "methods": ["Multi-book Lengthen"]})
                 methods_map[player].append("Multi-book Lengthen")
 
+    # DK / MGM / Exact / Digits / FD / Signals (same as before)
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -515,14 +492,11 @@ def run_flags(df, previous_df=None):
             for n in names:
                 c = mgm_stayed.get(n, 0)
                 if c >= 3:
-                    meth.append(f"Stayed in group {c}x")
-                    extra.append(f"Stayed in group {c}x")
+                    meth.append(f"Stayed in group {c}x"); extra.append(f"Stayed in group {c}x")
                 elif c >= 2:
-                    meth.append("Stayed in the group")
-                    extra.append("Stayed in the group")
+                    meth.append("Stayed in the group"); extra.append("Stayed in the group")
                 if n in survivor:
-                    meth.append("Last one left")
-                    extra.append("Last one left")
+                    meth.append("Last one left"); extra.append("Last one left")
             reason = f"MGM {'pair' if len(names)==2 else 'group of '+str(len(names))} ends in {d:02d}"
             if extra:
                 reason += " • " + " + ".join(set(extra))
@@ -595,8 +569,7 @@ def run_flags(df, previous_df=None):
                     "event": row["event"], "css": "hist", "methods": ["Price moved"]})
                 methods_map[row["player"]].append("Price moved")
 
-    save_history()
-
+    # +EV board
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -636,7 +609,56 @@ def run_flags(df, previous_df=None):
         })
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
-    # ── Name magic (strict + max 50 per type) ─────────────────
+    # ── Fallen Off: was on +EV last pull, not on this pull ──
+    current_ev = {
+        item["player"]: {
+            "methods": item["methods"],
+            "edge": item["edge"],
+            "is_bet": item["is_bet"],
+            "method_count": item["method_count"],
+        }
+        for item in ev_board
+    }
+    prev_ev = st.session_state.get("prev_ev", {})
+    fallen = []
+    for player, old in prev_ev.items():
+        if player in current_ev:
+            continue
+        # diagnose why
+        now_meths = list(set(methods_map.get(player, [])))
+        now_core = count_core_methods(now_meths)
+        n_books = len(df[df["player"] == player]) if player in all_players_now else 0
+        reasons = []
+        if player not in all_players_now:
+            reasons.append("Line gone / not on books")
+        elif n_books < 2:
+            reasons.append("Only 1 book left")
+        elif now_core < METHODS_MIN:
+            reasons.append(f"Lost core methods ({now_core} left)")
+            lost = set(old.get("methods", [])) - set(m for m in now_meths if is_core_method(m))
+            if lost:
+                reasons.append("Lost: " + ", ".join(list(lost)[:4]))
+        else:
+            reasons.append("Dropped under filters")
+        if old.get("is_bet"):
+            reasons.insert(0, "Was BET THIS")
+        fallen.append({
+            "type": "fallen",
+            "label": player,
+            "reason": " · ".join(reasons),
+            "event": "",
+            "css": "hist",
+            "methods": ["Fallen Off"] + (["Was BET THIS"] if old.get("is_bet") else []),
+            "old_methods": old.get("methods", []),
+            "old_edge": old.get("edge", 0),
+        })
+        results.append(fallen[-1])
+
+    # save current EV as previous for next pull
+    st.session_state["prev_ev"] = current_ev
+    save_history(prev_ev=current_ev)
+
+    # Name magic (strict)
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -644,24 +666,9 @@ def run_flags(df, previous_df=None):
     def diff_team(a, b):
         return len(pev[a] & pev[b]) == 0
 
-    # Both need 3+ core AND both need a personal strong flag
-    pool = []
-    for p, ms in methods_map.items():
-        if count_core_methods(ms) >= NAME_METHODS_MIN and has_personal_strong(ms):
-            pool.append(p)
+    pool = [p for p, ms in methods_map.items()
+            if count_core_methods(ms) >= NAME_METHODS_MIN and has_personal_strong(ms)]
 
-    def add_pairs(typ, pairs, method_label, reason_fn):
-        # pairs = list of (a, b) already filtered to different teams
-        # sort by combined core strength roughly alphabetically then cap
-        pairs = sorted(pairs, key=lambda x: (x[0], x[1]))[:NAME_MAX_PAIRS]
-        for a, b in pairs:
-            results.append({
-                "type": typ, "label": f"{a} + {b}",
-                "reason": reason_fn(a, b),
-                "event": "", "css": "name", "methods": [method_label]
-            })
-
-    # Same Init — different teams only, max 50
     init_map = defaultdict(list)
     for p in pool:
         f, l = get_initials(p)
@@ -673,12 +680,10 @@ def run_flags(df, previous_df=None):
             for b in names[i+1:]:
                 if diff_team(a, b):
                     init_pairs.append((a, b, k))
-    init_pairs = sorted(init_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
-    for a, b, k in init_pairs:
+    for a, b, k in sorted(init_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "same_init", "label": f"{a} + {b}",
             "reason": f"Same initials {k} (different teams)", "event": "", "css": "name", "methods": ["Same Init"]})
 
-    # Cross Init — different teams only, max 50
     cross_pairs = []
     for i, a in enumerate(pool):
         _, l1 = get_initials(a)
@@ -688,12 +693,10 @@ def run_flags(df, previous_df=None):
             f2, _ = get_initials(b)
             if f2 and l1 == f2 and diff_team(a, b):
                 cross_pairs.append((a, b, l1))
-    cross_pairs = sorted(cross_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
-    for a, b, letter in cross_pairs:
+    for a, b, letter in sorted(cross_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "cross", "label": f"{a} + {b}",
             "reason": f"Cross initials ({letter}) (different teams)", "event": "", "css": "name", "methods": ["Cross Init"]})
 
-    # Same Last — different teams only, max 50
     last_map = defaultdict(list)
     for p in pool:
         parts = clean_name(p).split()
@@ -705,12 +708,10 @@ def run_flags(df, previous_df=None):
             for b in names[i+1:]:
                 if diff_team(a, b):
                     last_pairs.append((a, b, last))
-    last_pairs = sorted(last_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
-    for a, b, last in last_pairs:
+    for a, b, last in sorted(last_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "last", "label": f"{a} + {b}",
             "reason": f"Same last name ({last.title()}) (different teams)", "event": "", "css": "name", "methods": ["Same Last"]})
 
-    # Same First — different teams only, max 50
     first_map = defaultdict(list)
     for p in pool:
         parts = clean_name(p).split()
@@ -722,12 +723,11 @@ def run_flags(df, previous_df=None):
             for b in names[i+1:]:
                 if diff_team(a, b):
                     first_pairs.append((a, b, first))
-    first_pairs = sorted(first_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]
-    for a, b, first in first_pairs:
+    for a, b, first in sorted(first_pairs, key=lambda x: (x[2], x[0], x[1]))[:NAME_MAX_PAIRS]:
         results.append({"type": "first", "label": f"{a} + {b}",
             "reason": f"Same first name ({first.title()}) (different teams)", "event": "", "css": "name", "methods": ["Same First"]})
 
-    return results, ev_board
+    return results, ev_board, fallen
 
 def main():
     if "history_loaded" not in st.session_state:
@@ -738,7 +738,6 @@ def main():
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     else:
         refresh_count = 0
-        st.caption("Add `streamlit-autorefresh` to requirements.txt for auto-fetch every 30 min.")
 
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
@@ -748,9 +747,9 @@ def main():
     st.markdown(f"""
     <div class="how-to">
         👑 <b>The Code</b> → BET THIS only when <b>2+ core methods</b> hit <b>and</b> edge ≥ 60<br>
-        🎯 <b>Market</b> → Over 0.5 HR only (1 homer) — no 2+ / 3+ lines<br>
+        🎯 <b>Market</b> → Over 0.5 HR only (1 homer)<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
-        🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min while open · History snaps: <b>{hist_n}</b>
+        🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History snaps: <b>{hist_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
@@ -777,16 +776,12 @@ def main():
 
     if "last_refresh_count" not in st.session_state:
         st.session_state["last_refresh_count"] = refresh_count
-    auto_fetch = (
-        HAS_AUTOREFRESH
-        and refresh_count != st.session_state["last_refresh_count"]
-        and bool(chosen)
-    )
+    auto_fetch = HAS_AUTOREFRESH and refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
     if auto_fetch:
         st.session_state["last_refresh_count"] = refresh_count
 
     if (manual_fetch or auto_fetch) and chosen:
-        with st.spinner("Fetching odds…" if manual_fetch else f"Auto-refresh ({REFRESH_MINUTES} min)…"):
+        with st.spinner("Fetching odds…" if manual_fetch else "Auto-refresh…"):
             df, found = do_fetch(odds_key, sgo_key, chosen, options)
         if df is not None and not df.empty:
             if "odds" in st.session_state:
@@ -794,31 +789,25 @@ def main():
             st.session_state["odds"] = df.to_dict("records")
             st.session_state["found_books"] = sorted(found)
             st.session_state["last_fetch_time"] = now_az()
-            msg = "Auto-refreshed" if auto_fetch else "Loaded"
-            st.success(f"{msg} {len(df)} props · {st.session_state['last_fetch_time']} AZ · History: {len(st.session_state.get('price_history', []))} snaps")
+            st.success(f"{'Auto-refreshed' if auto_fetch else 'Loaded'} {len(df)} props · {st.session_state['last_fetch_time']} AZ")
         else:
             st.warning("No 0.5 HR odds returned.")
 
-    last_t = st.session_state.get("last_fetch_time")
-    if last_t:
-        st.caption(f"Last fetch: {last_t} AZ · History snaps: {len(st.session_state.get('price_history', []))} · Auto every {REFRESH_MINUTES} min while open")
+    if st.session_state.get("last_fetch_time"):
+        st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ · History: {hist_n} snaps")
 
     found = st.session_state.get("found_books", [])
     if found:
         missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
         st.markdown(f'<div class="info-box"><b>Books in use:</b> {", ".join(found)}</div>', unsafe_allow_html=True)
         if missing:
-            st.markdown(f'''
-            <div class="warning-box">
-                ⚠️ <b>Still missing:</b> {", ".join(missing)}<br>
-                MGM usually drops later (often morning).
-            </div>''', unsafe_allow_html=True)
+            st.markdown(f'<div class="warning-box">⚠️ <b>Still missing:</b> {", ".join(missing)}</div>', unsafe_allow_html=True)
 
     odds = st.session_state.get("odds", [])
     prev = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     prev_df = pd.DataFrame(prev) if prev else None
-    results, ev_board = run_flags(df, prev_df) if not df.empty else ([], [])
+    results, ev_board, fallen = run_flags(df, prev_df) if not df.empty else ([], [], [])
 
     counts = {
         "dk": len([r for r in results if r["type"] == "dk"]),
@@ -828,48 +817,48 @@ def main():
         "name": len([r for r in results if r["type"] in ("same_init", "cross", "last", "first")]),
         "late": len([r for r in results if r["type"] == "late"]),
         "trend": len([r for r in results if r["type"] == "trend"]),
-        "bets": len([e for e in ev_board if e["is_bet"]])
+        "fallen": len(fallen),
+        "bets": len([e for e in ev_board if e["is_bet"]]),
     }
 
     st.markdown(f"""
     <div class="petty-row">
         <div class="petty-box"><div class="petty-num">{counts['bets']}</div><div class="petty-label">🟢 BET THIS</div></div>
         <div class="petty-box"><div class="petty-num">{counts['dk']}</div><div class="petty-label">🎯 DK 10s</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['mgm']}</div><div class="petty-label">🎰 MGM Groups</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['match']}</div><div class="petty-label">🤝 Exact</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['fd']}</div><div class="petty-label">💙 FD Patterns</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['mgm']}</div><div class="petty-label">🎰 MGM</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['fd']}</div><div class="petty-label">💙 FD</div></div>
         <div class="petty-box"><div class="petty-num">{counts['trend']}</div><div class="petty-label">📉 Trends</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['late']}</div><div class="petty-label">👻 Late Adds</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['name']}</div><div class="petty-label">💅 Name Magic</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['late']}</div><div class="petty-label">👻 Late</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['fallen']}</div><div class="petty-label">💀 Fallen</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['name']}</div><div class="petty-label">💅 Names</div></div>
     </div>
     """, unsafe_allow_html=True)
 
     tabs = st.tabs([
         "🐝 +EV Board", "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
         "🔢 Digits", "💙 FanDuel", "📈 Signals", "⏳ Movement",
-        "📉 Trends", "👻 Late Adds", "💅 Initials", "🔄 Cross",
-        "👩‍👧 Last Name", "👯 First Name", "📖 Glossary"
+        "📉 Trends", "👻 Late Adds", "💀 Fallen Off",
+        "💅 Initials", "🔄 Cross", "👩‍👧 Last Name", "👯 First Name", "📖 Glossary"
     ])
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Only 2+ core methods.** Overnight noise does not count.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
             cols = st.columns(2)
             for idx, item in enumerate(ev_board):
                 with cols[idx % 2]:
-                    tags = "".join(f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:5]) or '<span class="tag">—</span>'
+                    tags = "".join(f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:5]) or ""
                     meter = make_meter(item["bars"], item["level"])
                     cls = "bet" if item["is_bet"] else "skip"
                     label = "🟢 BET THIS" if item["is_bet"] else "⚪ SKIP"
                     st.markdown(f'''
-                    <div class="card {cls} grid-card {item["css"]}">
+                    <div class="card {cls} grid-card">
                         <b>{label}</b> — <b>{item["player"]}</b><br>{meter}
                         Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
                         Most books: {format_odds(item["median"])}<br>
-                        Edge: {int(item["edge"])} · Core methods: {item.get("method_count", 0)}<br>
+                        Edge: {int(item["edge"])} · Core: {item.get("method_count", 0)}<br>
                         {tags}<br><small>{item["why"]}</small>
                     </div>''', unsafe_allow_html=True)
 
@@ -886,43 +875,58 @@ def main():
                 with cols[idx % 2]:
                     tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("methods", []))
                     st.markdown(f'''
-                    <div class="card {r["css"]} grid-card">
+                    <div class="card grid-card">
                         <b>{r["label"]}</b><br>{r["reason"]}<br>{tags}
-                        <br><small>{r.get("event","")}</small>
                     </div>''', unsafe_allow_html=True)
 
-    show(tabs[1], "dk", "🎯 DraftKings 10s", "DK prices ending in 10.")
-    show(tabs[2], "mgm", "🎰 BetMGM Magic — Same Team Only", "Pairs & groups. Stayed in the group / Last one left.")
-    show(tabs[3], "match", "🤝 Exact Match", "Same exact price across books.")
-    show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Same exact price on BetMGM for multiple guys.")
-    show(tabs[5], "digit", "🔢 Matching Digits — 25 / 50 / 75", "Same player, those endings, on more than one book.")
-    show(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel ≥ +400 ending in 10 / 20 / 30 / 60 / 70 / 90.")
-    show(tabs[7], "signal", "📈 Signals", "Same on 3+ books only.")
-    show(tabs[8], "hist", "⏳ Price Movement", "Line moved since last pull.")
-    show(tabs[9], "trend", "📉 Trends — Movement Only", "Shortening / Lengthening. Needs 2+ history snaps.")
-    show(tabs[10], "late", "👻 Late Adds — FD / DK / MGM Only", "Just Appeared / Added Late / Gone Missing. Needs 2+ snaps.")
-    show(tabs[11], "same_init", "💅 Same Initials", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
-    show(tabs[12], "cross", "🔄 Cross Initials", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
-    show(tabs[13], "last", "👩‍👧 Same Last Name", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
-    show(tabs[14], "first", "👯 Same First Name", f"Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}.")
+    show(tabs[1], "dk", "🎯 DraftKings 10s", "DK ends in 10.")
+    show(tabs[2], "mgm", "🎰 BetMGM Magic", "Same-team pairs/groups.")
+    show(tabs[3], "match", "🤝 Exact Match", "Same price across books.")
+    show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, multiple guys.")
+    show(tabs[5], "digit", "🔢 Matching Digits", "25 / 50 / 75 across books.")
+    show(tabs[6], "fd", "💙 FanDuel Patterns", "≥ +400 ending 10/20/30/60/70/90.")
+    show(tabs[7], "signal", "📈 Signals", "Same on 3+ books.")
+    show(tabs[8], "hist", "⏳ Movement", "Price moved since last pull.")
+    show(tabs[9], "trend", "📉 Trends", "Shortening / Lengthening. Needs 2+ snaps.")
+    show(tabs[10], "late", "👻 Late Adds", "FD / DK / MGM only. Needs 2+ snaps.")
 
-    with tabs[15]:
-        st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
+    with tabs[11]:
+        st.markdown('<div class="queen-banner">💀 Fallen Off — Was On +EV, Now Gone</div>', unsafe_allow_html=True)
+        st.caption("Players who were on the +EV board last pull and are not on it this pull. Needs 2+ fetches.")
+        if not fallen:
+            st.info("None yet. Fetch twice and anyone who drops off the board will show here.")
+        else:
+            cols = st.columns(2)
+            for idx, r in enumerate(fallen):
+                with cols[idx % 2]:
+                    tags = "".join(f'<span class="tag tag-red">{m}</span>' for m in r.get("methods", []))
+                    old = r.get("old_methods", [])
+                    old_tags = "".join(f'<span class="tag">{m}</span>' for m in old[:4])
+                    edge_note = f" · was edge {int(r.get('old_edge', 0))}" if r.get("old_edge") else ""
+                    st.markdown(f'''
+                    <div class="card grid-card">
+                        <b>{r["label"]}</b>{edge_note}<br>
+                        {r["reason"]}<br>
+                        {tags}<br>
+                        <small>Had: {old_tags or "—"}</small>
+                    </div>''', unsafe_allow_html=True)
+
+    show(tabs[12], "same_init", "💅 Same Initials", f"3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
+    show(tabs[13], "cross", "🔄 Cross Initials", f"3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
+    show(tabs[14], "last", "👩‍👧 Same Last Name", f"3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
+    show(tabs[15], "first", "👯 Same First Name", f"3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
+
+    with tabs[16]:
+        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown(f"""
-        <div class="gloss-card"><b>🟢 BET THIS</b><br>2+ core methods and edge ≥ 60. Overnight noise does not count.</div>
-        <div class="gloss-card"><b>Core methods</b><br>DK 10 · FD Pattern · Exact Match · MGM Exact · Match 25/50/75 · MGM 00/25/50/75 · Stayed in the group · Last one left · Same on 3+ books · Multi-book Shorten / Lengthen</div>
-        <div class="gloss-card"><b>Noise (do not count)</b><br>Just Appeared · Added Late · Gone Missing · Stuck · single-book Shortening/Lengthening · Price moved</div>
-        <div class="gloss-card"><b>Edge</b><br>Best real price − median. Best ignores a lone 150+ outlier. Need 60+.</div>
-        <div class="gloss-card"><b>💅 Name Magic</b><br>
-            Both players need <b>3+ core methods</b> and a <b>personal strong</b> flag (DK 10, FD Pattern, Exact Match, Match 25/50/75, Last one left, Multi-book Shorten/Lengthen — not “just in an MGM group”).<br>
-            <b>Different teams only</b> for all name types.<br>
-            Max <b>{NAME_MAX_PAIRS}</b> pairs per name tab.
-        </div>
-        <div class="gloss-card"><b>History</b><br>Snaps save to a file so Trends / Late Adds work across refreshes (clears after ~18 hours).</div>
-        <div class="gloss-card"><b>🔄 Auto-refresh</b><br>Every 30 min while this tab is open.</div>
+        <div class="gloss-card"><b>🟢 BET THIS</b> — 2+ core methods and edge ≥ 60.</div>
+        <div class="gloss-card"><b>💀 Fallen Off</b> — Was on the +EV board last pull, not on this pull.<br>
+        Reasons we tag: Was BET THIS · Lost core methods · Only 1 book left · Line gone / not on books.</div>
+        <div class="gloss-card"><b>💅 Name Magic</b> — Both need 3+ core + personal strong. Different teams only. Max {NAME_MAX_PAIRS}/tab.</div>
+        <div class="gloss-card"><b>History</b> — Snaps save so Trends / Late Adds / Fallen Off work across refreshes (~18h).</div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<div class="footer">👑 Girl Magic • Where intuition meets odds analytics.<br>Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
