@@ -9,7 +9,7 @@ import requests
 from collections import defaultdict
 import statistics
 from datetime import datetime
-import pytz
+
 
 st.set_page_config(
     page_title="Girl Magic Odds ✨",
@@ -248,7 +248,6 @@ CORE_BOOKS = {
 
 EDGE_MIN = 60
 METHODS_MIN = 2
-AZ = pytz.timezone("America/Phoenix")
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -278,7 +277,10 @@ def get_initials(name):
     return parts[0][0].upper(), parts[-1][0].upper()
 
 def now_az():
-    return datetime.now(AZ).strftime("%I:%M %p")
+    # Arizona is UTC-7 year-round (no daylight saving)
+    from datetime import timezone, timedelta
+    az = timezone(timedelta(hours=-7))
+    return datetime.now(az).strftime("%I:%M %p")
 
 def get_confidence(methods, edge, is_bet):
     if not is_bet:
