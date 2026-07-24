@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-ONLY 0.5 (1 HR) · Girl Magic Score 0–100 · Fallen Off · History
+ONLY 0.5 HR · Score 0–100 · Tight Trends · Fallen Off
 """
 
 import streamlit as st
@@ -42,6 +42,8 @@ st.markdown("""
     .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: 12px 0 0 12px; background: #f472b6; }
     .bet { background: linear-gradient(155deg, #0c2418, #143d28) !important; border: 1px solid #34d399 !important; }
     .skip { background: #14101c !important; border: 1px solid #4b5563 !important; opacity: 0.8; }
+    .good-card { border-color: #34d399 !important; }
+    .fade-card { border-color: #f87171 !important; opacity: 0.9; }
     .score-pill { display: inline-block; background: linear-gradient(90deg, #db2777, #9333ea); color: white; font-weight: 800; font-size: 0.95rem; padding: 2px 10px; border-radius: 12px; margin-left: 6px; }
     .tag { display: inline-block; background: #3b0764; color: #f9a8d4; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin: 2px 3px 2px 0; border: 1px solid #a855f7; }
     .tag-green { background: #064e3b; color: #6ee7b7; border-color: #34d399; }
@@ -78,6 +80,7 @@ OUTLIER_GAP = 150
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
+BIG_MOVE = 100  # pts
 
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "Exact Match", "MGM Exact",
@@ -86,13 +89,15 @@ PERSONAL_STRONG = {
 }
 NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing",
-    "Multi-book Stuck", "Price moved", "Stayed the same", "Way different"
+    "Multi-book Stuck", "Price moved", "Stayed the same", "Way different",
+    "Shortening", "Lengthening"
 }
 
 def is_core_method(m):
     if m in NOISE_METHODS: return False
     if m.startswith("Shortening (") or m.startswith("Lengthening ("): return False
     if m.startswith("Stayed ") and "times" in m and "group" not in m.lower(): return False
+    if m.startswith("FADE") or m.startswith("FD under"): return False
     return True
 
 def count_core_methods(meths):
@@ -102,12 +107,8 @@ def has_personal_strong(meths):
     return any(m in PERSONAL_STRONG or m.startswith("Match ") for m in meths)
 
 def girl_magic_score(core_count, edge, methods):
-    """0–100 rank score. Edge pts can be 100+; score is always capped at 100."""
-    # Methods: up to 50 (10 pts each, max 5 counted for this bucket)
     method_pts = min(core_count, 5) * 10
-    # Edge: scale so 60 → ~15, 120 → ~30, 180+ → 40
     edge_pts = min(40, max(0, int((edge / 180) * 40)))
-    # Bonuses: up to 10
     bonus = 0
     if "Last one left" in methods: bonus += 5
     if any("Stayed in group" in m or m == "Stayed in the group" for m in methods): bonus += 3
@@ -320,6 +321,7 @@ def run_flags(df, previous_df=None):
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
 
+    # presence / late adds
     if "presence_history" not in st.session_state:
         st.session_state["presence_history"] = []
     current_presence = {(r["player"], r["book"]) for _, r in df.iterrows() if r["book"] in LATE_BOOKS}
@@ -346,6 +348,7 @@ def run_flags(df, previous_df=None):
                             "event": "", "css": "hist", "methods": ["Gone Missing"]})
             methods_map[player].append("Gone Missing")
 
+    # ── TIGHT TRENDS ──────────────────────────────────────────
     if "price_history" not in st.session_state:
         st.session_state["price_history"] = []
     snap = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
@@ -355,36 +358,59 @@ def run_flags(df, previous_df=None):
     phist = st.session_state["price_history"]
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
-        shorten_by_player, lengthen_by_player = defaultdict(list), defaultdict(list)
         for key, curr_price in curr_snap.items():
             player, book = key
-            if key not in prev_snap: continue
+            if key not in prev_snap:
+                continue
             prev_price = prev_snap[key]
-            if curr_price < prev_price:
-                shorten_by_player[player].append(book)
-                results.append({"type": "trend", "label": player,
-                    "reason": f"Shortening on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}",
-                    "event": "", "css": "hist", "methods": [f"Shortening ({book})"]})
-                methods_map[player].append(f"Shortening ({book})")
-            elif curr_price > prev_price:
-                lengthen_by_player[player].append(book)
-                results.append({"type": "trend", "label": player,
-                    "reason": f"Lengthening on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}",
-                    "event": "", "css": "hist", "methods": [f"Lengthening ({book})"]})
-                methods_map[player].append(f"Lengthening ({book})")
-        for player, books in shorten_by_player.items():
-            if len(books) >= 2:
-                results.append({"type": "trend", "label": player,
-                    "reason": f"Shortening on {len(books)} books: {', '.join(books)}",
-                    "event": "", "css": "hist", "methods": ["Multi-book Shorten"]})
-                methods_map[player].append("Multi-book Shorten")
-        for player, books in lengthen_by_player.items():
-            if len(books) >= 2:
-                results.append({"type": "trend", "label": player,
-                    "reason": f"Lengthening on {len(books)} books: {', '.join(books)}",
-                    "event": "", "css": "hist", "methods": ["Multi-book Lengthen"]})
-                methods_map[player].append("Multi-book Lengthen")
+            delta = curr_price - prev_price
 
+            # Shot way up (lengthen ≥ 100) → FADE
+            if delta >= BIG_MOVE:
+                results.append({
+                    "type": "trend", "trend_kind": "fade", "label": player,
+                    "reason": f"🔴 Shot way up on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} (+{int(delta)})",
+                    "event": "", "css": "hist", "methods": ["FADE · Shot way up"]
+                })
+            # Drop more than 100 → FADE
+            elif delta <= -BIG_MOVE:
+                results.append({
+                    "type": "trend", "trend_kind": "fade", "label": player,
+                    "reason": f"🔴 Dropped >100 on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(delta)})",
+                    "event": "", "css": "hist", "methods": ["FADE · Drop >100"]
+                })
+            # smaller moves not listed (noise)
+
+    # Cross-book structure (current snapshot only)
+    for player, g in df.groupby("player"):
+        by_book = {r["book"]: r["price"] for _, r in g.iterrows()}
+        fd = by_book.get("fanduel")
+        mgm = None
+        for k, v in by_book.items():
+            if "betmgm" in k or k == "mgm":
+                mgm = v
+                break
+        others = [v for b, v in by_book.items() if b != "fanduel"]
+
+        # 💚 FD 10–100 under MGM
+        if fd is not None and mgm is not None:
+            gap = mgm - fd  # positive if FD is lower (shorter) than MGM
+            if 10 <= gap <= 100:
+                results.append({
+                    "type": "trend", "trend_kind": "good", "label": player,
+                    "reason": f"💚 FD under MGM by {int(gap)} pts · FD {format_odds(fd)} · MGM {format_odds(mgm)}",
+                    "event": "", "css": "hist", "methods": ["FD under MGM"]
+                })
+
+        # 🔴 FD higher than all other books
+        if fd is not None and others and fd > max(others):
+            results.append({
+                "type": "trend", "trend_kind": "fade", "label": player,
+                "reason": f"🔴 FD highest of all books · FD {format_odds(fd)} · others max {format_odds(max(others))}",
+                "event": "", "css": "hist", "methods": ["FADE · FD highest"]
+            })
+
+    # DK / MGM / Exact / Digits / FD / Signals (unchanged core)
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -505,7 +531,7 @@ def run_flags(df, previous_df=None):
                     "event": row["event"], "css": "hist", "methods": ["Price moved"]})
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV with Girl Magic Score
+    # +EV board
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -523,17 +549,15 @@ def run_flags(df, previous_df=None):
         display_meths = [m for m in meths if is_core_method(m)]
         score = girl_magic_score(core_count, edge, display_meths)
         conf, bars, level = get_confidence(score, is_bet)
-        if is_bet:
-            why = f"Score {score}/100 · {core_count} core · Edge pts {int(edge)}. This is the one."
-        else:
-            why = f"Score {score}/100 · {core_count} core · Edge pts {int(edge)} (need {EDGE_MIN}+)."
+        why = (f"Score {score}/100 · {core_count} core · Edge pts {int(edge)}. This is the one."
+               if is_bet else
+               f"Score {score}/100 · {core_count} core · Edge pts {int(edge)} (need {EDGE_MIN}+).")
         ev_board.append({
             "player": player, "best_price": best, "best_book": best_book,
             "median": med, "edge": edge, "is_bet": is_bet, "why": why,
             "methods": display_meths, "score": score, "bars": bars,
             "level": level, "method_count": core_count
         })
-    # BET THIS first by score high→low, then SKIP by score high→low
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["score"], -x["edge"]))
 
     # Fallen Off
@@ -659,7 +683,7 @@ def main():
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer)<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
         🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History snaps: <b>{hist_n}</b><br>
-        📊 <b>Score</b> → 0–100 rank (methods + edge + bonuses). Board sorted high → low.
+        📊 <b>Score</b> → 0–100 · board sorted high → low
     </div>
     """, unsafe_allow_html=True)
 
@@ -718,13 +742,16 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     results, ev_board, fallen = run_flags(df, prev_df) if not df.empty else ([], [], [])
 
+    trend_good = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"]
+    trend_fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
+
     counts = {
         "dk": len([r for r in results if r["type"] == "dk"]),
         "mgm": len([r for r in results if r["type"] == "mgm"]),
         "fd": len([r for r in results if r["type"] == "fd"]),
         "name": len([r for r in results if r["type"] in ("same_init", "cross", "last", "first")]),
         "late": len([r for r in results if r["type"] == "late"]),
-        "trend": len([r for r in results if r["type"] == "trend"]),
+        "trend": len(trend_good),
         "fallen": len(fallen),
         "bets": len([e for e in ev_board if e["is_bet"]]),
     }
@@ -735,7 +762,7 @@ def main():
         <div class="petty-box"><div class="petty-num">{counts['dk']}</div><div class="petty-label">🎯 DK 10s</div></div>
         <div class="petty-box"><div class="petty-num">{counts['mgm']}</div><div class="petty-label">🎰 MGM</div></div>
         <div class="petty-box"><div class="petty-num">{counts['fd']}</div><div class="petty-label">💙 FD</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['trend']}</div><div class="petty-label">📉 Trends</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['trend']}</div><div class="petty-label">💚 FD under MGM</div></div>
         <div class="petty-box"><div class="petty-num">{counts['late']}</div><div class="petty-label">👻 Late</div></div>
         <div class="petty-box"><div class="petty-num">{counts['fallen']}</div><div class="petty-label">💀 Fallen</div></div>
         <div class="petty-box"><div class="petty-num">{counts['name']}</div><div class="petty-label">💅 Names</div></div>
@@ -751,7 +778,7 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 We Cracked The Code — Ranked by Score</div>', unsafe_allow_html=True)
-        st.caption("Sorted high → low by Girl Magic Score (0–100). Edge pts = best − median (can be over 100).")
+        st.caption("Sorted high → low by Girl Magic Score (0–100). Edge pts = best − median.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -794,8 +821,32 @@ def main():
     show(tabs[5], "digit", "🔢 Matching Digits", "25 / 50 / 75 across books.")
     show(tabs[6], "fd", "💙 FanDuel Patterns", "≥ +400 ending 10/20/30/60/70/90.")
     show(tabs[7], "signal", "📈 Signals", "Same on 3+ books.")
-    show(tabs[8], "hist", "⏳ Movement", "Price moved since last pull.")
-    show(tabs[9], "trend", "📉 Trends", "Shortening / Lengthening. Needs 2+ snaps.")
+    show(tabs[8], "hist", "⏳ Movement", "Raw price moves (display only).")
+
+    with tabs[9]:
+        st.markdown('<div class="queen-banner">📉 Trends — Tight Rules</div>', unsafe_allow_html=True)
+        st.caption("💚 Worth a look = FD 10–100 under MGM · 🔴 Fade = shot up ≥100, drop >100, or FD highest of all books")
+
+        st.markdown("#### 💚 Worth a look")
+        if not trend_good:
+            st.info("None right now.")
+        else:
+            cols = st.columns(2)
+            for idx, r in enumerate(trend_good):
+                with cols[idx % 2]:
+                    tags = "".join(f'<span class="tag tag-green">{m}</span>' for m in r.get("methods", []))
+                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+
+        st.markdown("#### 🔴 Fade")
+        if not trend_fade:
+            st.info("None right now.")
+        else:
+            cols = st.columns(2)
+            for idx, r in enumerate(trend_fade):
+                with cols[idx % 2]:
+                    tags = "".join(f'<span class="tag tag-red">{m}</span>' for m in r.get("methods", []))
+                    st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+
     show(tabs[10], "late", "👻 Late Adds", "FD / DK / MGM only. Needs 2+ snaps.")
 
     with tabs[11]:
@@ -809,10 +860,9 @@ def main():
                 with cols[idx % 2]:
                     tags = "".join(f'<span class="tag tag-red">{m}</span>' for m in r.get("methods", []))
                     old_tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("old_methods", [])[:4])
-                    sc = r.get("old_score", 0)
                     st.markdown(f'''
                     <div class="card grid-card">
-                        <b>{r["label"]}</b> · was score {sc}<br>
+                        <b>{r["label"]}</b> · was score {r.get("old_score", 0)}<br>
                         {r["reason"]}<br>{tags}<br><small>Had: {old_tags or "—"}</small>
                     </div>''', unsafe_allow_html=True)
 
@@ -844,18 +894,27 @@ def main():
             Rank on the +EV board. Higher = better.<br><br>
             • Up to 50 from core method count<br>
             • Up to 40 from edge pts (scaled)<br>
-            • Up to 10 from strong bonuses (Last one left, etc.)<br>
+            • Up to 10 from strong bonuses<br>
             • Always capped at 100<br>
             • Board sorted high → low
         </div>
         <div class="gloss-card">
             <b>Edge pts</b><br>
-            How much better the best real price is vs the pack.<br><br>
+            Best real price vs the pack.<br><br>
             • Formula: <b>Best − Median</b><br>
-            • Best ignores a lone outlier (150+ longer than the next book)<br>
-            • Can be over 100 (that’s normal — it’s odds points, not a grade)<br>
-            • Need <b>60+</b> for BET THIS<br>
-            • Example: best +700, median +550 → edge pts = 150
+            • Best ignores a lone outlier (150+ longer than next)<br>
+            • Can be over 100 (odds points, not a grade)<br>
+            • Need <b>60+</b> for BET THIS
+        </div>
+        <div class="gloss-card">
+            <b>📉 Trends (tight)</b><br><br>
+            <b>💚 Worth a look</b><br>
+            • FanDuel is <b>10–100 pts under BetMGM</b><br><br>
+            <b>🔴 Fade</b><br>
+            • Shot way up (≥100 pts lengthen)<br>
+            • Dropped more than 100 pts<br>
+            • FanDuel is the <b>highest</b> of all books<br><br>
+            Tiny single-book moves are ignored.
         </div>
         <div class="gloss-card">
             <b>Core methods</b> (count toward 2+)<br><br>
@@ -865,27 +924,8 @@ def main():
             • Same on 3+ books · Multi-book Shorten / Lengthen
         </div>
         <div class="gloss-card">
-            <b>Noise</b> (tabs only — do not count toward 2+)<br><br>
-            • Just Appeared · Added Late · Gone Missing<br>
-            • Stuck · single-book Shortening / Lengthening · Price moved
-        </div>
-        <div class="gloss-card">
-            <b>🎯 DK 10</b><br>
-            DraftKings ends in 10 (+110, +210, +310…).<br>
-            Strong single-book tell. No team requirement.
-        </div>
-        <div class="gloss-card">
-            <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
-            Same-team pairs first, then groups of three.<br>
-            Watch Stayed in the group / Last one left.
-        </div>
-        <div class="gloss-card">
-            <b>⭐ MGM Exact · 🤝 Exact Match · 🔢 Match 25/50/75 · 💙 FD Pattern</b><br>
-            Exact prices across books / players. FD ≥ +400 ending 10/20/30/60/70/90.
-        </div>
-        <div class="gloss-card">
-            <b>📉 Trends</b><br>
-            Shortening / Lengthening only. Multi-book = same direction on 2+ books.
+            <b>🎯 DK 10 · 🎰 MGM · ⭐ MGM Exact · 🤝 Exact · 🔢 Digits · 💙 FD Pattern</b><br>
+            Same rules as always. FD ≥ +400 ending 10/20/30/60/70/90.
         </div>
         <div class="gloss-card">
             <b>👻 Late Adds</b><br>
@@ -893,21 +933,17 @@ def main():
         </div>
         <div class="gloss-card">
             <b>💀 Fallen Off</b><br>
-            Was on +EV last pull, gone this pull.<br><br>
-            • Was BET THIS<br>
-            • Lost core methods<br>
-            • Only 1 book left<br>
-            • Line gone / not on books
+            Was on +EV last pull, gone this pull.<br>
+            Tags: Was BET THIS · Lost core methods · Only 1 book left · Line gone.
         </div>
         <div class="gloss-card">
             <b>💅 Name Magic</b><br>
             Both need 3+ core + personal strong.<br>
-            Different teams only. Max {NAME_MAX_PAIRS} pairs per tab.<br>
-            “Only in an MGM group” is not personal strong.
+            Different teams only. Max {NAME_MAX_PAIRS} pairs per tab.
         </div>
         <div class="gloss-card">
             <b>History / Auto</b><br>
-            Snaps save across refreshes (~18h). Auto-fetch every 30 min while tab is open.
+            Snaps save across refreshes (~18h). Auto every 30 min while tab is open.
         </div>
         """, unsafe_allow_html=True)
 
