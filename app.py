@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-The Board (not fake EV) · Color tags · Full expander Glossary · History on fetch only
+Bet365: 850s · pairs/groups 25/50/75 · vs HardRock · full glossary · history on fetch only
 """
 
 import streamlit as st
@@ -56,6 +56,7 @@ st.markdown("""
     .tag-match { background: #4c1d95; color: #e9d5ff; border-color: #a855f7; }
     .tag-signal { background: #831843; color: #fbcfe8; border-color: #f472b6; }
     .tag-strong { background: #14532d; color: #bbf7d0; border-color: #22c55e; font-weight: 800; }
+    .tag-b365 { background: #14532d; color: #86efac; border-color: #22c55e; }
     .queen-banner { display: inline-block; background: linear-gradient(90deg, #db2777, #9333ea); color: white; font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 16px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
     .meter { display: flex; gap: 3px; margin: 4px 0 6px 0; }
     .meter-bar { height: 6px; width: 18px; border-radius: 3px; background: #374151; }
@@ -68,7 +69,6 @@ st.markdown("""
     .stTabs [aria-selected="true"] { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; }
     .footer { text-align: center; color: #f9a8d4; font-size: 0.95rem; margin-top: 36px; opacity: 0.9; padding-bottom: 20px; }
     .grid-card { margin-bottom: 7px; }
-    .gloss-card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #a855f7; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; font-size: 0.92rem; line-height: 1.45; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -79,8 +79,16 @@ HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 HISTORY_MAX_AGE_HOURS = 18
 
-PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars"}
-CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
+PREFERRED = {
+    "fanduel", "draftkings", "betmgm", "hardrockbet", "caesars",
+    "bet365", "bet365_au",
+}
+CORE_BOOKS = {
+    "fanduel": "FanDuel",
+    "draftkings": "DraftKings",
+    "betmgm": "BetMGM",
+    "bet365": "Bet365",
+}
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
 
 EDGE_MIN = 60
@@ -97,6 +105,8 @@ MOVE_PRICE_MIN = 500
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
     "Match 25", "Match 50", "Match 75",
+    "B365 850", "B365 Match 25", "B365 Match 50", "B365 Match 75",
+    "B365 > HardRock",
     "Last one left", "Multi-book Shorten", "Multi-book Lengthen", "Same on 3+ books"
 }
 NOISE_METHODS = {
@@ -104,6 +114,14 @@ NOISE_METHODS = {
     "Multi-book Stuck", "Price moved", "Stayed the same", "Way different",
     "Shortening", "Lengthening"
 }
+
+def is_bet365(book):
+    b = str(book).lower()
+    return "bet365" in b or b == "365"
+
+def is_hardrock(book):
+    b = str(book).lower()
+    return "hardrock" in b
 
 def is_core_method(m):
     if m in NOISE_METHODS: return False
@@ -117,7 +135,7 @@ def count_core_methods(meths):
     return len([m for m in set(meths) if is_core_method(m)])
 
 def has_personal_strong(meths):
-    return any(m in PERSONAL_STRONG or m.startswith("Match ") for m in meths)
+    return any(m in PERSONAL_STRONG or m.startswith("Match ") or m.startswith("B365") for m in meths)
 
 def has_dk_or_mgm(meths):
     for m in meths:
@@ -134,6 +152,8 @@ def method_tag_class(m):
         return "tag-mgm"
     if m.startswith("FD"):
         return "tag-fd"
+    if m.startswith("B365"):
+        return "tag-b365"
     if m in ("Exact Match", "MGM Exact") or m.startswith("Match "):
         return "tag-match"
     if "Multi-book" in m or m == "Same on 3+ books":
@@ -158,6 +178,8 @@ def girl_magic_score(core_count, edge, methods):
     if "Multi-book Shorten" in methods: bonus += 3
     if "Same on 3+ books" in methods: bonus += 2
     if "FD 600" in methods: bonus += 2
+    if "B365 850" in methods: bonus += 2
+    if "B365 > HardRock" in methods: bonus += 2
     bonus = min(10, bonus)
     return min(100, method_pts + edge_pts + bonus)
 
@@ -365,6 +387,9 @@ def fetch_sgo_hr_props(sgo_key):
                 for bk, bd in odd_data.get("byBookmaker", {}).items():
                     if not bd.get("available", True): continue
                     b = bk.lower()
+                    if b not in PREFERRED and not is_bet365(b): continue
+                    if is_bet365(b):
+                        b = "bet365"
                     if b not in PREFERRED: continue
                     price = bd.get("odds")
                     if price is None: continue
@@ -410,7 +435,7 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         [r for r in all_rows if r.get("source") == "oddsapi"],
         [r for r in all_rows if r.get("source") == "sgo"]
     )
-    return df, all_found & PREFERRED
+    return df, all_found & PREFERRED | {x for x in all_found if is_bet365(x)}
 
 def build_team_map(df):
     tm = {}
@@ -424,6 +449,9 @@ def run_flags(df, previous_df=None, record_history=True):
 
     if "team" not in df.columns:
         df["team"] = ""
+    # normalize bet365 keys
+    df["book"] = df["book"].apply(lambda b: "bet365" if is_bet365(b) else b)
+
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
@@ -497,6 +525,12 @@ def run_flags(df, previous_df=None, record_history=True):
             if "betmgm" in k or k == "mgm":
                 mgm_price = v
                 break
+        b365 = by_book.get("bet365")
+        hr = None
+        for k, v in by_book.items():
+            if is_hardrock(k):
+                hr = v
+                break
         others = [v for b, v in by_book.items() if b != "fanduel"]
         if fd is not None and mgm_price is not None:
             gap = mgm_price - fd
@@ -512,6 +546,15 @@ def run_flags(df, previous_df=None, record_history=True):
                 "reason": f"🔴 FD highest of all books · FD {format_odds(fd)} · others max {format_odds(max(others))}",
                 "event": "", "css": "hist", "methods": ["FADE · FD highest"], "gap": 0,
             })
+        # Bet365 higher than HardRock — good signal
+        if b365 is not None and hr is not None and b365 > hr:
+            gap_hr = int(b365 - hr)
+            results.append({
+                "type": "trend", "trend_kind": "good", "label": player,
+                "reason": f"💚 Bet365 higher than HardRock by {gap_hr} pts · 365 {format_odds(b365)} · HR {format_odds(hr)}",
+                "event": "", "css": "hist", "methods": ["B365 > HardRock"], "gap": gap_hr,
+            })
+            methods_map[player].append("B365 > HardRock")
 
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
@@ -549,6 +592,48 @@ def run_flags(df, previous_df=None, record_history=True):
                 "reason": f"DraftKings ends in 10 → {format_odds(row['price'])}",
                 "event": row["event"], "css": "dk", "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
+
+    # ── Bet365 850s (solo) ──
+    for _, row in df.iterrows():
+        if row["book"] != "bet365":
+            continue
+        price = abs(int(row["price"])) if row["price"] is not None else 0
+        if price == 850 or price % 1000 == 850:
+            results.append({
+                "type": "b365", "label": row["player"],
+                "reason": f"Bet365 850s → {format_odds(row['price'])}",
+                "event": row["event"], "css": "b365", "methods": ["B365 850"],
+            })
+            methods_map[row["player"]].append("B365 850")
+
+    # ── Bet365 pairs / groups of 3 · same team · 25/50/75 only (NO 00) ──
+    b365_df = df[df["book"] == "bet365"].copy()
+    if not b365_df.empty:
+        group_cols = ["event", "team"] if b365_df["team"].astype(str).str.len().gt(0).any() else ["event"]
+        for keys, g in b365_df.groupby(group_cols, dropna=False):
+            if not isinstance(keys, tuple):
+                keys = (keys,)
+            event = keys[0]
+            team = keys[1] if len(keys) > 1 else ""
+            ends = defaultdict(list)
+            for _, r in g.iterrows():
+                d = last_two(r["price"])
+                if d in (25, 50, 75):  # NO 00 on Bet365
+                    ends[d].append(r["player"])
+            for d, ps in ends.items():
+                names = sorted(set(ps))
+                if len(names) not in (2, 3):
+                    continue
+                kind = "pair" if len(names) == 2 else "group of 3"
+                tnote = f" · {team}" if team else " · same team"
+                meth = f"B365 Match {d}"
+                results.append({
+                    "type": "b365", "label": " + ".join(names),
+                    "reason": f"Bet365 {kind} ends in {d}{tnote}",
+                    "event": event, "css": "b365", "methods": [meth],
+                })
+                for n in names:
+                    methods_map[n].append(meth)
 
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
     current_mgm = []
@@ -907,9 +992,9 @@ def main():
     hist_n = len(st.session_state.get("price_history", []))
     st.markdown(f"""
     <div class="how-to">
-        👑 <b>The Board</b> → green = take it · gray = pass · ranked by Girl Magic Score<br>
-        👻 Late / Fallen need <b>2 real fetches</b> · History snaps: <b>{hist_n}</b><br>
-        📖 Glossary has full beginner-friendly rules (expand each section)
+        👑 <b>The Board</b> → TAKE IT / PASS · Girl Magic Score<br>
+        💚 <b>Bet365</b> → 850s · pairs/groups 25/50/75 (no 00) · higher than HardRock<br>
+        👻 Late/Fallen need <b>2 real fetches</b> · snaps: <b>{hist_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
@@ -958,7 +1043,8 @@ def main():
 
     found = st.session_state.get("found_books", [])
     if found:
-        missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
+        has_365 = any(is_bet365(b) or b == "bet365" for b in found)
+        missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found and not (b == "bet365" and has_365)]
         st.markdown(f'<div class="info-box"><b>Books in use:</b> {", ".join(found)}</div>', unsafe_allow_html=True)
         if missing:
             st.markdown(f'<div class="warning-box">⚠️ <b>Still missing:</b> {", ".join(missing)}</div>', unsafe_allow_html=True)
@@ -985,6 +1071,7 @@ def main():
         "dk": len([r for r in results if r["type"] == "dk"]),
         "mgm": len([r for r in results if r["type"] == "mgm"]),
         "fd": len([r for r in results if r["type"] == "fd"]),
+        "b365": len([r for r in results if r["type"] == "b365"]),
         "name": len([r for r in results if r["type"] in ("same_init", "double_init", "cross", "last", "first")]),
         "late": len([r for r in results if r["type"] == "late"]),
         "trend": len(trend_good),
@@ -994,20 +1081,20 @@ def main():
 
     st.markdown(f"""
     <div class="petty-row">
-        <div class="petty-box"><div class="petty-num">{counts['bets']}</div><div class="petty-label">🟢 BET THIS</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['bets']}</div><div class="petty-label">🟢 TAKE IT</div></div>
         <div class="petty-box"><div class="petty-num">{counts['dk']}</div><div class="petty-label">🎯 DK 10s</div></div>
         <div class="petty-box"><div class="petty-num">{counts['mgm']}</div><div class="petty-label">🎰 MGM</div></div>
         <div class="petty-box"><div class="petty-num">{counts['fd']}</div><div class="petty-label">💙 FD</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['trend']}</div><div class="petty-label">💚 FD under MGM</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['b365']}</div><div class="petty-label">💚 Bet365</div></div>
+        <div class="petty-box"><div class="petty-num">{counts['trend']}</div><div class="petty-label">💚 Trends</div></div>
         <div class="petty-box"><div class="petty-num">{counts['late']}</div><div class="petty-label">👻 Late</div></div>
         <div class="petty-box"><div class="petty-num">{counts['fallen']}</div><div class="petty-label">💀 Fallen</div></div>
-        <div class="petty-box"><div class="petty-num">{counts['name']}</div><div class="petty-label">💅 Names</div></div>
     </div>
     """, unsafe_allow_html=True)
 
     tabs = st.tabs([
         "👑 The Board", "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
-        "🔢 Digits", "💙 FanDuel", "📈 Signals", "⏳ Movement",
+        "🔢 Digits", "💙 FanDuel", "💚 Bet365", "📈 Signals", "⏳ Movement",
         "📉 Trends", "👻 Late Adds", "💀 Fallen Off",
         "💅 Same Init", "✨ Double Init", "🔄 Cross", "👩‍👧 Last Name", "👯 First Name",
         "📊 Results", "📖 Glossary"
@@ -1015,7 +1102,7 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 The Board — Take It or Pass</div>', unsafe_allow_html=True)
-        st.caption("Not a pure EV calculator. Ranked by Girl Magic Score (methods + edge + bonuses). Green tags = methods that hit.")
+        st.caption("Not pure EV. Ranked by Girl Magic Score. Color tags = methods.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1055,12 +1142,13 @@ def main():
 
     show(tabs[1], "dk", "🎯 DraftKings 10s", "DK ends in 10.")
     show(tabs[2], "mgm", "🎰 BetMGM Magic", "Same-team pairs/groups.")
-    show(tabs[3], "match", "🤝 Exact Match", "Same price across books.")
+    show(tabs[3], "match", "🤝 Exact Match", "Same price across books (includes Bet365 when present).")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, same team.")
     show(tabs[5], "digit", "🔢 Digits", "Pairs or groups of 3 · same team · 25/50/75.")
     show(tabs[6], "fd", "💙 FanDuel (needs DK or MGM)", f"≥ +{FD_MIN} or +600 — only with DK/MGM.")
+    show(tabs[7], "b365", "💚 Bet365", "850s · pairs/groups of 2–3 · endings 25/50/75 only (no 00). Empty until API returns Bet365.")
 
-    with tabs[7]:
+    with tabs[8]:
         st.markdown('<div class="queen-banner">📈 Signals — One Card Per Player</div>', unsafe_allow_html=True)
         items = [r for r in results if r["type"] == "signal"]
         if not items:
@@ -1072,7 +1160,7 @@ def main():
                     tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
-    with tabs[8]:
+    with tabs[9]:
         st.markdown('<div class="queen-banner">⏳ Movement (500+ only)</div>', unsafe_allow_html=True)
         ups = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"]
         downs = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"]
@@ -1090,9 +1178,9 @@ def main():
                 for r in downs:
                     st.markdown(f'<div class="card down-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br><span class="tag tag-green">Went down</span></div>', unsafe_allow_html=True)
 
-    with tabs[9]:
+    with tabs[10]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
-        st.caption("💚 Biggest FD-under-MGM gap first")
+        st.caption("💚 FD under MGM + Bet365 > HardRock · biggest gap first")
         st.markdown("#### 💚 Worth a look")
         if not trend_good: st.info("None right now.")
         else:
@@ -1110,7 +1198,7 @@ def main():
                     tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
-    with tabs[10]:
+    with tabs[11]:
         st.markdown('<div class="queen-banner">👻 Late Adds</div>', unsafe_allow_html=True)
         st.caption(f"Needs 2+ real fetches · snaps: {hist_n}")
         items = [r for r in results if r["type"] == "late"]
@@ -1125,9 +1213,8 @@ def main():
                     tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
-    with tabs[11]:
+    with tabs[12]:
         st.markdown('<div class="queen-banner">💀 Fallen Off</div>', unsafe_allow_html=True)
-        st.caption("Was on The Board last real fetch, gone this fetch.")
         if hist_n < 2:
             st.warning("Needs a previous fetch with a board to compare.")
         if not fallen:
@@ -1139,13 +1226,13 @@ def main():
                     tags = render_method_tags(r.get("methods", []))
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was score {r.get("old_score", 0)}<br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
-    show(tabs[12], "same_init", "💅 Same Initials", "Different teams · 3+ core + strong.")
-    show(tabs[13], "double_init", "✨ Double Initials", "First=last letter · different teams.")
-    show(tabs[14], "cross", "🔄 Cross Initials", "Different teams.")
-    show(tabs[15], "last", "👩‍👧 Same Last Name", "Different teams.")
-    show(tabs[16], "first", "👯 Same First Name", "Different teams.")
+    show(tabs[13], "same_init", "💅 Same Initials", "Different teams · 3+ core + strong.")
+    show(tabs[14], "double_init", "✨ Double Initials", "First=last letter · different teams.")
+    show(tabs[15], "cross", "🔄 Cross Initials", "Different teams.")
+    show(tabs[16], "last", "👩‍👧 Same Last Name", "Different teams.")
+    show(tabs[17], "first", "👯 Same First Name", "Different teams.")
 
-    with tabs[17]:
+    with tabs[18]:
         st.markdown('<div class="queen-banner">📊 Results Tracker</div>', unsafe_allow_html=True)
         rows = load_results()
         pending = [r for r in rows if r.get("result") == "PENDING"]
@@ -1204,191 +1291,103 @@ def main():
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
                 st.markdown(f"{icon} **{r['player']}** · {r.get('date')} · score {r.get('score')}")
 
-    # ── FULL BEGINNER GLOSSARY (expanders — do not strip) ──
-    with tabs[18]:
+    with tabs[19]:
         st.markdown('<div class="queen-banner">📖 The Code — Learn The Tricks</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>New here?</b> This app flags MLB <b>Over 0.5 home run</b> props using sportsbook pricing patterns
-            (not pure stats). Read top → bottom. Expand any section for the full rule.
+            <b>New here?</b> MLB <b>Over 0.5 home run</b> props · sportsbook pricing patterns.
+            Expand each section for the full rule.
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("### 1. The board in 30 seconds")
-        with st.expander("🟢 TAKE IT vs ⚪ PASS — what should I actually bet?", expanded=True):
+        with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
             st.markdown("""
-**TAKE IT** (BET THIS) = the only plays the group is supposed to take.
+**TAKE IT** needs:
+- **2+ core methods**
+- **Edge pts ≥ 60**
+- **Over 0.5 HR** only
 
-To qualify:
-- At least **2 core methods** hit on that player  
-- **Edge pts 60 or higher** (best real price vs the pack)  
-- Market is **Over 0.5 HR** only (1 homer — not 2+ lines)
+**PASS** = 2+ core but edge still under 60.
 
-**PASS** (SKIP) = has 2+ core methods but edge is still under 60. Close, we pass.
+**Girl Magic Score 0–100** ranks the board (methods + edge + bonuses).
 
-**Girl Magic Score (0–100)** ranks The Board (high → low).  
-More core methods + bigger edge + bonuses (like *Last one left*) = higher score.
+**Tag colors:** 🟢 DK · 🟡 MGM · 🔵 FD · 💚 Bet365 · 🟣 Exact/digits · bright green multi-book
+            """)
+        with st.expander("📊 Edge pts"):
+            st.markdown("""
+**Edge pts = Best price − Median** across books (outlier 150+ ignored).
 
-**Tag colors on the board**
-- 🟢 Green = DraftKings  
-- 🟡 Gold = BetMGM / stayed / last one left  
-- 🔵 Blue = FanDuel  
-- 🟣 Purple = Exact / digit matches  
-- Bright green = multi-book strength  
+Need **60+** for TAKE IT. Can be over 100 — that’s odds points, not a grade.
             """)
 
-        with st.expander("📊 Edge pts — what does that number mean?"):
-            st.markdown("""
-**Edge pts = Best price − Median price** across books.
-
-Example: best book +700, most books around +550 → edge pts = **150**.
-
-- We ignore a single crazy longshot outlier (150+ longer than everyone else)  
-- Edge can be over 100 — it’s **odds points**, not a grade out of 100  
-- Need **60+** for TAKE IT  
-            """)
-
-        st.markdown("### 2. Core methods (count toward the 2+ rule)")
+        st.markdown("### 2. Core methods")
         with st.expander("🎯 DraftKings 10s"):
+            st.markdown("DK prices ending in **10** (+110, +210, +310…). Core.")
+        with st.expander("🎰 BetMGM (00 / 25 / 50 / 75)"):
             st.markdown("""
-DK prices that **end in 10**: +110, +210, +310, +410, +510…
+Same **team**. Endings **00, 25, 50, 75**.
 
-Strong single-book tell. No team requirement. Counts as **core**.
+Pair preferred · group of 3+ ok. **Stayed in group** / **Last one left** are strong.
             """)
-        with st.expander("🎰 BetMGM classic endings (00 / 25 / 50 / 75)"):
+        with st.expander("💚 Bet365"):
             st.markdown("""
-Same **team**, MGM prices ending in **00, 25, 50, or 75**.
+**Only when the API returns Bet365.**
 
-- **Pair** (2 players) preferred  
-- **Group of 3** if no clean pair  
+1. **B365 850** — price is +850 or ends in 850 (+1850, +2850…)  
+2. **Pairs or groups of 3** — same team · endings **25 / 50 / 75 only** (**no 00** on Bet365)  
+3. **Exact Match** already includes Bet365 when it’s one of the books on the number  
+4. **B365 > HardRock** — Bet365 price higher than Hard Rock on the same player (good trend)
 
-**Stayed in the group** = still in that MGM pair/group after multiple fetches.  
-**Last one left** = started in a bigger group; only one still there (very strong).
+All of the above count as **core** (except pure noise tags).
             """)
-        with st.expander("⭐ MGM Exact · 🤝 Exact Match · 🔢 Digits"):
+        with st.expander("⭐ MGM Exact · 🤝 Exact · 🔢 Digits"):
             st.markdown("""
-**MGM Exact** — two+ players on MGM share the *exact* same price (same team).
-
-**Exact Match** — two+ books show the same price on the *same* player.
-
-**Digits** — **pairs or groups of 3 only**, **same team** (BetMGM), endings **25 / 50 / 75**.  
-No solos. No groups of 4+.
+**MGM Exact** — same exact MGM price, same team.  
+**Exact Match** — same price across books (Bet365 counts when present).  
+**Digits** — MGM pairs/groups of 3 · 25/50/75 · same team.
             """)
-        with st.expander("💙 FanDuel patterns"):
+        with st.expander("💙 FanDuel"):
             st.markdown(f"""
-FanDuel only counts when that player **also** has **DK 10** or a **BetMGM** trick.
-
-- Price **≥ +{FD_MIN}** ending in **10 / 20 / 30 / 60 / 70 / 90**, or  
-- Exact **+600** (tagged FD 600)
-
-FD alone is not enough.
+Only with **DK 10** or **MGM**.  
+≥ **+{FD_MIN}** endings 10/20/30/60/70/90 · or exact **+600**.
             """)
-        with st.expander("📈 Signals (one card per player)"):
-            st.markdown(f"""
-All signals for a player live on **one card**:
+        with st.expander("📈 Signals"):
+            st.markdown(f"One card per player · same on 3+ · multi-book moves ≥ {MOVE_MIN} · etc.")
 
-- Same exact price on **3+ books**  
-- Same ending (25/50/75) on **3+ books**  
-- **One book higher** than the pack (others lower)  
-- Stuck price across multiple history snaps  
-- Multi-book same direction (2+ books, move ≥ {MOVE_MIN} pts)
-            """)
+        st.markdown("### 3. Noise")
+        with st.expander("Does not count toward 2+"):
+            st.markdown("Late/missing · single-book move · FADE tags · FD under MGM (support only).")
 
-        st.markdown("### 3. Noise (shows on tabs — does NOT count toward 2+)")
-        with st.expander("What is “noise”?"):
-            st.markdown("""
-These can still be useful to *look at*, but they **do not** help a play become TAKE IT by themselves:
-
-- Just Appeared / Added Late / Gone Missing  
-- Single-book price moved  
-- FADE tags (shot way up, drop >100, FD highest)  
-- FD under MGM (trend only — support signal)
-            """)
-
-        st.markdown("### 4. Movement, Trends, Late, Fallen")
+        st.markdown("### 4. Movement · Trends · Late · Fallen")
         with st.expander("⏳ Movement"):
-            st.markdown(f"""
-Only **{MOVE_PRICE_MIN}+** prices. Move must be **≥ {MOVE_MIN} pts**.
-
-- **🔴 Left = went UP** (longer)  
-- **🟢 Right = went DOWN** (shorter)  
-
-Uses **shared history** (works on phone + computer).  
-Snaps only save on a **real Fetch / Auto-refresh** — not every tab click.
-            """)
+            st.markdown(f"**{MOVE_PRICE_MIN}+** only · ≥ {MOVE_MIN} pts · 🔴 UP · 🟢 DOWN · snaps only on real Fetch.")
         with st.expander("📉 Trends"):
             st.markdown("""
-**💚 Worth a look** — FanDuel is **10–100 pts under BetMGM**.  
-Sorted **biggest gap first** (100 → 10).
+**💚** FD 10–100 under MGM (biggest gap first) · **Bet365 higher than HardRock**  
 
-**🔴 Fade**
-- Shot way up (≥100 pts longer)  
-- Dropped more than 100 pts  
-- FanDuel is the **highest** of all books  
+**🔴** Shot way up · drop >100 · FD highest of all books
             """)
-        with st.expander("👻 Late Adds · 💀 Fallen Off"):
-            st.markdown("""
-**Late Adds** (FD / DK / MGM only)
-- **Just Appeared** — on a book now, wasn’t last pull  
-- **Added Late** — missing earlier, just showed up  
-- **Gone Missing** — was there, now gone  
+        with st.expander("👻 Late · 💀 Fallen"):
+            st.markdown("Need **2+ real fetches**. Late = FD/DK/MGM presence change. Fallen = left The Board.")
 
-**Fallen Off** — was on The Board last real fetch, not on it this fetch.  
-Tags can include: Was BET THIS, Lost core methods, Only 1 book left, Line gone.
-
-**Need 2+ real fetches** before these tabs can fill. Watch “History: X snaps” under the buttons.
-            """)
-
-        st.markdown("### 5. Name Magic (different teams only)")
-        with st.expander("💅 Same Init · ✨ Double Init · 🔄 Cross · Same First/Last"):
+        st.markdown("### 5. Name Magic")
+        with st.expander("Initials & names"):
             st.markdown(f"""
-Only players who already match our **odds tricks**:
+Both players: **{NAME_METHODS_MIN}+ core** + personal strong · **different teams** · max {NAME_MAX_PAIRS}.
 
-- Both need **{NAME_METHODS_MIN}+ core methods**  
-- Both need a **personal strong** flag (see below)  
-- **Different teams** (when team data exists)  
-- Max **{NAME_MAX_PAIRS}** pairs per tab  
-
-| Type | Meaning | Example |
-|------|---------|---------|
-| **Same Init** | Same first + last initial | Trea Turner + Tyler Tolbert = **TT** |
-| **Double Init** | First letter = last letter on each name | Turner **TT**, Steer **SS**, Hernandez **HH** |
-| **Cross** | One player’s **last** initial = other’s **first** | … |
-| **Same First / Last** | Exact same first or last name | … |
-
-**Personal strong** (required for name pairs):  
-DK 10 · FD Pattern · FD 600 · Exact Match · Match 25/50/75 ·  
-Last one left · Multi-book Shorten/Lengthen · Same on 3+ books  
-
-“Only in an MGM group” is **not** enough alone for name magic.
+Same Init · Double Init · Cross · Same First/Last.
             """)
 
-        st.markdown("### 6. Results — learning what works")
-        with st.expander("📊 Results tab"):
-            st.markdown("""
-Every **TAKE IT** auto-logs here.
+        st.markdown("### 6. Results")
+        with st.expander("📊 Results"):
+            st.markdown("TAKE IT auto-logs · mark HIT/MISS · method hit rates after the slate.")
 
-After the games, mark **HIT** (1+ HR) or **MISS** (0 HR).
-
-You’ll see:
-- Overall hit rate  
-- **Per-method** hit rates  
-
-That’s how we tighten the code over time — not vibes, receipts.
-            """)
-
-        st.markdown("### 7. How to run the app")
-        with st.expander("Step-by-step for first-timers"):
+        st.markdown("### 7. First-timers")
+        with st.expander("How to run"):
             st.markdown(f"""
-1. **Load Games**  
-2. Select the games you care about  
-3. **Fetch Odds**  
-4. Open **The Board** — green **TAKE IT** first  
-5. Use method tabs (DK / MGM / FD / etc.) to see *why*  
-6. After games → **Results** → mark HIT/MISS  
-
-Auto-refresh every **{REFRESH_MINUTES} minutes** while this tab is open.  
-History clears after ~18 hours (new slate day).
+1 Load Games → 2 Select → 3 Fetch → **The Board** (TAKE IT first) → Results after games.  
+Auto every **{REFRESH_MINUTES} min**. History ~18h.
             """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
