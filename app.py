@@ -980,7 +980,7 @@ def main():
     show(tabs[13], "last", "👩‍👧 Same Last Name", "Both need 2+ core methods. Jr. ignored.")
     show(tabs[14], "first", "👯 Same First Name", "Both need 2+ core methods.")
 
-       with tabs[15]:
+    with tabs[15]:
         st.markdown('<div class="queen-banner">📖 The Code — What Everything Means</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="gloss-card">
