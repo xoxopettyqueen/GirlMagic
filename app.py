@@ -553,14 +553,14 @@ def run_flags(df, previous_df=None):
                 flagged.add(player)
                 methods_map[player].append(f"Match {d}")
 
-    # FanDuel (now includes 20s)
+    # FanDuel ≥ +400 ending in 10 / 20 / 30 / 60 / 70 / 90
     for _, row in df.iterrows():
         if row["book"] == "fanduel":
             price = abs(int(row["price"])) if row["price"] else 0
             last = last_two(row["price"])
-            if price >= 500 and last in (10, 20, 30, 60, 70, 90):
+            if price >= 400 and last in (10, 20, 30, 60, 70, 90):
                 results.append({"type": "fd", "label": row["player"],
-                    "reason": f"FanDuel ≥ +500 ends in {last:02d} → {format_odds(row['price'])}",
+                    "reason": f"FanDuel ≥ +400 ends in {last:02d} → {format_odds(row['price'])}",
                     "event": row["event"], "css": "fd", "methods": ["FD Pattern"]})
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("FD Pattern")
@@ -891,7 +891,7 @@ def main():
     show(tabs[3], "match", "🤝 Exact Match — Books Agree", "Same exact price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact — Locked In", "Same exact price on BetMGM for multiple guys.")
     show(tabs[5], "digit", "🔢 Matching Digits — 25 / 50 / 75", "Same player showing those endings on different books.")
-    show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 20 / 30 / 60 / 70 / 90.")
+    show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +400 ending in 10 / 20 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
     show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
     show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Only when both already have 2+ real book methods. Jr. is ignored.")
@@ -934,7 +934,7 @@ def main():
             <b>🔢 Matching Digits</b> — same player shows 25 / 50 / 75 endings on more than one book.
         </div>
         <div class="gloss-card">
-            <b>💙 FanDuel Patterns</b> — FD prices ≥ +500 that end in 10, 20, 30, 60, 70, or 90.
+            <b>💙 FanDuel Patterns</b> — FD prices ≥ +400 that end in 10, 20, 30, 60, 70, or 90.
         </div>
         <div class="gloss-card">
             <b>📈 Signals</b> — Stayed the same • Same on 3+ books • Way different (outlier).
