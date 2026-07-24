@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-MGM = same team only + sticky pair/group logic
+Advanced Sticky: Sticky Count + Solo Survivor
 """
 
 import streamlit as st
@@ -249,30 +249,13 @@ def run_flags(df, previous_df=None):
     flagged_players = set()
     player_methods = defaultdict(list)
 
-    # Track previous MGM groups so we can mark "sticky" players
-    previous_mgm_groups = set()
-    if previous_df is not None and not previous_df.empty:
-        prev_mgm = previous_df[previous_df["book"].str.lower().str.contains("betmgm|mgm", na=False)]
-        for event, event_group in prev_mgm.groupby("event"):
-            ending_groups = defaultdict(list)
-            for _, row in event_group.iterrows():
-                d = last_two(row["price"])
-                if d in (0, 25, 50, 75):
-                    ending_groups[d].append(row["player"])
-            for d, players in ending_groups.items():
-                names = tuple(sorted(set(players)))
-                if len(names) >= 2:
-                    previous_mgm_groups.add((event, d, names))
+    # ========== ADVANCED STICKY TRACKING ==========
+    # Store history of MGM groups across fetches
+    if "mgm_history" not in st.session_state:
+        st.session_state["mgm_history"] = []   # list of {event, ending, players: frozenset}
 
-    # ========== DraftKings Ends in 10 ==========
-    for _, row in df.iterrows():
-        if "draftkings" in str(row["book"]).lower():
-            if last_two(row["price"]) == 10:
-                results.append({"type": "dk", "label": row["player"], "reason": f"DK ends in 10 → {format_odds(row['price'])}", "event": row["event"], "css": "dk", "methods": ["DK 10"]})
-                flagged_players.add(row["player"])
-                player_methods[row["player"]].append("DK 10")
+    current_mgm_groups = []
 
-    # ========== BetMGM Classic Endings (SAME TEAM ONLY) ==========
     mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
 
     for event, event_group in mgm_df.groupby("event"):
@@ -283,25 +266,93 @@ def run_flags(df, previous_df=None):
                 ending_groups[d].append(row["player"])
 
         for d, players in ending_groups.items():
+            names = frozenset(players)
+            if len(names) >= 2:
+                current_mgm_groups.append({
+                    "event": event,
+                    "ending": d,
+                    "players": names
+                })
+
+    # Update history (keep last 8 snapshots)
+    st.session_state["mgm_history"].append(current_mgm_groups)
+    st.session_state["mgm_history"] = st.session_state["mgm_history"][-8:]
+
+    # Calculate sticky counts and survivors
+    sticky_count = defaultdict(int)          # player → how many times seen in a group
+    survivor_players = set()
+
+    history = st.session_state["mgm_history"]
+    if len(history) >= 2:
+        # Sticky Count: how many snapshots this player appeared in any group
+        for snapshot in history:
+            seen_this_snap = set()
+            for g in snapshot:
+                for p in g["players"]:
+                    seen_this_snap.add(p)
+            for p in seen_this_snap:
+                sticky_count[p] += 1
+
+        # Solo Survivor: players who were in larger groups earlier and are still present
+        earliest = history[0]
+        latest = history[-1]
+        early_players = set()
+        for g in earliest:
+            if len(g["players"]) >= 3:
+                early_players.update(g["players"])
+        late_players = set()
+        for g in latest:
+            late_players.update(g["players"])
+        survivor_players = early_players & late_players
+
+    # ========== DraftKings Ends in 10 ==========
+    for _, row in df.iterrows():
+        if "draftkings" in str(row["book"]).lower():
+            if last_two(row["price"]) == 10:
+                results.append({"type": "dk", "label": row["player"], "reason": f"DK ends in 10 → {format_odds(row['price'])}", "event": row["event"], "css": "dk", "methods": ["DK 10"]})
+                flagged_players.add(row["player"])
+                player_methods[row["player"]].append("DK 10")
+
+    # ========== BetMGM Classic Endings (Same Team) + Sticky ==========
+    for event, event_group in mgm_df.groupby("event"):
+        ending_groups = defaultdict(list)
+        for _, row in event_group.iterrows():
+            d = last_two(row["price"])
+            if d in (0, 25, 50, 75):
+                ending_groups[d].append(row["player"])
+
+        for d, players in ending_groups.items():
             names = sorted(set(players))
             if len(names) >= 2:
-                # Check if this exact group existed in the previous fetch
-                is_sticky = (event, d, tuple(names)) in previous_mgm_groups
-                sticky_tag = " • STAYED IN GROUP" if is_sticky else ""
+                methods = [f"MGM {d:02d}"]
+                extra = []
+                for n in names:
+                    cnt = sticky_count.get(n, 0)
+                    if cnt >= 3:
+                        methods.append(f"Sticky×{cnt}")
+                        extra.append(f"Sticky×{cnt}")
+                    elif cnt >= 2:
+                        methods.append("Sticky")
+                        extra.append("Sticky")
+                    if n in survivor_players:
+                        methods.append("Survivor")
+                        extra.append("Survivor")
+
+                reason = f"MGM {'Pair' if len(names)==2 else 'Group of '+str(len(names))} ends in {d:02d}"
+                if extra:
+                    reason += " • " + " + ".join(set(extra))
 
                 results.append({
                     "type": "mgm",
                     "label": " + ".join(names),
-                    "reason": f"MGM {'Pair' if len(names)==2 else 'Group of '+str(len(names))} ends in {d:02d}{sticky_tag}",
+                    "reason": reason,
                     "event": event,
                     "css": "mgm",
-                    "methods": [f"MGM {d:02d}"] + (["Sticky"] if is_sticky else [])
+                    "methods": list(set(methods))
                 })
                 for n in names:
                     flagged_players.add(n)
-                    player_methods[n].append(f"MGM {d:02d}")
-                    if is_sticky:
-                        player_methods[n].append("Sticky")
+                    player_methods[n].extend(methods)
 
     # ========== Exact Matching Odds ==========
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
@@ -313,19 +364,12 @@ def run_flags(df, previous_df=None):
             flagged_players.add(player)
             player_methods[player].append("Exact Match")
 
-    # ========== MGM Exact Match (SAME TEAM / SAME GAME ONLY) ==========
+    # ========== MGM Exact Match ==========
     for event, event_group in mgm_df.groupby("event"):
         for price, price_group in event_group.groupby("price"):
             players = sorted(price_group["player"].unique().tolist())
             if len(players) >= 2:
-                results.append({
-                    "type": "mgm_exact",
-                    "label": " + ".join(players),
-                    "reason": f"MGM Exact {format_odds(price)} ({len(players)} players)",
-                    "event": event,
-                    "css": "mgm",
-                    "methods": ["MGM Exact"]
-                })
+                results.append({"type": "mgm_exact", "label": " + ".join(players), "reason": f"MGM Exact {format_odds(price)} ({len(players)} players)", "event": event, "css": "mgm", "methods": ["MGM Exact"]})
                 for p in players:
                     flagged_players.add(p)
                     player_methods[p].append("MGM Exact")
@@ -496,7 +540,8 @@ def main():
 
     st.markdown("""
     <div class="how-to">
-        <b>Quick start:</b> Load Games → Select games → Fetch Odds → Green cards = the ones we like
+        <b>Quick start:</b> Load Games → Select games → Fetch Odds → Green cards = the ones we like<br>
+        <b>Tip:</b> Fetch a few times during the day so Sticky & Survivor tags can build up.
     </div>
     """, unsafe_allow_html=True)
 
@@ -557,7 +602,6 @@ def main():
         "📖 Glossary"
     ])
 
-    # +EV Board
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 Boss Bitch Picks</div>', unsafe_allow_html=True)
         st.write("**Green = we like it.** **Gray = we skip it.**")
@@ -569,7 +613,7 @@ def main():
             for idx, item in enumerate(ev_board):
                 col = cols[idx % 2]
                 with col:
-                    tags_html = "".join([f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:4]])
+                    tags_html = "".join([f'<span class="tag tag-green">{m}</span>' for m in item["methods"][:5]])
                     if not item["methods"]:
                         tags_html = '<span class="tag">No methods</span>'
 
@@ -600,7 +644,6 @@ def main():
             if not items:
                 st.info("None right now")
                 return
-
             cols = st.columns(2)
             for idx, r in enumerate(items):
                 col = cols[idx % 2]
@@ -616,15 +659,15 @@ def main():
                     </div>''', unsafe_allow_html=True)
 
     show_tab(tabs[1], "dk", "🎯 DraftKings Ends in 10", "DK prices ending in 10")
-    show_tab(tabs[2], "mgm", "🎰 BetMGM Classic (Same Team Only)", "Two+ players on the same team with MGM 00/25/50/75. Sticky = stayed in the group.")
-    show_tab(tabs[3], "match", "🤝 Exact Matching Odds", "Same exact price on the same player across books")
-    show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact Match (Same Game)", "Same exact price on BetMGM for multiple players in the same game")
-    show_tab(tabs[5], "digit", "🔢 Matching 25/50/75", "Same player has 25/50/75 endings on different books")
+    show_tab(tabs[2], "mgm", "🎰 BetMGM Classic (Same Team)", "Same-team pairs/groups. Sticky×N = appeared N times. Survivor = stayed from a bigger group.")
+    show_tab(tabs[3], "match", "🤝 Exact Matching Odds", "Same exact price across books")
+    show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact Match", "Same exact price on BetMGM for multiple players")
+    show_tab(tabs[5], "digit", "🔢 Matching 25/50/75", "Same player has 25/50/75 on different books")
     show_tab(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel +500+ ending in 10/30/60/70/90")
     show_tab(tabs[7], "signal", "📈 Line Signals", "Stuck numbers or one book way off")
     show_tab(tabs[8], "hist", "⏳ Price Movement", "Price changed since last fetch")
-    show_tab(tabs[9], "same_init", "💅 Same Initials", "Same first + last initial (already has a method)")
-    show_tab(tabs[10], "cross", "🔄 Cross Initials", "Last initial of one = first initial of another")
+    show_tab(tabs[9], "same_init", "💅 Same Initials", "Same first + last initial (already has method)")
+    show_tab(tabs[10], "cross", "🔄 Cross Initials", "Last initial of one = first of another")
     show_tab(tabs[11], "last", "👩‍👧 Same Last Name", "Players sharing a last name")
     show_tab(tabs[12], "first", "👯 Same First Name", "Players sharing a first name")
 
@@ -634,34 +677,35 @@ def main():
 ### Black & white rules
 
 **🟢 BET THIS**  
-Two things must both be true:
-1. At least one of our Girl Magic methods hit
-2. The best price is clearly better than what most other books are offering
+Must have **both**:
+1. At least one Girl Magic method
+2. Best price clearly better than most other books
 
 **⚪ SKIP**  
 Everything else.
 
 ---
 
-### MGM Rules (important)
+### Advanced MGM Sticky Rules
 
-- **MGM methods only count for players on the same team**
-- If a player **stays in a pair or group** across fetches, he gets the **Sticky** tag  
-  → That player is the one more likely to go
+- **Sticky** → Player appeared in an MGM group on the last fetch  
+- **Sticky×3 / Sticky×4…** → How many times the player has been in a group (higher = stronger)  
+- **Survivor** → Player was part of a bigger group earlier and is still in a group now  
+  → This is the one more likely to go
 
 ---
 
 ### All methods
 
 - **DK 10** → DraftKings ends in 10  
-- **MGM 00/25/50/75** → Same-team pairs or groups on BetMGM  
-- **Sticky** → Player stayed in the same MGM pair/group  
+- **MGM 00/25/50/75** → Same-team pairs or groups  
+- **Sticky / Sticky×N / Survivor** → Advanced sticky detection  
 - **Exact Match** → Same price on different books  
-- **MGM Exact** → Same price on BetMGM for multiple players in the same game  
+- **MGM Exact** → Same price on BetMGM for multiple players  
 - **Matching Digits** → 25/50/75 across books  
-- **FD Pattern** → FanDuel +500+ with special endings  
+- **FD Pattern** → FanDuel +500+ special endings  
 - **Stuck / Wide** → Line signals  
-- **Name patterns** → Only shown when a method already hit
+- **Name patterns** → Only when a method already hit
         """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
