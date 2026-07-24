@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Tight filters • Clean glossary • Magic energy
+Rule: BET THIS = 2+ methods + edge ≥ 60
 """
 
 import streamlit as st
@@ -228,7 +228,8 @@ CORE_BOOKS = {
     "betmgm": "BetMGM"
 }
 
-EDGE_MIN = 60  # tighter — fewer random people
+EDGE_MIN = 60
+METHODS_MIN = 2   # need at least 2 methods to bet
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -580,7 +581,7 @@ def run_flags(df, previous_df=None):
                 flagged.add(row["player"])
                 methods_map[row["player"]].append("Price moved")
 
-    # +EV — tighter
+    # +EV — STRICT: need 2+ methods AND edge ≥ 60
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -595,28 +596,37 @@ def run_flags(df, previous_df=None):
             med = best
         edge = best - med
         meths = list(set(methods_map.get(player, [])))
-        is_bet = edge >= EDGE_MIN and player in flagged and len(meths) > 0
+        method_count = len(meths)
+
+        # THE RULE
+        is_bet = (method_count >= METHODS_MIN) and (edge >= EDGE_MIN)
+
         conf, bars, level, css = get_confidence(meths, edge, is_bet)
         pri = 0
         if "Last one left" in meths: pri += 30
         if any("Stayed" in m and "times" in m for m in meths): pri += 20
         if "Stayed in the group" in meths: pri += 10
         if "Same on 3+ books" in meths: pri += 8
-        pri += len(meths) + min(edge / 10, 15)
+        pri += method_count * 5 + min(edge / 10, 15)
+
         if is_bet:
-            why = "Method hit + price is clearly better than most books."
-        elif player in flagged:
-            why = "Method hit, but the price isn’t better enough yet."
+            why = f"{method_count} methods hit + price is clearly better. This is the one."
+        elif method_count >= METHODS_MIN:
+            why = f"{method_count} methods hit, but the price isn’t better enough yet."
+        elif edge >= EDGE_MIN:
+            why = "Price looks better, but we need at least 2 methods."
         else:
-            why = "No strong method or not enough edge."
-        # only show people who at least have a method OR a real edge
-        if player in flagged or edge >= EDGE_MIN:
+            why = "Not enough methods and not enough edge."
+
+        # only show players with at least 1 method or real edge
+        if method_count >= 1 or edge >= EDGE_MIN:
             ev_board.append({
                 "player": player, "best_price": best, "best_book": best_book,
                 "median": med, "edge": edge, "is_bet": is_bet, "why": why,
                 "methods": meths, "priority": pri, "bars": bars,
-                "level": level, "css": css
+                "level": level, "css": css, "method_count": method_count
             })
+
     ev_board = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["priority"]))
 
     # Name patterns (only when already flagged)
@@ -689,8 +699,8 @@ def main():
 
     st.markdown("""
     <div class="how-to">
-        <b>Quick start:</b> Load Games → Select games → Fetch Odds → Green cards = the ones we like.<br>
-        <b>Books we use:</b> FanDuel • DraftKings • BetMGM • Hard Rock • Caesars
+        <b>The rule:</b> We only say <b>BET THIS</b> when <b>2 or more methods</b> hit <b>and</b> the price is clearly better (edge ≥ 60).<br>
+        <b>Books:</b> FanDuel • DraftKings • BetMGM • Hard Rock • Caesars
     </div>
     """, unsafe_allow_html=True)
 
@@ -765,7 +775,7 @@ def main():
 
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 I Cracked The Code — Boss Bitch Picks</div>', unsafe_allow_html=True)
-        st.write("**Green = we like it.** **Gray = we skip it.** Only the strong ones make it here.")
+        st.write("**Green = 2+ methods + real edge.** Everything else is skip.")
         if not ev_board:
             st.info("Fetch some games first.")
         else:
@@ -781,6 +791,7 @@ def main():
                         <b>{label}</b> — <b>{item["player"]}</b><br>{meter}
                         Best: {format_odds(item["best_price"])} on {item["best_book"]}<br>
                         Most books: {format_odds(item["median"])}<br>
+                        Methods: {item.get("method_count", 0)}<br>
                         {tags}<br><small>{item["why"]}</small>
                     </div>''', unsafe_allow_html=True)
 
@@ -802,14 +813,14 @@ def main():
                         <br><small>{r.get("event","")}</small>
                     </div>''', unsafe_allow_html=True)
 
-    show(tabs[1], "dk", "🎯 DraftKings 10s — I See You", "DK prices ending in 10. One of our favorites.")
+    show(tabs[1], "dk", "🎯 DraftKings 10s — I See You", "DK prices ending in 10.")
     show(tabs[2], "mgm", "🎰 BetMGM Magic — Same Team Only", "Pairs & groups. Look for Stayed in the group / Last one left. Usually posts in the morning.")
-    show(tabs[3], "match", "🤝 Exact Match — Books Agree", "Same exact price across books. They know something.")
+    show(tabs[3], "match", "🤝 Exact Match — Books Agree", "Same exact price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact — Locked In", "Same exact price on BetMGM for multiple guys.")
     show(tabs[5], "digit", "🔢 Matching Digits — 25 / 50 / 75", "Same player showing those endings on different books.")
     show(tabs[6], "fd", "💙 FanDuel Patterns — High Heat", "FanDuel ≥ +500 ending in 10 / 30 / 60 / 70 / 90.")
     show(tabs[7], "signal", "📈 Signals — Something’s Up", "Stayed the same • Same on 3+ books • Way different.")
-    show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last time we pulled.")
+    show(tabs[8], "hist", "⏳ Price Movement — Watch The Line", "Price moved since the last pull.")
     show(tabs[9], "same_init", "💅 Same Initials — Name Magic", "Same first + last initial (only when a method already hit).")
     show(tabs[10], "cross", "🔄 Cross Initials — Connected", "One player’s last initial matches another’s first.")
     show(tabs[11], "last", "👩‍👧 Same Last Name — Family Ties", "Shared last name.")
@@ -821,21 +832,21 @@ def main():
         st.markdown("""
         <div class="gloss-card">
             <b>🟢 BET THIS</b><br>
-            Has one of our methods <b>and</b> the price is better than most books by a clear amount.<br>
-            These are the ones we actually want.
+            Needs <b>2 or more methods</b> <b>and</b> the price clearly better than most books (edge ≥ 60).<br>
+            These are the only ones we actually take.
         </div>
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
-            Either no real method hit, or the price isn’t better enough yet.<br>
+            Less than 2 methods, or the price isn’t better enough yet.<br>
             We pass.
         </div>
         <div class="gloss-card">
             <b>Stayed in the group</b><br>
-            This player is still inside the same BetMGM pair or group across pulls.
+            Still inside the same BetMGM pair or group across pulls.
         </div>
         <div class="gloss-card">
             <b>Stayed 3 times</b><br>
-            Showed up on three different fetches. The books keep him in that spot.
+            Showed up on three different fetches. Books keep him in that spot.
         </div>
         <div class="gloss-card">
             <b>Last one left</b><br>
@@ -843,11 +854,11 @@ def main():
         </div>
         <div class="gloss-card">
             <b>DK 10 / FD Pattern / Exact Match / Matching Digits</b><br>
-            These are the core book tricks we track every day.
+            The core book tricks we track every day.
         </div>
         <div class="gloss-card">
             <b>Confidence meter</b><br>
-            More filled bars = stronger combination of methods + edge.<br>
+            More filled bars = stronger mix of methods + edge.<br>
             High / Strong / Medium / Low.
         </div>
         """, unsafe_allow_html=True)
