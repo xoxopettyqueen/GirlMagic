@@ -1188,30 +1188,184 @@ def main():
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
                 st.markdown(f"{icon} **{r['player']}** · {r.get('date')} · score {r.get('score')}")
 
-    with tabs[18]:
-        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        st.markdown(f"""
-        <div class="gloss-card">
-            <b>🟢 BET THIS</b> — 2+ core · edge ≥ 60 · 0.5 HR · logs to Results
-        </div>
-        <div class="gloss-card">
-            <b>👻 Late Adds / 💀 Fallen Off</b><br>
-            History snaps only on <b>real Fetch or Auto-refresh</b> — not tab clicks.<br>
-            Need <b>2+ fetches</b> before these tabs fill.
-        </div>
-        <div class="gloss-card">
-            <b>📉 Trends 💚</b> — FD 10–100 under MGM · biggest gap first
-        </div>
-        <div class="gloss-card">
-            <b>🔢 Digits</b> — pairs/groups of 3 · same team · 25/50/75
-        </div>
-        <div class="gloss-card">
-            <b>💙 FanDuel</b> — ≥ +{FD_MIN} or +600 · only with DK/MGM
-        </div>
-        <div class="gloss-card">
-            <b>⏳ Movement</b> — 500+ only · 🔴 UP / 🟢 DOWN
+        with tabs[18]:
+        st.markdown('<div class="queen-banner">📖 The Code — Learn The Tricks</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="how-to">
+            <b>New here?</b> This app flags MLB <b>Over 0.5 home run</b> props using sportsbook pricing patterns
+            (not pure stats). Read top → bottom. Expand any section for the full rule.
         </div>
         """, unsafe_allow_html=True)
+
+        st.markdown("### 1. The board in 30 seconds")
+        with st.expander("🟢 BET THIS vs ⚪ SKIP — what should I actually bet?", expanded=True):
+            st.markdown("""
+**BET THIS** = the only plays the group is supposed to take.
+
+To qualify:
+- At least **2 core methods** hit on that player  
+- **Edge pts 60 or higher** (best real price vs the pack)  
+- Market is **Over 0.5 HR** only (1 homer — not 2+ lines)
+
+**SKIP** = has 2+ core methods but edge is still under 60. Close, we pass.
+
+**Girl Magic Score (0–100)** ranks the +EV board (high → low).  
+More core methods + bigger edge + bonuses (like *Last one left*) = higher score.
+            """)
+
+        with st.expander("📊 Edge pts — what does that number mean?"):
+            st.markdown("""
+**Edge pts = Best price − Median price** across books.
+
+Example: best book +700, most books around +550 → edge pts = **150**.
+
+- We ignore a single crazy longshot outlier (150+ longer than everyone else)  
+- Edge can be over 100 — it’s **odds points**, not a grade out of 100  
+- Need **60+** for BET THIS  
+            """)
+
+        st.markdown("### 2. Core methods (count toward the 2+ rule)")
+        with st.expander("🎯 DraftKings 10s"):
+            st.markdown("""
+DK prices that **end in 10**: +110, +210, +310, +410, +510…
+
+Strong single-book tell. No team requirement. Counts as **core**.
+            """)
+        with st.expander("🎰 BetMGM classic endings (00 / 25 / 50 / 75)"):
+            st.markdown("""
+Same **team**, MGM prices ending in **00, 25, 50, or 75**.
+
+- **Pair** (2 players) preferred  
+- **Group of 3** if no clean pair  
+
+**Stayed in the group** = still in that MGM pair/group after multiple fetches.  
+**Last one left** = started in a bigger group; only one still there (very strong).
+            """)
+        with st.expander("⭐ MGM Exact · 🤝 Exact Match · 🔢 Digits"):
+            st.markdown("""
+**MGM Exact** — two+ players on MGM share the *exact* same price (same team).
+
+**Exact Match** — two+ books show the same price on the *same* player.
+
+**Digits** — **pairs or groups of 3 only**, **same team** (BetMGM), endings **25 / 50 / 75**.  
+No solos. No groups of 4+.
+            """)
+        with st.expander("💙 FanDuel patterns"):
+            st.markdown(f"""
+FanDuel only counts when that player **also** has **DK 10** or a **BetMGM** trick.
+
+- Price **≥ +{FD_MIN}** ending in **10 / 20 / 30 / 60 / 70 / 90**, or  
+- Exact **+600** (tagged FD 600)
+
+FD alone is not enough.
+            """)
+        with st.expander("📈 Signals (one card per player)"):
+            st.markdown(f"""
+All signals for a player live on **one card**:
+
+- Same exact price on **3+ books**  
+- Same ending (25/50/75) on **3+ books**  
+- **One book higher** than the pack (others lower)  
+- Stuck price across multiple history snaps  
+- Multi-book same direction (2+ books, move ≥ {MOVE_MIN} pts)
+            """)
+
+        st.markdown("### 3. Noise (shows on tabs — does NOT count toward 2+)")
+        with st.expander("What is “noise”?"):
+            st.markdown("""
+These can still be useful to *look at*, but they **do not** help a play become BET THIS by themselves:
+
+- Just Appeared / Added Late / Gone Missing  
+- Single-book price moved  
+- FADE tags (shot way up, drop >100, FD highest)  
+- FD under MGM (trend only — support signal)
+            """)
+
+        st.markdown("### 4. Movement, Trends, Late, Fallen")
+        with st.expander("⏳ Movement"):
+            st.markdown(f"""
+Only **{MOVE_PRICE_MIN}+** prices. Move must be **≥ {MOVE_MIN} pts**.
+
+- **🔴 Left = went UP** (longer)  
+- **🟢 Right = went DOWN** (shorter)  
+
+Uses **shared history** (works on phone + computer).  
+Snaps only save on a **real Fetch / Auto-refresh** — not every tab click.
+            """)
+        with st.expander("📉 Trends"):
+            st.markdown("""
+**💚 Worth a look** — FanDuel is **10–100 pts under BetMGM**.  
+Sorted **biggest gap first** (100 → 10).
+
+**🔴 Fade**
+- Shot way up (≥100 pts longer)  
+- Dropped more than 100 pts  
+- FanDuel is the **highest** of all books  
+            """)
+        with st.expander("👻 Late Adds · 💀 Fallen Off"):
+            st.markdown("""
+**Late Adds** (FD / DK / MGM only)
+- **Just Appeared** — on a book now, wasn’t last pull  
+- **Added Late** — missing earlier, just showed up  
+- **Gone Missing** — was there, now gone  
+
+**Fallen Off** — was on the +EV board last real fetch, not on it this fetch.  
+Tags can include: Was BET THIS, Lost core methods, Only 1 book left, Line gone.
+
+**Need 2+ real fetches** before these tabs can fill. Watch “History: X snaps” under the buttons.
+            """)
+
+        st.markdown("### 5. Name Magic (different teams only)")
+        with st.expander("💅 Same Init · ✨ Double Init · 🔄 Cross · Same First/Last"):
+            st.markdown(f"""
+Only players who already match our **odds tricks**:
+
+- Both need **{NAME_METHODS_MIN}+ core methods**  
+- Both need a **personal strong** flag (see below)  
+- **Different teams** (when team data exists)  
+- Max **{NAME_MAX_PAIRS}** pairs per tab  
+
+| Type | Meaning | Example |
+|------|---------|---------|
+| **Same Init** | Same first + last initial | Trea Turner + Tyler Tolbert = **TT** |
+| **Double Init** | First letter = last letter on each name | Turner **TT**, Steer **SS**, Hernandez **HH** |
+| **Cross** | One player’s **last** initial = other’s **first** | … |
+| **Same First / Last** | Exact same first or last name | … |
+
+**Personal strong** (required for name pairs):  
+DK 10 · FD Pattern · FD 600 · Exact Match · Match 25/50/75 ·  
+Last one left · Multi-book Shorten/Lengthen · Same on 3+ books  
+
+“Only in an MGM group” is **not** enough alone for name magic.
+            """)
+
+        st.markdown("### 6. Results — learning what works")
+        with st.expander("📊 Results tab"):
+            st.markdown("""
+Every **BET THIS** auto-logs here.
+
+After the games, mark **HIT** (1+ HR) or **MISS** (0 HR).
+
+You’ll see:
+- Overall hit rate  
+- **Per-method** hit rates  
+
+That’s how we tighten the code over time — not vibes, receipts.
+            """)
+
+        st.markdown("### 7. How to run the app")
+        with st.expander("Step-by-step for first-timers"):
+            st.markdown(f"""
+1. **Load Games**  
+2. Select the games you care about  
+3. **Fetch Odds**  
+4. Check **+EV Board** — green **BET THIS** first  
+5. Use method tabs (DK / MGM / FD / etc.) to see *why*  
+6. After games → **Results** → mark HIT/MISS  
+
+Auto-refresh every **{REFRESH_MINUTES} minutes** while this tab is open.  
+History clears after ~18 hours (new slate day).
+            """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
