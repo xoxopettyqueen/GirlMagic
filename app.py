@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Movement 500+ only · Signals one card per player · FD needs DK/MGM · Double Init
+Digits = pairs/groups of 3 same team · Full glossary · Movement 500+ · Signals 1 card
 """
 
 import streamlit as st
@@ -334,7 +334,6 @@ def run_flags(df, previous_df=None):
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
-    # collect signal lines per player, emit one card later
     signal_bucket = defaultdict(list)
     signal_methods = defaultdict(set)
 
@@ -394,18 +393,18 @@ def run_flags(df, previous_df=None):
     for player, g in df.groupby("player"):
         by_book = {r["book"]: r["price"] for _, r in g.iterrows()}
         fd = by_book.get("fanduel")
-        mgm = None
+        mgm_price = None
         for k, v in by_book.items():
             if "betmgm" in k or k == "mgm":
-                mgm = v
+                mgm_price = v
                 break
         others = [v for b, v in by_book.items() if b != "fanduel"]
-        if fd is not None and mgm is not None:
-            gap = mgm - fd
+        if fd is not None and mgm_price is not None:
+            gap = mgm_price - fd
             if 10 <= gap <= 100:
                 results.append({
                     "type": "trend", "trend_kind": "good", "label": player,
-                    "reason": f"💚 FD under MGM by {int(gap)} pts · FD {format_odds(fd)} · MGM {format_odds(mgm)}",
+                    "reason": f"💚 FD under MGM by {int(gap)} pts · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}",
                     "event": "", "css": "hist", "methods": ["FD under MGM"]
                 })
         if fd is not None and others and fd > max(others):
@@ -524,7 +523,8 @@ def run_flags(df, previous_df=None):
                     "event": event, "css": "mgm", "methods": ["MGM Exact"]})
                 for n in names: methods_map[n].append("MGM Exact")
 
-    for event, g in df.groupby("event"):
+    # DIGITS — pairs or groups of 3 ONLY · same team (BetMGM only)
+    for event, g in mgm.groupby("event"):
         ends = defaultdict(list)
         for _, r in g.iterrows():
             d = last_two(r["price"])
@@ -532,12 +532,16 @@ def run_flags(df, previous_df=None):
                 ends[d].append(r["player"])
         for d, ps in ends.items():
             names = sorted(set(ps))
-            if len(names) < 2: continue
-            kind = "pair" if len(names) == 2 else f"group of {len(names)}"
+            if len(names) not in (2, 3):
+                continue
+            kind = "pair" if len(names) == 2 else "group of 3"
             results.append({
-                "type": "digit", "label": " + ".join(names),
-                "reason": f"Digit {kind} ends in {d}",
-                "event": event, "css": "digit", "methods": [f"Match {d}"],
+                "type": "digit",
+                "label": " + ".join(names),
+                "reason": f"Digit {kind} ends in {d} (same team)",
+                "event": event,
+                "css": "digit",
+                "methods": [f"Match {d}"],
             })
             for n in names:
                 methods_map[n].append(f"Match {d}")
@@ -565,7 +569,6 @@ def run_flags(df, previous_df=None):
             })
             methods_map[player].append("FD Pattern")
 
-    # ── SIGNALS collected per player, one card later ──
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
@@ -624,20 +627,16 @@ def run_flags(df, previous_df=None):
                 signal_methods[player].add("Multi-book Shorten")
                 methods_map[player].append("Multi-book Shorten")
 
-    # one signal card per player
     for player in sorted(signal_bucket.keys()):
-        lines = signal_bucket[player]
-        meths = list(signal_methods[player])
         results.append({
             "type": "signal",
             "label": player,
-            "reason": "<br>".join(lines),
+            "reason": "<br>".join(signal_bucket[player]),
             "event": "",
             "css": "signal",
-            "methods": meths,
+            "methods": list(signal_methods[player]),
         })
 
-    # +EV
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         prices = g["price"].dropna().tolist()
@@ -802,7 +801,7 @@ def main():
         🎯 <b>Market</b> → Over 0.5 HR only (1 homer)<br>
         💜 <b>Books</b> → FanDuel • DraftKings • BetMGM • Hard Rock • Caesars<br>
         🔄 <b>Auto</b> → Every {REFRESH_MINUTES} min · History: <b>{hist_n}</b><br>
-        💙 FD needs DK/MGM · Movement 500+ only · Signals one card per player
+        💙 FD needs DK/MGM · Movement 500+ · Digits = pair/group of 3 same team
     </div>
     """, unsafe_allow_html=True)
 
@@ -937,10 +936,9 @@ def main():
     show(tabs[2], "mgm", "🎰 BetMGM Magic", "Same-team pairs/groups.")
     show(tabs[3], "match", "🤝 Exact Match", "Same price across books.")
     show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, multiple guys.")
-    show(tabs[5], "digit", "🔢 Digits — Pairs & Groups", "2+ players sharing ending 25 / 50 / 75.")
+    show(tabs[5], "digit", "🔢 Digits", "Pairs or groups of 3 only · same team (BetMGM) · endings 25/50/75.")
     show(tabs[6], "fd", "💙 FanDuel (needs DK or MGM)", f"≥ +{FD_MIN} endings or exact +600 — only if also DK 10 or MGM.")
 
-    # Signals — already one card per player from run_flags
     with tabs[7]:
         st.markdown('<div class="queen-banner">📈 Signals — One Card Per Player</div>', unsafe_allow_html=True)
         st.caption("All signals for that player listed under one card.")
@@ -954,9 +952,7 @@ def main():
                     tags = "".join(f'<span class="tag">{m}</span>' for m in r.get("methods", []))
                     st.markdown(f'''
                     <div class="card grid-card">
-                        <b>{r["label"]}</b><br>
-                        {r["reason"]}<br>
-                        {tags}
+                        <b>{r["label"]}</b><br>{r["reason"]}<br>{tags}
                     </div>''', unsafe_allow_html=True)
 
     with tabs[8]:
@@ -1010,10 +1006,11 @@ def main():
                     tags = "".join(f'<span class="tag tag-red">{m}</span>' for m in r.get("methods", []))
                     st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
-    show(tabs[10], "late", "👻 Late Adds", "FD / DK / MGM only.")
+    show(tabs[10], "late", "👻 Late Adds", "FD / DK / MGM only. Needs 2+ snaps.")
 
     with tabs[11]:
         st.markdown('<div class="queen-banner">💀 Fallen Off</div>', unsafe_allow_html=True)
+        st.caption("Was on +EV last pull, gone now. Needs 2+ fetches.")
         if not fallen:
             st.info("None yet.")
         else:
@@ -1045,7 +1042,6 @@ def main():
             • Overnight noise does <b>not</b> count<br>
             • Over <b>0.5 HR only</b> (1 homer)
         </div>
-
         <div class="gloss-card">
             <b>⚪ SKIP</b><br>
             Close, but not quite.<br><br>
@@ -1053,221 +1049,106 @@ def main():
             • Edge pts still under 60<br>
             • We pass
         </div>
-
         <div class="gloss-card">
             <b>📊 Girl Magic Score (0–100)</b><br>
             Rank on the +EV board. Higher = better.<br><br>
             • Up to 50 from core method count<br>
             • Up to 40 from edge pts (scaled)<br>
-            • Up to 10 from strong bonuses (Last one left, etc.)<br>
+            • Up to 10 from strong bonuses<br>
             • Always capped at 100<br>
             • Board sorted high → low
         </div>
-
         <div class="gloss-card">
             <b>Edge pts</b><br>
             How much better the best real price is vs the pack.<br><br>
             • Formula: <b>Best − Median</b><br>
             • Best ignores a lone outlier (150+ longer than the next book)<br>
             • Can be over 100 (odds points, not a grade)<br>
-            • Need <b>60+</b> for BET THIS<br>
-            • Example: best +700, median +550 → edge pts = 150
+            • Need <b>60+</b> for BET THIS
         </div>
-
         <div class="gloss-card">
             <b>Core methods</b> (count toward the 2+ rule)<br><br>
-            • DK 10<br>
-            • FD Pattern · FD 600<br>
-            • Exact Match<br>
-            • MGM Exact<br>
-            • Match 25 / 50 / 75<br>
-            • MGM 00 / 25 / 50 / 75<br>
-            • Stayed in the group<br>
-            • Last one left<br>
-            • Same on 3+ books<br>
-            • Multi-book Shorten<br>
-            • Multi-book Lengthen
+            • DK 10 · FD Pattern · FD 600 · Exact Match · MGM Exact<br>
+            • Match 25 / 50 / 75 · MGM 00 / 25 / 50 / 75<br>
+            • Stayed in the group · Last one left<br>
+            • Same on 3+ books · Multi-book Shorten · Multi-book Lengthen
         </div>
-
         <div class="gloss-card">
             <b>Noise</b> (tabs only — do <b>not</b> count toward 2+)<br><br>
             • Just Appeared · Added Late · Gone Missing<br>
             • Stuck · single-book Shortening / Lengthening<br>
             • Price moved · FADE tags · FD under MGM (trend only)
         </div>
-
         <div class="gloss-card">
             <b>🎯 DK 10</b><br>
-            DraftKings price ends in 10.<br><br>
-            • Examples: +110, +210, +310, +410, +510<br>
-            • Strong single-book tell<br>
-            • No team requirement
+            DraftKings ends in 10 (+110, +210, +310…). Strong single-book tell.
         </div>
-
         <div class="gloss-card">
             <b>🎰 MGM 00 / 25 / 50 / 75</b><br>
-            BetMGM classic endings on the <b>same team</b>.<br><br>
-            • Valid endings: 00, 25, 50, 75<br>
-            • Pairs first (2 players)<br>
-            • Group of three if no pair exists
+            Same-team pairs first, then groups. Valid endings: 00, 25, 50, 75.
         </div>
-
         <div class="gloss-card">
-            <b>Stayed in the group</b><br>
-            Still inside the same BetMGM pair/group after multiple pulls.<br>
-            The book keeps putting them there on purpose.
+            <b>Stayed in the group / Last one left</b><br>
+            Stayed = still in the MGM pair/group across pulls.<br>
+            Last one left = started in a bigger group, only one still standing.
         </div>
-
         <div class="gloss-card">
-            <b>Stayed in group 3x / 4x</b><br>
-            Same MGM spot on 3+ different fetches.<br>
-            Stronger than a one-time group.
+            <b>⭐ MGM Exact · 🤝 Exact Match</b><br>
+            Exact same price on MGM (multi players) or across books (same player).
         </div>
-
-        <div class="gloss-card">
-            <b>Last one left</b><br>
-            Started in a bigger MGM group. Only one still standing.<br>
-            One of the strongest signals we track.
-        </div>
-
-        <div class="gloss-card">
-            <b>⭐ MGM Exact</b><br>
-            Two or more players on BetMGM share the <b>exact same price</b>. Same team.
-        </div>
-
-        <div class="gloss-card">
-            <b>🤝 Exact Match</b><br>
-            Two or more books have the exact same price on the same player.
-        </div>
-
         <div class="gloss-card">
             <b>🔢 Digits</b><br>
-            Pair or group of <b>players</b> sharing ending 25 / 50 / 75<br>
-            (same idea as MGM — not solo)
+            <b>Pairs or groups of 3 only</b> · <b>same team</b> (BetMGM) · endings 25 / 50 / 75<br>
+            No solos. No groups of 4+.
         </div>
-
         <div class="gloss-card">
             <b>💙 FanDuel</b><br>
-            • ≥ +{FD_MIN} ending in 10 / 20 / 30 / 60 / 70 / 90<br>
-            • Exact <b>+600</b> is its own flag (FD 600)<br>
-            • <b>Only shown if that player also has DK 10 or a BetMGM trick</b>
+            ≥ +{FD_MIN} ending 10/20/30/60/70/90 · or exact +600<br>
+            <b>Only if that player also has DK 10 or a BetMGM trick</b>
         </div>
-
         <div class="gloss-card">
             <b>📈 Signals</b><br>
-            <b>One card per player</b> — all their signals listed under them.<br><br>
-            • Same exact price on 3+ books<br>
-            • Same ending tier (25/50/75) on 3+ books<br>
-            • <b>One book higher</b> than the pack (others lower)<br>
-            • Stuck price across 3+ history snaps<br>
-            • Multi-book same direction (2+ books, move ≥ {MOVE_MIN} pts)
+            <b>One card per player</b> — all their signals under them.<br><br>
+            • Same price on 3+ books<br>
+            • Same ending on 3+ books<br>
+            • One book higher than the pack<br>
+            • Stuck price · Multi-book same direction
         </div>
-
         <div class="gloss-card">
             <b>⏳ Movement</b><br>
-            One card per player. Split columns:<br><br>
-            • Left = <b>🔴 Went UP</b><br>
-            • Right = <b>🟢 Went DOWN</b><br>
-            • Only <b>{MOVE_PRICE_MIN}+</b> prices<br>
-            • Only moves of <b>{MOVE_MIN} pts or more</b><br>
-            • From shared history (works on mobile + desktop)
+            🔴 UP (left) · 🟢 DOWN (right)<br>
+            Only <b>{MOVE_PRICE_MIN}+</b> prices · move ≥ {MOVE_MIN} pts · shared history
         </div>
-
         <div class="gloss-card">
-            <b>📉 Trends</b><br><br>
-            <b>💚 Worth a look</b><br>
-            • FanDuel is <b>10–100 pts under BetMGM</b><br><br>
-            <b>🔴 Fade</b><br>
-            • Shot way up (≥100 pts lengthen)<br>
-            • Dropped more than 100 pts<br>
-            • FanDuel is the <b>highest</b> of all books<br><br>
-            Tiny single-book moves are ignored.
+            <b>📉 Trends</b><br>
+            💚 FD 10–100 under MGM · 🔴 Shot up ≥100 / Drop >100 / FD highest
         </div>
-
         <div class="gloss-card">
             <b>👻 Late Adds</b><br>
-            Who showed up or disappeared on the books.<br><br>
-            • <b>Just Appeared</b> — on a book now, wasn’t on the last pull<br>
-            • <b>Added Late</b> — missing earlier, just showed up<br>
-            • <b>Gone Missing</b> — was there, now gone<br>
-            • FanDuel, DraftKings, and BetMGM only<br>
-            • Needs 2+ presence history snaps
+            Just Appeared / Added Late / Gone Missing on FD, DK, MGM only.<br>
+            Needs 2+ presence snaps.
         </div>
-
         <div class="gloss-card">
             <b>💀 Fallen Off</b><br>
-            Was on the +EV board last pull. Not on it this pull.<br><br>
-            Reasons we tag when we can:<br>
-            • Was BET THIS<br>
-            • Lost core methods<br>
-            • Only 1 book left<br>
-            • Line gone / not on books<br>
-            • Needs 2+ fetches
+            Was on +EV last pull, gone this pull.<br>
+            Tags: Was BET THIS · Lost core methods · Only 1 book left · Line gone
         </div>
-
         <div class="gloss-card">
-            <b>💅 Same Init</b><br>
-            Same first letter + same last letter.<br><br>
-            • Example: Trea Turner & Tyler Tolbert = TT<br>
-            • Both need 3+ core methods<br>
-            • Both need a personal strong flag<br>
-            • Different teams only<br>
-            • Max {NAME_MAX_PAIRS} pairs
+            <b>💅 Same Init</b> — same first+last initials (TT + TT)<br>
+            <b>✨ Double Init</b> — first letter = last letter (TT, SS, HH)<br>
+            <b>🔄 Cross</b> — last of one = first of the other<br>
+            <b>Same First / Last</b> — exact name match<br><br>
+            All: both need 3+ core + personal strong · different teams · max {NAME_MAX_PAIRS}
         </div>
-
         <div class="gloss-card">
-            <b>✨ Double Init</b><br>
-            First letter equals last letter on each player.<br><br>
-            • Examples: Trea Turner (TT), Spencer Steer (SS), Heriberto Hernandez (HH)<br>
-            • Both need 3+ core + personal strong<br>
-            • Different teams only<br>
-            • Max {NAME_MAX_PAIRS} pairs
+            <b>Personal strong</b><br>
+            DK 10 · FD Pattern · FD 600 · Exact Match · Match 25/50/75 ·
+            Last one left · Multi-book Shorten/Lengthen · Same on 3+ books<br>
+            “Only in an MGM group” does <b>not</b> count alone.
         </div>
-
         <div class="gloss-card">
-            <b>🔄 Cross Init</b><br>
-            One player’s last initial matches the other player’s first initial.<br><br>
-            • Both need 3+ core + personal strong<br>
-            • Different teams only<br>
-            • Max {NAME_MAX_PAIRS} pairs
-        </div>
-
-        <div class="gloss-card">
-            <b>👩‍👧 Same Last / 👯 Same First</b><br>
-            Exact same last name or first name.<br><br>
-            • Both need 3+ core + personal strong<br>
-            • Different teams only<br>
-            • Max {NAME_MAX_PAIRS} pairs
-        </div>
-
-        <div class="gloss-card">
-            <b>Personal strong</b> (for Name Magic)<br>
-            Counts as strong for name pairs:<br><br>
-            • DK 10 · FD Pattern · FD 600 · Exact Match<br>
-            • Match 25 / 50 / 75<br>
-            • Last one left<br>
-            • Multi-book Shorten / Lengthen<br>
-            • Same on 3+ books<br><br>
-            “Only in an MGM group” does <b>not</b> count as personal strong.
-        </div>
-
-        <div class="gloss-card">
-            <b>Confidence Meter</b><br>
-            The little bars under each +EV card.<br>
-            More filled = stronger mix of core methods + edge.
-        </div>
-
-        <div class="gloss-card">
-            <b>History</b><br>
-            Price / presence / MGM / +EV snaps save to a file.<br>
-            Trends, Late Adds, Movement, and Fallen Off work across refreshes and devices.<br>
-            Clears after ~18 hours (new slate day).
-        </div>
-
-        <div class="gloss-card">
-            <b>🔄 Auto-refresh</b><br>
-            Every 30 minutes while this tab is open.<br>
-            Selected games re-fetch automatically.
+            <b>History / Auto</b><br>
+            Snaps ~18h · Auto every 30 min while tab is open
         </div>
         """, unsafe_allow_html=True)
 
