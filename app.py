@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-Advanced Sticky: Sticky Count + Solo Survivor
+Clear sticky names + general sticky + smaller cards
 """
 
 import streamlit as st
@@ -34,58 +34,60 @@ st.markdown("""
         background: linear-gradient(90deg, #f9a8d4, #e879f9, #c084fc);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 2.6rem !important;
+        font-size: 2.5rem !important;
         margin-bottom: 0 !important;
     }
 
     .subtitle {
         color: #f9a8d4;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         font-weight: 600;
         letter-spacing: 1.5px;
         text-transform: uppercase;
         margin-top: -4px;
-        margin-bottom: 18px;
+        margin-bottom: 14px;
     }
 
     .how-to {
         background: #1c0f2b;
         border: 1px solid #f472b6;
-        border-radius: 14px;
-        padding: 12px 16px;
-        margin-bottom: 18px;
-        font-size: 0.9rem;
-        line-height: 1.45;
+        border-radius: 12px;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        font-size: 0.85rem;
+        line-height: 1.4;
     }
 
     .stButton > button {
         background: linear-gradient(90deg, #db2777, #9333ea) !important;
         color: white !important;
         border: none !important;
-        border-radius: 12px !important;
+        border-radius: 10px !important;
         font-weight: 700 !important;
-        padding: 0.6rem 1.4rem !important;
-        box-shadow: 0 4px 15px rgba(219, 39, 119, 0.4);
+        padding: 0.5rem 1.2rem !important;
+        box-shadow: 0 3px 12px rgba(219, 39, 119, 0.4);
+        font-size: 0.9rem;
     }
 
     .card {
         background: linear-gradient(155deg, #1c0f2b, #27143a);
         border: 1px solid #f472b6;
-        border-radius: 14px;
-        padding: 12px 16px;
+        border-radius: 12px;
+        padding: 10px 13px;
         margin: 0;
         color: #fdf2f8;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         position: relative;
         height: 100%;
+        font-size: 0.88rem;
     }
 
     .card::before {
         content: '';
         position: absolute;
         top: 0; left: 0;
-        width: 5px; height: 100%;
-        border-radius: 14px 0 0 14px;
+        width: 4px; height: 100%;
+        border-radius: 12px 0 0 12px;
     }
 
     .dk::before { background: #00a3e0; }
@@ -100,7 +102,7 @@ st.markdown("""
     .bet {
         background: linear-gradient(155deg, #0d2818, #163d28) !important;
         border: 1px solid #34d399 !important;
-        box-shadow: 0 0 18px rgba(52, 211, 153, 0.25);
+        box-shadow: 0 0 14px rgba(52, 211, 153, 0.25);
     }
     .bet::before { background: #34d399; }
 
@@ -115,11 +117,11 @@ st.markdown("""
         display: inline-block;
         background: #3b0764;
         color: #f9a8d4;
-        font-size: 0.68rem;
+        font-size: 0.62rem;
         font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 12px;
-        margin: 2px 3px 2px 0;
+        padding: 2px 7px;
+        border-radius: 10px;
+        margin: 2px 2px 2px 0;
         border: 1px solid #a855f7;
     }
 
@@ -129,33 +131,27 @@ st.markdown("""
         border: 1px solid #34d399;
     }
 
-    .tag-gold {
-        background: #422006;
-        color: #fcd34d;
-        border: 1px solid #f59e0b;
-    }
-
     .queen-banner {
         display: inline-block;
         background: linear-gradient(90deg, #db2777, #9333ea);
         color: white;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         font-weight: 700;
-        padding: 4px 12px;
-        border-radius: 20px;
+        padding: 3px 10px;
+        border-radius: 16px;
         letter-spacing: 1px;
         text-transform: uppercase;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
-    .stTabs [data-baseweb="tab-list"] { gap: 5px; }
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
     .stTabs [data-baseweb="tab"] {
         background: #1c0f2b;
-        border-radius: 10px;
+        border-radius: 8px;
         color: #f9a8d4;
         font-weight: 600;
-        padding: 8px 12px;
-        font-size: 0.85rem;
+        padding: 6px 10px;
+        font-size: 0.8rem;
     }
     .stTabs [aria-selected="true"] {
         background: linear-gradient(90deg, #db2777, #9333ea) !important;
@@ -165,14 +161,14 @@ st.markdown("""
     .footer {
         text-align: center;
         color: #f9a8d4;
-        font-size: 0.9rem;
-        margin-top: 40px;
+        font-size: 0.85rem;
+        margin-top: 30px;
         letter-spacing: 1px;
         opacity: 0.85;
     }
 
     .grid-card {
-        margin-bottom: 12px;
+        margin-bottom: 8px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -249,61 +245,29 @@ def run_flags(df, previous_df=None):
     flagged_players = set()
     player_methods = defaultdict(list)
 
-    # ========== ADVANCED STICKY TRACKING ==========
-    # Store history of MGM groups across fetches
-    if "mgm_history" not in st.session_state:
-        st.session_state["mgm_history"] = []   # list of {event, ending, players: frozenset}
+    # ========== HISTORY FOR STAYED-IN-GROUP ==========
+    if "price_history" not in st.session_state:
+        st.session_state["price_history"] = []
 
-    current_mgm_groups = []
+    # Current snapshot of player → price per book
+    current_snap = {}
+    for _, row in df.iterrows():
+        key = (row["player"], row["book"])
+        current_snap[key] = row["price"]
 
-    mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
+    st.session_state["price_history"].append(current_snap)
+    st.session_state["price_history"] = st.session_state["price_history"][-8:]
 
-    for event, event_group in mgm_df.groupby("event"):
-        ending_groups = defaultdict(list)
-        for _, row in event_group.iterrows():
-            d = last_two(row["price"])
-            if d in (0, 25, 50, 75):
-                ending_groups[d].append(row["player"])
-
-        for d, players in ending_groups.items():
-            names = frozenset(players)
-            if len(names) >= 2:
-                current_mgm_groups.append({
-                    "event": event,
-                    "ending": d,
-                    "players": names
-                })
-
-    # Update history (keep last 8 snapshots)
-    st.session_state["mgm_history"].append(current_mgm_groups)
-    st.session_state["mgm_history"] = st.session_state["mgm_history"][-8:]
-
-    # Calculate sticky counts and survivors
-    sticky_count = defaultdict(int)          # player → how many times seen in a group
-    survivor_players = set()
-
-    history = st.session_state["mgm_history"]
+    # Count how many times a player kept the same price on the same book
+    stayed_count = defaultdict(int)
+    history = st.session_state["price_history"]
     if len(history) >= 2:
-        # Sticky Count: how many snapshots this player appeared in any group
-        for snapshot in history:
-            seen_this_snap = set()
-            for g in snapshot:
-                for p in g["players"]:
-                    seen_this_snap.add(p)
-            for p in seen_this_snap:
-                sticky_count[p] += 1
-
-        # Solo Survivor: players who were in larger groups earlier and are still present
-        earliest = history[0]
-        latest = history[-1]
-        early_players = set()
-        for g in earliest:
-            if len(g["players"]) >= 3:
-                early_players.update(g["players"])
-        late_players = set()
-        for g in latest:
-            late_players.update(g["players"])
-        survivor_players = early_players & late_players
+        for i in range(1, len(history)):
+            prev = history[i-1]
+            curr = history[i]
+            for key in curr:
+                if key in prev and prev[key] == curr[key]:
+                    stayed_count[key[0]] += 1   # count by player
 
     # ========== DraftKings Ends in 10 ==========
     for _, row in df.iterrows():
@@ -313,7 +277,49 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(row["player"])
                 player_methods[row["player"]].append("DK 10")
 
-    # ========== BetMGM Classic Endings (Same Team) + Sticky ==========
+    # ========== BetMGM Classic (SAME TEAM ONLY) ==========
+    mgm_df = df[df["book"].str.lower().str.contains("betmgm|mgm", na=False)].copy()
+
+    # MGM group history
+    if "mgm_history" not in st.session_state:
+        st.session_state["mgm_history"] = []
+
+    current_mgm_groups = []
+    for event, event_group in mgm_df.groupby("event"):
+        ending_groups = defaultdict(list)
+        for _, row in event_group.iterrows():
+            d = last_two(row["price"])
+            if d in (0, 25, 50, 75):
+                ending_groups[d].append(row["player"])
+        for d, players in ending_groups.items():
+            names = frozenset(players)
+            if len(names) >= 2:
+                current_mgm_groups.append({"event": event, "ending": d, "players": names})
+
+    st.session_state["mgm_history"].append(current_mgm_groups)
+    st.session_state["mgm_history"] = st.session_state["mgm_history"][-8:]
+
+    mgm_stayed = defaultdict(int)
+    mgm_survivor = set()
+    mgm_hist = st.session_state["mgm_history"]
+    if len(mgm_hist) >= 2:
+        for snap in mgm_hist:
+            seen = set()
+            for g in snap:
+                for p in g["players"]:
+                    seen.add(p)
+            for p in seen:
+                mgm_stayed[p] += 1
+
+        early = set()
+        for g in mgm_hist[0]:
+            if len(g["players"]) >= 3:
+                early.update(g["players"])
+        late = set()
+        for g in mgm_hist[-1]:
+            late.update(g["players"])
+        mgm_survivor = early & late
+
     for event, event_group in mgm_df.groupby("event"):
         ending_groups = defaultdict(list)
         for _, row in event_group.iterrows():
@@ -327,16 +333,16 @@ def run_flags(df, previous_df=None):
                 methods = [f"MGM {d:02d}"]
                 extra = []
                 for n in names:
-                    cnt = sticky_count.get(n, 0)
+                    cnt = mgm_stayed.get(n, 0)
                     if cnt >= 3:
-                        methods.append(f"Sticky×{cnt}")
-                        extra.append(f"Sticky×{cnt}")
+                        methods.append(f"Stayed {cnt} times")
+                        extra.append(f"Stayed {cnt} times")
                     elif cnt >= 2:
-                        methods.append("Sticky")
-                        extra.append("Sticky")
-                    if n in survivor_players:
-                        methods.append("Survivor")
-                        extra.append("Survivor")
+                        methods.append("Stayed in the group")
+                        extra.append("Stayed in the group")
+                    if n in mgm_survivor:
+                        methods.append("Last one left")
+                        extra.append("Last one left")
 
                 reason = f"MGM {'Pair' if len(names)==2 else 'Group of '+str(len(names))} ends in {d:02d}"
                 if extra:
@@ -398,22 +404,37 @@ def run_flags(df, previous_df=None):
                 flagged_players.add(row["player"])
                 player_methods[row["player"]].append("FD Pattern")
 
+    # ========== General "Stayed the same" (any book) ==========
+    for player, cnt in stayed_count.items():
+        if cnt >= 2:
+            label = f"Stayed {cnt} times" if cnt >= 3 else "Stayed the same"
+            results.append({
+                "type": "signal",
+                "label": player,
+                "reason": f"Price stayed the same on multiple fetches",
+                "event": "",
+                "css": "signal",
+                "methods": [label]
+            })
+            flagged_players.add(player)
+            player_methods[player].append(label)
+
     # ========== Line Signals ==========
     for (player, point), group in df.groupby(["player", "point"], dropna=False):
         prices = group["price"].dropna().tolist()
         books = group["book"].tolist()
         if len(prices) < 3: continue
         if len(set(prices)) == 1:
-            results.append({"type": "signal", "label": player, "reason": f"Stuck {format_odds(prices[0])} on {len(prices)} books", "event": group["event"].iloc[0], "css": "signal", "methods": ["Stuck"]})
+            results.append({"type": "signal", "label": player, "reason": f"Same price on {len(prices)} books", "event": group["event"].iloc[0], "css": "signal", "methods": ["Same on 3+ books"]})
             flagged_players.add(player)
-            player_methods[player].append("Stuck")
+            player_methods[player].append("Same on 3+ books")
         try:
             med = statistics.median(prices)
             for i, pr in enumerate(prices):
                 if abs(pr - med) >= 150:
-                    results.append({"type": "signal", "label": player, "reason": f"Wide on {books[i]}", "event": group["event"].iloc[0], "css": "signal", "methods": ["Wide"]})
+                    results.append({"type": "signal", "label": player, "reason": f"One book way different ({books[i]})", "event": group["event"].iloc[0], "css": "signal", "methods": ["Way different"]})
                     flagged_players.add(player)
-                    player_methods[player].append("Wide")
+                    player_methods[player].append("Way different")
         except:
             pass
 
@@ -425,10 +446,10 @@ def run_flags(df, previous_df=None):
             if key in prev_lookup:
                 old, new = prev_lookup[key], row["price"]
                 if old is not None and new is not None and old != new:
-                    direction = "↑" if new > old else "↓"
-                    results.append({"type": "hist", "label": row["player"], "reason": f"{row['book']}: {format_odds(old)} → {format_odds(new)} {direction}", "event": row["event"], "css": "hist", "methods": ["Moved"]})
+                    direction = "went up" if new > old else "went down"
+                    results.append({"type": "hist", "label": row["player"], "reason": f"{row['book']}: {format_odds(old)} → {format_odds(new)} ({direction})", "event": row["event"], "css": "hist", "methods": ["Price moved"]})
                     flagged_players.add(row["player"])
-                    player_methods[row["player"]].append("Moved")
+                    player_methods[row["player"]].append("Price moved")
 
     # ========== +EV Board ==========
     ev_board = []
@@ -541,7 +562,7 @@ def main():
     st.markdown("""
     <div class="how-to">
         <b>Quick start:</b> Load Games → Select games → Fetch Odds → Green cards = the ones we like<br>
-        <b>Tip:</b> Fetch a few times during the day so Sticky & Survivor tags can build up.
+        <b>Tip:</b> Fetch a few times so “Stayed in the group” and “Last one left” can show up.
     </div>
     """, unsafe_allow_html=True)
 
@@ -659,13 +680,13 @@ def main():
                     </div>''', unsafe_allow_html=True)
 
     show_tab(tabs[1], "dk", "🎯 DraftKings Ends in 10", "DK prices ending in 10")
-    show_tab(tabs[2], "mgm", "🎰 BetMGM Classic (Same Team)", "Same-team pairs/groups. Sticky×N = appeared N times. Survivor = stayed from a bigger group.")
+    show_tab(tabs[2], "mgm", "🎰 BetMGM (Same Team Only)", "Same-team pairs/groups. Clear names: Stayed in the group / Stayed 3 times / Last one left")
     show_tab(tabs[3], "match", "🤝 Exact Matching Odds", "Same exact price across books")
     show_tab(tabs[4], "mgm_exact", "⭐ MGM Exact Match", "Same exact price on BetMGM for multiple players")
     show_tab(tabs[5], "digit", "🔢 Matching 25/50/75", "Same player has 25/50/75 on different books")
     show_tab(tabs[6], "fd", "💙 FanDuel Patterns", "FanDuel +500+ ending in 10/30/60/70/90")
-    show_tab(tabs[7], "signal", "📈 Line Signals", "Stuck numbers or one book way off")
-    show_tab(tabs[8], "hist", "⏳ Price Movement", "Price changed since last fetch")
+    show_tab(tabs[7], "signal", "📈 Signals", "Stayed the same, Same on 3+ books, Way different")
+    show_tab(tabs[8], "hist", "⏳ Price Movement", "Price went up or down since last fetch")
     show_tab(tabs[9], "same_init", "💅 Same Initials", "Same first + last initial (already has method)")
     show_tab(tabs[10], "cross", "🔄 Cross Initials", "Last initial of one = first of another")
     show_tab(tabs[11], "last", "👩‍👧 Same Last Name", "Players sharing a last name")
@@ -674,38 +695,30 @@ def main():
     with tabs[13]:
         st.markdown('<div class="queen-banner">📖 Glossary</div>', unsafe_allow_html=True)
         st.markdown("""
-### Black & white rules
-
 **🟢 BET THIS**  
-Must have **both**:
-1. At least one Girl Magic method
-2. Best price clearly better than most other books
+Has one of our methods **and** the price is better than most other books.
 
 **⚪ SKIP**  
-Everything else.
+Either no method hit, or the price is not better than most other books.
 
 ---
 
-### Advanced MGM Sticky Rules
+**MGM clear names**
+- **Stayed in the group** → Still in the same MGM pair/group
+- **Stayed 3 times** → Appeared in the group on 3 different fetches
+- **Last one left** → Started in a bigger group and is still there
 
-- **Sticky** → Player appeared in an MGM group on the last fetch  
-- **Sticky×3 / Sticky×4…** → How many times the player has been in a group (higher = stronger)  
-- **Survivor** → Player was part of a bigger group earlier and is still in a group now  
-  → This is the one more likely to go
-
----
-
-### All methods
-
+**Other methods**
 - **DK 10** → DraftKings ends in 10  
 - **MGM 00/25/50/75** → Same-team pairs or groups  
-- **Sticky / Sticky×N / Survivor** → Advanced sticky detection  
 - **Exact Match** → Same price on different books  
 - **MGM Exact** → Same price on BetMGM for multiple players  
 - **Matching Digits** → 25/50/75 across books  
 - **FD Pattern** → FanDuel +500+ special endings  
-- **Stuck / Wide** → Line signals  
-- **Name patterns** → Only when a method already hit
+- **Stayed the same** → Price did not change across fetches (any book)  
+- **Same on 3+ books** → Exact same price on three or more books  
+- **Way different** → One book is much higher or lower than the rest  
+- **Name patterns** → Only shown when a method already hit
         """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
