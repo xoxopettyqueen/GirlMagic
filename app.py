@@ -1355,7 +1355,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if core_count < METHODS_MIN:
             continue
 
-                has_fade = player in spike_dump or "Spike" in meths or "Dump" in meths
+        has_fade = player in spike_dump or "Spike" in meths or "Dump" in meths
         price_too_low = best is not None and int(best) < PRICE_MIN_TAKE
         primary = has_primary_group(meths)
 
