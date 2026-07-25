@@ -1,20 +1,14 @@
 """
-Girl Magic Odds ✨ — full app
+Girl Magic Odds ✨ — full app (mobile-friendly)
 
 PAIR first (MGM/365 same team) · TRIO only if no pair
 🔥 HOT = pair/trio + FD + DK10/Was/DK FD-style
 🟢 TAKE = live pair/trio · not faded · ≥+400 · not HardRock-best
 ⚪ PASS = no primary · HardRock best · fade ±150 · price too low
 
-📈 Movement tab restored:
-  · Up (red) | Down (green)
-  · Only prices ≥ +500
-  · Biggest gaps first
-  · One card per player
-  · FD 10–100 under MGM flagged
-
+📈 Movement: 500+ · Up red · Down green · FD 10–100 under MGM = like
 Digits = MGM + Bet365 only · No Caesars · No mirrors
-📋 Cheat Sheet · mobile-safe board (row-by-row)
+📋 Cheat Sheet · single Glossary · mobile CSS (scroll tabs, full-width cards)
 """
 
 import streamlit as st
@@ -38,30 +32,78 @@ try:
 except ImportError:
     HAS_BS4 = False
 
-st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(
+    page_title="Girl Magic Odds ✨",
+    page_icon="👑",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
-.stApp{background:linear-gradient(165deg,#0a0410 0%,#160a22 40%,#1f0b30 100%);color:#fce7f3;font-family:'Inter',sans-serif}
-h1{font-family:'Playfair Display',serif!important;font-weight:900!important;background:linear-gradient(90deg,#f9a8d4,#e879f9,#c084fc,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:2.4rem!important;margin-bottom:2px!important}
-.subtitle{color:#f9a8d4;font-size:.9rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
-.tagline{color:#e9d5ff;font-size:.85rem;font-style:italic;margin-bottom:14px;opacity:.95}
-.how-to{background:linear-gradient(135deg,#1a0f28,#2a1040);border:1px solid #f472b6;border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:.85rem;line-height:1.45;position:relative}
-.how-to::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#f472b6,#c084fc)}
+
+.stApp{
+  background:linear-gradient(165deg,#0a0410 0%,#160a22 40%,#1f0b30 100%);
+  color:#fce7f3;
+  font-family:'Inter',sans-serif;
+}
+.block-container{
+  padding-top:1rem !important;
+  padding-bottom:2rem !important;
+  max-width:100% !important;
+}
+h1{
+  font-family:'Playfair Display',serif!important;
+  font-weight:900!important;
+  background:linear-gradient(90deg,#f9a8d4,#e879f9,#c084fc,#f472b6);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-size:2.2rem!important;
+  margin-bottom:2px!important;
+  line-height:1.15!important;
+}
+.subtitle{color:#f9a8d4;font-size:.85rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px}
+.tagline{color:#e9d5ff;font-size:.8rem;font-style:italic;margin-bottom:12px;opacity:.95}
+.how-to{
+  background:linear-gradient(135deg,#1a0f28,#2a1040);
+  border:1px solid #f472b6;border-radius:14px;
+  padding:12px 14px;margin-bottom:12px;font-size:.82rem;line-height:1.45;position:relative;
+}
+.how-to::before{
+  content:'';position:absolute;top:0;left:0;width:4px;height:100%;
+  background:linear-gradient(180deg,#f472b6,#c084fc);
+}
 .how-to b{color:#f9a8d4}
-.info-box{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:.85rem}
-.stButton>button{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important;border:none!important;border-radius:10px!important;font-weight:700!important;padding:.5rem 1.1rem!important}
+.info-box{
+  background:#1a0f28;border:1px solid #a855f7;border-radius:12px;
+  padding:8px 12px;margin-bottom:10px;font-size:.82rem;
+}
+.stButton>button{
+  background:linear-gradient(90deg,#db2777,#9333ea)!important;
+  color:#fff!important;border:none!important;border-radius:10px!important;
+  font-weight:700!important;padding:.55rem 1rem!important;
+  min-height:44px !important;width:100%;
+}
 .petty-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.petty-box{flex:1;min-width:58px;background:#1a0f28;border:1px solid #f472b6;border-radius:12px;padding:8px 6px;text-align:center}
-.petty-num{font-size:1.2rem;font-weight:800;color:#f9a8d4;line-height:1.1}
-.petty-label{font-size:.52rem;color:#e9d5ff;margin-top:3px}
-.trends-today{background:linear-gradient(135deg,#2a1040,#1a0f28 50%,#3b0764);border:1px solid #c084fc;border-radius:16px;padding:12px 16px;margin-bottom:16px}
+.petty-box{
+  flex:1;min-width:72px;background:#1a0f28;border:1px solid #f472b6;
+  border-radius:12px;padding:10px 6px;text-align:center;
+}
+.petty-num{font-size:1.15rem;font-weight:800;color:#f9a8d4;line-height:1.1}
+.petty-label{font-size:.55rem;color:#e9d5ff;margin-top:3px}
+.trends-today{
+  background:linear-gradient(135deg,#2a1040,#1a0f28 50%,#3b0764);
+  border:1px solid #c084fc;border-radius:16px;padding:12px 14px;margin-bottom:14px;
+}
 .trends-today-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.trends-today-title{color:#f9a8d4;font-weight:800;font-size:.92rem}
-.trends-today-sub{color:#e9d5ff;font-size:.7rem;opacity:.9}
-.trends-chips{display:flex;flex-wrap:wrap;gap:7px}
-.trend-chip{display:inline-flex;align-items:center;border-radius:999px;padding:6px 12px;font-size:.76rem;font-weight:800;border:2px solid transparent}
+.trends-today-title{color:#f9a8d4;font-weight:800;font-size:.9rem}
+.trends-today-sub{color:#e9d5ff;font-size:.68rem;opacity:.9}
+.trends-chips{display:flex;flex-wrap:wrap;gap:6px}
+.trend-chip{
+  display:inline-flex;align-items:center;border-radius:999px;
+  padding:6px 10px;font-size:.72rem;font-weight:800;border:2px solid transparent;
+}
 .chip-mgm{background:#422006;border-color:#f59e0b;color:#fcd34d}
 .chip-dk{background:#064e3b;border-color:#34d399;color:#6ee7b7}
 .chip-fd{background:#1e3a5f;border-color:#3b82f6;color:#93c5fd}
@@ -69,17 +111,32 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .chip-hr{background:#7f1d1d;border-color:#f87171;color:#fecaca}
 .chip-other{background:#3b0764;border-color:#a855f7;color:#e9d5ff}
 .chip-count{font-weight:900;margin-left:4px}
-.card{background:linear-gradient(155deg,#1a0f28,#251438);border:1px solid #f472b6;border-radius:12px;padding:9px 11px;color:#fdf2f8;position:relative;font-size:.88rem;margin-bottom:6px}
-.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:12px 0 0 12px;background:#f472b6}
+.card{
+  background:linear-gradient(155deg,#1a0f28,#251438);
+  border:1px solid #f472b6;border-radius:12px;
+  padding:10px 12px;color:#fdf2f8;position:relative;
+  font-size:.86rem;margin-bottom:8px;width:100%;box-sizing:border-box;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;width:4px;height:100%;
+  border-radius:12px 0 0 12px;background:#f472b6;
+}
 .bet{background:linear-gradient(155deg,#0c2418,#143d28)!important;border:1px solid #34d399!important}
 .hot{background:linear-gradient(155deg,#3b0764,#7c2d12)!important;border:1px solid #fb923c!important}
-.skip{background:#14101c!important;border:1px solid #4b5563!important;opacity:.85}
+.skip{background:#14101c!important;border:1px solid #4b5563!important;opacity:.88}
 .fade-card{border-color:#f87171!important;opacity:.9}
 .move-up{border-color:#f87171!important;background:linear-gradient(155deg,#2a1010,#1a0f28)!important}
 .move-down{border-color:#34d399!important;background:linear-gradient(155deg,#0c2418,#1a0f28)!important}
 .move-like{border-color:#60a5fa!important;background:linear-gradient(155deg,#0f172a,#1a0f28)!important}
-.score-pill{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-weight:800;font-size:.85rem;padding:2px 9px;border-radius:12px;margin-left:5px}
-.tag{display:inline-block;background:#3b0764;color:#f9a8d4;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:10px;margin:2px 2px 2px 0;border:1px solid #a855f7}
+.score-pill{
+  display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);
+  color:#fff;font-weight:800;font-size:.8rem;padding:2px 9px;border-radius:12px;margin-left:5px;
+}
+.tag{
+  display:inline-block;background:#3b0764;color:#f9a8d4;
+  font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;
+  margin:2px 2px 2px 0;border:1px solid #a855f7;
+}
 .tag-dk{background:#064e3b;color:#6ee7b7;border-color:#34d399}
 .tag-mgm{background:#422006;color:#fcd34d;border-color:#f59e0b}
 .tag-fd{background:#1e3a5f;color:#93c5fd;border-color:#3b82f6}
@@ -88,22 +145,57 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .tag-b365{background:#14532d;color:#86efac;border-color:#22c55e}
 .tag-fade{background:#450a0a;color:#fca5a5;border-color:#f87171}
 .tag-hot{background:#7c2d12;color:#fdba74;border-color:#fb923c}
-.queen-banner{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.queen-banner{
+  display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);
+  color:#fff;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:16px;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;
+}
 .meter{display:flex;gap:3px;margin:3px 0 5px}
 .meter-bar{height:5px;width:16px;border-radius:3px;background:#374151}
 .meter-bar.filled-high{background:linear-gradient(90deg,#f472b6,#c026d3)}
 .meter-bar.filled-strong{background:linear-gradient(90deg,#e879f9,#a855f7)}
 .meter-bar.filled-medium{background:linear-gradient(90deg,#c084fc,#7c3aed)}
 .meter-bar.filled-low{background:#6b7280}
-.stTabs [data-baseweb="tab-list"]{gap:4px;flex-wrap:wrap}
-.stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:6px 9px;font-size:.78rem}
-.stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
-.footer{text-align:center;color:#f9a8d4;font-size:.9rem;margin-top:28px;opacity:.9;padding-bottom:16px}
-.res-card{background:#1a0f28;border:1px solid #7c3aed;border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:.82rem}
-@media (max-width:768px){
-  .card{font-size:.82rem;padding:8px 10px}
-  .petty-box{min-width:46%}
-  .score-pill{font-size:.75rem}
+.res-card{
+  background:#1a0f28;border:1px solid #7c3aed;border-radius:10px;
+  padding:8px 10px;margin-bottom:8px;font-size:.8rem;
+}
+.stTabs [data-baseweb="tab-list"]{
+  gap:4px;flex-wrap:nowrap !important;overflow-x:auto !important;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:6px;
+}
+.stTabs [data-baseweb="tab"]{
+  background:#1a0f28;border-radius:8px;color:#f9a8d4;
+  font-weight:600;padding:8px 10px;font-size:.75rem;
+  white-space:nowrap !important;flex-shrink:0;
+}
+.stTabs [aria-selected="true"]{
+  background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important;
+}
+.footer{text-align:center;color:#f9a8d4;font-size:.85rem;margin-top:24px;opacity:.9;padding-bottom:20px}
+
+@media (max-width: 768px){
+  .block-container{padding-left:0.6rem !important;padding-right:0.6rem !important}
+  h1{font-size:1.55rem !important}
+  .subtitle{font-size:.72rem}
+  .tagline{font-size:.72rem}
+  .how-to{font-size:.78rem;padding:10px 12px}
+  .petty-box{min-width:46%;flex:1 1 46%}
+  .petty-num{font-size:1.05rem}
+  .petty-label{font-size:.5rem}
+  .card{font-size:.82rem;padding:10px 11px;margin-bottom:10px}
+  .score-pill{font-size:.72rem}
+  [data-testid="column"]{
+    width:100% !important;flex:1 1 100% !important;min-width:100% !important;
+  }
+  .stMultiSelect, .stTextInput, .stTextArea, .stSelectbox{width:100% !important}
+  .stButton>button{min-height:46px !important;font-size:.9rem !important}
+  .streamlit-expanderHeader{font-size:.85rem !important}
+  .trend-chip{font-size:.68rem;padding:5px 9px}
+}
+@media (max-width: 400px){
+  h1{font-size:1.35rem !important}
+  .petty-box{min-width:100%;flex:1 1 100%}
 }
 </style>
 """, unsafe_allow_html=True)
@@ -128,7 +220,7 @@ METHODS_STRONG = 3
 OUTLIER_GAP = 150
 BIG_MOVE = 150
 PRICE_MIN_TAKE = 400
-PRICE_MIN_MOVE = 500  # movement tab only tracks 500+
+PRICE_MIN_MOVE = 500
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
@@ -619,16 +711,8 @@ def movement_summary(player):
 
 
 def build_movement_board(lock=None, live_df=None):
-    """
-    One card per player. Only care about last/current price ≥ PRICE_MIN_MOVE (500+).
-    Up = lengthening (price up) · Down = shortening (price down).
-    Also flag FD 10–100 under MGM when both present.
-    Sorted by biggest |delta| first within each side.
-    """
     lock = lock if lock is not None else (st.session_state.get("pregame_lock") or load_pregame())
     ups, downs, likes = [], [], []
-
-    # Live prices by player/book for FD vs MGM compare
     live = {}
     if live_df is not None and not live_df.empty:
         for _, r in live_df.iterrows():
@@ -643,8 +727,6 @@ def build_movement_board(lock=None, live_df=None):
         last = entry.get("last_prices") or {}
         if not first or not last:
             continue
-
-        # Prefer priority book that has both first + last
         book, f, l, delta = None, None, None, None
         for b in BOOK_PRIORITY:
             if b in first and b in last and first[b] is not None and last[b] is not None:
@@ -659,20 +741,12 @@ def build_movement_board(lock=None, live_df=None):
                     break
         if book is None or delta is None:
             continue
-
-        # Only track 500+ (current or first)
         if max(abs(f), abs(l)) < PRICE_MIN_MOVE:
             continue
-        if abs(delta) < 40 and abs(delta) < BIG_MOVE:
-            # still allow small moves if FD-under-MGM like setup exists
-            pass
 
-        # FD vs MGM gap (prefer FD 10–100 lower than MGM)
-        fd_gap = None
-        fd_note = ""
+        fd_gap, fd_note = None, ""
         prices = live.get(player) or last
-        mgm_p = None
-        fd_p = None
+        mgm_p, fd_p = None, None
         for bk, pr in (prices or {}).items():
             if pr is None:
                 continue
@@ -682,7 +756,7 @@ def build_movement_board(lock=None, live_df=None):
             if "fanduel" in bl or bl == "fd":
                 fd_p = int(pr)
         if mgm_p is not None and fd_p is not None:
-            fd_gap = mgm_p - fd_p  # positive => FD shorter/lower number than MGM
+            fd_gap = mgm_p - fd_p
             if 10 <= fd_gap <= 100:
                 fd_note = f"FD {format_odds(fd_p)} is {fd_gap} under MGM {format_odds(mgm_p)} · like"
 
@@ -690,17 +764,10 @@ def build_movement_board(lock=None, live_df=None):
             continue
 
         card = {
-            "player": player,
-            "book": book,
-            "first": f,
-            "last": l,
-            "delta": delta,
-            "abs_delta": abs(delta),
-            "label": book_label(book),
-            "fd_note": fd_note,
-            "fd_gap": fd_gap,
-            "is_spike": delta >= BIG_MOVE,
-            "is_dump": delta <= -BIG_MOVE,
+            "player": player, "book": book, "first": f, "last": l,
+            "delta": delta, "abs_delta": abs(delta), "label": book_label(book),
+            "fd_note": fd_note, "fd_gap": fd_gap,
+            "is_spike": delta >= BIG_MOVE, "is_dump": delta <= -BIG_MOVE,
         }
         if fd_note:
             likes.append(card)
@@ -1728,7 +1795,7 @@ def main():
         f'<b>PAIR first</b> · <b>TRIO</b> if no pair · '
         f'<b>🔥 HOT</b> = pair/trio + FD + DK · '
         f'<b>PASS</b> HardRock-best / fade ±{BIG_MOVE} · '
-        f'<b>📈 Movement</b> 500+ only · 🔒 {lock_n}'
+        f'<b>📈 Movement</b> 500+ · 🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -1849,7 +1916,6 @@ def main():
     misses_n = sum(1 for r in today_rows if r.get("result") == "MISS")
     graded_n = hits_n + misses_n
     hit_pct = int(hits_n / graded_n * 100) if graded_n else 0
-    n_was_dk = len([r for r in results if r["type"] == "dk_was"])
     n_hot = len([e for e in ev_board if e.get("is_hot") and e.get("is_bet")])
     n_take = len([e for e in ev_board if e["is_bet"] and not e.get("is_hot")])
     n_pass = len([e for e in ev_board if not e["is_bet"]])
@@ -1872,8 +1938,8 @@ def main():
     """, unsafe_allow_html=True)
 
     tab_board, tab_move, tab_tricks, tab_names, tab_sheet, tab_results, tab_gloss = st.tabs([
-        "👑 The Board", "📈 Movement", "✨ Odds Tricks", "💅 Name Magic",
-        "📋 Cheat Sheet", "📊 Results", "📖 Glossary",
+        "👑 Board", "📈 Move", "✨ Tricks", "💅 Names",
+        "📋 Sheet", "📊 Results", "📖 Code",
     ])
 
     with tab_board:
@@ -1917,12 +1983,11 @@ def main():
         st.markdown('<div class="queen-banner">📈 Line Movement</div>', unsafe_allow_html=True)
         st.caption(
             f"Only **+{PRICE_MIN_MOVE}+** · one card per player · biggest gaps first · "
-            f"⬆️ red = lengthening · ⬇️ green = shortening · ±{BIG_MOVE} = FADE · "
-            f"💙 FD 10–100 under MGM = like"
+            f"⬆️ red · ⬇️ green · ±{BIG_MOVE} = FADE · 💙 FD 10–100 under MGM = like"
         )
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
-            st.info("Fetch odds at least twice so first → last prices can move.")
+            st.info("Fetch odds at least twice so first → last can move.")
         else:
             if likes:
                 st.markdown("**💙 FD under MGM (10–100 pts) — we like this**")
@@ -1933,17 +1998,16 @@ def main():
                             break
                         with col:
                             render_move_card(likes[i + j])
-
             left, right = st.columns(2)
             with left:
-                st.markdown(f"**⬆️ UP / lengthening ({len(ups)})**")
+                st.markdown(f"**⬆️ UP ({len(ups)})**")
                 if not ups:
                     st.caption("None yet.")
                 else:
                     for c in ups[:40]:
                         render_move_card(c)
             with right:
-                st.markdown(f"**⬇️ DOWN / shortening ({len(downs)})**")
+                st.markdown(f"**⬇️ DOWN ({len(downs)})**")
                 if not downs:
                     st.caption("None yet.")
                 else:
@@ -1953,11 +2017,10 @@ def main():
     with tab_tricks:
         st.markdown('<div class="queen-banner">✨ Odds Tricks</div>', unsafe_allow_html=True)
         sub = st.tabs([
-            "🎯 DK 10 / FD-style", "📉 Was DK 10", "🎰 MGM pairs/trios",
-            "⭐ MGM Exact", "🤝 Exact", "💙 FD", "💚 365 pairs/trios", "🔒 Lock",
+            "🎯 DK", "📉 Was DK", "🎰 MGM", "⭐ Exact MGM",
+            "🤝 Exact", "💙 FD", "💚 365", "🔒 Lock",
         ])
         with sub[0]:
-            st.caption("DK ends-in-10 + DK priced like FD")
             render_card_grid([r for r in results if r["type"] == "dk"])
         with sub[1]:
             render_card_grid([r for r in results if r["type"] == "dk_was"])
@@ -1971,7 +2034,6 @@ def main():
         with sub[5]:
             render_card_grid([r for r in results if r["type"] == "fd"])
         with sub[6]:
-            st.caption("Same classic endings · 25/50/75 · pair then trio")
             render_card_grid([r for r in results if r["type"] == "b365"])
         with sub[7]:
             lock = st.session_state.get("pregame_lock") or load_pregame()
@@ -2229,9 +2291,9 @@ def main():
             for r in sorted(dnps, key=lambda x: x.get("player") or ""):
                 st.markdown(f"🟡 **{r.get('player')}** · was {format_odds(r.get('best_price'))}")
 
+    # ========== GLOSSARY — ONE BLOCK ONLY ==========
     with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-
         st.markdown("""
         <div class="how-to">
             <b>Girl Magic in one breath:</b><br>
@@ -2338,11 +2400,18 @@ Sync MLB HRs auto-logs / can promote PENDING → HIT · Undo on graded rows
 2. Fetch again later so **Movement** has first → last  
 3. **RotoWire** after lineups  
 4. Board: HOT → TAKE → PASS  
-5. **📈 Movement** for 500+ moves + FD-under-MGM  
+5. **📈 Move** for 500+ moves + FD-under-MGM  
 6. **Cheat Sheet** if you have lists  
 7. Live → Sync MLB HRs → grade PENDING  
 
 Auto-refresh ~ every **{REFRESH_MINUTES}** min when enabled.
             """)
+
+    st.markdown(
+        '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls</div>',
+        unsafe_allow_html=True,
+    )
+
+
 if __name__ == "__main__":
     main()
