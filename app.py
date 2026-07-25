@@ -6,9 +6,8 @@ PAIR first · TRIO only if no pair
 🟢 TAKE = live pair/trio · not faded · ≥+400 · not HardRock-best
 ⚪ PASS = no primary · HardRock best · fade ±150 · price too low
 
-🪞 HR = RBI 1.5 — same price on O 0.5 HR + O 1.5 RBI · same book (support tag)
-No cross-book Exact · MGM Exact stays
-Tricks: one card per player
+🪞 HR = RBI 1.5 — same price on O 0.5 HR + O 1.5 RBI · same book (FanDuel first)
+No cross-book Exact · MGM Exact stays · Tricks: one card per player
 """
 
 import streamlit as st
@@ -553,7 +552,6 @@ def save_pregame(data):
 
 
 def update_pregame_lock(df):
-    """Lock from HR 0.5 rows only."""
     if df is None or df.empty:
         return load_pregame()
     if "market" in df.columns:
@@ -1213,8 +1211,8 @@ def fetch_sgo_hr_props(sgo_key):
             players_map = ev.get("players", {})
             for odd_id, odd_data in ev.get("odds", {}).items():
                 oid = odd_id.lower()
-                is_hr = "batting_homeruns" in oid
-                is_rbi = "batting_rbi" in oid
+                is_hr = "homerun" in oid or "home_run" in oid or "batting_homeruns" in oid
+                is_rbi = "batting_rbi" in oid or "rbis" in oid or oid.endswith("_rbi")
                 if not is_hr and not is_rbi:
                     continue
                 if "ou-over" not in oid and "-over" not in oid:
@@ -1349,30 +1347,60 @@ def detect_classic_groups(book_df, endings):
 
 
 def detect_hr_rbi_mirrors(df_all):
-    """O 0.5 HR price == O 1.5 RBI price on the SAME book."""
+    """
+    O 0.5 HR price == O 1.5 RBI price on the SAME book.
+    FanDuel first (you see this most there). Name-normalized match.
+    """
     results = []
     extra = defaultdict(list)
     if df_all is None or df_all.empty or "market" not in df_all.columns:
         return results, extra
-    hr = df_all[(df_all["market"] == "hr") & (df_all["point"].astype(float) == 0.5)]
-    rbi = df_all[(df_all["market"] == "rbi") & (df_all["point"].astype(float) == 1.5)]
+
+    work = df_all.copy()
+    work["player_key"] = work["player"].apply(lambda n: clean_name(n).lower())
+    work["book"] = work["book"].apply(lambda b: "bet365" if is_bet365(b) else str(b).lower())
+
+    hr = work[(work["market"] == "hr") & (work["point"].astype(float).sub(0.5).abs() < 0.02)]
+    rbi = work[(work["market"] == "rbi") & (work["point"].astype(float).sub(1.5).abs() < 0.02)]
     if hr.empty or rbi.empty:
         return results, extra
-    for _, h in hr.iterrows():
-        player, book, price = h["player"], h["book"], h["price"]
-        if price is None:
+
+    rbi_map = defaultdict(list)
+    for _, r in rbi.iterrows():
+        if r["price"] is None:
             continue
-        matches = rbi[
-            (rbi["player"] == player) & (rbi["book"] == book) & (rbi["price"] == price)
-        ]
-        if matches.empty:
-            continue
-        reason = f"HR 0.5 = RBI 1.5 @ {format_odds(price)} on {book_label(book)}"
-        results.append({
-            "type": "mirror", "label": player, "reason": reason,
-            "event": h.get("event") or "", "methods": [MIRROR_TAG],
-        })
-        extra[player].append(MIRROR_TAG)
+        rbi_map[(r["player_key"], r["book"])].append(int(r["price"]))
+
+    book_order = ["fanduel", "draftkings", "betmgm", "bet365", "hardrockbet"]
+    seen = set()
+
+    for book in book_order:
+        hr_book = hr[hr["book"] == book]
+        for _, h in hr_book.iterrows():
+            if h["price"] is None:
+                continue
+            key = (h["player_key"], book)
+            price = int(h["price"])
+            if price not in rbi_map.get(key, []):
+                continue
+            dedupe = (h["player_key"], book, price)
+            if dedupe in seen:
+                continue
+            seen.add(dedupe)
+            player = clean_name(h["player"])
+            reason = f"HR 0.5 = RBI 1.5 @ {format_odds(price)} on {book_label(book)}"
+            if book == "fanduel":
+                reason = "💙 FD · " + reason
+            results.append({
+                "type": "mirror",
+                "label": player,
+                "reason": reason,
+                "event": h.get("event") or "",
+                "methods": [MIRROR_TAG],
+            })
+            extra[player].append(MIRROR_TAG)
+
+    results.sort(key=lambda r: (0 if "FD" in r["reason"] else 1, r["label"]))
     return results, extra
 
 
@@ -1388,7 +1416,6 @@ def run_flags(df_all, previous_df=None, record_history=True, selected_events=Non
     df_all["book"] = df_all["book"].apply(lambda b: "bet365" if is_bet365(b) else b)
     df_all = df_all[~df_all["book"].astype(str).str.contains("caesar", case=False, na=False)]
 
-    # Board + classic methods = HR 0.5 only
     df = df_all[df_all["market"] == "hr"].copy()
     if df.empty:
         return [], [], {}
@@ -1539,8 +1566,6 @@ def run_flags(df_all, previous_df=None, record_history=True, selected_events=Non
                     "reason": f"B365 {format_odds(p365.iloc[0])} > HardRock {format_odds(phr.iloc[0])}",
                     "event": g["event"].iloc[0], "methods": ["B365 > HardRock"]})
 
-    # NO cross-book Exact Match
-
     for _, row in df.iterrows():
         if row["book"] != "fanduel":
             continue
@@ -1560,7 +1585,6 @@ def run_flags(df_all, previous_df=None, record_history=True, selected_events=Non
                 "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
 
-    # 🪞 HR = RBI 1.5 mirrors (support tag)
     mirror_rows, mirror_extra = detect_hr_rbi_mirrors(df_all)
     results.extend(mirror_rows)
     for player, tags in mirror_extra.items():
@@ -1714,7 +1738,6 @@ def run_flags(df_all, previous_df=None, record_history=True, selected_events=Non
 
 
 def render_card_grid(items):
-    """One card per player/label — merge every method under that category."""
     if not items:
         st.info("None right now.")
         return
@@ -1842,7 +1865,7 @@ def main():
         f'<div class="how-to">'
         f'<b>PAIR first</b> · <b>TRIO</b> if no pair · '
         f'<b>🔥 HOT</b> = pair/trio + FD + DK · '
-        f'<b>🪞 HR=RBI</b> support · '
+        f'<b>🪞 HR=RBI</b> (FD first) · '
         f'<b>1 card/player</b> · 🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
@@ -1927,7 +1950,9 @@ def main():
             st.session_state["new_fetch"] = True
             n_hr = len(df[df["market"] == "hr"]) if "market" in df.columns else len(df)
             n_rbi = len(df[df["market"] == "rbi"]) if "market" in df.columns else 0
-            st.success(f"Loaded {n_hr} HR props · {n_rbi} RBI 1.5 props")
+            st.success(f"Loaded {n_hr} HR · {n_rbi} RBI 1.5")
+            if n_rbi == 0:
+                st.warning("No RBI 1.5 lines this fetch — mirror needs those rows.")
             try:
                 a, p, m = auto_log_mlb_hrs()
                 if a or p:
@@ -2088,7 +2113,18 @@ def main():
         with sub[3]:
             render_card_grid([r for r in results if r["type"] == "mgm_exact"])
         with sub[4]:
-            st.caption("Same American price on O 0.5 HR and O 1.5 RBI · same book · support tag")
+            st.caption("Same American price on O 0.5 HR and O 1.5 RBI · same book · FanDuel first")
+            if not df_all.empty and "market" in df_all.columns:
+                n_hr = len(df_all[df_all["market"] == "hr"])
+                n_rbi = len(df_all[df_all["market"] == "rbi"])
+                by_book = (
+                    df_all[df_all["market"] == "rbi"].groupby("book").size().to_dict()
+                    if n_rbi else {}
+                )
+                books_txt = ", ".join(f"{k}:{v}" for k, v in sorted(by_book.items())) or "none"
+                st.caption(f"This fetch · HR: **{n_hr}** · RBI 1.5: **{n_rbi}** · by book: {books_txt}")
+                if n_rbi == 0:
+                    st.warning("No RBI 1.5 lines — books may not post them yet, or API returned HR only.")
             render_card_grid([r for r in results if r["type"] == "mirror"])
         with sub[5]:
             render_card_grid([r for r in results if r["type"] == "fd"])
@@ -2367,7 +2403,7 @@ def main():
             <b>PAIR (exactly 2)</b> first. <b>TRIO (exactly 3)</b> only when that ending has no pair.<br>
             <b>🔥 HOT</b> = pair/trio + FanDuel + DK 10 / Was / DK FD-style.<br>
             <b>🟢 TAKE IT</b> = live pair/trio · not faded · price high enough · not HardRock-best.<br>
-            <b>🪞 HR = RBI 1.5</b> = same price on O 0.5 HR and O 1.5 RBI · same book · support only.<br>
+            <b>🪞 HR = RBI 1.5</b> = same price on O 0.5 HR and O 1.5 RBI · same book · <b>FanDuel first</b> · support only.<br>
             <b>No cross-book Exact.</b> MGM Exact stays. Tricks = one card per player.
         </div>
         """, unsafe_allow_html=True)
@@ -2392,10 +2428,12 @@ Board is **0.5 HR only**.
             st.markdown("""
 When a player’s **Over 0.5 HR** price equals their **Over 1.5 RBI** price on the **same book**, we tag **HR = RBI 1.5**.
 
+- **FanDuel first** (you see this most there), then DK / MGM / 365 / HardRock  
+- Same American number only · name-cleaned match  
 - Support tag only — does **not** unlock TAKE by itself  
 - Small score boost when present  
-- Shows on the board and under **✨ Tricks → 🪞 HR=RBI**  
-- Cross-book Exact Match is **removed**; **MGM Exact** stays
+- **✨ Tricks → 🪞 HR=RBI** shows pull counts so you know if RBI data arrived  
+- Cross-book Exact removed · **MGM Exact** stays
             """)
 
         with st.expander("🎰 MGM · 💚 365 · 🎯 DK · 💙 FD"):
@@ -2429,11 +2467,12 @@ Auto-DNP only if RotoWire ≥ **{LINEUP_MIN_NAMES}** names.
         with st.expander("How to run a slate"):
             st.markdown(f"""
 1. Load Games → select → Fetch (HR + RBI)  
-2. Fetch again for Movement  
-3. RotoWire after lineups  
-4. Board HOT → TAKE → PASS  
-5. Tricks → 🪞 for HR=RBI mirrors  
-6. Sync MLB HRs → grade PENDING  
+2. Check toast: **HR · RBI 1.5** counts  
+3. Fetch again for Movement  
+4. RotoWire after lineups  
+5. Board HOT → TAKE → PASS  
+6. Tricks → 🪞 for HR=RBI (read pull counts)  
+7. Sync MLB HRs → grade PENDING  
 Auto-refresh ~ every **{REFRESH_MINUTES}** min when enabled.
             """)
 
