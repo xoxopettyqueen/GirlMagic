@@ -1479,7 +1479,7 @@ def main():
                             undo_result(rid, r.get("source"))
                             st.rerun()
 
-        with tab_gloss:
+    with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
