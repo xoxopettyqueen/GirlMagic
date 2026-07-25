@@ -1355,12 +1355,13 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if core_count < METHODS_MIN:
             continue
 
-        has_fade = player in spike_dump or "Spike" in meths or "Dump" in meths
+                has_fade = player in spike_dump or "Spike" in meths or "Dump" in meths
         price_too_low = best is not None and int(best) < PRICE_MIN_TAKE
+        primary = has_primary_group(meths)
 
-        # HOT = MGM primary group + FD + DK (live or was) — all three
+        # HOT = MGM pair/trio + FD + DK10 (live or was)
         is_hot = (
-            has_primary_group(meths)
+            primary
             and has_fd_heat(meths)
             and has_dk_support(meths)
             and not has_fade
@@ -1369,8 +1370,13 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if is_hot and "🔥 HOT" not in meths:
             meths.insert(0, "🔥 HOT")
 
-        # TAKE IT = 2+ cores, not faded, price not too low
-        is_bet = core_count >= METHODS_MIN and not has_fade and not price_too_low
+        # TAKE IT = MUST be in MGM/365 pair or trio (not every random 2 methods)
+        is_bet = (
+            primary
+            and core_count >= METHODS_MIN
+            and not has_fade
+            and not price_too_low
+        )
 
         display_meths = [
             m for m in meths
