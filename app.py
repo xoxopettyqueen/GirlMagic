@@ -1520,24 +1520,53 @@ def main():
         with top[3]:
             today_only = st.checkbox("Today only", value=True, key="res_today")
 
-        with st.expander("⚡ Manual Log (backup)", expanded=False):
-            lc1, lc2, lc3, lc4 = st.columns([2, 1, 1, 1])
-            with lc1:
-                hr_player = st.text_input("Player", key="hr_player")
-            with lc2:
-                hr_price = st.text_input("Price", key="hr_price")
-            with lc3:
-                hr_book = st.selectbox("Book", ["betmgm", "draftkings", "fanduel", "bet365", "untagged"], key="hr_book")
-            with lc4:
-                st.write("")
-                st.write("")
-                if st.button("Log HIT", key="manual_log"):
-                    ok, msg = log_manual_hr(hr_player, hr_price, hr_book)
-                    if ok:
-                        st.success(msg)
-                        st.rerun()
-                    else:
-                        st.error(msg)
+        with st.expander("Hit rate by BEST book", expanded=True):
+            st.caption(
+                "Among graded HIT/MISS only (DNP ignored). "
+                "Best book = the book we stored as best_price when the pick was logged."
+            )
+            book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+            for r in done:
+                b = r.get("best_book") or "untagged"
+                if is_bet365(b):
+                    b = "bet365"
+                bl = book_label(b)
+                if r.get("result") == "HIT":
+                    book_stats[bl]["hit"] += 1
+                elif r.get("result") == "MISS":
+                    book_stats[bl]["miss"] += 1
+
+            if not book_stats:
+                st.caption("Grade some PENDING first.")
+            else:
+                # sort by hit rate then volume
+                ranked = sorted(
+                    book_stats.items(),
+                    key=lambda x: (
+                        -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"])),
+                        -(x[1]["hit"] + x[1]["miss"]),
+                    ),
+                )
+                cols = st.columns(min(4, max(1, len(ranked))))
+                for i, (bl, s) in enumerate(ranked):
+                    t = s["hit"] + s["miss"]
+                    pct = int(s["hit"] / t * 100) if t else 0
+                    with cols[i % len(cols)]:
+                        st.markdown(
+                            f'<div class="petty-box">'
+                            f'<div class="petty-num">{pct}%</div>'
+                            f'<div class="petty-label">{bl}</div>'
+                            f'<div style="font-size:.65rem;color:#e9d5ff;margin-top:4px">'
+                            f'{s["hit"]}H / {s["miss"]}M · {t} plays</div>'
+                            f'</div>',
+                            unsafe_allow_html=True,
+                        )
+                lines = [
+                    f"**{bl}**: {s['hit']}/{s['hit']+s['miss']} "
+                    f"({int(s['hit']/(s['hit']+s['miss'])*100) if (s['hit']+s['miss']) else 0}%)"
+                    for bl, s in ranked
+                ]
+                st.markdown(" · ".join(lines))
 
         rows = load_results()
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
