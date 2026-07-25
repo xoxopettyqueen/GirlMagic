@@ -1688,7 +1688,7 @@ def main():
         max_page = max(0, (total_p - 1) // PENDING_PAGE) if total_p else 0
         if page > max_page:
             page = 0
-            st.session_            st.session_state["pending_page"] = 0
+        st.session_state["pending_page"] = 0
         start = page * PENDING_PAGE
         end = min(start + PENDING_PAGE, total_p)
         slice_p = pending[start:end]
