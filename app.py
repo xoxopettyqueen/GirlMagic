@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
-MGM exact 2/3 same-team · Stayed-in-group collapsed · DNP · spike/dump
-Top strip without Locked · full Glossary · MLB auto HR · compact Results
+MGM exact 2/3 same-team · Stayed-in-group collapsed · DNP · MISS→DNP bulk
+Spike/Dump fade · full graded list · full Glossary · MLB auto HR
 """
 
 import streamlit as st
@@ -38,7 +38,6 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .how-to::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#f472b6,#c084fc)}
 .how-to b{color:#f9a8d4}
 .info-box{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:.85rem}
-.warning-box{background:#3b0764;border:2px solid #f472b6;border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.9rem}
 .stButton>button{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important;border:none!important;border-radius:10px!important;font-weight:700!important;padding:.5rem 1.1rem!important}
 .petty-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .petty-box{flex:1;min-width:64px;background:#1a0f28;border:1px solid #f472b6;border-radius:12px;padding:8px 6px;text-align:center}
@@ -98,7 +97,6 @@ ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "bet365", "bet365_au"}
 BOOK_PRIORITY = ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet", "caesars"]
-LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
 
 EDGE_MIN = 60
 METHODS_MIN = 2
@@ -110,7 +108,7 @@ NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
 FD_MIN = 500
 PENDING_PAGE = 20
-MGM_STAY_SNAPS = 3  # need ≥3 snapshots still in a group
+MGM_STAY_SNAPS = 3
 
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
@@ -137,16 +135,12 @@ def is_core_method(m):
         return False
     if m.startswith("Outlier") or m.startswith("Stuck") or m.startswith("Same ending"):
         return False
-    # collapse old Nx tags — do not count as separate core
     if m.startswith("Stayed in group") and m != "Stayed in group":
         return False
     return True
 
 def normalize_method(m):
-    """Collapse Stayed in group 2x/3x/... → Stayed in group"""
-    if m.startswith("Stayed in group"):
-        return "Stayed in group"
-    if m == "Stayed in the group":
+    if str(m).startswith("Stayed in group") or m == "Stayed in the group":
         return "Stayed in group"
     return m
 
@@ -156,7 +150,10 @@ def count_core_methods(meths):
 
 def has_personal_strong(meths):
     cleaned = {normalize_method(m) for m in meths}
-    return any(m in PERSONAL_STRONG or m.startswith("Match ") or m.startswith("B365") or m.startswith("MGM ") for m in cleaned)
+    return any(
+        m in PERSONAL_STRONG or m.startswith("Match ") or m.startswith("B365") or m.startswith("MGM ")
+        for m in cleaned
+    )
 
 def has_dk_or_mgm(meths):
     for m in meths:
@@ -196,7 +193,6 @@ def render_method_tags(methods, limit=6):
 def girl_magic_score(core_count, edge, methods):
     methods = [normalize_method(m) for m in methods]
     method_pts = min(core_count, 5) * 10
-    # boost 3+ cores
     if core_count >= METHODS_STRONG:
         method_pts += 8
     edge_pts = min(40, max(0, int((edge / 180) * 40)))
@@ -209,8 +205,7 @@ def girl_magic_score(core_count, edge, methods):
         bonus += 3
     if "Same on 3+ books" in methods:
         bonus += 2
-    # demote wild moves
-    if "Spike" in methods or "Dump" in methods or any(m.startswith("FADE") for m in methods):
+    if "Spike" in methods or "Dump" in methods or any(str(m).startswith("FADE") for m in methods):
         bonus -= 8
     return max(0, min(100, method_pts + edge_pts + min(12, bonus)))
 
@@ -276,7 +271,8 @@ def clean_name(name):
     return " ".join(parts)
 
 def names_match(a, b):
-    ca, cb = clean_name(a).lower(), clean_name(b).lower()
+    ca = clean_name(a).lower().replace(".", "").replace("'", "")
+    cb = clean_name(b).lower().replace(".", "").replace("'", "")
     if ca == cb:
         return True
     pa, pb = ca.split(), cb.split()
@@ -355,13 +351,17 @@ def name_in_lineup(player, lineup_names):
     if not lineup_names:
         return None
     cn = clean_name(player)
-    if cn in lineup_names:
-        return True
+    cn_l = cn.lower().replace(".", "")
+    for ln in lineup_names:
+        if names_match(cn, ln):
+            return True
+        if cn_l == clean_name(ln).lower().replace(".", ""):
+            return True
     parts = cn.split()
     if len(parts) >= 2:
         last, fi = parts[-1].lower(), parts[0][0].lower()
         for ln in lineup_names:
-            lp = ln.split()
+            lp = clean_name(ln).split()
             if len(lp) >= 2 and lp[-1].lower() == last and lp[0][0].lower() == fi:
                 return True
     return False
@@ -410,7 +410,6 @@ def update_pregame_lock(df):
         entry.setdefault("books", {})
         entry.setdefault("first_prices", {})
         entry.setdefault("last_prices", {})
-        # first seen price per book (for movement)
         if book not in entry["first_prices"] and price is not None:
             entry["first_prices"][book] = int(price)
         if price is not None:
@@ -438,7 +437,6 @@ def get_locked(player):
     return {}
 
 def movement_summary(player):
-    """Return (label, delta) from first→last lock prices across books. Prefer MGM."""
     entry = get_locked(player)
     first = entry.get("first_prices") or {}
     last = entry.get("last_prices") or {}
@@ -567,7 +565,6 @@ def set_result_status(row_id, status):
             row["result"] = status
             if status == "HIT" and row.get("ending") is None and row.get("best_price") is not None:
                 row["ending"] = last_two(row["best_price"])
-            # attach movement note at grade time
             mv, delta = movement_summary(row.get("player", ""))
             if mv:
                 row["movement"] = mv
@@ -584,7 +581,6 @@ def undo_result(row_id, source):
     return set_result_status(row_id, "PENDING")
 
 def dedupe_pending(rows, today):
-    """One PENDING take_it per player per day (keep highest score)."""
     best = {}
     others = []
     for r in rows:
@@ -596,15 +592,53 @@ def dedupe_pending(rows, today):
             others.append(r)
     return others + list(best.values())
 
+def auto_mark_dnp():
+    lineup = st.session_state.get("lineup_names") or set()
+    if not lineup:
+        return 0
+    rows = load_results()
+    today = today_az()
+    n = 0
+    for r in rows:
+        if r.get("date") != today or r.get("result") != "PENDING":
+            continue
+        if r.get("source") != "take_it":
+            continue
+        if name_in_lineup(r.get("player", ""), lineup) is False:
+            r["result"] = "DNP"
+            n += 1
+    if n:
+        save_results(rows)
+    return n
+
+def bulk_miss_to_dnp(today_only=True):
+    lineup = st.session_state.get("lineup_names") or set()
+    if not lineup:
+        return 0, "Load RotoWire first"
+    rows = load_results()
+    today = today_az()
+    n = 0
+    for r in rows:
+        if r.get("result") != "MISS":
+            continue
+        if today_only and r.get("date") != today:
+            continue
+        if name_in_lineup(r.get("player", ""), lineup) is False:
+            r["result"] = "DNP"
+            n += 1
+    if n:
+        save_results(rows)
+    return n, f"Converted {n} MISS → DNP (not in lineup)"
+
 def log_bet_this(ev_board):
     rows = load_results()
     today = today_az()
+    lineup = st.session_state.get("lineup_names") or set()
     added = 0
     for item in ev_board:
         if not item.get("is_bet"):
             continue
-        # skip DNP / not in lineup
-        if "Not in lineup" in item.get("methods", []):
+        if lineup and name_in_lineup(item["player"], lineup) is False:
             continue
         if any(r.get("date") == today and r.get("player") == item["player"] and r.get("source") == "take_it" for r in rows):
             continue
@@ -659,7 +693,6 @@ def log_manual_hr(player, price, book):
     save_results(rows)
     return True, f"Logged {player} {format_odds(price)} {book_label(book)}"
 
-# ── MLB auto ────────────────────────────────────────────────
 def fetch_mlb_home_runs_today():
     date = today_mlb()
     hrs = []
@@ -762,26 +795,6 @@ def auto_log_mlb_hrs():
         save_results(rows)
     return auto_n, promote_n, msg
 
-def auto_mark_dnp():
-    """PENDING take_it players not in RotoWire lineup → DNP (excluded from HIT%)."""
-    lineup = st.session_state.get("lineup_names") or set()
-    if not lineup:
-        return 0
-    rows = load_results()
-    today = today_az()
-    n = 0
-    for r in rows:
-        if r.get("date") != today or r.get("result") != "PENDING":
-            continue
-        if r.get("source") != "take_it":
-            continue
-        if name_in_lineup(r.get("player", ""), lineup) is False:
-            r["result"] = "DNP"
-            n += 1
-    if n:
-        save_results(rows)
-    return n
-
 def pending_sort_key(r):
     return (r.get("date") or "", r.get("time") or "", r.get("logged_at") or "", r.get("player") or "")
 
@@ -789,7 +802,6 @@ def build_whats_going_today(rows):
     today = today_az()
     todays = [r for r in rows if r.get("date") == today]
     hits = [r for r in todays if r.get("result") == "HIT"]
-    # HIT% excludes DNP
     graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
     n_hits, n_graded = len(hits), len(graded)
     book_ending = Counter()
@@ -821,13 +833,12 @@ def render_whats_going_today():
     <div class="trends-today">
       <div class="trends-today-header">
         <div class="trends-today-title">🔥 What's Going Today</div>
-        <div class="trends-today-sub">{n_hits} HR of {n_graded} graded (DNP excluded) · book-coded</div>
+        <div class="trends-today-sub">{n_hits} HR of {n_graded} graded (DNP excluded)</div>
       </div>
       <div class="trends-chips">{chips_html}</div>
     </div>
     """, unsafe_allow_html=True)
 
-# ── fetch ───────────────────────────────────────────────────
 def fetch_rotowire_lineups():
     if not HAS_BS4:
         return set(), "Install beautifulsoup4"
@@ -1005,7 +1016,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     lineup_names = st.session_state.get("lineup_names", set())
     spike_dump = {}
 
-    for k in ("presence_history", "price_history", "mgm_history"):
+    for k in ("price_history", "mgm_history"):
         if k not in st.session_state:
             st.session_state[k] = []
 
@@ -1014,7 +1025,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         st.session_state["price_history"].append(current_prices)
         st.session_state["price_history"] = st.session_state["price_history"][-8:]
 
-    # movement from lock first→last
     for player in df["player"].unique():
         mv, delta = movement_summary(player)
         if abs(delta) >= BIG_MOVE:
@@ -1023,7 +1033,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             methods_map[player].append(tag)
             methods_map[player].append(f"FADE · {tag}")
 
-    # DK 10
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -1031,39 +1040,28 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
 
-    # ── MGM: EXACTLY 2 (pair) or EXACTLY 3 (group), same team ──
+    # MGM exactly 2 or 3, same team
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
     current_mgm = []
-    # require team for same-team rule
-    if not mgm.empty:
-        has_team = mgm["team"].astype(str).str.len().gt(0).any()
-        if has_team:
-            for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
-                if not team:
+    if not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any():
+        for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
+            if not team:
+                continue
+            ends = defaultdict(list)
+            for _, r in g.iterrows():
+                d = last_two(r["price"])
+                if d in (0, 25, 50, 75):
+                    ends[d].append(r["player"])
+            for d, ps in ends.items():
+                names = sorted(set(ps))
+                if len(names) not in (2, 3):
                     continue
-                ends = defaultdict(list)
-                for _, r in g.iterrows():
-                    d = last_two(r["price"])
-                    if d in (0, 25, 50, 75):
-                        ends[d].append(r["player"])
-                for d, ps in ends.items():
-                    names = sorted(set(ps))
-                    # STRICT: only 2 or only 3
-                    if len(names) not in (2, 3):
-                        continue
-                    current_mgm.append({
-                        "event": event, "ending": d, "team": team,
-                        "players": frozenset(names),
-                    })
-        else:
-            # no team IDs — cannot safely same-team group; skip MGM groups
-            pass
+                current_mgm.append({"event": event, "ending": d, "team": team, "players": frozenset(names)})
 
     if record_history:
         st.session_state["mgm_history"].append(current_mgm)
         st.session_state["mgm_history"] = st.session_state["mgm_history"][-8:]
 
-    # Stayed in group: ONE tag if in group across ≥ MGM_STAY_SNAPS snaps
     h = st.session_state["mgm_history"]
     stay_count = defaultdict(int)
     survivor = set()
@@ -1097,18 +1095,15 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if name in survivor:
                 meth.append("Last one left")
                 extra.append("Last one left")
-        meth = list(dict.fromkeys(meth))  # unique, order kept
+        meth = list(dict.fromkeys(meth))
         reason = f"MGM {kind} ends in {d:02d} · {grp.get('team', '')}"
         if extra:
             reason += " · " + " + ".join(dict.fromkeys(extra))
-        results.append({
-            "type": "mgm", "label": " + ".join(names),
-            "reason": reason, "event": grp["event"], "methods": meth,
-        })
+        results.append({"type": "mgm", "label": " + ".join(names), "reason": reason,
+                        "event": grp["event"], "methods": meth})
         for name in names:
             methods_map[name].extend(meth)
 
-    # Exact match
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -1119,7 +1114,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": g["event"].iloc[0], "methods": ["Exact Match"]})
             methods_map[player].append("Exact Match")
 
-    # MGM Exact — same team, exact price, 2 or 3 only
     if not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any():
         for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
             if not team:
@@ -1131,9 +1125,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 results.append({"type": "mgm_exact", "label": " + ".join(names),
                     "reason": f"MGM Exact {format_odds(price)} · {team}",
                     "event": event, "methods": ["MGM Exact"]})
-                for n in names:
-                    methods_map[n].append("MGM Exact")
-            # Digits 25/50/75 — same as pairs/groups (already in current_mgm via endings)
+                for nm in names:
+                    methods_map[nm].append("MGM Exact")
             ends = defaultdict(list)
             for _, r in g.iterrows():
                 d = last_two(r["price"])
@@ -1147,10 +1140,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 results.append({"type": "digit", "label": " + ".join(names),
                     "reason": f"Digit {kind} ends {d} · {team}",
                     "event": event, "methods": [f"Match {d}"]})
-                for n in names:
-                    methods_map[n].append(f"Match {d}")
+                for nm in names:
+                    methods_map[nm].append(f"Match {d}")
 
-    # FD
     for _, row in df.iterrows():
         if row["book"] != "fanduel":
             continue
@@ -1170,7 +1162,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
 
-    # B365 850
     for _, row in df.iterrows():
         if row["book"] != "bet365":
             continue
@@ -1181,7 +1172,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["B365 850"]})
             methods_map[row["player"]].append("B365 850")
 
-    # Board
     ev_board = []
     player_events = defaultdict(set)
     for _, r in df.iterrows():
@@ -1203,12 +1193,10 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             med = best
         edge = best - med
         raw_meths = list(set(methods_map.get(player, [])))
-        meths = [normalize_method(m) for m in raw_meths]
-        meths = list(dict.fromkeys(meths))
+        meths = list(dict.fromkeys(normalize_method(m) for m in raw_meths))
         core_count = count_core_methods(meths)
         if core_count < METHODS_MIN:
             continue
-        # fade big spikes/dumps off TAKE IT
         has_fade = player in spike_dump or "Spike" in meths or "Dump" in meths
         is_bet = edge >= EDGE_MIN and not has_fade
         display_meths = [m for m in meths if is_core_method(m) or m in ("Spike", "Dump")]
@@ -1226,10 +1214,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "median": med, "edge": edge, "is_bet": is_bet, "why": why,
             "methods": display_meths, "score": score, "bars": bars, "level": level,
             "method_count": core_count, "team": team_map.get(player, ""),
-            "events": list(player_events.get(player, [])),
-            "movement": mv_note,
+            "events": list(player_events.get(player, [])), "movement": mv_note,
         })
-    # rank: bets first, then 3+ methods, then score, then edge
     ev_board = sorted(
         ev_board,
         key=lambda x: (not x["is_bet"], -(x["method_count"] >= METHODS_STRONG), -x["score"], -x["edge"]),
@@ -1247,7 +1233,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         st.session_state["prev_ev"] = current_ev
         save_history(prev_ev=current_ev)
 
-    # Name magic
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -1315,8 +1300,8 @@ def main():
 
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(
-        f'<div class="how-to">⚡ <b>Sync MLB HRs</b> · 🔒 lock {lock_n} (in Odds Tricks) · '
-        f'MGM pairs=2 / groups=3 only · DNP excluded from HIT%</div>',
+        f'<div class="how-to">⚡ MLB auto · 🔒 {lock_n} locked · MGM pairs=2 / groups=3 · '
+        f'RotoWire → PENDING+MISS→DNP · HIT% ignores DNP</div>',
         unsafe_allow_html=True,
     )
     render_whats_going_today()
@@ -1339,8 +1324,14 @@ def main():
             if names:
                 st.success(msg)
                 n_dnp = auto_mark_dnp()
+                n_miss, miss_msg = bulk_miss_to_dnp(today_only=True)
+                bits = []
                 if n_dnp:
-                    st.info(f"Marked {n_dnp} PENDING as DNP (not in lineup)")
+                    bits.append(f"PENDING→DNP {n_dnp}")
+                if n_miss:
+                    bits.append(f"MISS→DNP {n_miss}")
+                if bits:
+                    st.info(" · ".join(bits))
             else:
                 st.warning(msg or "No lineup names")
     with c3:
@@ -1398,6 +1389,8 @@ def main():
                     st.info(f"MLB: {a} new · {p} promoted")
             except Exception:
                 pass
+            if st.session_state.get("lineup_names"):
+                auto_mark_dnp()
         else:
             st.warning("No 0.5 HR odds.")
 
@@ -1417,31 +1410,21 @@ def main():
     if ev_board:
         log_bet_this(ev_board)
 
-    # Results stats for top strip
     all_rows = load_results()
     today_rows = [r for r in all_rows if r.get("date") == today_az()]
     hits_n = sum(1 for r in today_rows if r.get("result") == "HIT")
     misses_n = sum(1 for r in today_rows if r.get("result") == "MISS")
-    dnp_n = sum(1 for r in today_rows if r.get("result") == "DNP")
     pending_n = sum(1 for r in today_rows if r.get("result") == "PENDING")
     graded_n = hits_n + misses_n
     hit_pct = int(hits_n / graded_n * 100) if graded_n else 0
 
-    counts = {
-        "bets": len([e for e in ev_board if e["is_bet"]]),
-        "mgm": len([r for r in results if r["type"] == "mgm"]),
-        "fd": len([r for r in results if r["type"] == "fd"]),
-        "pending": pending_n,
-        "hitpct": hit_pct,
-        "dnp": dnp_n,
-    }
     st.markdown(f"""
     <div class="petty-row">
-      <div class="petty-box"><div class="petty-num">{counts['bets']}</div><div class="petty-label">🟢 TAKE IT</div></div>
-      <div class="petty-box"><div class="petty-num">{counts['mgm']}</div><div class="petty-label">🎰 MGM 2/3</div></div>
-      <div class="petty-box"><div class="petty-num">{counts['fd']}</div><div class="petty-label">💙 FD</div></div>
-      <div class="petty-box"><div class="petty-num">{counts['pending']}</div><div class="petty-label">⏳ PENDING</div></div>
-      <div class="petty-box"><div class="petty-num">{counts['hitpct']}%</div><div class="petty-label">📈 HIT% (no DNP)</div></div>
+      <div class="petty-box"><div class="petty-num">{len([e for e in ev_board if e['is_bet']])}</div><div class="petty-label">🟢 TAKE IT</div></div>
+      <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='mgm'])}</div><div class="petty-label">🎰 MGM 2/3</div></div>
+      <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='fd'])}</div><div class="petty-label">💙 FD</div></div>
+      <div class="petty-box"><div class="petty-num">{pending_n}</div><div class="petty-label">⏳ PENDING</div></div>
+      <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT% (no DNP)</div></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1451,7 +1434,7 @@ def main():
 
     with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
-        st.caption("3+ methods ranked higher · Spike/Dump (≥100 pts) cannot be TAKE IT")
+        st.caption("Bench filtered when RotoWire loaded · Spike/Dump cannot TAKE IT · 3+ methods ranked higher")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1481,7 +1464,7 @@ def main():
         with sub[0]:
             render_card_grid([r for r in results if r["type"] == "dk"])
         with sub[1]:
-            st.caption("Exactly 2 (pair) or 3 (group) · same team · 00/25/50/75")
+            st.caption("Exactly 2 or 3 · same team · 00/25/50/75")
             render_card_grid([r for r in results if r["type"] == "mgm"])
         with sub[2]:
             render_card_grid([r for r in results if r["type"] == "match"])
@@ -1532,9 +1515,9 @@ def main():
 
     with tab_results:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
-        st.caption("HIT% ignores DNP · 🟡 DNP = did not play · movement saved on grade")
+        st.caption("HIT% ignores DNP · RotoWire auto PENDING+MISS→DNP · full graded list below")
 
-        top = st.columns([1, 1, 1, 2])
+        top = st.columns([1, 1, 1, 1])
         with top[0]:
             if st.button("⚡ Sync MLB", key="sync_res"):
                 with st.spinner("MLB…"):
@@ -1542,11 +1525,19 @@ def main():
                 st.success(f"{m} · {a} new · {p} promoted")
                 st.rerun()
         with top[1]:
-            if st.button("📋 Mark DNPs", key="mark_dnp"):
+            if st.button("📋 PENDING→DNP", key="mark_dnp"):
                 n = auto_mark_dnp()
-                st.success(f"Marked {n} as DNP")
+                st.success(f"PENDING → DNP: {n}")
                 st.rerun()
         with top[2]:
+            if st.button("🟡 MISS→DNP", key="miss_to_dnp"):
+                n, msg = bulk_miss_to_dnp(today_only=True)
+                if n:
+                    st.success(msg)
+                else:
+                    st.warning(msg)
+                st.rerun()
+        with top[3]:
             today_only = st.checkbox("Today only", value=True, key="res_today")
 
         with st.expander("⚡ Manual Log (backup)", expanded=False):
@@ -1587,49 +1578,28 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
-        with st.expander(f"All graded HIT/MISS ({len(done)}) — fix DNPs here", expanded=True):
-            st.caption("Missed but didn’t play? Click 🟡 DNP. Undo = back to PENDING for TAKE IT rows.")
-            if not done:
-                st.caption("None yet.")
+        with st.expander("Method hit rates (noise filtered)", expanded=False):
+            method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+            for r in done:
+                for m in r.get("methods", []):
+                    m = normalize_method(m)
+                    if m in ("Manual HR log", "MLB auto HR") or m in NOISE_METHODS:
+                        continue
+                    if not is_core_method(m) and m not in PERSONAL_STRONG:
+                        continue
+                    if r["result"] == "HIT":
+                        method_stats[m]["hit"] += 1
+                    else:
+                        method_stats[m]["miss"] += 1
+            if not method_stats:
+                st.caption("Grade some PENDING first.")
             else:
-                # oldest first so you can work through the day
-                ordered = sorted(done, key=pending_sort_key)
-                # optional filter
-                q = st.text_input("Filter player", key="graded_filter", placeholder="type a name…")
-                if q:
-                    ordered = [r for r in ordered if q.lower() in (r.get("player") or "").lower()]
-
-                for r in ordered:
-                    rid = r["id"]
-                    icon = "🟢" if r["result"] == "HIT" else "🔴"
-                    endg = r.get("ending")
-                    end_s = f" {int(endg):02d}" if endg is not None else ""
-                    mv = r.get("movement") or ""
-                    src = r.get("source") or ""
-                    line = (
-                        f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} "
-                        f"{book_label(r.get('best_book'))}{end_s}"
-                    )
-                    if mv:
-                        line += f" · _{mv}_"
-                    if src:
-                        line += f" · `{src}`"
-
-                    c1, c2, c3, c4 = st.columns([4, 1, 1, 1])
-                    with c1:
-                        st.markdown(line)
-                    with c2:
-                        if r.get("result") != "HIT" and st.button("🟢", key=f"g_hit_{rid}", help="HIT"):
-                            set_result_status(rid, "HIT")
-                            st.rerun()
-                    with c3:
-                        if r.get("result") != "MISS" and st.button("🔴", key=f"g_miss_{rid}", help="MISS"):
-                            set_result_status(rid, "MISS")
-                            st.rerun()
-                    with c4:
-                        if st.button("🟡", key=f"g_dnp_{rid}", help="DNP — did not play"):
-                            set_result_status(rid, "DNP")
-                            st.rerun()
+                lines = []
+                for m, s in sorted(method_stats.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+                    t = s["hit"] + s["miss"]
+                    pct = s["hit"] / t * 100 if t else 0
+                    lines.append(f"**{m}**: {s['hit']}/{t} ({pct:.0f}%)")
+                st.markdown(" · ".join(lines))
 
         total_p = len(pending)
         page = st.session_state.get("pending_page", 0)
@@ -1667,7 +1637,7 @@ def main():
                     st.markdown(
                         f'<div class="res-card"><b>{r["player"]}</b> · '
                         f'{format_odds(r.get("best_price"))} {book_label(r.get("best_book"))}{end_s}'
-                        f'{mv_s}<br><small>{r.get("time","")} · score {r.get("score")} · core {r.get("core")}</small></div>',
+                        f'{mv_s}<br><small>{r.get("time","")} · score {r.get("score")}</small></div>',
                         unsafe_allow_html=True,
                     )
                     b1, b2, b3 = st.columns(3)
@@ -1684,27 +1654,46 @@ def main():
                             set_result_status(rid, "DNP")
                             st.rerun()
 
-        with st.expander(f"Recent graded ({len(done)}) — Undo", expanded=False):
-            for r in reversed(done[-30:]):
-                rid = r["id"]
-                icon = "🟢" if r["result"] == "HIT" else "🔴"
-                endg = r.get("ending")
-                end_s = f" {int(endg):02d}" if endg is not None else ""
-                mv = r.get("movement") or ""
-                c1, c2 = st.columns([5, 1])
-                with c1:
-                    st.markdown(
+        # ALL graded — fix DNPs
+        with st.expander(f"All graded HIT/MISS ({len(done)}) — fix DNPs here", expanded=True):
+            st.caption("Didn’t play? 🟡 DNP. Load RotoWire first, then MISS→DNP bulk, or fix one-by-one.")
+            if not done:
+                st.caption("None yet.")
+            else:
+                q = st.text_input("Filter player", key="graded_filter", placeholder="type a name…")
+                ordered = sorted(done, key=pending_sort_key)
+                if q:
+                    ordered = [r for r in ordered if q.lower() in (r.get("player") or "").lower()]
+                for r in ordered:
+                    rid = r["id"]
+                    icon = "🟢" if r["result"] == "HIT" else "🔴"
+                    endg = r.get("ending")
+                    end_s = f" {int(endg):02d}" if endg is not None else ""
+                    mv = r.get("movement") or ""
+                    line = (
                         f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} "
                         f"{book_label(r.get('best_book'))}{end_s}"
-                        + (f" · _{mv}_" if mv else "")
                     )
-                with c2:
-                    if st.button("↩️", key=f"undo_{rid}", help="Undo"):
-                        undo_result(rid, r.get("source"))
-                        st.rerun()
+                    if mv:
+                        line += f" · _{mv}_"
+                    c1, c2, c3, c4 = st.columns([4, 1, 1, 1])
+                    with c1:
+                        st.markdown(line)
+                    with c2:
+                        if r.get("result") != "HIT" and st.button("🟢", key=f"g_hit_{rid}", help="HIT"):
+                            set_result_status(rid, "HIT")
+                            st.rerun()
+                    with c3:
+                        if r.get("result") != "MISS" and st.button("🔴", key=f"g_miss_{rid}", help="MISS"):
+                            set_result_status(rid, "MISS")
+                            st.rerun()
+                    with c4:
+                        if st.button("🟡", key=f"g_dnp_{rid}", help="DNP"):
+                            set_result_status(rid, "DNP")
+                            st.rerun()
 
         with st.expander(f"DNP list ({len(dnps)})", expanded=False):
-            for r in dnps[-40:]:
+            for r in sorted(dnps, key=lambda x: x.get("player") or ""):
                 st.caption(f"🟡 {r.get('player')} · was {format_odds(r.get('best_price'))}")
 
     with tab_gloss:
@@ -1721,95 +1710,68 @@ def main():
             st.markdown(f"""
 **TAKE IT** needs:
 
-- **2 or more core methods** (3+ ranks higher)
-- **Edge pts ≥ {EDGE_MIN}**
-- Over **0.5 HR** only
-- **Not** a Spike or Dump (≥ {BIG_MOVE} pts first→last lock)
-- In RotoWire lineup when loaded
+- **2+ core methods** (3+ ranks higher)
+- **Edge ≥ {EDGE_MIN}**
+- Over **0.5** only
+- **Not** Spike/Dump (≥ {BIG_MOVE} pts first→last lock)
+- In RotoWire lineup when lineup is loaded
 
-**PASS** = has methods but fails edge, or got faded for a huge move.
-
-**Score 0–100** · 3+ methods get a boost · Spike/Dump get a penalty.
+Bench players are **not** logged as TAKE IT when RotoWire is loaded.
             """)
         with st.expander("📊 Edge pts"):
-            st.markdown("""
-**Edge pts** = best price minus the **median** across books.
-
-- Outliers **150+** away from the pack are ignored for “best”
-- Need **60+** for TAKE IT
-- Gap between books — not a bankroll EV formula
-            """)
+            st.markdown("Best minus median across books. Outliers 150+ ignored. Need 60+ for TAKE IT.")
 
         st.markdown("### 2. Core methods")
-        with st.expander("🎯 DraftKings 10s"):
-            st.markdown("DK odds **ending in 10** (+110, +210, +310…). Solo flag.")
-        with st.expander("🎰 BetMGM (STRICT)", expanded=True):
+        with st.expander("🎯 DK 10s"):
+            st.markdown("DraftKings odds ending in **10**.")
+        with st.expander("🎰 BetMGM STRICT", expanded=True):
             st.markdown("""
 **Same team only.**
 
 | Mode | Size | Endings |
 |------|------|---------|
-| **Pair** | **Exactly 2** | 00, 25, 50, 75 |
-| **Group** | **Exactly 3** | 00, 25, 50, 75 |
+| Pair | **Exactly 2** | 00, 25, 50, 75 |
+| Group | **Exactly 3** | 00, 25, 50, 75 |
 
-**Not allowed:** 4+ players, mixed teams.
-
-**Stayed in group** — one tag only if still in a group across **3+** fetches (no more 2x/3x/8x spam).
-
-**Last one left** — was in an early group of 3 and still present later.
+**Stayed in group** = one tag if still in a group across **3+** fetches (no 2x/3x/8x spam).  
+**Last one left** = early group of 3, still there later.
             """)
-        with st.expander("💚 Bet365"):
-            st.markdown("**B365 850** · same-team pairs/groups 25/50/75 (no 00) when API has 365 · **B365 > HardRock**.")
-        with st.expander("🤝 Exact · ⭐ MGM Exact · 🔢 Digits"):
-            st.markdown("""
-**Exact Match** — same price on 2+ books.
-
-**MGM Exact / Digits** — same team, **exactly 2 or 3** players, same price or same 25/50/75 ending.
-            """)
-        with st.expander("💙 FanDuel"):
-            st.markdown(f"Only with DK/MGM already: FD **≥ +{FD_MIN}** ending 10/20/30/60/70/90 **or** exact **+600**.")
-        with st.expander("📈 Signals"):
-            st.markdown("**Core:** Same on 3+ books · Multi-book Shorten.  \n**Noise:** Multi-book Lengthen (we don’t like multi-book lengthening).")
-
-        st.markdown("### 3. Spike / Dump / DNP")
-        with st.expander("Line movement"):
+        with st.expander("💚 Bet365 · 🤝 Exact · 💙 FD · 📈 Signals"):
             st.markdown(f"""
-From **first locked price → last locked price** per book (prefers MGM):
-
-- **Spike** ≥ +{BIG_MOVE} → FADE · cannot be TAKE IT
-- **Dump** ≤ −{BIG_MOVE} → FADE · cannot be TAKE IT
-- Mild moves shown on cards / Results for memory
+**B365 850** when available.  
+**Exact / MGM Exact / Digits** — same team, size 2 or 3 for MGM.  
+**FD** ≥ +{FD_MIN} pattern or +600 **with** DK/MGM.  
+**Signals core:** Same on 3+ books · Multi-book Shorten. Lengthen = noise.
             """)
-        with st.expander("🟡 DNP"):
+
+        st.markdown("### 3. DNP · Spike · Results")
+        with st.expander("🟡 DNP + RotoWire", expanded=True):
             st.markdown("""
-**DNP** = did not play (not in RotoWire lineup).
+**DNP** = did not play.
 
-- Use **🟡** on PENDING or **Mark DNPs** after RotoWire
-- **HIT% ignores DNP** — only HIT vs MISS
-- Old false “misses” for bench players should be graded DNP when possible
+- **RotoWire** button → PENDING not in lineup → DNP **and** MISS not in lineup → DNP (today)
+- **PENDING→DNP** / **MISS→DNP** buttons on Results
+- Manual 🟡 on any PENDING or graded row
+- **HIT% = HIT / (HIT+MISS)** — DNP excluded
+
+Always load RotoWire after lineups post.
             """)
+        with st.expander("Spike / Dump"):
+            st.markdown(f"First lock → last lock. ±{BIG_MOVE}+ = FADE, cannot TAKE IT. Shown on cards and Results.")
+        with st.expander("⚡ Auto HR · 🔒 Lock"):
+            st.markdown("Sync MLB promotes PENDING or logs mlb_auto with lock price. Lock never wiped when live lines vanish.")
 
-        st.markdown("### 4. Lock · Auto HR · Results")
-        with st.expander("🔒 Pregame lock"):
-            st.markdown("Every Fetch **merges** prices + first/last for movement. Live drop does **not** wipe lock. See **Odds Tricks → Lock**.")
-        with st.expander("⚡ Auto HR"):
-            st.markdown("**Sync MLB HRs** → promotes PENDING TAKE IT to HIT, or logs mlb_auto with lock price.")
-        with st.expander("📊 Results"):
-            st.markdown("PENDING 2-col · 🟢 HIT · 🔴 MISS · 🟡 DNP · Undo on graded · movement note stored.")
-
-        st.markdown("### 5. Name Magic")
-        with st.expander("Rules"):
-            st.markdown(f"Both need **{NAME_METHODS_MIN}+ core** + personal strong · different teams · max {NAME_MAX_PAIRS}. Jr. ignored.")
-
-        st.markdown("### 6. First-timers")
+        st.markdown("### 4. Name Magic · First-timers")
+        with st.expander("Name Magic"):
+            st.markdown(f"Both need {NAME_METHODS_MIN}+ core + strong method · different teams · max {NAME_MAX_PAIRS}.")
         with st.expander("How to run a slate"):
             st.markdown(f"""
-1. Load Games → select → **Fetch Odds** (builds lock)  
-2. **RotoWire** → auto-marks DNP when possible  
-3. Board → TAKE IT (watch Spike/Dump fades)  
-4. After live → **Sync MLB HRs** · grade rest · 🟡 DNP for no-plays  
+1. Load Games → Fetch (builds lock)  
+2. **RotoWire** after lineups (auto DNP cleanup)  
+3. Board → TAKE IT  
+4. Live → Sync MLB · grade rest · 🟡 for scratches  
 
-Auto-refresh ~ every **{REFRESH_MINUTES}** min.
+Auto-refresh ~{REFRESH_MINUTES} min.
             """)
 
     st.markdown(
