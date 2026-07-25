@@ -1,13 +1,20 @@
 """
-Girl Magic Odds ✨ — full app (no mirrors)
+Girl Magic Odds ✨ — full app
 
 PAIR first (MGM/365 same team) · TRIO only if no pair
 🔥 HOT = pair/trio + FD + DK10/Was/DK FD-style
 🟢 TAKE = live pair/trio · not faded · ≥+400 · not HardRock-best
 ⚪ PASS = no primary · HardRock best · fade ±150 · price too low
 
-Digits = MGM + Bet365 only · No Caesars
-📋 Cheat Sheet · mobile-safe board order (row-by-row)
+📈 Movement tab restored:
+  · Up (red) | Down (green)
+  · Only prices ≥ +500
+  · Biggest gaps first
+  · One card per player
+  · FD 10–100 under MGM flagged
+
+Digits = MGM + Bet365 only · No Caesars · No mirrors
+📋 Cheat Sheet · mobile-safe board (row-by-row)
 """
 
 import streamlit as st
@@ -68,6 +75,9 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .hot{background:linear-gradient(155deg,#3b0764,#7c2d12)!important;border:1px solid #fb923c!important}
 .skip{background:#14101c!important;border:1px solid #4b5563!important;opacity:.85}
 .fade-card{border-color:#f87171!important;opacity:.9}
+.move-up{border-color:#f87171!important;background:linear-gradient(155deg,#2a1010,#1a0f28)!important}
+.move-down{border-color:#34d399!important;background:linear-gradient(155deg,#0c2418,#1a0f28)!important}
+.move-like{border-color:#60a5fa!important;background:linear-gradient(155deg,#0f172a,#1a0f28)!important}
 .score-pill{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-weight:800;font-size:.85rem;padding:2px 9px;border-radius:12px;margin-left:5px}
 .tag{display:inline-block;background:#3b0764;color:#f9a8d4;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:10px;margin:2px 2px 2px 0;border:1px solid #a855f7}
 .tag-dk{background:#064e3b;color:#6ee7b7;border-color:#34d399}
@@ -118,6 +128,7 @@ METHODS_STRONG = 3
 OUTLIER_GAP = 150
 BIG_MOVE = 150
 PRICE_MIN_TAKE = 400
+PRICE_MIN_MOVE = 500  # movement tab only tracks 500+
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
@@ -605,6 +616,103 @@ def movement_summary(player):
         direction = "up" if d > 0 else "down"
         return f"{direction} {book_label(b)} {format_odds(f)}→{format_odds(l)}", d
     return "", d
+
+
+def build_movement_board(lock=None, live_df=None):
+    """
+    One card per player. Only care about last/current price ≥ PRICE_MIN_MOVE (500+).
+    Up = lengthening (price up) · Down = shortening (price down).
+    Also flag FD 10–100 under MGM when both present.
+    Sorted by biggest |delta| first within each side.
+    """
+    lock = lock if lock is not None else (st.session_state.get("pregame_lock") or load_pregame())
+    ups, downs, likes = [], [], []
+
+    # Live prices by player/book for FD vs MGM compare
+    live = {}
+    if live_df is not None and not live_df.empty:
+        for _, r in live_df.iterrows():
+            p = clean_name(r["player"])
+            b = r["book"]
+            if is_bet365(b):
+                b = "bet365"
+            live.setdefault(p, {})[b] = int(r["price"]) if r["price"] is not None else None
+
+    for player, entry in (lock or {}).items():
+        first = entry.get("first_prices") or {}
+        last = entry.get("last_prices") or {}
+        if not first or not last:
+            continue
+
+        # Prefer priority book that has both first + last
+        book, f, l, delta = None, None, None, None
+        for b in BOOK_PRIORITY:
+            if b in first and b in last and first[b] is not None and last[b] is not None:
+                book, f, l = b, int(first[b]), int(last[b])
+                delta = l - f
+                break
+        if book is None:
+            for b in first:
+                if b in last and first[b] is not None and last[b] is not None:
+                    book, f, l = b, int(first[b]), int(last[b])
+                    delta = l - f
+                    break
+        if book is None or delta is None:
+            continue
+
+        # Only track 500+ (current or first)
+        if max(abs(f), abs(l)) < PRICE_MIN_MOVE:
+            continue
+        if abs(delta) < 40 and abs(delta) < BIG_MOVE:
+            # still allow small moves if FD-under-MGM like setup exists
+            pass
+
+        # FD vs MGM gap (prefer FD 10–100 lower than MGM)
+        fd_gap = None
+        fd_note = ""
+        prices = live.get(player) or last
+        mgm_p = None
+        fd_p = None
+        for bk, pr in (prices or {}).items():
+            if pr is None:
+                continue
+            bl = str(bk).lower()
+            if "betmgm" in bl or bl == "mgm":
+                mgm_p = int(pr)
+            if "fanduel" in bl or bl == "fd":
+                fd_p = int(pr)
+        if mgm_p is not None and fd_p is not None:
+            fd_gap = mgm_p - fd_p  # positive => FD shorter/lower number than MGM
+            if 10 <= fd_gap <= 100:
+                fd_note = f"FD {format_odds(fd_p)} is {fd_gap} under MGM {format_odds(mgm_p)} · like"
+
+        if abs(delta) < 40 and not fd_note:
+            continue
+
+        card = {
+            "player": player,
+            "book": book,
+            "first": f,
+            "last": l,
+            "delta": delta,
+            "abs_delta": abs(delta),
+            "label": book_label(book),
+            "fd_note": fd_note,
+            "fd_gap": fd_gap,
+            "is_spike": delta >= BIG_MOVE,
+            "is_dump": delta <= -BIG_MOVE,
+        }
+        if fd_note:
+            likes.append(card)
+        if delta > 0:
+            ups.append(card)
+        elif delta < 0:
+            downs.append(card)
+
+    ups.sort(key=lambda x: -x["abs_delta"])
+    downs.sort(key=lambda x: -x["abs_delta"])
+    likes.sort(key=lambda x: -(x.get("fd_gap") or 0))
+    return ups, downs, likes
 
 
 def pick_lock_book_price(player):
@@ -1528,7 +1636,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
 
 def render_card_grid(items):
-    """Row-by-row so mobile keeps order."""
     if not items:
         st.info("None right now.")
         return
@@ -1578,6 +1685,26 @@ def render_cheat_hits(hits, title):
                 )
 
 
+def render_move_card(c):
+    direction = "⬆️ UP" if c["delta"] > 0 else "⬇️ DOWN"
+    cls = "move-up" if c["delta"] > 0 else "move-down"
+    if c.get("fd_note"):
+        cls = "move-like"
+    badge = ""
+    if c.get("is_spike"):
+        badge = '<span class="tag tag-fade">SPIKE · FADE</span>'
+    elif c.get("is_dump"):
+        badge = '<span class="tag tag-fade">DUMP · FADE</span>'
+    fd = f'<br><span class="tag tag-fd">{c["fd_note"]}</span>' if c.get("fd_note") else ""
+    st.markdown(
+        f'<div class="card {cls}">'
+        f'<b>{direction}</b> — <b>{c["player"]}</b><br>'
+        f'{c["label"]} {format_odds(c["first"])} → {format_odds(c["last"])} '
+        f'({c["delta"]:+d}){fd}<br>{badge}</div>',
+        unsafe_allow_html=True,
+    )
+
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
@@ -1600,8 +1727,8 @@ def main():
         f'<div class="how-to">'
         f'<b>PAIR first</b> · <b>TRIO</b> if no pair · '
         f'<b>🔥 HOT</b> = pair/trio + FD + DK · '
-        f'<b>PASS</b> HardRock-best / fade / short price · '
-        f'📋 Cheat Sheet · 🔒 {lock_n}'
+        f'<b>PASS</b> HardRock-best / fade ±{BIG_MOVE} · '
+        f'<b>📈 Movement</b> 500+ only · 🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -1728,19 +1855,24 @@ def main():
     n_pass = len([e for e in ev_board if not e["is_bet"]])
     n_pairs = len([r for r in results if r["type"] == "mgm" and "PAIR" in r.get("reason", "")])
 
+    ups, downs, likes = build_movement_board(
+        st.session_state.get("pregame_lock") or load_pregame(),
+        df if not df.empty else None,
+    )
+
     st.markdown(f"""
     <div class="petty-row">
       <div class="petty-box"><div class="petty-num">{n_hot}</div><div class="petty-label">🔥 HOT</div></div>
       <div class="petty-box"><div class="petty-num">{n_take}</div><div class="petty-label">🟢 TAKE IT</div></div>
       <div class="petty-box"><div class="petty-num">{n_pass}</div><div class="petty-label">⚪ PASS</div></div>
       <div class="petty-box"><div class="petty-num">{n_pairs}</div><div class="petty-label">🎰 MGM PAIRS</div></div>
-      <div class="petty-box"><div class="petty-num">{n_was_dk}</div><div class="petty-label">📉 Was DK 10</div></div>
+      <div class="petty-box"><div class="petty-num">{len(ups)+len(downs)}</div><div class="petty-label">📈 MOVES</div></div>
       <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT%</div></div>
     </div>
     """, unsafe_allow_html=True)
 
-    tab_board, tab_tricks, tab_names, tab_sheet, tab_results, tab_gloss = st.tabs([
-        "👑 The Board", "✨ Odds Tricks", "💅 Name Magic",
+    tab_board, tab_move, tab_tricks, tab_names, tab_sheet, tab_results, tab_gloss = st.tabs([
+        "👑 The Board", "📈 Movement", "✨ Odds Tricks", "💅 Name Magic",
         "📋 Cheat Sheet", "📊 Results", "📖 Glossary",
     ])
 
@@ -1750,7 +1882,6 @@ def main():
         if not ev_board:
             st.info("Select games and fetch.")
         else:
-            # Row-by-row → mobile keeps HOT → TAKE → PASS order
             for i in range(0, len(ev_board), 2):
                 cols = st.columns(2)
                 for j, col in enumerate(cols):
@@ -1781,6 +1912,43 @@ def main():
                           · edge {int(item["edge"])} · core {item.get("method_count", 0)}<br>
                           {tags}{mv_line}<br><small>{item["why"]}</small>
                         </div>''', unsafe_allow_html=True)
+
+    with tab_move:
+        st.markdown('<div class="queen-banner">📈 Line Movement</div>', unsafe_allow_html=True)
+        st.caption(
+            f"Only **+{PRICE_MIN_MOVE}+** · one card per player · biggest gaps first · "
+            f"⬆️ red = lengthening · ⬇️ green = shortening · ±{BIG_MOVE} = FADE · "
+            f"💙 FD 10–100 under MGM = like"
+        )
+        lock = st.session_state.get("pregame_lock") or load_pregame()
+        if not lock:
+            st.info("Fetch odds at least twice so first → last prices can move.")
+        else:
+            if likes:
+                st.markdown("**💙 FD under MGM (10–100 pts) — we like this**")
+                for i in range(0, min(len(likes), 20), 2):
+                    cols = st.columns(2)
+                    for j, col in enumerate(cols):
+                        if i + j >= len(likes):
+                            break
+                        with col:
+                            render_move_card(likes[i + j])
+
+            left, right = st.columns(2)
+            with left:
+                st.markdown(f"**⬆️ UP / lengthening ({len(ups)})**")
+                if not ups:
+                    st.caption("None yet.")
+                else:
+                    for c in ups[:40]:
+                        render_move_card(c)
+            with right:
+                st.markdown(f"**⬇️ DOWN / shortening ({len(downs)})**")
+                if not downs:
+                    st.caption("None yet.")
+                else:
+                    for c in downs[:40]:
+                        render_move_card(c)
 
     with tab_tricks:
         st.markdown('<div class="queen-banner">✨ Odds Tricks</div>', unsafe_allow_html=True)
@@ -1845,17 +2013,14 @@ def main():
     with tab_sheet:
         st.markdown('<div class="queen-banner">📋 Cheat Sheet Check</div>', unsafe_allow_html=True)
         st.caption("Paste names (one per line). Shows who also hits our live methods.")
-
         col_a, col_b = st.columns(2)
         with col_a:
             my_text = st.text_area("💜 My cheat sheet", height=180, placeholder="One name per line", key="cheat_mine")
         with col_b:
             girls_text = st.text_area("💖 Girls’ cheat sheet", height=180, placeholder="One name per line", key="cheat_girls")
-
         show_misses = st.checkbox("Also show names with no method hits", value=False, key="cheat_show_miss")
         mm = st.session_state.get("methods_map") or methods_map or {}
         eb = st.session_state.get("ev_board") or ev_board or []
-
         if not mm and not eb:
             st.warning("Fetch odds first.")
         else:
@@ -2071,10 +2236,10 @@ def main():
             <b>Girl Magic in one breath:</b><br>
             Classic endings only on <b>MGM + Bet365</b> · same team.<br>
             <b>PAIR (exactly 2)</b> first. <b>TRIO (exactly 3)</b> only when that ending has no pair.<br>
-            <b>🔥 HOT</b> = pair/trio + FanDuel pattern + DK 10 / Was DK 10 / DK FD-style.<br>
+            <b>🔥 HOT</b> = pair/trio + FanDuel + DK 10 / Was / DK FD-style.<br>
             <b>🟢 TAKE IT</b> = live pair/trio · not faded · price high enough · not HardRock-best.<br>
-            <b>⚪ PASS</b> = no pair/trio · HardRock is best · big move (±150) · price too low.<br>
-            <b>No Caesars.</b> Edge is info only.
+            <b>⚪ PASS</b> = no pair/trio · HardRock best · ±150 move · price too low.<br>
+            <b>📈 Movement</b> = 500+ only · Up red · Down green · FD 10–100 under MGM = like.
         </div>
         """, unsafe_allow_html=True)
 
@@ -2092,9 +2257,18 @@ def main():
 
 **🟢 TAKE IT** = live pair/trio · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
 
-**⚪ PASS** = no primary · HardRock best · ±{BIG_MOVE} · short price  
+**⚪ PASS** = no primary · HardRock best · ±{BIG_MOVE} · short price
+            """)
 
-**Board order on phone:** cards render row-by-row so HOT → TAKE → PASS stays in order.
+        with st.expander("📈 Movement tab", expanded=True):
+            st.markdown(f"""
+- Only players with price **≥ +{PRICE_MIN_MOVE}**
+- Compares **first locked** price → **latest** (needs 2+ fetches)
+- **One card per player** (not one per book)
+- **Biggest |move| first**
+- **⬆️ UP (red)** = lengthening · **⬇️ DOWN (green)** = shortening
+- **±{BIG_MOVE}** tagged Spike/Dump → FADE on the board
+- **FD 10–100 pts under MGM** called out as a **like**
             """)
 
         with st.expander("🎯 DK · 💙 FD · HardRock"):
@@ -2108,7 +2282,7 @@ def main():
             st.markdown("Paste My sheet / Girls’ sheet → see who also hits live methods.")
 
         with st.expander("What we ignore"):
-            st.markdown("- Caesars · digits on non-MGM/365 books · edge as a gate")
+            st.markdown("- Caesars · digits on non-MGM/365 · edge as a gate · sub-500 movement noise")
 
     st.markdown(
         '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls</div>',
