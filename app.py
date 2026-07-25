@@ -1720,7 +1720,7 @@ def main():
                     unsafe_allow_html=True,
                 )
 
-        with tab_gloss:
+    with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
