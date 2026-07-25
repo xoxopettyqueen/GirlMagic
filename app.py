@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
-MGM exact 2/3 same-team · Stayed-in-group collapsed · DNP · MISS→DNP bulk
-Spike/Dump fade · full graded list · full Glossary · MLB auto HR
+Full app: MGM 2/3 · DNP · MISS→DNP · methods on Results · Spike/Dump
+Auto HR · lock · full Glossary
 """
 
 import streamlit as st
@@ -81,7 +81,7 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:6px 9px;font-size:.78rem}
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
 .footer{text-align:center;color:#f9a8d4;font-size:.9rem;margin-top:28px;opacity:.9;padding-bottom:16px}
-.res-card{background:#1a0f28;border:1px solid #7c3aed;border-radius:10px;padding:8px 10px;margin-bottom:6px;font-size:.82rem}
+.res-card{background:#1a0f28;border:1px solid #7c3aed;border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:.82rem}
 </style>
 """, unsafe_allow_html=True)
 
@@ -182,7 +182,7 @@ def method_tag_class(m):
         return "tag-strong"
     return ""
 
-def render_method_tags(methods, limit=6):
+def render_method_tags(methods, limit=10):
     seen = []
     for m in methods:
         nm = normalize_method(m)
@@ -351,11 +351,8 @@ def name_in_lineup(player, lineup_names):
     if not lineup_names:
         return None
     cn = clean_name(player)
-    cn_l = cn.lower().replace(".", "")
     for ln in lineup_names:
         if names_match(cn, ln):
-            return True
-        if cn_l == clean_name(ln).lower().replace(".", ""):
             return True
     parts = cn.split()
     if len(parts) >= 2:
@@ -366,7 +363,6 @@ def name_in_lineup(player, lineup_names):
                 return True
     return False
 
-# ── persistence ─────────────────────────────────────────────
 def load_pregame():
     if not os.path.exists(PREGAME_FILE):
         return {}
@@ -463,16 +459,6 @@ def movement_summary(player):
         direction = "up" if d > 0 else "down"
         return f"{direction} {book_label(b)} {format_odds(f)}→{format_odds(l)}", d
     return "", d
-
-def locked_price_str(player):
-    entry = get_locked(player)
-    books = entry.get("books") or {}
-    parts = []
-    for b, info in sorted(books.items()):
-        p = info.get("price")
-        if p is not None:
-            parts.append(f"{book_label(b)} {format_odds(p)}")
-    return " · ".join(parts)
 
 def pick_lock_book_price(player):
     entry = get_locked(player)
@@ -1040,7 +1026,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
 
-    # MGM exactly 2 or 3, same team
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
     current_mgm = []
     if not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any():
@@ -1084,8 +1069,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     for grp in current_mgm:
         names = sorted(grp["players"])
         d = grp["ending"]
-        n = len(names)
-        kind = "pair" if n == 2 else "group of 3"
+        kind = "pair" if len(names) == 2 else "group of 3"
         meth = [f"MGM {d:02d}"]
         extra = []
         for name in names:
@@ -1300,8 +1284,8 @@ def main():
 
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(
-        f'<div class="how-to">⚡ MLB auto · 🔒 {lock_n} locked · MGM pairs=2 / groups=3 · '
-        f'RotoWire → PENDING+MISS→DNP · HIT% ignores DNP</div>',
+        f'<div class="how-to">⚡ MLB auto · 🔒 {lock_n} locked · MGM 2/3 · RotoWire DNP cleanup · '
+        f'Results shows <b>every method</b> matched</div>',
         unsafe_allow_html=True,
     )
     render_whats_going_today()
@@ -1324,7 +1308,7 @@ def main():
             if names:
                 st.success(msg)
                 n_dnp = auto_mark_dnp()
-                n_miss, miss_msg = bulk_miss_to_dnp(today_only=True)
+                n_miss, _ = bulk_miss_to_dnp(today_only=True)
                 bits = []
                 if n_dnp:
                     bits.append(f"PENDING→DNP {n_dnp}")
@@ -1434,7 +1418,6 @@ def main():
 
     with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
-        st.caption("Bench filtered when RotoWire loaded · Spike/Dump cannot TAKE IT · 3+ methods ranked higher")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1515,7 +1498,7 @@ def main():
 
     with tab_results:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
-        st.caption("HIT% ignores DNP · RotoWire auto PENDING+MISS→DNP · full graded list below")
+        st.caption("Every row shows methods matched · filter by name or method · HIT% ignores DNP")
 
         top = st.columns([1, 1, 1, 1])
         with top[0]:
@@ -1532,10 +1515,7 @@ def main():
         with top[2]:
             if st.button("🟡 MISS→DNP", key="miss_to_dnp"):
                 n, msg = bulk_miss_to_dnp(today_only=True)
-                if n:
-                    st.success(msg)
-                else:
-                    st.warning(msg)
+                st.success(msg) if n else st.warning(msg)
                 st.rerun()
         with top[3]:
             today_only = st.checkbox("Today only", value=True, key="res_today")
@@ -1633,11 +1613,14 @@ def main():
                     endg = r.get("ending")
                     end_s = f" · {int(endg):02d}" if endg is not None else ""
                     mv = r.get("movement") or ""
-                    mv_s = f"<br><small>{mv}</small>" if mv else ""
+                    meths = list(dict.fromkeys(normalize_method(m) for m in (r.get("methods") or [])))
+                    tags = render_method_tags(meths, limit=8)
                     st.markdown(
                         f'<div class="res-card"><b>{r["player"]}</b> · '
                         f'{format_odds(r.get("best_price"))} {book_label(r.get("best_book"))}{end_s}'
-                        f'{mv_s}<br><small>{r.get("time","")} · score {r.get("score")}</small></div>',
+                        f'{" · " + mv if mv else ""}'
+                        f'<br><small>score {r.get("score")} · core {r.get("core")}</small>'
+                        f'<br>{tags if tags else ""}</div>',
                         unsafe_allow_html=True,
                     )
                     b1, b2, b3 = st.columns(3)
@@ -1654,47 +1637,88 @@ def main():
                             set_result_status(rid, "DNP")
                             st.rerun()
 
-        # ALL graded — fix DNPs
-        with st.expander(f"All graded HIT/MISS ({len(done)}) — fix DNPs here", expanded=True):
-            st.caption("Didn’t play? 🟡 DNP. Load RotoWire first, then MISS→DNP bulk, or fix one-by-one.")
+        # FULL graded history with methods
+        with st.expander(f"All graded HIT/MISS ({len(done)}) — methods matched", expanded=True):
+            st.caption("Filter by player or method (e.g. MGM 75, DK 10, Stayed in group). 🟡 = DNP.")
             if not done:
                 st.caption("None yet.")
             else:
-                q = st.text_input("Filter player", key="graded_filter", placeholder="type a name…")
+                q = st.text_input("Filter player or method", key="graded_filter", placeholder="Soto or MGM 75…")
+                c_hit, c_miss = st.columns(2)
+                with c_hit:
+                    show_hits = st.checkbox("Show HITs", value=True, key="show_hits")
+                with c_miss:
+                    show_misses = st.checkbox("Show MISSes", value=True, key="show_misses")
+
                 ordered = sorted(done, key=pending_sort_key)
                 if q:
-                    ordered = [r for r in ordered if q.lower() in (r.get("player") or "").lower()]
+                    ql = q.lower()
+                    ordered = [
+                        r for r in ordered
+                        if ql in (r.get("player") or "").lower()
+                        or any(ql in normalize_method(m).lower() for m in (r.get("methods") or []))
+                    ]
+                ordered = [
+                    r for r in ordered
+                    if (r.get("result") == "HIT" and show_hits) or (r.get("result") == "MISS" and show_misses)
+                ]
+                st.caption(f"Showing {len(ordered)} rows")
+
                 for r in ordered:
                     rid = r["id"]
                     icon = "🟢" if r["result"] == "HIT" else "🔴"
                     endg = r.get("ending")
-                    end_s = f" {int(endg):02d}" if endg is not None else ""
+                    end_s = f" ends {int(endg):02d}" if endg is not None else ""
                     mv = r.get("movement") or ""
-                    line = (
-                        f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} "
-                        f"{book_label(r.get('best_book'))}{end_s}"
+                    meths = list(dict.fromkeys(normalize_method(m) for m in (r.get("methods") or [])))
+                    tags = render_method_tags(meths, limit=12)
+                    meta = []
+                    if r.get("score") is not None:
+                        meta.append(f"score {r['score']}")
+                    if r.get("core") is not None:
+                        meta.append(f"core {r['core']}")
+                    if r.get("edge") is not None:
+                        meta.append(f"edge {r['edge']}")
+                    meta_s = " · ".join(meta)
+                    src = r.get("source") or ""
+
+                    st.markdown(
+                        f'<div class="res-card">'
+                        f'{icon} <b>{r["player"]}</b> · {format_odds(r.get("best_price"))} '
+                        f'{book_label(r.get("best_book"))}{end_s}'
+                        f'{" · " + meta_s if meta_s else ""}'
+                        f'{" · " + mv if mv else ""}'
+                        f'{" · `" + src + "`" if src else ""}'
+                        f'<br>{tags if tags else "<small>no methods stored (older log)</small>"}'
+                        f'</div>',
+                        unsafe_allow_html=True,
                     )
-                    if mv:
-                        line += f" · _{mv}_"
-                    c1, c2, c3, c4 = st.columns([4, 1, 1, 1])
+                    c1, c2, c3, c4 = st.columns(4)
                     with c1:
-                        st.markdown(line)
-                    with c2:
-                        if r.get("result") != "HIT" and st.button("🟢", key=f"g_hit_{rid}", help="HIT"):
+                        if r.get("result") != "HIT" and st.button("🟢 HIT", key=f"g_hit_{rid}"):
                             set_result_status(rid, "HIT")
                             st.rerun()
-                    with c3:
-                        if r.get("result") != "MISS" and st.button("🔴", key=f"g_miss_{rid}", help="MISS"):
+                    with c2:
+                        if r.get("result") != "MISS" and st.button("🔴 MISS", key=f"g_miss_{rid}"):
                             set_result_status(rid, "MISS")
                             st.rerun()
-                    with c4:
-                        if st.button("🟡", key=f"g_dnp_{rid}", help="DNP"):
+                    with c3:
+                        if st.button("🟡 DNP", key=f"g_dnp_{rid}"):
                             set_result_status(rid, "DNP")
+                            st.rerun()
+                    with c4:
+                        if st.button("↩️", key=f"g_undo_{rid}", help="Undo"):
+                            undo_result(rid, r.get("source"))
                             st.rerun()
 
         with st.expander(f"DNP list ({len(dnps)})", expanded=False):
             for r in sorted(dnps, key=lambda x: x.get("player") or ""):
-                st.caption(f"🟡 {r.get('player')} · was {format_odds(r.get('best_price'))}")
+                meths = list(dict.fromkeys(normalize_method(m) for m in (r.get("methods") or [])))
+                tags = render_method_tags(meths, limit=6)
+                st.markdown(
+                    f"🟡 **{r.get('player')}** · was {format_odds(r.get('best_price'))}<br>{tags}",
+                    unsafe_allow_html=True,
+                )
 
     with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
@@ -1708,71 +1732,40 @@ def main():
         st.markdown("### 1. The Board")
         with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
             st.markdown(f"""
-**TAKE IT** needs:
-
-- **2+ core methods** (3+ ranks higher)
-- **Edge ≥ {EDGE_MIN}**
-- Over **0.5** only
-- **Not** Spike/Dump (≥ {BIG_MOVE} pts first→last lock)
-- In RotoWire lineup when lineup is loaded
-
-Bench players are **not** logged as TAKE IT when RotoWire is loaded.
+**TAKE IT** needs: **2+ core methods** (3+ ranks higher) · edge ≥ **{EDGE_MIN}** · Over **0.5** only ·  
+not Spike/Dump · in RotoWire lineup when loaded. Methods are **saved** on each log for Results review.
             """)
         with st.expander("📊 Edge pts"):
-            st.markdown("Best minus median across books. Outliers 150+ ignored. Need 60+ for TAKE IT.")
+            st.markdown("Best minus median. Outliers 150+ ignored. Need 60+.")
 
         st.markdown("### 2. Core methods")
         with st.expander("🎯 DK 10s"):
             st.markdown("DraftKings odds ending in **10**.")
         with st.expander("🎰 BetMGM STRICT", expanded=True):
             st.markdown("""
-**Same team only.**
-
-| Mode | Size | Endings |
-|------|------|---------|
-| Pair | **Exactly 2** | 00, 25, 50, 75 |
-| Group | **Exactly 3** | 00, 25, 50, 75 |
-
-**Stayed in group** = one tag if still in a group across **3+** fetches (no 2x/3x/8x spam).  
-**Last one left** = early group of 3, still there later.
+**Same team only.** Pair = **exactly 2** · Group = **exactly 3** · endings **00/25/50/75**.  
+**Stayed in group** = one tag (≥3 snaps). **Last one left** = early 3-group survivor.
             """)
-        with st.expander("💚 Bet365 · 🤝 Exact · 💙 FD · 📈 Signals"):
-            st.markdown(f"""
-**B365 850** when available.  
-**Exact / MGM Exact / Digits** — same team, size 2 or 3 for MGM.  
-**FD** ≥ +{FD_MIN} pattern or +600 **with** DK/MGM.  
-**Signals core:** Same on 3+ books · Multi-book Shorten. Lengthen = noise.
-            """)
+        with st.expander("💚 Bet365 · Exact · FD · Signals"):
+            st.markdown(f"B365 850 · Exact/MGM Exact/Digits (2 or 3 same team) · FD ≥+{FD_MIN} or +600 with DK/MGM · Same on 3+ / Multi-book Shorten.")
 
-        st.markdown("### 3. DNP · Spike · Results")
-        with st.expander("🟡 DNP + RotoWire", expanded=True):
+        st.markdown("### 3. Results · DNP · movement")
+        with st.expander("📊 Results methods history", expanded=True):
             st.markdown("""
-**DNP** = did not play.
-
-- **RotoWire** button → PENDING not in lineup → DNP **and** MISS not in lineup → DNP (today)
-- **PENDING→DNP** / **MISS→DNP** buttons on Results
-- Manual 🟡 on any PENDING or graded row
-- **HIT% = HIT / (HIT+MISS)** — DNP excluded
-
-Always load RotoWire after lineups post.
+**All graded** shows every HIT/MISS with **method tags**, score, core, edge, movement.  
+Filter by player **or** method string (e.g. `MGM 75`, `DK 10`).  
+Older rows may say “no methods stored” if logged before this feature.
             """)
-        with st.expander("Spike / Dump"):
-            st.markdown(f"First lock → last lock. ±{BIG_MOVE}+ = FADE, cannot TAKE IT. Shown on cards and Results.")
-        with st.expander("⚡ Auto HR · 🔒 Lock"):
-            st.markdown("Sync MLB promotes PENDING or logs mlb_auto with lock price. Lock never wiped when live lines vanish.")
+        with st.expander("🟡 DNP + RotoWire"):
+            st.markdown("RotoWire → PENDING+MISS not in lineup → DNP. HIT% ignores DNP. Manual 🟡 always available.")
+        with st.expander("Spike / Dump · Lock · Auto HR"):
+            st.markdown(f"±{BIG_MOVE}+ first→last lock = FADE. Lock survives live. Sync MLB auto-logs HRs.")
 
         st.markdown("### 4. Name Magic · First-timers")
         with st.expander("Name Magic"):
-            st.markdown(f"Both need {NAME_METHODS_MIN}+ core + strong method · different teams · max {NAME_MAX_PAIRS}.")
+            st.markdown(f"{NAME_METHODS_MIN}+ core + strong · different teams · max {NAME_MAX_PAIRS}.")
         with st.expander("How to run a slate"):
-            st.markdown(f"""
-1. Load Games → Fetch (builds lock)  
-2. **RotoWire** after lineups (auto DNP cleanup)  
-3. Board → TAKE IT  
-4. Live → Sync MLB · grade rest · 🟡 for scratches  
-
-Auto-refresh ~{REFRESH_MINUTES} min.
-            """)
+            st.markdown(f"Load → Fetch → **RotoWire** → Board → live **Sync MLB** → Results review methods. Auto ~{REFRESH_MINUTES} min.")
 
     st.markdown(
         '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls</div>',
