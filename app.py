@@ -5,7 +5,7 @@ PAIR first · TRIO only if no pair
 🔥 HOT = pair/trio + FD + DK
 🟢 TAKE = PAIR only · ≥+500 · not faded · not HardRock-best
 Rotated in = new pair/trio · Stayed = same group
-HR 0.5 only · no RBI mirrors
+HR 0.5 only · Lock tab paginated · no Caesars on Lock
 """
 
 import streamlit as st
@@ -94,6 +94,7 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .meter-bar.filled-medium{background:linear-gradient(90deg,#c084fc,#7c3aed)}
 .meter-bar.filled-low{background:#6b7280}
 .res-card{background:#1a0f28;border:1px solid #7c3aed;border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:.8rem}
+.lock-line{padding:6px 0;border-bottom:1px solid #2a1a3a;font-size:.84rem}
 .stTabs [data-baseweb="tab-list"]{gap:4px;flex-wrap:nowrap !important;overflow-x:auto !important;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:6px}
 .stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:8px 10px;font-size:.75rem;white-space:nowrap !important;flex-shrink:0}
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
@@ -136,6 +137,7 @@ NAME_MAX_PAIRS = 50
 FD_MIN = 500
 FD_STYLE_ENDS = (10, 20, 30, 60, 70, 90)
 PENDING_PAGE = 20
+LOCK_PAGE = 30
 MGM_STAY_SNAPS = 3
 LINEUP_MIN_NAMES = 80
 
@@ -249,7 +251,6 @@ def group_board_tags(methods):
     out = []
     if "🔥 HOT" in ms:
         out.append("🔥 HOT")
-
     ending, kind, extras = None, None, []
     for m in ms:
         if m in ("MGM 00", "MGM 25", "MGM 50", "MGM 75") or (m.startswith("MGM ") and m[4:].strip().isdigit()):
@@ -275,7 +276,6 @@ def group_board_tags(methods):
         if extras:
             label += " · " + " + ".join(dict.fromkeys(extras))
         out.append(label)
-
     b_ending, b_kind, b_extra = None, None, []
     for m in ms:
         if m.startswith("B365 Match"):
@@ -297,7 +297,6 @@ def group_board_tags(methods):
         if b_extra:
             label += " · " + " + ".join(b_extra)
         out.append(label)
-
     dk_bits = []
     if "DK 10" in ms:
         dk_bits.append("10")
@@ -307,7 +306,6 @@ def group_board_tags(methods):
         dk_bits.append("FD-style")
     if dk_bits:
         out.append("🎯 DK · " + " / ".join(dk_bits))
-
     fd_bits = []
     if "FD Pattern" in ms:
         fd_bits.append("pattern")
@@ -315,7 +313,6 @@ def group_board_tags(methods):
         fd_bits.append("600")
     if fd_bits:
         out.append("💙 FD · " + " / ".join(fd_bits))
-
     for fade in ("Spike", "Dump", "HardRock best"):
         if fade in ms:
             out.append(f"🚫 {fade}")
@@ -391,6 +388,8 @@ def book_label(b):
         return "365"
     if "hardrock" in b:
         return "HardRock"
+    if "caesar" in b:
+        return "Caesars"
     if b in ("untagged", "unknown", "—", ""):
         return "Untagged"
     return b.title() if b else "Untagged"
@@ -1850,6 +1849,71 @@ def render_board_card(item):
     </div>''', unsafe_allow_html=True)
 
 
+def render_lock_tab(lock):
+    """Paginated lock list · no Caesars · Prev/Next."""
+    if not lock:
+        st.info("Fetch to build lock.")
+        return
+
+    if "lock_page" not in st.session_state:
+        st.session_state["lock_page"] = 0
+
+    q = st.text_input("Filter player", key="lock_q", placeholder="Type a name…")
+
+    rows = []
+    for player, entry in sorted(lock.items()):
+        if q and q.lower() not in player.lower():
+            continue
+        books = entry.get("books") or {}
+        lines = []
+        for b, info in books.items():
+            if "caesar" in str(b).lower():
+                continue
+            if info.get("price") is None:
+                continue
+            lines.append(f"{book_label(b)} {format_odds(info.get('price'))}")
+        # also show first/last if useful
+        if not lines and entry.get("mgm_price") is not None:
+            lines.append(f"MGM {format_odds(entry['mgm_price'])}")
+        if lines:
+            rows.append((player, " · ".join(lines)))
+
+    total = len(rows)
+    page = st.session_state["lock_page"]
+    max_page = max(0, (total - 1) // LOCK_PAGE) if total else 0
+    if page > max_page:
+        page = 0
+        st.session_state["lock_page"] = 0
+
+    start = page * LOCK_PAGE
+    end = min(start + LOCK_PAGE, total)
+    slice_rows = rows[start:end]
+
+    st.caption(f"Showing **{start + 1 if total else 0}–{end}** of **{total}** (Caesars hidden)")
+
+    n1, n2, n3 = st.columns([1, 1, 4])
+    with n1:
+        if st.button("← Prev", disabled=page <= 0, key="lock_prev"):
+            st.session_state["lock_page"] = max(0, page - 1)
+            st.rerun()
+    with n2:
+        if st.button("Next →", disabled=page >= max_page, key="lock_next"):
+            st.session_state["lock_page"] = min(max_page, page + 1)
+            st.rerun()
+    with n3:
+        st.caption(f"Page {page + 1} / {max_page + 1 if total else 1}")
+
+    if not slice_rows:
+        st.info("No players match this filter.")
+        return
+
+    for player, line in slice_rows:
+        st.markdown(
+            f'<div class="lock-line"><b>{player}</b> — {line}</div>',
+            unsafe_allow_html=True,
+        )
+
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
@@ -1858,6 +1922,8 @@ def main():
         st.session_state.setdefault("lineup_confirmed", False)
     if "pending_page" not in st.session_state:
         st.session_state["pending_page"] = 0
+    if "lock_page" not in st.session_state:
+        st.session_state["lock_page"] = 0
 
     if HAS_AUTOREFRESH:
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
@@ -1953,6 +2019,7 @@ def main():
             st.session_state["last_selected"] = list(chosen)
             st.session_state["last_fetch_time"] = now_az()
             st.session_state["new_fetch"] = True
+            st.session_state["lock_page"] = 0  # reset lock paging on new fetch
             st.success(f"Loaded {len(df)} HR rows · {now_az()}")
             try:
                 a, p, m = auto_log_mlb_hrs()
@@ -1964,7 +2031,6 @@ def main():
         else:
             st.warning("No props returned.")
 
-    # Last fetch + books present / missing
     found = st.session_state.get("found_books", [])
     last_t = st.session_state.get("last_fetch_time")
     if last_t or found:
@@ -2112,25 +2178,8 @@ def main():
             with st.expander("Bet365", expanded=True):
                 render_card_grid([r for r in results if r["type"] == "b365"])
         with sub[6]:
-            lock = st.session_state.get("pregame_lock") or load_pregame()
-            if not lock:
-                st.info("Fetch to build lock.")
-            else:
-                q = st.text_input("Filter", key="lock_q")
-                shown = 0
-                for player, entry in sorted(lock.items()):
-                    if q and q.lower() not in player.lower():
-                        continue
-                    books = entry.get("books") or {}
-                    lines = [
-                        f"{book_label(b)} {format_odds(info.get('price'))}"
-                        for b, info in books.items() if info.get("price") is not None
-                    ]
-                    if lines:
-                        st.markdown(f"**{player}** — " + " · ".join(lines))
-                        shown += 1
-                    if shown >= 80:
-                        break
+            st.markdown("**🔒 Pregame lock** — prices we saved · Caesars hidden · 30 per page")
+            render_lock_tab(st.session_state.get("pregame_lock") or load_pregame())
 
     with tab_names:
         st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
@@ -2334,10 +2383,15 @@ def main():
 
 **Rotated** — moved into a *new* pair/trio · **Stayed** — same group across fetches  
             """)
+        with st.expander("Lock tab"):
+            st.markdown(f"""
+- Shows saved pregame prices (no Caesars)  
+- **{LOCK_PAGE} per page** with **Prev / Next**  
+- Filter by name  
+- Resets to page 1 on each new Fetch  
+            """)
         with st.expander("RotoWire"):
             st.markdown(f"Auto-DNP only when **CONFIRMED** + ≥ **{LINEUP_MIN_NAMES}** names.")
-        with st.expander("Board tags"):
-            st.markdown("One chip per family: `🎰 MGM Pair · 25 · stayed + rotated` · `🎯 DK · 10` · `💙 FD · pattern`")
 
     st.markdown(
         '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls</div>',
