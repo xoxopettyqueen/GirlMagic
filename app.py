@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
-What's Going Today banner · Late dedupe · RotoWire · non-starters off board
+Full glossary · Log any HR → What's Going Today · Late dedupe · RotoWire
 """
 
 import streamlit as st
@@ -124,6 +124,7 @@ BIG_MOVE = 100
 MOVE_MIN = 40
 FD_MIN = 500
 MOVE_PRICE_MIN = 500
+PENDING_SHOW = 40
 
 PERSONAL_STRONG = {
     "DK 10", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
@@ -138,7 +139,6 @@ NOISE_METHODS = {
     "Multi-book Stuck", "Price moved", "Stayed the same", "Way different",
     "Shortening", "Lengthening", "Multi-book Lengthen",
 }
-
 CLASSIC_ENDINGS = {0, 10, 25, 50, 75}
 
 def is_bet365(book):
@@ -226,7 +226,8 @@ def book_label(b):
     if "bet365" in b or b == "365": return "365"
     if "hardrock" in b: return "HardRock"
     if "caesars" in b: return "Caesars"
-    return b.title() if b else "—"
+    if b in ("untagged", "unknown", "—", ""): return "Untagged"
+    return b.title() if b else "Untagged"
 
 def clean_name(name):
     name = str(name).strip()
@@ -311,7 +312,7 @@ def name_in_lineup(player, lineup_names):
 
 def fetch_rotowire_lineups():
     if not HAS_BS4:
-        return set(), "Install beautifulsoup4 (add to requirements.txt)"
+        return set(), "Install beautifulsoup4"
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -410,7 +411,7 @@ def log_bet_this(ev_board):
     for item in ev_board:
         if not item.get("is_bet"):
             continue
-        if any(r.get("date") == today and r.get("player") == item["player"] for r in rows):
+        if any(r.get("date") == today and r.get("player") == item["player"] and r.get("source") != "manual_hr" for r in rows):
             continue
         price = item.get("best_price")
         book = item.get("best_book", "")
@@ -423,14 +424,43 @@ def log_bet_this(ev_board):
             "ending": ending,
             "methods": item["methods"], "core": item.get("method_count", 0),
             "result": "PENDING",
+            "source": "take_it",
         })
         added += 1
     if added:
         save_results(rows)
     return added
 
+def log_manual_hr(player, price, book):
+    """Anyone who went yard — not only TAKE IT. Feeds What's Going Today."""
+    rows = load_results()
+    today = today_az()
+    player = clean_name(player)
+    if not player:
+        return False, "Need a player name"
+    try:
+        price = int(str(price).replace("+", "").replace(",", "").strip())
+    except Exception:
+        return False, "Need a valid price (e.g. 475)"
+    book = (book or "untagged").strip().lower()
+    ending = last_two(price)
+    # allow multiple HRs same player same day with different prices
+    rid = f"hr_{today}_{player}_{price}_{book}_{len(rows)}"
+    rows.append({
+        "id": rid,
+        "date": today, "time": now_az(), "player": player,
+        "score": None, "edge": None,
+        "best_price": price, "best_book": book,
+        "ending": ending,
+        "methods": ["Manual HR log"],
+        "core": 0,
+        "result": "HIT",
+        "source": "manual_hr",
+    })
+    save_results(rows)
+    return True, f"Logged {player} {format_odds(price)} {book_label(book)} ends {ending:02d}"
+
 def build_whats_going_today(rows):
-    """Aggregate HIT results for today → chips for endings / books."""
     today = today_az()
     todays = [r for r in rows if r.get("date") == today]
     hits = [r for r in todays if r.get("result") == "HIT"]
@@ -439,7 +469,7 @@ def build_whats_going_today(rows):
     n_graded = len(graded)
 
     ending_counts = Counter()
-    book_ending = Counter()  # ("MGM", 75) etc.
+    book_ending = Counter()
 
     for r in hits:
         price = r.get("best_price")
@@ -451,52 +481,43 @@ def build_whats_going_today(rows):
             continue
         ending = int(ending)
         bl = book_label(book)
-        if ending in CLASSIC_ENDINGS or ending in (0, 10, 25, 50, 75):
-            ending_counts[ending] += 1
-            book_ending[(bl, ending)] += 1
-        else:
-            ending_counts[ending] += 1
-            book_ending[(bl, ending)] += 1
+        ending_counts[ending] += 1
+        book_ending[(bl, ending)] += 1
 
     chips = []
-    # Prefer book+ending for classics
     for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: -x[1]):
         if cnt < 1:
             continue
-        if end in (25, 50, 75, 0, 10) or bl in ("MGM", "DK", "FD", "365"):
-            label = f"{bl} {end:02d}" if end is not None else bl
-            chips.append((label, cnt, True if end in (75, 25, 50, 0, 10) else False))
-    # Also pure ending totals if useful
+        label = f"{bl} {end:02d}"
+        hot = end in (75, 25, 50, 0, 10) or cnt >= 2
+        chips.append((label, cnt, hot))
     for end, cnt in sorted(ending_counts.items(), key=lambda x: -x[1]):
-        if cnt < 1:
-            continue
-        pure = f"Ends {end:02d}"
-        if not any(c[0] == pure for c in chips):
-            # only add pure if not already covered heavily
-            if end in (75, 25, 50, 0, 10):
+        if end in (75, 25, 50, 0, 10) and cnt >= 1:
+            pure = f"Ends {end:02d}"
+            if not any(c[0] == pure for c in chips):
                 chips.append((pure, cnt, end == 75))
 
-    # de-dupe labels keep highest
     seen = {}
     for label, cnt, hot in chips:
         if label not in seen or cnt > seen[label][0]:
             seen[label] = (cnt, hot)
-    chips = [(lab, v[0], v[1]) for lab, v in seen.items()]
-    chips = sorted(chips, key=lambda x: (-x[1], x[0]))[:8]
-
+    chips = sorted([(lab, v[0], v[1]) for lab, v in seen.items()], key=lambda x: (-x[1], x[0]))[:8]
     return n_hits, n_graded, chips
 
 def render_whats_going_today():
     rows = load_results()
     n_hits, n_graded, chips = build_whats_going_today(rows)
-    chips_html = ""
     if chips:
-        for label, cnt, hot in chips:
-            cls = "trend-chip hot" if hot or cnt >= 2 else "trend-chip"
-            chips_html += f'<span class="{cls}">{label}: <span class="chip-count">{cnt} HR</span></span>'
+        chips_html = "".join(
+            f'<span class="trend-chip {"hot" if hot else ""}">{label}: '
+            f'<span class="chip-count">{cnt} HR</span></span>'
+            for label, cnt, hot in chips
+        )
     else:
-        chips_html = '<span class="trend-chip">No HITs graded yet today — mark Results as they go yard</span>'
-
+        chips_html = (
+            '<span class="trend-chip">No HITs yet — mark Results HIT or use '
+            '<b>Log a HR</b> for anyone who went (not only TAKE IT)</span>'
+        )
     st.markdown(f"""
     <div class="trends-today">
         <div class="trends-today-header">
@@ -691,8 +712,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 s.add((p, b, e))
             return s
 
-        latest = scoped(hist[-1])
-        previous = scoped(hist[-2])
+        latest, previous = scoped(hist[-1]), scoped(hist[-2])
         early = set()
         for snap in hist[:max(1, len(hist)//3)]:
             early |= scoped(snap)
@@ -1247,12 +1267,11 @@ def main():
     lu_n = len(st.session_state.get("lineup_names", set()))
     st.markdown(f"""
     <div class="how-to">
-        🔥 <b>What's Going Today</b> fills as you mark HIT on Results (endings + books)<br>
-        📋 RotoWire · non-starters off The Board · Late = one card per player · snaps: <b>{hist_n}</b>
+        🔥 <b>What's Going Today</b> = HITs from Results <b>and</b> anyone you <b>Log a HR</b> (not only TAKE IT)<br>
+        📋 RotoWire · Late = one card/player · snaps: <b>{hist_n}</b> · lineup names: <b>{lu_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── What's Going Today (Results-driven) ──
     render_whats_going_today()
 
     odds_key = get_odds_api_key()
@@ -1281,7 +1300,7 @@ def main():
 
     events = st.session_state.get("events", [])
     if not events:
-        st.info("Click **Load Games**. Grade HITs on Results to feed What's Going Today.")
+        st.info("Click **Load Games**. Use **Log a HR** on Results for anyone who went yard.")
         st.stop()
 
     options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
@@ -1340,9 +1359,6 @@ def main():
     trend_fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
     fd_under = [r for r in trend_good if "FD under MGM" in r.get("methods", [])]
     b365_hr = [r for r in trend_good if "B365 > HardRock" in r.get("methods", [])]
-    other_good = [r for r in trend_good
-                  if "FD under MGM" not in r.get("methods", [])
-                  and "B365 > HardRock" not in r.get("methods", [])]
 
     counts = {
         "dk": len([r for r in results if r["type"] == "dk"]),
@@ -1510,7 +1526,31 @@ def main():
 
     with tabs[18]:
         st.markdown('<div class="queen-banner">📊 Results Tracker</div>', unsafe_allow_html=True)
-        st.caption("Mark HIT when they go yard — feeds 🔥 What's Going Today (ending + book).")
+        st.caption("TAKE IT auto-logs as PENDING. Anyone who went yard → **Log a HR** (feeds What's Going Today).")
+
+        st.markdown("#### ⚡ Log a HR (anyone — not only TAKE IT)")
+        lc1, lc2, lc3, lc4 = st.columns([2, 1, 1, 1])
+        with lc1:
+            hr_player = st.text_input("Player", placeholder="Paul Goldschmidt", key="hr_player")
+        with lc2:
+            hr_price = st.text_input("Price", placeholder="475", key="hr_price")
+        with lc3:
+            hr_book = st.selectbox(
+                "Book",
+                ["betmgm", "bet365", "draftkings", "fanduel", "hardrockbet", "caesars", "untagged"],
+                key="hr_book",
+            )
+        with lc4:
+            st.write("")
+            st.write("")
+            if st.button("Log HIT", type="primary"):
+                ok, msg = log_manual_hr(hr_player, hr_price, hr_book)
+                if ok:
+                    st.success(msg)
+                    st.rerun()
+                else:
+                    st.error(msg)
+
         rows = load_results()
         pending = [r for r in rows if r.get("result") == "PENDING"]
         done = [r for r in rows if r.get("result") in ("HIT", "MISS")]
@@ -1526,24 +1566,29 @@ def main():
             <div class="petty-box"><div class="petty-num">{rate:.0f}%</div><div class="petty-label">HIT RATE</div></div>
         </div>
         """, unsafe_allow_html=True)
+
         method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
         for r in done:
             for m in r.get("methods", []):
+                if m == "Manual HR log":
+                    continue
                 if r["result"] == "HIT": method_stats[m]["hit"] += 1
                 else: method_stats[m]["miss"] += 1
         if method_stats:
-            st.markdown("#### Method hit rates")
+            st.markdown("#### Method hit rates (TAKE IT grades)")
             lines = []
             for m, s in sorted(method_stats.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
                 t = s["hit"] + s["miss"]
                 pct = s["hit"] / t * 100 if t else 0
                 lines.append(f"**{m}**: {s['hit']}/{t} ({pct:.0f}%)")
             st.markdown(" · ".join(lines))
-        st.markdown("#### Pending")
+
+        st.markdown(f"#### Pending (showing {min(PENDING_SHOW, len(pending))} of {len(pending)})")
+        st.caption("Only TAKE IT picks auto-log here. Extra names = many TAKE ITs over the day — not missing buttons for all 177.")
         if not pending:
-            st.info("No pending — TAKE ITs auto-log here.")
+            st.info("No pending TAKE ITs.")
         else:
-            for r in reversed(pending[-40:]):
+            for r in reversed(pending[-PENDING_SHOW:]):
                 rid = r["id"]
                 end = r.get("ending")
                 end_s = f" · ends {int(end):02d}" if end is not None else ""
@@ -1551,7 +1596,7 @@ def main():
                     f"**{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}"
                     f"{end_s} · score {r.get('score')}"
                 )
-                st.caption(", ".join(r.get("methods", [])[:5]))
+                st.caption(", ".join((r.get("methods") or [])[:5]))
                 c1, c2, _ = st.columns([1, 1, 4])
                 with c1:
                     if st.button("🟢 HIT", key=f"hit_{rid}"):
@@ -1569,35 +1614,154 @@ def main():
                                 row["result"] = "MISS"
                         save_results(rows)
                         st.rerun()
-        st.markdown("#### Recent graded")
+
+        st.markdown("#### Recent graded / logged HRs")
         if not done:
             st.info("None yet.")
         else:
-            for r in reversed(done[-20:]):
+            for r in reversed(done[-25:]):
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
                 end = r.get("ending")
                 end_s = f" ends {int(end):02d}" if end is not None else ""
+                src = " · manual" if r.get("source") == "manual_hr" else ""
                 st.markdown(
                     f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} "
-                    f"{book_label(r.get('best_book'))}{end_s}"
+                    f"{book_label(r.get('best_book'))}{end_s}{src}"
                 )
 
     with tabs[19]:
-        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        with st.expander("🔥 What's Going Today", expanded=True):
+        st.markdown('<div class="queen-banner">📖 The Code — Learn The Tricks</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="how-to">
+            <b>New here?</b> MLB <b>Over 0.5 home run</b> props · sportsbook pricing patterns.
+            Expand each section for the full rule.
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("### 1. The board in 30 seconds")
+        with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
             st.markdown("""
-Not predictive — **descriptive only**.
+**TAKE IT** needs:
+- **2+ core methods**
+- **Edge pts ≥ 60**
+- **Over 0.5 HR** only
+- When RotoWire is loaded: player should be **in the lineup**
 
-As you mark **HIT** on Results, we count **ending digits** (00 / 10 / 25 / 50 / **75**) and **book** (MGM, DK, FD, 365…).
+**PASS** = 2+ core but edge still under 60.
 
-Example chips: `MGM 75: 3 HR` · `Ends 75: 4 HR`
+**Girl Magic Score 0–100** ranks the board (methods + edge + bonuses).
 
-That’s how you see if today’s cash is clustering on classic MGM/365 endings like the @MLBHR +475s.
+**Tag colors:** 🟢 DK · 🟡 MGM · 🔵 FD · 💚 Bet365 · 🟣 Exact/digits · bright green multi-book
             """)
-        with st.expander("The Board + RotoWire"):
-            st.markdown("TAKE IT = 2+ core · edge ≥ 60 · in lineup when RotoWire loaded.")
-        with st.expander("Noise"):
-            st.markdown("Late tags · Not in lineup · **Multi-book Lengthen** · FADE.")
+        with st.expander("📊 Edge pts"):
+            st.markdown("""
+**Edge pts = Best price − Median** across books (outlier 150+ ignored).
+
+Need **60+** for TAKE IT. Can be over 100 — that’s odds points, not a grade.
+            """)
+
+        st.markdown("### 2. Core methods")
+        with st.expander("🎯 DraftKings 10s"):
+            st.markdown("DK prices ending in **10** (+110, +210, +310…). Core.")
+        with st.expander("🎰 BetMGM (00 / 25 / 50 / 75)"):
+            st.markdown("""
+Same **team**. Endings **00, 25, 50, 75**.
+
+Pair preferred · group of 3+ ok. **Stayed in group** / **Last one left** are strong.
+            """)
+        with st.expander("💚 Bet365"):
+            st.markdown("""
+**Only when the API returns Bet365.**
+
+1. **B365 850** — price is +850 or ends in 850  
+2. **Pairs or groups of 3** — same team · endings **25 / 50 / 75 only** (**no 00**)  
+3. **Exact Match** includes Bet365 when present  
+4. **B365 > HardRock** — own Trends section · core  
+
+Empty until the feed includes Bet365.
+            """)
+        with st.expander("⭐ MGM Exact · 🤝 Exact · 🔢 Digits"):
+            st.markdown("""
+**MGM Exact** — same exact MGM price, same team.  
+**Exact Match** — same price across books.  
+**Digits** — MGM pairs/groups of 3 · 25/50/75 · same team.
+            """)
+        with st.expander("💙 FanDuel"):
+            st.markdown(f"""
+Only with **DK 10** or **MGM**.  
+≥ **+{FD_MIN}** endings 10/20/30/60/70/90 · or exact **+600**.
+            """)
+        with st.expander("📈 Signals"):
+            st.markdown("""
+One card per player · same on 3+ books · multi-book moves · etc.
+
+**Multi-book Shorten** = core (good).  
+**Multi-book Lengthen** = **noise** (does not help TAKE IT).
+            """)
+
+        st.markdown("### 3. Noise")
+        with st.expander("Does not count toward 2+"):
+            st.markdown("Late/missing · Not in lineup · single-book move · FADE tags · FD under MGM (support only) · **Multi-book Lengthen**.")
+
+        st.markdown("### 4. Movement · Trends · Late · Fallen · Lineups")
+        with st.expander("⏳ Movement"):
+            st.markdown(f"**{MOVE_PRICE_MIN}+** only · ≥ {MOVE_MIN} pts · 🔴 UP · 🟢 DOWN · snaps only on real Fetch.")
+        with st.expander("📉 Trends"):
+            st.markdown("""
+**💚** FD 10–100 under MGM (biggest gap first) · **Bet365 higher than HardRock**  
+
+**🔴** Shot way up · drop >100 · FD highest of all books
+            """)
+        with st.expander("👻 Late · 💀 Fallen · 📋 RotoWire"):
+            st.markdown("""
+**Late** = one card per player (Just Appeared / Added Late / Gone Missing).  
+
+**Not in lineup** = on books but missing from free RotoWire lineups.  
+
+**In lineup · missing books** = starter with no DK/FD/MGM prop yet.  
+
+**Fallen** = left The Board for selected games only (not the whole league).  
+
+Need **2+ real fetches** of those games for presence compares.  
+
+Click **Refresh RotoWire Lineups** so non-starters leave The Board.
+            """)
+
+        st.markdown("### 5. Name Magic")
+        with st.expander("Initials & names"):
+            st.markdown(f"""
+Both players: **{NAME_METHODS_MIN}+ core** + personal strong · **different teams** · max {NAME_MAX_PAIRS}.
+
+Same Init · Double Init · Cross · Same First/Last.  
+Non-starters excluded when RotoWire is loaded.
+            """)
+
+        st.markdown("### 6. Results · What's Going Today")
+        with st.expander("📊 Results + 🔥 What's Going Today", expanded=True):
+            st.markdown("""
+**TAKE IT** auto-logs as PENDING (once per player per day).  
+
+**HIT / MISS** grades those picks for method hit rates.  
+
+**Log a HR** = anyone who went yard (Goldschmidt +475 MGM, etc.) even if they were never TAKE IT.  
+That is what fills **What's Going Today** with chips like `MGM 75: 3 HR`.
+
+Banner is **descriptive only** — slate-wide · not predictive.
+
+Pending list shows the **last 40** of N (you may have many TAKE ITs logged over the day).
+            """)
+
+        st.markdown("### 7. First-timers")
+        with st.expander("How to run"):
+            st.markdown(f"""
+1 **Load Games** → 2 Select only the games you want → 3 **Fetch**  
+2 **Refresh RotoWire** so bench guys filter off  
+3 **The Board** (TAKE IT first)  
+4 As HRs happen: grade PENDING **or** **Log a HR** with price + book  
+5 Watch **What's Going Today** for ending clusters (75s, etc.)  
+
+Auto every **{REFRESH_MINUTES} min**. History ~18h.
+            """)
 
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
