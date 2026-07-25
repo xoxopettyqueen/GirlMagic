@@ -7,6 +7,7 @@ PAIR first · TRIO only if no pair
 ⚪ PASS = no primary · HardRock best · fade ±150 · price too low
 
 🪞 HR = RBI 1.5 — same price on O 0.5 HR + O 1.5 RBI · same book (FanDuel first)
+RBI 1.5 from batter_rbis + batter_rbis_alternate
 No cross-book Exact · MGM Exact stays · Tricks: one card per player
 """
 
@@ -123,7 +124,8 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 MLB_API = "https://statsapi.mlb.com/api/v1"
 REGIONS = "us,us2"
-MARKETS = "batter_home_runs,batter_rbis"
+# 1.5 RBI often lives on alternate market
+MARKETS = "batter_home_runs,batter_rbis,batter_rbis_alternate"
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
@@ -1175,7 +1177,8 @@ def flatten_oddsapi(data):
             mkey = (market.get("key") or "").lower()
             if mkey == "batter_home_runs":
                 market_tag, want_point = "hr", 0.5
-            elif mkey == "batter_rbis":
+            elif mkey in ("batter_rbis", "batter_rbis_alternate"):
+                # 1.5 often on alternate; main is mostly 0.5
                 market_tag, want_point = "rbi", 1.5
             else:
                 continue
@@ -1349,7 +1352,7 @@ def detect_classic_groups(book_df, endings):
 def detect_hr_rbi_mirrors(df_all):
     """
     O 0.5 HR price == O 1.5 RBI price on the SAME book.
-    FanDuel first (you see this most there). Name-normalized match.
+    FanDuel first. Name-normalized match.
     """
     results = []
     extra = defaultdict(list)
@@ -1865,7 +1868,7 @@ def main():
         f'<div class="how-to">'
         f'<b>PAIR first</b> · <b>TRIO</b> if no pair · '
         f'<b>🔥 HOT</b> = pair/trio + FD + DK · '
-        f'<b>🪞 HR=RBI</b> (FD first) · '
+        f'<b>🪞 HR=RBI</b> (FD first · alternate market) · '
         f'<b>1 card/player</b> · 🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
@@ -1938,7 +1941,7 @@ def main():
         st.session_state["last_odds_refresh"] = refresh_count
 
     if (manual_fetch or auto_fetch) and chosen:
-        with st.spinner("Fetching odds (HR + RBI)…"):
+        with st.spinner("Fetching odds (HR + RBI main/alternate)…"):
             df, found = do_fetch(odds_key, sgo_key, chosen, options)
         if df is not None and not df.empty:
             update_pregame_lock(df)
@@ -1952,7 +1955,7 @@ def main():
             n_rbi = len(df[df["market"] == "rbi"]) if "market" in df.columns else 0
             st.success(f"Loaded {n_hr} HR · {n_rbi} RBI 1.5")
             if n_rbi == 0:
-                st.warning("No RBI 1.5 lines this fetch — mirror needs those rows.")
+                st.warning("No RBI 1.5 lines — books may not post them yet.")
             try:
                 a, p, m = auto_log_mlb_hrs()
                 if a or p:
@@ -2124,7 +2127,7 @@ def main():
                 books_txt = ", ".join(f"{k}:{v}" for k, v in sorted(by_book.items())) or "none"
                 st.caption(f"This fetch · HR: **{n_hr}** · RBI 1.5: **{n_rbi}** · by book: {books_txt}")
                 if n_rbi == 0:
-                    st.warning("No RBI 1.5 lines — books may not post them yet, or API returned HR only.")
+                    st.warning("No RBI 1.5 lines — books may not post them yet.")
             render_card_grid([r for r in results if r["type"] == "mirror"])
         with sub[5]:
             render_card_grid([r for r in results if r["type"] == "fd"])
@@ -2403,7 +2406,8 @@ def main():
             <b>PAIR (exactly 2)</b> first. <b>TRIO (exactly 3)</b> only when that ending has no pair.<br>
             <b>🔥 HOT</b> = pair/trio + FanDuel + DK 10 / Was / DK FD-style.<br>
             <b>🟢 TAKE IT</b> = live pair/trio · not faded · price high enough · not HardRock-best.<br>
-            <b>🪞 HR = RBI 1.5</b> = same price on O 0.5 HR and O 1.5 RBI · same book · <b>FanDuel first</b> · support only.<br>
+            <b>🪞 HR = RBI 1.5</b> = same price on O 0.5 HR and O 1.5 RBI · same book · <b>FanDuel first</b>.
+            RBI 1.5 from <code>batter_rbis</code> + <code>batter_rbis_alternate</code>. Support only.<br>
             <b>No cross-book Exact.</b> MGM Exact stays. Tricks = one card per player.
         </div>
         """, unsafe_allow_html=True)
@@ -2428,11 +2432,10 @@ Board is **0.5 HR only**.
             st.markdown("""
 When a player’s **Over 0.5 HR** price equals their **Over 1.5 RBI** price on the **same book**, we tag **HR = RBI 1.5**.
 
-- **FanDuel first** (you see this most there), then DK / MGM / 365 / HardRock  
-- Same American number only · name-cleaned match  
+- **FanDuel first**, then DK / MGM / 365 / HardRock  
+- API pulls **batter_rbis** + **batter_rbis_alternate** (1.5 is often on alternate)  
 - Support tag only — does **not** unlock TAKE by itself  
-- Small score boost when present  
-- **✨ Tricks → 🪞 HR=RBI** shows pull counts so you know if RBI data arrived  
+- **✨ Tricks → 🪞 HR=RBI** shows HR / RBI counts by book  
 - Cross-book Exact removed · **MGM Exact** stays
             """)
 
@@ -2466,12 +2469,12 @@ Auto-DNP only if RotoWire ≥ **{LINEUP_MIN_NAMES}** names.
 
         with st.expander("How to run a slate"):
             st.markdown(f"""
-1. Load Games → select → Fetch (HR + RBI)  
-2. Check toast: **HR · RBI 1.5** counts  
+1. Load Games → select → Fetch (HR + RBI main/alternate)  
+2. Check toast: **HR · RBI 1.5** counts (RBI should be much higher than 1 now)  
 3. Fetch again for Movement  
 4. RotoWire after lineups  
 5. Board HOT → TAKE → PASS  
-6. Tricks → 🪞 for HR=RBI (read pull counts)  
+6. Tricks → 🪞 for HR=RBI  
 7. Sync MLB HRs → grade PENDING  
 Auto-refresh ~ every **{REFRESH_MINUTES}** min when enabled.
             """)
