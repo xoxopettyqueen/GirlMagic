@@ -1,11 +1,11 @@
 """
 Girl Magic Odds ✨
-Boss Bitch • HBIC • Me & My Girls We Rolling
+Boss Bitch · HBIC · Me & My Girls We Rolling
 
-- Pregame lock (MGM etc. kept after live)
-- Results: all PENDING, oldest first, paginated, HIT/MISS
-- Undo on graded (HIT→PENDING; manual HR deleted)
-- Log a HR · full glossary
+Tabs: Board | Odds Tricks (sub) | Name Magic (sub) | Results | Glossary
+What's Going Today: book color-coded chips
+Results: no raw HTML · Undo · oldest-first pages
+Pregame lock · full glossary
 """
 
 import streamlit as st
@@ -54,9 +54,14 @@ st.markdown("""
     .trends-today-title { color: #f9a8d4; font-weight: 800; font-size: 0.95rem; }
     .trends-today-sub { color: #e9d5ff; font-size: 0.72rem; opacity: 0.9; }
     .trends-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .trend-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.35); border: 1px solid #a855f7; border-radius: 999px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #fce7f3; }
-    .trend-chip.hot { border-color: #f472b6; background: rgba(219, 39, 119, 0.25); }
-    .trend-chip .chip-count { color: #f9a8d4; font-weight: 900; }
+    .trend-chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 7px 14px; font-size: 0.8rem; font-weight: 800; color: #fff; border: 2px solid transparent; }
+    .chip-mgm { background: #422006; border-color: #f59e0b; color: #fcd34d; }
+    .chip-dk { background: #064e3b; border-color: #34d399; color: #6ee7b7; }
+    .chip-fd { background: #1e3a5f; border-color: #3b82f6; color: #93c5fd; }
+    .chip-365 { background: #14532d; border-color: #22c55e; color: #86efac; }
+    .chip-hr { background: #7f1d1d; border-color: #f87171; color: #fecaca; }
+    .chip-other { background: #3b0764; border-color: #a855f7; color: #e9d5ff; }
+    .chip-count { font-weight: 900; margin-left: 4px; }
     .card { background: linear-gradient(155deg, #1a0f28, #251438); border: 1px solid #f472b6; border-radius: 12px; padding: 10px 12px; margin: 0; color: #fdf2f8; position: relative; height: 100%; font-size: 0.93rem; }
     .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: 12px 0 0 12px; background: #f472b6; }
     .bet { background: linear-gradient(155deg, #0c2418, #143d28) !important; border: 1px solid #34d399 !important; }
@@ -82,8 +87,8 @@ st.markdown("""
     .meter-bar.filled-strong { background: linear-gradient(90deg, #e879f9, #a855f7); }
     .meter-bar.filled-medium { background: linear-gradient(90deg, #c084fc, #7c3aed); }
     .meter-bar.filled-low { background: #6b7280; }
-    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] { background: #1a0f28; border-radius: 8px; color: #f9a8d4; font-weight: 600; padding: 7px 8px; font-size: 0.78rem; }
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; flex-wrap: wrap; }
+    .stTabs [data-baseweb="tab"] { background: #1a0f28; border-radius: 8px; color: #f9a8d4; font-weight: 600; padding: 7px 10px; font-size: 0.8rem; }
     .stTabs [aria-selected="true"] { background: linear-gradient(90deg, #db2777, #9333ea) !important; color: white !important; }
     .footer { text-align: center; color: #f9a8d4; font-size: 0.95rem; margin-top: 36px; opacity: 0.9; padding-bottom: 20px; }
     .grid-card { margin-bottom: 7px; }
@@ -219,6 +224,15 @@ def book_label(b):
     if b in ("untagged", "unknown", "—", ""): return "Untagged"
     return b.title() if b else "Untagged"
 
+def chip_class_for_book(bl):
+    bl = str(bl).upper()
+    if "MGM" in bl: return "chip-mgm"
+    if bl in ("DK", "DRAFTKINGS"): return "chip-dk"
+    if bl in ("FD", "FANDUEL"): return "chip-fd"
+    if "365" in bl: return "chip-365"
+    if "HARD" in bl: return "chip-hr"
+    return "chip-other"
+
 def clean_name(name):
     name = str(name).strip()
     suffixes = {"jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"}
@@ -293,7 +307,6 @@ def name_in_lineup(player, lineup_names):
                 return True
     return False
 
-# ── pregame lock ─────────────────────────────────────────────
 def load_pregame():
     if not os.path.exists(PREGAME_FILE):
         return {}
@@ -311,7 +324,6 @@ def save_pregame(data):
         pass
 
 def update_pregame_lock(df):
-    """MERGE only — never delete when books vanish after live."""
     if df is None or df.empty:
         return load_pregame()
     lock = load_pregame()
@@ -325,10 +337,7 @@ def update_pregame_lock(df):
         price = r["price"]
         event = r.get("event") or ""
         if player not in lock:
-            lock[player] = {
-                "date": today, "event": event, "books": {},
-                "locked_at": ts, "updated_at": ts,
-            }
+            lock[player] = {"date": today, "event": event, "books": {}, "locked_at": ts, "updated_at": ts}
         entry = lock[player]
         if event:
             entry["event"] = event
@@ -363,7 +372,6 @@ def locked_price_str(player):
             parts.append(f"{book_label(b)} {format_odds(p)}")
     return " · ".join(parts)
 
-# ── history / results ────────────────────────────────────────
 def load_history():
     if not os.path.exists(HISTORY_FILE): return
     try:
@@ -425,7 +433,6 @@ def save_results(rows):
         pass
 
 def set_result_status(row_id, status):
-    """PENDING | HIT | MISS"""
     rows = load_results()
     for row in rows:
         if row.get("id") == row_id:
@@ -437,7 +444,6 @@ def set_result_status(row_id, status):
     return False
 
 def undo_result(row_id, source):
-    """TAKE IT → PENDING. Manual HR → delete row."""
     if source == "manual_hr":
         rows = [x for x in load_results() if x.get("id") != row_id]
         save_results(rows)
@@ -456,14 +462,13 @@ def log_bet_this(ev_board):
         price = item.get("best_price")
         book = item.get("best_book", "")
         locked = get_locked(item["player"])
-        mgm_p = locked.get("mgm_price")
         ending = last_two(price)
         rows.append({
             "id": f"{today}_{item['player']}_{int(item['score'])}",
             "date": today, "time": now_az(), "player": item["player"],
             "score": item["score"], "edge": int(item["edge"]),
             "best_price": price, "best_book": book,
-            "ending": ending, "mgm_locked": mgm_p,
+            "ending": ending, "mgm_locked": locked.get("mgm_price"),
             "mgm_ending": locked.get("mgm_ending"),
             "locked_books": locked.get("books"),
             "methods": item["methods"], "core": item.get("method_count", 0),
@@ -514,7 +519,7 @@ def build_whats_going_today(rows):
     hits = [r for r in todays if r.get("result") == "HIT"]
     graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
     n_hits, n_graded = len(hits), len(graded)
-    ending_counts, book_ending = Counter(), Counter()
+    book_ending = Counter()
     for r in hits:
         price = r.get("best_price")
         book = r.get("best_book") or ""
@@ -528,38 +533,31 @@ def build_whats_going_today(rows):
             continue
         ending = int(ending)
         bl = book_label(book)
-        ending_counts[ending] += 1
         book_ending[(bl, ending)] += 1
     chips = []
-    for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: -x[1]):
-        chips.append((f"{bl} {end:02d}", cnt, end in (75, 25, 50, 0, 10) or cnt >= 2))
-    for end, cnt in sorted(ending_counts.items(), key=lambda x: -x[1]):
-        if end in (75, 25, 50, 0, 10):
-            pure = f"Ends {end:02d}"
-            if not any(c[0] == pure for c in chips):
-                chips.append((pure, cnt, end == 75))
-    seen = {}
-    for label, cnt, hot in chips:
-        if label not in seen or cnt > seen[label][0]:
-            seen[label] = (cnt, hot)
-    chips = sorted([(lab, v[0], v[1]) for lab, v in seen.items()], key=lambda x: (-x[1], x[0]))[:8]
-    return n_hits, n_graded, chips
+    for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: (-x[1], x[0], x[1])):
+        chips.append((bl, end, cnt))
+    return n_hits, n_graded, chips[:12]
 
 def render_whats_going_today():
     rows = load_results()
     n_hits, n_graded, chips = build_whats_going_today(rows)
     if chips:
-        chips_html = "".join(
-            f'<span class="trend-chip {"hot" if hot else ""}">{label}: <span class="chip-count">{cnt} HR</span></span>'
-            for label, cnt, hot in chips
-        )
+        parts = []
+        for bl, end, cnt in chips:
+            cls = chip_class_for_book(bl)
+            parts.append(
+                f'<span class="trend-chip {cls}">{bl} {end:02d}'
+                f'<span class="chip-count"> · {cnt} HR</span></span>'
+            )
+        chips_html = "".join(parts)
     else:
-        chips_html = '<span class="trend-chip">No HITs yet — grade PENDING or Log a HR</span>'
+        chips_html = '<span class="trend-chip chip-other">No HITs yet — grade PENDING or Log a HR</span>'
     st.markdown(f"""
     <div class="trends-today">
         <div class="trends-today-header">
             <div class="trends-today-title">🔥 What's Going Today</div>
-            <div class="trends-today-sub">{n_hits} HR{"s" if n_hits != 1 else ""} of {n_graded} graded · not predictive</div>
+            <div class="trends-today-sub">{n_hits} HR{"s" if n_hits != 1 else ""} of {n_graded} graded · book-coded · not predictive</div>
         </div>
         <div class="trends-chips">{chips_html}</div>
     </div>
@@ -798,7 +796,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             lock_note = locked_price_str(player)
             reason = f"{kind} · {', '.join(books)}"
             if lock_note and kind == "Gone Missing":
-                reason += f"<br>🔒 last pregame: {lock_note}"
+                reason += f" | 🔒 {lock_note}"
             results.append({
                 "type": "late", "label": player, "reason": reason,
                 "event": info.get("event", ""), "css": "hist", "methods": [kind],
@@ -814,7 +812,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if status is False:
                 results.append({
                     "type": "late", "label": player,
-                    "reason": "⚠️ On books but NOT in RotoWire lineup — likely not playing",
+                    "reason": "On books but NOT in RotoWire lineup — likely not playing",
                     "event": "", "css": "hist", "methods": ["Not in lineup"],
                 })
                 methods_map[player].append("Not in lineup")
@@ -838,13 +836,13 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if delta >= BIG_MOVE:
                 results.append({
                     "type": "trend", "trend_kind": "fade", "label": player,
-                    "reason": f"🔴 Shot way up on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} (+{int(delta)})",
+                    "reason": f"Shot way up on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} (+{int(delta)})",
                     "event": "", "css": "hist", "methods": ["FADE · Shot way up"], "gap": abs(int(delta)),
                 })
             elif delta <= -BIG_MOVE:
                 results.append({
                     "type": "trend", "trend_kind": "fade", "label": player,
-                    "reason": f"🔴 Dropped >100 on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(delta)})",
+                    "reason": f"Dropped >100 on {book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(delta)})",
                     "event": "", "css": "hist", "methods": ["FADE · Drop >100"], "gap": abs(int(delta)),
                 })
 
@@ -868,20 +866,20 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if 10 <= gap <= 100:
                 results.append({
                     "type": "trend", "trend_kind": "good", "label": player,
-                    "reason": f"💚 FD under MGM by {int(gap)} pts · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}",
+                    "reason": f"FD under MGM by {int(gap)} pts · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}",
                     "event": "", "css": "hist", "methods": ["FD under MGM"], "gap": int(gap),
                 })
         if fd is not None and others and fd > max(others):
             results.append({
                 "type": "trend", "trend_kind": "fade", "label": player,
-                "reason": f"🔴 FD highest of all books · FD {format_odds(fd)} · others max {format_odds(max(others))}",
+                "reason": f"FD highest of all books · FD {format_odds(fd)} · others max {format_odds(max(others))}",
                 "event": "", "css": "hist", "methods": ["FADE · FD highest"], "gap": 0,
             })
         if b365 is not None and hr is not None and b365 > hr:
             gap_hr = int(b365 - hr)
             results.append({
                 "type": "trend", "trend_kind": "good", "label": player,
-                "reason": f"💚 Bet365 higher than HardRock by {gap_hr} pts · 365 {format_odds(b365)} · HR {format_odds(hr)}",
+                "reason": f"Bet365 higher than HardRock by {gap_hr} pts · 365 {format_odds(b365)} · HR {format_odds(hr)}",
                 "event": "", "css": "hist", "methods": ["B365 > HardRock"], "gap": gap_hr,
             })
             methods_map[player].append("B365 > HardRock")
@@ -900,11 +898,11 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             (player_up if delta > 0 else player_down)[player].append(line)
         for player, moves in sorted(player_up.items()):
             results.append({"type": "hist", "move_dir": "up", "label": player,
-                "reason": "<br>".join(moves), "event": "", "css": "hist", "methods": ["Price moved"]})
+                "reason": " | ".join(moves), "event": "", "css": "hist", "methods": ["Price moved"]})
             methods_map[player].append("Price moved")
         for player, moves in sorted(player_down.items()):
             results.append({"type": "hist", "move_dir": "down", "label": player,
-                "reason": "<br>".join(moves), "event": "", "css": "hist", "methods": ["Price moved"]})
+                "reason": " | ".join(moves), "event": "", "css": "hist", "methods": ["Price moved"]})
             methods_map[player].append("Price moved")
 
     for _, row in df.iterrows():
@@ -1005,7 +1003,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         kind = "pair" if len(names) == 2 else f"group of {len(names)}"
         team_note = f" · {team}" if team else ""
         reason = f"MGM {kind} ends in {d:02d}{team_note}"
-        if extra: reason += " • " + " + ".join(set(extra))
+        if extra: reason += " · " + " + ".join(set(extra))
         results.append({"type": "mgm", "label": " + ".join(names),
             "reason": reason, "event": grp["event"], "css": "mgm", "methods": list(set(meth))})
         for n in names: methods_map[n].extend(meth)
@@ -1124,7 +1122,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     for player in sorted(signal_bucket.keys()):
         results.append({
             "type": "signal", "label": player,
-            "reason": "<br>".join(signal_bucket[player]),
+            "reason": " | ".join(signal_bucket[player]),
             "event": "", "css": "signal", "methods": list(signal_methods[player]),
         })
 
@@ -1204,7 +1202,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if player not in all_players_now:
             reasons.append("Line gone from live feed (often MGM after first pitch)")
             if lock_note:
-                reasons.append(f"🔒 last pregame: {lock_note}")
+                reasons.append(f"🔒 {lock_note}")
         elif n_books < 2:
             reasons.append("Only 1 book left")
         elif now_core < METHODS_MIN:
@@ -1304,6 +1302,19 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
     return results, ev_board, fallen
 
+def render_card_grid(items):
+    if not items:
+        st.info("None right now.")
+        return
+    cols = st.columns(2)
+    for idx, r in enumerate(items):
+        with cols[idx % 2]:
+            tags = render_method_tags(r.get("methods", []))
+            st.markdown(
+                f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>',
+                unsafe_allow_html=True,
+            )
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
@@ -1318,7 +1329,7 @@ def main():
         refresh_count = 0
 
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
-    st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Boss Bitch · HBIC · Me & My Girls We Rolling</p>', unsafe_allow_html=True)
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
 
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
@@ -1327,7 +1338,7 @@ def main():
     st.markdown(f"""
     <div class="how-to">
         🔒 <b>Pregame lock</b> keeps last prices when MGM vanishes · locked: <b>{lock_n}</b><br>
-        📊 Results: grade <b>all</b> PENDING · <b>↩️ Undo</b> on wrong HIT/MISS · Log a HR<br>
+        📊 Results: grade all PENDING · ↩️ Undo · Log a HR<br>
         snaps: <b>{hist_n}</b> · lineup: <b>{lu_n}</b>
     </div>
     """, unsafe_allow_html=True)
@@ -1385,10 +1396,7 @@ def main():
             st.session_state["last_fetch_time"] = now_az()
             st.session_state["last_selected"] = list(chosen)
             st.session_state["new_fetch"] = True
-            st.success(
-                f"{'Auto-refreshed' if auto_fetch else 'Loaded'} {len(df)} props · "
-                f"lock: {len(st.session_state.get('pregame_lock', {}))} players"
-            )
+            st.success(f"Loaded {len(df)} props · lock: {len(st.session_state.get('pregame_lock', {}))} players")
         else:
             st.warning("No 0.5 HR odds. Lock unchanged.")
 
@@ -1442,18 +1450,20 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    tabs = st.tabs([
-        "👑 The Board", "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
-        "🔢 Digits", "💙 FanDuel", "💚 Bet365", "📈 Signals", "⏳ Movement",
-        "📉 Trends", "👻 Late Adds", "💀 Fallen Off", "🔒 Pregame Lock",
-        "💅 Same Init", "✨ Double Init", "🔄 Cross", "👩‍👧 Last Name", "👯 First Name",
-        "📊 Results", "📖 Glossary"
+    # ── 5 TOP TABS ──────────────────────────────────────────
+    tab_board, tab_tricks, tab_names, tab_results, tab_gloss = st.tabs([
+        "👑 The Board",
+        "✨ Odds Tricks",
+        "💅 Name Magic",
+        "📊 Results",
+        "📖 Glossary",
     ])
 
-    with tabs[0]:
+    # ── BOARD ───────────────────────────────────────────────
+    with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
         if not lu_n:
-            st.caption("⚠️ Refresh RotoWire so non-starters don’t clog The Board.")
+            st.caption("Refresh RotoWire so non-starters don’t clog The Board.")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1477,150 +1487,143 @@ def main():
                         {tags}<br><small>{item["why"]}</small>
                     </div>''', unsafe_allow_html=True)
 
-    def show(tab, typ, banner, explain):
-        with tab:
-            st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
-            st.caption(explain)
-            items = [r for r in results if r["type"] == typ]
-            if not items:
-                st.info("None right now.")
-                return
-            cols = st.columns(2)
-            for idx, r in enumerate(items):
-                with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
-
-    show(tabs[1], "dk", "🎯 DraftKings 10s", "DK ends in 10.")
-    show(tabs[2], "mgm", "🎰 BetMGM Magic", "Same-team pairs/groups.")
-    show(tabs[3], "match", "🤝 Exact Match", "Same price across books.")
-    show(tabs[4], "mgm_exact", "⭐ MGM Exact", "Exact same MGM price, same team.")
-    show(tabs[5], "digit", "🔢 Digits", "Pairs/groups of 3 · same team · 25/50/75.")
-    show(tabs[6], "fd", "💙 FanDuel", f"≥ +{FD_MIN} or +600 with DK/MGM.")
-    show(tabs[7], "b365", "💚 Bet365", "850s · pairs 25/50/75 (no 00).")
-
-    with tabs[8]:
-        st.markdown('<div class="queen-banner">📈 Signals</div>', unsafe_allow_html=True)
-        items = [r for r in results if r["type"] == "signal"]
-        if not items: st.info("None.")
-        else:
-            cols = st.columns(2)
-            for idx, r in enumerate(items):
-                with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
-
-    with tabs[9]:
-        st.markdown('<div class="queen-banner">⏳ Movement</div>', unsafe_allow_html=True)
-        ups = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"]
-        downs = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"]
-        col_up, col_down = st.columns(2)
-        with col_up:
-            st.markdown("#### 🔴 UP")
-            if not ups: st.info("None.")
+    # ── ODDS TRICKS (sub-tabs) ───────────────────────────────
+    with tab_tricks:
+        st.markdown('<div class="queen-banner">✨ Odds Tricks</div>', unsafe_allow_html=True)
+        st.caption("Gold = MGM · Green = DK · Blue = FD · Bright green = 365")
+        sub = st.tabs([
+            "🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact", "🔢 Digits",
+            "💙 FanDuel", "💚 Bet365", "📈 Signals", "⏳ Movement", "📉 Trends",
+            "👻 Late", "💀 Fallen", "🔒 Lock",
+        ])
+        with sub[0]:
+            st.caption("DraftKings prices ending in 10.")
+            render_card_grid([r for r in results if r["type"] == "dk"])
+        with sub[1]:
+            st.caption("Same-team pairs/groups · 00/25/50/75.")
+            render_card_grid([r for r in results if r["type"] == "mgm"])
+        with sub[2]:
+            st.caption("Same price across books.")
+            render_card_grid([r for r in results if r["type"] == "match"])
+        with sub[3]:
+            st.caption("Exact same MGM price, same team.")
+            render_card_grid([r for r in results if r["type"] == "mgm_exact"])
+        with sub[4]:
+            st.caption("Pairs/groups of 3 · same team · 25/50/75.")
+            render_card_grid([r for r in results if r["type"] == "digit"])
+        with sub[5]:
+            st.caption(f"≥ +{FD_MIN} or +600 with DK/MGM.")
+            render_card_grid([r for r in results if r["type"] == "fd"])
+        with sub[6]:
+            st.caption("850s · pairs 25/50/75 (no 00).")
+            render_card_grid([r for r in results if r["type"] == "b365"])
+        with sub[7]:
+            st.caption("Multi-book Lengthen = noise.")
+            render_card_grid([r for r in results if r["type"] == "signal"])
+        with sub[8]:
+            ups = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"]
+            downs = [r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"]
+            col_up, col_down = st.columns(2)
+            with col_up:
+                st.markdown("#### 🔴 UP")
+                if not ups: st.info("None.")
+                else:
+                    for r in ups:
+                        st.markdown(f'<div class="card up-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+            with col_down:
+                st.markdown("#### 🟢 DOWN")
+                if not downs: st.info("None.")
+                else:
+                    for r in downs:
+                        st.markdown(f'<div class="card down-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+        with sub[9]:
+            st.markdown("#### 💚 FD under MGM")
+            if not fd_under: st.info("None.")
             else:
-                for r in ups:
-                    st.markdown(f'<div class="card up-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-        with col_down:
-            st.markdown("#### 🟢 DOWN")
-            if not downs: st.info("None.")
+                cols = st.columns(2)
+                for idx, r in enumerate(fd_under):
+                    with cols[idx % 2]:
+                        st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+            st.markdown("#### 💚 Bet365 > HardRock")
+            if not b365_hr: st.info("None.")
             else:
-                for r in downs:
-                    st.markdown(f'<div class="card down-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+                cols = st.columns(2)
+                for idx, r in enumerate(b365_hr):
+                    with cols[idx % 2]:
+                        st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+            st.markdown("#### 🔴 Fade")
+            if not trend_fade: st.info("None.")
+            else:
+                cols = st.columns(2)
+                for idx, r in enumerate(trend_fade):
+                    with cols[idx % 2]:
+                        st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+        with sub[10]:
+            st.caption("Gone Missing shows 🔒 last pregame when available.")
+            render_card_grid([r for r in results if r["type"] == "late"])
+        with sub[11]:
+            st.caption("Often = live feed dropped MGM. Lock keeps prices.")
+            if not fallen: st.info("None.")
+            else:
+                cols = st.columns(2)
+                for idx, r in enumerate(fallen):
+                    with cols[idx % 2]:
+                        st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
+        with sub[12]:
+            st.caption("Merge-only. MGM gone after live → numbers stay.")
+            lock = st.session_state.get("pregame_lock") or load_pregame()
+            if not lock:
+                st.info("Fetch while pregame to build lock.")
+            else:
+                items = sorted(lock.items(), key=lambda x: x[0])
+                st.write(f"**{len(items)}** players locked")
+                q = st.text_input("Filter player", key="lock_filter")
+                cols = st.columns(2)
+                shown = 0
+                for player, entry in items:
+                    if q and q.lower() not in player.lower():
+                        continue
+                    books = entry.get("books") or {}
+                    lines = []
+                    for b, info in sorted(books.items()):
+                        p = info.get("price")
+                        if p is not None:
+                            end = info.get("ending")
+                            end_s = f" ends {int(end):02d}" if end is not None else ""
+                            lines.append(f"{book_label(b)} {format_odds(p)}{end_s}")
+                    if not lines:
+                        continue
+                    with cols[shown % 2]:
+                        ev = entry.get("event") or ""
+                        st.markdown(
+                            f'<div class="card grid-card"><b>{player}</b>'
+                            f'{(" · " + ev) if ev else ""}<br>' + "<br>".join(lines) + "</div>",
+                            unsafe_allow_html=True,
+                        )
+                    shown += 1
+                if shown == 0:
+                    st.info("No matches.")
 
-    with tabs[10]:
-        st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
-        st.markdown("#### 💚 FD under MGM")
-        if not fd_under: st.info("None.")
-        else:
-            cols = st.columns(2)
-            for idx, r in enumerate(fd_under):
-                with cols[idx % 2]:
-                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-        st.markdown("#### 💚 Bet365 > HardRock")
-        if not b365_hr: st.info("None.")
-        else:
-            cols = st.columns(2)
-            for idx, r in enumerate(b365_hr):
-                with cols[idx % 2]:
-                    st.markdown(f'<div class="card good-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-        st.markdown("#### 🔴 Fade")
-        if not trend_fade: st.info("None.")
-        else:
-            cols = st.columns(2)
-            for idx, r in enumerate(trend_fade):
-                with cols[idx % 2]:
-                    st.markdown(f'<div class="card fade-card grid-card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+    # ── NAME MAGIC (sub-tabs) ───────────────────────────────
+    with tab_names:
+        st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
+        st.caption(f"Both need {NAME_METHODS_MIN}+ core + personal strong · different teams · max {NAME_MAX_PAIRS}")
+        nsub = st.tabs(["💅 Same Init", "✨ Double Init", "🔄 Cross", "👩‍👧 Last Name", "👯 First Name"])
+        with nsub[0]:
+            render_card_grid([r for r in results if r["type"] == "same_init"])
+        with nsub[1]:
+            render_card_grid([r for r in results if r["type"] == "double_init"])
+        with nsub[2]:
+            render_card_grid([r for r in results if r["type"] == "cross"])
+        with nsub[3]:
+            render_card_grid([r for r in results if r["type"] == "last"])
+        with nsub[4]:
+            render_card_grid([r for r in results if r["type"] == "first"])
 
-    with tabs[11]:
-        st.markdown('<div class="queen-banner">👻 Late Adds</div>', unsafe_allow_html=True)
-        items = [r for r in results if r["type"] == "late"]
-        if not items: st.info("None.")
-        else:
-            cols = st.columns(2)
-            for idx, r in enumerate(items):
-                with cols[idx % 2]:
-                    tags = render_method_tags(r.get("methods", []))
-                    st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
-
-    with tabs[12]:
-        st.markdown('<div class="queen-banner">💀 Fallen Off</div>', unsafe_allow_html=True)
-        if not fallen: st.info("None.")
-        else:
-            cols = st.columns(2)
-            for idx, r in enumerate(fallen):
-                with cols[idx % 2]:
-                    st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
-
-    with tabs[13]:
-        st.markdown('<div class="queen-banner">🔒 Pregame Lock</div>', unsafe_allow_html=True)
-        st.caption("Merge-only. MGM gone after live → numbers stay here.")
-        lock = st.session_state.get("pregame_lock") or load_pregame()
-        if not lock:
-            st.info("Fetch while pregame to build lock.")
-        else:
-            items = sorted(lock.items(), key=lambda x: x[0])
-            st.write(f"**{len(items)}** players locked")
-            q = st.text_input("Filter player", key="lock_filter")
-            cols = st.columns(2)
-            shown = 0
-            for player, entry in items:
-                if q and q.lower() not in player.lower():
-                    continue
-                books = entry.get("books") or {}
-                lines = []
-                for b, info in sorted(books.items()):
-                    p = info.get("price")
-                    if p is not None:
-                        end = info.get("ending")
-                        end_s = f" ends {int(end):02d}" if end is not None else ""
-                        lines.append(f"{book_label(b)} {format_odds(p)}{end_s}")
-                if not lines:
-                    continue
-                with cols[shown % 2]:
-                    ev = entry.get("event") or ""
-                    st.markdown(
-                        f'<div class="card grid-card"><b>{player}</b>'
-                        f'{(" · " + ev) if ev else ""}<br>' + "<br>".join(lines) + "</div>",
-                        unsafe_allow_html=True,
-                    )
-                shown += 1
-            if shown == 0:
-                st.info("No matches.")
-
-    show(tabs[14], "same_init", "💅 Same Initials", "Different teams.")
-    show(tabs[15], "double_init", "✨ Double Initials", "Different teams.")
-    show(tabs[16], "cross", "🔄 Cross Initials", "Different teams.")
-    show(tabs[17], "last", "👩‍👧 Same Last Name", "Different teams.")
-    show(tabs[18], "first", "👯 Same First Name", "Different teams.")
-
-    # ── Results + Undo ───────────────────────────────────────
-    with tabs[19]:
+    # ── RESULTS (no raw HTML) ───────────────────────────────
+    with tab_results:
         st.markdown('<div class="queen-banner">📊 Results Tracker</div>', unsafe_allow_html=True)
-        st.caption(
-            "Wrong HIT? Scroll to **Recent graded** → **↩️ Undo** "
-            "(TAKE IT → PENDING · manual HR → deleted)."
-        )
+        st.caption("Wrong HIT? Recent graded → ↩️ Undo (TAKE IT → PENDING · manual HR deleted).")
 
         st.markdown("#### ⚡ Log a HR")
         lc1, lc2, lc3, lc4 = st.columns([2, 1, 1, 1])
@@ -1688,15 +1691,14 @@ def main():
         max_page = max(0, (total_p - 1) // PENDING_PAGE) if total_p else 0
         if page > max_page:
             page = 0
-        st.session_state["pending_page"] = 0
+            st.session_state["pending_page"] = 0
         start = page * PENDING_PAGE
         end = min(start + PENDING_PAGE, total_p)
         slice_p = pending[start:end]
 
         st.markdown(f"#### Pending — **{start + 1 if total_p else 0}–{end} of {total_p}** (oldest first)")
-        st.caption("Every row has HIT / MISS. Use Next until none left.")
 
-        nav1, nav2, nav3 = st.columns([1, 1, 4])
+        nav1, nav2, _ = st.columns([1, 1, 4])
         with nav1:
             if st.button("← Prev", disabled=page <= 0):
                 st.session_state["pending_page"] = max(0, page - 1)
@@ -1716,13 +1718,15 @@ def main():
                 mgm_l = r.get("mgm_locked")
                 mgm_s = f" · 🔒 MGM {format_odds(mgm_l)}" if mgm_l is not None else ""
                 lock_s = locked_price_str(r["player"])
-                extra = f"<br><small>🔒 {lock_s}</small>" if lock_s else ""
                 st.markdown(
                     f"**{r['player']}** · {format_odds(r.get('best_price'))} "
                     f"{book_label(r.get('best_book'))}{end_s}{mgm_s} · score {r.get('score')} · {r.get('time', '')}"
-                    f"{extra}"
                 )
-                st.caption(", ".join((r.get("methods") or [])[:5]))
+                if lock_s:
+                    st.caption(f"🔒 {lock_s}")
+                meths = r.get("methods") or []
+                if meths:
+                    st.caption(", ".join(meths[:6]))
                 c1, c2, _ = st.columns([1, 1, 4])
                 with c1:
                     if st.button("🟢 HIT", key=f"hit_{rid}"):
@@ -1734,7 +1738,7 @@ def main():
                         st.rerun()
 
         st.markdown("#### Recent graded / logged HRs")
-        st.caption("↩️ Undo = TAKE IT back to PENDING · manual HR deleted")
+        st.caption("↩️ Undo = TAKE IT → PENDING · manual HR deleted")
         if not done:
             st.info("None yet.")
         else:
@@ -1762,70 +1766,180 @@ def main():
                         set_result_status(rid, "MISS")
                         st.rerun()
 
-    with tabs[20]:
+    # ── GLOSSARY (full, not stripped) ───────────────────────
+    with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>New here?</b> MLB Over 0.5 HR · book patterns. Expand each section.
+            <b>New here?</b> MLB Over 0.5 HR props · book patterns only.
+            Expand each section. Gold = MGM · Green = DK · Blue = FD · Bright green = 365.
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown("### 1. Board")
+        st.markdown("### 1. The Board")
         with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
             st.markdown("""
-**TAKE IT** = 2+ core · edge ≥ 60 · Over 0.5 HR · in lineup when RotoWire loaded.  
-**PASS** = 2+ core but edge under 60. Score 0–100 ranks the board.
+**TAKE IT** needs all of these:
+
+- **2 or more core methods** (see section 2)
+- **Edge pts ≥ 60**
+- Over **0.5 HR** only (never 1.5 / 2.5)
+- In RotoWire lineup when lineups are loaded
+
+**PASS** = has 2+ core methods but edge is under 60.
+
+**Score 0–100** ranks the board (methods + edge + bonuses like Last one left).
             """)
         with st.expander("📊 Edge pts"):
-            st.markdown("**Best − median** (outlier 150+ ignored). Need **60+** for TAKE IT.")
+            st.markdown("""
+**Edge pts** = best price minus the median across books.
 
-        st.markdown("### 2. Core methods")
-        with st.expander("🎯 DK 10s"):
-            st.markdown("DraftKings prices ending in **10**.")
-        with st.expander("🎰 BetMGM"):
-            st.markdown("Same team · **00 / 25 / 50 / 75** · pairs preferred · **Stayed in group** / **Last one left** strong.")
+- Outliers that are **150+** away from the pack are ignored for “best”
+- You need **60 or more** edge pts for TAKE IT
+- This is *not* a bankroll EV calculator — it is a gap score between books
+            """)
+
+        st.markdown("### 2. Core methods (count toward the 2+)")
+        with st.expander("🎯 DraftKings 10s"):
+            st.markdown("""
+Flag any **DraftKings** pregame prop whose American odds **end in 10**  
+(examples: +110, +210, +310, +410, +510).
+
+No team requirement. Solo flag.
+            """)
+        with st.expander("🎰 BetMGM Classic Endings"):
+            st.markdown("""
+**Same team only.**
+
+Valid endings: **00, 25, 50, 75**.
+
+- **Pair (primary):** two players on the same team with the **same** ending
+- **Group of three (fallback):** three on the same team sharing one ending when no pair exists
+
+**Sticky / survivor (strong):**
+
+- **Stayed in the group** / **Stayed in group Nx** = still in the same MGM ending group across fetches
+- **Last one left** = was in an early group of 3+ and is still present later — often the one that hits
+            """)
         with st.expander("💚 Bet365"):
-            st.markdown("When API has 365: **850s** · pairs/groups **25/50/75** (no 00) · **B365 > HardRock**.")
-        with st.expander("⭐ Exact · Digits · FD"):
-            st.markdown(f"**Exact** / **MGM Exact** / **Digits** 25/50/75 same team. **FD** ≥ +{FD_MIN} or +600 with DK/MGM.")
+            st.markdown("""
+When the API returns Bet365:
+
+- **B365 850** — prices that are 850 (or end in 850)
+- **B365 Match 25 / 50 / 75** — same-team pairs or groups of 3 (like MGM, **no 00**)
+- **B365 > HardRock** — Bet365 priced higher than Hard Rock on the same player
+- Exact Match also includes 365 when prices line up
+            """)
+        with st.expander("🤝 Exact Match · ⭐ MGM Exact · 🔢 Digits"):
+            st.markdown("""
+**Exact Match** — same American price on 2+ books for the same player.
+
+**MGM Exact** — two or more players on the **same team** with the **exact same** MGM price.
+
+**Digits** — MGM same-team **pairs or groups of three** with endings **25, 50, or 75** only  
+(not random 40s/60s).
+            """)
+        with st.expander("💙 FanDuel patterns"):
+            st.markdown(f"""
+Only if the player **already has** a DK or MGM core method:
+
+- FanDuel **≥ +{FD_MIN}** ending in **10, 20, 30, 60, 70, or 90**
+- Or exact **+600**
+
+FanDuel alone does not count.
+            """)
         with st.expander("📈 Signals"):
-            st.markdown("**Multi-book Shorten** = core. **Multi-book Lengthen** = noise.")
+            st.markdown("""
+**Counts as core when strong:**
 
-        st.markdown("### 3. Noise")
-        with st.expander("Does not count toward 2+"):
-            st.markdown("Late tags · Not in lineup · single-book move · FADE · FD under MGM · Multi-book Lengthen.")
+- **Same on 3+ books**
+- **Multi-book Shorten** (price dropping on 2+ books)
 
-        st.markdown("### 4. Lock · Late · Fallen")
+**Noise (does not count toward 2+):**
+
+- **Multi-book Lengthen** (we do **not** like lengthening on multiple books)
+- Single-book stuck / single outlier higher alone
+            """)
+
+        st.markdown("### 3. Noise (does NOT count toward 2+)")
+        with st.expander("What is ignored for TAKE IT gating"):
+            st.markdown("""
+- Just Appeared / Added Late / Gone Missing  
+- Not in lineup / In lineup · missing books  
+- Price moved (single book)  
+- FADE tags (shot way up, drop >100, FD highest)  
+- FD under MGM (support trend only)  
+- Multi-book Lengthen  
+- Outlier / Stuck / Same ending chips that are not core
+            """)
+
+        st.markdown("### 4. Lock · Late · Fallen · Lineups")
         with st.expander("🔒 Pregame lock", expanded=True):
             st.markdown("""
-Every **Fetch** merges prices into lock. When MGM vanishes after live, rows **stay**.  
-Gone Missing / Fallen show 🔒 last prices. Log a HR can use blank price → lock.
+Every **Fetch** **merges** player → book → price into `girl_magic_pregame.json`.
+
+When a game goes live and **MGM (or any book) disappears from the API**, those rows are **not deleted**.
+
+- **Gone Missing / Fallen** show 🔒 last pregame prices  
+- **Log a HR** can leave price blank and pull from the lock for that book  
+- Tab: **Odds Tricks → 🔒 Lock**
             """)
-        with st.expander("👻 Late · 💀 Fallen · RotoWire"):
-            st.markdown("Late = one card/player. Fallen = left Board for selected games. RotoWire filters bench.")
+        with st.expander("👻 Late · 💀 Fallen · 📋 RotoWire"):
+            st.markdown("""
+**Late** — one card per player (Just Appeared / Added Late / Gone Missing), scoped to selected games.
+
+**Fallen Off** — was on The Board, then left for this selection (often live feed / lost core methods).
+
+**RotoWire** — free public lineups. Non-starters are filtered off The Board when loaded.  
+Refresh the lineup button after lineup posts.
+            """)
 
         st.markdown("### 5. Name Magic")
         with st.expander("Initials & names"):
-            st.markdown(f"**{NAME_METHODS_MIN}+ core** + personal strong · different teams · max {NAME_MAX_PAIRS}.")
+            st.markdown(f"""
+Only pairs where **both** players have:
 
-        st.markdown("### 6. Results")
-        with st.expander("📊 Grade + Undo", expanded=True):
+- **{NAME_METHODS_MIN}+ core methods**
+- At least one **personal strong** method (DK 10, MGM group/exact, FD pattern, B365, etc.)
+- **Different teams** preferred (same team rare)
+
+Types: Same Init · Double Init · Cross Init · Same Last · Same First  
+
+Capped at **{NAME_MAX_PAIRS}** pairs per type. Jr. / Sr. ignored in names.
+            """)
+
+        st.markdown("### 6. Results · What's Going Today")
+        with st.expander("📊 How to grade + Undo", expanded=True):
             st.markdown("""
-PENDING stays after live. **Oldest first** · page through **all**.  
-**↩️ Undo**: TAKE IT grade → PENDING · manual HR → deleted.  
-What's Going Today = HIT endings (descriptive only).
+**PENDING never deletes when a game goes live.**
+
+- List is **oldest first**
+- Use **Next →** until every pick has HIT or MISS
+- **↩️ Undo** on Recent graded: TAKE IT grade → PENDING · manual HR log → deleted
+
+**Log a HR** = anyone who went yard (even if never TAKE IT). Blank price uses 🔒 lock.
+
+**What's Going Today** (top banner) = today’s HIT counts by **book + ending**  
+(MGM 75, DK 10, 365 00, etc.). Color-coded by book. **Descriptive only — not a prediction.**
             """)
 
         st.markdown("### 7. First-timers")
-        with st.expander("How to run"):
+        with st.expander("How to run a slate"):
             st.markdown(f"""
-1 Load → select → **Fetch** (builds 🔒)  
-2 RotoWire → Board  
-3 After live: grade all PENDING · Undo mistakes · Log HR from lock  
-Auto every **{REFRESH_MINUTES} min**.
+1. **Load Games** → select games → **Fetch Odds** (builds 🔒 while pregame)  
+2. **Refresh RotoWire**  
+3. **The Board** → TAKE IT rows  
+4. **Odds Tricks** / **Name Magic** sub-tabs for deep dive  
+5. After live: **Results** → grade **all** PENDING pages · **Undo** mistakes · **Log a HR** from lock  
+
+Auto-refresh about every **{REFRESH_MINUTES}** minutes when the tab stays open.
             """)
 
-    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls We Rolling</div>',
+        unsafe_allow_html=True,
+    )
+
 
 if __name__ == "__main__":
     main()
