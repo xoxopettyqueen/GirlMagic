@@ -6,9 +6,9 @@ PAIR first · TRIO only if no pair
 🟢 TAKE = live pair/trio · not faded · ≥+400 · not HardRock-best
 ⚪ PASS = no primary · HardRock best · fade ±150 · price too low
 
-Tricks/Name cards: ONE card per player (all methods merged)
-📈 Movement ordered · RotoWire DNP only when lineup solid
-Digits = MGM + Bet365 only · No Caesars · No mirrors
+🪞 HR = RBI 1.5 — same price on O 0.5 HR + O 1.5 RBI · same book (support tag)
+No cross-book Exact · MGM Exact stays
+Tricks: one card per player
 """
 
 import streamlit as st
@@ -124,7 +124,7 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 MLB_API = "https://statsapi.mlb.com/api/v1"
 REGIONS = "us,us2"
-MARKETS = "batter_home_runs"
+MARKETS = "batter_home_runs,batter_rbis"
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
@@ -149,6 +149,7 @@ FD_STYLE_ENDS = (10, 20, 30, 60, 70, 90)
 PENDING_PAGE = 20
 MGM_STAY_SNAPS = 3
 LINEUP_MIN_NAMES = 80
+MIRROR_TAG = "HR = RBI 1.5"
 
 FD_METHODS = {"FD Pattern", "FD 600"}
 DK_METHODS = {"DK 10", "Was DK 10", "DK FD-style"}
@@ -156,7 +157,7 @@ PAIR_TAGS = {"MGM Pair", "B365 Pair", "MGM Exact"}
 TRIO_TAGS = {"MGM Trio", "B365 Trio"}
 PERSONAL_STRONG = PAIR_TAGS | TRIO_TAGS | FD_METHODS | DK_METHODS | {
     "Exact Match", "B365 850", "B365 > HardRock", "Stayed in group", "Last one left",
-    "🔥 HOT", "MGM 00", "MGM 25", "MGM 50", "MGM 75",
+    "🔥 HOT", "MGM 00", "MGM 25", "MGM 50", "MGM 75", MIRROR_TAG,
 }
 NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing", "Not in lineup",
@@ -227,6 +228,8 @@ def method_tag_class(m):
     m = normalize_method(str(m))
     if m == "🔥 HOT":
         return "tag-hot"
+    if m == MIRROR_TAG:
+        return "tag-match"
     if m in DK_METHODS or m.startswith("DK"):
         return "tag-dk"
     if m.startswith("MGM") or m in ("Last one left", "Stayed in group") or m in PAIR_TAGS | TRIO_TAGS:
@@ -275,6 +278,8 @@ def girl_magic_score(core_count, edge, methods):
     if "Was DK 10" in methods:
         bonus += 5
     if "DK 10" in methods:
+        bonus += 4
+    if MIRROR_TAG in methods:
         bonus += 4
     edge_pts = min(15, max(0, int((max(0, edge) / 200) * 15)))
     if "Spike" in methods or "Dump" in methods or "HardRock best" in methods:
@@ -548,7 +553,12 @@ def save_pregame(data):
 
 
 def update_pregame_lock(df):
+    """Lock from HR 0.5 rows only."""
     if df is None or df.empty:
+        return load_pregame()
+    if "market" in df.columns:
+        df = df[df["market"] == "hr"].copy()
+    if df.empty:
         return load_pregame()
     lock = load_pregame()
     today = today_az()
@@ -637,7 +647,10 @@ def build_movement_board(lock=None, live_df=None):
     likes_fd, likes_down, big_dump, mild_up, spikes, stuck = [], [], [], [], [], []
     live = {}
     if live_df is not None and not live_df.empty:
-        for _, r in live_df.iterrows():
+        src = live_df
+        if "market" in src.columns:
+            src = src[src["market"] == "hr"]
+        for _, r in src.iterrows():
             p = clean_name(r["player"])
             b = r["book"]
             if is_bet365(b):
@@ -1143,7 +1156,7 @@ def fetch_odds_oddsapi(api_key, event_id):
         r = requests.get(
             f"{ODDS_API_BASE}/sports/baseball_mlb/events/{event_id}/odds",
             params={"apiKey": api_key, "regions": REGIONS, "markets": MARKETS, "oddsFormat": "american"},
-            timeout=20,
+            timeout=25,
         )
         return r.json() if r.status_code == 200 else None
     except Exception:
@@ -1161,15 +1174,23 @@ def flatten_oddsapi(data):
         if bk not in PREFERRED or "caesar" in bk:
             continue
         for market in book.get("markets", []):
+            mkey = (market.get("key") or "").lower()
+            if mkey == "batter_home_runs":
+                market_tag, want_point = "hr", 0.5
+            elif mkey == "batter_rbis":
+                market_tag, want_point = "rbi", 1.5
+            else:
+                continue
             for o in market.get("outcomes", []):
                 if o.get("name", "").lower() != "over":
                     continue
                 pt = o.get("point")
-                if pt is None or abs(float(pt) - 0.5) > 0.01:
+                if pt is None or abs(float(pt) - want_point) > 0.01:
                     continue
                 rows.append({
                     "event": event, "book": bk, "player": o.get("description"),
-                    "price": o.get("price"), "point": 0.5, "team": "", "source": "oddsapi",
+                    "price": o.get("price"), "point": float(pt),
+                    "market": market_tag, "team": "", "source": "oddsapi",
                 })
     return rows, found
 
@@ -1191,12 +1212,18 @@ def fetch_sgo_hr_props(sgo_key):
             event_name = f"{away} @ {home}"
             players_map = ev.get("players", {})
             for odd_id, odd_data in ev.get("odds", {}).items():
-                if "batting_homeRuns" not in odd_id:
+                oid = odd_id.lower()
+                is_hr = "batting_homeruns" in oid
+                is_rbi = "batting_rbi" in oid
+                if not is_hr and not is_rbi:
                     continue
-                if "ou-over" not in odd_id and "-over" not in odd_id:
+                if "ou-over" not in oid and "-over" not in oid:
                     continue
                 ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
-                if ou is None or abs(float(ou) - 0.5) > 0.01:
+                if ou is None:
+                    continue
+                want = 0.5 if is_hr else 1.5
+                if abs(float(ou) - want) > 0.01:
                     continue
                 pid = odd_data.get("playerID") or odd_data.get("statEntityID")
                 if not pid or pid not in players_map:
@@ -1224,7 +1251,9 @@ def fetch_sgo_hr_props(sgo_key):
                     found.add(b)
                     rows.append({
                         "event": event_name, "book": b, "player": pname,
-                        "price": price, "point": 0.5, "team": team, "source": "sgo",
+                        "price": price, "point": want,
+                        "market": "hr" if is_hr else "rbi",
+                        "team": team, "source": "sgo",
                     })
     except Exception as e:
         st.warning(f"SGO note: {e}")
@@ -1236,14 +1265,16 @@ def merge_odds(a, b):
     if not combined:
         return pd.DataFrame()
     df = pd.DataFrame(combined)
+    if "market" not in df.columns:
+        df["market"] = "hr"
     df["priority"] = df["source"].map({"oddsapi": 0, "sgo": 1})
-    df = df.sort_values(["player", "book", "priority"])
+    df = df.sort_values(["player", "book", "market", "priority"])
     team_map = {}
     for _, r in df.iterrows():
         if r.get("team"):
             team_map[r["player"]] = r["team"]
     df["team"] = df.apply(lambda r: r["team"] if r.get("team") else team_map.get(r["player"], ""), axis=1)
-    df = df.drop_duplicates(subset=["player", "book"], keep="first")
+    df = df.drop_duplicates(subset=["player", "book", "market"], keep="first")
     return df.drop(columns=["priority", "source"], errors="ignore")
 
 
@@ -1317,13 +1348,50 @@ def detect_classic_groups(book_df, endings):
     return groups
 
 
-def run_flags(df, previous_df=None, record_history=True, selected_events=None):
+def detect_hr_rbi_mirrors(df_all):
+    """O 0.5 HR price == O 1.5 RBI price on the SAME book."""
+    results = []
+    extra = defaultdict(list)
+    if df_all is None or df_all.empty or "market" not in df_all.columns:
+        return results, extra
+    hr = df_all[(df_all["market"] == "hr") & (df_all["point"].astype(float) == 0.5)]
+    rbi = df_all[(df_all["market"] == "rbi") & (df_all["point"].astype(float) == 1.5)]
+    if hr.empty or rbi.empty:
+        return results, extra
+    for _, h in hr.iterrows():
+        player, book, price = h["player"], h["book"], h["price"]
+        if price is None:
+            continue
+        matches = rbi[
+            (rbi["player"] == player) & (rbi["book"] == book) & (rbi["price"] == price)
+        ]
+        if matches.empty:
+            continue
+        reason = f"HR 0.5 = RBI 1.5 @ {format_odds(price)} on {book_label(book)}"
+        results.append({
+            "type": "mirror", "label": player, "reason": reason,
+            "event": h.get("event") or "", "methods": [MIRROR_TAG],
+        })
+        extra[player].append(MIRROR_TAG)
+    return results, extra
+
+
+def run_flags(df_all, previous_df=None, record_history=True, selected_events=None):
+    if df_all is None or df_all.empty:
+        return [], [], {}
+    if "market" not in df_all.columns:
+        df_all = df_all.copy()
+        df_all["market"] = "hr"
+    if "team" not in df_all.columns:
+        df_all["team"] = ""
+
+    df_all["book"] = df_all["book"].apply(lambda b: "bet365" if is_bet365(b) else b)
+    df_all = df_all[~df_all["book"].astype(str).str.contains("caesar", case=False, na=False)]
+
+    # Board + classic methods = HR 0.5 only
+    df = df_all[df_all["market"] == "hr"].copy()
     if df.empty:
         return [], [], {}
-    if "team" not in df.columns:
-        df["team"] = ""
-    df["book"] = df["book"].apply(lambda b: "bet365" if is_bet365(b) else b)
-    df = df[~df["book"].astype(str).str.contains("caesar", case=False, na=False)]
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
 
     results, methods_map = [], defaultdict(list)
@@ -1471,15 +1539,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     "reason": f"B365 {format_odds(p365.iloc[0])} > HardRock {format_odds(phr.iloc[0])}",
                     "event": g["event"].iloc[0], "methods": ["B365 > HardRock"]})
 
-    for (player, _), g in df.groupby(["player", "point"], dropna=False):
-        if len(g) < 2:
-            continue
-        prices = g["price"].dropna().tolist()
-        if len(set(prices)) == 1:
-            results.append({"type": "match", "label": player,
-                "reason": f"Exact {format_odds(prices[0])} → {', '.join(g['book'])}",
-                "event": g["event"].iloc[0], "methods": ["Exact Match"]})
-            methods_map[player].append("Exact Match")
+    # NO cross-book Exact Match
 
     for _, row in df.iterrows():
         if row["book"] != "fanduel":
@@ -1499,6 +1559,12 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "reason": f"FD ≥+{FD_MIN} ends {last:02d} → {format_odds(row['price'])}",
                 "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
+
+    # 🪞 HR = RBI 1.5 mirrors (support tag)
+    mirror_rows, mirror_extra = detect_hr_rbi_mirrors(df_all)
+    results.extend(mirror_rows)
+    for player, tags in mirror_extra.items():
+        methods_map[player].extend(tags)
 
     ev_board = []
     player_events = defaultdict(set)
@@ -1547,7 +1613,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             m for m in meths
             if is_core_method(m) or m in (
                 "Spike", "Dump", "🔥 HOT", "Was DK 10", "HardRock best",
-                "Stayed in group", "Last one left", "DK FD-style",
+                "Stayed in group", "Last one left", "DK FD-style", MIRROR_TAG,
             )
         ]
         score = girl_magic_score(core_count, edge, display_meths)
@@ -1563,6 +1629,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             why += " · TRIO fallback"
         else:
             why += " · no primary → PASS"
+        if MIRROR_TAG in meths:
+            why += " · 🪞 HR=RBI"
         if hr_best:
             why += " · PASS HardRock best"
             is_bet = False
@@ -1646,23 +1714,17 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
 
 def render_card_grid(items):
-    """One card per player/label — merge every method they hit under that category."""
+    """One card per player/label — merge every method under that category."""
     if not items:
         st.info("None right now.")
         return
-
     by_key = {}
     for r in items:
         key = (r.get("label") or "").strip()
         if not key:
             continue
         if key not in by_key:
-            by_key[key] = {
-                "label": key,
-                "reasons": [],
-                "methods": [],
-                "event": r.get("event") or "",
-            }
+            by_key[key] = {"label": key, "reasons": [], "methods": [], "event": r.get("event") or ""}
         reason = (r.get("reason") or "").strip()
         if reason and reason not in by_key[key]["reasons"]:
             by_key[key]["reasons"].append(reason)
@@ -1675,14 +1737,12 @@ def render_card_grid(items):
 
     merged = []
     for v in by_key.values():
-        reason = " · ".join(v["reasons"][:4]) if v["reasons"] else ""
         merged.append({
             "label": v["label"],
-            "reason": reason,
+            "reason": " · ".join(v["reasons"][:4]) if v["reasons"] else "",
             "methods": v["methods"],
             "event": v["event"],
         })
-
     merged.sort(key=lambda x: (-len(x["methods"]), x["label"]))
 
     for i in range(0, len(merged), 2):
@@ -1782,8 +1842,8 @@ def main():
         f'<div class="how-to">'
         f'<b>PAIR first</b> · <b>TRIO</b> if no pair · '
         f'<b>🔥 HOT</b> = pair/trio + FD + DK · '
-        f'<b>PASS</b> HardRock-best / fade ±{BIG_MOVE} · '
-        f'<b>1 card / player</b> on Tricks · 🔒 {lock_n}'
+        f'<b>🪞 HR=RBI</b> support · '
+        f'<b>1 card/player</b> · 🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -1855,7 +1915,7 @@ def main():
         st.session_state["last_odds_refresh"] = refresh_count
 
     if (manual_fetch or auto_fetch) and chosen:
-        with st.spinner("Fetching odds…"):
+        with st.spinner("Fetching odds (HR + RBI)…"):
             df, found = do_fetch(odds_key, sgo_key, chosen, options)
         if df is not None and not df.empty:
             update_pregame_lock(df)
@@ -1865,7 +1925,9 @@ def main():
             st.session_state["found_books"] = sorted(found)
             st.session_state["last_selected"] = list(chosen)
             st.session_state["new_fetch"] = True
-            st.success(f"Loaded {len(df)} props")
+            n_hr = len(df[df["market"] == "hr"]) if "market" in df.columns else len(df)
+            n_rbi = len(df[df["market"] == "rbi"]) if "market" in df.columns else 0
+            st.success(f"Loaded {n_hr} HR props · {n_rbi} RBI 1.5 props")
             try:
                 a, p, m = auto_log_mlb_hrs()
                 if a or p:
@@ -1875,7 +1937,7 @@ def main():
             if st.session_state.get("lineup_names"):
                 auto_mark_dnp()
         else:
-            st.warning("No 0.5 HR odds.")
+            st.warning("No props returned.")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -1885,13 +1947,13 @@ def main():
         st.markdown(f'<div class="info-box"><b>Books:</b> {", ".join(found)}{note}</div>', unsafe_allow_html=True)
 
     odds = st.session_state.get("odds", [])
-    df = pd.DataFrame(odds) if odds else pd.DataFrame()
+    df_all = pd.DataFrame(odds) if odds else pd.DataFrame()
     prev_df = pd.DataFrame(st.session_state.get("previous_odds", []) or [])
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
     results, ev_board, methods_map = (
-        run_flags(df, prev_df if not prev_df.empty else None, record_history=new_fetch, selected_events=selected_events)
-        if not df.empty else ([], [], {})
+        run_flags(df_all, prev_df if not prev_df.empty else None, record_history=new_fetch, selected_events=selected_events)
+        if not df_all.empty else ([], [], {})
     )
     st.session_state["methods_map"] = methods_map
     st.session_state["ev_board"] = ev_board
@@ -1908,10 +1970,11 @@ def main():
     n_take = len([e for e in ev_board if e["is_bet"] and not e.get("is_hot")])
     n_pass = len([e for e in ev_board if not e["is_bet"]])
     n_pairs = len([r for r in results if r["type"] == "mgm" and "PAIR" in r.get("reason", "")])
+    n_mirror = len({r["label"] for r in results if r["type"] == "mirror"})
 
     move_map = build_movement_board(
         st.session_state.get("pregame_lock") or load_pregame(),
-        df if not df.empty else None,
+        df_all if not df_all.empty else None,
     )
     n_moves = (
         len(move_map["likes_down"]) + len(move_map["big_dump"])
@@ -1924,7 +1987,7 @@ def main():
       <div class="petty-box"><div class="petty-num">{n_take}</div><div class="petty-label">🟢 TAKE IT</div></div>
       <div class="petty-box"><div class="petty-num">{n_pass}</div><div class="petty-label">⚪ PASS</div></div>
       <div class="petty-box"><div class="petty-num">{n_pairs}</div><div class="petty-label">🎰 MGM PAIRS</div></div>
-      <div class="petty-box"><div class="petty-num">{n_moves}</div><div class="petty-label">📈 MOVES</div></div>
+      <div class="petty-box"><div class="petty-num">{n_mirror}</div><div class="petty-label">🪞 HR=RBI</div></div>
       <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT%</div></div>
     </div>
     """, unsafe_allow_html=True)
@@ -1936,7 +1999,7 @@ def main():
 
     with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
-        st.caption("PAIR first · TRIO if no pair · HOT = pair/trio + FD + DK · HardRock best = PASS")
+        st.caption("0.5 HR only · PAIR first · 🪞 HR=RBI is support only")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1974,8 +2037,8 @@ def main():
     with tab_move:
         st.markdown('<div class="queen-banner">📈 Line Movement</div>', unsafe_allow_html=True)
         st.caption(
-            f"**Order:** Likes → Good downs → Big dumps → Mild ups → Spikes (FADE) → Stuck · "
-            f"Only **+{PRICE_MIN_MOVE}+** · ±{BIG_MOVE} spike = hate · moderate down = like"
+            f"**Order:** Likes → Good downs → Big dumps → Mild ups → Spikes → Stuck · "
+            f"Only **+{PRICE_MIN_MOVE}+** HR prices"
         )
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
@@ -2000,7 +2063,7 @@ def main():
             _section("⬇️ Good downs (−40 to −149) — LIKE", m["likes_down"])
             _section("⚠️ Big dumps (−150+) — value can die", m["big_dump"])
             _section("⬆️ Mild ups (+40 to +149) — watch", m["mild_up"])
-            _section("🚫 Spikes (+150+) — FADE / we hate this", m["spikes"])
+            _section("🚫 Spikes (+150+) — FADE", m["spikes"])
             with st.expander(f"😴 Stuck same all day ({len(m['stuck'])})", expanded=False):
                 if not m["stuck"]:
                     st.caption("None.")
@@ -2010,8 +2073,11 @@ def main():
 
     with tab_tricks:
         st.markdown('<div class="queen-banner">✨ Odds Tricks</div>', unsafe_allow_html=True)
-        st.caption("One card per player — every method they hit is stacked on that card")
-        sub = st.tabs(["🎯 DK", "📉 Was DK", "🎰 MGM", "⭐ Exact MGM", "🤝 Exact", "💙 FD", "💚 365", "🔒 Lock"])
+        st.caption("One card per player · all methods stacked · no cross-book Exact")
+        sub = st.tabs([
+            "🎯 DK", "📉 Was DK", "🎰 MGM", "⭐ Exact MGM",
+            "🪞 HR=RBI", "💙 FD", "💚 365", "🔒 Lock",
+        ])
         with sub[0]:
             render_card_grid([r for r in results if r["type"] == "dk"])
         with sub[1]:
@@ -2022,7 +2088,8 @@ def main():
         with sub[3]:
             render_card_grid([r for r in results if r["type"] == "mgm_exact"])
         with sub[4]:
-            render_card_grid([r for r in results if r["type"] == "match"])
+            st.caption("Same American price on O 0.5 HR and O 1.5 RBI · same book · support tag")
+            render_card_grid([r for r in results if r["type"] == "mirror"])
         with sub[5]:
             render_card_grid([r for r in results if r["type"] == "fd"])
         with sub[6]:
@@ -2283,7 +2350,7 @@ def main():
                             st.rerun()
 
         with st.expander(f"DNP ({len(dnps)})", expanded=False):
-            st.caption("False DNP? Use ↩️. Auto-DNP only when RotoWire ≥80 names.")
+            st.caption("False DNP? ↩️. Auto-DNP only when RotoWire ≥80 names.")
             for r in sorted(dnps, key=lambda x: x.get("player") or ""):
                 rid = r.get("id", "")
                 st.markdown(f"🟡 **{r.get('player')}** · was {format_odds(r.get('best_price'))}")
@@ -2298,11 +2365,10 @@ def main():
             <b>Girl Magic in one breath:</b><br>
             Classic endings only on <b>MGM + Bet365</b> · same team.<br>
             <b>PAIR (exactly 2)</b> first. <b>TRIO (exactly 3)</b> only when that ending has no pair.<br>
-            <b>🔥 HOT</b> = pair/trio + FanDuel pattern + DK 10 / Was DK 10 / DK FD-style.<br>
+            <b>🔥 HOT</b> = pair/trio + FanDuel + DK 10 / Was / DK FD-style.<br>
             <b>🟢 TAKE IT</b> = live pair/trio · not faded · price high enough · not HardRock-best.<br>
-            <b>⚪ PASS</b> = no pair/trio · HardRock is best · big move (±150) · price too low.<br>
-            <b>Tricks tabs</b> = <b>one card per player</b> (all methods stacked).<br>
-            <b>No Caesars.</b> RotoWire DNP only when lineup is solid (≥80 names).
+            <b>🪞 HR = RBI 1.5</b> = same price on O 0.5 HR and O 1.5 RBI · same book · support only.<br>
+            <b>No cross-book Exact.</b> MGM Exact stays. Tricks = one card per player.
         </div>
         """, unsafe_allow_html=True)
 
@@ -2316,13 +2382,23 @@ def main():
 | **BetMGM** | 00 · 25 · 50 · 75 |
 | **Bet365** | 25 · 50 · 75 |
 
-**🔥 HOT** = pair/trio + FD + DK support · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
+**🔥 HOT** = pair/trio + FD + DK · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
 **🟢 TAKE IT** = live pair/trio · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
 **⚪ PASS** = no primary · HardRock best · ±{BIG_MOVE} · short price  
-Board: HOT → TAKE → PASS. Tricks: **one card per name**, every method on it.
+Board is **0.5 HR only**.
             """)
 
-        with st.expander("🎰 MGM · 💚 Bet365 · 🎯 DK · 💙 FD"):
+        with st.expander("🪞 HR = RBI 1.5"):
+            st.markdown("""
+When a player’s **Over 0.5 HR** price equals their **Over 1.5 RBI** price on the **same book**, we tag **HR = RBI 1.5**.
+
+- Support tag only — does **not** unlock TAKE by itself  
+- Small score boost when present  
+- Shows on the board and under **✨ Tricks → 🪞 HR=RBI**  
+- Cross-book Exact Match is **removed**; **MGM Exact** stays
+            """)
+
+        with st.expander("🎰 MGM · 💚 365 · 🎯 DK · 💙 FD"):
             st.markdown(f"""
 Digits only MGM + Bet365. PAIR first. TRIO only if no pair.  
 **DK 10** · **Was DK 10** · **DK FD-style** · **FD Pattern** / **FD 600**  
@@ -2333,30 +2409,30 @@ Digits only MGM + Bet365. PAIR first. TRIO only if no pair.
             st.markdown(f"""
 1. 💙 FD 10–100 under MGM — LIKE  
 2. ⬇️ Good downs (−40 to −149) — LIKE  
-3. ⚠️ Big dumps (−150+) — value can die  
+3. ⚠️ Big dumps (−150+) — caution  
 4. ⬆️ Mild ups — watch  
 5. 🚫 Spikes (+150+) — FADE  
-6. 😴 Stuck same all day — noise  
-Only **+{PRICE_MIN_MOVE}+** · needs 2+ fetches.
+6. 😴 Stuck — noise  
+Only **+{PRICE_MIN_MOVE}+** HR · needs 2+ fetches.
             """)
 
         with st.expander("📋 Sheet · 📊 Results · RotoWire"):
             st.markdown(f"""
 Cheat Sheet: paste lists → method hits.  
 HIT% ignores DNP. Best-book = MGM · DK · FD · HardRock.  
-Auto-DNP only if RotoWire ≥ **{LINEUP_MIN_NAMES}** names. False DNP → ↩️ PENDING.
+Auto-DNP only if RotoWire ≥ **{LINEUP_MIN_NAMES}** names.
             """)
 
         with st.expander("What we ignore"):
-            st.markdown("- Caesars · non-MGM/365 digits · edge as a gate · mirrors · sub-500 movement noise")
+            st.markdown("- Caesars · non-MGM/365 digits · edge as a gate · cross-book Exact · sub-500 movement noise")
 
         with st.expander("How to run a slate"):
             st.markdown(f"""
-1. Load Games → select → Fetch  
+1. Load Games → select → Fetch (HR + RBI)  
 2. Fetch again for Movement  
-3. RotoWire after lineups (check auto-DNP ON)  
+3. RotoWire after lineups  
 4. Board HOT → TAKE → PASS  
-5. Tricks = one card per player with all tags  
+5. Tricks → 🪞 for HR=RBI mirrors  
 6. Sync MLB HRs → grade PENDING  
 Auto-refresh ~ every **{REFRESH_MINUTES}** min when enabled.
             """)
