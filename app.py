@@ -2229,7 +2229,7 @@ def main():
             for r in sorted(dnps, key=lambda x: x.get("player") or ""):
                 st.markdown(f"🟡 **{r.get('player')}** · was {format_odds(r.get('best_price'))}")
 
-       with tab_gloss:
+    with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
 
         st.markdown("""
