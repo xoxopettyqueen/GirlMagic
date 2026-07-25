@@ -2231,17 +2231,154 @@ def main():
 
     with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
+
         st.markdown("""
         <div class="how-to">
             <b>Girl Magic in one breath:</b><br>
             Classic endings only on <b>MGM + Bet365</b> · same team.<br>
             <b>PAIR (exactly 2)</b> first. <b>TRIO (exactly 3)</b> only when that ending has no pair.<br>
-            <b>🔥 HOT</b> = pair/trio + FanDuel + DK 10 / Was / DK FD-style.<br>
+            <b>🔥 HOT</b> = pair/trio + FanDuel pattern + DK 10 / Was DK 10 / DK FD-style.<br>
             <b>🟢 TAKE IT</b> = live pair/trio · not faded · price high enough · not HardRock-best.<br>
-            <b>⚪ PASS</b> = no pair/trio · HardRock best · ±150 move · price too low.<br>
-            <b>📈 Movement</b> = 500+ only · Up red · Down green · FD 10–100 under MGM = like.
+            <b>⚪ PASS</b> = no pair/trio · HardRock is best · big move (±150) · price too low.<br>
+            <b>📈 Movement</b> = 500+ only · Up red · Down green · FD 10–100 under MGM = like.<br>
+            <b>No Caesars.</b> Edge is info only — not a TAKE/PASS gate.
         </div>
         """, unsafe_allow_html=True)
+
+        with st.expander("🔥 HOT · 🟢 TAKE IT · ⚪ PASS", expanded=True):
+            st.markdown(f"""
+### What unlocks each label
+
+**PAIR**  
+Exactly **2** players · **same team** · same classic ending.
+
+**TRIO**  
+Exactly **3** players · **same team** · same ending · **only** when that team+ending is not a pair.
+
+| Book | Classic endings |
+|------|-----------------|
+| **BetMGM** | **00 · 25 · 50 · 75** |
+| **Bet365** | **25 · 50 · 75** (no 00) |
+
+---
+
+**🔥 HOT TAKE** — all of these:
+
+1. Live **PAIR** or **TRIO** (MGM or 365)  
+2. **FanDuel** pattern (≥ +{FD_MIN} ending 10/20/30/60/70/90) or **FD +600**  
+3. **DK support** — live **DK 10**, **Was DK 10**, or **DK FD-style**  
+4. Not ±{BIG_MOVE} faded · best price ≥ +{PRICE_MIN_TAKE} · **not** HardRock-best  
+
+**🟢 TAKE IT**
+
+- Live **PAIR** or **TRIO**  
+- Not faded  
+- Best price ≥ +{PRICE_MIN_TAKE}  
+- **Not** HardRock-best  
+- Edge does **not** decide this  
+
+**⚪ PASS**
+
+- No live pair/trio  
+- **HardRock is the best price** on the board  
+- Spike or dump ±{BIG_MOVE}  
+- Price under +{PRICE_MIN_TAKE}  
+
+**Board order (including phone):** HOT → TAKE IT → PASS · pairs ranked above trios · cards render row-by-row so mobile doesn’t scramble order.
+            """)
+
+        with st.expander("🎰 MGM · 💚 Bet365 · pairs & trios", expanded=True):
+            st.markdown("""
+**Digits only on MGM and Bet365** — never on DK, FD, HardRock, etc.
+
+1. Group by **game + team + last two digits** of the price.  
+2. If **exactly 2** names → **PAIR** → primary TAKE signal.  
+3. If **exactly 3** names → **TRIO** → only because there was no pair for that ending.  
+4. **MGM Exact** = two players on the same team with the **exact same full price** (also a PAIR).
+
+**Stayed in group** = still in a group across 3+ fetches (boost only — does **not** unlock TAKE alone).  
+**Last one left** = was in an early trio and is still there (boost only).
+            """)
+
+        with st.expander("🎯 DK · 💙 FanDuel · HardRock", expanded=True):
+            st.markdown(f"""
+**DK 10** — DraftKings price ends in **10**.  
+
+**Was DK 10** — had ends-in-10 earlier today, then fell off (still counts for HOT).  
+
+**DK FD-style** — DraftKings ≥ +{FD_MIN} and ends in **10 / 20 / 30 / 60 / 70 / 90**  
+(same shape as FanDuel patterns — we’ve seen these go more often).  
+
+**FD Pattern** — FanDuel ≥ +{FD_MIN} ending 10/20/30/60/70/90.  
+**FD 600** — exact +600.  
+
+**HardRock best** — if HardRock is the longest price vs the rest → **PASS**. We don’t like that.  
+HardRock still appears in results HIT% for tracking only.
+            """)
+
+        with st.expander("📈 Movement tab", expanded=True):
+            st.markdown(f"""
+- Only players with price **≥ +{PRICE_MIN_MOVE}** (we don’t care about 300s/400s here)  
+- Compares **first locked** price → **latest** (needs **2+ fetches**)  
+- **One card per player** (not one per book)  
+- Sorted by **biggest |move| first**  
+- **⬆️ UP (red)** = lengthening · **⬇️ DOWN (green)** = shortening  
+- **±{BIG_MOVE}** tagged Spike/Dump → **FADE** on the board  
+- **FD 10–100 pts under MGM** called out as a **like** (top of the Movement tab)  
+
+Huge spikes or dumps are things we tend to **fade**, not chase.
+            """)
+
+        with st.expander("📋 Cheat Sheet tab", expanded=True):
+            st.markdown("""
+Paste **My cheat sheet** and/or **Girls’ cheat sheet** (one name per line).
+
+After **Fetch Odds**, we match those names to live methods and show:
+
+- 🔥 HOT / 🟢 TAKE IT / 🎰 PRIMARY  
+- Method tags  
+- Best price when they’re on the board  
+
+Optional checkbox: also list names with **no** method hits.  
+Names on **both** sheets are called out.
+            """)
+
+        with st.expander("📊 Results · DNP · HIT%", expanded=True):
+            st.markdown("""
+**PENDING** — TAKE ITs waiting for HIT / MISS / DNP.  
+
+**HIT%** — hits ÷ (hits + misses). **DNP does not count.**  
+
+**Best-book HIT%** — MGM · DK · FD · HardRock only.  
+No Untagged · no Bet365 (until we’re solid) · no Caesars.  
+
+**RotoWire** can mark PENDING / MISS → DNP when a name is not in the lineup.  
+**Sync MLB HRs** auto-logs home runs and can promote PENDING → HIT.  
+**Undo** is available on graded rows.
+            """)
+
+        with st.expander("What we ignore"):
+            st.markdown("""
+- **Caesars** — not pulled, not tracked  
+- **Digits on any book except MGM + Bet365**  
+- **Edge as a gate** — shown on cards only; does not force TAKE or PASS  
+- **Generic Digits tab** — removed on purpose  
+- **Mirrors** (HR = RBI / FD HR = Hit) — removed  
+- **Sub-500 noise** on the Movement tab  
+            """)
+
+        with st.expander("How to run a slate"):
+            st.markdown(f"""
+1. **Load Games** → select → **Fetch Odds** (builds the 🔒 lock)  
+2. Fetch again later so **Movement** has first → last  
+3. **RotoWire** after lineups post  
+4. Board: **HOT** → **TAKE IT** → **PASS**  
+5. **📈 Movement** for 500+ ups/downs and FD-under-MGM likes  
+6. **Cheat Sheet** — paste your lists, see who also hits methods  
+7. Live → **Sync MLB HRs** → grade PENDING → review method + best-book rates  
+
+Auto-refresh ~ every **{REFRESH_MINUTES}** minutes when enabled.
+            """)
 
         with st.expander("🔥 HOT · 🟢 TAKE IT · ⚪ PASS", expanded=True):
             st.markdown(f"""
