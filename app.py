@@ -1,16 +1,13 @@
 """
 Girl Magic Odds ✨ — full app
 
-PRIMARY digits: MGM + Bet365 ONLY (same-team)
-  · Prefer PAIR (exactly 2)
-  · TRIO (exactly 3) only when there is no pair for that team+ending
+PAIR first (MGM/365 same team) · TRIO only if no pair for that ending
+🔥 HOT = pair/trio + FD + DK10/Was/DK FD-style
+🟢 TAKE = live pair/trio · not faded · price ≥ +400 · not HardRock-best
+⚪ PASS = no primary · HardRock best · fade ±150 · price too low
 
-🔥 HOT  = live pair/trio + FD pattern + DK10 (live or Was)
-🟢 TAKE = live pair, or trio fallback · not faded · price ≥ +400 · not HardRock-best
-⚪ PASS = no live primary · HardRock best · fade ±150 · price too low
-
-DK FD-style = DK priced like FD patterns (goes more often) — support tag
-No Caesars · No generic Digits tab
+Digits = MGM + Bet365 only · No Caesars
+📋 Cheat Sheet = paste names → who also hits our methods
 """
 
 import streamlit as st
@@ -106,10 +103,9 @@ PREGAME_FILE = "girl_magic_pregame.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 
-# No Caesars
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "bet365", "bet365_au"}
 BOOK_PRIORITY = ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet"]
-ALLOWED_BEST_BOOKS = {"MGM", "DK", "FD", "HardRock"}  # HIT% only — HardRock tracked but best=PASS on board
+ALLOWED_BEST_BOOKS = {"MGM", "DK", "FD", "HardRock"}
 
 METHODS_MIN = 2
 METHODS_STRONG = 3
@@ -169,21 +165,14 @@ def count_core_methods(meths):
 
 
 def has_pair(meths):
-    cleaned = {normalize_method(m) for m in meths}
-    return bool(cleaned & PAIR_TAGS)
+    return bool({normalize_method(m) for m in meths} & PAIR_TAGS)
 
 
 def has_trio(meths):
-    cleaned = {normalize_method(m) for m in meths}
-    return bool(cleaned & TRIO_TAGS)
+    return bool({normalize_method(m) for m in meths} & TRIO_TAGS)
 
 
 def has_live_primary(meths):
-    """
-    PAIR always qualifies.
-    TRIO only as fallback (when we couldn't find a pair for that ending) —
-    still counts if tagged MGM Trio / B365 Trio (we only create trios when len==3).
-    """
     return has_pair(meths) or has_trio(meths)
 
 
@@ -192,8 +181,7 @@ def has_fd_heat(meths):
 
 
 def has_dk_support(meths):
-    cleaned = {normalize_method(m) for m in meths}
-    return bool(cleaned & {"DK 10", "Was DK 10", "DK FD-style"})
+    return bool({normalize_method(m) for m in meths} & {"DK 10", "Was DK 10", "DK FD-style"})
 
 
 def has_personal_strong(meths):
@@ -377,11 +365,9 @@ def now_utc_iso():
 
 
 def smart_best(prices, books):
-    """Best price ignoring HardRock when possible (we don't like HardRock best)."""
     if not prices:
         return None, None
     paired = list(zip(prices, books))
-    # Prefer non-HardRock for "best"
     non_hr = [(p, b) for p, b in paired if "hardrock" not in str(b).lower()]
     use = non_hr if non_hr else paired
     use = sorted(use, key=lambda x: x[0], reverse=True)
@@ -447,6 +433,71 @@ def name_in_lineup(player, lineup_names):
             if len(lp) >= 2 and lp[-1].lower() == last and lp[0][0].lower() == fi:
                 return True
     return False
+
+
+def parse_cheat_sheet(text):
+    if not text or not str(text).strip():
+        return []
+    raw = str(text).replace(",", "\n").replace(";", "\n")
+    names, seen = [], set()
+    for line in raw.splitlines():
+        n = clean_name(line.strip())
+        if not n or len(n) < 3:
+            continue
+        key = n.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        names.append(n)
+    return names
+
+
+def check_cheat_sheet(sheet_names, methods_map, ev_board, source_label="Sheet"):
+    board_by = {}
+    for item in ev_board or []:
+        board_by[clean_name(item["player"])] = item
+
+    hits, misses = [], []
+    for sheet_name in sheet_names:
+        matched_key = None
+        meths = []
+        for k, ms in (methods_map or {}).items():
+            if names_match(sheet_name, k):
+                matched_key = clean_name(k)
+                meths = list(dict.fromkeys(normalize_method(m) for m in ms))
+                break
+        if matched_key is None:
+            for k in board_by:
+                if names_match(sheet_name, k):
+                    matched_key = k
+                    break
+        board = board_by.get(matched_key) if matched_key else None
+        if board:
+            meths = list(dict.fromkeys(meths + [normalize_method(m) for m in board.get("methods", [])]))
+
+        primary = has_live_primary(meths) if meths else False
+        has_signal = primary or bool(board and (board.get("is_bet") or board.get("is_hot"))) or count_core_methods(meths) >= 1
+        entry = {
+            "source": source_label,
+            "sheet_name": sheet_name,
+            "matched_as": matched_key or sheet_name,
+            "methods": meths,
+            "on_board": board is not None,
+            "is_bet": bool(board and board.get("is_bet")),
+            "is_hot": bool(board and board.get("is_hot")),
+            "score": board.get("score") if board else None,
+            "best_price": board.get("best_price") if board else None,
+            "best_book": board.get("best_book") if board else None,
+            "why": board.get("why") if board else "",
+            "primary": primary,
+        }
+        if has_signal:
+            hits.append(entry)
+        else:
+            misses.append(entry)
+
+    hits.sort(key=lambda x: (not x["is_hot"], not x["is_bet"], not x["primary"], -(x["score"] or 0)))
+    return hits, misses
 
 
 def load_pregame():
@@ -687,9 +738,7 @@ def auto_mark_dnp():
     today = today_az()
     n = 0
     for r in rows:
-        if r.get("date") != today or r.get("result") != "PENDING":
-            continue
-        if r.get("source") != "take_it":
+        if r.get("date") != today or r.get("result") != "PENDING" or r.get("source") != "take_it":
             continue
         if name_in_lineup(r.get("player", ""), lineup) is False:
             r["result"] = "DNP"
@@ -716,7 +765,7 @@ def bulk_miss_to_dnp(today_only=True):
             n += 1
     if n:
         save_results(rows)
-    return n, f"Converted {n} MISS → DNP (not in lineup)"
+    return n, f"Converted {n} MISS → DNP"
 
 
 def log_bet_this(ev_board):
@@ -987,9 +1036,7 @@ def flatten_oddsapi(data):
     for book in data.get("bookmakers", []):
         bk = book.get("key", "").lower()
         found.add(bk)
-        if bk not in PREFERRED:
-            continue
-        if "caesar" in bk:
+        if bk not in PREFERRED or "caesar" in bk:
             continue
         for market in book.get("markets", []):
             for o in market.get("outcomes", []):
@@ -1043,9 +1090,7 @@ def fetch_sgo_hr_props(sgo_key):
                     b = bk.lower()
                     if is_bet365(b):
                         b = "bet365"
-                    if "caesar" in b:
-                        continue
-                    if b not in PREFERRED:
+                    if "caesar" in b or b not in PREFERRED:
                         continue
                     price = bd.get("odds")
                     if price is None:
@@ -1115,9 +1160,8 @@ def build_team_map(df):
 
 
 def detect_was_dk10(current_prices, price_history):
-    was = set()
     if not price_history or len(price_history) < 2:
-        return was
+        return set()
     had_dk10 = set()
     for snap in price_history[:-1]:
         for (player, book), price in snap.items():
@@ -1130,15 +1174,11 @@ def detect_was_dk10(current_prices, price_history):
     return had_dk10 - still
 
 
-def detect_classic_groups(book_df, endings, pair_tag, trio_tag, prefix):
-    """
-    Same-team classic endings.
-    Prefer PAIR (exactly 2). TRIO (exactly 3) only when that ending has 3 — no pair for that ending.
-    """
+def detect_classic_groups(book_df, endings):
+    """Pair (2) preferred; trio (3) only when that ending has exactly 3."""
     groups = []
-    results_extra = []
     if book_df.empty or not book_df["team"].astype(str).str.len().gt(0).any():
-        return groups, results_extra
+        return groups
     for (event, team), g in book_df.groupby(["event", "team"], dropna=False):
         if not team:
             continue
@@ -1152,14 +1192,13 @@ def detect_classic_groups(book_df, endings, pair_tag, trio_tag, prefix):
             if len(names) == 2:
                 groups.append({"event": event, "ending": d, "team": team, "players": frozenset(names), "size": 2})
             elif len(names) == 3:
-                # trio only as fallback when not exactly a pair
                 groups.append({"event": event, "ending": d, "team": team, "players": frozenset(names), "size": 3})
-    return groups, results_extra
+    return groups
 
 
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if df.empty:
-        return [], [], []
+        return [], [], {}
     if "team" not in df.columns:
         df["team"] = ""
     df["book"] = df["book"].apply(lambda b: "bet365" if is_bet365(b) else b)
@@ -1188,7 +1227,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             methods_map[player].append(tag)
             methods_map[player].append(f"FADE · {tag}")
 
-    # DK 10
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
             results.append({"type": "dk", "label": row["player"],
@@ -1196,7 +1234,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
 
-    # DK FD-style (DK priced like FD patterns — goes more often)
     for _, row in df.iterrows():
         if row["book"] != "draftkings":
             continue
@@ -1215,11 +1252,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "event": "", "methods": ["Was DK 10"]})
         methods_map[player].append("Was DK 10")
 
-    # —— MGM classic endings ONLY (00/25/50/75) · pair preferred · trio fallback ——
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
-    current_mgm = []
-    mgm_groups, _ = detect_classic_groups(mgm, (0, 25, 50, 75), "MGM Pair", "MGM Trio", "MGM")
-    current_mgm = mgm_groups
+    current_mgm = detect_classic_groups(mgm, (0, 25, 50, 75))
 
     if record_history:
         st.session_state["mgm_history"].append(current_mgm)
@@ -1249,7 +1283,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         d = grp["ending"]
         size = grp.get("size") or len(names)
         is_pair = size == 2
-        kind = "pair" if is_pair else "trio (no pair for this ending)"
+        kind = "pair" if is_pair else "trio (no pair)"
         meth = [f"MGM {d:02d}", "MGM Pair" if is_pair else "MGM Trio"]
         extra = []
         for name in names:
@@ -1261,10 +1295,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 extra.append("Last one left")
         meth = list(dict.fromkeys(meth))
         reason = f"MGM {kind} ends {d:02d} · {grp.get('team', '')}"
-        if is_pair:
-            reason += " · PAIR → TAKE IT"
-        else:
-            reason += " · TRIO fallback → TAKE IT"
+        reason += " · PAIR → TAKE" if is_pair else " · TRIO fallback → TAKE"
         if extra:
             reason += " · " + " + ".join(dict.fromkeys(extra))
         results.append({"type": "mgm", "label": " + ".join(names), "reason": reason,
@@ -1272,7 +1303,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         for name in names:
             methods_map[name].extend(meth)
 
-    # MGM Exact same full price — pairs only (exactly 2)
     if not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any():
         for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
             if not team:
@@ -1287,10 +1317,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 for nm in names:
                     methods_map[nm].extend(["MGM Exact", "MGM Pair"])
 
-    # —— Bet365 same classic endings (25/50/75 only, no 00) · pair preferred · trio fallback ——
     b365 = df[df["book"] == "bet365"].copy()
-    b365_groups, _ = detect_classic_groups(b365, (25, 50, 75), "B365 Pair", "B365 Trio", "B365")
-    for grp in b365_groups:
+    for grp in detect_classic_groups(b365, (25, 50, 75)):
         names = sorted(grp["players"])
         d = grp["ending"]
         size = grp.get("size") or len(names)
@@ -1323,7 +1351,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     "reason": f"B365 {format_odds(p365.iloc[0])} > HardRock {format_odds(phr.iloc[0])}",
                     "event": g["event"].iloc[0], "methods": ["B365 > HardRock"]})
 
-    # Exact match across books (not digit groups)
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -1334,7 +1361,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": g["event"].iloc[0], "methods": ["Exact Match"]})
             methods_map[player].append("Exact Match")
 
-    # FD patterns (only with primary or DK support already building)
     for _, row in df.iterrows():
         if row["book"] != "fanduel":
             continue
@@ -1354,7 +1380,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
 
-    # Board
     ev_board = []
     player_events = defaultdict(set)
     for _, r in df.iterrows():
@@ -1390,22 +1415,13 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             meths.append("HardRock best")
 
         is_hot = (
-            primary
-            and has_fd_heat(meths)
-            and has_dk_support(meths)
-            and not has_fade
-            and not price_too_low
-            and not hr_best
+            primary and has_fd_heat(meths) and has_dk_support(meths)
+            and not has_fade and not price_too_low and not hr_best
         )
         if is_hot and "🔥 HOT" not in meths:
             meths.insert(0, "🔥 HOT")
 
-        is_bet = (
-            primary
-            and not has_fade
-            and not price_too_low
-            and not hr_best
-        )
+        is_bet = primary and not has_fade and not price_too_low and not hr_best
 
         display_meths = [
             m for m in meths
@@ -1420,13 +1436,13 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
         why = f"Score {score}/100 · {core_count} core · Edge {int(edge)} (info)"
         if is_hot:
-            why += " · 🔥 HOT = pair/trio + FD + DK"
+            why += " · 🔥 HOT"
         elif has_pair(meths):
-            why += " · MGM/365 PAIR"
+            why += " · PAIR"
         elif has_trio(meths):
-            why += " · TRIO fallback (no pair)"
+            why += " · TRIO fallback"
         else:
-            why += " · no live primary → PASS"
+            why += " · no primary → PASS"
         if "DK FD-style" in meths:
             why += " · DK FD-style"
         if hr_best:
@@ -1459,7 +1475,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             tier = 1
         else:
             tier = 2
-        # pairs before trios within TAKE IT
         return (tier, not x.get("is_pair"), -x.get("score", 0), -x.get("edge", 0))
 
     ev_board = sorted(ev_board, key=board_rank)
@@ -1509,7 +1524,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     })
                     n += 1
 
-    return results, ev_board, []
+    return results, ev_board, dict(methods_map)
 
 
 def render_card_grid(items):
@@ -1522,6 +1537,34 @@ def render_card_grid(items):
             tags = render_method_tags(r.get("methods", []))
             st.markdown(
                 f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>',
+                unsafe_allow_html=True,
+            )
+
+
+def render_cheat_hits(hits, title):
+    if not hits:
+        st.info(f"No method hits on {title}.")
+        return
+    st.markdown(f"**{title} — {len(hits)} popping off**")
+    cols = st.columns(2)
+    for idx, e in enumerate(hits):
+        with cols[idx % 2]:
+            if e["is_hot"]:
+                label, cls = "🔥 HOT", "hot"
+            elif e["is_bet"]:
+                label, cls = "🟢 TAKE IT", "bet"
+            elif e["primary"]:
+                label, cls = "🎰 PRIMARY", "bet"
+            else:
+                label, cls = "✨ METHOD", "card"
+            tags = render_method_tags(e["methods"], limit=8)
+            price = format_odds(e["best_price"]) if e["best_price"] is not None else "—"
+            book = e.get("best_book") or ""
+            score = e["score"] if e["score"] is not None else "—"
+            st.markdown(
+                f'<div class="card {cls}"><b>{label}</b> — <b>{e["matched_as"]}</b>'
+                f'<span class="score-pill">{score}</span><br>'
+                f'{price} {book}<br>{tags}</div>',
                 unsafe_allow_html=True,
             )
 
@@ -1546,10 +1589,10 @@ def main():
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(
         f'<div class="how-to">'
-        f'<b>PAIR first</b> (MGM/365 same team) · <b>TRIO</b> only if no pair · '
+        f'<b>PAIR first</b> · <b>TRIO</b> if no pair · '
         f'<b>🔥 HOT</b> = pair/trio + FD + DK · '
-        f'<b>PASS</b> HardRock-best / fade ±{BIG_MOVE} / price &lt; +{PRICE_MIN_TAKE} · '
-        f'DK FD-style tracked · No Caesars · 🔒 {lock_n}'
+        f'<b>PASS</b> HardRock-best / fade / short price · '
+        f'📋 Cheat Sheet checks your list vs methods · 🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -1647,7 +1690,7 @@ def main():
     if found:
         note = ""
         if "betmgm" not in found and not any("mgm" in x for x in found):
-            note = " · <b>MGM missing</b> — pairs need MGM or 365"
+            note = " · <b>MGM missing</b>"
         st.markdown(f'<div class="info-box"><b>Books:</b> {", ".join(found)}{note}</div>', unsafe_allow_html=True)
 
     odds = st.session_state.get("odds", [])
@@ -1655,10 +1698,12 @@ def main():
     prev_df = pd.DataFrame(st.session_state.get("previous_odds", []) or [])
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
-    results, ev_board, fallen = (
+    results, ev_board, methods_map = (
         run_flags(df, prev_df if not prev_df.empty else None, record_history=new_fetch, selected_events=selected_events)
-        if not df.empty else ([], [], [])
+        if not df.empty else ([], [], {})
     )
+    st.session_state["methods_map"] = methods_map
+    st.session_state["ev_board"] = ev_board
     if ev_board:
         log_bet_this(ev_board)
 
@@ -1685,13 +1730,14 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    tab_board, tab_tricks, tab_names, tab_results, tab_gloss = st.tabs([
-        "👑 The Board", "✨ Odds Tricks", "💅 Name Magic", "📊 Results", "📖 Glossary",
+    tab_board, tab_tricks, tab_names, tab_sheet, tab_results, tab_gloss = st.tabs([
+        "👑 The Board", "✨ Odds Tricks", "💅 Name Magic",
+        "📋 Cheat Sheet", "📊 Results", "📖 Glossary",
     ])
 
     with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
-        st.caption("PAIR first · TRIO only if no pair · HOT = pair/trio + FD + DK · HardRock best = PASS")
+        st.caption("PAIR first · TRIO if no pair · HOT = pair/trio + FD + DK · HardRock best = PASS")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1724,28 +1770,26 @@ def main():
 
     with tab_tricks:
         st.markdown('<div class="queen-banner">✨ Odds Tricks</div>', unsafe_allow_html=True)
-        # No Digits tab — digits live only under MGM / 365
         sub = st.tabs([
             "🎯 DK 10 / FD-style", "📉 Was DK 10", "🎰 MGM pairs/trios",
             "⭐ MGM Exact", "🤝 Exact", "💙 FD", "💚 365 pairs/trios", "🔒 Lock",
         ])
         with sub[0]:
-            st.caption("DK ends-in-10 + DK priced like FD (goes more often)")
+            st.caption("DK ends-in-10 + DK priced like FD")
             render_card_grid([r for r in results if r["type"] == "dk"])
         with sub[1]:
             render_card_grid([r for r in results if r["type"] == "dk_was"])
         with sub[2]:
-            st.caption("PAIR preferred · TRIO only when that ending has 3 (no pair)")
+            st.caption("PAIR preferred · TRIO only when ending has exactly 3")
             render_card_grid([r for r in results if r["type"] == "mgm"])
         with sub[3]:
-            st.caption("Exact same full MGM price · pairs only")
             render_card_grid([r for r in results if r["type"] == "mgm_exact"])
         with sub[4]:
             render_card_grid([r for r in results if r["type"] == "match"])
         with sub[5]:
             render_card_grid([r for r in results if r["type"] == "fd"])
         with sub[6]:
-            st.caption("Same classic endings as MGM · 25/50/75 · pair then trio")
+            st.caption("Same classic endings · 25/50/75 · pair then trio")
             render_card_grid([r for r in results if r["type"] == "b365"])
         with sub[7]:
             lock = st.session_state.get("pregame_lock") or load_pregame()
@@ -1784,6 +1828,60 @@ def main():
         with nsub[4]:
             render_card_grid([r for r in results if r["type"] == "first"])
 
+    with tab_sheet:
+        st.markdown('<div class="queen-banner">📋 Cheat Sheet Check</div>', unsafe_allow_html=True)
+        st.caption("Paste names (one per line). We show who also hits our live methods after you Fetch Odds.")
+
+        col_a, col_b = st.columns(2)
+        with col_a:
+            my_text = st.text_area(
+                "💜 My cheat sheet",
+                height=180,
+                placeholder="Juan Soto\nAaron Judge\n...",
+                key="cheat_mine",
+            )
+        with col_b:
+            girls_text = st.text_area(
+                "💖 Girls’ cheat sheet",
+                height=180,
+                placeholder="One name per line",
+                key="cheat_girls",
+            )
+
+        show_misses = st.checkbox("Also show names with no method hits", value=False, key="cheat_show_miss")
+        mm = st.session_state.get("methods_map") or methods_map or {}
+        eb = st.session_state.get("ev_board") or ev_board or []
+
+        if not mm and not eb:
+            st.warning("Fetch odds first so we have methods to check against.")
+        else:
+            my_names = parse_cheat_sheet(my_text)
+            girls_names = parse_cheat_sheet(girls_text)
+
+            if my_names:
+                hits, misses = check_cheat_sheet(my_names, mm, eb, "My sheet")
+                render_cheat_hits(hits, "💜 My sheet")
+                if show_misses and misses:
+                    with st.expander(f"No method hit ({len(misses)})"):
+                        st.write(", ".join(m["sheet_name"] for m in misses))
+
+            if girls_names:
+                hits, misses = check_cheat_sheet(girls_names, mm, eb, "Girls sheet")
+                render_cheat_hits(hits, "💖 Girls’ sheet")
+                if show_misses and misses:
+                    with st.expander(f"Girls — no method hit ({len(misses)})"):
+                        st.write(", ".join(m["sheet_name"] for m in misses))
+
+            if my_names and girls_names:
+                my_set = {n.lower() for n in my_names}
+                both = [n for n in girls_names if n.lower() in my_set]
+                if both:
+                    st.markdown("**🤝 On both sheets**")
+                    st.write(", ".join(both))
+
+            if not my_names and not girls_names:
+                st.info("Paste at least one name to check.")
+
     with tab_results:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         top = st.columns([1, 1, 1, 1])
@@ -1813,7 +1911,11 @@ def main():
             with lc2:
                 hr_price = st.text_input("Price", key="hr_price")
             with lc3:
-                hr_book = st.selectbox("Book", ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet", "untagged"], key="hr_book")
+                hr_book = st.selectbox(
+                    "Book",
+                    ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet", "untagged"],
+                    key="hr_book",
+                )
             with lc4:
                 st.write("")
                 st.write("")
@@ -1842,7 +1944,7 @@ def main():
         """, unsafe_allow_html=True)
 
         with st.expander("Hit rate by BEST book", expanded=True):
-            st.caption("HIT/MISS · no Untagged/365/Caesars · HardRock included for tracking")
+            st.caption("HIT/MISS · no Untagged/365/Caesars")
             graded_for_books = [r for r in rows_view if r.get("result") in ("HIT", "MISS")]
             book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
             for r in graded_for_books:
@@ -1859,7 +1961,10 @@ def main():
             if not book_stats:
                 st.caption("Grade PENDING first.")
             else:
-                ranked = sorted(book_stats.items(), key=lambda x: (-(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"])), -(x[1]["hit"] + x[1]["miss"])))
+                ranked = sorted(
+                    book_stats.items(),
+                    key=lambda x: (-(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"])), -(x[1]["hit"] + x[1]["miss"])),
+                )
                 cols = st.columns(min(4, max(1, len(ranked))))
                 for i, (bl, s) in enumerate(ranked):
                     t = s["hit"] + s["miss"]
@@ -1963,39 +2068,38 @@ def main():
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>Digits only on MGM + Bet365</b> (same team).<br>
-            <b>PAIR (exactly 2)</b> first. <b>TRIO (exactly 3)</b> only when that ending has no pair.<br>
-            <b>🔥 HOT</b> = pair/trio + FD + DK10/Was/FD-style.<br>
-            <b>PASS</b> if HardRock is best · fade ±150 · price too low.<br>
-            <b>No Caesars.</b> No generic Digits tab.
+            <b>PAIR first</b> (exactly 2, same team, classic endings on <b>MGM / 365 only</b>).<br>
+            <b>TRIO</b> only when that ending has exactly 3 (no pair).<br>
+            <b>🔥 HOT</b> = pair/trio + FD + DK10 / Was / DK FD-style.<br>
+            <b>PASS</b> = HardRock best · fade ±150 · price too low.<br>
+            <b>📋 Cheat Sheet</b> = paste your list → only names that also hit our methods.
         </div>
         """, unsafe_allow_html=True)
 
         with st.expander("🔥 HOT · 🟢 TAKE IT · ⚪ PASS", expanded=True):
             st.markdown(f"""
-**PAIR** = exactly **2** players · same team · same classic ending  
-**TRIO** = exactly **3** · only when that team+ending is not a pair  
+**MGM endings:** 00, 25, 50, 75 · **Bet365:** 25, 50, 75  
 
-| Ending book | Endings |
-|-------------|---------|
-| **MGM** | 00, 25, 50, 75 |
-| **Bet365** | 25, 50, 75 (no 00) |
+**PAIR** = exactly 2 same team · **TRIO** = exactly 3 (fallback only)
 
-**🔥 HOT** = live pair/trio + FD pattern/600 + (DK 10 **or** Was DK 10 **or** DK FD-style)
+**🔥 HOT** = live pair/trio + FD + (DK 10 or Was DK 10 or DK FD-style)
 
-**🟢 TAKE IT** = live pair **or** trio fallback · not faded · price ≥ +{PRICE_MIN_TAKE} · **not** HardRock-best
+**🟢 TAKE IT** = live pair/trio · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best
 
-**⚪ PASS** = no pair/trio · HardRock best · ±{BIG_MOVE} move · price &lt; +{PRICE_MIN_TAKE}
+**⚪ PASS** = no pair/trio · HardRock best · ±{BIG_MOVE} · short price
 
-**DK FD-style** = DraftKings ≥ +{FD_MIN} ending 10/20/30/60/70/90 (like FanDuel) — goes more often.
+**DK FD-style** = DK ≥ +{FD_MIN} ending like FanDuel (goes more often)
             """)
 
-        with st.expander("What we ignore"):
+        with st.expander("📋 Cheat Sheet"):
             st.markdown("""
-- **Caesars** — not tracked  
-- **Digits on DK/FD/etc.** — only MGM + 365  
-- **HardRock as best price** — automatic PASS on the board  
-- **Edge** — info only, not a gate  
+Paste **My sheet** and/or **Girls’ sheet** (one name per line).
+
+After **Fetch Odds**, we match names to live methods and show:
+- 🔥 HOT / 🟢 TAKE IT / 🎰 PRIMARY / method tags
+- Best price when on the board
+
+Optional: show names with **no** method hits.
             """)
 
     st.markdown(
