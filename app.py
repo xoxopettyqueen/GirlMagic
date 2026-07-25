@@ -1,7 +1,7 @@
 """
-Girl Magic Odds ✨ — full fixed app
-MGM 2/3 · DNP · MISS→DNP · methods on Results · HIT rate by best book
-Spike/Dump · Auto HR · full Glossary
+Girl Magic Odds ✨ — full app
+MGM 2/3 · DNP · methods on Results · HIT% by best book (no Untagged/365)
+Top strip: TAKE IT / DK / MGM / Exact / FD / HIT% · Glossary tightened
 """
 
 import streamlit as st
@@ -40,9 +40,9 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .info-box{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:.85rem}
 .stButton>button{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important;border:none!important;border-radius:10px!important;font-weight:700!important;padding:.5rem 1.1rem!important}
 .petty-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.petty-box{flex:1;min-width:64px;background:#1a0f28;border:1px solid #f472b6;border-radius:12px;padding:8px 6px;text-align:center}
-.petty-num{font-size:1.25rem;font-weight:800;color:#f9a8d4;line-height:1.1}
-.petty-label{font-size:.55rem;color:#e9d5ff;margin-top:3px}
+.petty-box{flex:1;min-width:58px;background:#1a0f28;border:1px solid #f472b6;border-radius:12px;padding:8px 6px;text-align:center}
+.petty-num{font-size:1.2rem;font-weight:800;color:#f9a8d4;line-height:1.1}
+.petty-label{font-size:.52rem;color:#e9d5ff;margin-top:3px}
 .trends-today{background:linear-gradient(135deg,#2a1040,#1a0f28 50%,#3b0764);border:1px solid #c084fc;border-radius:16px;padding:12px 16px;margin-bottom:16px}
 .trends-today-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
 .trends-today-title{color:#f9a8d4;font-weight:800;font-size:.92rem}
@@ -97,6 +97,8 @@ ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "bet365", "bet365_au"}
 BOOK_PRIORITY = ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet", "caesars"]
+# Best-book HIT% — skip Untagged + 365 until you're sure
+ALLOWED_BEST_BOOKS = {"MGM", "DK", "FD", "HardRock", "Caesars"}
 
 EDGE_MIN = 60
 METHODS_MIN = 2
@@ -1347,8 +1349,8 @@ def main():
 
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(
-        f'<div class="how-to">⚡ MLB auto · 🔒 {lock_n} locked · MGM 2/3 · RotoWire DNP · '
-        f'Results = methods + <b>HIT% by best book</b></div>',
+        f'<div class="how-to">⚡ MLB auto · 🔒 {lock_n} locked · MGM pairs=2 / groups=3 · '
+        f'Best-book HIT% = MGM/DK/FD only (no Untagged/365 yet)</div>',
         unsafe_allow_html=True,
     )
     render_whats_going_today()
@@ -1461,17 +1463,18 @@ def main():
     today_rows = [r for r in all_rows if r.get("date") == today_az()]
     hits_n = sum(1 for r in today_rows if r.get("result") == "HIT")
     misses_n = sum(1 for r in today_rows if r.get("result") == "MISS")
-    pending_n = sum(1 for r in today_rows if r.get("result") == "PENDING")
     graded_n = hits_n + misses_n
     hit_pct = int(hits_n / graded_n * 100) if graded_n else 0
 
+    # Top strip: methods + TAKE IT + HIT% — no DNP count
     st.markdown(f"""
     <div class="petty-row">
       <div class="petty-box"><div class="petty-num">{len([e for e in ev_board if e['is_bet']])}</div><div class="petty-label">🟢 TAKE IT</div></div>
+      <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='dk'])}</div><div class="petty-label">🎯 DK 10</div></div>
       <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='mgm'])}</div><div class="petty-label">🎰 MGM 2/3</div></div>
+      <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='match'])}</div><div class="petty-label">🤝 Exact</div></div>
       <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='fd'])}</div><div class="petty-label">💙 FD</div></div>
-      <div class="petty-box"><div class="petty-num">{pending_n}</div><div class="petty-label">⏳ PENDING</div></div>
-      <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT% (no DNP)</div></div>
+      <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT%</div></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1561,7 +1564,7 @@ def main():
 
     with tab_results:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
-        st.caption("Methods on every row · HIT% by best book · HIT% ignores DNP")
+        st.caption("Methods on every row · HIT% by best book (MGM/DK/FD) · DNP excluded from rates")
 
         top = st.columns([1, 1, 1, 1])
         with top[0]:
@@ -1605,7 +1608,6 @@ def main():
                     else:
                         st.error(msg)
 
-        # Build lists FIRST — before any expanders that use them
         rows = load_results()
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
         pending = sorted([r for r in rows_view if r.get("result") == "PENDING"], key=pending_sort_key)
@@ -1615,13 +1617,13 @@ def main():
         misses = sum(1 for r in done if r["result"] == "MISS")
         rate = (hits / (hits + misses) * 100) if (hits + misses) else 0
 
+        # Results strip — no DNP box
         st.markdown(f"""
         <div class="petty-row">
           <div class="petty-box"><div class="petty-num">{len(pending)}</div><div class="petty-label">PENDING</div></div>
           <div class="petty-box"><div class="petty-num">{hits}</div><div class="petty-label">HITS</div></div>
           <div class="petty-box"><div class="petty-num">{misses}</div><div class="petty-label">MISSES</div></div>
-          <div class="petty-box"><div class="petty-num">{len(dnps)}</div><div class="petty-label">DNP</div></div>
-          <div class="petty-box"><div class="petty-num">{rate:.0f}%</div><div class="petty-label">HIT% (no DNP)</div></div>
+          <div class="petty-box"><div class="petty-num">{rate:.0f}%</div><div class="petty-label">HIT%</div></div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -1648,19 +1650,20 @@ def main():
                     lines.append(f"**{m}**: {s['hit']}/{t} ({pct:.0f}%)")
                 st.markdown(" · ".join(lines))
 
-        # HIT rate by best book — AFTER done is defined
         with st.expander("Hit rate by BEST book", expanded=True):
             st.caption(
-                "Among graded HIT/MISS only (DNP ignored). "
-                "Best book = the book stored as best_price when the pick was logged."
+                "HIT/MISS only · DNP ignored · Untagged & Bet365 hidden until coverage is solid. "
+                "Best book = best_book stored when logged."
             )
             graded_for_books = [r for r in rows_view if r.get("result") in ("HIT", "MISS")]
             book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
             for r in graded_for_books:
                 b = r.get("best_book") or "untagged"
                 if is_bet365(b):
-                    b = "bet365"
+                    continue
                 bl = book_label(b)
+                if bl not in ALLOWED_BEST_BOOKS:
+                    continue
                 if r.get("result") == "HIT":
                     book_stats[bl]["hit"] += 1
                 else:
@@ -1826,7 +1829,7 @@ def main():
                             undo_result(rid, r.get("source"))
                             st.rerun()
 
-        with st.expander(f"DNP list ({len(dnps)})", expanded=False):
+        with st.expander(f"DNP list ({len(dnps)}) — hidden from HIT%", expanded=False):
             for r in sorted(dnps, key=lambda x: x.get("player") or ""):
                 meths = list(dict.fromkeys(normalize_method(m) for m in (r.get("methods") or [])))
                 tags = render_method_tags(meths, limit=6)
@@ -1839,198 +1842,72 @@ def main():
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>New here?</b> MLB Over <b>0.5 HR</b> only · book patterns.
-            Gold = MGM · Green = DK · Blue = FD · Bright green = 365.
-            Expand each section. Results stores every method + HIT% by best book.
+            <b>Quick start:</b> MLB Over <b>0.5 HR</b> only.
+            Gold = MGM · Green = DK · Blue = FD.
+            Expand a section only when you need the details.
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown("### 1. The Board")
-        with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
+        st.markdown("### Board")
+        with st.expander("🟢 TAKE IT · edge · score", expanded=True):
             st.markdown(f"""
-**TAKE IT** needs **all** of these:
+**TAKE IT** = **2+ core methods** · edge ≥ **{EDGE_MIN}** · Over **0.5** only · not Spike/Dump · in lineup when RotoWire is loaded.
 
-- **2 or more core methods** (section 2) — **3+ ranks higher** and gets a score boost
-- **Edge pts ≥ {EDGE_MIN}**
-- Over **0.5 HR** only (never 1.5 / 2.5)
-- **Not** a Spike or Dump (line moved ±{BIG_MOVE}+ from first lock → last lock)
-- In **RotoWire lineup** when lineups are loaded
+**3+ methods** rank higher. **Score 0–100** = methods + edge + bonuses − Spike/Dump penalty.
 
-**PASS** = has 2+ core methods but fails edge, or got **FADE** for a huge move.
-
-**Score 0–100** = methods + edge + bonuses minus Spike/Dump penalty.
-
-When logged as TAKE IT, **every method tag** and **best_book** are saved for Results.
-            """)
-        with st.expander("📊 Edge pts"):
-            st.markdown("""
-**Edge pts** = best price minus the **median** across books on the same prop.
-
-- Outliers **150+** away from the pack are ignored when picking “best”
-- You need **60 or more** for TAKE IT
-- This is a **gap between books**, not a bankroll / Kelly EV calculator
+**Edge** = best price − median across books (outliers 150+ ignored). Gap between books — not Kelly EV.
             """)
 
-        st.markdown("### 2. Core methods (count toward the 2+)")
-        with st.expander("🎯 DraftKings 10s"):
-            st.markdown("""
-Flag any **DraftKings** prop whose American odds **end in 10**
-(examples: +110, +210, +310, +410, +510).
-
-No team requirement. Solo flag. Counts as a **personal strong** method.
-            """)
-        with st.expander("🎰 BetMGM Classic Endings (STRICT)", expanded=True):
-            st.markdown("""
-**Same team only.** If team IDs are missing from the feed, MGM groups will not fire.
-
-| Mode | Size | Valid endings |
-|------|------|----------------|
-| **Pair** | **Exactly 2** players | **00, 25, 50, 75** |
-| **Group** | **Exactly 3** players | **00, 25, 50, 75** |
-
-**Not allowed:** 4+ players, mixed teams.
-
-**Sticky / survivor:**
-
-- **Stayed in group** — **one tag only** if still in a MGM ending group across **3+** fetches
-- **Last one left** — was in an early **group of 3** and is still present later
-            """)
-        with st.expander("💚 Bet365"):
-            st.markdown("""
-When the API returns Bet365:
-
-- **B365 850** — prices that are 850 (or end in 850)
-- **B365 Match 25 / 50 / 75** — same-team pairs or groups of 3 (like MGM, **no 00**)
-- **B365 > HardRock** — Bet365 priced higher than Hard Rock on the same player
-- **Exact Match** also includes 365 when prices line up across books
-            """)
-        with st.expander("🤝 Exact Match · ⭐ MGM Exact · 🔢 Digits"):
-            st.markdown("""
-**Exact Match** — same American price on **2+ books** for the same player.
-
-**MGM Exact** — two or three players on the **same team** with the **exact same** MGM price.
-
-**Digits** — MGM same-team **pairs or groups of three** with endings **25, 50, or 75** only.
-            """)
-        with st.expander("💙 FanDuel patterns"):
+        st.markdown("### Core methods")
+        with st.expander("🎯 DK 10 · 🎰 MGM · 💚 365 · 🤝 Exact · 💙 FD · 📈 Signals", expanded=True):
             st.markdown(f"""
-Only if the player **already has** a DK or MGM core method:
+**DK 10** — DraftKings odds ending in **10**.
 
-- FanDuel **≥ +{FD_MIN}** ending in **10, 20, 30, 60, 70, or 90**
-- Or exact **+600**
+**MGM** — **same team only** · **exactly 2** (pair) or **exactly 3** (group) · endings **00 / 25 / 50 / 75**.  
+**Stayed in group** = still in a group across **3+** fetches (one tag, no 2x/8x spam).  
+**Last one left** = early group of 3, still there later.
 
-FanDuel alone does **not** count toward the 2+.
-            """)
-        with st.expander("📈 Signals"):
-            st.markdown("""
-**Counts as core when strong:**
+**Bet365** — when available: **850s**, same-team 25/50/75 pairs/groups, **B365 > HardRock**.
 
-- **Same on 3+ books**
-- **Multi-book Shorten** (price dropping on 2+ books)
+**Exact / MGM Exact / Digits** — same price across books, or same-team MGM exact / 25·50·75 pairs & triples.
 
-**Noise (does not count toward 2+):**
+**FD** — only with DK or MGM already: ≥ **+{FD_MIN}** ending 10/20/30/60/70/90, or exact **+600**.
 
-- **Multi-book Lengthen**
-- Single-book stuck / single outlier higher alone
+**Signals (core):** Same on 3+ books · Multi-book Shorten.  
+**Noise:** Multi-book Lengthen, Spike/Dump, late/missing chips.
             """)
 
-        st.markdown("### 3. Noise (does NOT count toward 2+)")
-        with st.expander("What is ignored for TAKE IT gating"):
-            st.markdown("""
-- Just Appeared / Added Late / Gone Missing
-- Not in lineup / In lineup · missing books
-- Price moved (single book)
-- **Spike** / **Dump** / FADE tags (also **block TAKE IT** when move ≥ 100 pts)
-- FD under MGM (support note only)
-- Multi-book Lengthen
-            """)
-
-        st.markdown("### 4. Spike · Dump · Lock · Lineups · DNP")
-        with st.expander("📈 Spike / Dump (line memory)", expanded=True):
+        st.markdown("### Line memory · lock · DNP")
+        with st.expander("Spike / Dump · 🔒 Lock · 🟡 DNP"):
             st.markdown(f"""
-From **first locked price → last locked price** per book (prefers MGM):
+**Spike / Dump** — first lock → last lock ±**{BIG_MOVE}+** → FADE, cannot TAKE IT.
 
-- **Spike** ≥ +{BIG_MOVE} → **FADE** · cannot be TAKE IT
-- **Dump** ≤ −{BIG_MOVE} → **FADE** · cannot be TAKE IT
-- Mild moves still show on cards and Results
+**Lock** — Fetch merges prices; survives live drop. Used for Log a HR / MLB auto.
+
+**DNP** — did not play (RotoWire). PENDING/MISS can auto-convert. **HIT% ignores DNP.**  
+No DNP count on the main strip — only in Results expander if you need it.
             """)
-        with st.expander("🔒 Pregame lock"):
+
+        st.markdown("### Results · Name Magic · flow")
+        with st.expander("HIT% by best book · methods history"):
             st.markdown("""
-Every **Fetch** **merges** player → book → price into the lock file, plus **first** and **last** prices for movement.
+Every pending/graded row stores **methods** + **best_book**.
 
-When a game goes live and books disappear, those rows are **not deleted**.
+**Hit rate by BEST book** shows only **MGM / DK / FD / HardRock / Caesars**  
+(Untagged + Bet365 hidden until you’re sure about those logs).
 
-- Log a HR / MLB auto can use lock for price (prefers MGM → DK → FD → 365)
-- Tab: **Odds Tricks → 🔒 Lock**
+Filter graded list by player or method text (e.g. `MGM 75`).
             """)
-        with st.expander("📋 RotoWire · 🟡 DNP", expanded=True):
-            st.markdown("""
-**RotoWire** = free public lineups.
-
-When loaded:
-
-- **The Board** hides non-starters
-- **TAKE IT is not logged** for bench names
-- **PENDING → DNP** for take_it rows not in lineup
-- **MISS → DNP** (today) for graded misses not in lineup
-
-**DNP** = did not play. **HIT% = HIT / (HIT + MISS)** — DNP excluded.
-
-Buttons: **RotoWire**, **PENDING→DNP**, **MISS→DNP**, or manual **🟡**.
-            """)
-
-        st.markdown("### 5. Name Magic")
-        with st.expander("Initials & names"):
+        with st.expander("Name Magic · How to run a slate"):
             st.markdown(f"""
-Only pairs where **both** players have:
+Name pairs need **{NAME_METHODS_MIN}+ core** + a strong method · different teams · max {NAME_MAX_PAIRS}. Jr. ignored.
 
-- **{NAME_METHODS_MIN}+ core methods**
-- At least one **personal strong** method
-- **Different teams** preferred
+1. Load → Fetch (lock)  
+2. **RotoWire** after lineups  
+3. Board → TAKE IT  
+4. Live → **Sync MLB** · grade · review methods + best-book HIT%  
 
-Types: Same Init · Double Init · Cross Init · Same Last · Same First
-
-Capped at **{NAME_MAX_PAIRS}** pairs. **Jr. / Sr.** ignored.
-            """)
-
-        st.markdown("### 6. Results · What's Going Today · Auto HR")
-        with st.expander("📊 Results — methods + best book HIT%", expanded=True):
-            st.markdown("""
-**Pending** and **All graded** show method tags, score, core, edge, movement, source.
-
-**Hit rate by BEST book** — among HIT/MISS only, groups by the book stored as `best_book`
-(FD vs MGM vs DK vs 365, etc.) so you can see which “best” book is actually hitting.
-
-**Filter** graded rows by player or method text.
-
-Older logs may say “no methods stored” if from before this feature.
-            """)
-        with st.expander("🔥 What's Going Today"):
-            st.markdown("""
-Top banner = today’s **HIT** counts by **book + ending**, color-coded.
-
-**Descriptive only — not a prediction.** DNP does not affect these chips.
-            """)
-        with st.expander("⚡ Auto HR (MLB)"):
-            st.markdown("""
-**Sync MLB HRs** uses the free MLB Stats API.
-
-1. PENDING TAKE IT for that player → auto **HIT**
-2. Else new **mlb_auto** HIT (price from 🔒 lock when possible)
-
-Also runs on auto-refresh and after Fetch.
-            """)
-
-        st.markdown("### 7. First-timers")
-        with st.expander("How to run a slate"):
-            st.markdown(f"""
-1. **Load Games** → select → **Fetch Odds** (builds 🔒 while pregame)
-2. **RotoWire** after lineups (auto PENDING + MISS → DNP for bench)
-3. **The Board** → TAKE IT (watch Spike/Dump fades)
-4. **Odds Tricks** / **Name Magic** for deep dive
-5. After live: **Sync MLB HRs** · grade remaining · review Results methods + best-book HIT%
-
-Auto-refresh about every **{REFRESH_MINUTES}** minutes when the tab stays open.
+Auto-refresh ~ every **{REFRESH_MINUTES}** min.
             """)
 
     st.markdown(
