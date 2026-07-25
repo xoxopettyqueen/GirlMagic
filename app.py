@@ -1,11 +1,7 @@
 """
 Girl Magic Odds ✨
-
-PAIR first · TRIO only if no pair
-🔥 HOT = pair/trio + FD + DK
-🟢 TAKE = PAIR only · ≥+500 · not faded · not HardRock-best
-Rotated in = new pair/trio · Stayed = same group
-HR 0.5 only · Lock tab paginated · full Glossary restored
+PAIR first · HOT = pair/trio+FD+DK · TAKE = PAIR only ≥+500
+HR 0.5 · Lock paginated · full Glossary · Results method + book hit rates
 """
 
 import streamlit as st
@@ -30,12 +26,7 @@ try:
 except ImportError:
     HAS_BS4 = False
 
-st.set_page_config(
-    page_title="Girl Magic Odds ✨",
-    page_icon="👑",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
+st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
@@ -98,6 +89,10 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .gloss-block{background:#1a0f28;border:1px solid #7c3aed;border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:.84rem;line-height:1.45}
 .gloss-block h4{color:#f9a8d4;margin:0 0 6px 0;font-size:.95rem}
 .gloss-block b{color:#fbcfe8}
+.stat-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.stat-pill{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;font-size:.78rem;min-width:120px}
+.stat-pill b{color:#f9a8d4;display:block;font-size:.95rem}
+.stat-pill span{color:#e9d5ff}
 .stTabs [data-baseweb="tab-list"]{gap:4px;flex-wrap:nowrap !important;overflow-x:auto !important;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:6px}
 .stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:8px 10px;font-size:.75rem;white-space:nowrap !important;flex-shrink:0}
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
@@ -143,6 +138,16 @@ LOCK_PAGE = 30
 MGM_STAY_SNAPS = 3
 LINEUP_MIN_NAMES = 80
 
+TRACK_METHODS = {
+    "🔥 HOT", "MGM Pair", "MGM Trio", "MGM Exact",
+    "MGM 00", "MGM 25", "MGM 50", "MGM 75",
+    "B365 Pair", "B365 Trio", "B365 850", "B365 > HardRock", "B365 Match",
+    "DK 10", "Was DK 10", "DK FD-style",
+    "FD Pattern", "FD 600",
+    "Stayed in group", "Last one left", "Rotated in",
+}
+TRACK_BOOKS = {"MGM", "DK", "FD", "365", "HardRock"}
+
 FD_METHODS = {"FD Pattern", "FD 600"}
 DK_METHODS = {"DK 10", "Was DK 10", "DK FD-style"}
 PAIR_TAGS = {"MGM Pair", "B365 Pair", "MGM Exact"}
@@ -155,7 +160,7 @@ NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing", "Not in lineup",
     "In lineup · missing books", "Price moved", "Shortening", "Lengthening",
     "Multi-book Lengthen", "Spike", "Dump", "FADE · Spike", "FADE · Dump",
-    "HardRock best",
+    "HardRock best", "Manual HR log", "MLB auto HR",
 }
 
 
@@ -177,10 +182,13 @@ def is_core_method(m):
 
 
 def normalize_method(m):
-    if str(m).startswith("Stayed in group") or m == "Stayed in the group":
+    s = str(m)
+    if s.startswith("Stayed in group") or s == "Stayed in the group":
         return "Stayed in group"
-    if str(m).startswith("Rotated"):
+    if s.startswith("Rotated"):
         return "Rotated in"
+    if s.startswith("B365 Match"):
+        return "B365 Match"
     return m
 
 
@@ -278,11 +286,9 @@ def group_board_tags(methods):
         if extras:
             label += " · " + " + ".join(dict.fromkeys(extras))
         out.append(label)
-    b_ending, b_kind, b_extra = None, None, []
+    b_kind, b_extra = None, []
     for m in ms:
-        if m.startswith("B365 Match"):
-            b_ending = m.split()[-1]
-        elif m == "B365 Pair":
+        if m == "B365 Pair":
             b_kind = "Pair"
         elif m == "B365 Trio":
             b_kind = b_kind or "Trio"
@@ -290,12 +296,12 @@ def group_board_tags(methods):
             b_extra.append("850")
         elif m == "B365 > HardRock":
             b_extra.append(">HR")
-    if b_kind or b_ending or b_extra:
+        elif m == "B365 Match":
+            b_extra.append("match")
+    if b_kind or b_extra:
         label = "💚 B365"
         if b_kind:
             label += f" {b_kind}"
-        if b_ending:
-            label += f" · {b_ending}"
         if b_extra:
             label += " · " + " + ".join(b_extra)
         out.append(label)
@@ -1128,6 +1134,64 @@ def render_whats_going_today():
     """, unsafe_allow_html=True)
 
 
+def build_results_analytics(rows):
+    graded = [r for r in rows if r.get("result") in ("HIT", "MISS")]
+    method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    for r in graded:
+        key = "hit" if r.get("result") == "HIT" else "miss"
+        for m in r.get("methods") or []:
+            nm = normalize_method(m)
+            if nm in TRACK_METHODS or nm.startswith("MGM ") or nm.startswith("B365"):
+                method_stats[nm][key] += 1
+        bl = book_label(r.get("best_book"))
+        if bl in TRACK_BOOKS:
+            book_stats[bl][key] += 1
+
+    def pack(d):
+        out = []
+        for name, s in d.items():
+            total = s["hit"] + s["miss"]
+            if total < 1:
+                continue
+            pct = int(round(100 * s["hit"] / total))
+            out.append({"name": name, "hit": s["hit"], "miss": s["miss"], "total": total, "pct": pct})
+        out.sort(key=lambda x: (-x["pct"], -x["total"], x["name"]))
+        return out
+
+    return pack(method_stats), pack(book_stats)
+
+
+def render_results_analytics(rows):
+    methods, books = build_results_analytics(rows)
+    if not methods and not books:
+        st.caption("Grade some PENDING rows (HIT/MISS) to see method + book hit rates.")
+        return
+    with st.expander("📈 Method & book hit rates", expanded=True):
+        if methods:
+            st.markdown("**By method**")
+            html = '<div class="stat-row">'
+            for m in methods[:16]:
+                html += (
+                    f'<div class="stat-pill"><b>{m["pct"]}%</b>'
+                    f'<span>{m["name"]}</span><br>'
+                    f'<span>{m["hit"]}H / {m["miss"]}M · {m["total"]}</span></div>'
+                )
+            html += "</div>"
+            st.markdown(html, unsafe_allow_html=True)
+        if books:
+            st.markdown("**By best book** (Untagged skipped)")
+            html = '<div class="stat-row">'
+            for b in books:
+                html += (
+                    f'<div class="stat-pill"><b>{b["pct"]}%</b>'
+                    f'<span>{b["name"]}</span><br>'
+                    f'<span>{b["hit"]}H / {b["miss"]}M · {b["total"]}</span></div>'
+                )
+            html += "</div>"
+            st.markdown(html, unsafe_allow_html=True)
+
+
 def fetch_rotowire_lineups():
     if not HAS_BS4:
         return set(), "Install beautifulsoup4", False
@@ -1398,6 +1462,8 @@ def detect_mgm_rotation(mgm_history):
                 if not player_sigs[p] or player_sigs[p][-1] != sig:
                     player_sigs[p].append(sig)
     return {p for p, sigs in player_sigs.items() if len(sigs) >= 2}
+
+
 
 
 def run_flags(df_all, previous_df=None, record_history=True, selected_events=None):
@@ -2037,7 +2103,7 @@ Prefer different teams. Same-team name matches are rarer on purpose.
 </div>
         """, unsafe_allow_html=True)
 
-    with st.expander("📊 Edge · Score · HardRock"):
+    with st.expander("📊 Edge · Score · HardRock · Results tracking"):
         st.markdown("""
 <div class="gloss-block">
 <h4>Edge</h4>
@@ -2049,7 +2115,11 @@ Built from core methods + pair/trio bonus + stayed/rotated + FD/DK heat − fade
 </div>
 <div class="gloss-block">
 <h4>HardRock best</h4>
-If HardRock has the longest number and everyone else is shorter → automatic <b>PASS</b>. We do not chase HardRock tops.
+If HardRock has the longest number and everyone else is shorter → automatic <b>PASS</b>.
+</div>
+<div class="gloss-block">
+<h4>Method & book hit rates</h4>
+On Results: after you mark HIT/MISS, we show % by method (MGM Pair, DK 10, etc.) and by best book (MGM/DK/FD/365/HardRock). DNP and Untagged are skipped.
 </div>
         """, unsafe_allow_html=True)
 
@@ -2444,6 +2514,8 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
+        render_results_analytics(rows_view)
+
         total_p = len(pending)
         page = st.session_state.get("pending_page", 0)
         max_page = max(0, (total_p - 1) // PENDING_PAGE) if total_p else 0
@@ -2543,3 +2615,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
