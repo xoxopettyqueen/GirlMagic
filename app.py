@@ -2,11 +2,10 @@
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
 
-FIXES:
-- Pregame lock: last fetch prices saved; never wiped when MGM/books vanish after live
-- Results: ALL pending HIT/MISS, oldest first, paginated
-- Log a HR for anyone who went (not only TAKE IT)
-- Full glossary
+- Pregame lock (MGM etc. kept after live)
+- Results: all PENDING, oldest first, paginated, HIT/MISS
+- Undo on graded (HIT→PENDING; manual HR deleted)
+- Log a HR · full glossary
 """
 
 import streamlit as st
@@ -91,7 +90,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ─── constants ───────────────────────────────────────────────
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 REGIONS = "us,us2"
@@ -136,7 +134,6 @@ NOISE_METHODS = {
     "Multi-book Lengthen",
 }
 
-# ─── helpers ─────────────────────────────────────────────────
 def is_bet365(book):
     b = str(book).lower()
     return "bet365" in b or b == "365"
@@ -296,7 +293,7 @@ def name_in_lineup(player, lineup_names):
                 return True
     return False
 
-# ─── PREGAME LOCK (core fix) ─────────────────────────────────
+# ── pregame lock ─────────────────────────────────────────────
 def load_pregame():
     if not os.path.exists(PREGAME_FILE):
         return {}
@@ -314,10 +311,7 @@ def save_pregame(data):
         pass
 
 def update_pregame_lock(df):
-    """
-    MERGE only — never delete.
-    When MGM (or any book) disappears after live, last prices stay locked.
-    """
+    """MERGE only — never delete when books vanish after live."""
     if df is None or df.empty:
         return load_pregame()
     lock = load_pregame()
@@ -336,7 +330,6 @@ def update_pregame_lock(df):
                 "locked_at": ts, "updated_at": ts,
             }
         entry = lock[player]
-        # keep newest event name if present
         if event:
             entry["event"] = event
         entry["date"] = today
@@ -347,7 +340,6 @@ def update_pregame_lock(df):
             "ending": last_two(price),
             "seen_at": ts,
         }
-        # convenience fields for MGM
         if "betmgm" in book or book == "mgm":
             entry["mgm_price"] = int(price) if price is not None else entry.get("mgm_price")
             entry["mgm_ending"] = last_two(price)
@@ -371,7 +363,7 @@ def locked_price_str(player):
             parts.append(f"{book_label(b)} {format_odds(p)}")
     return " · ".join(parts)
 
-# ─── history / results ───────────────────────────────────────
+# ── history / results ────────────────────────────────────────
 def load_history():
     if not os.path.exists(HISTORY_FILE): return
     try:
@@ -432,6 +424,26 @@ def save_results(rows):
     except Exception:
         pass
 
+def set_result_status(row_id, status):
+    """PENDING | HIT | MISS"""
+    rows = load_results()
+    for row in rows:
+        if row.get("id") == row_id:
+            row["result"] = status
+            if status == "HIT" and row.get("ending") is None and row.get("best_price") is not None:
+                row["ending"] = last_two(row["best_price"])
+            save_results(rows)
+            return True
+    return False
+
+def undo_result(row_id, source):
+    """TAKE IT → PENDING. Manual HR → delete row."""
+    if source == "manual_hr":
+        rows = [x for x in load_results() if x.get("id") != row_id]
+        save_results(rows)
+        return True
+    return set_result_status(row_id, "PENDING")
+
 def log_bet_this(ev_board):
     rows = load_results()
     today = today_az()
@@ -443,7 +455,6 @@ def log_bet_this(ev_board):
             continue
         price = item.get("best_price")
         book = item.get("best_book", "")
-        # prefer locked MGM if we have it for ending context
         locked = get_locked(item["player"])
         mgm_p = locked.get("mgm_price")
         ending = last_two(price)
@@ -452,8 +463,7 @@ def log_bet_this(ev_board):
             "date": today, "time": now_az(), "player": item["player"],
             "score": item["score"], "edge": int(item["edge"]),
             "best_price": price, "best_book": book,
-            "ending": ending,
-            "mgm_locked": mgm_p,
+            "ending": ending, "mgm_locked": mgm_p,
             "mgm_ending": locked.get("mgm_ending"),
             "locked_books": locked.get("books"),
             "methods": item["methods"], "core": item.get("method_count", 0),
@@ -471,7 +481,6 @@ def log_manual_hr(player, price, book):
     player = clean_name(player)
     if not player:
         return False, "Need a player name"
-    # if price blank, try pregame lock
     if (price is None or str(price).strip() == "") and book:
         locked = get_locked(player)
         books = locked.get("books") or {}
@@ -483,7 +492,7 @@ def log_manual_hr(player, price, book):
     try:
         price = int(str(price).replace("+", "").replace(",", "").strip())
     except Exception:
-        return False, "Need a valid price (or a locked pregame price for that book)"
+        return False, "Need a valid price (or locked pregame for that book)"
     book = (book or "untagged").strip().lower()
     ending = last_two(price)
     rid = f"hr_{today}_{player}_{price}_{book}_{len(rows)}"
@@ -512,7 +521,6 @@ def build_whats_going_today(rows):
         ending = r.get("ending")
         if ending is None and price is not None:
             ending = last_two(price)
-        # prefer MGM locked ending when logging was untagged
         if ending is None and r.get("mgm_ending") is not None:
             ending = r["mgm_ending"]
             book = book or "betmgm"
@@ -546,7 +554,7 @@ def render_whats_going_today():
             for label, cnt, hot in chips
         )
     else:
-        chips_html = '<span class="trend-chip">No HITs yet — grade PENDING (all pages) or Log a HR</span>'
+        chips_html = '<span class="trend-chip">No HITs yet — grade PENDING or Log a HR</span>'
     st.markdown(f"""
     <div class="trends-today">
         <div class="trends-today-header">
@@ -711,7 +719,6 @@ def build_team_map(df):
             tm[r["player"]] = r["team"]
     return tm
 
-# ─── flags (same logic; lock updated outside) ────────────────
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if df.empty: return [], [], []
 
@@ -1319,9 +1326,9 @@ def main():
     lu_n = len(st.session_state.get("lineup_names", set()))
     st.markdown(f"""
     <div class="how-to">
-        🔒 <b>Pregame lock</b> = last prices kept when MGM/books vanish after live · locked players: <b>{lock_n}</b><br>
-        📊 Results = <b>all</b> PENDING (oldest first, page through) · Log a HR for anyone who went<br>
-        📋 snaps: <b>{hist_n}</b> · lineup names: <b>{lu_n}</b>
+        🔒 <b>Pregame lock</b> keeps last prices when MGM vanishes · locked: <b>{lock_n}</b><br>
+        📊 Results: grade <b>all</b> PENDING · <b>↩️ Undo</b> on wrong HIT/MISS · Log a HR<br>
+        snaps: <b>{hist_n}</b> · lineup: <b>{lu_n}</b>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1370,7 +1377,6 @@ def main():
         with st.spinner("Fetching odds…" if manual_fetch else "Auto-refresh…"):
             df, found = do_fetch(odds_key, sgo_key, chosen, options)
         if df is not None and not df.empty:
-            # ★ PREGAME LOCK — merge only, never wipe
             update_pregame_lock(df)
             if "odds" in st.session_state:
                 st.session_state["previous_odds"] = st.session_state["odds"]
@@ -1381,10 +1387,10 @@ def main():
             st.session_state["new_fetch"] = True
             st.success(
                 f"{'Auto-refreshed' if auto_fetch else 'Loaded'} {len(df)} props · "
-                f"{len(chosen)} game(s) · pregame lock updated ({len(st.session_state.get('pregame_lock', {}))} players)"
+                f"lock: {len(st.session_state.get('pregame_lock', {}))} players"
             )
         else:
-            st.warning("No 0.5 HR odds for the selected game(s). Lock file unchanged.")
+            st.warning("No 0.5 HR odds. Lock unchanged.")
 
     found = st.session_state.get("found_books", [])
     if found:
@@ -1417,14 +1423,11 @@ def main():
     b365_hr = [r for r in trend_good if "B365 > HardRock" in r.get("methods", [])]
 
     counts = {
-        "dk": len([r for r in results if r["type"] == "dk"]),
         "mgm": len([r for r in results if r["type"] == "mgm"]),
         "fd": len([r for r in results if r["type"] == "fd"]),
-        "b365": len([r for r in results if r["type"] == "b365"]),
         "late": len([r for r in results if r["type"] == "late"]),
         "fallen": len(fallen),
         "bets": len([e for e in ev_board if e["is_bet"]]),
-        "nolinup": len([r for r in results if "Not in lineup" in r.get("methods", [])]),
         "lock": len(st.session_state.get("pregame_lock") or {}),
     }
 
@@ -1498,7 +1501,6 @@ def main():
 
     with tabs[8]:
         st.markdown('<div class="queen-banner">📈 Signals</div>', unsafe_allow_html=True)
-        st.caption("Multi-book Lengthen = noise.")
         items = [r for r in results if r["type"] == "signal"]
         if not items: st.info("None.")
         else:
@@ -1552,7 +1554,6 @@ def main():
 
     with tabs[11]:
         st.markdown('<div class="queen-banner">👻 Late Adds</div>', unsafe_allow_html=True)
-        st.caption("Gone Missing shows 🔒 last pregame prices when available.")
         items = [r for r in results if r["type"] == "late"]
         if not items: st.info("None.")
         else:
@@ -1564,7 +1565,6 @@ def main():
 
     with tabs[12]:
         st.markdown('<div class="queen-banner">💀 Fallen Off</div>', unsafe_allow_html=True)
-        st.caption("Often = live feed dropped MGM. 🔒 lock keeps last prices.")
         if not fallen: st.info("None.")
         else:
             cols = st.columns(2)
@@ -1572,18 +1572,13 @@ def main():
                 with cols[idx % 2]:
                     st.markdown(f'<div class="card grid-card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
 
-    # ── Pregame Lock tab ──
     with tabs[13]:
         st.markdown('<div class="queen-banner">🔒 Pregame Lock</div>', unsafe_allow_html=True)
-        st.caption(
-            "Updated on every Fetch. When MGM disappears after first pitch, "
-            "these numbers stay. Use them to Log a HR with the right ending."
-        )
+        st.caption("Merge-only. MGM gone after live → numbers stay here.")
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
-            st.info("No lock yet — Fetch odds while games are still pregame.")
+            st.info("Fetch while pregame to build lock.")
         else:
-            # sort by name
             items = sorted(lock.items(), key=lambda x: x[0])
             st.write(f"**{len(items)}** players locked")
             q = st.text_input("Filter player", key="lock_filter")
@@ -1606,9 +1601,7 @@ def main():
                     ev = entry.get("event") or ""
                     st.markdown(
                         f'<div class="card grid-card"><b>{player}</b>'
-                        f'{(" · " + ev) if ev else ""}<br>'
-                        + "<br>".join(lines)
-                        + f'<br><small>updated {entry.get("updated_at", "")[:19]}</small></div>',
+                        f'{(" · " + ev) if ev else ""}<br>' + "<br>".join(lines) + "</div>",
                         unsafe_allow_html=True,
                     )
                 shown += 1
@@ -1621,20 +1614,20 @@ def main():
     show(tabs[17], "last", "👩‍👧 Same Last Name", "Different teams.")
     show(tabs[18], "first", "👯 Same First Name", "Different teams.")
 
-    # ── Results: ALL pending, oldest first, paginated ──
+    # ── Results + Undo ───────────────────────────────────────
     with tabs[19]:
         st.markdown('<div class="queen-banner">📊 Results Tracker</div>', unsafe_allow_html=True)
         st.caption(
-            "PENDING never deletes when a game goes live. Grade **every** pick "
-            "(oldest first). Log a HR for anyone who went — price can come from 🔒 lock."
+            "Wrong HIT? Scroll to **Recent graded** → **↩️ Undo** "
+            "(TAKE IT → PENDING · manual HR → deleted)."
         )
 
-        st.markdown("#### ⚡ Log a HR (anyone)")
+        st.markdown("#### ⚡ Log a HR")
         lc1, lc2, lc3, lc4 = st.columns([2, 1, 1, 1])
         with lc1:
             hr_player = st.text_input("Player", placeholder="Paul Goldschmidt", key="hr_player")
         with lc2:
-            hr_price = st.text_input("Price (blank = use lock)", placeholder="475", key="hr_price")
+            hr_price = st.text_input("Price (blank = lock)", placeholder="475", key="hr_price")
         with lc3:
             hr_book = st.selectbox(
                 "Book",
@@ -1654,10 +1647,7 @@ def main():
 
         rows = load_results()
         today_only = st.checkbox("Today only", value=True, key="res_today")
-        if today_only:
-            rows_view = [r for r in rows if r.get("date") == today_az()]
-        else:
-            rows_view = rows
+        rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
 
         pending = sorted(
             [r for r in rows_view if r.get("result") == "PENDING"],
@@ -1698,13 +1688,13 @@ def main():
         max_page = max(0, (total_p - 1) // PENDING_PAGE) if total_p else 0
         if page > max_page:
             page = 0
-            st.session_state["pending_page"] = 0
+            st.session_            st.session_state["pending_page"] = 0
         start = page * PENDING_PAGE
         end = min(start + PENDING_PAGE, total_p)
         slice_p = pending[start:end]
 
         st.markdown(f"#### Pending — **{start + 1 if total_p else 0}–{end} of {total_p}** (oldest first)")
-        st.caption("Every name below has HIT and MISS. Use Next/Prev until none left.")
+        st.caption("Every row has HIT / MISS. Use Next until none left.")
 
         nav1, nav2, nav3 = st.columns([1, 1, 4])
         with nav1:
@@ -1721,8 +1711,8 @@ def main():
         else:
             for r in slice_p:
                 rid = r["id"]
-                end = r.get("ending")
-                end_s = f" · ends {int(end):02d}" if end is not None else ""
+                endg = r.get("ending")
+                end_s = f" · ends {int(endg):02d}" if endg is not None else ""
                 mgm_l = r.get("mgm_locked")
                 mgm_s = f" · 🔒 MGM {format_odds(mgm_l)}" if mgm_l is not None else ""
                 lock_s = locked_price_str(r["player"])
@@ -1736,116 +1726,102 @@ def main():
                 c1, c2, _ = st.columns([1, 1, 4])
                 with c1:
                     if st.button("🟢 HIT", key=f"hit_{rid}"):
-                        for row in rows:
-                            if row["id"] == rid:
-                                row["result"] = "HIT"
-                                if row.get("ending") is None and row.get("best_price") is not None:
-                                    row["ending"] = last_two(row["best_price"])
-                        save_results(rows)
+                        set_result_status(rid, "HIT")
                         st.rerun()
                 with c2:
                     if st.button("🔴 MISS", key=f"miss_{rid}"):
-                        for row in rows:
-                            if row["id"] == rid:
-                                row["result"] = "MISS"
-                        save_results(rows)
+                        set_result_status(rid, "MISS")
                         st.rerun()
 
         st.markdown("#### Recent graded / logged HRs")
+        st.caption("↩️ Undo = TAKE IT back to PENDING · manual HR deleted")
         if not done:
             st.info("None yet.")
         else:
-            for r in reversed(done[-30:]):
+            for r in reversed(done[-40:]):
+                rid = r["id"]
                 icon = "🟢" if r["result"] == "HIT" else "🔴"
-                end = r.get("ending")
-                end_s = f" ends {int(end):02d}" if end is not None else ""
+                endg = r.get("ending")
+                end_s = f" ends {int(endg):02d}" if endg is not None else ""
                 src = " · manual" if r.get("source") == "manual_hr" else ""
                 st.markdown(
                     f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} "
                     f"{book_label(r.get('best_book'))}{end_s}{src}"
                 )
+                u1, u2, u3, _ = st.columns([1, 1, 1, 3])
+                with u1:
+                    if st.button("↩️ Undo", key=f"undo_{rid}"):
+                        undo_result(rid, r.get("source"))
+                        st.rerun()
+                with u2:
+                    if r.get("result") != "HIT" and st.button("🟢 HIT", key=f"fix_hit_{rid}"):
+                        set_result_status(rid, "HIT")
+                        st.rerun()
+                with u3:
+                    if r.get("result") != "MISS" and st.button("🔴 MISS", key=f"fix_miss_{rid}"):
+                        set_result_status(rid, "MISS")
+                        st.rerun()
 
     with tabs[20]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>New here?</b> MLB Over 0.5 HR props · book patterns. Expand each section.
+            <b>New here?</b> MLB Over 0.5 HR · book patterns. Expand each section.
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("### 1. Board")
         with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
             st.markdown("""
-**TAKE IT** = 2+ core methods · edge pts ≥ 60 · Over 0.5 HR · in lineup when RotoWire loaded.
-
-**PASS** = 2+ core but edge under 60.
-
-Score 0–100 ranks the board.
+**TAKE IT** = 2+ core · edge ≥ 60 · Over 0.5 HR · in lineup when RotoWire loaded.  
+**PASS** = 2+ core but edge under 60. Score 0–100 ranks the board.
             """)
         with st.expander("📊 Edge pts"):
-            st.markdown("**Best − median** across books (outlier 150+ ignored). Need **60+** for TAKE IT.")
+            st.markdown("**Best − median** (outlier 150+ ignored). Need **60+** for TAKE IT.")
 
         st.markdown("### 2. Core methods")
         with st.expander("🎯 DK 10s"):
             st.markdown("DraftKings prices ending in **10**.")
         with st.expander("🎰 BetMGM"):
-            st.markdown("Same team · endings **00 / 25 / 50 / 75** · pairs preferred · group of 3+ ok · **Stayed in group** / **Last one left** strong.")
+            st.markdown("Same team · **00 / 25 / 50 / 75** · pairs preferred · **Stayed in group** / **Last one left** strong.")
         with st.expander("💚 Bet365"):
-            st.markdown("When API has 365: **850s** · pairs/groups **25/50/75** (no 00) · **B365 > HardRock** · Exact Match includes 365.")
+            st.markdown("When API has 365: **850s** · pairs/groups **25/50/75** (no 00) · **B365 > HardRock**.")
         with st.expander("⭐ Exact · Digits · FD"):
-            st.markdown(f"""
-**Exact** = same price across books. **MGM Exact** = same MGM price same team.  
-**Digits** = MGM pairs/groups 25/50/75 same team.  
-**FD** = ≥ +{FD_MIN} endings 10/20/30/60/70/90 or +600 — only with DK or MGM.
-            """)
+            st.markdown(f"**Exact** / **MGM Exact** / **Digits** 25/50/75 same team. **FD** ≥ +{FD_MIN} or +600 with DK/MGM.")
         with st.expander("📈 Signals"):
             st.markdown("**Multi-book Shorten** = core. **Multi-book Lengthen** = noise.")
 
         st.markdown("### 3. Noise")
         with st.expander("Does not count toward 2+"):
-            st.markdown("Late tags · Not in lineup · single-book move · FADE · FD under MGM (support) · Multi-book Lengthen.")
+            st.markdown("Late tags · Not in lineup · single-book move · FADE · FD under MGM · Multi-book Lengthen.")
 
-        st.markdown("### 4. Lock · Late · Fallen · Lineups")
-        with st.expander("🔒 Pregame lock (critical)", expanded=True):
+        st.markdown("### 4. Lock · Late · Fallen")
+        with st.expander("🔒 Pregame lock", expanded=True):
             st.markdown("""
-Every **Fetch** merges player → book → price into `girl_magic_pregame.json`.
-
-When the game goes live and **MGM (or any book) disappears from the API**, we **do not delete** those rows.
-
-**Gone Missing / Fallen** show 🔒 last pregame prices.  
-**Log a HR** can leave price blank and pull from the lock for that book.
+Every **Fetch** merges prices into lock. When MGM vanishes after live, rows **stay**.  
+Gone Missing / Fallen show 🔒 last prices. Log a HR can use blank price → lock.
             """)
-        with st.expander("👻 Late · 💀 Fallen · 📋 RotoWire"):
-            st.markdown("""
-Late = one card per player. Fallen = left The Board for selected games.  
-RotoWire filters non-starters off The Board when loaded.
-            """)
+        with st.expander("👻 Late · 💀 Fallen · RotoWire"):
+            st.markdown("Late = one card/player. Fallen = left Board for selected games. RotoWire filters bench.")
 
         st.markdown("### 5. Name Magic")
         with st.expander("Initials & names"):
-            st.markdown(f"Both need **{NAME_METHODS_MIN}+ core** + personal strong · **different teams** · max {NAME_MAX_PAIRS}.")
+            st.markdown(f"**{NAME_METHODS_MIN}+ core** + personal strong · different teams · max {NAME_MAX_PAIRS}.")
 
-        st.markdown("### 6. Results · What's Going Today")
-        with st.expander("📊 How to grade everything", expanded=True):
+        st.markdown("### 6. Results")
+        with st.expander("📊 Grade + Undo", expanded=True):
             st.markdown("""
-**PENDING** stays after games go live — it is **not** erased when MGM drops.
-
-List is **oldest first**. Use **Next →** until you’ve hit HIT/MISS on **all** of them.
-
-**Log a HR** = anyone who went yard (even never TAKE IT). Blank price → uses 🔒 lock.
-
-**What's Going Today** counts HITs by ending + book (MGM 75, etc.). Descriptive only.
+PENDING stays after live. **Oldest first** · page through **all**.  
+**↩️ Undo**: TAKE IT grade → PENDING · manual HR → deleted.  
+What's Going Today = HIT endings (descriptive only).
             """)
 
         st.markdown("### 7. First-timers")
         with st.expander("How to run"):
             st.markdown(f"""
-1 Load Games → select → **Fetch** (builds 🔒 lock while pregame)  
-2 Refresh RotoWire  
-3 Board → TAKE IT  
-4 After live: grade **all** PENDING pages · Log HR with lock prices  
-5 Watch What's Going Today for ending clusters  
-
+1 Load → select → **Fetch** (builds 🔒)  
+2 RotoWire → Board  
+3 After live: grade all PENDING · Undo mistakes · Log HR from lock  
 Auto every **{REFRESH_MINUTES} min**.
             """)
 
