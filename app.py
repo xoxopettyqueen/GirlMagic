@@ -1,11 +1,12 @@
 """
 Girl Magic Odds ✨ — full app
 
-HOT TAKE  = MGM pair/trio (same endings) + FD pattern + DK 10 at some point (live or Was)
-TAKE IT   = 2+ core methods · not faded · price not too short
-PASS      = faded (±150) · price too low · or missing what we need
+🔥 HOT TAKE = live MGM pair/trio + FD pattern + DK 10 (live or Was)
+🟢 TAKE IT  = live MGM/365 pair or trio + 2+ cores · not faded · price ≥ +400
+⚪ PASS     = no live primary · fade ±150 · or price too low
 
-Edge = info only. Board order: HOT TAKE → TAKE IT → PASS
+Stayed / Last one left = boost tags only (do NOT unlock TAKE IT alone)
+Edge = info only · Board: HOT → TAKE IT → PASS
 """
 
 import streamlit as st
@@ -109,7 +110,7 @@ METHODS_MIN = 2
 METHODS_STRONG = 3
 OUTLIER_GAP = 150
 BIG_MOVE = 150
-PRICE_MIN_TAKE = 400   # American odds shorter than this → PASS (price too low)
+PRICE_MIN_TAKE = 400
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
@@ -117,12 +118,13 @@ FD_MIN = 500
 PENDING_PAGE = 20
 MGM_STAY_SNAPS = 3
 
-PRIMARY_GROUP_METHODS = {
+# Live pair/trio only — Stayed / Last one left do NOT unlock TAKE IT alone
+LIVE_PRIMARY_METHODS = {
     "MGM 00", "MGM 25", "MGM 50", "MGM 75", "MGM Exact",
     "Match 25", "Match 50", "Match 75",
     "B365 Match 25", "B365 Match 50", "B365 Match 75",
-    "Stayed in group", "Last one left",
 }
+PRIMARY_GROUP_METHODS = LIVE_PRIMARY_METHODS | {"Stayed in group", "Last one left"}
 FD_METHODS = {"FD Pattern", "FD 600"}
 DK_METHODS = {"DK 10", "Was DK 10"}
 PERSONAL_STRONG = PRIMARY_GROUP_METHODS | FD_METHODS | DK_METHODS | {
@@ -165,15 +167,23 @@ def count_core_methods(meths):
     return len([m for m in cleaned if is_core_method(m)])
 
 
-def has_primary_group(meths):
-    """MGM or Bet365 same-team pair/trio (same endings) or stayed/last one left."""
+def has_live_primary(meths):
+    """Live MGM/365 pair or trio only. Stayed / Last one left do NOT count."""
     cleaned = {normalize_method(m) for m in meths}
     for m in cleaned:
-        if m in PRIMARY_GROUP_METHODS:
+        if m in LIVE_PRIMARY_METHODS:
             return True
-        if m.startswith("MGM ") or m.startswith("B365 Match") or m.startswith("Match "):
+        if m.startswith("B365 Match"):
+            return True
+        if m.startswith("MGM ") and m[4:] in ("00", "25", "50", "75"):
+            return True
+        if m.startswith("Match ") and m[6:] in ("25", "50", "75"):
             return True
     return False
+
+
+def has_primary_group(meths):
+    return has_live_primary(meths)
 
 
 def has_fd_heat(meths):
@@ -181,7 +191,6 @@ def has_fd_heat(meths):
 
 
 def has_dk_support(meths):
-    """Live DK 10 OR Was DK 10 at some point today."""
     return bool({normalize_method(m) for m in meths} & DK_METHODS)
 
 
@@ -194,7 +203,7 @@ def has_personal_strong(meths):
 
 
 def has_dk_or_mgm(meths):
-    return has_dk_support(meths) or has_primary_group(meths)
+    return has_dk_support(meths) or has_live_primary(meths)
 
 
 def method_tag_class(m):
@@ -236,7 +245,7 @@ def girl_magic_score(core_count, edge, methods):
     if core_count >= METHODS_STRONG:
         method_pts += 6
     bonus = 0
-    if has_primary_group(methods):
+    if has_live_primary(methods):
         bonus += 18
     if "Last one left" in methods:
         bonus += 10
@@ -1146,7 +1155,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     was_dk10 = detect_was_dk10(current_prices, st.session_state.get("price_history", []))
     for player in was_dk10:
         results.append({"type": "dk_was", "label": player,
-            "reason": "Was DK 10 earlier · fell off (still counts for HOT)",
+            "reason": "Was DK 10 earlier · counts toward HOT",
             "event": "", "methods": ["Was DK 10"]})
         methods_map[player].append("Was DK 10")
 
@@ -1204,7 +1213,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 meth.append("Last one left")
                 extra.append("Last one left")
         meth = list(dict.fromkeys(meth))
-        reason = f"MGM {kind} ends in {d:02d} · {grp.get('team', '')} · PRIMARY"
+        reason = f"MGM {kind} ends in {d:02d} · {grp.get('team', '')} · LIVE PRIMARY"
         if extra:
             reason += " · " + " + ".join(dict.fromkeys(extra))
         results.append({"type": "mgm", "label": " + ".join(names), "reason": reason,
@@ -1231,7 +1240,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 if len(names) not in (2, 3):
                     continue
                 results.append({"type": "mgm_exact", "label": " + ".join(names),
-                    "reason": f"MGM Exact {format_odds(price)} · {team} · PRIMARY",
+                    "reason": f"MGM Exact {format_odds(price)} · {team} · LIVE PRIMARY",
                     "event": event, "methods": ["MGM Exact"]})
                 for nm in names:
                     methods_map[nm].append("MGM Exact")
@@ -1246,7 +1255,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     continue
                 kind = "pair" if len(names) == 2 else "group of 3"
                 results.append({"type": "digit", "label": " + ".join(names),
-                    "reason": f"Digit {kind} ends {d} · {team} · PRIMARY",
+                    "reason": f"Digit {kind} ends {d} · {team} · LIVE PRIMARY",
                     "event": event, "methods": [f"Match {d}"]})
                 for nm in names:
                     methods_map[nm].append(f"Match {d}")
@@ -1268,7 +1277,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 kind = "pair" if len(names) == 2 else "group of 3"
                 meth = [f"B365 Match {d}"]
                 results.append({"type": "b365", "label": " + ".join(names),
-                    "reason": f"B365 {kind} ends {d} · {team} · PRIMARY",
+                    "reason": f"B365 {kind} ends {d} · {team} · LIVE PRIMARY",
                     "event": event, "methods": meth})
                 for nm in names:
                     methods_map[nm].extend(meth)
@@ -1324,10 +1333,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
 
-    # ── Board labels ──
-    # HOT TAKE = MGM pair/trio + FD pattern + DK 10 at some point + not fade + price ok
-    # TAKE IT  = 2+ core methods + not fade + price ok
-    # PASS     = fade · price too low · or fails the above
+    # Board — TAKE IT requires LIVE primary only
     ev_board = []
     player_events = defaultdict(set)
     for _, r in df.iterrows():
@@ -1352,14 +1358,14 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         meths = list(dict.fromkeys(normalize_method(m) for m in raw_meths))
 
         core_count = count_core_methods(meths)
-        if core_count < METHODS_MIN:
+        # Only put people with live primary OR 2+ cores on the board
+        primary = has_live_primary(meths)
+        if not primary and core_count < METHODS_MIN:
             continue
 
         has_fade = player in spike_dump or "Spike" in meths or "Dump" in meths
         price_too_low = best is not None and int(best) < PRICE_MIN_TAKE
-        primary = has_primary_group(meths)
 
-        # HOT = MGM pair/trio + FD + DK10 (live or was)
         is_hot = (
             primary
             and has_fd_heat(meths)
@@ -1370,7 +1376,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if is_hot and "🔥 HOT" not in meths:
             meths.insert(0, "🔥 HOT")
 
-        # TAKE IT = MUST be in MGM/365 pair or trio (not every random 2 methods)
+        # TAKE IT = live MGM/365 pair or trio only
         is_bet = (
             primary
             and core_count >= METHODS_MIN
@@ -1380,7 +1386,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
         display_meths = [
             m for m in meths
-            if is_core_method(m) or m in ("Spike", "Dump", "🔥 HOT", "Was DK 10", "HardRock highest")
+            if is_core_method(m) or m in ("Spike", "Dump", "🔥 HOT", "Was DK 10", "HardRock highest", "Stayed in group", "Last one left")
         ]
         score = girl_magic_score(core_count, edge, display_meths)
         _, bars, level = get_confidence(score, is_bet, core_count, is_hot=is_hot)
@@ -1388,9 +1394,11 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
         why = f"Score {score}/100 · {core_count} core · Edge {int(edge)} (info)"
         if is_hot:
-            why += " · 🔥 HOT = MGM group + FD + DK10"
-        elif has_primary_group(meths):
-            why += " · PRIMARY group"
+            why += " · 🔥 HOT = live MGM + FD + DK10"
+        elif primary:
+            why += " · LIVE primary pair/trio"
+        else:
+            why += " · no live primary → PASS"
         if "Was DK 10" in meths:
             why += " · was DK 10"
         if price_too_low:
@@ -1409,7 +1417,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "bars": bars, "level": level, "method_count": core_count,
             "team": team_map.get(player, ""),
             "events": list(player_events.get(player, [])), "movement": mv_note,
-            "has_primary": has_primary_group(meths),
+            "has_primary": primary,
         })
 
     def board_rank(x):
@@ -1505,10 +1513,10 @@ def main():
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(
         f'<div class="how-to">'
-        f'<b>🔥 HOT:</b> MGM pair/trio + FD + DK10 (live or was) · '
-        f'<b>TAKE IT:</b> 2+ cores · '
-        f'<b>PASS:</b> fade ±{BIG_MOVE} or price &lt; +{PRICE_MIN_TAKE} · '
-        f'Edge = info only · 🔒 {lock_n}'
+        f'<b>🔥 HOT:</b> live MGM pair/trio + FD + DK10 · '
+        f'<b>TAKE IT:</b> live MGM/365 pair or trio only · '
+        f'<b>PASS:</b> no live primary · fade ±{BIG_MOVE} · price &lt; +{PRICE_MIN_TAKE} · '
+        f'Stayed alone ≠ TAKE · 🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -1606,7 +1614,7 @@ def main():
     if found:
         note = ""
         if "betmgm" not in found and not any("mgm" in x for x in found):
-            note = " · <b>MGM not in this fetch</b>"
+            note = " · <b>MGM not in this fetch</b> — TAKE IT needs live MGM/365 pairs"
         st.markdown(f'<div class="info-box"><b>Books:</b> {", ".join(found)}{note}</div>', unsafe_allow_html=True)
 
     odds = st.session_state.get("odds", [])
@@ -1628,12 +1636,15 @@ def main():
     graded_n = hits_n + misses_n
     hit_pct = int(hits_n / graded_n * 100) if graded_n else 0
     n_was_dk = len([r for r in results if r["type"] == "dk_was"])
+    n_hot = len([e for e in ev_board if e.get("is_hot") and e.get("is_bet")])
+    n_take = len([e for e in ev_board if e["is_bet"] and not e.get("is_hot")])
+    n_pass = len([e for e in ev_board if not e["is_bet"]])
 
     st.markdown(f"""
     <div class="petty-row">
-      <div class="petty-box"><div class="petty-num">{len([e for e in ev_board if e.get('is_hot') and e.get('is_bet')])}</div><div class="petty-label">🔥 HOT</div></div>
-      <div class="petty-box"><div class="petty-num">{len([e for e in ev_board if e['is_bet'] and not e.get('is_hot')])}</div><div class="petty-label">🟢 TAKE IT</div></div>
-      <div class="petty-box"><div class="petty-num">{len([e for e in ev_board if not e['is_bet']])}</div><div class="petty-label">⚪ PASS</div></div>
+      <div class="petty-box"><div class="petty-num">{n_hot}</div><div class="petty-label">🔥 HOT</div></div>
+      <div class="petty-box"><div class="petty-num">{n_take}</div><div class="petty-label">🟢 TAKE IT</div></div>
+      <div class="petty-box"><div class="petty-num">{n_pass}</div><div class="petty-label">⚪ PASS</div></div>
       <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='mgm'])}</div><div class="petty-label">🎰 MGM 2/3</div></div>
       <div class="petty-box"><div class="petty-num">{n_was_dk}</div><div class="petty-label">📉 Was DK 10</div></div>
       <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT%</div></div>
@@ -1647,11 +1658,11 @@ def main():
     with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
         st.caption(
-            f"🔥 HOT = MGM pair/trio + FD + DK10 (live or was) · "
-            f"TAKE IT = 2+ cores · PASS = fade ±{BIG_MOVE} or price < +{PRICE_MIN_TAKE}"
+            f"🔥 HOT = live MGM + FD + DK10 · TAKE IT = live MGM/365 pair/trio only · "
+            f"PASS = no live primary / fade ±{BIG_MOVE} / price < +{PRICE_MIN_TAKE}"
         )
         if not ev_board:
-            st.info("Select games and fetch.")
+            st.info("Select games and fetch. TAKE IT needs live MGM or 365 pairs.")
         else:
             cols = st.columns(2)
             for idx, item in enumerate(ev_board):
@@ -1692,7 +1703,7 @@ def main():
             st.caption("Had DK ends-in-10 earlier · counts toward 🔥 HOT")
             render_card_grid([r for r in results if r["type"] == "dk_was"])
         with sub[2]:
-            st.caption("PRIMARY · Exactly 2 or 3 · same team · 00/25/50/75")
+            st.caption("LIVE PRIMARY · Exactly 2 or 3 · same team · 00/25/50/75")
             render_card_grid([r for r in results if r["type"] == "mgm"])
         with sub[3]:
             render_card_grid([r for r in results if r["type"] == "match"])
@@ -1701,7 +1712,7 @@ def main():
         with sub[5]:
             render_card_grid([r for r in results if r["type"] == "digit"])
         with sub[6]:
-            st.caption("Stacks with MGM + DK → 🔥 HOT")
+            st.caption("With live MGM + DK → 🔥 HOT")
             render_card_grid([r for r in results if r["type"] == "fd"])
         with sub[7]:
             render_card_grid([r for r in results if r["type"] == "b365"])
@@ -2019,65 +2030,46 @@ def main():
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>Board labels (in order):</b><br>
-            🔥 <b>HOT TAKE</b> = MGM pair/trio (same endings) <b>+</b> FanDuel pattern <b>+</b> DK 10 at some point (live or Was)<br>
-            🟢 <b>TAKE IT</b> = <b>2 or more</b> core methods · not faded · price not too short<br>
-            ⚪ <b>PASS</b> = things we don’t like (fade ±150) <b>or</b> price too low
+            <b>Board order:</b><br>
+            🔥 <b>HOT TAKE</b> = live MGM pair/trio <b>+</b> FanDuel pattern <b>+</b> DK 10 (live or Was)<br>
+            🟢 <b>TAKE IT</b> = <b>live</b> MGM/365 pair or trio only (exactly 2 or 3, same team, same endings)<br>
+            ⚪ <b>PASS</b> = no live primary · fade ±150 · or price too low<br>
+            <b>Stayed / Last one left</b> boost score but do <b>not</b> unlock TAKE IT alone.
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown("### Board labels")
-        with st.expander("🔥 HOT TAKE · 🟢 TAKE IT · ⚪ PASS", expanded=True):
+        with st.expander("🔥 HOT · 🟢 TAKE IT · ⚪ PASS", expanded=True):
             st.markdown(f"""
-**🔥 HOT TAKE** — all of these:
+**🔥 HOT TAKE** needs all of:
 
-1. **MGM pair or trio** (exactly 2 or 3, same team, endings **00 / 25 / 50 / 75**)  
-   — or Bet365 same-team 25/50/75 when live  
-2. **FanDuel pattern** (≥ +{FD_MIN} ending 10/20/30/60/70/90, or exact +600)  
-3. **DK 10 at some point** — live **DK 10** *or* **Was DK 10** (fell off earlier)  
+1. **Live** MGM pair/trio (or Bet365) — same team, exactly 2 or 3, endings 00/25/50/75  
+2. **FanDuel** pattern (≥ +{FD_MIN} ends 10/20/30/60/70/90 or +600)  
+3. **DK 10** live **or** **Was DK 10**  
 4. Not ±{BIG_MOVE} faded · best price ≥ +{PRICE_MIN_TAKE}
 
-**🟢 TAKE IT** — **2 or more** core methods · not faded · best price ≥ +{PRICE_MIN_TAKE}  
-(Does **not** need the full HOT stack.)
+**🟢 TAKE IT** = **live** pair/trio only · 2+ cores · not faded · price ≥ +{PRICE_MIN_TAKE}
 
-**⚪ PASS** — faded (±{BIG_MOVE} spike or dump) **or** price too low (&lt; +{PRICE_MIN_TAKE}) **or** only weak/noise tags.
+**⚪ PASS** = not in a live pair/trio · **or** faded · **or** price &lt; +{PRICE_MIN_TAKE}
 
-**Edge** (best book higher than the pack median) is **info only** — it does **not** decide TAKE vs PASS.
+**Edge** is display only — does not decide TAKE vs PASS.
             """)
 
-        st.markdown("### Primary methods")
-        with st.expander("🎰 MGM · 💚 Bet365 · 💙 FD · 🎯 DK", expanded=True):
+        with st.expander("🎰 Live primary · Stayed · DK · FD"):
             st.markdown(f"""
-| Signal | Rule |
-|--------|------|
-| **MGM pair/trio** | Same team · exactly **2** or **3** · endings **00, 25, 50, 75** |
-| **Bet365 pair/trio** | Same team · 2 or 3 · **25, 50, 75** (no 00) |
-| **Stayed in group** | Still in an MGM ending group across **3+** fetches |
-| **Last one left** | Was in an early group of 3 · still there later |
-| **FD pattern** | ≥ +{FD_MIN} ending 10/20/30/60/70/90 or **+600** (stacks on primary) |
-| **DK 10** | Live DraftKings ends in **10** |
-| **Was DK 10** | Had ends-in-10 earlier today · fell off · **still counts for HOT** |
-
-**±{BIG_MOVE}** move either way (first lock → last) → **FADE** → PASS.
+| Tag | What it is |
+|-----|------------|
+| **MGM 00/25/50/75** | Live pair or group of 3 · same team · **this unlocks TAKE IT** |
+| **Stayed in group** | Still in group 3+ fetches · **boost only** |
+| **Last one left** | Survived from early group of 3 · **boost only** |
+| **DK 10 / Was DK 10** | Live ends-in-10 or fell off earlier · needed for **HOT** |
+| **FD Pattern / 600** | Stacks on live primary for **HOT** |
+| **±{BIG_MOVE}** | Spike or dump → **FADE → PASS** |
             """)
 
-        st.markdown("### Results · DNP · HardRock")
-        with st.expander("HIT% · best book · DNP"):
+        with st.expander("Results · HIT% · DNP"):
             st.markdown("""
-Logs store **methods** + **best_book**.
-
-**Best-book HIT%** = MGM / DK / FD / **HardRock** / Caesars (no Untagged / 365 until solid).
-
-**DNP** = did not play — excluded from HIT%. RotoWire can auto PENDING/MISS → DNP.
-            """)
-        with st.expander("How to run a slate"):
-            st.markdown(f"""
-1. Load Games → select → Fetch (builds 🔒 lock)  
-2. RotoWire after lineups post  
-3. Board: **HOT** first · then TAKE IT · then PASS  
-4. Live → Sync MLB HRs · grade · review method + best-book rates  
-
-Auto-refresh ~ every **{REFRESH_MINUTES}** min.
+Best-book HIT%: **MGM · DK · FD · HardRock · Caesars** (no Untagged/365).  
+DNP = did not play · excluded from HIT%. RotoWire can auto-mark DNP.
             """)
 
     st.markdown(
