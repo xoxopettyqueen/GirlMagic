@@ -1720,58 +1720,215 @@ def main():
                     unsafe_allow_html=True,
                 )
 
-    with tab_gloss:
+        with tab_gloss:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
             <b>New here?</b> MLB Over <b>0.5 HR</b> only · book patterns.
             Gold = MGM · Green = DK · Blue = FD · Bright green = 365.
+            Expand each section. Results stores every method so you can review what hit.
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("### 1. The Board")
         with st.expander("🟢 TAKE IT vs ⚪ PASS", expanded=True):
             st.markdown(f"""
-**TAKE IT** needs: **2+ core methods** (3+ ranks higher) · edge ≥ **{EDGE_MIN}** · Over **0.5** only ·  
-not Spike/Dump · in RotoWire lineup when loaded. Methods are **saved** on each log for Results review.
+**TAKE IT** needs **all** of these:
+
+- **2 or more core methods** (section 2) — **3+ ranks higher** on the board and gets a score boost
+- **Edge pts ≥ {EDGE_MIN}**
+- Over **0.5 HR** only (never 1.5 / 2.5)
+- **Not** a Spike or Dump (line moved ±{BIG_MOVE}+ from first lock → last lock)
+- In **RotoWire lineup** when lineups are loaded
+
+**PASS** = has 2+ core methods but fails edge, or got **FADE** for a huge move.
+
+**Score 0–100** = methods + edge + bonuses (Last one left, Stayed in group, etc.) minus Spike/Dump penalty.
+
+When a player is logged as TAKE IT, **every method tag is saved** so Results can show what matched later.
             """)
         with st.expander("📊 Edge pts"):
-            st.markdown("Best minus median. Outliers 150+ ignored. Need 60+.")
-
-        st.markdown("### 2. Core methods")
-        with st.expander("🎯 DK 10s"):
-            st.markdown("DraftKings odds ending in **10**.")
-        with st.expander("🎰 BetMGM STRICT", expanded=True):
             st.markdown("""
-**Same team only.** Pair = **exactly 2** · Group = **exactly 3** · endings **00/25/50/75**.  
-**Stayed in group** = one tag (≥3 snaps). **Last one left** = early 3-group survivor.
-            """)
-        with st.expander("💚 Bet365 · Exact · FD · Signals"):
-            st.markdown(f"B365 850 · Exact/MGM Exact/Digits (2 or 3 same team) · FD ≥+{FD_MIN} or +600 with DK/MGM · Same on 3+ / Multi-book Shorten.")
+**Edge pts** = best price minus the **median** across books on the same prop.
 
-        st.markdown("### 3. Results · DNP · movement")
-        with st.expander("📊 Results methods history", expanded=True):
+- Outliers **150+** away from the pack are ignored when picking “best”
+- You need **60 or more** for TAKE IT
+- This is a **gap between books**, not a bankroll / Kelly EV calculator
+            """)
+
+        st.markdown("### 2. Core methods (count toward the 2+)")
+        with st.expander("🎯 DraftKings 10s"):
             st.markdown("""
-**All graded** shows every HIT/MISS with **method tags**, score, core, edge, movement.  
-Filter by player **or** method string (e.g. `MGM 75`, `DK 10`).  
-Older rows may say “no methods stored” if logged before this feature.
-            """)
-        with st.expander("🟡 DNP + RotoWire"):
-            st.markdown("RotoWire → PENDING+MISS not in lineup → DNP. HIT% ignores DNP. Manual 🟡 always available.")
-        with st.expander("Spike / Dump · Lock · Auto HR"):
-            st.markdown(f"±{BIG_MOVE}+ first→last lock = FADE. Lock survives live. Sync MLB auto-logs HRs.")
+Flag any **DraftKings** prop whose American odds **end in 10**  
+(examples: +110, +210, +310, +410, +510).
 
-        st.markdown("### 4. Name Magic · First-timers")
-        with st.expander("Name Magic"):
-            st.markdown(f"{NAME_METHODS_MIN}+ core + strong · different teams · max {NAME_MAX_PAIRS}.")
+No team requirement. Solo flag. Counts as a **personal strong** method.
+            """)
+        with st.expander("🎰 BetMGM Classic Endings (STRICT)", expanded=True):
+            st.markdown("""
+**Same team only.** If team IDs are missing from the feed, MGM groups will not fire (better than wrong teams).
+
+| Mode | Size | Valid endings |
+|------|------|----------------|
+| **Pair** | **Exactly 2** players | **00, 25, 50, 75** |
+| **Group** | **Exactly 3** players | **00, 25, 50, 75** |
+
+**Not allowed:** 4+ players, mixed teams, “almost” pairs.
+
+**Sticky / survivor (strong):**
+
+- **Stayed in group** — **one tag only** if still in a MGM ending group across **3+** fetches  
+  (no more Stayed in group 2x / 3x / 8x spam that wrecked method rates)
+- **Last one left** — was in an early **group of 3** and is still present later — often the one that hits
+
+Pairs always matter; groups of three are the fallback shape you care about.
+            """)
+        with st.expander("💚 Bet365"):
+            st.markdown("""
+When the API returns Bet365:
+
+- **B365 850** — prices that are 850 (or end in 850)
+- **B365 Match 25 / 50 / 75** — same-team pairs or groups of 3 (like MGM, **no 00**)
+- **B365 > HardRock** — Bet365 priced higher than Hard Rock on the same player
+- **Exact Match** also includes 365 when prices line up across books
+            """)
+        with st.expander("🤝 Exact Match · ⭐ MGM Exact · 🔢 Digits"):
+            st.markdown("""
+**Exact Match** — same American price on **2+ books** for the same player.
+
+**MGM Exact** — two or three players on the **same team** with the **exact same** MGM price.
+
+**Digits** — MGM same-team **pairs or groups of three** with endings **25, 50, or 75** only  
+(not random 40s / 60s).
+            """)
+        with st.expander("💙 FanDuel patterns"):
+            st.markdown(f"""
+Only if the player **already has** a DK or MGM core method:
+
+- FanDuel **≥ +{FD_MIN}** ending in **10, 20, 30, 60, 70, or 90**
+- Or exact **+600**
+
+FanDuel alone does **not** count toward the 2+.
+            """)
+        with st.expander("📈 Signals"):
+            st.markdown("""
+**Counts as core when strong:**
+
+- **Same on 3+ books**
+- **Multi-book Shorten** (price dropping on 2+ books)
+
+**Noise (does not count toward 2+):**
+
+- **Multi-book Lengthen** (we do **not** like lengthening on multiple books)
+- Single-book stuck / single outlier higher alone
+            """)
+
+        st.markdown("### 3. Noise (does NOT count toward 2+)")
+        with st.expander("What is ignored for TAKE IT gating"):
+            st.markdown("""
+- Just Appeared / Added Late / Gone Missing  
+- Not in lineup / In lineup · missing books  
+- Price moved (single book)  
+- **Spike** / **Dump** / FADE tags (also **block TAKE IT** when move ≥ 100 pts)  
+- FD under MGM (support note only)  
+- Multi-book Lengthen  
+- Outlier / Stuck chips that are not listed as core  
+            """)
+
+        st.markdown("### 4. Spike · Dump · Lock · Lineups · DNP")
+        with st.expander("📈 Spike / Dump (line memory)", expanded=True):
+            st.markdown(f"""
+From **first locked price → last locked price** per book (prefers MGM):
+
+- **Spike** ≥ +{BIG_MOVE} → **FADE** · cannot be TAKE IT  
+- **Dump** ≤ −{BIG_MOVE} → **FADE** · cannot be TAKE IT  
+- Mild moves still show on cards and Results so you remember what the line did  
+
+You said you hate huge spikes and huge dumps — the board respects that.
+            """)
+        with st.expander("🔒 Pregame lock"):
+            st.markdown("""
+Every **Fetch** **merges** player → book → price into the lock file, plus **first** and **last** prices for movement.
+
+When a game goes live and **MGM (or any book) disappears**, those rows are **not deleted**.
+
+- Gone Missing / Fallen can show 🔒 last pregame prices  
+- Log a HR / MLB auto can use lock for price (prefers MGM → DK → FD → 365)  
+- Tab: **Odds Tricks → 🔒 Lock**
+            """)
+        with st.expander("📋 RotoWire · 🟡 DNP", expanded=True):
+            st.markdown("""
+**RotoWire** = free public lineups.
+
+When loaded:
+
+- **The Board** hides non-starters  
+- **TAKE IT is not logged** for bench names  
+- **PENDING → DNP** for take_it rows not in lineup  
+- **MISS → DNP** (today) for graded misses who were not in lineup  
+
+**DNP** = did not play. **HIT% = HIT / (HIT + MISS)** — DNP is **excluded**.
+
+Buttons: **RotoWire**, **PENDING→DNP**, **MISS→DNP**, or manual **🟡** on any row.
+
+Always refresh RotoWire after lineups post (and again after late scratches).
+            """)
+
+        st.markdown("### 5. Name Magic")
+        with st.expander("Initials & names"):
+            st.markdown(f"""
+Only pairs where **both** players have:
+
+- **{NAME_METHODS_MIN}+ core methods**
+- At least one **personal strong** method (DK 10, MGM group/exact, FD pattern, B365, etc.)
+- **Different teams** preferred
+
+Types: Same Init · Double Init · Cross Init · Same Last · Same First  
+
+Capped at **{NAME_MAX_PAIRS}** pairs. **Jr. / Sr.** ignored in names.
+            """)
+
+        st.markdown("### 6. Results · What's Going Today · Auto HR")
+        with st.expander("📊 Results — methods history", expanded=True):
+            st.markdown("""
+**Pending** and **All graded HIT/MISS** show:
+
+- Player · price · book · ending  
+- **Method tags** (what matched that day)  
+- Score · core count · edge · movement · source  
+
+**Filter** by player name **or** method text (e.g. `MGM 75`, `DK 10`, `Stayed in group`).
+
+Toggle HITs / MISSes. **🟡 DNP** / **↩️ Undo** on each graded row.
+
+Older logs from before methods were saved may say “no methods stored.”
+            """)
+        with st.expander("🔥 What's Going Today"):
+            st.markdown("""
+Top banner = today’s **HIT** counts by **book + ending** (MGM 75, DK 10, etc.), color-coded.
+
+**Descriptive only — not a prediction.** DNP does not affect these chips.
+            """)
+        with st.expander("⚡ Auto HR (MLB)"):
+            st.markdown("""
+**Sync MLB HRs** uses the free MLB Stats API.
+
+1. PENDING TAKE IT for that player → auto **HIT**  
+2. Else new **mlb_auto** HIT (price from 🔒 lock when possible)  
+
+Also runs on auto-refresh and after Fetch. Manual log is backup only.
+            """)
+
+        st.markdown("### 7. First-timers")
         with st.expander("How to run a slate"):
-            st.markdown(f"Load → Fetch → **RotoWire** → Board → live **Sync MLB** → Results review methods. Auto ~{REFRESH_MINUTES} min.")
+            st.markdown(f"""
+1. **Load Games** → select games → **Fetch Odds** (builds 🔒 while pregame)  
+2. **RotoWire** after lineups (auto PENDING + MISS → DNP for bench)  
+3. **The Board** → TAKE IT rows (watch Spike/Dump fades)  
+4. **Odds Tricks** / **Name Magic** for deep dive  
+5. After live: **Sync MLB HRs** · grade remaining PENDING · review **Results** methods  
 
-    st.markdown(
-        '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls</div>',
-        unsafe_allow_html=True,
-    )
-
-
+Auto-refresh about every **{REFRESH_MINUTES}** minutes when the tab stays open.
+            """)
 if __name__ == "__main__":
     main()
