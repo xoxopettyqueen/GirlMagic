@@ -6,9 +6,9 @@ PAIR first · TRIO only if no pair
 🟢 TAKE = live pair/trio · not faded · ≥+400 · not HardRock-best
 ⚪ PASS = no primary · HardRock best · fade ±150 · price too low
 
-🪞 HR = RBI 1.5 — same price on O 0.5 HR + O 1.5 RBI · same book (FanDuel first)
-RBI 1.5 from batter_rbis + batter_rbis_alternate
-No cross-book Exact · MGM Exact stays · Tricks: one card per player
+RotoWire: CONFIRMED only for auto-DNP (projected never auto-DNP)
+Board: compact cards · HOT+TAKE open · PASS collapsed
+🪞 HR = RBI 1.5 from batter_rbis + batter_rbis_alternate
 """
 
 import streamlit as st
@@ -70,8 +70,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .chip-hr{background:#7f1d1d;border-color:#f87171;color:#fecaca}
 .chip-other{background:#3b0764;border-color:#a855f7;color:#e9d5ff}
 .chip-count{font-weight:900;margin-left:4px}
-.card{background:linear-gradient(155deg,#1a0f28,#251438);border:1px solid #f472b6;border-radius:12px;padding:10px 12px;color:#fdf2f8;position:relative;font-size:.86rem;margin-bottom:8px;width:100%;box-sizing:border-box}
-.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:12px 0 0 12px;background:#f472b6}
+.card{background:linear-gradient(155deg,#1a0f28,#251438);border:1px solid #f472b6;border-radius:10px;padding:7px 9px;color:#fdf2f8;position:relative;font-size:.78rem;margin-bottom:6px;width:100%;box-sizing:border-box}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;background:#f472b6}
 .bet{background:linear-gradient(155deg,#0c2418,#143d28)!important;border:1px solid #34d399!important}
 .hot{background:linear-gradient(155deg,#3b0764,#7c2d12)!important;border:1px solid #fb923c!important}
 .skip{background:#14101c!important;border:1px solid #4b5563!important;opacity:.88}
@@ -79,8 +79,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .move-up{border-color:#f87171!important;background:linear-gradient(155deg,#2a1010,#1a0f28)!important}
 .move-down{border-color:#34d399!important;background:linear-gradient(155deg,#0c2418,#1a0f28)!important}
 .move-like{border-color:#60a5fa!important;background:linear-gradient(155deg,#0f172a,#1a0f28)!important}
-.score-pill{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-weight:800;font-size:.8rem;padding:2px 9px;border-radius:12px;margin-left:5px}
-.tag{display:inline-block;background:#3b0764;color:#f9a8d4;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;margin:2px 2px 2px 0;border:1px solid #a855f7}
+.score-pill{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-weight:800;font-size:.68rem;padding:1px 7px;border-radius:10px;margin-left:4px}
+.tag{display:inline-block;background:#3b0764;color:#f9a8d4;font-size:.55rem;font-weight:700;padding:1px 5px;border-radius:8px;margin:1px 2px 1px 0;border:1px solid #a855f7}
 .tag-dk{background:#064e3b;color:#6ee7b7;border-color:#34d399}
 .tag-mgm{background:#422006;color:#fcd34d;border-color:#f59e0b}
 .tag-fd{background:#1e3a5f;color:#93c5fd;border-color:#3b82f6}
@@ -90,8 +90,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .tag-fade{background:#450a0a;color:#fca5a5;border-color:#f87171}
 .tag-hot{background:#7c2d12;color:#fdba74;border-color:#fb923c}
 .queen-banner{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.meter{display:flex;gap:3px;margin:3px 0 5px}
-.meter-bar{height:5px;width:16px;border-radius:3px;background:#374151}
+.meter{display:flex;gap:2px;margin:2px 0 3px}
+.meter-bar{height:4px;width:12px;border-radius:2px;background:#374151}
 .meter-bar.filled-high{background:linear-gradient(90deg,#f472b6,#c026d3)}
 .meter-bar.filled-strong{background:linear-gradient(90deg,#e879f9,#a855f7)}
 .meter-bar.filled-medium{background:linear-gradient(90deg,#c084fc,#7c3aed)}
@@ -108,8 +108,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
   .how-to{font-size:.78rem;padding:10px 12px}
   .petty-box{min-width:46%;flex:1 1 46%}
   .petty-num{font-size:1.05rem}.petty-label{font-size:.5rem}
-  .card{font-size:.82rem;padding:10px 11px;margin-bottom:10px}
-  .score-pill{font-size:.72rem}
+  .card{font-size:.74rem;padding:7px 8px;margin-bottom:6px}
+  .score-pill{font-size:.62rem}
   [data-testid="column"]{width:100% !important;flex:1 1 100% !important;min-width:100% !important}
   .stMultiSelect,.stTextInput,.stTextArea,.stSelectbox{width:100% !important}
   .stButton>button{min-height:46px !important;font-size:.9rem !important}
@@ -124,7 +124,6 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 MLB_API = "https://statsapi.mlb.com/api/v1"
 REGIONS = "us,us2"
-# 1.5 RBI often lives on alternate market
 MARKETS = "batter_home_runs,batter_rbis,batter_rbis_alternate"
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
@@ -460,6 +459,9 @@ def event_matches_chosen(ev, chosen):
 
 
 def name_in_lineup(player, lineup_names):
+    """None = unknown (projected only). True/False only when confirmed solid."""
+    if not st.session_state.get("lineup_confirmed"):
+        return None
     if not lineup_names:
         return None
     if len(lineup_names) < LINEUP_MIN_NAMES:
@@ -853,6 +855,9 @@ def dedupe_pending(rows, today):
 
 
 def auto_mark_dnp():
+    """Only when RotoWire CONFIRMED + enough names. Never on projected."""
+    if not st.session_state.get("lineup_confirmed"):
+        return 0
     lineup = st.session_state.get("lineup_names") or set()
     if not lineup or len(lineup) < LINEUP_MIN_NAMES:
         return 0
@@ -871,6 +876,8 @@ def auto_mark_dnp():
 
 
 def bulk_miss_to_dnp(today_only=True):
+    if not st.session_state.get("lineup_confirmed"):
+        return 0, "Projected only — auto-DNP OFF until confirmed"
     lineup = st.session_state.get("lineup_names") or set()
     if not lineup or len(lineup) < LINEUP_MIN_NAMES:
         return 0, "Lineup incomplete — auto-DNP off"
@@ -898,6 +905,7 @@ def log_bet_this(ev_board):
     for item in ev_board:
         if not item.get("is_bet"):
             continue
+        # Only skip board→pending when CONFIRMED DNP (False). None/True = keep.
         if lineup and name_in_lineup(item["player"], lineup) is False:
             continue
         if any(r.get("date") == today and r.get("player") == item["player"] and r.get("source") == "take_it" for r in rows):
@@ -1108,37 +1116,88 @@ def render_whats_going_today():
 
 
 def fetch_rotowire_lineups():
+    """
+    Prefer CONFIRMED lineups only.
+    Projected boxes that sit all day are ignored for auto-DNP.
+    Returns (names, message, confirmed_solid).
+    """
     if not HAS_BS4:
-        return set(), "Install beautifulsoup4"
+        return set(), "Install beautifulsoup4", False
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        ),
         "Accept-Language": "en-US,en;q=0.9",
     }
     try:
         r = requests.get(ROTOWIRE_URL, headers=headers, timeout=25)
         if r.status_code != 200:
-            return set(), f"RotoWire HTTP {r.status_code}"
+            return set(), f"RotoWire HTTP {r.status_code}", False
         soup = BeautifulSoup(r.content, "html.parser")
-        names = set()
-        selectors = [
-            "div.lineup__player a", "li.lineup__player a", "a.lineup__player-link",
-            "div.lineup__player div.name a", "div.lineup__player span.player-name", ".lineup__player a",
-        ]
-        for sel in selectors:
-            for el in soup.select(sel):
-                t = el.get_text(strip=True)
-                if t and len(t.split()) >= 2 and not t.lower().startswith("http"):
-                    names.add(clean_name(t))
-        for a in soup.select("a[href*='/baseball/player/']"):
-            t = a.get_text(strip=True)
-            if t and len(t.split()) >= 2:
-                names.add(clean_name(t))
-        n = len(names)
-        if n < LINEUP_MIN_NAMES:
-            return names, f"RotoWire incomplete · only {n} names (need ≥{LINEUP_MIN_NAMES}) — auto-DNP OFF"
-        return names, f"RotoWire · {n} lineup names · auto-DNP ON"
+
+        confirmed_names = set()
+        projected_names = set()
+
+        boxes = soup.select("div.lineup") or soup.select("div.lineup__box") or []
+        for box in boxes:
+            text = box.get_text(" ", strip=True).lower()
+            classes = " ".join(box.get("class") or []).lower()
+            is_confirmed = (
+                "confirmed" in text
+                or "is-confirmed" in classes
+                or "lineup__status--confirmed" in classes
+                or "has-confirmed" in classes
+            )
+            is_projected = (
+                ("expected" in text or "projected" in text or "lineup__status--expected" in classes)
+                and not is_confirmed
+            )
+
+            names_here = set()
+            for sel in (
+                "div.lineup__player a",
+                "li.lineup__player a",
+                "a.lineup__player-link",
+                "div.lineup__player div.name a",
+                ".lineup__player a",
+            ):
+                for el in box.select(sel):
+                    t = el.get_text(strip=True)
+                    if t and len(t.split()) >= 2 and not t.lower().startswith("http"):
+                        names_here.add(clean_name(t))
+            for a in box.select("a[href*='/baseball/player/']"):
+                t = a.get_text(strip=True)
+                if t and len(t.split()) >= 2:
+                    names_here.add(clean_name(t))
+
+            if is_confirmed:
+                confirmed_names |= names_here
+            else:
+                # projected or ambiguous → never use for auto-DNP
+                projected_names |= names_here
+
+        if not confirmed_names and not projected_names:
+            for a in soup.select("a[href*='/baseball/player/']"):
+                t = a.get_text(strip=True)
+                if t and len(t.split()) >= 2:
+                    projected_names.add(clean_name(t))
+
+        if confirmed_names:
+            n = len(confirmed_names)
+            solid = n >= LINEUP_MIN_NAMES
+            msg = (
+                f"RotoWire · CONFIRMED · {n} names"
+                + (" · auto-DNP ON" if solid else " · partial · auto-DNP OFF until more confirmed")
+            )
+            return confirmed_names, msg, solid
+
+        n = len(projected_names)
+        msg = f"RotoWire · PROJECTED only · {n} names · auto-DNP OFF until confirmed"
+        return projected_names, msg, False
+
     except Exception as e:
-        return set(), f"RotoWire error: {e}"
+        return set(), f"RotoWire error: {e}", False
 
 
 def fetch_events_oddsapi(api_key):
@@ -1178,7 +1237,6 @@ def flatten_oddsapi(data):
             if mkey == "batter_home_runs":
                 market_tag, want_point = "hr", 0.5
             elif mkey in ("batter_rbis", "batter_rbis_alternate"):
-                # 1.5 often on alternate; main is mostly 0.5
                 market_tag, want_point = "rbi", 1.5
             else:
                 continue
@@ -1350,10 +1408,6 @@ def detect_classic_groups(book_df, endings):
 
 
 def detect_hr_rbi_mirrors(df_all):
-    """
-    O 0.5 HR price == O 1.5 RBI price on the SAME book.
-    FanDuel first. Name-normalized match.
-    """
     results = []
     extra = defaultdict(list)
     if df_all is None or df_all.empty or "market" not in df_all.columns:
@@ -1599,6 +1653,7 @@ def run_flags(df_all, previous_df=None, record_history=True, selected_events=Non
         player_events[r["player"]].add(r["event"])
 
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
+        # Only drop when CONFIRMED DNP (False). Projected = None = keep.
         if lineup_names and name_in_lineup(player, lineup_names) is False:
             continue
         prices = g["price"].dropna().tolist()
@@ -1718,7 +1773,7 @@ def run_flags(df_all, previous_df=None, record_history=True, selected_events=Non
         p for p, ms in methods_map.items()
         if count_core_methods(ms) >= NAME_METHODS_MIN and has_personal_strong(ms)
     ]
-    if lineup_names and len(lineup_names) >= LINEUP_MIN_NAMES:
+    if lineup_names and st.session_state.get("lineup_confirmed") and len(lineup_names) >= LINEUP_MIN_NAMES:
         pool = [p for p in pool if name_in_lineup(p, lineup_names) is not False]
 
     init_map = defaultdict(list)
@@ -1846,11 +1901,38 @@ def render_move_card(c):
     )
 
 
+def render_board_card(item):
+    tags = render_method_tags(item["methods"])
+    meter = make_meter(item["bars"], item["level"])
+    cls = "bet" if item["is_bet"] else "skip"
+    if item.get("is_hot") and item["is_bet"]:
+        cls = "hot"
+    if "Spike" in item["methods"] or "Dump" in item["methods"] or "HardRock best" in item["methods"]:
+        cls = "skip fade-card"
+    if item.get("is_hot") and item["is_bet"]:
+        label = "🔥 HOT"
+    elif item["is_bet"]:
+        label = "🟢 TAKE"
+    else:
+        label = "⚪ PASS"
+    mv = item.get("movement") or ""
+    mv_line = f"<br><small>{mv}</small>" if mv else ""
+    st.markdown(f'''
+    <div class="card {cls}">
+      <b>{label}</b> — <b>{item["player"]}</b>
+      <span class="score-pill">{item["score"]}</span><br>{meter}
+      {format_odds(item["best_price"])} · {item["best_book"]}
+      · e{int(item["edge"])} · c{item.get("method_count", 0)}
+      <br>{tags}{mv_line}
+    </div>''', unsafe_allow_html=True)
+
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
         st.session_state["pregame_lock"] = load_pregame()
         st.session_state["history_loaded"] = True
+        st.session_state.setdefault("lineup_confirmed", False)
     if "pending_page" not in st.session_state:
         st.session_state["pending_page"] = 0
 
@@ -1864,12 +1946,12 @@ def main():
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
 
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
+    conf = "CONFIRMED" if st.session_state.get("lineup_confirmed") else "projected / off"
     st.markdown(
         f'<div class="how-to">'
-        f'<b>PAIR first</b> · <b>TRIO</b> if no pair · '
-        f'<b>🔥 HOT</b> = pair/trio + FD + DK · '
-        f'<b>🪞 HR=RBI</b> (FD first · alternate market) · '
-        f'<b>1 card/player</b> · 🔒 {lock_n}'
+        f'<b>PAIR first</b> · <b>HOT</b> = pair/trio + FD + DK · '
+        f'<b>DNP</b> only on <b>confirmed</b> lineups ({conf}) · '
+        f'🔒 {lock_n}'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -1887,10 +1969,11 @@ def main():
             st.session_state["events"] = fetch_events_oddsapi(odds_key)
     with c2:
         if st.button("📋 RotoWire"):
-            names, msg = fetch_rotowire_lineups()
+            names, msg, confirmed_solid = fetch_rotowire_lineups()
             st.session_state["lineup_names"] = names
             st.session_state["lineup_msg"] = msg
-            if names and len(names) >= LINEUP_MIN_NAMES:
+            st.session_state["lineup_confirmed"] = confirmed_solid
+            if confirmed_solid:
                 st.success(msg)
                 n_dnp = auto_mark_dnp()
                 n_miss, miss_msg = bulk_miss_to_dnp(today_only=True)
@@ -1902,7 +1985,7 @@ def main():
                 if bits:
                     st.info(" · ".join(bits))
             else:
-                st.warning(msg or "Incomplete lineup — auto-DNP disabled")
+                st.warning(msg)
     with c3:
         if st.button("⚡ Sync MLB HRs", type="primary"):
             with st.spinner("Pulling MLB HRs…"):
@@ -1919,6 +2002,11 @@ def main():
         st.session_state["last_hr_sync"] = refresh_count
         try:
             auto_log_mlb_hrs()
+            # Re-pull lineups on refresh so confirmed flips on automatically
+            names, msg, solid = fetch_rotowire_lineups()
+            st.session_state["lineup_names"] = names
+            st.session_state["lineup_msg"] = msg
+            st.session_state["lineup_confirmed"] = solid
             auto_mark_dnp()
         except Exception:
             pass
@@ -1941,7 +2029,7 @@ def main():
         st.session_state["last_odds_refresh"] = refresh_count
 
     if (manual_fetch or auto_fetch) and chosen:
-        with st.spinner("Fetching odds (HR + RBI main/alternate)…"):
+        with st.spinner("Fetching odds (HR + RBI)…"):
             df, found = do_fetch(odds_key, sgo_key, chosen, options)
         if df is not None and not df.empty:
             update_pregame_lock(df)
@@ -1962,8 +2050,7 @@ def main():
                     st.info(f"MLB: {a} new · {p} promoted")
             except Exception:
                 pass
-            if st.session_state.get("lineup_names"):
-                auto_mark_dnp()
+            auto_mark_dnp()
         else:
             st.warning("No props returned.")
 
@@ -2004,17 +2091,13 @@ def main():
         st.session_state.get("pregame_lock") or load_pregame(),
         df_all if not df_all.empty else None,
     )
-    n_moves = (
-        len(move_map["likes_down"]) + len(move_map["big_dump"])
-        + len(move_map["mild_up"]) + len(move_map["spikes"])
-    )
 
     st.markdown(f"""
     <div class="petty-row">
       <div class="petty-box"><div class="petty-num">{n_hot}</div><div class="petty-label">🔥 HOT</div></div>
-      <div class="petty-box"><div class="petty-num">{n_take}</div><div class="petty-label">🟢 TAKE IT</div></div>
+      <div class="petty-box"><div class="petty-num">{n_take}</div><div class="petty-label">🟢 TAKE</div></div>
       <div class="petty-box"><div class="petty-num">{n_pass}</div><div class="petty-label">⚪ PASS</div></div>
-      <div class="petty-box"><div class="petty-num">{n_pairs}</div><div class="petty-label">🎰 MGM PAIRS</div></div>
+      <div class="petty-box"><div class="petty-num">{n_pairs}</div><div class="petty-label">🎰 PAIRS</div></div>
       <div class="petty-box"><div class="petty-num">{n_mirror}</div><div class="petty-label">🪞 HR=RBI</div></div>
       <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT%</div></div>
     </div>
@@ -2027,57 +2110,46 @@ def main():
 
     with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
-        st.caption("0.5 HR only · PAIR first · 🪞 HR=RBI is support only")
+        st.caption("Compact · HOT + TAKE open · PASS collapsed · DNP only after confirmed lineups")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
-            for i in range(0, len(ev_board), 2):
+            hots = [e for e in ev_board if e.get("is_hot") and e.get("is_bet")]
+            takes = [e for e in ev_board if e["is_bet"] and not e.get("is_hot")]
+            passes = [e for e in ev_board if not e["is_bet"]]
+
+            st.markdown(f"**🔥 HOT ({len(hots)}) · 🟢 TAKE ({len(takes)})**")
+            show = hots + takes
+            for i in range(0, len(show), 2):
                 cols = st.columns(2)
                 for j, col in enumerate(cols):
-                    if i + j >= len(ev_board):
+                    if i + j >= len(show):
                         break
-                    item = ev_board[i + j]
                     with col:
-                        tags = render_method_tags(item["methods"])
-                        meter = make_meter(item["bars"], item["level"])
-                        cls = "bet" if item["is_bet"] else "skip"
-                        if item.get("is_hot") and item["is_bet"]:
-                            cls = "hot"
-                        if "Spike" in item["methods"] or "Dump" in item["methods"] or "HardRock best" in item["methods"]:
-                            cls = "skip fade-card"
-                        if item.get("is_hot") and item["is_bet"]:
-                            label = "🔥 HOT TAKE"
-                        elif item["is_bet"]:
-                            label = "🟢 TAKE IT"
-                        else:
-                            label = "⚪ PASS"
-                        mv = item.get("movement") or ""
-                        mv_line = f"<br><small>{mv}</small>" if mv else ""
-                        st.markdown(f'''
-                        <div class="card {cls}">
-                          <b>{label}</b> — <b>{item["player"]}</b>
-                          <span class="score-pill">{item["score"]}</span><br>{meter}
-                          Best {format_odds(item["best_price"])} · {item["best_book"]}
-                          · edge {int(item["edge"])} · core {item.get("method_count", 0)}<br>
-                          {tags}{mv_line}<br><small>{item["why"]}</small>
-                        </div>''', unsafe_allow_html=True)
+                        render_board_card(show[i + j])
+
+            with st.expander(f"⚪ PASS ({len(passes)}) — collapsed", expanded=False):
+                for i in range(0, len(passes), 2):
+                    cols = st.columns(2)
+                    for j, col in enumerate(cols):
+                        if i + j >= len(passes):
+                            break
+                        with col:
+                            render_board_card(passes[i + j])
 
     with tab_move:
         st.markdown('<div class="queen-banner">📈 Line Movement</div>', unsafe_allow_html=True)
-        st.caption(
-            f"**Order:** Likes → Good downs → Big dumps → Mild ups → Spikes → Stuck · "
-            f"Only **+{PRICE_MIN_MOVE}+** HR prices"
-        )
+        st.caption(f"Only **+{PRICE_MIN_MOVE}+** HR · likes first")
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
-            st.info("Fetch odds at least **twice** so first → last can move.")
+            st.info("Fetch odds at least **twice**.")
         else:
             m = move_map
 
-            def _section(title, items, empty="None."):
+            def _section(title, items):
                 st.markdown(f"**{title} ({len(items)})**")
                 if not items:
-                    st.caption(empty)
+                    st.caption("None.")
                     return
                 for i in range(0, min(len(items), 30), 2):
                     cols = st.columns(2)
@@ -2087,21 +2159,18 @@ def main():
                         with col:
                             render_move_card(items[i + j])
 
-            _section("💙 FD under MGM (10–100) — LIKE", m["likes_fd"])
-            _section("⬇️ Good downs (−40 to −149) — LIKE", m["likes_down"])
-            _section("⚠️ Big dumps (−150+) — value can die", m["big_dump"])
-            _section("⬆️ Mild ups (+40 to +149) — watch", m["mild_up"])
-            _section("🚫 Spikes (+150+) — FADE", m["spikes"])
-            with st.expander(f"😴 Stuck same all day ({len(m['stuck'])})", expanded=False):
-                if not m["stuck"]:
-                    st.caption("None.")
-                else:
-                    for c in m["stuck"][:40]:
-                        render_move_card(c)
+            _section("💙 FD under MGM — LIKE", m["likes_fd"])
+            _section("⬇️ Good downs — LIKE", m["likes_down"])
+            _section("⚠️ Big dumps", m["big_dump"])
+            _section("⬆️ Mild ups", m["mild_up"])
+            _section("🚫 Spikes — FADE", m["spikes"])
+            with st.expander(f"😴 Stuck ({len(m['stuck'])})", expanded=False):
+                for c in m["stuck"][:40]:
+                    render_move_card(c)
 
     with tab_tricks:
         st.markdown('<div class="queen-banner">✨ Odds Tricks</div>', unsafe_allow_html=True)
-        st.caption("One card per player · all methods stacked · no cross-book Exact")
+        st.caption("One card per player")
         sub = st.tabs([
             "🎯 DK", "📉 Was DK", "🎰 MGM", "⭐ Exact MGM",
             "🪞 HR=RBI", "💙 FD", "💚 365", "🔒 Lock",
@@ -2111,12 +2180,11 @@ def main():
         with sub[1]:
             render_card_grid([r for r in results if r["type"] == "dk_was"])
         with sub[2]:
-            st.caption("PAIR preferred · TRIO only when ending has exactly 3")
             render_card_grid([r for r in results if r["type"] == "mgm"])
         with sub[3]:
             render_card_grid([r for r in results if r["type"] == "mgm_exact"])
         with sub[4]:
-            st.caption("Same American price on O 0.5 HR and O 1.5 RBI · same book · FanDuel first")
+            st.caption("Same price HR 0.5 = RBI 1.5 · same book · FD first")
             if not df_all.empty and "market" in df_all.columns:
                 n_hr = len(df_all[df_all["market"] == "hr"])
                 n_rbi = len(df_all[df_all["market"] == "rbi"])
@@ -2125,9 +2193,7 @@ def main():
                     if n_rbi else {}
                 )
                 books_txt = ", ".join(f"{k}:{v}" for k, v in sorted(by_book.items())) or "none"
-                st.caption(f"This fetch · HR: **{n_hr}** · RBI 1.5: **{n_rbi}** · by book: {books_txt}")
-                if n_rbi == 0:
-                    st.warning("No RBI 1.5 lines — books may not post them yet.")
+                st.caption(f"HR **{n_hr}** · RBI 1.5 **{n_rbi}** · {books_txt}")
             render_card_grid([r for r in results if r["type"] == "mirror"])
         with sub[5]:
             render_card_grid([r for r in results if r["type"] == "fd"])
@@ -2136,7 +2202,7 @@ def main():
         with sub[7]:
             lock = st.session_state.get("pregame_lock") or load_pregame()
             if not lock:
-                st.info("Fetch pregame to build lock.")
+                st.info("Fetch to build lock.")
             else:
                 q = st.text_input("Filter", key="lock_q")
                 shown = 0
@@ -2148,10 +2214,8 @@ def main():
                         f"{book_label(b)} {format_odds(info.get('price'))}"
                         for b, info in books.items() if info.get("price") is not None
                     ]
-                    mv, _ = movement_summary(player)
-                    extra = f" · {mv}" if mv else ""
                     if lines:
-                        st.markdown(f"**{player}** — " + " · ".join(lines) + extra)
+                        st.markdown(f"**{player}** — " + " · ".join(lines))
                         shown += 1
                     if shown >= 80:
                         break
@@ -2171,14 +2235,13 @@ def main():
             render_card_grid([r for r in results if r["type"] == "first"])
 
     with tab_sheet:
-        st.markdown('<div class="queen-banner">📋 Cheat Sheet Check</div>', unsafe_allow_html=True)
-        st.caption("Paste names (one per line). Shows who also hits our live methods.")
+        st.markdown('<div class="queen-banner">📋 Cheat Sheet</div>', unsafe_allow_html=True)
         col_a, col_b = st.columns(2)
         with col_a:
-            my_text = st.text_area("💜 My cheat sheet", height=180, placeholder="One name per line", key="cheat_mine")
+            my_text = st.text_area("💜 My sheet", height=160, key="cheat_mine")
         with col_b:
-            girls_text = st.text_area("💖 Girls’ cheat sheet", height=180, placeholder="One name per line", key="cheat_girls")
-        show_misses = st.checkbox("Also show names with no method hits", value=False, key="cheat_show_miss")
+            girls_text = st.text_area("💖 Girls sheet", height=160, key="cheat_girls")
+        show_misses = st.checkbox("Show misses", value=False, key="cheat_show_miss")
         mm = st.session_state.get("methods_map") or methods_map or {}
         eb = st.session_state.get("ev_board") or ev_board or []
         if not mm and not eb:
@@ -2190,39 +2253,27 @@ def main():
                 hits, misses = check_cheat_sheet(my_names, mm, eb, "My sheet")
                 render_cheat_hits(hits, "💜 My sheet")
                 if show_misses and misses:
-                    with st.expander(f"No method hit ({len(misses)})"):
+                    with st.expander(f"No hit ({len(misses)})"):
                         st.write(", ".join(m["sheet_name"] for m in misses))
             if girls_names:
                 hits, misses = check_cheat_sheet(girls_names, mm, eb, "Girls sheet")
-                render_cheat_hits(hits, "💖 Girls’ sheet")
+                render_cheat_hits(hits, "💖 Girls sheet")
                 if show_misses and misses:
-                    with st.expander(f"Girls — no method hit ({len(misses)})"):
+                    with st.expander(f"Girls no hit ({len(misses)})"):
                         st.write(", ".join(m["sheet_name"] for m in misses))
-            if my_names and girls_names:
-                my_set = {n.lower() for n in my_names}
-                both = [n for n in girls_names if n.lower() in my_set]
-                if both:
-                    st.markdown("**🤝 On both sheets**")
-                    st.write(", ".join(both))
-            if not my_names and not girls_names:
-                st.info("Paste at least one name to check.")
 
     with tab_results:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         top = st.columns([1, 1, 1, 1])
         with top[0]:
             if st.button("⚡ Sync MLB", key="sync_res"):
-                with st.spinner("MLB…"):
-                    a, p, m = auto_log_mlb_hrs()
+                a, p, m = auto_log_mlb_hrs()
                 st.success(f"{m} · {a} new · {p} promoted")
                 st.rerun()
         with top[1]:
             if st.button("📋 PENDING→DNP", key="mark_dnp"):
                 n = auto_mark_dnp()
-                if n:
-                    st.success(f"PENDING → DNP: {n}")
-                else:
-                    st.warning("None marked — lineup incomplete or everyone matched")
+                st.success(f"DNP: {n}") if n else st.warning("None — need CONFIRMED lineup")
                 st.rerun()
         with top[2]:
             if st.button("🟡 MISS→DNP", key="miss_to_dnp"):
@@ -2272,7 +2323,6 @@ def main():
         """, unsafe_allow_html=True)
 
         with st.expander("Hit rate by BEST book", expanded=True):
-            st.caption("HIT/MISS · no Untagged/365/Caesars")
             graded_for_books = [r for r in rows_view if r.get("result") in ("HIT", "MISS")]
             book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
             for r in graded_for_books:
@@ -2389,7 +2439,7 @@ def main():
                             st.rerun()
 
         with st.expander(f"DNP ({len(dnps)})", expanded=False):
-            st.caption("False DNP? ↩️. Auto-DNP only when RotoWire ≥80 names.")
+            st.caption("False DNP? ↩️. Auto only after CONFIRMED RotoWire.")
             for r in sorted(dnps, key=lambda x: x.get("player") or ""):
                 rid = r.get("id", "")
                 st.markdown(f"🟡 **{r.get('player')}** · was {format_odds(r.get('best_price'))}")
@@ -2401,82 +2451,51 @@ def main():
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>Girl Magic in one breath:</b><br>
-            Classic endings only on <b>MGM + Bet365</b> · same team.<br>
-            <b>PAIR (exactly 2)</b> first. <b>TRIO (exactly 3)</b> only when that ending has no pair.<br>
-            <b>🔥 HOT</b> = pair/trio + FanDuel + DK 10 / Was / DK FD-style.<br>
-            <b>🟢 TAKE IT</b> = live pair/trio · not faded · price high enough · not HardRock-best.<br>
-            <b>🪞 HR = RBI 1.5</b> = same price on O 0.5 HR and O 1.5 RBI · same book · <b>FanDuel first</b>.
-            RBI 1.5 from <code>batter_rbis</code> + <code>batter_rbis_alternate</code>. Support only.<br>
-            <b>No cross-book Exact.</b> MGM Exact stays. Tricks = one card per player.
+            <b>DNP is automatic only on CONFIRMED lineups.</b><br>
+            Projected lineups that sit all day → <b>auto-DNP OFF</b>.<br>
+            When RotoWire flips to confirmed + enough names → <b>auto-DNP ON</b>.<br>
+            Board: HOT + TAKE open · PASS collapsed · smaller cards.
         </div>
         """, unsafe_allow_html=True)
 
-        with st.expander("🔥 HOT · 🟢 TAKE IT · ⚪ PASS", expanded=True):
+        with st.expander("🔥 HOT · 🟢 TAKE · ⚪ PASS", expanded=True):
             st.markdown(f"""
-**PAIR** — exactly 2 · same team · same classic ending  
-**TRIO** — exactly 3 · only when that ending has no pair  
+**PAIR** first (exactly 2 same team / ending) · **TRIO** only if no pair  
 
 | Book | Endings |
 |------|---------|
-| **BetMGM** | 00 · 25 · 50 · 75 |
-| **Bet365** | 25 · 50 · 75 |
+| **MGM** | 00 · 25 · 50 · 75 |
+| **365** | 25 · 50 · 75 |
 
-**🔥 HOT** = pair/trio + FD + DK · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
-**🟢 TAKE IT** = live pair/trio · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
-**⚪ PASS** = no primary · HardRock best · ±{BIG_MOVE} · short price  
-Board is **0.5 HR only**.
+**HOT** = pair/trio + FD + DK · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
+**TAKE** = live pair/trio · same gates  
+**PASS** = no primary · HardRock best · ±{BIG_MOVE} · short price
+            """)
+
+        with st.expander("📋 RotoWire · auto-DNP"):
+            st.markdown(f"""
+- **PROJECTED** all day → we do **not** mark DNP  
+- **CONFIRMED** + ≥ **{LINEUP_MIN_NAMES}** names → auto-DNP ON  
+- Auto-refresh re-checks RotoWire so it flips on without you  
+- False DNP → ↩️ PENDING on Results
             """)
 
         with st.expander("🪞 HR = RBI 1.5"):
             st.markdown("""
-When a player’s **Over 0.5 HR** price equals their **Over 1.5 RBI** price on the **same book**, we tag **HR = RBI 1.5**.
-
-- **FanDuel first**, then DK / MGM / 365 / HardRock  
-- API pulls **batter_rbis** + **batter_rbis_alternate** (1.5 is often on alternate)  
-- Support tag only — does **not** unlock TAKE by itself  
-- **✨ Tricks → 🪞 HR=RBI** shows HR / RBI counts by book  
-- Cross-book Exact removed · **MGM Exact** stays
-            """)
-
-        with st.expander("🎰 MGM · 💚 365 · 🎯 DK · 💙 FD"):
-            st.markdown(f"""
-Digits only MGM + Bet365. PAIR first. TRIO only if no pair.  
-**DK 10** · **Was DK 10** · **DK FD-style** · **FD Pattern** / **FD 600**  
-**HardRock best** → PASS
-            """)
-
-        with st.expander("📈 Movement"):
-            st.markdown(f"""
-1. 💙 FD 10–100 under MGM — LIKE  
-2. ⬇️ Good downs (−40 to −149) — LIKE  
-3. ⚠️ Big dumps (−150+) — caution  
-4. ⬆️ Mild ups — watch  
-5. 🚫 Spikes (+150+) — FADE  
-6. 😴 Stuck — noise  
-Only **+{PRICE_MIN_MOVE}+** HR · needs 2+ fetches.
-            """)
-
-        with st.expander("📋 Sheet · 📊 Results · RotoWire"):
-            st.markdown(f"""
-Cheat Sheet: paste lists → method hits.  
-HIT% ignores DNP. Best-book = MGM · DK · FD · HardRock.  
-Auto-DNP only if RotoWire ≥ **{LINEUP_MIN_NAMES}** names.
+Same American price on O 0.5 HR and O 1.5 RBI · same book · **FanDuel first**.  
+Pulls `batter_rbis` + `batter_rbis_alternate`. Support tag only.
             """)
 
         with st.expander("What we ignore"):
-            st.markdown("- Caesars · non-MGM/365 digits · edge as a gate · cross-book Exact · sub-500 movement noise")
+            st.markdown("- Caesars · projected DNPs · edge as a gate · cross-book Exact")
 
-        with st.expander("How to run a slate"):
+        with st.expander("How to run"):
             st.markdown(f"""
-1. Load Games → select → Fetch (HR + RBI main/alternate)  
-2. Check toast: **HR · RBI 1.5** counts (RBI should be much higher than 1 now)  
-3. Fetch again for Movement  
-4. RotoWire after lineups  
-5. Board HOT → TAKE → PASS  
-6. Tricks → 🪞 for HR=RBI  
-7. Sync MLB HRs → grade PENDING  
-Auto-refresh ~ every **{REFRESH_MINUTES}** min when enabled.
+1. Load → select → Fetch  
+2. RotoWire (caption must say CONFIRMED for auto-DNP)  
+3. Board = HOT + TAKE; open PASS only if needed  
+4. Sync MLB HRs → grade  
+Auto-refresh ~ every **{REFRESH_MINUTES}** min.
             """)
 
     st.markdown(
