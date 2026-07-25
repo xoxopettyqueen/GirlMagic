@@ -5,7 +5,7 @@ PAIR first · TRIO only if no pair
 🔥 HOT = pair/trio + FD + DK
 🟢 TAKE = PAIR only · ≥+500 · not faded · not HardRock-best
 Rotated in = new pair/trio · Stayed = same group
-HR 0.5 only · Lock tab paginated · no Caesars on Lock
+HR 0.5 only · Lock tab paginated · full Glossary restored
 """
 
 import streamlit as st
@@ -95,6 +95,9 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .meter-bar.filled-low{background:#6b7280}
 .res-card{background:#1a0f28;border:1px solid #7c3aed;border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:.8rem}
 .lock-line{padding:6px 0;border-bottom:1px solid #2a1a3a;font-size:.84rem}
+.gloss-block{background:#1a0f28;border:1px solid #7c3aed;border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:.84rem;line-height:1.45}
+.gloss-block h4{color:#f9a8d4;margin:0 0 6px 0;font-size:.95rem}
+.gloss-block b{color:#fbcfe8}
 .stTabs [data-baseweb="tab-list"]{gap:4px;flex-wrap:nowrap !important;overflow-x:auto !important;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:6px}
 .stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:8px 10px;font-size:.75rem;white-space:nowrap !important;flex-shrink:0}
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
@@ -123,7 +126,6 @@ ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "bet365", "bet365_au"}
 CORE_BOOKS = ["fanduel", "draftkings", "betmgm", "bet365", "hardrockbet"]
 BOOK_PRIORITY = ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet"]
-ALLOWED_BEST_BOOKS = {"MGM", "DK", "FD", "HardRock"}
 
 METHODS_MIN = 2
 METHODS_STRONG = 3
@@ -1850,16 +1852,12 @@ def render_board_card(item):
 
 
 def render_lock_tab(lock):
-    """Paginated lock list · no Caesars · Prev/Next."""
     if not lock:
         st.info("Fetch to build lock.")
         return
-
     if "lock_page" not in st.session_state:
         st.session_state["lock_page"] = 0
-
     q = st.text_input("Filter player", key="lock_q", placeholder="Type a name…")
-
     rows = []
     for player, entry in sorted(lock.items()):
         if q and q.lower() not in player.lower():
@@ -1872,25 +1870,20 @@ def render_lock_tab(lock):
             if info.get("price") is None:
                 continue
             lines.append(f"{book_label(b)} {format_odds(info.get('price'))}")
-        # also show first/last if useful
         if not lines and entry.get("mgm_price") is not None:
             lines.append(f"MGM {format_odds(entry['mgm_price'])}")
         if lines:
             rows.append((player, " · ".join(lines)))
-
     total = len(rows)
     page = st.session_state["lock_page"]
     max_page = max(0, (total - 1) // LOCK_PAGE) if total else 0
     if page > max_page:
         page = 0
         st.session_state["lock_page"] = 0
-
     start = page * LOCK_PAGE
     end = min(start + LOCK_PAGE, total)
     slice_rows = rows[start:end]
-
     st.caption(f"Showing **{start + 1 if total else 0}–{end}** of **{total}** (Caesars hidden)")
-
     n1, n2, n3 = st.columns([1, 1, 4])
     with n1:
         if st.button("← Prev", disabled=page <= 0, key="lock_prev"):
@@ -1902,16 +1895,189 @@ def render_lock_tab(lock):
             st.rerun()
     with n3:
         st.caption(f"Page {page + 1} / {max_page + 1 if total else 1}")
-
     if not slice_rows:
         st.info("No players match this filter.")
         return
-
     for player, line in slice_rows:
-        st.markdown(
-            f'<div class="lock-line"><b>{player}</b> — {line}</div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown(f'<div class="lock-line"><b>{player}</b> — {line}</div>', unsafe_allow_html=True)
+
+
+def render_glossary():
+    st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
+    st.caption("Me & My Girls · every rule in one place · open a section to learn it")
+
+    with st.expander("👑 Board labels — HOT · TAKE · PASS", expanded=True):
+        st.markdown(f"""
+<div class="gloss-block">
+<h4>🔥 HOT</h4>
+Player is in a <b>pair or trio</b> on MGM or Bet365 <b>and</b> has FanDuel heat <b>and</b> DK support.<br>
+Also must <b>not</b> be faded (±{BIG_MOVE}), not under +{PRICE_MIN_TAKE}, and not best on HardRock.
+</div>
+<div class="gloss-block">
+<h4>🟢 TAKE</h4>
+Must be a <b>PAIR</b> (two guys, same team, same classic ending).<br>
+Bare trio alone is <b>not</b> TAKE — it needs the full HOT stack (FD + DK) or it stays PASS.
+</div>
+<div class="gloss-block">
+<h4>⚪ PASS</h4>
+Trio-only · price under +{PRICE_MIN_TAKE} · HardRock is the best number · big spike or dump (±{BIG_MOVE}).
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("🎰 MGM classic endings (PAIR first)"):
+        st.markdown("""
+<div class="gloss-block">
+<h4>What counts</h4>
+Odds that end in <b>00 · 25 · 50 · 75</b> on BetMGM.<br>
+Players must be on the <b>same team</b>.
+</div>
+<div class="gloss-block">
+<h4>Mode A — Pair (primary)</h4>
+Exactly <b>two</b> players · same team · same ending (example: both +525).<br>
+Pairs always beat groups.
+</div>
+<div class="gloss-block">
+<h4>Mode B — Trio (fallback)</h4>
+Only if no pair exists for that ending: <b>three</b> players · same team · same ending.
+</div>
+<div class="gloss-block">
+<h4>Stayed · Rotated · Last one left</h4>
+<b>Stayed</b> = still in a group across several fetches.<br>
+<b>Rotated</b> = jumped into a <i>new</i> pair/trio.<br>
+<b>Last one left</b> = was in an early trio and is still showing late.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("💚 Bet365 (same classic idea + 850)"):
+        st.markdown("""
+<div class="gloss-block">
+<h4>Classic endings</h4>
+Same as MGM but on Bet365: endings <b>25 · 50 · 75</b> (no 00 on 365).<br>
+Pair first · trio only if no pair · same team.
+</div>
+<div class="gloss-block">
+<h4>B365 850</h4>
+Flag when the price is exactly <b>+850</b> (or ends with 850 on bigger numbers).
+</div>
+<div class="gloss-block">
+<h4>B365 > HardRock</h4>
+We like when Bet365 is <b>higher</b> than HardRock on the same player.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("🎯 DraftKings"):
+        st.markdown("""
+<div class="gloss-block">
+<h4>DK ends in 10</h4>
+Any pregame DK prop ending in <b>10</b> (e.g. +110, +210, +310, +410).<br>
+No team rule · solo flag · still counts toward HOT support.
+</div>
+<div class="gloss-block">
+<h4>Was DK 10</h4>
+Had a DK 10 earlier in the day and lost it — still counts as DK support for HOT.
+</div>
+<div class="gloss-block">
+<h4>DK FD-style</h4>
+DK priced like FanDuel: ≥ +500 and ending in 10 / 20 / 30 / 60 / 70 / 90.<br>
+Those go more often than random DK numbers.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("💙 FanDuel patterns"):
+        st.markdown(f"""
+<div class="gloss-block">
+<h4>When FD counts</h4>
+Only if the player <b>already</b> has DK or MGM/365 support — we do not flag random FD numbers alone.
+</div>
+<div class="gloss-block">
+<h4>Pattern endings</h4>
+Price ≥ <b>+{FD_MIN}</b> and last two digits are <b>10 · 20 · 30 · 60 · 70 · 90</b>.
+</div>
+<div class="gloss-block">
+<h4>FD 600</h4>
+Exact <b>+600</b> is a special number we watch.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("⭐ MGM Exact Pair"):
+        st.markdown("""
+<div class="gloss-block">
+Two players on the <b>same team</b> with the <b>exact same MGM price</b> (not just same ending).<br>
+Counts as a pair for TAKE / HOT.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("📈 Line movement"):
+        st.markdown(f"""
+<div class="gloss-block">
+<h4>What we like</h4>
+• FD is <b>10–100 points under</b> MGM<br>
+• Mild downs (price shortening a bit)
+</div>
+<div class="gloss-block">
+<h4>What we fade</h4>
+• Spike or dump of <b>±{BIG_MOVE}</b> or more<br>
+• Stuck at the same price all day (boring)
+</div>
+<div class="gloss-block">
+Only tracks players around <b>+{PRICE_MIN_MOVE}+</b>. Movement is measured from the first locked price of the day.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("💅 Name Magic"):
+        st.markdown(f"""
+<div class="gloss-block">
+Only pairs that already have <b>{NAME_METHODS_MIN}+ core methods</b> (and a strong method) show up.<br>
+Prefer different teams. Same-team name matches are rarer on purpose.
+</div>
+<div class="gloss-block">
+<b>Same initials</b> — first + last initial match (e.g. MM + MM)<br>
+<b>Cross</b> — one player's last initial = the other's first<br>
+<b>Same first / last name</b> — exact match on first or last
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("📊 Edge · Score · HardRock"):
+        st.markdown("""
+<div class="gloss-block">
+<h4>Edge</h4>
+Best price minus the median across books. Positive edge = longer than the group. It is a helper, not the reason we TAKE or PASS.
+</div>
+<div class="gloss-block">
+<h4>Score (0–100)</h4>
+Built from core methods + pair/trio bonus + stayed/rotated + FD/DK heat − fade penalties. Capped at 100.
+</div>
+<div class="gloss-block">
+<h4>HardRock best</h4>
+If HardRock has the longest number and everyone else is shorter → automatic <b>PASS</b>. We do not chase HardRock tops.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("🔒 Lock · RotoWire · Results"):
+        st.markdown(f"""
+<div class="gloss-block">
+<h4>Lock</h4>
+Saves the first price we see on each book so movement still works after MGM drops live odds.<br>
+Caesars is never stored. Lock list is paginated ({LOCK_PAGE} per page).
+</div>
+<div class="gloss-block">
+<h4>RotoWire</h4>
+Auto-DNP only when lineups are <b>CONFIRMED</b> and we have at least <b>{LINEUP_MIN_NAMES}</b> names.<br>
+Projected lineups do not DNP anyone.
+</div>
+<div class="gloss-block">
+<h4>Results</h4>
+TAKE ITs log as PENDING. Mark HIT / MISS / DNP. Sync MLB HRs auto-promotes or logs new HRs. Undo is available on graded rows.
+</div>
+        """, unsafe_allow_html=True)
+
+    with st.expander("Books we care about"):
+        st.markdown("""
+<div class="gloss-block">
+<b>Core:</b> FanDuel · DraftKings · BetMGM · Bet365 · HardRock<br>
+Caesars is ignored everywhere. William Hill is ignored.
+</div>
+        """, unsafe_allow_html=True)
 
 
 def main():
@@ -2019,7 +2185,7 @@ def main():
             st.session_state["last_selected"] = list(chosen)
             st.session_state["last_fetch_time"] = now_az()
             st.session_state["new_fetch"] = True
-            st.session_state["lock_page"] = 0  # reset lock paging on new fetch
+            st.session_state["lock_page"] = 0
             st.success(f"Loaded {len(df)} HR rows · {now_az()}")
             try:
                 a, p, m = auto_log_mlb_hrs()
@@ -2095,7 +2261,6 @@ def main():
             hots = [e for e in ev_board if e.get("is_hot") and e.get("is_bet")]
             takes = [e for e in ev_board if e["is_bet"] and not e.get("is_hot")]
             passes = [e for e in ev_board if not e["is_bet"]]
-
             with st.expander(f"🔥 HOT ({len(hots)})", expanded=True):
                 if not hots:
                     st.caption("None.")
@@ -2106,7 +2271,6 @@ def main():
                             if i + j < len(hots):
                                 with col:
                                     render_board_card(hots[i + j])
-
             with st.expander(f"🟢 TAKE ({len(takes)})", expanded=False):
                 if not takes:
                     st.caption("None.")
@@ -2117,7 +2281,6 @@ def main():
                             if i + j < len(takes):
                                 with col:
                                     render_board_card(takes[i + j])
-
             with st.expander(f"⚪ PASS ({len(passes)})", expanded=False):
                 if not passes:
                     st.caption("None.")
@@ -2136,7 +2299,6 @@ def main():
             st.info("Fetch at least twice.")
         else:
             m = move_map
-
             def _exp(title, items, open_=False):
                 with st.expander(f"{title} ({len(items)})", expanded=open_):
                     if not items:
@@ -2148,7 +2310,6 @@ def main():
                             if i + j < len(items):
                                 with col:
                                     render_move_card(items[i + j])
-
             _exp("💙 FD under MGM — LIKE", m["likes_fd"], True)
             _exp("⬇️ Good downs — LIKE", m["likes_down"])
             _exp("⚠️ Big dumps", m["big_dump"])
@@ -2372,26 +2533,7 @@ def main():
                     st.rerun()
 
     with tab_gloss:
-        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        with st.expander("HOT · TAKE · PASS", expanded=True):
-            st.markdown(f"""
-**🔥 HOT** — pair or trio + FD + DK · not faded · ≥ +{PRICE_MIN_TAKE} · not HardRock-best  
-
-**🟢 TAKE** — **PAIR only** · same gates (bare trio is not TAKE)  
-
-**⚪ PASS** — trio-only · fade ±{BIG_MOVE} · HardRock best · short price  
-
-**Rotated** — moved into a *new* pair/trio · **Stayed** — same group across fetches  
-            """)
-        with st.expander("Lock tab"):
-            st.markdown(f"""
-- Shows saved pregame prices (no Caesars)  
-- **{LOCK_PAGE} per page** with **Prev / Next**  
-- Filter by name  
-- Resets to page 1 on each new Fetch  
-            """)
-        with st.expander("RotoWire"):
-            st.markdown(f"Auto-DNP only when **CONFIRMED** + ≥ **{LINEUP_MIN_NAMES}** names.")
+        render_glossary()
 
     st.markdown(
         '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls</div>',
