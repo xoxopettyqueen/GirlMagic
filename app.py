@@ -1,7 +1,12 @@
 """
 Girl Magic Odds ✨ — full app
-MGM 2/3 · DNP · methods on Results · HIT% by best book (no Untagged/365)
-Top strip: TAKE IT / DK / MGM / Exact / FD / HIT% · Glossary tightened
+Hierarchy:
+  1) MGM / Bet365 same-team pair(2) or group(3)  → primary
+  2) Stayed in group / Last one left
+  3) + FD pattern on MGM/365                     → 🔥 HOT
+  4) DK 10 (live) or Was DK 10 (fell off)        → support
+  5) ±150 Spike/Dump                             → FADE
+Best-book HIT%: MGM/DK/FD/HardRock/Caesars only
 """
 
 import streamlit as st
@@ -59,6 +64,7 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .card{background:linear-gradient(155deg,#1a0f28,#251438);border:1px solid #f472b6;border-radius:12px;padding:9px 11px;color:#fdf2f8;position:relative;font-size:.88rem;margin-bottom:6px}
 .card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:12px 0 0 12px;background:#f472b6}
 .bet{background:linear-gradient(155deg,#0c2418,#143d28)!important;border:1px solid #34d399!important}
+.hot{background:linear-gradient(155deg,#3b0764,#7c2d12)!important;border:1px solid #fb923c!important}
 .skip{background:#14101c!important;border:1px solid #4b5563!important;opacity:.85}
 .fade-card{border-color:#f87171!important;opacity:.9}
 .score-pill{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-weight:800;font-size:.85rem;padding:2px 9px;border-radius:12px;margin-left:5px}
@@ -70,6 +76,7 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .tag-strong{background:#14532d;color:#bbf7d0;border-color:#22c55e}
 .tag-b365{background:#14532d;color:#86efac;border-color:#22c55e}
 .tag-fade{background:#450a0a;color:#fca5a5;border-color:#f87171}
+.tag-hot{background:#7c2d12;color:#fdba74;border-color:#fb923c}
 .queen-banner{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
 .meter{display:flex;gap:3px;margin:3px 0 5px}
 .meter-bar{height:5px;width:16px;border-radius:3px;background:#374151}
@@ -97,14 +104,13 @@ ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "bet365", "bet365_au"}
 BOOK_PRIORITY = ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet", "caesars"]
-# Best-book HIT% — skip Untagged + 365 until you're sure
 ALLOWED_BEST_BOOKS = {"MGM", "DK", "FD", "HardRock", "Caesars"}
 
 EDGE_MIN = 60
 METHODS_MIN = 2
 METHODS_STRONG = 3
 OUTLIER_GAP = 150
-BIG_MOVE = 100
+BIG_MOVE = 150          # ±150 spike/dump → FADE
 REFRESH_MINUTES = 30
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
@@ -112,12 +118,19 @@ FD_MIN = 500
 PENDING_PAGE = 20
 MGM_STAY_SNAPS = 3
 
-PERSONAL_STRONG = {
-    "DK 10", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
-    "Match 25", "Match 50", "Match 75", "MGM 00", "MGM 25", "MGM 50", "MGM 75",
-    "B365 850", "B365 Match 25", "B365 Match 50", "B365 Match 75",
-    "B365 > HardRock", "Last one left", "Stayed in group",
-    "Multi-book Shorten", "Same on 3+ books",
+# Primary group methods (MGM / 365 same-team 2 or 3)
+PRIMARY_GROUP_METHODS = {
+    "MGM 00", "MGM 25", "MGM 50", "MGM 75", "MGM Exact",
+    "Match 25", "Match 50", "Match 75",
+    "B365 Match 25", "B365 Match 50", "B365 Match 75",
+    "Stayed in group", "Last one left",
+}
+FD_METHODS = {"FD Pattern", "FD 600"}
+DK_METHODS = {"DK 10", "Was DK 10"}
+
+PERSONAL_STRONG = PRIMARY_GROUP_METHODS | FD_METHODS | DK_METHODS | {
+    "Exact Match", "B365 850", "B365 > HardRock",
+    "Multi-book Shorten", "Same on 3+ books", "🔥 HOT",
 }
 NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing", "Not in lineup",
@@ -155,6 +168,27 @@ def count_core_methods(meths):
     return len([m for m in cleaned if is_core_method(m)])
 
 
+def has_primary_group(meths):
+    """MGM or Bet365 same-team pair/group / stayed / last one left."""
+    cleaned = {normalize_method(m) for m in meths}
+    for m in cleaned:
+        if m in PRIMARY_GROUP_METHODS:
+            return True
+        if m.startswith("MGM ") or m.startswith("B365 Match") or m.startswith("Match "):
+            return True
+    return False
+
+
+def has_fd_heat(meths):
+    cleaned = {normalize_method(m) for m in meths}
+    return bool(cleaned & FD_METHODS)
+
+
+def has_dk_support(meths):
+    cleaned = {normalize_method(m) for m in meths}
+    return bool(cleaned & DK_METHODS)
+
+
 def has_personal_strong(meths):
     cleaned = {normalize_method(m) for m in meths}
     return any(
@@ -164,26 +198,23 @@ def has_personal_strong(meths):
 
 
 def has_dk_or_mgm(meths):
-    for m in meths:
-        m = normalize_method(m)
-        if m == "DK 10":
-            return True
-        if m.startswith("MGM") or m in ("Last one left", "Stayed in group"):
-            return True
-    return False
+    """FD only stacks if DK or MGM/365 group already present."""
+    return has_dk_support(meths) or has_primary_group(meths)
 
 
 def method_tag_class(m):
     m = normalize_method(str(m))
-    if m == "DK 10" or m.startswith("DK"):
+    if m in ("🔥 HOT",):
+        return "tag-hot"
+    if m in DK_METHODS or m.startswith("DK"):
         return "tag-dk"
-    if m.startswith("MGM") or m in ("Last one left", "Stayed in group"):
+    if m.startswith("MGM") or m in ("Last one left", "Stayed in group") or m.startswith("Match "):
         return "tag-mgm"
     if m.startswith("FD"):
         return "tag-fd"
     if m.startswith("B365"):
         return "tag-b365"
-    if m in ("Exact Match", "MGM Exact") or m.startswith("Match "):
+    if m in ("Exact Match", "MGM Exact"):
         return "tag-match"
     if m in ("Spike", "Dump") or m.startswith("FADE"):
         return "tag-fade"
@@ -198,27 +229,51 @@ def render_method_tags(methods, limit=10):
         nm = normalize_method(m)
         if nm not in seen:
             seen.append(nm)
+    # HOT first if present
+    if "🔥 HOT" in seen:
+        seen.remove("🔥 HOT")
+        seen.insert(0, "🔥 HOT")
     return "".join(f'<span class="tag {method_tag_class(m)}">{m}</span>' for m in seen[:limit])
 
 
 def girl_magic_score(core_count, edge, methods):
+    """
+    Scoring hierarchy:
+      primary MGM/365 group  → big boost
+      stayed / last one left → boost
+      HOT (group + FD)       → max boost
+      DK 10 / Was DK 10      → small support
+      Spike/Dump ±150        → penalty
+    """
     methods = [normalize_method(m) for m in methods]
-    method_pts = min(core_count, 5) * 10
+    method_pts = min(core_count, 5) * 8
     if core_count >= METHODS_STRONG:
-        method_pts += 8
-    edge_pts = min(40, max(0, int((edge / 180) * 40)))
+        method_pts += 6
+
     bonus = 0
+    if has_primary_group(methods):
+        bonus += 18  # primary engine
     if "Last one left" in methods:
-        bonus += 5
+        bonus += 10
     if "Stayed in group" in methods:
+        bonus += 8
+    if "🔥 HOT" in methods:
+        bonus += 14  # group + FD
+    if "Was DK 10" in methods:
+        bonus += 5
+    if "DK 10" in methods:
         bonus += 4
     if "Multi-book Shorten" in methods:
         bonus += 3
     if "Same on 3+ books" in methods:
         bonus += 2
+
+    edge_pts = min(30, max(0, int((edge / 180) * 30)))
+
     if "Spike" in methods or "Dump" in methods or any(str(m).startswith("FADE") for m in methods):
-        bonus -= 8
-    return max(0, min(100, method_pts + edge_pts + min(12, bonus)))
+        bonus -= 15
+
+    return max(0, min(100, method_pts + edge_pts + min(40, max(-15, bonus))))
 
 
 def get_odds_api_key():
@@ -343,10 +398,10 @@ def smart_best(prices, books):
     return best_p, best_b
 
 
-def get_confidence(score, is_bet, core_count):
+def get_confidence(score, is_bet, core_count, is_hot=False):
     if not is_bet:
         return "Skip", 1, "low"
-    if core_count >= METHODS_STRONG and score >= 80:
+    if is_hot or (core_count >= METHODS_STRONG and score >= 80):
         return "High", 5, "high"
     if score >= 70:
         return "Strong", 4, "strong"
@@ -394,6 +449,7 @@ def name_in_lineup(player, lineup_names):
     return False
 
 
+# ── persistence ─────────────────────────────────────────────
 def load_pregame():
     if not os.path.exists(PREGAME_FILE):
         return {}
@@ -468,6 +524,7 @@ def get_locked(player):
 
 
 def movement_summary(player):
+    """±BIG_MOVE (150) = Spike/Dump."""
     entry = get_locked(player)
     first = entry.get("first_prices") or {}
     last = entry.get("last_prices") or {}
@@ -687,6 +744,7 @@ def log_bet_this(ev_board):
             "mgm_locked": locked.get("mgm_price"),
             "methods": [normalize_method(m) for m in item["methods"]],
             "core": item.get("method_count", 0),
+            "is_hot": item.get("is_hot", False),
             "movement": mv, "movement_delta": delta,
             "result": "PENDING", "source": "take_it", "logged_at": now_utc_iso(),
         })
@@ -1052,6 +1110,30 @@ def build_team_map(df):
     return tm
 
 
+def detect_was_dk10(current_prices, price_history):
+    """
+    Was DK 10 / Fell off DK 10:
+    - Earlier snap: player had draftkings price ending in 10
+    - Current: no longer ends in 10 (or no DK price)
+    """
+    was = set()
+    if not price_history or len(price_history) < 2:
+        return was
+    # anyone who had DK ends-in-10 in any prior snap
+    had_dk10 = set()
+    for snap in price_history[:-1]:
+        for (player, book), price in snap.items():
+            if book == "draftkings" and last_two(price) == 10:
+                had_dk10.add(player)
+    # current still DK 10?
+    still = set()
+    for (player, book), price in current_prices.items():
+        if book == "draftkings" and last_two(price) == 10:
+            still.add(player)
+    was = had_dk10 - still
+    return was
+
+
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if df.empty:
         return [], [], []
@@ -1074,6 +1156,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         st.session_state["price_history"].append(current_prices)
         st.session_state["price_history"] = st.session_state["price_history"][-8:]
 
+    # ±150 Spike / Dump
     for player in df["player"].unique():
         mv, delta = movement_summary(player)
         if abs(delta) >= BIG_MOVE:
@@ -1082,13 +1165,25 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             methods_map[player].append(tag)
             methods_map[player].append(f"FADE · {tag}")
 
+    # ── DK 10 (live) ──
+    current_dk10 = set()
     for _, row in df.iterrows():
         if row["book"] == "draftkings" and last_two(row["price"]) == 10:
+            current_dk10.add(row["player"])
             results.append({"type": "dk", "label": row["player"],
                 "reason": f"DK ends in 10 → {format_odds(row['price'])}",
                 "event": row["event"], "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
 
+    # ── Was DK 10 (fell off) ──
+    was_dk10 = detect_was_dk10(current_prices, st.session_state.get("price_history", []))
+    for player in was_dk10:
+        results.append({"type": "dk_was", "label": player,
+            "reason": "Was DK 10 earlier · fell off (still track — sometimes still goes)",
+            "event": "", "methods": ["Was DK 10"]})
+        methods_map[player].append("Was DK 10")
+
+    # ── MGM: exactly 2 or 3, same team, endings 00/25/50/75 ──
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
     current_mgm = []
     if not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any():
@@ -1143,7 +1238,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 meth.append("Last one left")
                 extra.append("Last one left")
         meth = list(dict.fromkeys(meth))
-        reason = f"MGM {kind} ends in {d:02d} · {grp.get('team', '')}"
+        reason = f"MGM {kind} ends in {d:02d} · {grp.get('team', '')} · PRIMARY"
         if extra:
             reason += " · " + " + ".join(dict.fromkeys(extra))
         results.append({"type": "mgm", "label": " + ".join(names), "reason": reason,
@@ -1151,6 +1246,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         for name in names:
             methods_map[name].extend(meth)
 
+    # Exact match across books
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
@@ -1161,6 +1257,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": g["event"].iloc[0], "methods": ["Exact Match"]})
             methods_map[player].append("Exact Match")
 
+    # MGM Exact + Digits (same team, 2 or 3 only)
     if not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any():
         for (event, team), g in mgm.groupby(["event", "team"], dropna=False):
             if not team:
@@ -1170,7 +1267,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 if len(names) not in (2, 3):
                     continue
                 results.append({"type": "mgm_exact", "label": " + ".join(names),
-                    "reason": f"MGM Exact {format_odds(price)} · {team}",
+                    "reason": f"MGM Exact {format_odds(price)} · {team} · PRIMARY",
                     "event": event, "methods": ["MGM Exact"]})
                 for nm in names:
                     methods_map[nm].append("MGM Exact")
@@ -1185,11 +1282,69 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     continue
                 kind = "pair" if len(names) == 2 else "group of 3"
                 results.append({"type": "digit", "label": " + ".join(names),
-                    "reason": f"Digit {kind} ends {d} · {team}",
+                    "reason": f"Digit {kind} ends {d} · {team} · PRIMARY",
                     "event": event, "methods": [f"Match {d}"]})
                 for nm in names:
                     methods_map[nm].append(f"Match {d}")
 
+    # ── Bet365 same-team pair/group 25/50/75 (no 00) + 850 ──
+    b365 = df[df["book"] == "bet365"].copy()
+    if not b365.empty and b365["team"].astype(str).str.len().gt(0).any():
+        for (event, team), g in b365.groupby(["event", "team"], dropna=False):
+            if not team:
+                continue
+            ends = defaultdict(list)
+            for _, r in g.iterrows():
+                d = last_two(r["price"])
+                if d in (25, 50, 75):
+                    ends[d].append(r["player"])
+            for d, ps in ends.items():
+                names = sorted(set(ps))
+                if len(names) not in (2, 3):
+                    continue
+                kind = "pair" if len(names) == 2 else "group of 3"
+                meth = [f"B365 Match {d}"]
+                results.append({"type": "b365", "label": " + ".join(names),
+                    "reason": f"B365 {kind} ends {d} · {team} · PRIMARY",
+                    "event": event, "methods": meth})
+                for nm in names:
+                    methods_map[nm].extend(meth)
+
+    for _, row in df.iterrows():
+        if row["book"] != "bet365":
+            continue
+        price = abs(int(row["price"])) if row["price"] is not None else 0
+        if price == 850 or price % 1000 == 850:
+            results.append({"type": "b365", "label": row["player"],
+                "reason": f"B365 850 → {format_odds(row['price'])}",
+                "event": row["event"], "methods": ["B365 850"]})
+            methods_map[row["player"]].append("B365 850")
+
+    # HardRock vs pack (optional flag when HR is best/shortest)
+    for (player, _), g in df.groupby(["player", "point"], dropna=False):
+        if "hardrockbet" not in set(g["book"]):
+            continue
+        hr_price = g[g["book"] == "hardrockbet"]["price"].dropna()
+        if hr_price.empty:
+            continue
+        hr_p = int(hr_price.iloc[0])
+        others = g[g["book"] != "hardrockbet"]["price"].dropna().tolist()
+        if others and hr_p == max([hr_p] + others):
+            methods_map[player].append("HardRock highest")
+
+    # B365 > HardRock
+    for (player, _), g in df.groupby(["player", "point"], dropna=False):
+        books = set(g["book"])
+        if "bet365" in books and "hardrockbet" in books:
+            p365 = g[g["book"] == "bet365"]["price"].dropna()
+            phr = g[g["book"] == "hardrockbet"]["price"].dropna()
+            if not p365.empty and not phr.empty and int(p365.iloc[0]) > int(phr.iloc[0]):
+                methods_map[player].append("B365 > HardRock")
+                results.append({"type": "b365", "label": player,
+                    "reason": f"B365 {format_odds(p365.iloc[0])} > HardRock {format_odds(phr.iloc[0])}",
+                    "event": g["event"].iloc[0], "methods": ["B365 > HardRock"]})
+
+    # ── FD only if DK or MGM/365 primary already ──
     for _, row in df.iterrows():
         if row["book"] != "fanduel":
             continue
@@ -1209,16 +1364,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
 
-    for _, row in df.iterrows():
-        if row["book"] != "bet365":
-            continue
-        price = abs(int(row["price"])) if row["price"] is not None else 0
-        if price == 850 or price % 1000 == 850:
-            results.append({"type": "b365", "label": row["player"],
-                "reason": f"B365 850 → {format_odds(row['price'])}",
-                "event": row["event"], "methods": ["B365 850"]})
-            methods_map[row["player"]].append("B365 850")
-
+    # ── Board: TAKE IT hierarchy ──
     ev_board = []
     player_events = defaultdict(set)
     for _, r in df.iterrows():
@@ -1241,31 +1387,57 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         edge = best - med
         raw_meths = list(set(methods_map.get(player, [])))
         meths = list(dict.fromkeys(normalize_method(m) for m in raw_meths))
+
+        # 🔥 HOT = primary MGM/365 group + FD
+        is_hot = has_primary_group(meths) and has_fd_heat(meths)
+        if is_hot and "🔥 HOT" not in meths:
+            meths.insert(0, "🔥 HOT")
+
         core_count = count_core_methods(meths)
         if core_count < METHODS_MIN:
             continue
+
         has_fade = player in spike_dump or "Spike" in meths or "Dump" in meths
+        # Prefer primary group for TAKE IT quality
         is_bet = edge >= EDGE_MIN and not has_fade
-        display_meths = [m for m in meths if is_core_method(m) or m in ("Spike", "Dump")]
+        # DK 10 alone never reaches METHODS_MIN=2 without another core — good
+
+        display_meths = [m for m in meths if is_core_method(m) or m in ("Spike", "Dump", "🔥 HOT", "Was DK 10", "HardRock highest")]
         score = girl_magic_score(core_count, edge, display_meths)
-        _, bars, level = get_confidence(score, is_bet, core_count)
+        _, bars, level = get_confidence(score, is_bet, core_count, is_hot=is_hot)
         mv_note = spike_dump.get(player, ("", "", 0))[1]
+
         why = f"Score {score}/100 · {core_count} core · Edge {int(edge)}"
-        if core_count >= METHODS_STRONG:
-            why += " · 3+ methods"
+        if has_primary_group(meths):
+            why += " · PRIMARY group"
+        if is_hot:
+            why += " · 🔥 HOT (group+FD)"
+        if "Was DK 10" in meths:
+            why += " · was DK 10"
         if has_fade:
-            why += f" · FADE {mv_note}" if mv_note else " · FADE move"
+            why += f" · FADE {mv_note}" if mv_note else " · FADE ±150"
             is_bet = False
+
         ev_board.append({
             "player": player, "best_price": best, "best_book": best_book,
-            "median": med, "edge": edge, "is_bet": is_bet, "why": why,
-            "methods": display_meths, "score": score, "bars": bars, "level": level,
-            "method_count": core_count, "team": team_map.get(player, ""),
+            "median": med, "edge": edge, "is_bet": is_bet, "is_hot": is_hot,
+            "why": why, "methods": display_meths, "score": score,
+            "bars": bars, "level": level, "method_count": core_count,
+            "team": team_map.get(player, ""),
             "events": list(player_events.get(player, [])), "movement": mv_note,
+            "has_primary": has_primary_group(meths),
         })
+
+    # Rank: HOT first, then primary group, then bet, then score
     ev_board = sorted(
         ev_board,
-        key=lambda x: (not x["is_bet"], -(x["method_count"] >= METHODS_STRONG), -x["score"], -x["edge"]),
+        key=lambda x: (
+            not x.get("is_hot"),
+            not x.get("has_primary"),
+            not x["is_bet"],
+            -x["score"],
+            -x["edge"],
+        ),
     )
 
     if record_history:
@@ -1349,8 +1521,13 @@ def main():
 
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(
-        f'<div class="how-to">⚡ MLB auto · 🔒 {lock_n} locked · MGM pairs=2 / groups=3 · '
-        f'Best-book HIT% = MGM/DK/FD only (no Untagged/365 yet)</div>',
+        f'<div class="how-to">'
+        f'<b>Primary:</b> MGM/365 same-team pair(2) or group(3) · '
+        f'<b>Stay:</b> Stayed / Last one left · '
+        f'<b>🔥 HOT:</b> group + FD · '
+        f'<b>DK:</b> live 10s + Was DK 10 · '
+        f'<b>Fade:</b> ±{BIG_MOVE} · 🔒 {lock_n}'
+        f'</div>',
         unsafe_allow_html=True,
     )
     render_whats_going_today()
@@ -1445,7 +1622,10 @@ def main():
 
     found = st.session_state.get("found_books", [])
     if found:
-        st.markdown(f'<div class="info-box"><b>Books:</b> {", ".join(found)}</div>', unsafe_allow_html=True)
+        note = ""
+        if "betmgm" not in found and not any("mgm" in x for x in found):
+            note = " · <b>MGM not in this fetch</b> — primary groups need MGM/365"
+        st.markdown(f'<div class="info-box"><b>Books:</b> {", ".join(found)}{note}</div>', unsafe_allow_html=True)
 
     odds = st.session_state.get("odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
@@ -1466,14 +1646,14 @@ def main():
     graded_n = hits_n + misses_n
     hit_pct = int(hits_n / graded_n * 100) if graded_n else 0
 
-    # Top strip: methods + TAKE IT + HIT% — no DNP count
+    n_was_dk = len([r for r in results if r["type"] == "dk_was"])
     st.markdown(f"""
     <div class="petty-row">
       <div class="petty-box"><div class="petty-num">{len([e for e in ev_board if e['is_bet']])}</div><div class="petty-label">🟢 TAKE IT</div></div>
       <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='dk'])}</div><div class="petty-label">🎯 DK 10</div></div>
+      <div class="petty-box"><div class="petty-num">{n_was_dk}</div><div class="petty-label">📉 Was DK 10</div></div>
       <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='mgm'])}</div><div class="petty-label">🎰 MGM 2/3</div></div>
-      <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='match'])}</div><div class="petty-label">🤝 Exact</div></div>
-      <div class="petty-box"><div class="petty-num">{len([r for r in results if r['type']=='fd'])}</div><div class="petty-label">💙 FD</div></div>
+      <div class="petty-box"><div class="petty-num">{len([e for e in ev_board if e.get('is_hot')])}</div><div class="petty-label">🔥 HOT</div></div>
       <div class="petty-box"><div class="petty-num">{hit_pct}%</div><div class="petty-label">📈 HIT%</div></div>
     </div>
     """, unsafe_allow_html=True)
@@ -1484,6 +1664,7 @@ def main():
 
     with tab_board:
         st.markdown('<div class="queen-banner">👑 The Board</div>', unsafe_allow_html=True)
+        st.caption("PRIMARY = MGM/365 groups · 🔥 HOT = group + FD · Was DK 10 = fell off but still tracked · ±150 FADE")
         if not ev_board:
             st.info("Select games and fetch.")
         else:
@@ -1493,9 +1674,16 @@ def main():
                     tags = render_method_tags(item["methods"])
                     meter = make_meter(item["bars"], item["level"])
                     cls = "bet" if item["is_bet"] else "skip"
+                    if item.get("is_hot") and item["is_bet"]:
+                        cls = "hot"
                     if "Spike" in item["methods"] or "Dump" in item["methods"]:
                         cls = "skip fade-card"
-                    label = "🟢 TAKE IT" if item["is_bet"] else "⚪ PASS"
+                    if item.get("is_hot") and item["is_bet"]:
+                        label = "🔥 HOT TAKE"
+                    elif item["is_bet"]:
+                        label = "🟢 TAKE IT"
+                    else:
+                        label = "⚪ PASS"
                     mv = item.get("movement") or ""
                     mv_line = f"<br><small>{mv}</small>" if mv else ""
                     st.markdown(f'''
@@ -1509,23 +1697,31 @@ def main():
 
     with tab_tricks:
         st.markdown('<div class="queen-banner">✨ Odds Tricks</div>', unsafe_allow_html=True)
-        sub = st.tabs(["🎯 DK 10s", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact", "🔢 Digits", "💙 FD", "💚 365", "🔒 Lock"])
+        sub = st.tabs([
+            "🎯 DK 10", "📉 Was DK 10", "🎰 MGM", "🤝 Exact", "⭐ MGM Exact",
+            "🔢 Digits", "💙 FD", "💚 365", "🔒 Lock",
+        ])
         with sub[0]:
             render_card_grid([r for r in results if r["type"] == "dk"])
         with sub[1]:
-            st.caption("Exactly 2 or 3 · same team · 00/25/50/75")
-            render_card_grid([r for r in results if r["type"] == "mgm"])
+            st.caption("Had DK ends-in-10 earlier · fell off · sometimes still go")
+            render_card_grid([r for r in results if r["type"] == "dk_was"])
         with sub[2]:
-            render_card_grid([r for r in results if r["type"] == "match"])
+            st.caption("PRIMARY · Exactly 2 or 3 · same team · 00/25/50/75")
+            render_card_grid([r for r in results if r["type"] == "mgm"])
         with sub[3]:
-            render_card_grid([r for r in results if r["type"] == "mgm_exact"])
+            render_card_grid([r for r in results if r["type"] == "match"])
         with sub[4]:
-            render_card_grid([r for r in results if r["type"] == "digit"])
+            render_card_grid([r for r in results if r["type"] == "mgm_exact"])
         with sub[5]:
-            render_card_grid([r for r in results if r["type"] == "fd"])
+            render_card_grid([r for r in results if r["type"] == "digit"])
         with sub[6]:
-            render_card_grid([r for r in results if r["type"] == "b365"])
+            st.caption("Only with DK or MGM/365 primary already → stacks to 🔥 HOT")
+            render_card_grid([r for r in results if r["type"] == "fd"])
         with sub[7]:
+            st.caption("PRIMARY when live · pairs/groups 25/50/75 · 850s · B365 > HardRock")
+            render_card_grid([r for r in results if r["type"] == "b365"])
+        with sub[8]:
             lock = st.session_state.get("pregame_lock") or load_pregame()
             if not lock:
                 st.info("Fetch pregame to build lock.")
@@ -1564,7 +1760,7 @@ def main():
 
     with tab_results:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
-        st.caption("Methods on every row · HIT% by best book (MGM/DK/FD) · DNP excluded from rates")
+        st.caption("Methods + best-book HIT% · DNP excluded · HardRock included in best-book rates")
 
         top = st.columns([1, 1, 1, 1])
         with top[0]:
@@ -1596,7 +1792,7 @@ def main():
             with lc2:
                 hr_price = st.text_input("Price", key="hr_price")
             with lc3:
-                hr_book = st.selectbox("Book", ["betmgm", "draftkings", "fanduel", "bet365", "untagged"], key="hr_book")
+                hr_book = st.selectbox("Book", ["betmgm", "draftkings", "fanduel", "bet365", "hardrockbet", "untagged"], key="hr_book")
             with lc4:
                 st.write("")
                 st.write("")
@@ -1617,7 +1813,6 @@ def main():
         misses = sum(1 for r in done if r["result"] == "MISS")
         rate = (hits / (hits + misses) * 100) if (hits + misses) else 0
 
-        # Results strip — no DNP box
         st.markdown(f"""
         <div class="petty-row">
           <div class="petty-box"><div class="petty-num">{len(pending)}</div><div class="petty-label">PENDING</div></div>
@@ -1651,10 +1846,7 @@ def main():
                 st.markdown(" · ".join(lines))
 
         with st.expander("Hit rate by BEST book", expanded=True):
-            st.caption(
-                "HIT/MISS only · DNP ignored · Untagged & Bet365 hidden until coverage is solid. "
-                "Best book = best_book stored when logged."
-            )
+            st.caption("HIT/MISS only · no Untagged/365 · includes HardRock")
             graded_for_books = [r for r in rows_view if r.get("result") in ("HIT", "MISS")]
             book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
             for r in graded_for_books:
@@ -1767,7 +1959,6 @@ def main():
                     show_hits = st.checkbox("Show HITs", value=True, key="show_hits")
                 with c_miss:
                     show_misses = st.checkbox("Show MISSes", value=True, key="show_misses")
-
                 ordered = sorted(done, key=pending_sort_key)
                 if q:
                     ql = q.lower()
@@ -1781,7 +1972,6 @@ def main():
                     if (r.get("result") == "HIT" and show_hits) or (r.get("result") == "MISS" and show_misses)
                 ]
                 st.caption(f"Showing {len(ordered)} rows")
-
                 for r in ordered:
                     rid = r["id"]
                     icon = "🟢" if r["result"] == "HIT" else "🔴"
@@ -1799,7 +1989,6 @@ def main():
                         meta.append(f"edge {r['edge']}")
                     meta_s = " · ".join(meta)
                     src = r.get("source") or ""
-
                     st.markdown(
                         f'<div class="res-card">'
                         f'{icon} <b>{r["player"]}</b> · {format_odds(r.get("best_price"))} '
@@ -1807,7 +1996,7 @@ def main():
                         f'{" · " + meta_s if meta_s else ""}'
                         f'{" · " + mv if mv else ""}'
                         f'{" · `" + src + "`" if src else ""}'
-                        f'<br>{tags if tags else "<small>no methods stored (older log)</small>"}'
+                        f'<br>{tags if tags else "<small>no methods stored</small>"}'
                         f'</div>',
                         unsafe_allow_html=True,
                     )
@@ -1829,7 +2018,7 @@ def main():
                             undo_result(rid, r.get("source"))
                             st.rerun()
 
-        with st.expander(f"DNP list ({len(dnps)}) — hidden from HIT%", expanded=False):
+        with st.expander(f"DNP list ({len(dnps)})", expanded=False):
             for r in sorted(dnps, key=lambda x: x.get("player") or ""):
                 meths = list(dict.fromkeys(normalize_method(m) for m in (r.get("methods") or [])))
                 tags = render_method_tags(meths, limit=6)
@@ -1842,72 +2031,64 @@ def main():
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="how-to">
-            <b>Quick start:</b> MLB Over <b>0.5 HR</b> only.
-            Gold = MGM · Green = DK · Blue = FD.
-            Expand a section only when you need the details.
+            <b>Hierarchy:</b> MGM/365 same-team 2 or 3 → who stayed → + FD = 🔥 HOT →
+            DK 10 / Was DK 10 support → ±150 move = fade.
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown("### Board")
-        with st.expander("🟢 TAKE IT · edge · score", expanded=True):
-            st.markdown(f"""
-**TAKE IT** = **2+ core methods** · edge ≥ **{EDGE_MIN}** · Over **0.5** only · not Spike/Dump · in lineup when RotoWire is loaded.
-
-**3+ methods** rank higher. **Score 0–100** = methods + edge + bonuses − Spike/Dump penalty.
-
-**Edge** = best price − median across books (outliers 150+ ignored). Gap between books — not Kelly EV.
-            """)
-
-        st.markdown("### Core methods")
-        with st.expander("🎯 DK 10 · 🎰 MGM · 💚 365 · 🤝 Exact · 💙 FD · 📈 Signals", expanded=True):
-            st.markdown(f"""
-**DK 10** — DraftKings odds ending in **10**.
-
-**MGM** — **same team only** · **exactly 2** (pair) or **exactly 3** (group) · endings **00 / 25 / 50 / 75**.  
-**Stayed in group** = still in a group across **3+** fetches (one tag, no 2x/8x spam).  
-**Last one left** = early group of 3, still there later.
-
-**Bet365** — when available: **850s**, same-team 25/50/75 pairs/groups, **B365 > HardRock**.
-
-**Exact / MGM Exact / Digits** — same price across books, or same-team MGM exact / 25·50·75 pairs & triples.
-
-**FD** — only with DK or MGM already: ≥ **+{FD_MIN}** ending 10/20/30/60/70/90, or exact **+600**.
-
-**Signals (core):** Same on 3+ books · Multi-book Shorten.  
-**Noise:** Multi-book Lengthen, Spike/Dump, late/missing chips.
-            """)
-
-        st.markdown("### Line memory · lock · DNP")
-        with st.expander("Spike / Dump · 🔒 Lock · 🟡 DNP"):
-            st.markdown(f"""
-**Spike / Dump** — first lock → last lock ±**{BIG_MOVE}+** → FADE, cannot TAKE IT.
-
-**Lock** — Fetch merges prices; survives live drop. Used for Log a HR / MLB auto.
-
-**DNP** — did not play (RotoWire). PENDING/MISS can auto-convert. **HIT% ignores DNP.**  
-No DNP count on the main strip — only in Results expander if you need it.
-            """)
-
-        st.markdown("### Results · Name Magic · flow")
-        with st.expander("HIT% by best book · methods history"):
+        st.markdown("### 1. Primary engine (trumps)")
+        with st.expander("🎰 MGM · 💚 Bet365 same-team pairs & groups", expanded=True):
             st.markdown("""
-Every pending/graded row stores **methods** + **best_book**.
+**This is the main “who’s gonna go” signal.**
 
-**Hit rate by BEST book** shows only **MGM / DK / FD / HardRock / Caesars**  
-(Untagged + Bet365 hidden until you’re sure about those logs).
+| Book | Size | Endings | Team |
+|------|------|---------|------|
+| **MGM** | **Exactly 2** (pair) or **exactly 3** (group) | **00, 25, 50, 75** | **Same team only** |
+| **Bet365** | Exactly 2 or 3 | **25, 50, 75** (no 00) | **Same team only** |
 
-Filter graded list by player or method text (e.g. `MGM 75`).
+People fall off boards / DNP — that’s why **Stayed in group** (still in the group across 3+ fetches) and **Last one left** (early group of 3, still there) matter. The one who **stays** is often the one.
             """)
-        with st.expander("Name Magic · How to run a slate"):
+
+        st.markdown("### 2. Heat stack & DK")
+        with st.expander("🔥 HOT · 💙 FD · 🎯 DK 10 · 📉 Was DK 10", expanded=True):
             st.markdown(f"""
-Name pairs need **{NAME_METHODS_MIN}+ core** + a strong method · different teams · max {NAME_MAX_PAIRS}. Jr. ignored.
+**🔥 HOT** = primary MGM or 365 group **plus** an FD number we like  
+(FD ≥ +{FD_MIN} ending 10/20/30/60/70/90, or exact +600).  
+All the books are hinting — max priority on the board.
 
+**DK 10** = live DraftKings price ending in **10**. Real method, **not enough alone** for TAKE IT.
+
+**Was DK 10** = had DK ends-in-10 earlier today, then **fell off**.  
+Guys fall off DK 10s all day and **still sometimes go** — we track them as support, same as live DK 10 for pairing with primary groups.
+            """)
+
+        st.markdown("### 3. Fade · edge · TAKE IT")
+        with st.expander(f"±{BIG_MOVE} Spike/Dump · edge · board rules", expanded=True):
+            st.markdown(f"""
+**Spike or Dump ±{BIG_MOVE}+** (shorten **or** lengthen from first lock → last) → **FADE**, cannot TAKE IT.
+
+**TAKE IT** needs: **2+ core methods** · edge ≥ **{EDGE_MIN}** · Over **0.5** only · not faded · in lineup when RotoWire loaded.
+
+**Edge** = best − median (outliers 150+ ignored). Board ranks: **HOT → primary group → other TAKE IT → score**.
+            """)
+
+        st.markdown("### 4. Results · DNP · HardRock · flow")
+        with st.expander("HIT% · best book · HardRock · DNP"):
+            st.markdown("""
+Every log stores **methods** + **best_book**.  
+
+**Best-book HIT%** = MGM / DK / FD / **HardRock** / Caesars (no Untagged, no 365 until solid).  
+
+**DNP** = did not play — excluded from HIT%. RotoWire auto PENDING/MISS → DNP.
+            """)
+        with st.expander("How to run a slate"):
+            st.markdown(f"""
 1. Load → Fetch (lock)  
-2. **RotoWire** after lineups  
-3. Board → TAKE IT  
-4. Live → **Sync MLB** · grade · review methods + best-book HIT%  
+2. RotoWire after lineups  
+3. Board: primary groups first, 🔥 HOT, Was DK 10 support  
+4. Live → Sync MLB · grade · review method + best-book rates  
 
-Auto-refresh ~ every **{REFRESH_MINUTES}** min.
+Auto ~{REFRESH_MINUTES} min.
             """)
 
     st.markdown(
