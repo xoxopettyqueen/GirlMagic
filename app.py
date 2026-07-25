@@ -1587,28 +1587,49 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
-        with st.expander("Method hit rates (noise filtered)", expanded=False):
-            method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
-            for r in done:
-                for m in r.get("methods", []):
-                    m = normalize_method(m)
-                    if m in ("Manual HR log", "MLB auto HR") or m in NOISE_METHODS:
-                        continue
-                    if not is_core_method(m) and m not in PERSONAL_STRONG:
-                        continue
-                    if r["result"] == "HIT":
-                        method_stats[m]["hit"] += 1
-                    else:
-                        method_stats[m]["miss"] += 1
-            if not method_stats:
-                st.caption("Grade some PENDING first.")
+        with st.expander(f"All graded HIT/MISS ({len(done)}) — fix DNPs here", expanded=True):
+            st.caption("Missed but didn’t play? Click 🟡 DNP. Undo = back to PENDING for TAKE IT rows.")
+            if not done:
+                st.caption("None yet.")
             else:
-                lines = []
-                for m, s in sorted(method_stats.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
-                    t = s["hit"] + s["miss"]
-                    pct = s["hit"] / t * 100 if t else 0
-                    lines.append(f"**{m}**: {s['hit']}/{t} ({pct:.0f}%)")
-                st.markdown(" · ".join(lines))
+                # oldest first so you can work through the day
+                ordered = sorted(done, key=pending_sort_key)
+                # optional filter
+                q = st.text_input("Filter player", key="graded_filter", placeholder="type a name…")
+                if q:
+                    ordered = [r for r in ordered if q.lower() in (r.get("player") or "").lower()]
+
+                for r in ordered:
+                    rid = r["id"]
+                    icon = "🟢" if r["result"] == "HIT" else "🔴"
+                    endg = r.get("ending")
+                    end_s = f" {int(endg):02d}" if endg is not None else ""
+                    mv = r.get("movement") or ""
+                    src = r.get("source") or ""
+                    line = (
+                        f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} "
+                        f"{book_label(r.get('best_book'))}{end_s}"
+                    )
+                    if mv:
+                        line += f" · _{mv}_"
+                    if src:
+                        line += f" · `{src}`"
+
+                    c1, c2, c3, c4 = st.columns([4, 1, 1, 1])
+                    with c1:
+                        st.markdown(line)
+                    with c2:
+                        if r.get("result") != "HIT" and st.button("🟢", key=f"g_hit_{rid}", help="HIT"):
+                            set_result_status(rid, "HIT")
+                            st.rerun()
+                    with c3:
+                        if r.get("result") != "MISS" and st.button("🔴", key=f"g_miss_{rid}", help="MISS"):
+                            set_result_status(rid, "MISS")
+                            st.rerun()
+                    with c4:
+                        if st.button("🟡", key=f"g_dnp_{rid}", help="DNP — did not play"):
+                            set_result_status(rid, "DNP")
+                            st.rerun()
 
         total_p = len(pending)
         page = st.session_state.get("pending_page", 0)
