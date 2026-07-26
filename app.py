@@ -1,7 +1,7 @@
 """
 Girl Magic Odds ✨
 - No Digits tab (folded into MGM)
-- MGM: pairs + groups of 3 + Exact 2–3 only
+- MGM: pairs + groups of 3 + Exact 2-3 only
 - One card per player on every method tab
 - +EV language (no Kelly) · Tracker Multi-book · What's Going Today
 - Auto-grade (stronger name match) · MLB HRs on banner · lock · undo · strict board
@@ -34,7 +34,7 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
 .stApp{background:linear-gradient(165deg,#0a0410 0%,#160a22 40%,#1f0b30 100%);color:#fce7f3;font-family:'Inter',sans-serif}
-/* medium width — not full bleed, not phone-narrow on desktop */
+/* medium width - not full bleed, not phone-narrow on desktop */
 .main .block-container,
 [data-testid="stMainBlockContainer"],
 .block-container{
@@ -238,7 +238,7 @@ def book_label(b):
     if "fanduel" in b or b == "fd": return "FD"
     if "hardrock" in b: return "HardRock"
     if "caesars" in b: return "Caesars"
-    if b in ("untagged", "unknown", "—", ""): return "Untagged"
+    if b in ("untagged", "unknown", "-", ""): return "Untagged"
     return b.title() if b else "Untagged"
 
 def clean_name(name):
@@ -505,7 +505,7 @@ def pending_sort_key(r):
 
 @st.cache_data(ttl=120, show_spinner=False)
 def _fetch_mlb_hr_hitters_cached(dates_key):
-    """Heavy MLB calls — cached ~2 min. dates_key = comma-joined YYYY-MM-DD."""
+    """Heavy MLB calls - cached ~2 min. dates_key = comma-joined YYYY-MM-DD."""
     dates = [d for d in dates_key.split(",") if d]
     hr_names, final_players = set(), set()
     games_checked = 0
@@ -585,7 +585,7 @@ def _fetch_mlb_hr_hitters_cached(dates_key):
         msg += " · e.g. " + ", ".join(sorted(hr_names)[:5])
     if errors and not hr_names:
         msg += " · " + "; ".join(errors[:2])
-    # sets not cache-friendly in return for some streamlit — use frozenset
+    # sets not cache-friendly in return for some streamlit - use frozenset
     return frozenset(hr_names), frozenset(final_players), msg
 
 
@@ -709,7 +709,7 @@ def render_whats_going_today():
             for label, cnt, hot in chips
         )
     else:
-        chips_html = '<span class="trend-chip">No ending matches yet — lock + auto-grade fill this</span>'
+        chips_html = '<span class="trend-chip">No ending matches yet - lock + auto-grade fill this</span>'
     st.markdown(f"""
     <div class="trends-today">
         <div class="trends-today-header">
@@ -829,7 +829,7 @@ def fetch_rotowire_lineups():
                 if t and len(t.split()) >= 2:
                     names.add(clean_name(t))
         if not names:
-            return set(), "RotoWire 0 names — site may block Streamlit or changed layout"
+            return set(), "RotoWire 0 names - site may block Streamlit or changed layout"
         return names, f"RotoWire · {len(names)} names"
     except Exception as e:
         return set(), f"RotoWire error: {e}"
@@ -1195,7 +1195,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "events": list(player_events.get(player, [])),
             "event": next(iter(player_events.get(player, [])), ""),
         }
-        # WATCH: 1+ core method — logged for learning / auto-grade
+        # WATCH: 1+ core method - logged for learning / auto-grade
         if core_count >= 1:
             watch_board.append(dict(row))
         # TAKE IT board: still 2+ core
@@ -1464,21 +1464,21 @@ def build_lock_lab():
             + ", ".join(" + ".join(tags) + f" ({c})" for tags, c in top_cross)
         )
         insights.append(
-            f"🧩 <b>{multi_tag_n}/{len(matched)}</b> Lock-matched HRs had 2+ of our tags — "
+            f"🧩 <b>{multi_tag_n}/{len(matched)}</b> Lock-matched HRs had 2+ of our tags - "
             "those are the cross-method hits to study."
         )
     # watch-outs
     watch = []
     for (bl, end), c in book_end_counter.most_common(8):
         if bl in ("HardRock", "Caesars") and c >= 5:
-            watch.append(f"{bl} ending {end:02d} showed {c}× (noisy book — don't treat as a core trick yet)")
+            watch.append(f"{bl} ending {end:02d} showed {c}× (noisy book - don't treat as a core trick yet)")
     other_ends = [(e, c) for e, c in ending_counter.most_common() if e not in MGM_ENDINGS and e != 10 and e not in FD_ENDINGS and c >= 3]
     for e, c in other_ends[:3]:
-        watch.append(f"Ending {e:02d} showed {c}× on HRs — not in our official list; watch if it keeps repeating")
+        watch.append(f"Ending {e:02d} showed {c}× on HRs - not in our official list; watch if it keeps repeating")
     if not matched:
-        insights.append("No HRs matched Lock yet — need pregame fetches so Lock is full.")
+        insights.append("No HRs matched Lock yet - need pregame fetches so Lock is full.")
     if len(matched) < len(hr_names) * 0.5 and hr_names:
-        watch.append("Many HRs missing from Lock — fetch earlier / more games next slate.")
+        watch.append("Many HRs missing from Lock - fetch earlier / more games next slate.")
 
     return {
         "hr_count": len(hr_names), "matched": matched_ranked, "unmatched": unmatched,
@@ -1542,7 +1542,7 @@ def main():
         if st.button("⚡ Auto-grade MLB"):
             with st.spinner("MLB box scores…"):
                 h, m, s, msg = auto_grade_pending()
-            st.success(f"{h} HIT · {m} MISS · {s} still open — {msg}")
+            st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
             st.rerun()
     with c4:
         auto_lineups = st.checkbox("Lineups on fetch", value=True)
@@ -1584,7 +1584,7 @@ def main():
     st.markdown(
         f'<p class="games-hint">② Today only · {len(options)} games'
         + (f" (odds feed listed {raw_n}; extras were tomorrow/other day)" if raw_n else "")
-        + " · clear chips you don’t want · live games often return no 0.5 HR props</p>",
+        + " · clear chips you don't want · live games often return no 0.5 HR props</p>",
         unsafe_allow_html=True,
     )
 
@@ -1629,7 +1629,7 @@ def main():
             st.session_state["last_fetch_time"] = now_az()
             st.success(f"Loaded {len(df)} props · {now_az()} AZ")
         else:
-            st.warning("No 0.5 HR odds — games may already be live/final, or books pulled props. Pick pregame matchups and fetch again.")
+            st.warning("No 0.5 HR odds - games may already be live/final, or books pulled props. Pick pregame matchups and fetch again.")
     if st.session_state.get("last_fetch_time"):
         st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
     found = st.session_state.get("found_books", [])
@@ -1707,7 +1707,7 @@ def main():
                         team = item.get("team") or ""
                         st.markdown(f"""
                         <div class="card {cls}">
-                            <b>{label}</b> — <b>{item['player']}</b>{(' · '+team) if team else ''}
+                            <b>{label}</b> - <b>{item['player']}</b>{(' · '+team) if team else ''}
                             <span class="score-pill">{item['score']}</span><br>{meter}
                             Best {format_odds(item['best_price'])} {book_label(item['best_book'])}
                             · consensus {format_odds(item['median'])} · edge <b>{int(item['edge'])}</b><br>
@@ -1716,7 +1716,7 @@ def main():
     if nav == TAB_LABELS[1]:
         show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
     if nav == TAB_LABELS[2]:
-        show_player_cards("mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2–3 · all on one card", results)
+        show_player_cards("mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2-3 · all on one card", results)
     if nav == TAB_LABELS[3]:
         show_player_cards("fd", "💙 FanDuel", f"≥+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
     if nav == TAB_LABELS[4]:
@@ -1768,7 +1768,7 @@ def main():
                 i += 1
     if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
-        st.caption("Today's MLB HRs matched to pregame Lock. Learn from everyone we priced — not only TAKE IT/WATCH.")
+        st.caption("Today's MLB HRs matched to pregame Lock. Learn from everyone we priced - not only TAKE IT/WATCH.")
         lab = build_lock_lab()
         st.markdown(f"""
         <div class="petty-row">
@@ -1861,7 +1861,7 @@ def main():
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB…"):
                 h, m, s, msg = auto_grade_pending()
-            st.success(f"{h} HIT · {m} MISS · {s} open — {msg}")
+            st.success(f"{h} HIT · {m} MISS · {s} open - {msg}")
             st.rerun()
         rows = load_results()
         n_all = len(rows)
@@ -1870,7 +1870,7 @@ def main():
         st.caption(
             f"File has {n_all} logged plays · {n_pending_all} pending · {n_today} with today's date. "
             "Empty today = no successful prop fetch logged TAKE IT/WATCH yet (live games return no props). "
-            "Lock is saved prices only — not the same as Results."
+            "Lock is saved prices only - not the same as Results."
         )
         today_only = st.checkbox("Today only", value=False)
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
@@ -1891,7 +1891,7 @@ def main():
         page = min(st.session_state.get("pending_page", 0), max(0, (total_p - 1) // PENDING_PAGE) if total_p else 0)
         st.session_state["pending_page"] = page
         start, end = page * PENDING_PAGE, min((page + 1) * PENDING_PAGE, total_p)
-        st.caption(f"Manual leftover {start+1 if total_p else 0}–{end} of {total_p}")
+        st.caption(f"Manual leftover {start+1 if total_p else 0}-{end} of {total_p}")
         n1, n2, _ = st.columns([1, 1, 4])
         with n1:
             if st.button("← Prev", disabled=page <= 0):
@@ -1915,7 +1915,7 @@ def main():
                 if st.button("🔴 MISS", key=f"miss_{rid}"):
                     set_result_status(rid, "MISS")
                     st.rerun()
-        st.markdown("#### Graded — ↩️ Undo")
+        st.markdown("#### Graded - ↩️ Undo")
         for r in reversed(done[-40:]):
             rid = r["id"]
             icon = "🟢" if r["result"] == "HIT" else "🔴"
@@ -1934,13 +1934,13 @@ def main():
 
         def fmt_rate(h, m, t, pct):
             if t == 0 or pct is None:
-                return "—"
+                return "-"
             return f"{pct:.0f}% · {h}H / {m}M · n={t}"
 
         ti = overall.get("take_it", (0, 0, 0, None))
         wa = overall.get("watch", (0, 0, 0, None))
-        ti_pct = f"{ti[3]:.0f}" if ti[3] is not None else "—"
-        wa_pct = f"{wa[3]:.0f}" if wa[3] is not None else "—"
+        ti_pct = f"{ti[3]:.0f}" if ti[3] is not None else "-"
+        wa_pct = f"{wa[3]:.0f}" if wa[3] is not None else "-"
         st.markdown(f"""
         <div class="petty-row">
             <div class="petty-box"><div class="petty-num">{ti_pct}</div><div class="petty-label">🟢 TAKE IT %</div></div>
@@ -1996,93 +1996,61 @@ def main():
 
     if nav == TAB_LABELS[15]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        st.caption("Plain-English guide. Read this once — then the tabs make sense.")
-        st.markdown("""
-        <div class="glossary-block">
-            <h4>🟢 Board — TAKE IT vs PASS vs WATCH</h4>
-            <b>What you're looking at:</b> players the app thinks are worth a 0.5 HR bet (one home run).<br><br>
-            <b>🟢 TAKE IT</b> = green light to bet.<br>
-            Needs <b>at least 2 of our tricks</b> (methods) <b>and</b> the price looks longer than what the other books agree on (edge at least 60).<br>
-            We only show a few per team and per game so the list stays short.<br><br>
-            <b>⚪ PASS</b> = has tricks, but the price isn't long enough yet — don't force it.<br><br>
-            <b>👀 WATCH</b> = has <b>at least 1 trick</b>. We don't always bet these — we <b>track</b> them so we learn who actually hits.<br>
-            WATCH feeds auto-grade and the Backtest tab.
-        </div>
+        st.caption("Plain-English guide. Read this once - then the tabs make sense.")
+        st.markdown(
+            '<div class="glossary-block">'
+            "<h4>🟢 Board - TAKE IT vs PASS vs WATCH</h4>"
+            "<b>What you're looking at:</b> players the app thinks are worth a 0.5 HR bet (one home run).<br><br>"
+            "<b>🟢 TAKE IT</b> = green light to bet.<br>"
+            "Needs <b>at least 2 of our tricks</b> (methods) <b>and</b> the price looks longer than what the other books agree on (edge at least 60).<br>"
+            "We only show a few per team and per game so the list stays short.<br><br>"
+            "<b>⚪ PASS</b> = has tricks, but the price is not long enough yet - do not force it.<br><br>"
+            "<b>👀 WATCH</b> = has <b>at least 1 trick</b>. We do not always bet these - we <b>track</b> them so we learn who actually hits.<br>"
+            "WATCH feeds auto-grade and the Backtest tab."
+            "</div>"
+            '<div class="glossary-block">'
+            "<h4>Score · edge · +EV lean</h4>"
+            "<b>Score (0-100)</b> = quick strength number. More tricks + better price → higher score.<br>"
+            "<b>Edge</b> = how much longer the best book is vs the middle of the books.<br>"
+            "<b>+EV lean</b> = this kind of tag has been hitting enough in our graded history that this price looks okay. Not bankroll math."
+            "</div>"
+            '<div class="glossary-block">'
+            "<h4>🎰 BetMGM</h4>"
+            "MGM prices ending in <b>00, 25, 50, or 75</b>. <b>Pair</b> = 2 teammates same ending. <b>Group of 3</b> only - not 4+. "
+            "<b>MGM Exact</b> = 2 or 3 teammates at the exact same number."
+            "</div>"
+            '<div class="glossary-block">'
+            "<h4>🎯 DK · 💙 FD · 🤝 Exact</h4>"
+            "<b>DK 10</b> ends in 10. <b>DK FD-style</b> = FD-type endings on DK. "
+            "<b>FD Pattern</b> = +400+ ending 10/20/30/60/70/90 and needs DK or MGM too. "
+            "<b>Exact</b> = same price across books (not MGM teammate exact)."
+            "</div>"
+            '<div class="glossary-block">'
+            "<h4>🔒 Lock · 🧠 Lock Lab</h4>"
+            "<b>Lock</b> = last pregame prices we saved. "
+            "<b>Lock Lab</b> = today's real HRs matched to Lock - best place to see what endings and methods actually went, best price book, and cross-tags."
+            "</div>"
+            '<div class="glossary-block">'
+            "<h4>📡 Tracker · 📊 Results · Auto-grade</h4>"
+            "<b>Results</b> = TAKE IT and WATCH plays we logged (PENDING then HIT/MISS). "
+            "<b>Auto-grade</b> uses MLB box scores. <b>Tracker</b> = hit rate by tag after enough graded plays."
+            "</div>"
+            '<div class="glossary-block">'
+            "<h4>🧪 Backtest</h4>"
+            "Last two weeks of graded TAKE IT vs WATCH hit rates."
+            "</div>"
+            '<div class="glossary-block">'
+            "<h4>Books</h4>"
+            "Main: FanDuel, DraftKings, BetMGM. Compare: Hard Rock, Caesars. Bet365 on hold."
+            "</div>",
+            unsafe_allow_html=True,
+        )
 
-        <div class="glossary-block">
-            <h4>Score · edge · +EV lean</h4>
-            <b>Score (0–100)</b> = quick strength number. More tricks + better price → higher score.<br>
-            <b>Edge</b> = how much longer the best book is vs the middle of the books. Bigger edge = more “extra” payout if you're right.<br>
-            <b>+EV lean</b> = “this kind of tag has been hitting enough in our graded history that this price looks okay.”<br>
-            It is <b>not</b> fancy bankroll math — just a simple yes/no lean from past results.
-        </div>
+    st.markdown(
+        '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls We Rolling</div>',
+        unsafe_allow_html=True,
+    )
 
-        <div class="glossary-block">
-            <h4>🎰 BetMGM (all MGM tricks live here)</h4>
-            We only care about MGM prices that end in <b>00, 25, 50, or 75</b> (example: +525, +650, +875).<br><br>
-            <b>Pair</b> = exactly <b>2</b> teammates with the same ending.<br>
-            <b>Group of 3</b> = exactly <b>3</b> teammates with the same ending.<br>
-            We do <b>not</b> use groups of 4 or more — too noisy.<br><br>
-            <b>MGM Exact</b> = 2 or 3 teammates at the <b>exact same number</b> (not just the same ending).<br>
-            <b>Stayed in the group</b> = that player kept showing up in a pair/group across fetches — we treat that as stronger.<br>
-            <b>Last one left</b> = was in a group earlier and is still tagged later — extra attention.
-        </div>
 
-        <div class="glossary-block">
-            <h4>🎯 DraftKings</h4>
-            <b>DK 10</b> = DK price ends in 10 (like +410, +510). Classic DK flag.<br>
-            <b>DK FD-style</b> = DK using endings we usually see on FanDuel (10 / 20 / 30 / 60 / 70 / 90). Worth noting when it shows up on DK.
-        </div>
-
-        <div class="glossary-block">
-            <h4>💙 FanDuel</h4>
-            We only flag FD when the player <b>also</b> has a DK or MGM trick — FD alone is not enough.<br>
-            <b>FD Pattern</b> = price at least +400 and ends in 10, 20, 30, 60, 70, or 90.<br>
-            <b>FD +600</b> = exactly +600 — a number we watch on purpose.
-        </div>
-
-        <div class="glossary-block">
-            <h4>🤝 Exact (all books)</h4>
-            Same player, same price, on more than one book.<br>
-            Different from <b>MGM Exact</b> (that one is teammates on MGM only).
-        </div>
-
-        <div class="glossary-block">
-            <h4>📈 Signals · ⏳ Moves · 📉 Trends</h4>
-            <b>Signals</b> = tricks showing up on more than one book (multi-book method), or shortening on multiple books.<br>
-            <b>Moves</b> = price went up or down a lot since last fetch (we care more about 500+ prices).<br>
-            <b>Trends</b> = things we like or fade — e.g. FanDuel a bit under MGM (like), or FD the highest book (fade).
-        </div>
-
-        <div class="glossary-block">
-            <h4>👻 Late · 💀 Fallen · 🔒 Lock</h4>
-            <b>Late / Gone</b> = someone just showed up on a book, or disappeared (MGM often vanishes after first pitch).<br>
-            <b>Fallen</b> = was on the board earlier and dropped off filters or left the odds feed.<br>
-            <b>Lock</b> = last pregame prices we saved so we still know what MGM/DK/FD had <b>before</b> the game went live.
-        </div>
-
-        <div class="glossary-block">
-            <h4>📡 Tracker · 📊 Results · Auto-grade</h4>
-            <b>Results</b> = every TAKE IT and WATCH we logged. Starts as PENDING, then HIT or MISS.<br>
-            <b>Auto-grade</b> = checks MLB box scores and marks PENDING players HIT if they homered, MISS if the game is final and they didn't.<br>
-            You can still press HIT / MISS yourself and Undo if needed.<br><br>
-            <b>Tracker</b> = “when we graded this tag, how often did it hit?” Small samples stay hidden so one lucky day doesn't look like a system.
-        </div>
-
-        <div class="glossary-block">
-            <h4>🔥 What's Going Today · 🧪 Backtest</h4>
-            <b>What's Going Today</b> = how many HRs MLB actually had, how many of those were on our WATCH/TAKE list, and which endings showed up.<br>
-            It is a scoreboard — <b>not</b> a “bet this next” list.<br><br>
-            <b>Backtest</b> = last two weeks of graded plays.<br><b>🧠 Lock Lab</b> = today's HRs matched to Lock prices — best place to see what endings/methods actually went.<br>
-            Compare <b>TAKE IT hit rate</b> vs <b>WATCH hit rate</b>.<br>
-            If TAKE IT wins more often, the strict board is doing its job.<br>
-            If almost nobody who HRs was on our list, we need more WATCH coverage — not random betting.
-        </div>
-
-        <div class="glossary-block">
-            <h4>One card rule</h4>
-            On method tabs, each player (or pair) gets <b>one card</b> with every flag on it — no duplicate cards for the same name.
-        </div>
-
-        <div class="glossary-block">
-            <h4>Books we care about</h4>
+if __name__ == "__main__":
+    main()
