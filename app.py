@@ -4,7 +4,7 @@ Girl Magic Odds ✨
 - MGM: pairs + groups of 3 + Exact 2–3 only
 - One card per player on every method tab
 - +EV language (no Kelly) · Tracker Multi-book · What's Going Today
-- Auto-grade · lock · undo · strict board
+- Auto-grade (stronger name match) · MLB HRs on banner · lock · undo · strict board
 """
 
 import streamlit as st
@@ -224,10 +224,18 @@ def clean_name(name):
 
 def names_match(a, b):
     a, b = clean_name(a).lower(), clean_name(b).lower()
-    if a == b: return True
-    pa, pb = a.split(), b.split()
+    if a == b:
+        return True
+    a2 = a.replace(".", "").replace("  ", " ").strip()
+    b2 = b.replace(".", "").replace("  ", " ").strip()
+    if a2 == b2:
+        return True
+    pa, pb = a2.split(), b2.split()
     if len(pa) >= 2 and len(pb) >= 2:
-        if pa[-1] == pb[-1] and pa[0][0] == pb[0][0]: return True
+        if pa[-1] == pb[-1] and pa[0][0] == pb[0][0]:
+            return True
+        if pa[-1] == pb[-1] and (pa[0].startswith(pb[0]) or pb[0].startswith(pa[0])):
+            return True
     return False
 
 def clean_team(tid):
@@ -446,72 +454,20 @@ def log_bet_this(ev_board):
 def pending_sort_key(r):
     return (r.get("date") or "", r.get("time") or "", r.get("logged_at") or "", r.get("player") or "")
 
-def build_whats_going_today(rows):
-    today = today_az()
-    todays = [r for r in rows if r.get("date") == today]
-    hits = [r for r in todays if r.get("result") == "HIT"]
-    graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
-    ending_counts, book_ending = Counter(), Counter()
-    for r in hits:
-        price = r.get("best_price")
-        book = r.get("best_book") or ""
-        ending = r.get("ending")
-        if ending is None and price is not None: ending = last_two(price)
-        if ending is None and r.get("mgm_ending") is not None:
-            ending = r["mgm_ending"]
-            book = book or "betmgm"
-        if ending is None: continue
-        ending = int(ending)
-        bl = book_label(book)
-        ending_counts[ending] += 1
-        book_ending[(bl, ending)] += 1
-    chips = []
-    for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: -x[1]):
-        chips.append((f"{bl} {end:02d}", cnt, end in (0, 25, 50, 75, 10) or cnt >= 2))
-    for end, cnt in sorted(ending_counts.items(), key=lambda x: -x[1]):
-        if end in (0, 10, 25, 50, 75):
-            pure = f"Ends {end:02d}"
-            if not any(c[0] == pure for c in chips):
-                chips.append((pure, cnt, end == 75))
-    seen = {}
-    for label, cnt, hot in chips:
-        if label not in seen or cnt > seen[label][0]:
-            seen[label] = (cnt, hot)
-    chips = sorted([(lab, v[0], v[1]) for lab, v in seen.items()], key=lambda x: (-x[1], x[0]))[:8]
-    return len(hits), len(graded), chips
-
-def render_whats_going_today():
-    rows = load_results()
-    n_hits, n_graded, chips = build_whats_going_today(rows)
-    if chips:
-        chips_html = "".join(
-            f'<span class="trend-chip {"hot" if hot else ""}">{label}: <span class="chip-count">{cnt} HR</span></span>'
-            for label, cnt, hot in chips
-        )
-    else:
-        chips_html = '<span class="trend-chip">No HITs yet — auto-grade after games</span>'
-    st.markdown(f"""
-    <div class="trends-today">
-        <div class="trends-today-header">
-            <div class="trends-today-title">🔥 What's Going Today</div>
-            <div class="trends-today-sub">{n_hits} HR of {n_graded} graded · not a prediction</div>
-        </div>
-        <div class="trends-chips">{chips_html}</div>
-    </div>
-    """, unsafe_allow_html=True)
-
 def fetch_mlb_hr_hitters(date_str=None):
     date_str = date_str or today_mlb_date()
     hr_names, final_players = set(), set()
     live_or_final = 0
     try:
         r = requests.get(f"{MLB_STATS}/schedule", params={"sportId": 1, "date": date_str, "hydrate": "boxscore"}, timeout=25)
-        if r.status_code != 200: return set(), set(), f"MLB API HTTP {r.status_code}"
+        if r.status_code != 200:
+            return set(), set(), f"MLB API HTTP {r.status_code}"
         data = r.json()
         for d in data.get("dates", []):
             for game in d.get("games", []):
                 status = (game.get("status") or {}).get("abstractGameState", "")
-                if status not in ("Live", "Final"): continue
+                if status not in ("Live", "Final"):
+                    continue
                 live_or_final += 1
                 box = game.get("boxscore") or {}
                 teams = box.get("teams") or {}
@@ -520,25 +476,40 @@ def fetch_mlb_hr_hitters(date_str=None):
                     for _pid, pdata in players.items():
                         person = pdata.get("person") or {}
                         name = person.get("fullName") or ""
-                        if not name: continue
+                        if not name:
+                            continue
                         cn = clean_name(name)
                         stats = (pdata.get("stats") or {}).get("batting") or {}
                         hrs = stats.get("homeRuns")
-                        if hrs is None: continue
-                        try: hrs = int(hrs)
-                        except Exception: hrs = 0
-                        if status == "Final": final_players.add(cn)
-                        if hrs >= 1: hr_names.add(cn)
+                        if hrs is None:
+                            continue
+                        try:
+                            hrs = int(hrs)
+                        except Exception:
+                            hrs = 0
+                        if status == "Final":
+                            final_players.add(cn)
+                        if hrs >= 1:
+                            hr_names.add(cn)
         return hr_names, final_players, f"MLB {date_str}: {live_or_final} games · {len(hr_names)} HR"
     except Exception as e:
         return set(), set(), f"MLB error: {e}"
 
 def auto_grade_pending():
     hr_names, final_players, msg = fetch_mlb_hr_hitters()
+    # also try AZ-calendar date if different from MLB ET date
+    az = today_az()
+    mlb = today_mlb_date()
+    if az != mlb:
+        hr2, fin2, msg2 = fetch_mlb_hr_hitters(az)
+        hr_names |= hr2
+        final_players |= fin2
+        msg = msg + " | " + msg2
     rows = load_results()
     hits = misses = skipped = 0
     for row in rows:
-        if row.get("result") != "PENDING": continue
+        if row.get("result") != "PENDING":
+            continue
         player = row.get("player") or ""
         if any(names_match(player, h) for h in hr_names):
             row["result"] = "HIT"
@@ -554,7 +525,101 @@ def auto_grade_pending():
         else:
             skipped += 1
     save_results(rows)
-    return hits, misses, skipped, msg
+    return hits, misses, skipped, msg + f" · matched {hits} HIT / {misses} MISS"
+
+def build_whats_going_today(rows):
+    """Real MLB HRs today + endings from graded HITs / pregame lock."""
+    today = today_az()
+    hr_names, _final, _msg = fetch_mlb_hr_hitters()
+    az = today_az()
+    mlb = today_mlb_date()
+    if az != mlb:
+        hr2, _, _ = fetch_mlb_hr_hitters(az)
+        hr_names |= hr2
+
+    todays = [r for r in rows if r.get("date") == today]
+    hits_logged = [r for r in todays if r.get("result") == "HIT"]
+    graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
+    lock = st.session_state.get("pregame_lock") or load_pregame()
+
+    ending_counts, book_ending = Counter(), Counter()
+
+    for r in hits_logged:
+        ending = r.get("ending")
+        if ending is None and r.get("best_price") is not None:
+            ending = last_two(r["best_price"])
+        if ending is None and r.get("mgm_ending") is not None:
+            ending = r["mgm_ending"]
+        book = r.get("best_book") or ""
+        if ending is None:
+            continue
+        ending = int(ending)
+        bl = book_label(book)
+        ending_counts[ending] += 1
+        book_ending[(bl, ending)] += 1
+
+    for hr in hr_names:
+        already = any(names_match(hr, r.get("player") or "") for r in hits_logged)
+        if already:
+            continue
+        entry = None
+        for pname, data in lock.items():
+            if names_match(hr, pname):
+                entry = data
+                break
+        if not entry:
+            continue
+        end = entry.get("mgm_ending")
+        book = "betmgm" if end is not None else ""
+        if end is None:
+            for b, info in (entry.get("books") or {}).items():
+                if info.get("ending") is not None:
+                    end = info["ending"]
+                    book = b
+                    break
+        if end is None:
+            continue
+        end = int(end)
+        bl = book_label(book)
+        ending_counts[end] += 1
+        book_ending[(bl, end)] += 1
+
+    chips = []
+    for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: -x[1]):
+        chips.append((f"{bl} {end:02d}", cnt, end in (0, 25, 50, 75, 10) or cnt >= 2))
+    for end, cnt in sorted(ending_counts.items(), key=lambda x: -x[1]):
+        if end in (0, 10, 25, 50, 75):
+            pure = f"Ends {end:02d}"
+            if not any(c[0] == pure for c in chips):
+                chips.append((pure, cnt, end == 75))
+
+    seen = {}
+    for label, cnt, hot in chips:
+        if label not in seen or cnt > seen[label][0]:
+            seen[label] = (cnt, hot)
+    chips = sorted([(lab, v[0], v[1]) for lab, v in seen.items()], key=lambda x: (-x[1], x[0]))[:8]
+    return len(hr_names), len(graded), chips
+
+def render_whats_going_today():
+    rows = load_results()
+    mlb_hr, n_graded, chips = build_whats_going_today(rows)
+    if chips:
+        chips_html = "".join(
+            f'<span class="trend-chip {"hot" if hot else ""}">{label}: '
+            f'<span class="chip-count">{cnt} HR</span></span>'
+            for label, cnt, hot in chips
+        )
+    else:
+        chips_html = '<span class="trend-chip">No ending matches yet — lock + auto-grade fill this</span>'
+    st.markdown(f"""
+    <div class="trends-today">
+        <div class="trends-today-header">
+            <div class="trends-today-title">🔥 What's Going Today</div>
+            <div class="trends-today-sub">{mlb_hr} MLB HR today · {n_graded} graded on our list · not a prediction</div>
+        </div>
+        <div class="trends-chips">{chips_html}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 def build_tracker_stats(rows):
     done = [r for r in rows if r.get("result") in ("HIT", "MISS") and r.get("source") != "manual_hr"]
@@ -1345,9 +1410,10 @@ def main():
             On every method tab, each player (or pair label) gets <b>one card</b> with every flag stacked — no duplicates.
         </div>
         <div class="glossary-block">
-            <h4>📡 Tracker</h4>
-            “12 hit · 40 miss · 52 plays” = how many times we graded that tag.<br>
-            Small samples stay hidden so they don’t look like proof.
+            <h4>📡 Tracker · Auto-grade · What's Going</h4>
+            Tracker shows hit rates only after enough graded plays.<br>
+            <b>Auto-grade</b> marks PENDING TAKE ITs HIT/MISS from MLB box scores (stronger name match).<br>
+            <b>What's Going Today</b> shows real MLB HR count + endings from our lock / graded list.
         </div>
         """, unsafe_allow_html=True)
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
