@@ -455,58 +455,98 @@ def pending_sort_key(r):
     return (r.get("date") or "", r.get("time") or "", r.get("logged_at") or "", r.get("player") or "")
 
 def fetch_mlb_hr_hitters(date_str=None):
-    date_str = date_str or today_mlb_date()
+    """Two-step: schedule → per-game boxscore + live home_run events."""
+    if date_str:
+        dates = [date_str]
+    else:
+        dates = list({today_mlb_date(), today_az()})
+
     hr_names, final_players = set(), set()
-    live_or_final = 0
-    try:
-        r = requests.get(f"{MLB_STATS}/schedule", params={"sportId": 1, "date": date_str, "hydrate": "boxscore"}, timeout=25)
-        if r.status_code != 200:
-            return set(), set(), f"MLB API HTTP {r.status_code}"
-        data = r.json()
-        for d in data.get("dates", []):
-            for game in d.get("games", []):
-                status = (game.get("status") or {}).get("abstractGameState", "")
-                if status not in ("Live", "Final"):
-                    continue
-                live_or_final += 1
-                box = game.get("boxscore") or {}
-                teams = box.get("teams") or {}
-                for side in ("home", "away"):
-                    players = (teams.get(side) or {}).get("players") or {}
-                    for _pid, pdata in players.items():
-                        person = pdata.get("person") or {}
-                        name = person.get("fullName") or ""
-                        if not name:
+    games_checked = 0
+    errors = []
+    headers = {"User-Agent": "GirlMagicOdds/1.0", "Accept": "application/json"}
+
+    for dstr in dates:
+        try:
+            r = requests.get(
+                f"{MLB_STATS}/schedule",
+                params={"sportId": 1, "date": dstr},
+                headers=headers,
+                timeout=20,
+            )
+            if r.status_code != 200:
+                errors.append(f"schedule {dstr} HTTP {r.status_code}")
+                continue
+            games = []
+            for day in r.json().get("dates", []):
+                games.extend(day.get("games", []))
+        except Exception as e:
+            errors.append(f"schedule {dstr}: {e}")
+            continue
+
+        for g in games:
+            status = (g.get("status") or {}).get("abstractGameState", "")
+            if status not in ("Live", "Final"):
+                continue
+            pk = g.get("gamePk")
+            if not pk:
+                continue
+            games_checked += 1
+
+            try:
+                b = requests.get(f"{MLB_STATS}/game/{pk}/boxscore", headers=headers, timeout=15)
+                if b.status_code == 200:
+                    box = b.json()
+                    for side in ("home", "away"):
+                        players = ((box.get("teams") or {}).get(side) or {}).get("players") or {}
+                        for _pid, pdata in players.items():
+                            name = (pdata.get("person") or {}).get("fullName") or ""
+                            if not name:
+                                continue
+                            cn = clean_name(name)
+                            bat = (pdata.get("stats") or {}).get("batting") or {}
+                            try:
+                                hrs = int(bat.get("homeRuns") or 0)
+                            except Exception:
+                                hrs = 0
+                            if status == "Final" and bat:
+                                final_players.add(cn)
+                            if hrs >= 1:
+                                hr_names.add(cn)
+            except Exception as e:
+                errors.append(f"box {pk}: {e}")
+
+            try:
+                live = requests.get(
+                    f"https://statsapi.mlb.com/api/v1.1/game/{pk}/feed/live",
+                    headers=headers,
+                    timeout=15,
+                )
+                if live.status_code == 200:
+                    plays = ((live.json().get("liveData") or {}).get("plays") or {}).get("allPlays") or []
+                    for p in plays:
+                        if (p.get("result") or {}).get("eventType") != "home_run":
                             continue
-                        cn = clean_name(name)
-                        stats = (pdata.get("stats") or {}).get("batting") or {}
-                        hrs = stats.get("homeRuns")
-                        if hrs is None:
-                            continue
-                        try:
-                            hrs = int(hrs)
-                        except Exception:
-                            hrs = 0
-                        if status == "Final":
-                            final_players.add(cn)
-                        if hrs >= 1:
-                            hr_names.add(cn)
-        return hr_names, final_players, f"MLB {date_str}: {live_or_final} games · {len(hr_names)} HR"
-    except Exception as e:
-        return set(), set(), f"MLB error: {e}"
+                        batter = ((p.get("matchup") or {}).get("batter") or {}).get("fullName")
+                        if batter:
+                            hr_names.add(clean_name(batter))
+            except Exception as e:
+                errors.append(f"live {pk}: {e}")
+
+    msg = f"{games_checked} live/final games · {len(hr_names)} HR names"
+    if hr_names:
+        msg += " · e.g. " + ", ".join(sorted(hr_names)[:6])
+    if errors and not hr_names:
+        msg += " · " + "; ".join(errors[:2])
+    return hr_names, final_players, msg
+
 
 def auto_grade_pending():
     hr_names, final_players, msg = fetch_mlb_hr_hitters()
-    # also try AZ-calendar date if different from MLB ET date
-    az = today_az()
-    mlb = today_mlb_date()
-    if az != mlb:
-        hr2, fin2, msg2 = fetch_mlb_hr_hitters(az)
-        hr_names |= hr2
-        final_players |= fin2
-        msg = msg + " | " + msg2
     rows = load_results()
     hits = misses = skipped = 0
+    pending_n = sum(1 for r in rows if r.get("result") == "PENDING")
+
     for row in rows:
         if row.get("result") != "PENDING":
             continue
@@ -524,8 +564,10 @@ def auto_grade_pending():
             misses += 1
         else:
             skipped += 1
+
     save_results(rows)
-    return hits, misses, skipped, msg + f" · matched {hits} HIT / {misses} MISS"
+    return hits, misses, skipped, f"{msg} · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
+
 
 def build_whats_going_today(rows):
     """Real MLB HRs today + endings from graded HITs / pregame lock."""
