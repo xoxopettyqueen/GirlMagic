@@ -2,12 +2,11 @@
 Girl Magic Odds ✨
 Boss Bitch • HBIC • Me & My Girls We Rolling
 
-Fixes this build:
-- MGM / Digits: pairs + groups of 3 ONLY (no 4+)
-- Digits tab = MGM only
-- Tracker includes Multi-book method (and keeps n≥10)
-- Glossary readable again
-- Auto-grade · pregame lock · undo · strict board · Bet365 shelved
+- What's Going Today banner restored
+- MGM / Digits: pairs + groups of 3 ONLY
+- Tracker: Multi-book method + min n
+- Auto-grade · pregame lock · undo · strict board
+- Bet365 shelved · full glossary
 """
 
 import streamlit as st
@@ -78,6 +77,14 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .glossary-block{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:14px 16px;margin-bottom:12px;font-size:.88rem;line-height:1.55}
 .glossary-block h4{color:#f9a8d4;margin:0 0 8px 0;font-size:1rem}
 .glossary-block b{color:#fbcfe8}
+.trends-today{background:linear-gradient(135deg,#2a1040 0%,#1a0f28 50%,#3b0764 100%);border:1px solid #c084fc;border-radius:16px;padding:14px 18px;margin-bottom:18px}
+.trends-today-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.trends-today-title{color:#f9a8d4;font-weight:800;font-size:.95rem}
+.trends-today-sub{color:#e9d5ff;font-size:.72rem;opacity:.9}
+.trends-chips{display:flex;flex-wrap:wrap;gap:8px}
+.trend-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,.35);border:1px solid #a855f7;border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:700;color:#fce7f3}
+.trend-chip.hot{border-color:#f472b6;background:rgba(219,39,119,.25)}
+.trend-chip .chip-count{color:#f9a8d4;font-weight:900}
 </style>
 """, unsafe_allow_html=True)
 
@@ -131,7 +138,6 @@ TRACKER_BLOCKLIST = {
     "Price moved", "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest",
     "FD under MGM", "Multi-book Lengthen", "Stuck price", "Outlier higher",
 }
-# Always track these even if not "primary"
 TRACKER_ALWAYS = {
     "Multi-book method", "Stayed in the group", "Last one left",
     "MGM Exact", "DK 10", "FD Pattern", "FD 600", "Exact Match",
@@ -574,6 +580,64 @@ def log_manual_hr(player, price, book):
 def pending_sort_key(r):
     return (r.get("date") or "", r.get("time") or "", r.get("logged_at") or "", r.get("player") or "")
 
+# ── What's Going Today ───────────────────────────────────────
+def build_whats_going_today(rows):
+    today = today_az()
+    todays = [r for r in rows if r.get("date") == today]
+    hits = [r for r in todays if r.get("result") == "HIT"]
+    graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
+    ending_counts, book_ending = Counter(), Counter()
+    for r in hits:
+        price = r.get("best_price")
+        book = r.get("best_book") or ""
+        ending = r.get("ending")
+        if ending is None and price is not None:
+            ending = last_two(price)
+        if ending is None and r.get("mgm_ending") is not None:
+            ending = r["mgm_ending"]
+            book = book or "betmgm"
+        if ending is None:
+            continue
+        ending = int(ending)
+        bl = book_label(book)
+        ending_counts[ending] += 1
+        book_ending[(bl, ending)] += 1
+    chips = []
+    for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: -x[1]):
+        chips.append((f"{bl} {end:02d}", cnt, end in (0, 25, 50, 75, 10) or cnt >= 2))
+    for end, cnt in sorted(ending_counts.items(), key=lambda x: -x[1]):
+        if end in (0, 10, 25, 50, 75):
+            pure = f"Ends {end:02d}"
+            if not any(c[0] == pure for c in chips):
+                chips.append((pure, cnt, end == 75))
+    seen = {}
+    for label, cnt, hot in chips:
+        if label not in seen or cnt > seen[label][0]:
+            seen[label] = (cnt, hot)
+    chips = sorted([(lab, v[0], v[1]) for lab, v in seen.items()], key=lambda x: (-x[1], x[0]))[:8]
+    return len(hits), len(graded), chips
+
+def render_whats_going_today():
+    rows = load_results()
+    n_hits, n_graded, chips = build_whats_going_today(rows)
+    if chips:
+        chips_html = "".join(
+            f'<span class="trend-chip {"hot" if hot else ""}">{label}: '
+            f'<span class="chip-count">{cnt} HR</span></span>'
+            for label, cnt, hot in chips
+        )
+    else:
+        chips_html = '<span class="trend-chip">No HITs yet — auto-grade or log a HR</span>'
+    st.markdown(f"""
+    <div class="trends-today">
+        <div class="trends-today-header">
+            <div class="trends-today-title">🔥 What's Going Today</div>
+            <div class="trends-today-sub">{n_hits} HR of {n_graded} graded · not a prediction</div>
+        </div>
+        <div class="trends-chips">{chips_html}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
 # ── AUTO-GRADE ───────────────────────────────────────────────
 def fetch_mlb_hr_hitters(date_str=None):
     date_str = date_str or today_mlb_date()
@@ -645,17 +709,13 @@ def auto_grade_pending():
     return hits, misses, skipped, msg
 
 def build_tracker_stats(rows):
-    """Primary method + always track Multi-book method and key tags."""
     done = [r for r in rows if r.get("result") in ("HIT", "MISS") and r.get("source") != "manual_hr"]
     method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     ending_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
-
     for r in done:
         is_hit = r["result"] == "HIT"
         methods_to_count = set()
-
-        # primary = first core-ish method
         for m in r.get("methods") or []:
             nm = normalize_method_name(m)
             if nm in TRACKER_BLOCKLIST or nm in NOISE_METHODS:
@@ -663,13 +723,10 @@ def build_tracker_stats(rows):
             if is_core_method(nm) or nm in PERSONAL_STRONG:
                 methods_to_count.add(nm)
                 break
-
-        # always include these when present (esp. Multi-book method)
         for m in r.get("methods") or []:
             nm = normalize_method_name(m)
             if nm in TRACKER_ALWAYS:
                 methods_to_count.add(nm)
-
         for nm in methods_to_count:
             if nm in TRACKER_BLOCKLIST:
                 continue
@@ -677,14 +734,12 @@ def build_tracker_stats(rows):
                 method_stats[nm]["hit"] += 1
             else:
                 method_stats[nm]["miss"] += 1
-
         bb = book_label(r.get("best_book"))
         if bb != "Untagged":
             if is_hit:
                 book_stats[bb]["hit"] += 1
             else:
                 book_stats[bb]["miss"] += 1
-
         end = r.get("ending")
         if end is None and r.get("best_price") is not None:
             end = last_two(r["best_price"])
@@ -694,7 +749,6 @@ def build_tracker_stats(rows):
                 ending_stats[key]["hit"] += 1
             else:
                 ending_stats[key]["miss"] += 1
-
     return method_stats, book_stats, ending_stats
 
 def method_hit_rate(method_stats, method_name):
@@ -1037,7 +1091,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "event": row["event"], "methods": ["DK FD-style"]})
             methods_map[row["player"]].append("DK FD-style")
 
-    # ── MGM: pairs + groups of 3 ONLY ───────────────────────
+    # MGM pairs + groups of 3 ONLY
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
     current_mgm = []
     group_key = ["event", "team"] if (not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any()) else ["event"]
@@ -1053,12 +1107,10 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     ends[d].append(r["player"])
             for d, ps in ends.items():
                 names = sorted(set(ps))
-                # ★ ONLY 2 or 3
                 if len(names) not in (2, 3):
                     continue
                 current_mgm.append({
-                    "event": event,
-                    "ending": d,
+                    "event": event, "ending": d,
                     "team": team if isinstance(team, str) else "",
                     "players": frozenset(names),
                 })
@@ -1111,7 +1163,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         })
         for n in names:
             methods_map[n].extend(meth)
-        # Digits tab = same MGM-only pairs/groups of 3
         results.append({
             "type": "digit", "label": " + ".join(names),
             "reason": f"Digit {kind} ends {d:02d}{tnote}",
@@ -1127,7 +1178,6 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             event, team = keys[0], (keys[1] if len(keys) > 1 else "")
             for price, pg in g.groupby("price"):
                 names = sorted(pg["player"].unique())
-                # exact match pairs / groups of 3 only
                 if len(names) not in (2, 3):
                     continue
                 tnote = f" · {team}" if team else ""
@@ -1313,6 +1363,9 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
+    # ★ What's Going Today
+    render_whats_going_today()
+
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
     if not odds_key:
@@ -1483,7 +1536,7 @@ def main():
 
     show(tabs[1], "dk", "🎯 DraftKings", "Ends in 10 · FD-style tracked separately")
     show(tabs[2], "mgm", "🎰 BetMGM", "Same-team 00/25/50/75 · pairs OR groups of 3 ONLY")
-    show(tabs[3], "digit", "🔢 Digits (MGM only)", "Same as MGM groups — pairs & groups of 3 only · not other books")
+    show(tabs[3], "digit", "🔢 Digits (MGM only)", "Pairs & groups of 3 only · not other books")
     show(tabs[4], "fd", "💙 FanDuel", f"≥+{FD_MIN} endings 10/20/30/60/70/90 or +600 · needs DK/MGM")
     show(tabs[5], "match", "🤝 Exact", "Same price across books")
     show(tabs[6], "signal", "📈 Signals", "Multi-book method / shorten")
@@ -1565,7 +1618,7 @@ def main():
 
         st.markdown("#### By method")
         chips = chips_from_stats(method_stats)
-        st.markdown("".join(chips) if chips else "_(Need graded plays with n≥10 — Multi-book method will show here)_", unsafe_allow_html=True)
+        st.markdown("".join(chips) if chips else "_(Need graded plays with n≥10)_", unsafe_allow_html=True)
         st.markdown("#### By best book")
         chips = chips_from_stats(book_stats)
         st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
@@ -1652,55 +1705,42 @@ def main():
 
     with tabs[14]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-
         st.markdown("""
         <div class="glossary-block">
             <h4>🟢 The Board</h4>
-            <b>TAKE IT</b> = at least <b>2 core methods</b> · edge points ≥ <b>60</b> · Over <b>0.5 HR</b> only
-            · player is in the RotoWire lineup when lineups are loaded.<br><br>
-            We cap the board at <b>2 picks per team</b> and <b>6 per game</b> so you are not scrolling forever.<br>
-            <b>PASS</b> = same method count but edge under 60 — interesting, not a play.
+            <b>TAKE IT</b> = at least <b>2 core methods</b> · edge ≥ <b>60</b> · Over <b>0.5 HR</b>
+            · in RotoWire lineup when loaded.<br>
+            Cap: <b>2 per team</b> · <b>6 per game</b>.<br>
+            <b>PASS</b> = methods hit but edge under 60.
         </div>
-
+        <div class="glossary-block">
+            <h4>🔥 What's Going Today</h4>
+            Chips from <b>graded HITs today</b> (book + ending). Not a prediction — just what already went.
+        </div>
         <div class="glossary-block">
             <h4>🎯 DraftKings</h4>
-            <b>DK 10</b> = DK price ends in <b>10</b> (example +110, +210, +510).<br>
-            <b>DK FD-style</b> = DK price ends in 10 / 20 / 30 / 60 / 70 / 90 — tracked separately so we can learn if those hit.
+            <b>DK 10</b> = ends in 10. <b>DK FD-style</b> = ends 10/20/30/60/70/90 on DK (tracked separate).
         </div>
-
         <div class="glossary-block">
             <h4>🎰 BetMGM · 🔢 Digits</h4>
-            Same team only · endings <b>00 · 25 · 50 · 75</b>.<br>
-            <b>Pairs (2)</b> or <b>groups of exactly 3</b> — never 4 or more.<br>
-            <b>MGM Exact</b> = same exact price on MGM for 2 or 3 teammates.<br>
-            <b>Stayed in the group</b> / <b>Last one left</b> = strength tags when the group holds across fetches.<br>
-            The <b>Digits</b> tab is MGM only — not DK, not FD, not other books.
+            Same team · <b>00 / 25 / 50 / 75</b>.<br>
+            <b>Pairs (2)</b> or <b>groups of exactly 3</b> — never 4+.<br>
+            <b>MGM Exact</b> · <b>Stayed in the group</b> · <b>Last one left</b>.<br>
+            Digits tab = <b>MGM only</b>.
         </div>
-
         <div class="glossary-block">
             <h4>💙 FanDuel</h4>
-            Price ≥ threshold ending in <b>10 / 20 / 30 / 60 / 70 / 90</b>, or exact <b>+600</b> chalk.<br>
-            Only counts if that player also has a <b>DK or MGM</b> method (multi-book instinct).
+            ≥ threshold ending 10/20/30/60/70/90 or exact <b>+600</b> · only if player also has DK or MGM.
         </div>
-
         <div class="glossary-block">
             <h4>✨ Multi-book method</h4>
-            Player has core methods on <b>2 or more</b> of DK / MGM / FD at the same time.
-            This is tracked on the <b>Tracker</b> so we can see if overlap really hits more.
+            Core methods on <b>2+</b> of DK / MGM / FD. Tracked on the Tracker tab.
         </div>
-
         <div class="glossary-block">
-            <h4>📡 Tracker</h4>
-            Hit rates from graded TAKE ITs only.<br>
-            Chips with sample size under <b>10</b> are hidden — tiny n lies.<br>
-            Includes <b>Multi-book method</b>, MGM tags, DK 10, FD Pattern, etc.
-        </div>
-
-        <div class="glossary-block">
-            <h4>⚡ Auto-grade · 🔒 Lock</h4>
-            <b>Auto-grade</b> reads free MLB box scores: HIT when they already have a HR (even live);
-            MISS only after the game is Final and they did not homer.<br>
-            <b>Lock</b> saves last pregame prices every fetch. When MGM disappears after first pitch, numbers stay.
+            <h4>📡 Tracker · ⚡ Auto-grade · 🔒 Lock</h4>
+            Tracker: hit rates with <b>n ≥ 10</b> only.<br>
+            Auto-grade: HIT on live HR · MISS after Final with no HR.<br>
+            Lock: last pregame prices kept when MGM drops after first pitch.
         </div>
         """, unsafe_allow_html=True)
 
