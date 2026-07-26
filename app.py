@@ -1811,27 +1811,26 @@ def main():
             )
         st.markdown("".join(tag_chips) if tag_chips else "_(None)_", unsafe_allow_html=True)
 
-        st.markdown("#### HR players matched to Lock *(most of our tags first)*")
+        st.markdown("#### HR players matched to Lock *(most tags first — single column so mobile keeps order)*")
         if not lab["matched"]:
             st.info("No HR names matched Lock. Fetch pregame more so Lock fills.")
         else:
-            cols = st.columns(2)
-            for i, m in enumerate(lab["matched"][:40]):
-                with cols[i % 2]:
-                    tags_html = render_method_tags(m["tags"]) if m["tags"] else "<i>no standard tags</i>"
-                    prices = " · ".join(m["lines"][:6])
-                    ev = m["event"]
-                    best = ""
-                    if m.get("best_book") and m.get("best_price") is not None:
-                        best = f"<br><b>Best price:</b> {m['best_book']} {format_odds(m['best_price'])}"
-                    tn = m.get("tag_n", len(m.get("tags") or []))
-                    tag_line = f"{tn} tag" + ("s" if tn != 1 else "")
-                    st.markdown(
-                        f'<div class="card"><b>{m["hr_name"]}</b> · <span class="score-pill">{tag_line}</span>'
-                        + (f"<br><small>{ev}</small>" if ev else "")
-                        + f"<br>{prices}{best}<br>{tags_html}</div>",
-                        unsafe_allow_html=True,
-                    )
+            # one column: st.columns(2) on mobile stacks left then right and wrecks sort order
+            for m in lab["matched"][:40]:
+                tags_html = render_method_tags(m["tags"]) if m["tags"] else "<i>no standard tags</i>"
+                prices = " · ".join(m["lines"][:6])
+                ev = m["event"]
+                best = ""
+                if m.get("best_book") and m.get("best_price") is not None:
+                    best = f"<br><b>Best price:</b> {m['best_book']} {format_odds(m['best_price'])}"
+                tn = m.get("tag_n", len(m.get("tags") or []))
+                tag_line = f"{tn} tag" + ("s" if tn != 1 else "")
+                st.markdown(
+                    f'<div class="card"><b>{m["hr_name"]}</b> · <span class="score-pill">{tag_line}</span>'
+                    + (f"<br><small>{ev}</small>" if ev else "")
+                    + f"<br>{prices}{best}<br>{tags_html}</div>",
+                    unsafe_allow_html=True,
+                )
         if lab["unmatched"]:
             with st.expander(f"Not in Lock ({len(lab['unmatched'])})"):
                 st.write(", ".join(lab["unmatched"][:50]))
