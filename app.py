@@ -1541,11 +1541,13 @@ def main():
 
         ti = overall.get("take_it", (0, 0, 0, None))
         wa = overall.get("watch", (0, 0, 0, None))
+        ti_pct = f"{ti[3]:.0f}" if ti[3] is not None else "—"
+        wa_pct = f"{wa[3]:.0f}" if wa[3] is not None else "—"
         st.markdown(f"""
         <div class="petty-row">
-            <div class="petty-box"><div class="petty-num">{ti[3]:.0f if ti[3] is not None else '—'}</div><div class="petty-label">🟢 TAKE IT %</div></div>
+            <div class="petty-box"><div class="petty-num">{ti_pct}</div><div class="petty-label">🟢 TAKE IT %</div></div>
             <div class="petty-box"><div class="petty-num">{ti[2]}</div><div class="petty-label">TAKE n</div></div>
-            <div class="petty-box"><div class="petty-num">{wa[3]:.0f if wa[3] is not None else '—'}</div><div class="petty-label">👀 WATCH %</div></div>
+            <div class="petty-box"><div class="petty-num">{wa_pct}</div><div class="petty-label">👀 WATCH %</div></div>
             <div class="petty-box"><div class="petty-num">{wa[2]}</div><div class="petty-label">WATCH n</div></div>
             <div class="petty-box"><div class="petty-num">{n_graded}</div><div class="petty-label">Graded 14d</div></div>
         </div>
