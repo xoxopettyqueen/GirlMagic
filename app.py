@@ -34,6 +34,17 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
 .stApp{background:linear-gradient(165deg,#0a0410 0%,#160a22 40%,#1f0b30 100%);color:#fce7f3;font-family:'Inter',sans-serif}
+.main .block-container{max-width:820px!important;padding:1rem 1.15rem 2rem!important;margin:0 auto!important}
+@media (max-width:640px){
+  .main .block-container{padding:0.65rem 0.75rem 1.5rem!important}
+  h1{font-size:1.65rem!important}
+}
+div[role="radiogroup"]{flex-wrap:wrap!important;gap:4px!important;margin:6px 0 12px!important}
+div[role="radiogroup"] label{
+  background:#1a0f28!important;border:1px solid #a855f7!important;border-radius:8px!important;
+  padding:5px 9px!important;font-size:0.7rem!important;color:#f9a8d4!important;
+}
+
 h1{font-family:'Playfair Display',serif!important;font-weight:900!important;background:linear-gradient(90deg,#f9a8d4,#e879f9,#c084fc,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:2.5rem!important;margin-bottom:2px!important}
 .subtitle{color:#f9a8d4;font-size:.9rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
 .tagline{color:#e9d5ff;font-size:.85rem;font-style:italic;margin-bottom:14px;opacity:.95}
@@ -759,31 +770,47 @@ def aggregate_by_player(items):
         out.append({"label": label, "reason": "<br>".join(reasons), "methods": meths, "event": data["event"]})
     return out
 
-def show_player_cards(tab, typ, banner, explain, results):
-    with tab:
-        st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
-        st.caption(explain)
-        items = aggregate_by_player([r for r in results if r["type"] == typ])
-        if not items:
-            st.info("None.")
-            return
-        cols = st.columns(2)
-        for idx, r in enumerate(items[:40]):
-            with cols[idx % 2]:
-                tags = render_method_tags(r.get("methods", []))
-                st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+def show_player_cards(typ, banner, explain, results):
+    st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
+    st.caption(explain)
+    items = aggregate_by_player([r for r in results if r["type"] == typ])
+    if not items:
+        st.info("None.")
+        return
+    cols = st.columns(2)
+    for idx, r in enumerate(items[:40]):
+        with cols[idx % 2]:
+            tags = render_method_tags(r.get("methods", []))
+            st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
 def fetch_rotowire_lineups():
-    if not HAS_BS4: return set(), "Install beautifulsoup4"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    if not HAS_BS4:
+        return set(), "Install beautifulsoup4 in requirements.txt"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
     try:
-        r = requests.get(ROTOWIRE_URL, headers=headers, timeout=25)
-        if r.status_code != 200: return set(), f"RotoWire HTTP {r.status_code}"
+        r = requests.get(ROTOWIRE_URL, headers=headers, timeout=30)
+        if r.status_code != 200:
+            return set(), f"RotoWire HTTP {r.status_code}"
         soup = BeautifulSoup(r.content, "html.parser")
         names = set()
-        for el in soup.select("div.lineup__player a, li.lineup__player a"):
-            t = el.get_text(strip=True)
-            if t and len(t.split()) >= 2: names.add(clean_name(t))
+        for sel in (
+            "div.lineup__player a",
+            "li.lineup__player a",
+            "a.lineup__player-link",
+            ".lineup__player a",
+            "a[href*='/baseball/player/']",
+            "a[href*='/player/']",
+        ):
+            for el in soup.select(sel):
+                t = el.get_text(strip=True)
+                if t and len(t.split()) >= 2:
+                    names.add(clean_name(t))
+        if not names:
+            return set(), "RotoWire 0 names — site may block Streamlit or changed layout"
         return names, f"RotoWire · {len(names)} names"
     except Exception as e:
         return set(), f"RotoWire error: {e}"
@@ -1455,12 +1482,19 @@ def main():
         <div class="petty-box"><div class="petty-num">{lock_n}</div><div class="petty-label">🔒 Lock</div></div>
     </div>
     """, unsafe_allow_html=True)
-    tabs = st.tabs([
+    TAB_LABELS = [
         "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact",
         "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "💀 Fallen", "🔒 Lock",
         "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
-    ])
-    with tabs[0]:
+    ]
+    nav = st.radio(
+        "Section",
+        TAB_LABELS,
+        horizontal=True,
+        label_visibility="collapsed",
+        key="main_nav",
+    )
+    if nav == TAB_LABELS[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
         st.caption(f"Max {BOARD_MAX_PER_TEAM}/team · {BOARD_MAX_PER_GAME}/game · 2+ core · edge ≥ {EDGE_MIN}")
         if not ev_board:
@@ -1490,12 +1524,17 @@ def main():
                             · consensus {format_odds(item['median'])} · edge <b>{int(item['edge'])}</b><br>
                             {tags}{ev_s}<br><small>{item['why']}</small>
                         </div>""", unsafe_allow_html=True)
-    show_player_cards(tabs[1], "dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
-    show_player_cards(tabs[2], "mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2–3 · all on one card", results)
-    show_player_cards(tabs[3], "fd", "💙 FanDuel", f"≥+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
-    show_player_cards(tabs[4], "match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
-    show_player_cards(tabs[5], "signal", "📈 Signals", "Multi-book method · one card per player", results)
-    with tabs[6]:
+    if nav == TAB_LABELS[1]:
+        show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
+    if nav == TAB_LABELS[2]:
+        show_player_cards("mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2–3 · all on one card", results)
+    if nav == TAB_LABELS[3]:
+        show_player_cards("fd", "💙 FanDuel", f"≥+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
+    if nav == TAB_LABELS[4]:
+        show_player_cards("match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
+    if nav == TAB_LABELS[5]:
+        show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
+    if nav == TAB_LABELS[6]:
         st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
         for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
             st.markdown(f"#### {title}")
@@ -1505,7 +1544,7 @@ def main():
                 with cols[idx % 2]:
                     st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
             if not items: st.info("None")
-    with tabs[7]:
+    if nav == TAB_LABELS[7]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
         fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
@@ -1515,13 +1554,14 @@ def main():
         st.markdown("#### 🔴 Fade")
         for r in aggregate_by_player(fade)[:15]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-    show_player_cards(tabs[8], "late", "👻 Late / Gone", "One card per player · lock prices when gone", results)
-    with tabs[9]:
+    if nav == TAB_LABELS[8]:
+        show_player_cards("late", "👻 Late / Gone", "One card per player · lock prices when gone", results)
+    if nav == TAB_LABELS[9]:
         st.markdown('<div class="queen-banner">💀 Fallen</div>', unsafe_allow_html=True)
         for r in fallen[:30]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
         if not fallen: st.info("None")
-    with tabs[10]:
+    if nav == TAB_LABELS[10]:
         st.markdown('<div class="queen-banner">🔒 Pregame Lock</div>', unsafe_allow_html=True)
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
@@ -1537,7 +1577,7 @@ def main():
                 with cols[i % 2]:
                     st.markdown(f'<div class="card"><b>{player}</b><br>' + "<br>".join(lines) + "</div>", unsafe_allow_html=True)
                 i += 1
-    with tabs[11]:
+    if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption("How often each tag hit after we graded it. Small samples hidden.")
         def chips_from_stats(stats, min_n=TRACKER_MIN_N):
@@ -1557,7 +1597,7 @@ def main():
         st.markdown("#### By ending")
         chips = chips_from_stats(ending_stats)
         st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
-    with tabs[12]:
+    if nav == TAB_LABELS[12]:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB…"):
@@ -1619,7 +1659,7 @@ def main():
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
-    with tabs[13]:
+    if nav == TAB_LABELS[13]:
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("Forward test from graded Results. WATCH = 1+ core (learning). TAKE IT = 2+ core + edge (bets). Need sample before trusting %.")
         rows_bt = load_results()
@@ -1687,7 +1727,7 @@ def main():
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
-    with tabs[14]:
+    if nav == TAB_LABELS[14]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.caption("Plain-English guide. Read this once — then the tabs make sense.")
         st.markdown("""
