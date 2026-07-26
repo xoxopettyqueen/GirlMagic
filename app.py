@@ -28,27 +28,26 @@ try:
 except ImportError:
     HAS_BS4 = False
 
-st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="centered", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
 .stApp{background:linear-gradient(165deg,#0a0410 0%,#160a22 40%,#1f0b30 100%);color:#fce7f3;font-family:'Inter',sans-serif}
-/* force readable width even if theme fights us */
+/* medium width — not full bleed, not phone-narrow on desktop */
 .main .block-container,
 [data-testid="stMainBlockContainer"],
 .block-container{
-  max-width:720px!important;
+  max-width:1080px!important;
   width:100%!important;
-  padding-left:1rem!important;
-  padding-right:1rem!important;
+  padding-left:1.25rem!important;
+  padding-right:1.25rem!important;
   margin-left:auto!important;
   margin-right:auto!important;
 }
-section.main > div{max-width:720px!important;margin:0 auto!important}
 @media (max-width:640px){
-  .main .block-container,[data-testid="stMainBlockContainer"]{padding:0.6rem 0.7rem!important}
-  h1{font-size:1.6rem!important}
+  .main .block-container,[data-testid="stMainBlockContainer"]{padding:0.65rem 0.75rem!important}
+  h1{font-size:1.65rem!important}
 }
 div[role="radiogroup"]{flex-wrap:wrap!important;gap:4px!important;margin:6px 0 12px!important}
 div[role="radiogroup"] label{
@@ -1627,7 +1626,15 @@ def main():
             st.success(f"{h} HIT · {m} MISS · {s} open — {msg}")
             st.rerun()
         rows = load_results()
-        today_only = st.checkbox("Today only", value=True)
+        n_all = len(rows)
+        n_pending_all = sum(1 for r in rows if r.get("result") == "PENDING")
+        n_today = sum(1 for r in rows if r.get("date") == today_az())
+        st.caption(
+            f"File has {n_all} logged plays · {n_pending_all} pending · {n_today} with today's date. "
+            "Empty today = no successful prop fetch logged TAKE IT/WATCH yet (live games return no props). "
+            "Lock is saved prices only — not the same as Results."
+        )
+        today_only = st.checkbox("Today only", value=False)
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
         pending = sorted([r for r in rows_view if r.get("result") == "PENDING"], key=pending_sort_key)
         done = [r for r in rows_view if r.get("result") in ("HIT", "MISS")]
