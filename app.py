@@ -28,16 +28,27 @@ try:
 except ImportError:
     HAS_BS4 = False
 
-st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="centered", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
 .stApp{background:linear-gradient(165deg,#0a0410 0%,#160a22 40%,#1f0b30 100%);color:#fce7f3;font-family:'Inter',sans-serif}
-.main .block-container{max-width:820px!important;padding:1rem 1.15rem 2rem!important;margin:0 auto!important}
+/* force readable width even if theme fights us */
+.main .block-container,
+[data-testid="stMainBlockContainer"],
+.block-container{
+  max-width:720px!important;
+  width:100%!important;
+  padding-left:1rem!important;
+  padding-right:1rem!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+section.main > div{max-width:720px!important;margin:0 auto!important}
 @media (max-width:640px){
-  .main .block-container{padding:0.65rem 0.75rem 1.5rem!important}
-  h1{font-size:1.65rem!important}
+  .main .block-container,[data-testid="stMainBlockContainer"]{padding:0.6rem 0.7rem!important}
+  h1{font-size:1.6rem!important}
 }
 div[role="radiogroup"]{flex-wrap:wrap!important;gap:4px!important;margin:6px 0 12px!important}
 div[role="radiogroup"] label{
