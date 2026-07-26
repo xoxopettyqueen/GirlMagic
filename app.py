@@ -94,11 +94,9 @@ RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
-
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
-
 EDGE_MIN = 60
 METHODS_MIN = 2
 OUTLIER_GAP = 150
@@ -112,49 +110,37 @@ EV_MIN_N = 12
 BOARD_MAX_PER_TEAM = 2
 BOARD_MAX_PER_GAME = 6
 TRACKER_MIN_N = 10
-
 PERSONAL_STRONG = {
-    "DK 10", "DK FD-style", "FD Pattern", "FD 600",
-    "Exact Match", "MGM Exact",
-    "Match 00", "Match 25", "Match 50", "Match 75",
-    "MGM 00", "MGM 25", "MGM 50", "MGM 75",
-    "Last one left", "Stayed in the group", "Multi-book Shorten",
-    "Same on 3+ books", "Multi-book method",
+    "DK 10", "DK FD-style", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
+    "Match 00", "Match 25", "Match 50", "Match 75", "MGM 00", "MGM 25", "MGM 50", "MGM 75",
+    "Last one left", "Stayed in the group", "Multi-book Shorten", "Same on 3+ books", "Multi-book method",
 }
 NOISE_METHODS = {
-    "Just Appeared", "Added Late", "Gone Missing", "Not in lineup",
-    "In lineup · missing books", "Price moved", "Multi-book Lengthen",
-    "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest",
+    "Just Appeared", "Added Late", "Gone Missing", "Not in lineup", "In lineup · missing books",
+    "Price moved", "Multi-book Lengthen", "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest",
     "FD under MGM", "Shortening", "Lengthening", "Stuck price", "Outlier higher",
     "HOT", "HardRock highest", "MLB auto HR", "Was DK 10", "Manual HR log",
 }
 TRACKER_BLOCKLIST = {
     "HOT", "HardRock highest", "MLB auto HR", "Was DK 10", "Manual HR log",
-    "Just Appeared", "Added Late", "Gone Missing", "Not in lineup",
-    "Price moved", "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest",
-    "FD under MGM", "Multi-book Lengthen", "Stuck price", "Outlier higher",
+    "Just Appeared", "Added Late", "Gone Missing", "Not in lineup", "Price moved",
+    "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest", "FD under MGM",
+    "Multi-book Lengthen", "Stuck price", "Outlier higher",
 }
 TRACKER_ALWAYS = {
-    "Multi-book method", "Stayed in the group", "Last one left",
-    "MGM Exact", "DK 10", "FD Pattern", "FD 600", "Exact Match",
-    "Match 00", "Match 25", "Match 50", "Match 75",
-    "MGM 00", "MGM 25", "MGM 50", "MGM 75", "DK FD-style",
-    "Multi-book Shorten",
+    "Multi-book method", "Stayed in the group", "Last one left", "MGM Exact", "DK 10",
+    "FD Pattern", "FD 600", "Exact Match", "Match 00", "Match 25", "Match 50", "Match 75",
+    "MGM 00", "MGM 25", "MGM 50", "MGM 75", "DK FD-style", "Multi-book Shorten",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
 MGM_ENDINGS = (0, 25, 50, 75)
 
 def is_core_method(m):
-    if m in NOISE_METHODS:
-        return False
-    if m.startswith("FADE") or m.startswith("FD under"):
-        return False
-    if m.startswith("Stayed ") and "group" not in m.lower():
-        return False
-    if m.startswith("Outlier") or m.startswith("Stuck") or m.startswith("Same ending"):
-        return False
-    if m.startswith("Shortening") or m.startswith("Lengthening"):
-        return False
+    if m in NOISE_METHODS: return False
+    if m.startswith("FADE") or m.startswith("FD under"): return False
+    if m.startswith("Stayed ") and "group" not in m.lower(): return False
+    if m.startswith("Outlier") or m.startswith("Stuck") or m.startswith("Same ending"): return False
+    if m.startswith("Shortening") or m.startswith("Lengthening"): return False
     return True
 
 def normalize_method_name(m):
@@ -168,34 +154,25 @@ def count_core_methods(meths):
 
 def has_dk_or_mgm(meths):
     for m in meths:
-        if m in ("DK 10", "DK FD-style"):
-            return True
-        if m.startswith("MGM") or m in ("Last one left", "Stayed in the group") or "Stayed in group" in m:
-            return True
-        if m.startswith("Match "):
-            return True
+        if m in ("DK 10", "DK FD-style"): return True
+        if m.startswith("MGM") or m in ("Last one left", "Stayed in the group") or "Stayed in group" in m: return True
+        if m.startswith("Match "): return True
     return False
 
 def method_tag_class(m):
     m = str(m)
-    if m.startswith("DK"):
-        return "tag-dk"
-    if m.startswith("MGM") or m in ("Last one left", "Stayed in the group") or "Stayed in group" in m:
-        return "tag-mgm"
-    if m.startswith("FD"):
-        return "tag-fd"
-    if m in ("Exact Match", "MGM Exact") or m.startswith("Match "):
-        return "tag-match"
-    if "Multi-book" in m or m == "Same on 3+ books":
-        return "tag-strong"
+    if m.startswith("DK"): return "tag-dk"
+    if m.startswith("MGM") or m in ("Last one left", "Stayed in the group") or "Stayed in group" in m: return "tag-mgm"
+    if m.startswith("FD"): return "tag-fd"
+    if m in ("Exact Match", "MGM Exact") or m.startswith("Match "): return "tag-match"
+    if "Multi-book" in m or m == "Same on 3+ books": return "tag-strong"
     return ""
 
 def render_method_tags(methods, limit=8):
     seen = []
     for m in methods:
         nm = normalize_method_name(m)
-        if nm not in seen:
-            seen.append(nm)
+        if nm not in seen: seen.append(nm)
     return "".join(f'<span class="tag {method_tag_class(m)}">{m}</span>' for m in seen[:limit])
 
 def girl_magic_score(core_count, edge, methods):
@@ -203,16 +180,11 @@ def girl_magic_score(core_count, edge, methods):
     edge_pts = min(40, max(0, int((edge / 180) * 40)))
     bonus = 0
     ms = {normalize_method_name(m) for m in methods}
-    if "Last one left" in ms:
-        bonus += 5
-    if "Stayed in the group" in ms:
-        bonus += 3
-    if "Multi-book method" in ms or "Multi-book Shorten" in ms:
-        bonus += 4
-    if "Same on 3+ books" in ms:
-        bonus += 2
-    if "FD 600" in ms:
-        bonus += 2
+    if "Last one left" in ms: bonus += 5
+    if "Stayed in the group" in ms: bonus += 3
+    if "Multi-book method" in ms or "Multi-book Shorten" in ms: bonus += 4
+    if "Same on 3+ books" in ms: bonus += 2
+    if "FD 600" in ms: bonus += 2
     return min(100, method_pts + edge_pts + min(12, bonus))
 
 def get_odds_api_key():
@@ -225,31 +197,21 @@ def get_sgo_key():
     return st.secrets.get("SGO_API_KEY", "d5422e23cc05702bf95197f6a98ec8ce")
 
 def format_odds(p):
-    try:
-        return f"{int(p):+d}"
-    except Exception:
-        return str(p)
+    try: return f"{int(p):+d}"
+    except Exception: return str(p)
 
 def last_two(p):
-    try:
-        return abs(int(p)) % 100
-    except Exception:
-        return None
+    try: return abs(int(p)) % 100
+    except Exception: return None
 
 def book_label(b):
     b = str(b or "").lower()
-    if "betmgm" in b or b == "mgm":
-        return "MGM"
-    if "draftkings" in b or b == "dk":
-        return "DK"
-    if "fanduel" in b or b == "fd":
-        return "FD"
-    if "hardrock" in b:
-        return "HardRock"
-    if "caesars" in b:
-        return "Caesars"
-    if b in ("untagged", "unknown", "—", ""):
-        return "Untagged"
+    if "betmgm" in b or b == "mgm": return "MGM"
+    if "draftkings" in b or b == "dk": return "DK"
+    if "fanduel" in b or b == "fd": return "FD"
+    if "hardrock" in b: return "HardRock"
+    if "caesars" in b: return "Caesars"
+    if b in ("untagged", "unknown", "—", ""): return "Untagged"
     return b.title() if b else "Untagged"
 
 def clean_name(name):
@@ -262,17 +224,14 @@ def clean_name(name):
 
 def names_match(a, b):
     a, b = clean_name(a).lower(), clean_name(b).lower()
-    if a == b:
-        return True
+    if a == b: return True
     pa, pb = a.split(), b.split()
     if len(pa) >= 2 and len(pb) >= 2:
-        if pa[-1] == pb[-1] and pa[0][0] == pb[0][0]:
-            return True
+        if pa[-1] == pb[-1] and pa[0][0] == pb[0][0]: return True
     return False
 
 def clean_team(tid):
-    if not tid:
-        return ""
+    if not tid: return ""
     return str(tid).replace("_MLB", "").replace("_", " ").strip()
 
 def now_az():
@@ -288,8 +247,7 @@ def now_utc_iso():
     return datetime.now(timezone.utc).isoformat()
 
 def smart_best(prices, books):
-    if not prices:
-        return None, None
+    if not prices: return None, None
     paired = sorted(zip(prices, books), key=lambda x: x[0], reverse=True)
     best_p, best_b = paired[0]
     if len(paired) >= 2 and best_p - paired[1][0] >= OUTLIER_GAP:
@@ -297,14 +255,10 @@ def smart_best(prices, books):
     return best_p, best_b
 
 def get_confidence(score, is_bet):
-    if not is_bet:
-        return "Skip", 1, "low"
-    if score >= 85:
-        return "High", 5, "high"
-    if score >= 70:
-        return "Strong", 4, "strong"
-    if score >= 55:
-        return "Medium", 3, "medium"
+    if not is_bet: return "Skip", 1, "low"
+    if score >= 85: return "High", 5, "high"
+    if score >= 70: return "Strong", 4, "strong"
+    if score >= 55: return "Medium", 3, "medium"
     return "Low", 2, "low"
 
 def make_meter(bars, level):
@@ -315,24 +269,19 @@ def make_meter(bars, level):
     return html + "</div>"
 
 def event_matches_chosen(ev, chosen):
-    if not chosen:
-        return True
-    if ev in chosen:
-        return True
+    if not chosen: return True
+    if ev in chosen: return True
     ev_l = str(ev).lower()
     for c in chosen:
-        c_l = str(c).lower()
-        parts_c = [p.strip() for p in c_l.split("@")]
+        parts_c = [p.strip() for p in str(c).lower().split("@")]
         if len(parts_c) == 2 and parts_c[0] in ev_l and parts_c[1] in ev_l:
             return True
     return False
 
 def name_in_lineup(player, lineup_names):
-    if not lineup_names:
-        return None
+    if not lineup_names: return None
     cn = clean_name(player)
-    if cn in lineup_names:
-        return True
+    if cn in lineup_names: return True
     parts = cn.split()
     if len(parts) >= 2:
         last, fi = parts[-1].lower(), parts[0][0].lower()
@@ -343,45 +292,31 @@ def name_in_lineup(player, lineup_names):
     return False
 
 def american_to_decimal(american):
-    try:
-        a = int(american)
-    except Exception:
-        return None
-    if a > 0:
-        return 1 + a / 100.0
+    try: a = int(american)
+    except Exception: return None
+    if a > 0: return 1 + a / 100.0
     return 1 + 100.0 / abs(a)
 
 def simple_ev_lean(p_win, american):
-    """True if method hit-rate implies positive EV at this price. No Kelly wording."""
-    if p_win is None or p_win <= 0:
-        return False, None
+    if p_win is None or p_win <= 0: return False, None
     dec = american_to_decimal(american)
-    if not dec:
-        return False, None
-    # EV per $1 risk ≈ p*(dec-1) - (1-p)
+    if not dec: return False, None
     ev = p_win * (dec - 1) - (1 - p_win)
     return ev > 0, ev
 
-# ── persistence ──────────────────────────────────────────────
 def load_pregame():
-    if not os.path.exists(PREGAME_FILE):
-        return {}
+    if not os.path.exists(PREGAME_FILE): return {}
     try:
-        with open(PREGAME_FILE, "r") as f:
-            return json.load(f)
-    except Exception:
-        return {}
+        with open(PREGAME_FILE, "r") as f: return json.load(f)
+    except Exception: return {}
 
 def save_pregame(data):
     try:
-        with open(PREGAME_FILE, "w") as f:
-            json.dump(data, f, indent=2)
-    except Exception:
-        pass
+        with open(PREGAME_FILE, "w") as f: json.dump(data, f, indent=2)
+    except Exception: pass
 
 def update_pregame_lock(df):
-    if df is None or df.empty:
-        return load_pregame()
+    if df is None or df.empty: return load_pregame()
     lock = load_pregame()
     today, ts = today_az(), now_utc_iso()
     for _, r in df.iterrows():
@@ -392,16 +327,11 @@ def update_pregame_lock(df):
         if player not in lock:
             lock[player] = {"date": today, "event": event, "books": {}, "locked_at": ts, "updated_at": ts}
         entry = lock[player]
-        if event:
-            entry["event"] = event
+        if event: entry["event"] = event
         entry["date"] = today
         entry["updated_at"] = ts
         entry.setdefault("books", {})
-        entry["books"][book] = {
-            "price": int(price) if price is not None else None,
-            "ending": last_two(price),
-            "seen_at": ts,
-        }
+        entry["books"][book] = {"price": int(price) if price is not None else None, "ending": last_two(price), "seen_at": ts}
         if "betmgm" in book or book == "mgm":
             entry["mgm_price"] = int(price) if price is not None else entry.get("mgm_price")
             entry["mgm_ending"] = last_two(price)
@@ -419,78 +349,55 @@ def locked_price_str(player):
     parts = []
     for b, info in sorted(books.items()):
         p = info.get("price")
-        if p is not None:
-            parts.append(f"{book_label(b)} {format_odds(p)}")
+        if p is not None: parts.append(f"{book_label(b)} {format_odds(p)}")
     return " · ".join(parts)
 
 def load_history():
-    if not os.path.exists(HISTORY_FILE):
-        return
+    if not os.path.exists(HISTORY_FILE): return
     try:
-        with open(HISTORY_FILE, "r") as f:
-            data = json.load(f)
+        with open(HISTORY_FILE, "r") as f: data = json.load(f)
         saved_at = data.get("saved_at")
         if saved_at:
             age = datetime.now(timezone.utc) - datetime.fromisoformat(saved_at)
-            if age > timedelta(hours=HISTORY_MAX_AGE_HOURS):
-                return
+            if age > timedelta(hours=HISTORY_MAX_AGE_HOURS): return
         pr = []
         for snap in data.get("presence_history", []):
             s = set()
             for item in snap:
-                if len(item) >= 3:
-                    s.add((item[0], item[1], item[2]))
-                elif len(item) == 2:
-                    s.add((item[0], item[1], ""))
+                if len(item) >= 3: s.add((item[0], item[1], item[2]))
+                elif len(item) == 2: s.add((item[0], item[1], ""))
             pr.append(s)
         st.session_state["presence_history"] = pr[-12:]
         ph = [{tuple(k.split("||", 1)): v for k, v in snap.items()} for snap in data.get("price_history", [])]
         st.session_state["price_history"] = ph[-8:]
         mh = []
         for snap in data.get("mgm_history", []):
-            mh.append([
-                {"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": frozenset(g["players"])}
-                for g in snap
-            ])
+            mh.append([{"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": frozenset(g["players"])} for g in snap])
         st.session_state["mgm_history"] = mh[-8:]
-        if "prev_ev" in data:
-            st.session_state["prev_ev"] = data["prev_ev"]
-    except Exception:
-        pass
+        if "prev_ev" in data: st.session_state["prev_ev"] = data["prev_ev"]
+    except Exception: pass
 
 def save_history(prev_ev=None):
     try:
         ph = [{f"{a}||{b}": v for (a, b), v in snap.items()} for snap in st.session_state.get("price_history", [])]
         pr = [[[a, b, e] for (a, b, e) in snap] for snap in st.session_state.get("presence_history", [])]
-        mh = [
-            [{"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": list(g["players"])} for g in snap]
-            for snap in st.session_state.get("mgm_history", [])
-        ]
+        mh = [[{"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": list(g["players"])} for g in snap] for snap in st.session_state.get("mgm_history", [])]
         payload = {"saved_at": now_utc_iso(), "price_history": ph, "presence_history": pr, "mgm_history": mh}
-        if prev_ev is not None:
-            payload["prev_ev"] = prev_ev
-        elif "prev_ev" in st.session_state:
-            payload["prev_ev"] = st.session_state["prev_ev"]
-        with open(HISTORY_FILE, "w") as f:
-            json.dump(payload, f)
-    except Exception:
-        pass
+        if prev_ev is not None: payload["prev_ev"] = prev_ev
+        elif "prev_ev" in st.session_state: payload["prev_ev"] = st.session_state["prev_ev"]
+        with open(HISTORY_FILE, "w") as f: json.dump(payload, f)
+    except Exception: pass
 
 def load_results():
-    if not os.path.exists(RESULTS_FILE):
-        return []
+    if not os.path.exists(RESULTS_FILE): return []
     try:
-        with open(RESULTS_FILE, "r") as f:
-            return json.load(f)
-    except Exception:
-        return []
+        with open(RESULTS_FILE, "r") as f: return json.load(f)
+    except Exception: return []
 
 def save_results(rows):
     try:
-        with open(RESULTS_FILE, "w") as f:
-            json.dump(rows, f, indent=2)
-    except Exception:
-        pass
+        with open(RESULTS_FILE, "w") as f: json.dump(rows, f, indent=2)
+    except Exception: pass
 
 def set_result_status(row_id, status):
     rows = load_results()
@@ -516,8 +423,7 @@ def log_bet_this(ev_board):
     today = today_az()
     added = 0
     for item in ev_board:
-        if not item.get("is_bet"):
-            continue
+        if not item.get("is_bet"): continue
         if any(r.get("date") == today and r.get("player") == item["player"] and r.get("source") != "manual_hr" for r in rows):
             continue
         locked = get_locked(item["player"])
@@ -534,8 +440,7 @@ def log_bet_this(ev_board):
             "result": "PENDING", "source": "take_it", "logged_at": now_utc_iso(),
         })
         added += 1
-    if added:
-        save_results(rows)
+    if added: save_results(rows)
     return added
 
 def pending_sort_key(r):
@@ -551,13 +456,11 @@ def build_whats_going_today(rows):
         price = r.get("best_price")
         book = r.get("best_book") or ""
         ending = r.get("ending")
-        if ending is None and price is not None:
-            ending = last_two(price)
+        if ending is None and price is not None: ending = last_two(price)
         if ending is None and r.get("mgm_ending") is not None:
             ending = r["mgm_ending"]
             book = book or "betmgm"
-        if ending is None:
-            continue
+        if ending is None: continue
         ending = int(ending)
         bl = book_label(book)
         ending_counts[ending] += 1
@@ -582,8 +485,7 @@ def render_whats_going_today():
     n_hits, n_graded, chips = build_whats_going_today(rows)
     if chips:
         chips_html = "".join(
-            f'<span class="trend-chip {"hot" if hot else ""}">{label}: '
-            f'<span class="chip-count">{cnt} HR</span></span>'
+            f'<span class="trend-chip {"hot" if hot else ""}">{label}: <span class="chip-count">{cnt} HR</span></span>'
             for label, cnt, hot in chips
         )
     else:
@@ -604,14 +506,12 @@ def fetch_mlb_hr_hitters(date_str=None):
     live_or_final = 0
     try:
         r = requests.get(f"{MLB_STATS}/schedule", params={"sportId": 1, "date": date_str, "hydrate": "boxscore"}, timeout=25)
-        if r.status_code != 200:
-            return set(), set(), f"MLB API HTTP {r.status_code}"
+        if r.status_code != 200: return set(), set(), f"MLB API HTTP {r.status_code}"
         data = r.json()
         for d in data.get("dates", []):
             for game in d.get("games", []):
                 status = (game.get("status") or {}).get("abstractGameState", "")
-                if status not in ("Live", "Final"):
-                    continue
+                if status not in ("Live", "Final"): continue
                 live_or_final += 1
                 box = game.get("boxscore") or {}
                 teams = box.get("teams") or {}
@@ -620,21 +520,15 @@ def fetch_mlb_hr_hitters(date_str=None):
                     for _pid, pdata in players.items():
                         person = pdata.get("person") or {}
                         name = person.get("fullName") or ""
-                        if not name:
-                            continue
+                        if not name: continue
                         cn = clean_name(name)
                         stats = (pdata.get("stats") or {}).get("batting") or {}
                         hrs = stats.get("homeRuns")
-                        if hrs is None:
-                            continue
-                        try:
-                            hrs = int(hrs)
-                        except Exception:
-                            hrs = 0
-                        if status == "Final":
-                            final_players.add(cn)
-                        if hrs >= 1:
-                            hr_names.add(cn)
+                        if hrs is None: continue
+                        try: hrs = int(hrs)
+                        except Exception: hrs = 0
+                        if status == "Final": final_players.add(cn)
+                        if hrs >= 1: hr_names.add(cn)
         return hr_names, final_players, f"MLB {date_str}: {live_or_final} games · {len(hr_names)} HR"
     except Exception as e:
         return set(), set(), f"MLB error: {e}"
@@ -644,8 +538,7 @@ def auto_grade_pending():
     rows = load_results()
     hits = misses = skipped = 0
     for row in rows:
-        if row.get("result") != "PENDING":
-            continue
+        if row.get("result") != "PENDING": continue
         player = row.get("player") or ""
         if any(names_match(player, h) for h in hr_names):
             row["result"] = "HIT"
@@ -673,87 +566,63 @@ def build_tracker_stats(rows):
         methods_to_count = set()
         for m in r.get("methods") or []:
             nm = normalize_method_name(m)
-            if nm in TRACKER_BLOCKLIST or nm in NOISE_METHODS:
-                continue
+            if nm in TRACKER_BLOCKLIST or nm in NOISE_METHODS: continue
             if is_core_method(nm) or nm in PERSONAL_STRONG:
                 methods_to_count.add(nm)
                 break
         for m in r.get("methods") or []:
             nm = normalize_method_name(m)
-            if nm in TRACKER_ALWAYS:
-                methods_to_count.add(nm)
+            if nm in TRACKER_ALWAYS: methods_to_count.add(nm)
         for nm in methods_to_count:
-            if nm in TRACKER_BLOCKLIST:
-                continue
-            if is_hit:
-                method_stats[nm]["hit"] += 1
-            else:
-                method_stats[nm]["miss"] += 1
+            if nm in TRACKER_BLOCKLIST: continue
+            if is_hit: method_stats[nm]["hit"] += 1
+            else: method_stats[nm]["miss"] += 1
         bb = book_label(r.get("best_book"))
         if bb != "Untagged":
-            if is_hit:
-                book_stats[bb]["hit"] += 1
-            else:
-                book_stats[bb]["miss"] += 1
+            if is_hit: book_stats[bb]["hit"] += 1
+            else: book_stats[bb]["miss"] += 1
         end = r.get("ending")
-        if end is None and r.get("best_price") is not None:
-            end = last_two(r["best_price"])
+        if end is None and r.get("best_price") is not None: end = last_two(r["best_price"])
         if end is not None:
             key = f"{int(end):02d}"
-            if is_hit:
-                ending_stats[key]["hit"] += 1
-            else:
-                ending_stats[key]["miss"] += 1
+            if is_hit: ending_stats[key]["hit"] += 1
+            else: ending_stats[key]["miss"] += 1
     return method_stats, book_stats, ending_stats
 
 def method_hit_rate(method_stats, method_name):
     s = method_stats.get(method_name)
-    if not s:
-        return None, 0
+    if not s: return None, 0
     t = s["hit"] + s["miss"]
-    if t == 0:
-        return None, 0
+    if t == 0: return None, 0
     return s["hit"] / t, t
 
 def best_method_rate_for_player(methods, method_stats):
     best_p, best_n, best_m = None, 0, None
     for m in methods:
         nm = normalize_method_name(m)
-        if not is_core_method(nm):
-            continue
+        if not is_core_method(nm): continue
         p, n = method_hit_rate(method_stats, nm)
-        if p is None:
-            continue
+        if p is None: continue
         if best_p is None or p > best_p or (p == best_p and n > best_n):
             best_p, best_n, best_m = p, n, nm
     return best_p, best_n, best_m
 
-# ── one card per player helpers ──────────────────────────────
 def aggregate_by_player(items):
-    """Merge multiple result rows that share a player into one card."""
     by = defaultdict(lambda: {"reasons": [], "methods": [], "event": ""})
     for r in items:
-        # label may be "A + B" for pairs — still one card per label string
         key = r.get("label") or ""
         by[key]["reasons"].append(r.get("reason") or "")
         by[key]["methods"].extend(r.get("methods") or [])
-        if r.get("event"):
-            by[key]["event"] = r["event"]
+        if r.get("event"): by[key]["event"] = r["event"]
     out = []
     for label, data in by.items():
         meths = list({normalize_method_name(m) for m in data["methods"]})
-        # unique reasons keep order
         seen_r, reasons = set(), []
         for rr in data["reasons"]:
             if rr not in seen_r:
                 seen_r.add(rr)
                 reasons.append(rr)
-        out.append({
-            "label": label,
-            "reason": "<br>".join(reasons),
-            "methods": meths,
-            "event": data["event"],
-        })
+        out.append({"label": label, "reason": "<br>".join(reasons), "methods": meths, "event": data["event"]})
     return out
 
 def show_player_cards(tab, typ, banner, explain, results):
@@ -768,26 +637,19 @@ def show_player_cards(tab, typ, banner, explain, results):
         for idx, r in enumerate(items[:40]):
             with cols[idx % 2]:
                 tags = render_method_tags(r.get("methods", []))
-                st.markdown(
-                    f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>',
-                    unsafe_allow_html=True,
-                )
+                st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
 
-# ── APIs (same as before) ────────────────────────────────────
 def fetch_rotowire_lineups():
-    if not HAS_BS4:
-        return set(), "Install beautifulsoup4"
+    if not HAS_BS4: return set(), "Install beautifulsoup4"
     headers = {"User-Agent": "Mozilla/5.0"}
     try:
         r = requests.get(ROTOWIRE_URL, headers=headers, timeout=25)
-        if r.status_code != 200:
-            return set(), f"RotoWire HTTP {r.status_code}"
+        if r.status_code != 200: return set(), f"RotoWire HTTP {r.status_code}"
         soup = BeautifulSoup(r.content, "html.parser")
         names = set()
         for el in soup.select("div.lineup__player a, li.lineup__player a"):
             t = el.get_text(strip=True)
-            if t and len(t.split()) >= 2:
-                names.add(clean_name(t))
+            if t and len(t.split()) >= 2: names.add(clean_name(t))
         return names, f"RotoWire · {len(names)} names"
     except Exception as e:
         return set(), f"RotoWire error: {e}"
@@ -813,95 +675,67 @@ def fetch_odds_oddsapi(api_key, event_id):
         return None
 
 def flatten_oddsapi(data):
-    if not data:
-        return [], set()
+    if not data: return [], set()
     rows, found = [], set()
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     for book in data.get("bookmakers", []):
         bk = book.get("key", "").lower()
         found.add(bk)
-        if bk not in PREFERRED:
-            continue
+        if bk not in PREFERRED: continue
         for market in book.get("markets", []):
             for o in market.get("outcomes", []):
-                if o.get("name", "").lower() != "over":
-                    continue
+                if o.get("name", "").lower() != "over": continue
                 pt = o.get("point")
-                if pt is None or abs(float(pt) - 0.5) > 0.01:
-                    continue
-                rows.append({
-                    "event": event, "book": bk, "player": o.get("description"),
-                    "price": o.get("price"), "point": 0.5, "team": "", "source": "oddsapi",
-                })
+                if pt is None or abs(float(pt) - 0.5) > 0.01: continue
+                rows.append({"event": event, "book": bk, "player": o.get("description"), "price": o.get("price"), "point": 0.5, "team": "", "source": "oddsapi"})
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
     rows, found = [], set()
     try:
-        r = requests.get(
-            f"{SGO_BASE}/events",
-            params={"apiKey": sgo_key, "leagueID": "MLB", "oddsAvailable": "true", "limit": 25},
-            timeout=25,
-        )
-        if r.status_code != 200:
-            return rows, found
+        r = requests.get(f"{SGO_BASE}/events", params={"apiKey": sgo_key, "leagueID": "MLB", "oddsAvailable": "true", "limit": 25}, timeout=25)
+        if r.status_code != 200: return rows, found
         for ev in r.json().get("data", []):
-            if ev.get("status", {}).get("started"):
-                continue
+            if ev.get("status", {}).get("started"): continue
             teams = ev.get("teams", {})
             home = teams.get("home", {}).get("names", {}).get("long", "Home")
             away = teams.get("away", {}).get("names", {}).get("long", "Away")
             event_name = f"{away} @ {home}"
             players_map = ev.get("players", {})
             for odd_id, odd_data in ev.get("odds", {}).items():
-                if "batting_homeRuns" not in odd_id:
-                    continue
-                if "ou-over" not in odd_id and "-over" not in odd_id:
-                    continue
+                if "batting_homeRuns" not in odd_id: continue
+                if "ou-over" not in odd_id and "-over" not in odd_id: continue
                 ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
-                if ou is None or abs(float(ou) - 0.5) > 0.01:
-                    continue
+                if ou is None or abs(float(ou) - 0.5) > 0.01: continue
                 pid = odd_data.get("playerID") or odd_data.get("statEntityID")
-                if not pid or pid not in players_map:
-                    continue
+                if not pid or pid not in players_map: continue
                 pdata = players_map[pid]
                 pname = pdata.get("name")
-                if not pname:
-                    continue
+                if not pname: continue
                 team = clean_team(pdata.get("teamID") or "")
                 for bk, bd in odd_data.get("byBookmaker", {}).items():
-                    if not bd.get("available", True):
-                        continue
+                    if not bd.get("available", True): continue
                     b = bk.lower()
-                    if "bet365" in b or b not in PREFERRED:
-                        continue
+                    if "bet365" in b or b not in PREFERRED: continue
                     price = bd.get("odds")
-                    if price is None:
-                        continue
-                    try:
-                        price = int(str(price).replace("+", ""))
-                    except Exception:
-                        continue
+                    if price is None: continue
+                    try: price = int(str(price).replace("+", ""))
+                    except Exception: continue
                     found.add(b)
-                    rows.append({
-                        "event": event_name, "book": b, "player": pname,
-                        "price": price, "point": 0.5, "team": team, "source": "sgo",
-                    })
+                    rows.append({"event": event_name, "book": b, "player": pname, "price": price, "point": 0.5, "team": team, "source": "sgo"})
     except Exception as e:
         st.warning(f"SGO note: {e}")
     return rows, found
 
 def merge_odds(a, b):
     combined = a + b
-    if not combined:
-        return pd.DataFrame()
+    if not combined: return pd.DataFrame()
     df = pd.DataFrame(combined)
     df["priority"] = df["source"].map({"oddsapi": 0, "sgo": 1})
     df = df.sort_values(["player", "book", "priority"])
     team_map = {}
     for _, r in df.iterrows():
-        if r.get("team"):
-            team_map[r["player"]] = r["team"]
+        if r.get("team"): team_map[r["player"]] = r["team"]
     df["team"] = df.apply(lambda r: r["team"] if r.get("team") else team_map.get(r["player"], ""), axis=1)
     df = df.drop_duplicates(subset=["player", "book"], keep="first")
     return df.drop(columns=["priority", "source"], errors="ignore")
@@ -910,8 +744,7 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
     all_rows, all_found = [], set()
     for label in chosen_labels:
         eid = options.get(label)
-        if not eid:
-            continue
+        if not eid: continue
         data = fetch_odds_oddsapi(odds_key, eid)
         rows, found = flatten_oddsapi(data)
         all_rows.extend(rows)
@@ -919,12 +752,8 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
     sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
     all_rows.extend(sgo_rows)
     all_found.update(sgo_found)
-    if not all_rows:
-        return None, set()
-    df = merge_odds(
-        [r for r in all_rows if r.get("source") == "oddsapi"],
-        [r for r in all_rows if r.get("source") == "sgo"],
-    )
+    if not all_rows: return None, set()
+    df = merge_odds([r for r in all_rows if r.get("source") == "oddsapi"], [r for r in all_rows if r.get("source") == "sgo"])
     if chosen_labels and not df.empty and "event" in df.columns:
         mask = df["event"].apply(lambda e: event_matches_chosen(e, chosen_labels))
         df = df[mask].copy()
@@ -933,43 +762,34 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
 def build_team_map(df):
     tm = {}
     for _, r in df.iterrows():
-        if r.get("team"):
-            tm[r["player"]] = r["team"]
+        if r.get("team"): tm[r["player"]] = r["team"]
     return tm
 
 def tighten_board(ev_board):
-    if not ev_board:
-        return []
+    if not ev_board: return []
     ranked = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["method_count"], -x["score"], -x["edge"]))
     per_team, per_game, out = defaultdict(int), defaultdict(int), []
     for item in ranked:
         team = item.get("team") or "UNK"
         game = item.get("event") or (item.get("events") or ["UNK"])[0]
-        if per_team[team] >= BOARD_MAX_PER_TEAM or per_game[game] >= BOARD_MAX_PER_GAME:
-            continue
+        if per_team[team] >= BOARD_MAX_PER_TEAM or per_game[game] >= BOARD_MAX_PER_GAME: continue
         out.append(item)
         per_team[team] += 1
         per_game[game] += 1
     return out
 
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
-    if df.empty:
-        return [], [], []
-    if "team" not in df.columns:
-        df["team"] = ""
+    if df.empty: return [], [], []
+    if "team" not in df.columns: df["team"] = ""
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
-
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
     selected = set(selected_events) if selected_events else set(df["event"].unique())
     team_map = build_team_map(df)
     lineup_names = st.session_state.get("lineup_names", set())
     signal_bucket, signal_methods = defaultdict(list), defaultdict(set)
-
     for k in ("presence_history", "price_history", "mgm_history"):
-        if k not in st.session_state:
-            st.session_state[k] = []
-
+        if k not in st.session_state: st.session_state[k] = []
     current_presence = {(r["player"], r["book"], r["event"]) for _, r in df.iterrows() if r["book"] in LATE_BOOKS}
     current_prices = {(r["player"], r["book"]): r["price"] for _, r in df.iterrows()}
     if record_history:
@@ -977,33 +797,24 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         st.session_state["presence_history"] = st.session_state["presence_history"][-12:]
         st.session_state["price_history"].append(current_prices)
         st.session_state["price_history"] = st.session_state["price_history"][-8:]
-
     hist = st.session_state["presence_history"]
     phist = st.session_state["price_history"]
-
     if len(hist) >= 2:
         def norm(snap):
             out = set()
             for item in snap:
-                if len(item) == 3:
-                    out.add(item)
-                elif len(item) == 2:
-                    out.add((item[0], item[1], ""))
+                if len(item) == 3: out.add(item)
+                elif len(item) == 2: out.add((item[0], item[1], ""))
             return out
-
         def scoped(snap):
             s = set()
             for p, b, e in norm(snap):
-                if e and selected and not event_matches_chosen(e, selected):
-                    continue
-                if not e and selected:
-                    continue
+                if e and selected and not event_matches_chosen(e, selected): continue
+                if not e and selected: continue
                 s.add((p, b, e))
             return s
-
         latest, previous = scoped(hist[-1]), scoped(hist[-2])
         late_bucket = {}
-
         def add_late(player, book, event, kind):
             if player not in late_bucket:
                 late_bucket[player] = {"kind": kind, "books": [], "event": event}
@@ -1011,56 +822,41 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if pri.get(kind, 0) >= pri.get(late_bucket[player]["kind"], 0):
                 late_bucket[player]["kind"] = kind
             late_bucket[player]["books"].append(book)
-            if event:
-                late_bucket[player]["event"] = event
-
-        for player, book, event in latest - previous:
-            add_late(player, book, event, "Just Appeared")
-        for player, book, event in previous - latest:
-            add_late(player, book, event, "Gone Missing")
+            if event: late_bucket[player]["event"] = event
+        for player, book, event in latest - previous: add_late(player, book, event, "Just Appeared")
+        for player, book, event in previous - latest: add_late(player, book, event, "Gone Missing")
         for player, info in sorted(late_bucket.items()):
             kind = info["kind"]
             lock_note = locked_price_str(player)
             reason = f"{kind} · {', '.join(sorted(set(info['books'])))}"
-            if lock_note and kind == "Gone Missing":
-                reason += f"<br>🔒 {lock_note}"
+            if lock_note and kind == "Gone Missing": reason += f"<br>🔒 {lock_note}"
             results.append({"type": "late", "label": player, "reason": reason, "methods": [kind]})
             methods_map[player].append(kind)
-
     if lineup_names:
         for player in sorted(all_players_now):
             if name_in_lineup(player, lineup_names) is False:
                 results.append({"type": "late", "label": player, "reason": "⚠️ Not in RotoWire lineup", "methods": ["Not in lineup"]})
                 methods_map[player].append("Not in lineup")
-
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
         player_up, player_down = defaultdict(list), defaultdict(list)
         for key, curr_price in curr_snap.items():
             player, book = key
-            if player not in all_players_now or key not in prev_snap:
-                continue
+            if player not in all_players_now or key not in prev_snap: continue
             prev_price = prev_snap[key]
-            if abs(prev_price) < MOVE_PRICE_MIN and abs(curr_price) < MOVE_PRICE_MIN:
-                continue
+            if abs(prev_price) < MOVE_PRICE_MIN and abs(curr_price) < MOVE_PRICE_MIN: continue
             delta = curr_price - prev_price
-            if abs(delta) < MOVE_MIN:
-                continue
+            if abs(delta) < MOVE_MIN: continue
             line = f"{book}: {format_odds(prev_price)} → {format_odds(curr_price)} ({int(abs(delta))} pts)"
             (player_up if delta > 0 else player_down)[player].append(line)
             if delta >= BIG_MOVE:
-                results.append({"type": "trend", "trend_kind": "fade", "label": player,
-                    "reason": f"🔴 Shot up on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}",
-                    "methods": ["FADE · Shot way up"], "gap": abs(int(delta))})
+                results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"🔴 Shot up on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}", "methods": ["FADE · Shot way up"], "gap": abs(int(delta))})
             elif delta <= -BIG_MOVE:
-                results.append({"type": "trend", "trend_kind": "fade", "label": player,
-                    "reason": f"🔴 Drop >100 on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}",
-                    "methods": ["FADE · Drop >100"], "gap": abs(int(delta))})
+                results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"🔴 Drop >100 on {book}: {format_odds(prev_price)} → {format_odds(curr_price)}", "methods": ["FADE · Drop >100"], "gap": abs(int(delta))})
         for player, moves in sorted(player_up.items()):
             results.append({"type": "hist", "move_dir": "up", "label": player, "reason": "<br>".join(moves), "methods": ["Price moved"]})
         for player, moves in sorted(player_down.items()):
             results.append({"type": "hist", "move_dir": "down", "label": player, "reason": "<br>".join(moves), "methods": ["Price moved"]})
-
     for player, g in df.groupby("player"):
         by_book = {r["book"]: r["price"] for _, r in g.iterrows()}
         fd = by_book.get("fanduel")
@@ -1069,76 +865,52 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if fd is not None and mgm_price is not None:
             gap = mgm_price - fd
             if 10 <= gap <= 100:
-                results.append({"type": "trend", "trend_kind": "good", "label": player,
-                    "reason": f"💚 FD under MGM by {int(gap)} · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}",
-                    "methods": ["FD under MGM"], "gap": int(gap)})
+                results.append({"type": "trend", "trend_kind": "good", "label": player, "reason": f"💚 FD under MGM by {int(gap)} · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}", "methods": ["FD under MGM"], "gap": int(gap)})
         if fd is not None and others and fd > max(others):
-            results.append({"type": "trend", "trend_kind": "fade", "label": player,
-                "reason": f"🔴 FD highest · {format_odds(fd)}", "methods": ["FADE · FD highest"], "gap": 0})
-
+            results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"🔴 FD highest · {format_odds(fd)}", "methods": ["FADE · FD highest"], "gap": 0})
     for _, row in df.iterrows():
-        if row["book"] != "draftkings":
-            continue
+        if row["book"] != "draftkings": continue
         d = last_two(row["price"])
         if d == 10:
-            results.append({"type": "dk", "label": row["player"], "reason": f"DK ends 10 → {format_odds(row['price'])}",
-                "event": row["event"], "methods": ["DK 10"]})
+            results.append({"type": "dk", "label": row["player"], "reason": f"DK ends 10 → {format_odds(row['price'])}", "event": row["event"], "methods": ["DK 10"]})
             methods_map[row["player"]].append("DK 10")
         elif d in FD_ENDINGS:
-            results.append({"type": "dk", "label": row["player"], "reason": f"DK FD-style ends {d:02d} → {format_odds(row['price'])}",
-                "event": row["event"], "methods": ["DK FD-style"]})
+            results.append({"type": "dk", "label": row["player"], "reason": f"DK FD-style ends {d:02d} → {format_odds(row['price'])}", "event": row["event"], "methods": ["DK FD-style"]})
             methods_map[row["player"]].append("DK FD-style")
-
-    # ── ALL MGM under type "mgm" (pairs / groups of 3 + exact 2–3) ──
     mgm = df[df["book"].str.contains("betmgm|mgm", case=False, na=False)].copy()
     current_mgm = []
     group_key = ["event", "team"] if (not mgm.empty and mgm["team"].astype(str).str.len().gt(0).any()) else ["event"]
     if not mgm.empty:
         for keys, g in mgm.groupby(group_key, dropna=False):
-            if not isinstance(keys, tuple):
-                keys = (keys,)
+            if not isinstance(keys, tuple): keys = (keys,)
             event, team = keys[0], (keys[1] if len(keys) > 1 else "")
             ends = defaultdict(list)
             for _, r in g.iterrows():
                 d = last_two(r["price"])
-                if d in MGM_ENDINGS:
-                    ends[d].append(r["player"])
+                if d in MGM_ENDINGS: ends[d].append(r["player"])
             for d, ps in ends.items():
                 names = sorted(set(ps))
-                if len(names) not in (2, 3):
-                    continue
-                current_mgm.append({
-                    "event": event, "ending": d,
-                    "team": team if isinstance(team, str) else "",
-                    "players": frozenset(names),
-                })
-
+                if len(names) not in (2, 3): continue
+                current_mgm.append({"event": event, "ending": d, "team": team if isinstance(team, str) else "", "players": frozenset(names)})
     if record_history:
         st.session_state["mgm_history"].append(current_mgm)
         st.session_state["mgm_history"] = st.session_state["mgm_history"][-8:]
-
     mgm_stayed, survivor = defaultdict(int), set()
     h = st.session_state["mgm_history"]
     if len(h) >= 2:
         for snap in h:
             seen = set()
-            for g in snap:
-                seen.update(g["players"])
-            for p in seen:
-                mgm_stayed[p] += 1
+            for g in snap: seen.update(g["players"])
+            for p in seen: mgm_stayed[p] += 1
         early = set()
         for g in h[0]:
-            if len(g["players"]) == 3:
-                early.update(g["players"])
+            if len(g["players"]) == 3: early.update(g["players"])
         late = set()
-        for g in h[-1]:
-            late.update(g["players"])
+        for g in h[-1]: late.update(g["players"])
         survivor = early & late
-
     for grp in current_mgm:
         names = sorted(grp["players"])
-        if len(names) not in (2, 3):
-            continue
+        if len(names) not in (2, 3): continue
         d = grp["ending"]
         team = grp.get("team") or ""
         meth = [f"MGM {d:02d}", "Match 00" if d == 0 else f"Match {d:02d}"]
@@ -1153,132 +925,79 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         kind = "pair" if len(names) == 2 else "group of 3"
         tnote = f" · {team}" if team else " · same team"
         reason = f"MGM {kind} ends {d:02d}{tnote}"
-        if extra:
-            reason += " • " + " + ".join(sorted(set(extra)))
-        results.append({
-            "type": "mgm", "label": " + ".join(names), "reason": reason,
-            "event": grp["event"], "methods": list(set(meth)),
-        })
-        for n in names:
-            methods_map[n].extend(meth)
-
-    # MGM Exact 2–3 only → also type mgm
+        if extra: reason += " • " + " + ".join(sorted(set(extra)))
+        results.append({"type": "mgm", "label": " + ".join(names), "reason": reason, "event": grp["event"], "methods": list(set(meth))})
+        for n in names: methods_map[n].extend(meth)
     if not mgm.empty:
         gk = ["event", "team"] if mgm["team"].astype(str).str.len().gt(0).any() else ["event"]
         for keys, g in mgm.groupby(gk, dropna=False):
-            if not isinstance(keys, tuple):
-                keys = (keys,)
+            if not isinstance(keys, tuple): keys = (keys,)
             event, team = keys[0], (keys[1] if len(keys) > 1 else "")
             for price, pg in g.groupby("price"):
                 names = sorted(pg["player"].unique())
-                if len(names) not in (2, 3):
-                    continue
+                if len(names) not in (2, 3): continue
                 tnote = f" · {team}" if team else ""
-                results.append({
-                    "type": "mgm", "label": " + ".join(names),
-                    "reason": f"MGM Exact {format_odds(price)} ({len(names)}){tnote}",
-                    "event": event, "methods": ["MGM Exact"],
-                })
-                for n in names:
-                    methods_map[n].append("MGM Exact")
-
-    # Cross-book exact (not MGM-only) → type match
+                results.append({"type": "mgm", "label": " + ".join(names), "reason": f"MGM Exact {format_odds(price)} ({len(names)}){tnote}", "event": event, "methods": ["MGM Exact"]})
+                for n in names: methods_map[n].append("MGM Exact")
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
-        if len(g) < 2:
-            continue
+        if len(g) < 2: continue
         prices = g["price"].dropna().tolist()
         if len(set(prices)) == 1:
-            results.append({
-                "type": "match", "label": player,
-                "reason": f"Same price {format_odds(prices[0])} on {', '.join(g['book'])}",
-                "event": g["event"].iloc[0], "methods": ["Exact Match"],
-            })
+            results.append({"type": "match", "label": player, "reason": f"Same price {format_odds(prices[0])} on {', '.join(g['book'])}", "event": g["event"].iloc[0], "methods": ["Exact Match"]})
             methods_map[player].append("Exact Match")
-
     for _, row in df.iterrows():
-        if row["book"] != "fanduel":
-            continue
+        if row["book"] != "fanduel": continue
         player = row["player"]
-        if not has_dk_or_mgm(methods_map.get(player, [])):
-            continue
+        if not has_dk_or_mgm(methods_map.get(player, [])): continue
         price = abs(int(row["price"])) if row["price"] else 0
         last = last_two(row["price"])
         if price == 600:
-            results.append({
-                "type": "fd", "label": player,
-                "reason": f"FD +600 (with DK/MGM) → {format_odds(row['price'])}",
-                "event": row["event"], "methods": ["FD 600"],
-            })
+            results.append({"type": "fd", "label": player, "reason": f"FD +600 (with DK/MGM) → {format_odds(row['price'])}", "event": row["event"], "methods": ["FD 600"]})
             methods_map[player].append("FD 600")
         if price >= FD_MIN and last in FD_ENDINGS:
-            results.append({
-                "type": "fd", "label": player,
-                "reason": f"FD ends {last:02d} (with DK/MGM) → {format_odds(row['price'])}",
-                "event": row["event"], "methods": ["FD Pattern"],
-            })
+            results.append({"type": "fd", "label": player, "reason": f"FD ends {last:02d} (with DK/MGM) → {format_odds(row['price'])}", "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
-
     for player, ms in list(methods_map.items()):
         core = [m for m in set(ms) if is_core_method(m)]
         books_hit = set()
         for m in core:
-            if m.startswith("DK"):
-                books_hit.add("dk")
-            if m.startswith("MGM") or m.startswith("Match ") or m == "MGM Exact":
-                books_hit.add("mgm")
-            if m.startswith("FD"):
-                books_hit.add("fd")
+            if m.startswith("DK"): books_hit.add("dk")
+            if m.startswith("MGM") or m.startswith("Match ") or m == "MGM Exact": books_hit.add("mgm")
+            if m.startswith("FD"): books_hit.add("fd")
         if len(books_hit) >= 2:
             methods_map[player].append("Multi-book method")
             signal_bucket[player].append(f"Methods on {len(books_hit)} books")
             signal_methods[player].add("Multi-book method")
-
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
         down_by = defaultdict(list)
         for key, curr_price in curr_snap.items():
             player, book = key
-            if player not in all_players_now or key not in prev_snap:
-                continue
-            if curr_price - prev_snap[key] <= -MOVE_MIN:
-                down_by[player].append(book)
+            if player not in all_players_now or key not in prev_snap: continue
+            if curr_price - prev_snap[key] <= -MOVE_MIN: down_by[player].append(book)
         for player, books in down_by.items():
             if len(books) >= 2:
                 methods_map[player].append("Multi-book Shorten")
                 signal_bucket[player].append(f"Shorten on {', '.join(books)}")
                 signal_methods[player].add("Multi-book Shorten")
-
     for player in sorted(signal_bucket.keys()):
-        results.append({
-            "type": "signal", "label": player,
-            "reason": "<br>".join(signal_bucket[player]),
-            "methods": list(signal_methods[player]),
-        })
-
+        results.append({"type": "signal", "label": player, "reason": "<br>".join(signal_bucket[player]), "methods": list(signal_methods[player])})
     player_events = defaultdict(set)
-    for _, r in df.iterrows():
-        player_events[r["player"]].add(r["event"])
-
+    for _, r in df.iterrows(): player_events[r["player"]].add(r["event"])
     ev_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
-        if lineup_names and name_in_lineup(player, lineup_names) is False:
-            continue
+        if lineup_names and name_in_lineup(player, lineup_names) is False: continue
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
-        if len(prices) < 2:
-            continue
+        if len(prices) < 2: continue
         best, best_book = smart_best(prices, books)
-        if best is None:
-            continue
-        try:
-            med = statistics.median(prices)
-        except Exception:
-            med = best
+        if best is None: continue
+        try: med = statistics.median(prices)
+        except Exception: med = best
         edge = best - med
         meths = list({normalize_method_name(m) for m in methods_map.get(player, [])})
         core_count = count_core_methods(meths)
-        if core_count < METHODS_MIN:
-            continue
+        if core_count < METHODS_MIN: continue
         is_bet = edge >= EDGE_MIN
         display_meths = [m for m in meths if is_core_method(m)]
         score = girl_magic_score(core_count, edge, display_meths)
@@ -1292,45 +1011,28 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "events": list(player_events.get(player, [])),
             "event": next(iter(player_events.get(player, [])), ""),
         })
-
     ev_board = tighten_board(ev_board)
-    current_ev = {
-        item["player"]: {
-            "methods": item["methods"], "edge": item["edge"], "is_bet": item["is_bet"],
-            "method_count": item["method_count"], "score": item["score"], "events": item.get("events", []),
-        } for item in ev_board
-    }
-
+    current_ev = {item["player"]: {"methods": item["methods"], "edge": item["edge"], "is_bet": item["is_bet"], "method_count": item["method_count"], "score": item["score"], "events": item.get("events", [])} for item in ev_board}
     prev_ev = st.session_state.get("prev_ev", {})
     fallen = []
     for player, old in prev_ev.items():
-        if player in current_ev:
-            continue
+        if player in current_ev: continue
         old_events = old.get("events") or []
-        if selected and old_events and not any(event_matches_chosen(e, selected) for e in old_events):
-            continue
+        if selected and old_events and not any(event_matches_chosen(e, selected) for e in old_events): continue
         lock_note = locked_price_str(player)
         reasons = []
         if player not in all_players_now:
             reasons.append("Left feed (often MGM after pitch)")
-            if lock_note:
-                reasons.append(f"🔒 {lock_note}")
+            if lock_note: reasons.append(f"🔒 {lock_note}")
         else:
             reasons.append("Dropped filters")
-        if old.get("is_bet"):
-            reasons.insert(0, "Was TAKE IT")
-        fallen.append({
-            "type": "fallen", "label": player, "reason": " · ".join(reasons),
-            "methods": ["Fallen Off"], "old_score": old.get("score", 0),
-        })
+        if old.get("is_bet"): reasons.insert(0, "Was TAKE IT")
+        fallen.append({"type": "fallen", "label": player, "reason": " · ".join(reasons), "methods": ["Fallen Off"], "old_score": old.get("score", 0)})
         results.append(fallen[-1])
-
     if record_history:
         st.session_state["prev_ev"] = current_ev
         save_history(prev_ev=current_ev)
-
     return results, ev_board, fallen
-
 
 def main():
     if "history_loaded" not in st.session_state:
@@ -1339,16 +1041,13 @@ def main():
         st.session_state["history_loaded"] = True
     if "pending_page" not in st.session_state:
         st.session_state["pending_page"] = 0
-
     if HAS_AUTOREFRESH:
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     else:
         refresh_count = 0
-
     st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
-
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(f"""
     <div class="how-to">
@@ -1356,15 +1055,12 @@ def main():
         MGM = pairs / groups of 3 + Exact 2–3 only · one card per player · Lock <b>{lock_n}</b>
     </div>
     """, unsafe_allow_html=True)
-
     render_whats_going_today()
-
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
     if not odds_key:
         st.warning("Add The Odds API key.")
         st.stop()
-
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         if st.button("① Load Games", type="primary"):
@@ -1382,17 +1078,14 @@ def main():
             st.rerun()
     with c4:
         auto_lineups = st.checkbox("Lineups on fetch", value=True)
-
     events = st.session_state.get("events", [])
     if not events:
         st.info("Click **Load Games** once.")
         st.stop()
-
     options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
     default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
     chosen = st.multiselect("② Games", list(options.keys()), default=default_sel or list(options.keys())[:10])
     st.session_state["selected_games"] = chosen
-
     manual_fetch = st.button("③ Fetch now", type="primary")
     if "last_refresh_count" not in st.session_state:
         st.session_state["last_refresh_count"] = refresh_count
@@ -1403,13 +1096,11 @@ def main():
     if first_load:
         st.session_state["auto_once"] = False
         auto_fetch = True
-
     if (manual_fetch or auto_fetch) and chosen:
         with st.spinner("Fetching…"):
             if auto_lineups or not st.session_state.get("lineup_names"):
                 names, msg = fetch_rotowire_lineups()
-                if names:
-                    st.session_state["lineup_names"] = names
+                if names: st.session_state["lineup_names"] = names
             df, found = do_fetch(odds_key, sgo_key, chosen, options)
         if df is not None and not df.empty:
             update_pregame_lock(df)
@@ -1420,37 +1111,27 @@ def main():
             st.session_state["last_selected"] = list(chosen)
             st.session_state["new_fetch"] = True
             st.session_state["last_fetch_time"] = now_az()
-            try:
-                auto_grade_pending()
-            except Exception:
-                pass
+            try: auto_grade_pending()
+            except Exception: pass
             st.success(f"Loaded {len(df)} props · {now_az()} AZ")
         else:
             st.warning("No 0.5 HR odds.")
-
     if st.session_state.get("last_fetch_time"):
         st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
-
     found = st.session_state.get("found_books", [])
     if found:
         missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
         st.markdown(f'<div class="info-box"><b>Books:</b> {", ".join(found)}</div>', unsafe_allow_html=True)
         if missing:
             st.markdown(f'<div class="warning-box">⚠️ Missing: {", ".join(missing)}</div>', unsafe_allow_html=True)
-
     odds = st.session_state.get("odds", [])
     prev = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
-    results, ev_board, fallen = (
-        run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
-        if not df.empty else ([], [], [])
-    )
-    if ev_board:
-        log_bet_this(ev_board)
-
+    results, ev_board, fallen = (run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events) if not df.empty else ([], [], []))
+    if ev_board: log_bet_this(ev_board)
     method_stats, book_stats, ending_stats = build_tracker_stats(load_results())
     for item in ev_board:
         p, n, mname = best_method_rate_for_player(item["methods"], method_stats)
@@ -1461,7 +1142,6 @@ def main():
             item["ev_value"] = ev
         else:
             item["ev_lean"] = item["ev_value"] = None
-
     take_n = len([e for e in ev_board if e["is_bet"]])
     st.markdown(f"""
     <div class="petty-row">
@@ -1473,14 +1153,11 @@ def main():
         <div class="petty-box"><div class="petty-num">{lock_n}</div><div class="petty-label">🔒 Lock</div></div>
     </div>
     """, unsafe_allow_html=True)
-
-    # Digits tab REMOVED
     tabs = st.tabs([
         "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact",
         "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "💀 Fallen", "🔒 Lock",
         "📡 Tracker", "📊 Results", "📖 Code",
     ])
-
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
         st.caption(f"Max {BOARD_MAX_PER_TEAM}/team · {BOARD_MAX_PER_GAME}/game · 2+ core · edge ≥ {EDGE_MIN}")
@@ -1502,8 +1179,6 @@ def main():
                         ev_s = ""
                         if item.get("ev_lean") is True:
                             ev_s = f"<br><b>+EV lean</b> from past {item.get('method_rate_name')} plays"
-                        elif item.get("method_n") and item["method_n"] < EV_MIN_N:
-                            ev_s = ""  # don't show confusing n=
                         team = item.get("team") or ""
                         st.markdown(f"""
                         <div class="card {cls}">
@@ -1513,13 +1188,11 @@ def main():
                             · consensus {format_odds(item['median'])} · edge <b>{int(item['edge'])}</b><br>
                             {tags}{ev_s}<br><small>{item['why']}</small>
                         </div>""", unsafe_allow_html=True)
-
     show_player_cards(tabs[1], "dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
     show_player_cards(tabs[2], "mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2–3 · all on one card", results)
     show_player_cards(tabs[3], "fd", "💙 FanDuel", f"≥+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
     show_player_cards(tabs[4], "match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
     show_player_cards(tabs[5], "signal", "📈 Signals", "Multi-book method · one card per player", results)
-
     with tabs[6]:
         st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
         for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
@@ -1529,9 +1202,7 @@ def main():
             for idx, r in enumerate(items[:20]):
                 with cols[idx % 2]:
                     st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-            if not items:
-                st.info("None")
-
+            if not items: st.info("None")
     with tabs[7]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
@@ -1542,15 +1213,12 @@ def main():
         st.markdown("#### 🔴 Fade")
         for r in aggregate_by_player(fade)[:15]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-
     show_player_cards(tabs[8], "late", "👻 Late / Gone", "One card per player · lock prices when gone", results)
     with tabs[9]:
         st.markdown('<div class="queen-banner">💀 Fallen</div>', unsafe_allow_html=True)
         for r in fallen[:30]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
-        if not fallen:
-            st.info("None")
-
+        if not fallen: st.info("None")
     with tabs[10]:
         st.markdown('<div class="queen-banner">🔒 Pregame Lock</div>', unsafe_allow_html=True)
         lock = st.session_state.get("pregame_lock") or load_pregame()
@@ -1561,33 +1229,23 @@ def main():
             cols = st.columns(2)
             i = 0
             for player, entry in sorted(lock.items()):
-                if q and q.lower() not in player.lower():
-                    continue
+                if q and q.lower() not in player.lower(): continue
                 lines = [f"{book_label(b)} {format_odds(info['price'])}" for b, info in sorted((entry.get("books") or {}).items()) if info.get("price") is not None]
-                if not lines:
-                    continue
+                if not lines: continue
                 with cols[i % 2]:
                     st.markdown(f'<div class="card"><b>{player}</b><br>' + "<br>".join(lines) + "</div>", unsafe_allow_html=True)
                 i += 1
-
     with tabs[11]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption("How often each tag hit after we graded it. Small samples hidden.")
-
         def chips_from_stats(stats, min_n=TRACKER_MIN_N):
             out = []
             for name, s in sorted(stats.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
                 t = s["hit"] + s["miss"]
-                if t < min_n:
-                    continue
+                if t < min_n: continue
                 pct = 100 * s["hit"] / t
-                out.append(
-                    f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
-                    f'<div class="rate-name">{name}</div>'
-                    f'<div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays</div></div>'
-                )
+                out.append(f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div><div class="rate-name">{name}</div><div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays</div></div>')
             return out
-
         st.markdown("#### By method")
         chips = chips_from_stats(method_stats)
         st.markdown("".join(chips) if chips else "_(Need more graded plays)_", unsafe_allow_html=True)
@@ -1597,7 +1255,6 @@ def main():
         st.markdown("#### By ending")
         chips = chips_from_stats(ending_stats)
         st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
-
     with tabs[12]:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
@@ -1605,7 +1262,6 @@ def main():
                 h, m, s, msg = auto_grade_pending()
             st.success(f"{h} HIT · {m} MISS · {s} open — {msg}")
             st.rerun()
-
         rows = load_results()
         today_only = st.checkbox("Today only", value=True)
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
@@ -1622,7 +1278,6 @@ def main():
             <div class="petty-box"><div class="petty-num">{rate:.0f}%</div><div class="petty-label">RATE</div></div>
         </div>
         """, unsafe_allow_html=True)
-
         total_p = len(pending)
         page = min(st.session_state.get("pending_page", 0), max(0, (total_p - 1) // PENDING_PAGE) if total_p else 0)
         st.session_state["pending_page"] = page
@@ -1637,7 +1292,6 @@ def main():
             if st.button("Next →", disabled=end >= total_p):
                 st.session_state["pending_page"] = page + 1
                 st.rerun()
-
         for r in pending[start:end]:
             rid = r["id"]
             endg = r.get("ending")
@@ -1652,7 +1306,6 @@ def main():
                 if st.button("🔴 MISS", key=f"miss_{rid}"):
                     set_result_status(rid, "MISS")
                     st.rerun()
-
         st.markdown("#### Graded — ↩️ Undo")
         for r in reversed(done[-40:]):
             rid = r["id"]
@@ -1664,7 +1317,6 @@ def main():
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
-
     with tabs[13]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
@@ -1689,4 +1341,16 @@ def main():
             <b>Exact</b> tab = same price across books (not the MGM-only exact).
         </div>
         <div class="glossary-block">
-            <h4>One
+            <h4>One card rule</h4>
+            On every method tab, each player (or pair label) gets <b>one card</b> with every flag stacked — no duplicates.
+        </div>
+        <div class="glossary-block">
+            <h4>📡 Tracker</h4>
+            “12 hit · 40 miss · 52 plays” = how many times we graded that tag.<br>
+            Small samples stay hidden so they don’t look like proof.
+        </div>
+        """, unsafe_allow_html=True)
+    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    main()
