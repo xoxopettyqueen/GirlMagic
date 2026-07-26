@@ -1173,6 +1173,74 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         save_history(prev_ev=current_ev)
     return results, ev_board, fallen, watch_board
 
+
+def build_backtest_stats(rows, days=14):
+    """Daily + overall TAKE IT vs WATCH hit rates from graded results."""
+    today = today_az()
+    try:
+        today_dt = datetime.strptime(today, "%Y-%m-%d")
+    except Exception:
+        today_dt = datetime.now()
+    cutoff = (today_dt - timedelta(days=days)).strftime("%Y-%m-%d")
+
+    graded = [
+        r for r in rows
+        if r.get("result") in ("HIT", "MISS")
+        and r.get("source") in ("take_it", "watch")
+        and (r.get("date") or "") >= cutoff
+    ]
+
+    def rate(subset):
+        h = sum(1 for r in subset if r["result"] == "HIT")
+        m = sum(1 for r in subset if r["result"] == "MISS")
+        t = h + m
+        pct = (100.0 * h / t) if t else None
+        return h, m, t, pct
+
+    overall = {}
+    for src in ("take_it", "watch"):
+        overall[src] = rate([r for r in graded if r.get("source") == src])
+
+    by_date = {}
+    for r in graded:
+        d = r.get("date") or ""
+        by_date.setdefault(d, {"take_it": [], "watch": []})
+        src = r.get("source")
+        if src in by_date[d]:
+            by_date[d][src].append(r)
+
+    daily = []
+    for d in sorted(by_date.keys(), reverse=True):
+        ti = rate(by_date[d]["take_it"])
+        wa = rate(by_date[d]["watch"])
+        daily.append({"date": d, "take_it": ti, "watch": wa})
+
+    # method rates within WATCH vs TAKE IT
+    method_by_src = {"take_it": defaultdict(lambda: {"hit": 0, "miss": 0}), "watch": defaultdict(lambda: {"hit": 0, "miss": 0})}
+    for r in graded:
+        src = r.get("source")
+        if src not in method_by_src:
+            continue
+        is_hit = r["result"] == "HIT"
+        counted = set()
+        for m in r.get("methods") or []:
+            nm = normalize_method_name(m)
+            if nm in TRACKER_BLOCKLIST or nm in NOISE_METHODS:
+                continue
+            if not (is_core_method(nm) or nm in TRACKER_ALWAYS or nm in PERSONAL_STRONG):
+                continue
+            if nm in counted:
+                continue
+            counted.add(nm)
+            if is_hit:
+                method_by_src[src][nm]["hit"] += 1
+            else:
+                method_by_src[src][nm]["miss"] += 1
+
+    return overall, daily, method_by_src, len(graded)
+
+
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
@@ -1299,7 +1367,7 @@ def main():
     tabs = st.tabs([
         "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact",
         "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "💀 Fallen", "🔒 Lock",
-        "📡 Tracker", "📊 Results", "📖 Code",
+        "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
     ])
     with tabs[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
@@ -1461,6 +1529,72 @@ def main():
                 undo_result(rid, r.get("source"))
                 st.rerun()
     with tabs[13]:
+        st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
+        st.caption("Forward test from graded Results. WATCH = 1+ core (learning). TAKE IT = 2+ core + edge (bets). Need sample before trusting %.")
+        rows_bt = load_results()
+        overall, daily, method_by_src, n_graded = build_backtest_stats(rows_bt, days=14)
+
+        def fmt_rate(h, m, t, pct):
+            if t == 0 or pct is None:
+                return "—"
+            return f"{pct:.0f}% · {h}H / {m}M · n={t}"
+
+        ti = overall.get("take_it", (0, 0, 0, None))
+        wa = overall.get("watch", (0, 0, 0, None))
+        st.markdown(f"""
+        <div class="petty-row">
+            <div class="petty-box"><div class="petty-num">{ti[3]:.0f if ti[3] is not None else '—'}</div><div class="petty-label">🟢 TAKE IT %</div></div>
+            <div class="petty-box"><div class="petty-num">{ti[2]}</div><div class="petty-label">TAKE n</div></div>
+            <div class="petty-box"><div class="petty-num">{wa[3]:.0f if wa[3] is not None else '—'}</div><div class="petty-label">👀 WATCH %</div></div>
+            <div class="petty-box"><div class="petty-num">{wa[2]}</div><div class="petty-label">WATCH n</div></div>
+            <div class="petty-box"><div class="petty-num">{n_graded}</div><div class="petty-label">Graded 14d</div></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("#### Last 14 days")
+        if not daily:
+            st.info("No graded TAKE IT / WATCH rows yet. Fetch → let WATCH log → auto-grade after games.")
+        else:
+            for day in daily:
+                ti_s = fmt_rate(*day["take_it"])
+                wa_s = fmt_rate(*day["watch"])
+                st.markdown(
+                    f'<div class="card"><b>{day["date"]}</b><br>'
+                    f'🟢 TAKE IT: {ti_s}<br>👀 WATCH: {wa_s}</div>',
+                    unsafe_allow_html=True,
+                )
+
+        st.markdown("#### Methods on TAKE IT (graded)")
+        chips_ti = []
+        for name, s in sorted(method_by_src["take_it"].items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+            t = s["hit"] + s["miss"]
+            if t < 5:
+                continue
+            pct = 100 * s["hit"] / t
+            chips_ti.append(
+                f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
+                f'<div class="rate-name">{name}</div>'
+                f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
+            )
+        st.markdown("".join(chips_ti) if chips_ti else "_(Need more graded TAKE IT)_", unsafe_allow_html=True)
+
+        st.markdown("#### Methods on WATCH (graded)")
+        chips_wa = []
+        for name, s in sorted(method_by_src["watch"].items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+            t = s["hit"] + s["miss"]
+            if t < 5:
+                continue
+            pct = 100 * s["hit"] / t
+            chips_wa.append(
+                f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
+                f'<div class="rate-name">{name}</div>'
+                f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
+            )
+        st.markdown("".join(chips_wa) if chips_wa else "_(Need more graded WATCH)_", unsafe_allow_html=True)
+
+        st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
+
+    with tabs[14]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="glossary-block">
@@ -1491,7 +1625,7 @@ def main():
             <h4>📡 Tracker · Auto-grade · What's Going</h4>
             Tracker shows hit rates only after enough graded plays.<br>
             <b>Auto-grade</b> marks PENDING TAKE ITs HIT/MISS from MLB box scores (stronger name match).<br>
-            <b>What's Going Today</b> shows real MLB HR count + endings from our lock / graded list.
+            <b>What's Going Today</b> shows real MLB HR count + endings from our lock / graded list.<br><b>🧪 Backtest</b> compares TAKE IT vs WATCH hit rates over the last 14 days.
         </div>
         """, unsafe_allow_html=True)
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
