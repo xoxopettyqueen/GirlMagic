@@ -1365,6 +1365,9 @@ def build_lock_lab():
     lock = st.session_state.get("pregame_lock") or load_pregame()
     matched, unmatched = [], []
     ending_counter, tag_counter, book_end_counter = Counter(), Counter(), Counter()
+    book_appear = Counter()  # book showed any price on an HR
+    cross_counter = Counter()  # frozenset of core-ish tags together
+    multi_tag_n = 0
 
     for hr in sorted(hr_names):
         entry, lock_name = None, None
@@ -1379,17 +1382,78 @@ def build_lock_lab():
         for bl, end in ends_by_book.items():
             ending_counter[end] += 1
             book_end_counter[(bl, end)] += 1
+            book_appear[bl] += 1
         for t in tags:
             tag_counter[t] += 1
+        core_tags = [t for t in tags if t.startswith(("MGM", "DK", "FD", "Exact", "Same"))]
+        if len(core_tags) >= 2:
+            multi_tag_n += 1
+            cross_counter[tuple(sorted(core_tags))] += 1
         matched.append({
             "hr_name": hr, "lock_name": lock_name, "tags": tags, "lines": lines,
-            "event": entry.get("event") or "",
+            "event": entry.get("event") or "", "core_n": len(core_tags),
         })
 
+    # rank matched by how many of our tags they had
+    matched_ranked = sorted(matched, key=lambda m: (-m["core_n"], m["hr_name"]))
+
+    # insights text
+    insights = []
+    n = len(matched) or 1
+    if tag_counter:
+        top_tags = tag_counter.most_common(5)
+        insights.append(
+            "🔥 <b>Methods showing up most on HRs:</b> "
+            + ", ".join(f"{t} ({c})" for t, c in top_tags)
+        )
+    if book_appear:
+        top_books = book_appear.most_common(4)
+        insights.append(
+            "📚 <b>Books that had these HRs priced:</b> "
+            + ", ".join(f"{b} ({c}/{len(matched)})" for b, c in top_books)
+        )
+    # best book×ending combos among our classic endings
+    classic = []
+    for (bl, end), c in book_end_counter.most_common():
+        if bl in ("MGM", "DK", "FD") and (end in MGM_ENDINGS or end == 10 or end in FD_ENDINGS):
+            classic.append(((bl, end), c))
+        if len(classic) >= 6:
+            break
+    if classic:
+        insights.append(
+            "🎯 <b>Classic endings on HRs:</b> "
+            + ", ".join(f"{bl} {end:02d}×{c}" for (bl, end), c in classic)
+        )
+    if cross_counter:
+        top_cross = cross_counter.most_common(4)
+        insights.append(
+            "✨ <b>Cross-methods (2+ tags on same HR):</b> "
+            + ", ".join(" + ".join(tags) + f" ({c})" for tags, c in top_cross)
+        )
+        insights.append(
+            f"🧩 <b>{multi_tag_n}/{len(matched)}</b> Lock-matched HRs had 2+ of our tags — "
+            "those are the cross-method hits to study."
+        )
+    # watch-outs
+    watch = []
+    for (bl, end), c in book_end_counter.most_common(8):
+        if bl in ("HardRock", "Caesars") and c >= 5:
+            watch.append(f"{bl} ending {end:02d} showed {c}× (noisy book — don't treat as a core trick yet)")
+    other_ends = [(e, c) for e, c in ending_counter.most_common() if e not in MGM_ENDINGS and e != 10 and e not in FD_ENDINGS and c >= 3]
+    for e, c in other_ends[:3]:
+        watch.append(f"Ending {e:02d} showed {c}× on HRs — not in our official list; watch if it keeps repeating")
+    if not matched:
+        insights.append("No HRs matched Lock yet — need pregame fetches so Lock is full.")
+    if len(matched) < len(hr_names) * 0.5 and hr_names:
+        watch.append("Many HRs missing from Lock — fetch earlier / more games next slate.")
+
     return {
-        "hr_count": len(hr_names), "matched": matched, "unmatched": unmatched,
+        "hr_count": len(hr_names), "matched": matched_ranked, "unmatched": unmatched,
         "ending_counter": ending_counter, "tag_counter": tag_counter,
-        "book_end_counter": book_end_counter, "mlb_msg": mlb_msg, "lock_n": len(lock),
+        "book_end_counter": book_end_counter, "book_appear": book_appear,
+        "cross_counter": cross_counter, "multi_tag_n": multi_tag_n,
+        "insights": insights, "watch": watch,
+        "mlb_msg": mlb_msg, "lock_n": len(lock),
     }
 
 
@@ -1684,6 +1748,17 @@ def main():
         if lab.get("mlb_msg"):
             st.caption(lab["mlb_msg"])
 
+        st.markdown("#### 👑 What to take from today")
+        if lab.get("insights"):
+            for line in lab["insights"]:
+                st.markdown(f'<div class="info-box">{line}</div>', unsafe_allow_html=True)
+        if lab.get("watch"):
+            st.markdown("#### ⚠️ Watch-outs")
+            for line in lab["watch"]:
+                st.markdown(f'<div class="warning-box">{line}</div>', unsafe_allow_html=True)
+        if not lab.get("insights") and not lab.get("watch"):
+            st.info("Insights appear after HRs match Lock.")
+
         st.markdown("#### Endings on HRs that were in Lock")
         chips = []
         for (bl, end), cnt in sorted(lab["book_end_counter"].items(), key=lambda x: -x[1])[:14]:
@@ -1703,7 +1778,7 @@ def main():
             )
         st.markdown("".join(tag_chips) if tag_chips else "_(None)_", unsafe_allow_html=True)
 
-        st.markdown("#### HR players matched to Lock")
+        st.markdown("#### HR players matched to Lock *(most of our tags first)*")
         if not lab["matched"]:
             st.info("No HR names matched Lock. Fetch pregame more so Lock fills.")
         else:
