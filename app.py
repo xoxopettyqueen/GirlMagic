@@ -426,29 +426,51 @@ def undo_result(row_id, source):
         return True
     return set_result_status(row_id, "PENDING")
 
-def log_bet_this(ev_board):
+def log_bet_this(ev_board, watch_board=None):
+    """Log TAKE IT (is_bet) and WATCH (1+ core, not bet) for auto-grade learning."""
     rows = load_results()
     today = today_az()
     added = 0
-    for item in ev_board:
-        if not item.get("is_bet"): continue
-        if any(r.get("date") == today and r.get("player") == item["player"] and r.get("source") != "manual_hr" for r in rows):
-            continue
-        locked = get_locked(item["player"])
+    watch_board = watch_board or []
+
+    def already(player, source):
+        return any(
+            r.get("date") == today and r.get("player") == player
+            and r.get("source") != "manual_hr"
+            for r in rows
+        )
+
+    def append_row(item, source):
+        nonlocal added
+        player = item["player"]
+        if already(player, source):
+            return
+        locked = get_locked(player)
         price = item.get("best_price")
         rows.append({
-            "id": f"{today}_{item['player']}_{int(item['score'])}",
-            "date": today, "time": now_az(), "player": item["player"],
-            "score": item["score"], "edge": int(item["edge"]),
+            "id": f"{today}_{player}_{source}_{int(item.get('score') or 0)}",
+            "date": today, "time": now_az(), "player": player,
+            "score": item.get("score", 0), "edge": int(item.get("edge") or 0),
             "best_price": price, "best_book": item.get("best_book", ""),
-            "ending": last_two(price),
+            "ending": last_two(price) if price is not None else None,
             "mgm_locked": locked.get("mgm_price"), "mgm_ending": locked.get("mgm_ending"),
-            "methods": [normalize_method_name(m) for m in item["methods"]],
+            "methods": [normalize_method_name(m) for m in (item.get("methods") or [])],
             "core": item.get("method_count", 0),
-            "result": "PENDING", "source": "take_it", "logged_at": now_utc_iso(),
+            "result": "PENDING", "source": source, "logged_at": now_utc_iso(),
         })
         added += 1
-    if added: save_results(rows)
+
+    for item in ev_board:
+        if item.get("is_bet"):
+            append_row(item, "take_it")
+    for item in watch_board:
+        # don't double-log someone already TAKE IT
+        if item.get("is_bet"):
+            continue
+        append_row(item, "watch")
+
+    if added:
+        save_results(rows)
     return added
 
 def pending_sort_key(r):
@@ -570,21 +592,18 @@ def auto_grade_pending():
 
 
 def build_whats_going_today(rows):
-    """Real MLB HRs today + endings from graded HITs / pregame lock."""
+    """Real MLB HRs today + endings from graded / lock. Count how many HRs were on our WATCH/TAKE list."""
     today = today_az()
     hr_names, _final, _msg = fetch_mlb_hr_hitters()
-    az = today_az()
-    mlb = today_mlb_date()
-    if az != mlb:
-        hr2, _, _ = fetch_mlb_hr_hitters(az)
-        hr_names |= hr2
 
     todays = [r for r in rows if r.get("date") == today]
     hits_logged = [r for r in todays if r.get("result") == "HIT"]
     graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
+    our_list = [r for r in todays if r.get("source") in ("take_it", "watch")]
     lock = st.session_state.get("pregame_lock") or load_pregame()
 
     ending_counts, book_ending = Counter(), Counter()
+    on_our_list = 0
 
     for r in hits_logged:
         ending = r.get("ending")
@@ -601,6 +620,8 @@ def build_whats_going_today(rows):
         book_ending[(bl, ending)] += 1
 
     for hr in hr_names:
+        if any(names_match(hr, r.get("player") or "") for r in our_list):
+            on_our_list += 1
         already = any(names_match(hr, r.get("player") or "") for r in hits_logged)
         if already:
             continue
@@ -640,11 +661,11 @@ def build_whats_going_today(rows):
         if label not in seen or cnt > seen[label][0]:
             seen[label] = (cnt, hot)
     chips = sorted([(lab, v[0], v[1]) for lab, v in seen.items()], key=lambda x: (-x[1], x[0]))[:8]
-    return len(hr_names), len(graded), chips
+    return len(hr_names), len(graded), chips, on_our_list
 
 def render_whats_going_today():
     rows = load_results()
-    mlb_hr, n_graded, chips = build_whats_going_today(rows)
+    mlb_hr, n_graded, chips, on_list = build_whats_going_today(rows)
     if chips:
         chips_html = "".join(
             f'<span class="trend-chip {"hot" if hot else ""}">{label}: '
@@ -657,7 +678,7 @@ def render_whats_going_today():
     <div class="trends-today">
         <div class="trends-today-header">
             <div class="trends-today-title">🔥 What's Going Today</div>
-            <div class="trends-today-sub">{mlb_hr} MLB HR today · {n_graded} graded on our list · not a prediction</div>
+            <div class="trends-today-sub">{mlb_hr} MLB HR · {on_list} were on WATCH/TAKE · {n_graded} graded · not a prediction</div>
         </div>
         <div class="trends-chips">{chips_html}</div>
     </div>
@@ -886,7 +907,7 @@ def tighten_board(ev_board):
     return out
 
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
-    if df.empty: return [], [], []
+    if df.empty: return [], [], [], []
     if "team" not in df.columns: df["team"] = ""
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
@@ -1092,32 +1113,43 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     player_events = defaultdict(set)
     for _, r in df.iterrows(): player_events[r["player"]].add(r["event"])
     ev_board = []
+    watch_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if lineup_names and name_in_lineup(player, lineup_names) is False: continue
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
-        if len(prices) < 2: continue
-        best, best_book = smart_best(prices, books)
+        if len(prices) < 1: continue
+        best, best_book = smart_best(prices, books) if len(prices) >= 2 else (prices[0], books[0])
         if best is None: continue
-        try: med = statistics.median(prices)
+        try: med = statistics.median(prices) if len(prices) >= 2 else best
         except Exception: med = best
-        edge = best - med
+        edge = best - med if len(prices) >= 2 else 0
         meths = list({normalize_method_name(m) for m in methods_map.get(player, [])})
         core_count = count_core_methods(meths)
-        if core_count < METHODS_MIN: continue
-        is_bet = edge >= EDGE_MIN
         display_meths = [m for m in meths if is_core_method(m)]
         score = girl_magic_score(core_count, edge, display_meths)
-        conf, bars, level = get_confidence(score, is_bet)
-        ev_board.append({
+        conf, bars, level = get_confidence(score, core_count >= METHODS_MIN and edge >= EDGE_MIN)
+        row = {
             "player": player, "best_price": best, "best_book": best_book, "median": med,
-            "edge": edge, "is_bet": is_bet,
-            "why": f"Score {score}/100 · {core_count} core · edge {int(edge)}" + ("." if is_bet else f" (need {EDGE_MIN}+)."),
+            "edge": edge, "is_bet": False,
+            "why": f"Score {score}/100 · {core_count} core · edge {int(edge)}",
             "methods": display_meths, "score": score, "bars": bars, "level": level,
             "method_count": core_count, "team": team_map.get(player, ""),
             "events": list(player_events.get(player, [])),
             "event": next(iter(player_events.get(player, [])), ""),
-        })
+        }
+        # WATCH: 1+ core method — logged for learning / auto-grade
+        if core_count >= 1:
+            watch_board.append(dict(row))
+        # TAKE IT board: still 2+ core
+        if core_count < METHODS_MIN:
+            continue
+        is_bet = edge >= EDGE_MIN
+        row["is_bet"] = is_bet
+        row["why"] = f"Score {score}/100 · {core_count} core · edge {int(edge)}" + ("." if is_bet else f" (need {EDGE_MIN}+).")
+        conf, bars, level = get_confidence(score, is_bet)
+        row["bars"], row["level"] = bars, level
+        ev_board.append(row)
     ev_board = tighten_board(ev_board)
     current_ev = {item["player"]: {"methods": item["methods"], "edge": item["edge"], "is_bet": item["is_bet"], "method_count": item["method_count"], "score": item["score"], "events": item.get("events", [])} for item in ev_board}
     prev_ev = st.session_state.get("prev_ev", {})
@@ -1139,7 +1171,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if record_history:
         st.session_state["prev_ev"] = current_ev
         save_history(prev_ev=current_ev)
-    return results, ev_board, fallen
+    return results, ev_board, fallen, watch_board
 
 def main():
     if "history_loaded" not in st.session_state:
@@ -1159,7 +1191,7 @@ def main():
     st.markdown(f"""
     <div class="how-to">
         <b>Auto-fetch</b> every {REFRESH_MINUTES} min · <b>Auto-grade</b> from MLB<br>
-        MGM = pairs / groups of 3 + Exact 2–3 only · one card per player · Lock <b>{lock_n}</b>
+        TAKE IT = 2+ core · WATCH = 1+ core (for learning) · MGM pairs/3 only · Lock <b>{lock_n}</b>
     </div>
     """, unsafe_allow_html=True)
     render_whats_going_today()
@@ -1237,8 +1269,12 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
-    results, ev_board, fallen = (run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events) if not df.empty else ([], [], []))
-    if ev_board: log_bet_this(ev_board)
+    results, ev_board, fallen, watch_board = (
+        run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
+        if not df.empty else ([], [], [], [])
+    )
+    if ev_board or watch_board:
+        log_bet_this(ev_board, watch_board)
     method_stats, book_stats, ending_stats = build_tracker_stats(load_results())
     for item in ev_board:
         p, n, mname = best_method_rate_for_player(item["methods"], method_stats)
@@ -1462,3 +1498,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
