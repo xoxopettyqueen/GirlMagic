@@ -493,13 +493,10 @@ def log_bet_this(ev_board, watch_board=None):
 def pending_sort_key(r):
     return (r.get("date") or "", r.get("time") or "", r.get("logged_at") or "", r.get("player") or "")
 
-def fetch_mlb_hr_hitters(date_str=None):
-    """Two-step: schedule → per-game boxscore + live home_run events."""
-    if date_str:
-        dates = [date_str]
-    else:
-        dates = list({today_mlb_date(), today_az()})
-
+@st.cache_data(ttl=120, show_spinner=False)
+def _fetch_mlb_hr_hitters_cached(dates_key):
+    """Heavy MLB calls — cached ~2 min. dates_key = comma-joined YYYY-MM-DD."""
+    dates = [d for d in dates_key.split(",") if d]
     hr_names, final_players = set(), set()
     games_checked = 0
     errors = []
@@ -511,7 +508,7 @@ def fetch_mlb_hr_hitters(date_str=None):
                 f"{MLB_STATS}/schedule",
                 params={"sportId": 1, "date": dstr},
                 headers=headers,
-                timeout=20,
+                timeout=15,
             )
             if r.status_code != 200:
                 errors.append(f"schedule {dstr} HTTP {r.status_code}")
@@ -533,7 +530,7 @@ def fetch_mlb_hr_hitters(date_str=None):
             games_checked += 1
 
             try:
-                b = requests.get(f"{MLB_STATS}/game/{pk}/boxscore", headers=headers, timeout=15)
+                b = requests.get(f"{MLB_STATS}/game/{pk}/boxscore", headers=headers, timeout=12)
                 if b.status_code == 200:
                     box = b.json()
                     for side in ("home", "away"):
@@ -555,11 +552,12 @@ def fetch_mlb_hr_hitters(date_str=None):
             except Exception as e:
                 errors.append(f"box {pk}: {e}")
 
+            # live feed only if boxscore found few HRs mid-game
             try:
                 live = requests.get(
                     f"https://statsapi.mlb.com/api/v1.1/game/{pk}/feed/live",
                     headers=headers,
-                    timeout=15,
+                    timeout=12,
                 )
                 if live.status_code == 200:
                     plays = ((live.json().get("liveData") or {}).get("plays") or {}).get("allPlays") or []
@@ -572,12 +570,23 @@ def fetch_mlb_hr_hitters(date_str=None):
             except Exception as e:
                 errors.append(f"live {pk}: {e}")
 
-    msg = f"{games_checked} live/final games · {len(hr_names)} HR names"
+    msg = f"{games_checked} live/final · {len(hr_names)} HR"
     if hr_names:
-        msg += " · e.g. " + ", ".join(sorted(hr_names)[:6])
+        msg += " · e.g. " + ", ".join(sorted(hr_names)[:5])
     if errors and not hr_names:
         msg += " · " + "; ".join(errors[:2])
-    return hr_names, final_players, msg
+    # sets not cache-friendly in return for some streamlit — use frozenset
+    return frozenset(hr_names), frozenset(final_players), msg
+
+
+def fetch_mlb_hr_hitters(date_str=None):
+    if date_str:
+        dates_key = date_str
+    else:
+        dates_key = ",".join(sorted({today_mlb_date(), today_az()}))
+    hr, fin, msg = _fetch_mlb_hr_hitters_cached(dates_key)
+    return set(hr), set(fin), msg
+
 
 
 def auto_grade_pending():
@@ -815,11 +824,16 @@ def fetch_rotowire_lineups():
     except Exception as e:
         return set(), f"RotoWire error: {e}"
 
+@st.cache_data(ttl=180, show_spinner=False)
+def _fetch_events_oddsapi_cached(api_key):
+    r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events", params={"apiKey": api_key}, timeout=15)
+    r.raise_for_status()
+    return r.json()
+
+
 def fetch_events_oddsapi(api_key):
     try:
-        r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events", params={"apiKey": api_key}, timeout=15)
-        r.raise_for_status()
-        return r.json()
+        return _fetch_events_oddsapi_cached(api_key)
     except Exception as e:
         st.error(f"Odds API events error: {e}")
         return []
@@ -1391,7 +1405,7 @@ def main():
     raw_n = st.session_state.get("events_raw_count")
     st.markdown(
         f'<p class="games-hint">② Today only · {len(options)} games'
-        + (f" (API had {raw_n})" if raw_n else "")
+        + (f" (odds feed listed {raw_n}; extras were tomorrow/other day)" if raw_n else "")
         + " · clear chips you don’t want · live games often return no 0.5 HR props</p>",
         unsafe_allow_html=True,
     )
@@ -1404,7 +1418,6 @@ def main():
             list(options.keys()),
             default=default_sel,
             label_visibility="collapsed",
-            max_selections=min(15, max(1, len(options))) if options else 15,
         )
     with c_btn:
         if st.button("Clear games"):
@@ -1436,8 +1449,6 @@ def main():
             st.session_state["last_selected"] = list(chosen)
             st.session_state["new_fetch"] = True
             st.session_state["last_fetch_time"] = now_az()
-            try: auto_grade_pending()
-            except Exception: pass
             st.success(f"Loaded {len(df)} props · {now_az()} AZ")
         else:
             st.warning("No 0.5 HR odds — games may already be live/final, or books pulled props. Pick pregame matchups and fetch again.")
