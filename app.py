@@ -1596,40 +1596,103 @@ def main():
 
     with tabs[14]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
+        st.caption("Plain-English guide. Read this once — then the tabs make sense.")
         st.markdown("""
         <div class="glossary-block">
-            <h4>🟢 Board</h4>
-            <b>TAKE IT</b> = 2+ core methods · edge ≥ 60 · Over 0.5 HR · in lineup when loaded.<br>
-            Cap 2/team · 6/game.<br>
-            <b>+EV lean</b> = this tag has been hitting enough in the past that the price looks good — not bankroll math.
+            <h4>🟢 Board — TAKE IT vs PASS vs WATCH</h4>
+            <b>What you're looking at:</b> players the app thinks are worth a 0.5 HR bet (one home run).<br><br>
+            <b>🟢 TAKE IT</b> = green light to bet.<br>
+            Needs <b>at least 2 of our tricks</b> (methods) <b>and</b> the price looks longer than what the other books agree on (edge at least 60).<br>
+            We only show a few per team and per game so the list stays short.<br><br>
+            <b>⚪ PASS</b> = has tricks, but the price isn't long enough yet — don't force it.<br><br>
+            <b>👀 WATCH</b> = has <b>at least 1 trick</b>. We don't always bet these — we <b>track</b> them so we learn who actually hits.<br>
+            WATCH feeds auto-grade and the Backtest tab.
         </div>
+
         <div class="glossary-block">
-            <h4>🎰 MGM (everything MGM lives here)</h4>
-            Same team · endings <b>00 / 25 / 50 / 75</b>.<br>
-            <b>Pairs (2)</b> or <b>groups of exactly 3</b> only.<br>
-            <b>MGM Exact</b> = same exact price for 2 or 3 teammates.<br>
-            <b>Stayed in the group</b> / <b>Last one left</b> = extra strength.<br>
-            No separate Digits tab — it was the same thing twice.
+            <h4>Score · edge · +EV lean</h4>
+            <b>Score (0–100)</b> = quick strength number. More tricks + better price → higher score.<br>
+            <b>Edge</b> = how much longer the best book is vs the middle of the books. Bigger edge = more “extra” payout if you're right.<br>
+            <b>+EV lean</b> = “this kind of tag has been hitting enough in our graded history that this price looks okay.”<br>
+            It is <b>not</b> fancy bankroll math — just a simple yes/no lean from past results.
         </div>
+
         <div class="glossary-block">
-            <h4>🎯 DK · 💙 FD · 🤝 Exact</h4>
-            <b>DK 10</b> · <b>DK FD-style</b> on the DK tab.<br>
-            <b>FD</b> pattern / +600 only if player also has DK or MGM.<br>
-            <b>Exact</b> tab = same price across books (not the MGM-only exact).
+            <h4>🎰 BetMGM (all MGM tricks live here)</h4>
+            We only care about MGM prices that end in <b>00, 25, 50, or 75</b> (example: +525, +650, +875).<br><br>
+            <b>Pair</b> = exactly <b>2</b> teammates with the same ending.<br>
+            <b>Group of 3</b> = exactly <b>3</b> teammates with the same ending.<br>
+            We do <b>not</b> use groups of 4 or more — too noisy.<br><br>
+            <b>MGM Exact</b> = 2 or 3 teammates at the <b>exact same number</b> (not just the same ending).<br>
+            <b>Stayed in the group</b> = that player kept showing up in a pair/group across fetches — we treat that as stronger.<br>
+            <b>Last one left</b> = was in a group earlier and is still tagged later — extra attention.
         </div>
+
+        <div class="glossary-block">
+            <h4>🎯 DraftKings</h4>
+            <b>DK 10</b> = DK price ends in 10 (like +410, +510). Classic DK flag.<br>
+            <b>DK FD-style</b> = DK using endings we usually see on FanDuel (10 / 20 / 30 / 60 / 70 / 90). Worth noting when it shows up on DK.
+        </div>
+
+        <div class="glossary-block">
+            <h4>💙 FanDuel</h4>
+            We only flag FD when the player <b>also</b> has a DK or MGM trick — FD alone is not enough.<br>
+            <b>FD Pattern</b> = price at least +400 and ends in 10, 20, 30, 60, 70, or 90.<br>
+            <b>FD +600</b> = exactly +600 — a number we watch on purpose.
+        </div>
+
+        <div class="glossary-block">
+            <h4>🤝 Exact (all books)</h4>
+            Same player, same price, on more than one book.<br>
+            Different from <b>MGM Exact</b> (that one is teammates on MGM only).
+        </div>
+
+        <div class="glossary-block">
+            <h4>📈 Signals · ⏳ Moves · 📉 Trends</h4>
+            <b>Signals</b> = tricks showing up on more than one book (multi-book method), or shortening on multiple books.<br>
+            <b>Moves</b> = price went up or down a lot since last fetch (we care more about 500+ prices).<br>
+            <b>Trends</b> = things we like or fade — e.g. FanDuel a bit under MGM (like), or FD the highest book (fade).
+        </div>
+
+        <div class="glossary-block">
+            <h4>👻 Late · 💀 Fallen · 🔒 Lock</h4>
+            <b>Late / Gone</b> = someone just showed up on a book, or disappeared (MGM often vanishes after first pitch).<br>
+            <b>Fallen</b> = was on the board earlier and dropped off filters or left the odds feed.<br>
+            <b>Lock</b> = last pregame prices we saved so we still know what MGM/DK/FD had <b>before</b> the game went live.
+        </div>
+
+        <div class="glossary-block">
+            <h4>📡 Tracker · 📊 Results · Auto-grade</h4>
+            <b>Results</b> = every TAKE IT and WATCH we logged. Starts as PENDING, then HIT or MISS.<br>
+            <b>Auto-grade</b> = checks MLB box scores and marks PENDING players HIT if they homered, MISS if the game is final and they didn't.<br>
+            You can still press HIT / MISS yourself and Undo if needed.<br><br>
+            <b>Tracker</b> = “when we graded this tag, how often did it hit?” Small samples stay hidden so one lucky day doesn't look like a system.
+        </div>
+
+        <div class="glossary-block">
+            <h4>🔥 What's Going Today · 🧪 Backtest</h4>
+            <b>What's Going Today</b> = how many HRs MLB actually had, how many of those were on our WATCH/TAKE list, and which endings showed up.<br>
+            It is a scoreboard — <b>not</b> a “bet this next” list.<br><br>
+            <b>Backtest</b> = last two weeks of graded plays.<br>
+            Compare <b>TAKE IT hit rate</b> vs <b>WATCH hit rate</b>.<br>
+            If TAKE IT wins more often, the strict board is doing its job.<br>
+            If almost nobody who HRs was on our list, we need more WATCH coverage — not random betting.
+        </div>
+
         <div class="glossary-block">
             <h4>One card rule</h4>
-            On every method tab, each player (or pair label) gets <b>one card</b> with every flag stacked — no duplicates.
+            On method tabs, each player (or pair) gets <b>one card</b> with every flag on it — no duplicate cards for the same name.
         </div>
+
         <div class="glossary-block">
-            <h4>📡 Tracker · Auto-grade · What's Going</h4>
-            Tracker shows hit rates only after enough graded plays.<br>
-            <b>Auto-grade</b> marks PENDING TAKE ITs HIT/MISS from MLB box scores (stronger name match).<br>
-            <b>What's Going Today</b> shows real MLB HR count + endings from our lock / graded list.<br><b>🧪 Backtest</b> compares TAKE IT vs WATCH hit rates over the last 14 days.
+            <h4>Books we care about</h4>
+            Main focus: <b>FanDuel, DraftKings, BetMGM</b>.<br>
+            Also used for comparison: Hard Rock, Caesars.<br>
+            Bet365 is on hold until the plan includes it.
         </div>
         """, unsafe_allow_html=True)
+
     st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
-
