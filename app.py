@@ -1410,11 +1410,15 @@ def build_lock_lab():
         matched.append({
             "hr_name": hr, "lock_name": lock_name, "tags": tags, "lines": lines,
             "event": entry.get("event") or "", "core_n": len(core_tags),
+            "tag_n": len(tags),
             "best_book": best_book, "best_price": best_price,
         })
 
-    # rank matched by how many of our tags they had
-    matched_ranked = sorted(matched, key=lambda m: (-m["core_n"], m["hr_name"]))
+    # most tags first → then most core tags → name
+    matched_ranked = sorted(
+        matched,
+        key=lambda m: (-m.get("tag_n", 0), -m.get("core_n", 0), m["hr_name"]),
+    )
 
     # insights text
     insights = []
@@ -1820,8 +1824,10 @@ def main():
                     best = ""
                     if m.get("best_book") and m.get("best_price") is not None:
                         best = f"<br><b>Best price:</b> {m['best_book']} {format_odds(m['best_price'])}"
+                    tn = m.get("tag_n", len(m.get("tags") or []))
+                    tag_line = f"{tn} tag" + ("s" if tn != 1 else "")
                     st.markdown(
-                        f'<div class="card"><b>{m["hr_name"]}</b>'
+                        f'<div class="card"><b>{m["hr_name"]}</b> · <span class="score-pill">{tag_line}</span>'
                         + (f"<br><small>{ev}</small>" if ev else "")
                         + f"<br>{prices}{best}<br>{tags_html}</div>",
                         unsafe_allow_html=True,
@@ -2080,13 +2086,3 @@ def main():
 
         <div class="glossary-block">
             <h4>Books we care about</h4>
-            Main focus: <b>FanDuel, DraftKings, BetMGM</b>.<br>
-            Also used for comparison: Hard Rock, Caesars.<br>
-            Bet365 is on hold until the plan includes it.
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown('<div class="footer">👑 Girl Magic • Boss Bitch • HBIC • Me & My Girls We Rolling</div>', unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    main()
