@@ -1325,9 +1325,11 @@ def filter_events_today(events):
 
 
 def lock_player_summary(player, lock_entry):
-    """Tags from a pregame lock entry."""
+    """Tags from a pregame lock entry. Also picks longest price (best for bettor)."""
     books = lock_entry.get("books") or {}
     tags, lines, ends_by_book = [], [], {}
+    best_book, best_price, best_key = None, None, None
+    price_map = {}  # bl -> price
     for b, info in books.items():
         p = info.get("price")
         end = info.get("ending")
@@ -1335,7 +1337,9 @@ def lock_player_summary(player, lock_entry):
             end = last_two(p)
         if p is None:
             continue
+        p = int(p)
         bl = book_label(b)
+        price_map[bl] = p
         lines.append(f"{bl} {format_odds(p)}")
         if end is not None:
             end = int(end)
@@ -1346,17 +1350,20 @@ def lock_player_summary(player, lock_entry):
                 tags.append("DK 10")
             if bl == "DK" and end in FD_ENDINGS:
                 tags.append("DK FD-style")
-            if bl == "FD" and abs(int(p)) >= FD_MIN and end in FD_ENDINGS:
+            if bl == "FD" and abs(p) >= FD_MIN and end in FD_ENDINGS:
                 tags.append("FD Pattern")
-            if bl == "FD" and abs(int(p)) == 600:
+            if bl == "FD" and abs(p) == 600:
                 tags.append("FD 600")
+        # longest American odds = best for someone betting the over
+        if best_price is None or american_to_decimal(p) > american_to_decimal(best_price):
+            best_price, best_book, best_key = p, bl, b
     end_vals = list(ends_by_book.values())
     if len(end_vals) >= 2 and len(set(end_vals)) == 1:
         tags.append(f"Same end {end_vals[0]:02d}")
-    prices = [info.get("price") for info in books.values() if info.get("price") is not None]
-    if len(prices) >= 2 and len(set(int(x) for x in prices)) == 1:
+    prices = list(price_map.values())
+    if len(prices) >= 2 and len(set(prices)) == 1:
         tags.append("Exact Match")
-    return list(dict.fromkeys(tags)), lines, ends_by_book
+    return list(dict.fromkeys(tags)), lines, ends_by_book, best_book, best_price, price_map
 
 
 def build_lock_lab():
@@ -1365,8 +1372,11 @@ def build_lock_lab():
     lock = st.session_state.get("pregame_lock") or load_pregame()
     matched, unmatched = [], []
     ending_counter, tag_counter, book_end_counter = Counter(), Counter(), Counter()
-    book_appear = Counter()  # book showed any price on an HR
-    cross_counter = Counter()  # frozenset of core-ish tags together
+    book_appear = Counter()
+    best_book_wins = Counter()   # longest price among ALL books in lock
+    focus_best_wins = Counter()  # longest among MGM / DK / FD / Bet365
+    focus_best_prices = []
+    cross_counter = Counter()
     multi_tag_n = 0
 
     for hr in sorted(hr_names):
@@ -1378,13 +1388,21 @@ def build_lock_lab():
         if not entry:
             unmatched.append(hr)
             continue
-        tags, lines, ends_by_book = lock_player_summary(hr, entry)
+        tags, lines, ends_by_book, best_book, best_price, price_map = lock_player_summary(hr, entry)
         for bl, end in ends_by_book.items():
             ending_counter[end] += 1
             book_end_counter[(bl, end)] += 1
             book_appear[bl] += 1
         for t in tags:
             tag_counter[t] += 1
+        if best_book:
+            best_book_wins[best_book] += 1
+        # among focus books only (MGM / DK / FD)
+        focus = {b: p for b, p in price_map.items() if b in ("MGM", "DK", "FD", "Bet365")}
+        if focus:
+            fb = max(focus.items(), key=lambda x: american_to_decimal(x[1]))
+            focus_best_wins[fb[0]] += 1
+            focus_best_prices.append((hr, fb[0], fb[1]))
         core_tags = [t for t in tags if t.startswith(("MGM", "DK", "FD", "Exact", "Same"))]
         if len(core_tags) >= 2:
             multi_tag_n += 1
@@ -1392,6 +1410,7 @@ def build_lock_lab():
         matched.append({
             "hr_name": hr, "lock_name": lock_name, "tags": tags, "lines": lines,
             "event": entry.get("event") or "", "core_n": len(core_tags),
+            "best_book": best_book, "best_price": best_price,
         })
 
     # rank matched by how many of our tags they had
@@ -1406,11 +1425,21 @@ def build_lock_lab():
             "🔥 <b>Methods showing up most on HRs:</b> "
             + ", ".join(f"{t} ({c})" for t, c in top_tags)
         )
-    if book_appear:
-        top_books = book_appear.most_common(4)
+    if focus_best_wins:
+        tot = sum(focus_best_wins.values()) or 1
+        ranked = focus_best_wins.most_common()
         insights.append(
-            "📚 <b>Books that had these HRs priced:</b> "
-            + ", ".join(f"{b} ({c}/{len(matched)})" for b, c in top_books)
+            "💰 <b>Best price (longest) among MGM / DK / FD"
+            + (" / Bet365" if any(b == "Bet365" for b, _ in ranked) else "")
+            + " on HRs:</b> "
+            + ", ".join(f"{b} won {c}/{tot} ({100*c/tot:.0f}%)" for b, c in ranked)
+        )
+    if best_book_wins:
+        tot = sum(best_book_wins.values()) or 1
+        ranked = best_book_wins.most_common(5)
+        insights.append(
+            "📚 <b>Longest price among every book in Lock:</b> "
+            + ", ".join(f"{b} {c}/{tot}" for b, c in ranked)
         )
     # best book×ending combos among our classic endings
     classic = []
@@ -1788,10 +1817,13 @@ def main():
                     tags_html = render_method_tags(m["tags"]) if m["tags"] else "<i>no standard tags</i>"
                     prices = " · ".join(m["lines"][:6])
                     ev = m["event"]
+                    best = ""
+                    if m.get("best_book") and m.get("best_price") is not None:
+                        best = f"<br><b>Best price:</b> {m['best_book']} {format_odds(m['best_price'])}"
                     st.markdown(
                         f'<div class="card"><b>{m["hr_name"]}</b>'
                         + (f"<br><small>{ev}</small>" if ev else "")
-                        + f"<br>{prices}<br>{tags_html}</div>",
+                        + f"<br>{prices}{best}<br>{tags_html}</div>",
                         unsafe_allow_html=True,
                     )
         if lab["unmatched"]:
