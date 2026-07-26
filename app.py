@@ -82,6 +82,12 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .trend-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,.35);border:1px solid #a855f7;border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:700;color:#fce7f3}
 .trend-chip.hot{border-color:#f472b6;background:rgba(219,39,119,.25)}
 .trend-chip .chip-count{color:#f9a8d4;font-weight:900}
+/* keep game picker from eating the whole page */
+div[data-baseweb="select"]{max-width:100%}
+div[data-baseweb="select"] span{font-size:0.78rem!important}
+.stMultiSelect{max-width:920px}
+.stMultiSelect [data-baseweb="tag"]{max-width:160px}
+.games-hint{color:#e9d5ff;font-size:.8rem;margin:4px 0 8px}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1241,6 +1247,31 @@ def build_backtest_stats(rows, days=14):
 
 
 
+
+def event_is_today(e):
+    """True if commence_time falls on today in AZ or ET (covers late West Coast)."""
+    t = e.get("commence_time") or ""
+    if not t:
+        return True  # keep if unknown
+    try:
+        dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
+    except Exception:
+        return True
+    az = today_az()
+    et = today_mlb_date()
+    for hours, day in [(-7, az), (-4, et)]:
+        local = dt.astimezone(timezone(timedelta(hours=hours))).strftime("%Y-%m-%d")
+        if local == day:
+            return True
+    return False
+
+
+def filter_events_today(events):
+    today_only = [e for e in events if event_is_today(e)]
+    return today_only if today_only else events  # fallback if filter empty
+
+
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
@@ -1280,7 +1311,9 @@ def main():
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         if st.button("① Load Games", type="primary"):
-            st.session_state["events"] = fetch_events_oddsapi(odds_key)
+            raw = fetch_events_oddsapi(odds_key)
+            st.session_state["events"] = filter_events_today(raw)
+            st.session_state["events_raw_count"] = len(raw or [])
     with c2:
         if st.button("📋 Lineups"):
             names, msg = fetch_rotowire_lineups()
@@ -1305,11 +1338,21 @@ def main():
         hhmm = ""
         if t:
             try:
-                hhmm = datetime.fromisoformat(t.replace("Z", "+00:00")).strftime("%H:%M")
+                # show AZ time so it matches your day
+                dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
+                hhmm = dt.strftime("%-I:%M %p")
             except Exception:
-                hhmm = ""
+                try:
+                    dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
+                    hhmm = dt.strftime("%I:%M %p").lstrip("0")
+                except Exception:
+                    hhmm = ""
         base = f"{away} @ {home}"
-        return f"{base} ({hhmm}Z)" if hhmm else base
+        return f"{base} · {hhmm}" if hhmm else base
+
+    # safety: re-filter if stale events from yesterday still in session
+    events = filter_events_today(events)
+    st.session_state["events"] = events
 
     options = {}
     for e in events:
@@ -1318,12 +1361,28 @@ def main():
             lab = f"{lab} · {str(e.get('id', ''))[:6]}"
         options[lab] = e["id"]
 
-    default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
-    chosen = st.multiselect(
-        "② Games (clears each new AZ day)",
-        list(options.keys()),
-        default=default_sel,
+    raw_n = st.session_state.get("events_raw_count")
+    st.markdown(
+        f'<p class="games-hint">② Today only · {len(options)} games'
+        + (f" (API had {raw_n})" if raw_n else "")
+        + " · clear chips you don’t want · live games often return no 0.5 HR props</p>",
+        unsafe_allow_html=True,
     )
+
+    default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
+    c_sel, c_btn = st.columns([4, 1])
+    with c_sel:
+        chosen = st.multiselect(
+            "Games",
+            list(options.keys()),
+            default=default_sel,
+            label_visibility="collapsed",
+            max_selections=min(15, max(1, len(options))) if options else 15,
+        )
+    with c_btn:
+        if st.button("Clear games"):
+            st.session_state["selected_games"] = []
+            st.rerun()
     st.session_state["selected_games"] = chosen
     manual_fetch = st.button("③ Fetch now", type="primary")
     if "last_refresh_count" not in st.session_state:
@@ -1354,7 +1413,7 @@ def main():
             except Exception: pass
             st.success(f"Loaded {len(df)} props · {now_az()} AZ")
         else:
-            st.warning("No 0.5 HR odds.")
+            st.warning("No 0.5 HR odds — games may already be live/final, or books pulled props. Pick pregame matchups and fetch again.")
     if st.session_state.get("last_fetch_time"):
         st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
     found = st.session_state.get("found_books", [])
