@@ -1517,8 +1517,7 @@ def main():
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(f"""
     <div class="how-to">
-        <b>Auto-fetch</b> every {REFRESH_MINUTES} min · <b>Auto-grade</b> from MLB<br>
-        TAKE IT = 2+ core · WATCH = 1+ core (for learning) · MGM pairs/3 only · Lock <b>{lock_n}</b>
+        Live refresh · grades itself · Lock <b>{lock_n}</b> prices saved
     </div>
     """, unsafe_allow_html=True)
     render_whats_going_today()
@@ -1582,9 +1581,9 @@ def main():
 
     raw_n = st.session_state.get("events_raw_count")
     st.markdown(
-        f'<p class="games-hint">② Today only · {len(options)} games'
-        + (f" (odds feed listed {raw_n}; extras were tomorrow/other day)" if raw_n else "")
-        + " · clear chips you don't want · live games often return no 0.5 HR props</p>",
+        f'<p class="games-hint">② Today · {len(options)} games'
+        + (f" · feed had {raw_n}" if raw_n else "")
+        + " · live games often have no HR props</p>",
         unsafe_allow_html=True,
     )
 
@@ -1629,7 +1628,7 @@ def main():
             st.session_state["last_fetch_time"] = now_az()
             st.success(f"Loaded {len(df)} props · {now_az()} AZ")
         else:
-            st.warning("No 0.5 HR odds - games may already be live/final, or books pulled props. Pick pregame matchups and fetch again.")
+            st.warning("No HR props right now - usually means games are already live. Fetch earlier next time.")
     if st.session_state.get("last_fetch_time"):
         st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
     found = st.session_state.get("found_books", [])
@@ -1685,7 +1684,7 @@ def main():
     )
     if nav == TAB_LABELS[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
-        st.caption(f"Max {BOARD_MAX_PER_TEAM}/team · {BOARD_MAX_PER_GAME}/game · 2+ core · edge ≥ {EDGE_MIN}")
+        st.caption("Short list · strongest plays only")
         if not ev_board:
             st.info("Fetch while pregame.")
         else:
@@ -1768,7 +1767,7 @@ def main():
                 i += 1
     if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
-        st.caption("Today's MLB HRs matched to pregame Lock. Learn from everyone we priced - not only TAKE IT/WATCH.")
+        st.caption("Today's homers matched to what we locked before first pitch.")
         lab = build_lock_lab()
         st.markdown(f"""
         <div class="petty-row">
@@ -1781,18 +1780,18 @@ def main():
         if lab.get("mlb_msg"):
             st.caption(lab["mlb_msg"])
 
-        st.markdown("#### 👑 What to take from today")
+        st.markdown("#### What stood out today")
         if lab.get("insights"):
             for line in lab["insights"]:
                 st.markdown(f'<div class="info-box">{line}</div>', unsafe_allow_html=True)
         if lab.get("watch"):
-            st.markdown("#### ⚠️ Watch-outs")
+            st.markdown("#### Be careful with")
             for line in lab["watch"]:
                 st.markdown(f'<div class="warning-box">{line}</div>', unsafe_allow_html=True)
         if not lab.get("insights") and not lab.get("watch"):
             st.info("Insights appear after HRs match Lock.")
 
-        st.markdown("#### Endings on HRs that were in Lock")
+        st.markdown("#### Endings on today's HRs")
         chips = []
         for (bl, end), cnt in sorted(lab["book_end_counter"].items(), key=lambda x: -x[1])[:14]:
             hot = end in (0, 25, 50, 75, 10) or cnt >= 2
@@ -1802,7 +1801,7 @@ def main():
             )
         st.markdown("".join(chips) if chips else "_(No Lock↔HR matches yet)_", unsafe_allow_html=True)
 
-        st.markdown("#### Our tags on those HRs")
+        st.markdown("#### Our tags that showed up")
         tag_chips = []
         for tag, cnt in sorted(lab["tag_counter"].items(), key=lambda x: -x[1])[:16]:
             tag_chips.append(
@@ -1811,7 +1810,7 @@ def main():
             )
         st.markdown("".join(tag_chips) if tag_chips else "_(None)_", unsafe_allow_html=True)
 
-        st.markdown("#### HR players matched to Lock *(most tags first — single column so mobile keeps order)*")
+        st.markdown("#### Who went · most tags first")
         if not lab["matched"]:
             st.info("No HR names matched Lock. Fetch pregame more so Lock fills.")
         else:
@@ -1837,7 +1836,7 @@ def main():
 
     if nav == TAB_LABELS[12]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
-        st.caption("How often each tag hit after we graded it. Small samples hidden.")
+        st.caption("What has been hitting after we grade it.")
         def chips_from_stats(stats, min_n=TRACKER_MIN_N):
             out = []
             for name, s in sorted(stats.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
@@ -1867,9 +1866,8 @@ def main():
         n_pending_all = sum(1 for r in rows if r.get("result") == "PENDING")
         n_today = sum(1 for r in rows if r.get("date") == today_az())
         st.caption(
-            f"File has {n_all} logged plays · {n_pending_all} pending · {n_today} with today's date. "
-            "Empty today = no successful prop fetch logged TAKE IT/WATCH yet (live games return no props). "
-            "Lock is saved prices only - not the same as Results."
+            f"{n_all} logged · {n_pending_all} waiting · {n_today} today. "
+            "Empty usually means we only fetched after games went live."
         )
         today_only = st.checkbox("Today only", value=False)
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
@@ -1927,7 +1925,7 @@ def main():
                 st.rerun()
     if nav == TAB_LABELS[14]:
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
-        st.caption("Forward test from graded Results. WATCH = 1+ core (learning). TAKE IT = 2+ core + edge (bets). Need sample before trusting %.")
+        st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
         rows_bt = load_results()
         overall, daily, method_by_src, n_graded = build_backtest_stats(rows_bt, days=14)
 
