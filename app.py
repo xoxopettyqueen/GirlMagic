@@ -1248,6 +1248,15 @@ def main():
         st.session_state["history_loaded"] = True
     if "pending_page" not in st.session_state:
         st.session_state["pending_page"] = 0
+
+    # New AZ calendar day → clear yesterday's game picks + stale odds
+    _today = today_az()
+    if st.session_state.get("app_day") != _today:
+        st.session_state["app_day"] = _today
+        for k in ("selected_games", "last_selected", "events", "odds", "previous_odds", "found_books", "last_fetch_time", "auto_once", "new_fetch"):
+            st.session_state.pop(k, None)
+        st.session_state.pop("prev_ev", None)
+
     if HAS_AUTOREFRESH:
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     else:
@@ -1289,9 +1298,32 @@ def main():
     if not events:
         st.info("Click **Load Games** once.")
         st.stop()
-    options = {f"{e.get('away_team')} @ {e.get('home_team')}": e["id"] for e in events}
+    def _game_label(e):
+        away = e.get("away_team") or "?"
+        home = e.get("home_team") or "?"
+        t = e.get("commence_time") or ""
+        hhmm = ""
+        if t:
+            try:
+                hhmm = datetime.fromisoformat(t.replace("Z", "+00:00")).strftime("%H:%M")
+            except Exception:
+                hhmm = ""
+        base = f"{away} @ {home}"
+        return f"{base} ({hhmm}Z)" if hhmm else base
+
+    options = {}
+    for e in events:
+        lab = _game_label(e)
+        if lab in options:
+            lab = f"{lab} · {str(e.get('id', ''))[:6]}"
+        options[lab] = e["id"]
+
     default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
-    chosen = st.multiselect("② Games", list(options.keys()), default=default_sel or list(options.keys())[:10])
+    chosen = st.multiselect(
+        "② Games (clears each new AZ day)",
+        list(options.keys()),
+        default=default_sel,
+    )
     st.session_state["selected_games"] = chosen
     manual_fetch = st.button("③ Fetch now", type="primary")
     if "last_refresh_count" not in st.session_state:
