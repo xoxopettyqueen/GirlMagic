@@ -1323,6 +1323,77 @@ def filter_events_today(events):
 
 
 
+
+def lock_player_summary(player, lock_entry):
+    """Tags from a pregame lock entry."""
+    books = lock_entry.get("books") or {}
+    tags, lines, ends_by_book = [], [], {}
+    for b, info in books.items():
+        p = info.get("price")
+        end = info.get("ending")
+        if end is None and p is not None:
+            end = last_two(p)
+        if p is None:
+            continue
+        bl = book_label(b)
+        lines.append(f"{bl} {format_odds(p)}")
+        if end is not None:
+            end = int(end)
+            ends_by_book[bl] = end
+            if bl == "MGM" and end in MGM_ENDINGS:
+                tags.append(f"MGM {end:02d}")
+            if bl == "DK" and end == 10:
+                tags.append("DK 10")
+            if bl == "DK" and end in FD_ENDINGS:
+                tags.append("DK FD-style")
+            if bl == "FD" and abs(int(p)) >= FD_MIN and end in FD_ENDINGS:
+                tags.append("FD Pattern")
+            if bl == "FD" and abs(int(p)) == 600:
+                tags.append("FD 600")
+    end_vals = list(ends_by_book.values())
+    if len(end_vals) >= 2 and len(set(end_vals)) == 1:
+        tags.append(f"Same end {end_vals[0]:02d}")
+    prices = [info.get("price") for info in books.values() if info.get("price") is not None]
+    if len(prices) >= 2 and len(set(int(x) for x in prices)) == 1:
+        tags.append("Exact Match")
+    return list(dict.fromkeys(tags)), lines, ends_by_book
+
+
+def build_lock_lab():
+    """Today's MLB HRs matched to pregame Lock for learning."""
+    hr_names, _fin, mlb_msg = fetch_mlb_hr_hitters()
+    lock = st.session_state.get("pregame_lock") or load_pregame()
+    matched, unmatched = [], []
+    ending_counter, tag_counter, book_end_counter = Counter(), Counter(), Counter()
+
+    for hr in sorted(hr_names):
+        entry, lock_name = None, None
+        for pname, data in lock.items():
+            if names_match(hr, pname):
+                entry, lock_name = data, pname
+                break
+        if not entry:
+            unmatched.append(hr)
+            continue
+        tags, lines, ends_by_book = lock_player_summary(hr, entry)
+        for bl, end in ends_by_book.items():
+            ending_counter[end] += 1
+            book_end_counter[(bl, end)] += 1
+        for t in tags:
+            tag_counter[t] += 1
+        matched.append({
+            "hr_name": hr, "lock_name": lock_name, "tags": tags, "lines": lines,
+            "event": entry.get("event") or "",
+        })
+
+    return {
+        "hr_count": len(hr_names), "matched": matched, "unmatched": unmatched,
+        "ending_counter": ending_counter, "tag_counter": tag_counter,
+        "book_end_counter": book_end_counter, "mlb_msg": mlb_msg, "lock_n": len(lock),
+    }
+
+
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
@@ -1506,7 +1577,7 @@ def main():
     TAB_LABELS = [
         "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact",
         "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "💀 Fallen", "🔒 Lock",
-        "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
+        "🧠 Lock Lab", "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
     ]
     nav = st.radio(
         "Section",
@@ -1599,6 +1670,60 @@ def main():
                     st.markdown(f'<div class="card"><b>{player}</b><br>' + "<br>".join(lines) + "</div>", unsafe_allow_html=True)
                 i += 1
     if nav == TAB_LABELS[11]:
+        st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
+        st.caption("Today's MLB HRs matched to pregame Lock. Learn from everyone we priced — not only TAKE IT/WATCH.")
+        lab = build_lock_lab()
+        st.markdown(f"""
+        <div class="petty-row">
+            <div class="petty-box"><div class="petty-num">{lab["hr_count"]}</div><div class="petty-label">MLB HR</div></div>
+            <div class="petty-box"><div class="petty-num">{len(lab["matched"])}</div><div class="petty-label">In Lock</div></div>
+            <div class="petty-box"><div class="petty-num">{len(lab["unmatched"])}</div><div class="petty-label">Not in Lock</div></div>
+            <div class="petty-box"><div class="petty-num">{lab["lock_n"]}</div><div class="petty-label">Lock size</div></div>
+        </div>
+        """, unsafe_allow_html=True)
+        if lab.get("mlb_msg"):
+            st.caption(lab["mlb_msg"])
+
+        st.markdown("#### Endings on HRs that were in Lock")
+        chips = []
+        for (bl, end), cnt in sorted(lab["book_end_counter"].items(), key=lambda x: -x[1])[:14]:
+            hot = end in (0, 25, 50, 75, 10) or cnt >= 2
+            chips.append(
+                f'<span class="trend-chip {"hot" if hot else ""}">{bl} {end:02d}: '
+                f'<span class="chip-count">{cnt}</span></span>'
+            )
+        st.markdown("".join(chips) if chips else "_(No Lock↔HR matches yet)_", unsafe_allow_html=True)
+
+        st.markdown("#### Our tags on those HRs")
+        tag_chips = []
+        for tag, cnt in sorted(lab["tag_counter"].items(), key=lambda x: -x[1])[:16]:
+            tag_chips.append(
+                f'<div class="rate-chip"><div class="rate-pct">{cnt}</div>'
+                f'<div class="rate-name">{tag}</div></div>'
+            )
+        st.markdown("".join(tag_chips) if tag_chips else "_(None)_", unsafe_allow_html=True)
+
+        st.markdown("#### HR players matched to Lock")
+        if not lab["matched"]:
+            st.info("No HR names matched Lock. Fetch pregame more so Lock fills.")
+        else:
+            cols = st.columns(2)
+            for i, m in enumerate(lab["matched"][:40]):
+                with cols[i % 2]:
+                    tags_html = render_method_tags(m["tags"]) if m["tags"] else "<i>no standard tags</i>"
+                    prices = " · ".join(m["lines"][:6])
+                    ev = m["event"]
+                    st.markdown(
+                        f'<div class="card"><b>{m["hr_name"]}</b>'
+                        + (f"<br><small>{ev}</small>" if ev else "")
+                        + f"<br>{prices}<br>{tags_html}</div>",
+                        unsafe_allow_html=True,
+                    )
+        if lab["unmatched"]:
+            with st.expander(f"Not in Lock ({len(lab['unmatched'])})"):
+                st.write(", ".join(lab["unmatched"][:50]))
+
+    if nav == TAB_LABELS[12]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption("How often each tag hit after we graded it. Small samples hidden.")
         def chips_from_stats(stats, min_n=TRACKER_MIN_N):
@@ -1618,7 +1743,7 @@ def main():
         st.markdown("#### By ending")
         chips = chips_from_stats(ending_stats)
         st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
-    if nav == TAB_LABELS[12]:
+    if nav == TAB_LABELS[13]:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB…"):
@@ -1688,7 +1813,7 @@ def main():
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
-    if nav == TAB_LABELS[13]:
+    if nav == TAB_LABELS[14]:
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("Forward test from graded Results. WATCH = 1+ core (learning). TAKE IT = 2+ core + edge (bets). Need sample before trusting %.")
         rows_bt = load_results()
@@ -1756,7 +1881,7 @@ def main():
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
-    if nav == TAB_LABELS[14]:
+    if nav == TAB_LABELS[15]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.caption("Plain-English guide. Read this once — then the tabs make sense.")
         st.markdown("""
@@ -1835,7 +1960,7 @@ def main():
             <h4>🔥 What's Going Today · 🧪 Backtest</h4>
             <b>What's Going Today</b> = how many HRs MLB actually had, how many of those were on our WATCH/TAKE list, and which endings showed up.<br>
             It is a scoreboard — <b>not</b> a “bet this next” list.<br><br>
-            <b>Backtest</b> = last two weeks of graded plays.<br>
+            <b>Backtest</b> = last two weeks of graded plays.<br><b>🧠 Lock Lab</b> = today's HRs matched to Lock prices — best place to see what endings/methods actually went.<br>
             Compare <b>TAKE IT hit rate</b> vs <b>WATCH hit rate</b>.<br>
             If TAKE IT wins more often, the strict board is doing its job.<br>
             If almost nobody who HRs was on our list, we need more WATCH coverage — not random betting.
