@@ -809,13 +809,15 @@ def best_method_rate_for_player(methods, method_stats):
     return best_p, best_n, best_m
 
 def aggregate_by_player(items):
-    by = defaultdict(lambda: {"reasons": [], "methods": [], "event": "", "book_count": 0})
+    by = defaultdict(lambda: {"reasons": [], "methods": [], "event": "", "book_count": 0, "prices": {}})
     for r in items:
         key = r.get("label") or ""
         by[key]["reasons"].append(r.get("reason") or "")
         by[key]["methods"].extend(r.get("methods") or [])
         if r.get("event"): by[key]["event"] = r["event"]
         by[key]["book_count"] = max(by[key]["book_count"], int(r.get("book_count") or 0))
+        if r.get("prices"):
+            by[key].setdefault("prices", {}).update(r["prices"])
     out = []
     for label, data in by.items():
         meths = list({normalize_method_name(m) for m in data["methods"]})
@@ -830,25 +832,48 @@ def aggregate_by_player(items):
             "methods": meths,
             "event": data["event"],
             "book_count": data["book_count"],
+            "prices": data.get("prices") or {},
         })
     return out
+
+def _price_line_for_card(prices):
+    """DK · FD · HardRock · MGM order for signal cards."""
+    if not prices:
+        return ""
+    order = [("draftkings", "DK"), ("fanduel", "FD"), ("hardrockbet", "HardRock"), ("betmgm", "MGM"), ("caesars", "Caesars")]
+    parts = []
+    for key, lab in order:
+        p = prices.get(key)
+        if p is not None:
+            parts.append(f"{lab} {format_odds(p)}")
+    return " · ".join(parts)
 
 def show_player_cards(typ, banner, explain, results):
     st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
     st.caption(explain)
     items = aggregate_by_player([r for r in results if r["type"] == typ])
     if typ == "signal":
-        # most method-books first (3 before 2), then name
         items = sorted(items, key=lambda r: (-int(r.get("book_count") or 0), r.get("label") or ""))
-        st.caption("Sorted: most books first (3 → 2).")
+        st.caption("Sorted: most books first (3 → 2). Order stays correct on mobile.")
     if not items:
         st.info("None.")
         return
-    cols = st.columns(2)
-    for idx, r in enumerate(items[:40]):
-        with cols[idx % 2]:
-            tags = render_method_tags(r.get("methods", []))
-            st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}<br>{tags}</div>', unsafe_allow_html=True)
+    # Row pairs (not one big 2-col) so mobile stacks 1→2→3→4 instead of all-left then all-right
+    show_n = items[:40]
+    for i in range(0, len(show_n), 2):
+        cols = st.columns(2)
+        for j, col in enumerate(cols):
+            if i + j >= len(show_n):
+                break
+            r = show_n[i + j]
+            with col:
+                tags = render_method_tags(r.get("methods", []))
+                price_line = _price_line_for_card(r.get("prices") or {})
+                price_html = f"<br><small>{price_line}</small>" if price_line else ""
+                st.markdown(
+                    f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}{price_html}<br>{tags}</div>',
+                    unsafe_allow_html=True,
+                )
 
 def fetch_rotowire_lineups():
     if not HAS_BS4:
@@ -1252,6 +1277,19 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 signal_bucket[player].append(f"Shorten on {', '.join(books)}")
                 signal_methods[player].add("Multi-book Shorten")
                 signal_book_n[player] = max(signal_book_n.get(player, 0), len(books))
+    # price lookup for signal cards (DK / FD / HardRock / MGM)
+    price_by_player = defaultdict(dict)
+    for _, r in df.iterrows():
+        bk = str(r.get("book") or "").lower()
+        try:
+            bk = normalize_book(bk)
+        except Exception:
+            pass
+        if bk in ("draftkings", "fanduel", "hardrockbet", "betmgm", "caesars"):
+            try:
+                price_by_player[r["player"]][bk] = int(r["price"])
+            except Exception:
+                pass
     # highest book-count first, then name
     for player in sorted(signal_bucket.keys(), key=lambda p: (-signal_book_n.get(p, 0), p)):
         results.append({
@@ -1260,6 +1298,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "reason": "<br>".join(signal_bucket[player]),
             "methods": list(signal_methods[player]),
             "book_count": signal_book_n.get(player, 0),
+            "prices": dict(price_by_player.get(player) or {}),
         })
     player_events = defaultdict(set)
     for _, r in df.iterrows(): player_events[r["player"]].add(r["event"])
