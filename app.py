@@ -799,12 +799,13 @@ def best_method_rate_for_player(methods, method_stats):
     return best_p, best_n, best_m
 
 def aggregate_by_player(items):
-    by = defaultdict(lambda: {"reasons": [], "methods": [], "event": ""})
+    by = defaultdict(lambda: {"reasons": [], "methods": [], "event": "", "book_count": 0})
     for r in items:
         key = r.get("label") or ""
         by[key]["reasons"].append(r.get("reason") or "")
         by[key]["methods"].extend(r.get("methods") or [])
         if r.get("event"): by[key]["event"] = r["event"]
+        by[key]["book_count"] = max(by[key]["book_count"], int(r.get("book_count") or 0))
     out = []
     for label, data in by.items():
         meths = list({normalize_method_name(m) for m in data["methods"]})
@@ -813,13 +814,23 @@ def aggregate_by_player(items):
             if rr not in seen_r:
                 seen_r.add(rr)
                 reasons.append(rr)
-        out.append({"label": label, "reason": "<br>".join(reasons), "methods": meths, "event": data["event"]})
+        out.append({
+            "label": label,
+            "reason": "<br>".join(reasons),
+            "methods": meths,
+            "event": data["event"],
+            "book_count": data["book_count"],
+        })
     return out
 
 def show_player_cards(typ, banner, explain, results):
     st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
     st.caption(explain)
     items = aggregate_by_player([r for r in results if r["type"] == typ])
+    if typ == "signal":
+        # most method-books first (3 before 2), then name
+        items = sorted(items, key=lambda r: (-int(r.get("book_count") or 0), r.get("label") or ""))
+        st.caption("Sorted: most books first (3 → 2).")
     if not items:
         st.info("None.")
         return
@@ -1204,6 +1215,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if price >= FD_MIN and last in FD_ENDINGS:
             results.append({"type": "fd", "label": player, "reason": f"FD ends {last:02d} (with DK/MGM) → {format_odds(row['price'])}", "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
+    signal_book_n = {}  # player -> # of method-books (DK/MGM/FD) for sorting Signals
     for player, ms in list(methods_map.items()):
         core = [m for m in set(ms) if is_core_method(m)]
         books_hit = set()
@@ -1212,8 +1224,10 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if m.startswith("MGM") or m.startswith("Match ") or m == "MGM Exact": books_hit.add("mgm")
             if m.startswith("FD"): books_hit.add("fd")
         if len(books_hit) >= 2:
+            n = len(books_hit)
+            signal_book_n[player] = max(signal_book_n.get(player, 0), n)
             methods_map[player].append("Multi-book method")
-            signal_bucket[player].append(f"Methods on {len(books_hit)} books")
+            signal_bucket[player].append(f"Methods on {n} books")
             signal_methods[player].add("Multi-book method")
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
@@ -1227,8 +1241,16 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 methods_map[player].append("Multi-book Shorten")
                 signal_bucket[player].append(f"Shorten on {', '.join(books)}")
                 signal_methods[player].add("Multi-book Shorten")
-    for player in sorted(signal_bucket.keys()):
-        results.append({"type": "signal", "label": player, "reason": "<br>".join(signal_bucket[player]), "methods": list(signal_methods[player])})
+                signal_book_n[player] = max(signal_book_n.get(player, 0), len(books))
+    # highest book-count first, then name
+    for player in sorted(signal_bucket.keys(), key=lambda p: (-signal_book_n.get(p, 0), p)):
+        results.append({
+            "type": "signal",
+            "label": player,
+            "reason": "<br>".join(signal_bucket[player]),
+            "methods": list(signal_methods[player]),
+            "book_count": signal_book_n.get(player, 0),
+        })
     player_events = defaultdict(set)
     for _, r in df.iterrows(): player_events[r["player"]].add(r["event"])
     ev_board = []
