@@ -123,6 +123,8 @@ HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
+VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet"}
+VALUE_BOOK_LABELS = {"DK", "FD", "HardRock"}
 # Odds API uses different keys for the same books — map only
 BOOK_ALIASES = {
     "williamhill_us": "caesars",
@@ -294,11 +296,24 @@ def now_utc_iso():
     return datetime.now(timezone.utc).isoformat()
 
 def smart_best(prices, books):
-    if not prices: return None, None
-    paired = sorted(zip(prices, books), key=lambda x: x[0], reverse=True)
-    best_p, best_b = paired[0]
-    if len(paired) >= 2 and best_p - paired[1][0] >= OUTLIER_GAP:
-        return paired[1][0], paired[1][1]
+    """Longest price, preferring DK / FD / HardRock for where to bet.
+    Median/edge still use all books."""
+    if not prices:
+        return None, None
+    paired = list(zip(prices, books))
+    def _is_value(b):
+        k = str(b or "").lower()
+        try:
+            k = normalize_book(k)
+        except Exception:
+            pass
+        return k in VALUE_BOOKS or "hardrock" in k
+    value_paired = [(p, b) for p, b in paired if _is_value(b)]
+    pool = value_paired if value_paired else paired
+    pool = sorted(pool, key=lambda x: x[0], reverse=True)
+    best_p, best_b = pool[0]
+    if len(pool) >= 2 and best_p - pool[1][0] >= OUTLIER_GAP:
+        return pool[1][0], pool[1][1]
     return best_p, best_b
 
 def get_confidence(score, is_bet):
@@ -1445,7 +1460,7 @@ def build_lock_lab():
         if best_book:
             best_book_wins[best_book] += 1
         # among focus books only (MGM / DK / FD)
-        focus = {b: p for b, p in price_map.items() if b in ("MGM", "DK", "FD", "Bet365")}
+        focus = {b: p for b, p in price_map.items() if b in ("MGM", "DK", "FD", "HardRock", "Bet365")}
         if focus:
             fb = max(focus.items(), key=lambda x: american_to_decimal(x[1]))
             focus_best_wins[fb[0]] += 1
@@ -1480,7 +1495,7 @@ def build_lock_lab():
         tot = sum(focus_best_wins.values()) or 1
         ranked = focus_best_wins.most_common()
         insights.append(
-            "💰 <b>Best price (longest) among MGM / DK / FD"
+            "💰 <b>Best price (longest) among DK / FD / HardRock / MGM"
             + (" / Bet365" if any(b == "Bet365" for b, _ in ranked) else "")
             + " on HRs:</b> "
             + ", ".join(f"{b} won {c}/{tot} ({100*c/tot:.0f}%)" for b, c in ranked)
@@ -1564,10 +1579,52 @@ def main():
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(f"""
     <div class="how-to">
-        Live refresh · grades itself · Lock <b>{lock_n}</b> prices saved
+        Live refresh · <b>auto-grades</b> · Lock <b>{lock_n}</b> · learns from Results → Tracker / Lock Lab / Backtest
     </div>
     """, unsafe_allow_html=True)
+    if "auto_grade_ran" not in st.session_state:
+        st.session_state["auto_grade_ran"] = False
+    if not st.session_state["auto_grade_ran"]:
+        try:
+            pending_n = sum(1 for r in load_results() if r.get("result") == "PENDING")
+            if pending_n:
+                with st.spinner(f"Auto-grading {pending_n} pending…"):
+                    h, m, s, msg = auto_grade_pending()
+                st.session_state["auto_grade_ran"] = True
+                if h or m:
+                    st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
+            else:
+                st.session_state["auto_grade_ran"] = True
+        except Exception:
+            st.session_state["auto_grade_ran"] = True
     render_whats_going_today()
+    try:
+        _ms, _bs, _es = build_tracker_stats(load_results())
+        learn_bits = []
+        for name, s in sorted(_bs.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+            t = s["hit"] + s["miss"]
+            if t < 8:
+                continue
+            pct = 100 * s["hit"] / t
+            learn_bits.append(f"{name} best-price hit {pct:.0f}% (n={t})")
+        for name, s in sorted(_ms.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+            t = s["hit"] + s["miss"]
+            if t < 10:
+                continue
+            pct = 100 * s["hit"] / t
+            if pct >= 40:
+                learn_bits.append(f"{name} {pct:.0f}% (n={t})")
+            if len(learn_bits) >= 6:
+                break
+        if learn_bits:
+            st.markdown(
+                '<div class="info-box"><b>📡 Learning so far</b> (graded Results — more grades → smarter)<br>'
+                + " · ".join(learn_bits[:6])
+                + "</div>",
+                unsafe_allow_html=True,
+            )
+    except Exception:
+        pass
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
     if not odds_key:
@@ -1726,12 +1783,17 @@ def main():
         else:
             item["ev_lean"] = item["ev_value"] = None
     take_n = len([e for e in ev_board if e["is_bet"]])
+    pass_n = len([e for e in ev_board if not e["is_bet"]])
+    take_names = {e["player"] for e in ev_board}
+    # WATCH = 1+ core but not already on the 2+ core board list
+    watch_only = [w for w in watch_board if w["player"] not in take_names]
+    watch_n = len(watch_only)
     st.markdown(f"""
     <div class="petty-row">
         <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">🟢 TAKE IT</div></div>
+        <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">👀 WATCH</div></div>
+        <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">⚪ PASS</div></div>
         <div class="petty-box"><div class="petty-num">{len(aggregate_by_player([r for r in results if r['type']=='mgm']))}</div><div class="petty-label">🎰 MGM</div></div>
-        <div class="petty-box"><div class="petty-num">{len(aggregate_by_player([r for r in results if r['type']=='dk']))}</div><div class="petty-label">🎯 DK</div></div>
-        <div class="petty-box"><div class="petty-num">{len(aggregate_by_player([r for r in results if r['type']=='fd']))}</div><div class="petty-label">💙 FD</div></div>
         <div class="petty-box"><div class="petty-num">{len(fallen)}</div><div class="petty-label">💀 Fallen</div></div>
         <div class="petty-box"><div class="petty-num">{lock_n}</div><div class="petty-label">🔒 Lock</div></div>
     </div>
@@ -1750,34 +1812,66 @@ def main():
     )
     if nav == TAB_LABELS[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
-        st.caption("Short list · strongest plays only")
-        if not ev_board:
-            st.info("Fetch while pregame.")
+        st.caption("🟢 TAKE IT = 2+ methods + edge ≥ 60 · 👀 WATCH = 1+ method (track) · ⚪ PASS = 2+ methods but edge short")
+
+        def _render_board_card(item, label, cls):
+            tags = render_method_tags(item.get("methods") or [])
+            meter = make_meter(item.get("bars", 1), item.get("level", "low"))
+            ev_s = ""
+            if item.get("ev_lean") is True:
+                ev_s = f"<br><b>+EV lean</b> from past {item.get('method_rate_name')} plays"
+            team = item.get("team") or ""
+            st.markdown(
+                f'<div class="card {cls}">'
+                f'<b>{label}</b> - <b>{item["player"]}</b>{(" · " + team) if team else ""}'
+                f'<span class="score-pill">{item.get("score", 0)}</span><br>{meter}'
+                f'Best {format_odds(item.get("best_price"))} {book_label(item.get("best_book"))}'
+                f' · consensus {format_odds(item.get("median"))} · edge <b>{int(item.get("edge") or 0)}</b><br>'
+                f'{tags}{ev_s}<br><small>{item.get("why", "")}</small></div>',
+                unsafe_allow_html=True,
+            )
+
+        takes = [e for e in ev_board if e.get("is_bet")]
+        passes = [e for e in ev_board if not e.get("is_bet")]
+        take_names = {e["player"] for e in ev_board}
+        watches = [w for w in watch_board if w["player"] not in take_names]
+        # sort watches: more core methods / score first
+        watches = sorted(watches, key=lambda x: (-x.get("method_count", 0), -x.get("score", 0)))
+
+        if not takes and not passes and not watches:
+            st.info("Fetch while pregame — board fills when methods fire.")
         else:
-            by_game = defaultdict(list)
-            for item in ev_board:
-                by_game[item.get("event") or "Game"].append(item)
-            for game, items in by_game.items():
-                st.markdown(f"**{game}**")
+            if takes:
+                st.markdown("#### 🟢 TAKE IT")
+                by_game = defaultdict(list)
+                for item in takes:
+                    by_game[item.get("event") or "Game"].append(item)
+                for game, items in by_game.items():
+                    st.markdown(f"**{game}**")
+                    cols = st.columns(2)
+                    for idx, item in enumerate(items):
+                        with cols[idx % 2]:
+                            _render_board_card(item, "🟢 TAKE IT", "bet")
+            else:
+                st.markdown("#### 🟢 TAKE IT")
+                st.caption("None right now (need 2+ methods + edge ≥ 60).")
+
+            if passes:
+                st.markdown("#### ⚪ PASS · 2+ methods, edge short")
                 cols = st.columns(2)
-                for idx, item in enumerate(items):
+                for idx, item in enumerate(passes):
                     with cols[idx % 2]:
-                        tags = render_method_tags(item["methods"])
-                        meter = make_meter(item["bars"], item["level"])
-                        cls = "bet" if item["is_bet"] else "skip"
-                        label = "🟢 TAKE IT" if item["is_bet"] else "⚪ PASS"
-                        ev_s = ""
-                        if item.get("ev_lean") is True:
-                            ev_s = f"<br><b>+EV lean</b> from past {item.get('method_rate_name')} plays"
-                        team = item.get("team") or ""
-                        st.markdown(f"""
-                        <div class="card {cls}">
-                            <b>{label}</b> - <b>{item['player']}</b>{(' · '+team) if team else ''}
-                            <span class="score-pill">{item['score']}</span><br>{meter}
-                            Best {format_odds(item['best_price'])} {book_label(item['best_book'])}
-                            · consensus {format_odds(item['median'])} · edge <b>{int(item['edge'])}</b><br>
-                            {tags}{ev_s}<br><small>{item['why']}</small>
-                        </div>""", unsafe_allow_html=True)
+                        _render_board_card(item, "⚪ PASS", "skip")
+
+            st.markdown("#### 👀 WATCH · 1+ method (track for auto-grade)")
+            if not watches:
+                st.caption("None with exactly 1 core method right now — or everyone with methods is already TAKE IT / PASS.")
+            else:
+                cols = st.columns(2)
+                for idx, item in enumerate(watches[:40]):
+                    with cols[idx % 2]:
+                        _render_board_card(item, "👀 WATCH", "card")
+
     if nav == TAB_LABELS[1]:
         show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
     if nav == TAB_LABELS[2]:
@@ -2104,7 +2198,7 @@ def main():
             "</div>"
             '<div class="glossary-block">'
             "<h4>Books</h4>"
-            "Main: FanDuel, DraftKings, BetMGM. Compare: Hard Rock, Caesars. Bet365 on hold."
+            "Main methods: FanDuel, DraftKings, BetMGM. Value price books (prefer to bet the number): <b>DK, FD, Hard Rock</b> — often longest. Caesars compare. Bet365 on hold."
             "</div>",
             unsafe_allow_html=True,
         )
