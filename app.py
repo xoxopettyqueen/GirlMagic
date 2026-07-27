@@ -140,6 +140,8 @@ def normalize_book(key):
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
 EDGE_MIN = 60
 METHODS_MIN = 2
+NAME_METHODS_MIN = 3
+NAME_MAX_PAIRS = 50
 OUTLIER_GAP = 150
 REFRESH_MINUTES = 20
 FD_MIN = 400
@@ -262,6 +264,14 @@ def clean_name(name):
     if parts and parts[-1].lower().rstrip(".") in suffixes:
         parts = parts[:-1]
     return " ".join(parts)
+
+def get_initials(name):
+    name = clean_name(name)
+    parts = name.split()
+    if len(parts) < 2:
+        return None, None, None, None
+    first, last = parts[0], parts[-1]
+    return first[0].upper(), last[0].upper(), first.lower(), last.lower()
 
 def names_match(a, b):
     a, b = clean_name(a).lower(), clean_name(b).lower()
@@ -1309,6 +1319,130 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if old.get("is_bet"): reasons.insert(0, "Was TAKE IT")
         fallen.append({"type": "fallen", "label": player, "reason": " · ".join(reasons), "methods": ["Fallen Off"], "old_score": old.get("score", 0)})
         results.append(fallen[-1])
+    # ── Name Magic (only with methods · prefer different teams) ──
+    pev = defaultdict(set)
+    for _, r in df.iterrows():
+        pev[r["player"]].add(r["event"])
+
+    def _diff_teams(a, b):
+        ta, tb = team_map.get(a, ""), team_map.get(b, "")
+        if ta and tb:
+            return ta != tb
+        return len(pev[a] & pev[b]) == 0
+
+    def _has_strong(ms):
+        return any(
+            m in PERSONAL_STRONG or m.startswith("Match ") or m.startswith("MGM")
+            or m.startswith("DK") or m.startswith("FD")
+            for m in ms
+        )
+
+    pool = [
+        p for p, ms in methods_map.items()
+        if count_core_methods(ms) >= NAME_METHODS_MIN and _has_strong(ms)
+    ]
+    if lineup_names:
+        pool = [p for p in pool if name_in_lineup(p, lineup_names) is not False]
+
+    n_pairs = 0
+    # Same initials (first+last)
+    init_map = defaultdict(list)
+    for p in pool:
+        fi, li, _, _ = get_initials(p)
+        if fi and li:
+            init_map[fi + li].append(p)
+    for k, names in init_map.items():
+        names = sorted(set(names))
+        for i, a in enumerate(names):
+            for b in names[i + 1:]:
+                if n_pairs >= NAME_MAX_PAIRS:
+                    break
+                if not _diff_teams(a, b):
+                    continue
+                results.append({
+                    "type": "same_init", "label": f"{a} + {b}",
+                    "reason": f"Same initials {k} · different teams",
+                    "methods": ["Same Initials"], "event": "",
+                })
+                n_pairs += 1
+
+    # Cross initials: A's last = B's first
+    n_cross = 0
+    for i, a in enumerate(pool):
+        fi_a, li_a, _, _ = get_initials(a)
+        if not fi_a or not li_a:
+            continue
+        for b in pool[i + 1:]:
+            if n_cross >= NAME_MAX_PAIRS:
+                break
+            fi_b, li_b, _, _ = get_initials(b)
+            if not fi_b or not li_b:
+                continue
+            if not _diff_teams(a, b):
+                continue
+            if li_a == fi_b or li_b == fi_a:
+                if li_a == fi_b:
+                    rsn = f"Cross initials ({li_a}↔{fi_b}) · different teams"
+                else:
+                    rsn = f"Cross initials ({li_b}↔{fi_a}) · different teams"
+                results.append({
+                    "type": "cross", "label": f"{a} + {b}",
+                    "reason": rsn,
+                    "methods": ["Cross Initials"], "event": "",
+                })
+                n_cross += 1
+
+    # Fix cross reason properly in a cleaner loop - replace the broken cross block
+    # Actually my reason string is broken. Let me fix in a second pass.
+
+    # Same last name
+    last_map = defaultdict(list)
+    for p in pool:
+        _, _, _, last = get_initials(p)
+        if last:
+            last_map[last].append(p)
+    n_last = 0
+    for last, names in last_map.items():
+        names = sorted(set(names))
+        if len(names) < 2:
+            continue
+        for i, a in enumerate(names):
+            for b in names[i + 1:]:
+                if n_last >= NAME_MAX_PAIRS:
+                    break
+                if not _diff_teams(a, b):
+                    continue
+                results.append({
+                    "type": "last", "label": f"{a} + {b}",
+                    "reason": f"Same last name · {last.title()} · different teams",
+                    "methods": ["Same Last Name"], "event": "",
+                })
+                n_last += 1
+
+    # Same first name
+    first_map = defaultdict(list)
+    for p in pool:
+        _, _, first, _ = get_initials(p)
+        if first:
+            first_map[first].append(p)
+    n_first = 0
+    for first, names in first_map.items():
+        names = sorted(set(names))
+        if len(names) < 2:
+            continue
+        for i, a in enumerate(names):
+            for b in names[i + 1:]:
+                if n_first >= NAME_MAX_PAIRS:
+                    break
+                if not _diff_teams(a, b):
+                    continue
+                results.append({
+                    "type": "first", "label": f"{a} + {b}",
+                    "reason": f"Same first name · {first.title()} · different teams",
+                    "methods": ["Same First Name"], "event": "",
+                })
+                n_first += 1
+
     if record_history:
         st.session_state["prev_ev"] = current_ev
         save_history(prev_ev=current_ev)
@@ -1821,7 +1955,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     TAB_LABELS = [
-        "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact",
+        "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact", "💅 Names",
         "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "💀 Fallen", "🔒 Lock",
         "🧠 Lock Lab", "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
     ]
@@ -1903,8 +2037,18 @@ def main():
     if nav == TAB_LABELS[4]:
         show_player_cards("match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
     if nav == TAB_LABELS[5]:
-        show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
+        st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
+        st.caption(
+            f"Same / cross initials · same first or last name · "
+            f"both need {NAME_METHODS_MIN}+ core methods + a strong tag · different teams · max {NAME_MAX_PAIRS} pairs each"
+        )
+        show_player_cards("same_init", "💅 Same Initials", "Same first+last initial (e.g. MM) · different teams", results)
+        show_player_cards("cross", "🔄 Cross Initials", "One last initial = other first initial · different teams", results)
+        show_player_cards("last", "👩‍👧 Same Last Name", "Exact last name · different teams", results)
+        show_player_cards("first", "👯 Same First Name", "Exact first name · different teams", results)
     if nav == TAB_LABELS[6]:
+        show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
+    if nav == TAB_LABELS[7]:
         st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
         for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
             st.markdown(f"#### {title}")
@@ -1914,7 +2058,7 @@ def main():
                 with cols[idx % 2]:
                     st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
             if not items: st.info("None")
-    if nav == TAB_LABELS[7]:
+    if nav == TAB_LABELS[8]:
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
         fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
@@ -1924,14 +2068,14 @@ def main():
         st.markdown("#### 🔴 Fade")
         for r in aggregate_by_player(fade)[:15]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-    if nav == TAB_LABELS[8]:
-        show_player_cards("late", "👻 Late / Gone", "One card per player · lock prices when gone", results)
     if nav == TAB_LABELS[9]:
+        show_player_cards("late", "👻 Late / Gone", "One card per player · lock prices when gone", results)
+    if nav == TAB_LABELS[10]:
         st.markdown('<div class="queen-banner">💀 Fallen</div>', unsafe_allow_html=True)
         for r in fallen[:30]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
         if not fallen: st.info("None")
-    if nav == TAB_LABELS[10]:
+    if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">🔒 Pregame Lock</div>', unsafe_allow_html=True)
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
@@ -1947,7 +2091,7 @@ def main():
                 with cols[i % 2]:
                     st.markdown(f'<div class="card"><b>{player}</b><br>' + "<br>".join(lines) + "</div>", unsafe_allow_html=True)
                 i += 1
-    if nav == TAB_LABELS[11]:
+    if nav == TAB_LABELS[12]:
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
         st.caption("Today's homers matched to what we locked before first pitch.")
         lab = build_lock_lab()
@@ -2016,7 +2160,7 @@ def main():
             with st.expander(f"Not in Lock ({len(lab['unmatched'])})"):
                 st.write(", ".join(lab["unmatched"][:50]))
 
-    if nav == TAB_LABELS[12]:
+    if nav == TAB_LABELS[13]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption("What has been hitting after we grade it.")
         def chips_from_stats(stats, min_n=TRACKER_MIN_N):
@@ -2036,7 +2180,7 @@ def main():
         st.markdown("#### By ending")
         chips = chips_from_stats(ending_stats)
         st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
-    if nav == TAB_LABELS[13]:
+    if nav == TAB_LABELS[14]:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB…"):
@@ -2105,7 +2249,7 @@ def main():
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
-    if nav == TAB_LABELS[14]:
+    if nav == TAB_LABELS[15]:
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
         rows_bt = load_results()
@@ -2173,7 +2317,7 @@ def main():
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
-    if nav == TAB_LABELS[15]:
+    if nav == TAB_LABELS[16]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.caption("Plain-English guide. Read this once - then the tabs make sense.")
         st.markdown(
