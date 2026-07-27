@@ -123,6 +123,18 @@ HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
+# Odds API uses different keys for the same books — map only
+BOOK_ALIASES = {
+    "williamhill_us": "caesars",
+    "hardrockbet_oh": "hardrockbet",
+    "hardrockbet_nj": "hardrockbet",
+}
+
+def normalize_book(key):
+    k = str(key or "").lower().strip()
+    if "bet365" in k:
+        return "bet365"
+    return BOOK_ALIASES.get(k, k)
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
 EDGE_MIN = 60
 METHODS_MIN = 2
@@ -237,7 +249,7 @@ def book_label(b):
     if "draftkings" in b or b == "dk": return "DK"
     if "fanduel" in b or b == "fd": return "FD"
     if "hardrock" in b: return "HardRock"
-    if "caesars" in b: return "Caesars"
+    if "caesars" in b or "williamhill" in b: return "Caesars"
     if b in ("untagged", "unknown", "-", ""): return "Untagged"
     return b.title() if b else "Untagged"
 
@@ -864,15 +876,23 @@ def flatten_oddsapi(data):
     rows, found = [], set()
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     for book in data.get("bookmakers", []):
-        bk = book.get("key", "").lower()
-        found.add(bk)
+        raw = (book.get("key") or "").lower()
+        found.add(raw)
+        bk = normalize_book(raw)
         if bk not in PREFERRED: continue
         for market in book.get("markets", []):
+            # accept standard + alternate HR markets; still force 0.5 only
+            mkey = (market.get("key") or "")
+            if mkey and "home_run" not in mkey and "homer" not in mkey:
+                continue
             for o in market.get("outcomes", []):
                 if o.get("name", "").lower() != "over": continue
                 pt = o.get("point")
                 if pt is None or abs(float(pt) - 0.5) > 0.01: continue
-                rows.append({"event": event, "book": bk, "player": o.get("description"), "price": o.get("price"), "point": 0.5, "team": "", "source": "oddsapi"})
+                player = o.get("description")
+                price = o.get("price")
+                if not player or price is None: continue
+                rows.append({"event": event, "book": bk, "player": player, "price": int(price), "point": 0.5, "team": "", "source": "oddsapi"})
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
@@ -900,8 +920,8 @@ def fetch_sgo_hr_props(sgo_key):
                 team = clean_team(pdata.get("teamID") or "")
                 for bk, bd in odd_data.get("byBookmaker", {}).items():
                     if not bd.get("available", True): continue
-                    b = bk.lower()
-                    if "bet365" in b or b not in PREFERRED: continue
+                    b = normalize_book(bk)
+                    if b not in PREFERRED: continue
                     price = bd.get("odds")
                     if price is None: continue
                     try: price = int(str(price).replace("+", ""))
@@ -926,23 +946,50 @@ def merge_odds(a, b):
     return df.drop(columns=["priority", "source"], errors="ignore")
 
 def do_fetch(odds_key, sgo_key, chosen_labels, options):
-    all_rows, all_found = [], set()
+    all_rows, all_found_raw = [], set()
+    http_ok = 0
+    http_fail = 0
     for label in chosen_labels:
         eid = options.get(label)
         if not eid: continue
         data = fetch_odds_oddsapi(odds_key, eid)
+        if data is None:
+            http_fail += 1
+            continue
+        http_ok += 1
         rows, found = flatten_oddsapi(data)
         all_rows.extend(rows)
-        all_found.update(found)
+        all_found_raw.update(found)
     sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
     all_rows.extend(sgo_rows)
-    all_found.update(sgo_found)
-    if not all_rows: return None, set()
-    df = merge_odds([r for r in all_rows if r.get("source") == "oddsapi"], [r for r in all_rows if r.get("source") == "sgo"])
+    all_found_raw.update(sgo_found)
+    kept = {normalize_book(b) for b in all_found_raw} & PREFERRED
+    st.session_state["fetch_debug"] = {
+        "http_ok": http_ok,
+        "http_fail": http_fail,
+        "raw_books": sorted(all_found_raw),
+        "kept_books": sorted(kept),
+        "row_count_pre_filter": len(all_rows),
+        "sgo_rows": len(sgo_rows),
+    }
+    if not all_rows:
+        return None, set()
+    df = merge_odds(
+        [r for r in all_rows if r.get("source") == "oddsapi"],
+        [r for r in all_rows if r.get("source") == "sgo"],
+    )
     if chosen_labels and not df.empty and "event" in df.columns:
+        before = len(df)
         mask = df["event"].apply(lambda e: event_matches_chosen(e, chosen_labels))
-        df = df[mask].copy()
-    return df, all_found & PREFERRED
+        filtered = df[mask].copy()
+        # if label mismatch would wipe a good feed, keep unfiltered (still preferred books only)
+        if filtered.empty and before > 0:
+            st.session_state["fetch_debug"]["event_filter_wiped"] = before
+        else:
+            df = filtered
+            st.session_state["fetch_debug"]["event_filter_wiped"] = 0
+    st.session_state["fetch_debug"]["row_count_final"] = 0 if df is None or df.empty else len(df)
+    return df, kept
 
 def build_team_map(df):
     tm = {}
@@ -1628,15 +1675,34 @@ def main():
             st.session_state["last_fetch_time"] = now_az()
             st.success(f"Loaded {len(df)} props · {now_az()} AZ")
         else:
-            st.warning("No HR props right now - usually means games are already live. Fetch earlier next time.")
+            dbg = st.session_state.get("fetch_debug") or {}
+            raw = ", ".join(dbg.get("raw_books") or []) or "none"
+            kept = ", ".join(dbg.get("kept_books") or []) or "none"
+            st.warning(
+                "No preferred-book 0.5 HR props after fetch. "
+                "This is not always 'games live' — check debug below."
+            )
+            st.caption(
+                f"API games OK: {dbg.get('http_ok', 0)} · fail: {dbg.get('http_fail', 0)} · "
+                f"rows before filter: {dbg.get('row_count_pre_filter', 0)} · SGO: {dbg.get('sgo_rows', 0)} · "
+                f"raw books: {raw} · kept: {kept}"
+            )
     if st.session_state.get("last_fetch_time"):
         st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
     found = st.session_state.get("found_books", [])
-    if found:
+    dbg = st.session_state.get("fetch_debug") or {}
+    if found or dbg.get("raw_books"):
         missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
-        st.markdown(f'<div class="info-box"><b>Books:</b> {", ".join(found)}</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
+            + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
+            + "</div>",
+            unsafe_allow_html=True,
+        )
         if missing:
-            st.markdown(f'<div class="warning-box">⚠️ Missing: {", ".join(missing)}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="warning-box">⚠️ Core missing from this feed: {", ".join(missing)}</div>', unsafe_allow_html=True)
+        if dbg.get("event_filter_wiped"):
+            st.caption(f"Note: event label filter would have dropped {dbg['event_filter_wiped']} rows — kept unfiltered.")
     odds = st.session_state.get("odds", [])
     prev = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
