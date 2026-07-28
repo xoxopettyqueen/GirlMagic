@@ -751,7 +751,7 @@ def render_whats_going_today():
     <div class="trends-today">
         <div class="trends-today-header">
             <div class="trends-today-title">🔥 What's Going Today</div>
-            <div class="trends-today-sub">{mlb_hr} MLB HR · {on_list} were on WATCH/TAKE · {n_graded} graded · not a prediction</div>
+            <div class="trends-today-sub">{mlb_hr} HRs today · {on_list} were on our list</div>
         </div>
         <div class="trends-chips">{chips_html}</div>
     </div>
@@ -1774,7 +1774,7 @@ def main():
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(f"""
     <div class="how-to">
-        Live refresh · <b>auto-grades</b> · Lock <b>{lock_n}</b> · learns from Results → Tracker / Lock Lab / Backtest
+        <b>Lock {lock_n}</b> · auto-refresh · auto-grade on
     </div>
     """, unsafe_allow_html=True)
     if "auto_grade_ran" not in st.session_state:
@@ -1801,19 +1801,19 @@ def main():
             if t < 8:
                 continue
             pct = 100 * s["hit"] / t
-            learn_bits.append(f"{name} best-price hit {pct:.0f}% (n={t})")
+            learn_bits.append(f"<b>{name}</b> best book → {pct:.0f}% hit · {t} plays")
         for name, s in sorted(_ms.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
             t = s["hit"] + s["miss"]
             if t < 10:
                 continue
             pct = 100 * s["hit"] / t
             if pct >= 40:
-                learn_bits.append(f"{name} {pct:.0f}% (n={t})")
+                learn_bits.append(f"<b>{name}</b> → {pct:.0f}% hit · {t} plays")
             if len(learn_bits) >= 6:
                 break
         if learn_bits:
             st.markdown(
-                '<div class="info-box"><b>📡 Learning so far</b> (graded Results — more grades → smarter)<br>'
+                '<div class="info-box"><b>📡 After we grade</b><br>'
                 + " · ".join(learn_bits[:6])
                 + "</div>",
                 unsafe_allow_html=True,
@@ -2522,4 +2522,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    ma
