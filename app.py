@@ -720,40 +720,58 @@ def build_whats_going_today(rows):
         ending_counts[end] += 1
         book_ending[(bl, end)] += 1
 
-    chips = []
-    for (bl, end), cnt in sorted(book_ending.items(), key=lambda x: -x[1]):
-        chips.append((f"{bl} {end:02d}", cnt, end in (0, 25, 50, 75, 10) or cnt >= 2))
-    for end, cnt in sorted(ending_counts.items(), key=lambda x: -x[1]):
-        if end in (0, 10, 25, 50, 75):
-            pure = f"Ends {end:02d}"
-            if not any(c[0] == pure for c in chips):
-                chips.append((pure, cnt, end == 75))
-
-    seen = {}
-    for label, cnt, hot in chips:
-        if label not in seen or cnt > seen[label][0]:
-            seen[label] = (cnt, hot)
-    chips = sorted([(lab, v[0], v[1]) for lab, v in seen.items()], key=lambda x: (-x[1], x[0]))[:8]
-    return len(hr_names), len(graded), chips, on_our_list
+    # Group by book only (DK / FD / MGM / HardRock) — no duplicate "Ends XX" chips
+    by_book = defaultdict(list)
+    for (bl, end), cnt in book_ending.items():
+        by_book[bl].append((int(end), int(cnt)))
+    for bl in by_book:
+        by_book[bl].sort(key=lambda x: (-x[1], x[0]))
+    return len(hr_names), len(graded), dict(by_book), on_our_list
 
 def render_whats_going_today():
     rows = load_results()
-    mlb_hr, n_graded, chips, on_list = build_whats_going_today(rows)
-    if chips:
-        chips_html = "".join(
-            f'<span class="trend-chip {"hot" if hot else ""}">{label}: '
-            f'<span class="chip-count">{cnt} HR</span></span>'
-            for label, cnt, hot in chips
+    mlb_hr, n_graded, by_book, on_list = build_whats_going_today(rows)
+    # Prefer main books in a fixed order
+    order = ["DK", "FD", "MGM", "HardRock", "Caesars"]
+    sections = []
+    used = set()
+    for bl in order:
+        if bl not in by_book:
+            continue
+        used.add(bl)
+        parts = []
+        for end, cnt in by_book[bl][:6]:
+            hot = end in (0, 10, 25, 50, 75)
+            parts.append(
+                f'<span class="trend-chip {"hot" if hot else ""}">'
+                f'{end:02d}: <span class="chip-count">{cnt}</span></span>'
+            )
+        sections.append(
+            f'<div style="margin:6px 0 2px;font-size:0.78rem;font-weight:700;color:#f9a8d4">{bl}</div>'
+            f'<div class="trends-chips">{"".join(parts)}</div>'
         )
-    else:
-        chips_html = '<span class="trend-chip">No ending matches yet - lock + auto-grade fill this</span>'
+    for bl, items in sorted(by_book.items()):
+        if bl in used:
+            continue
+        parts = []
+        for end, cnt in items[:4]:
+            parts.append(
+                f'<span class="trend-chip">{end:02d}: <span class="chip-count">{cnt}</span></span>'
+            )
+        sections.append(
+            f'<div style="margin:6px 0 2px;font-size:0.78rem;font-weight:700;color:#e9d5ff">{bl}</div>'
+            f'<div class="trends-chips">{"".join(parts)}</div>'
+        )
+    body = "".join(sections) if sections else (
+        '<span class="trend-chip">No book endings matched yet — lock + grades fill this</span>'
+    )
     st.markdown(f"""
     <div class="trends-today">
         <div class="trends-today-header">
             <div class="trends-today-title">🔥 What's Going Today</div>
             <div class="trends-today-sub">{mlb_hr} HRs today · {on_list} were on our list</div>
         </div>
-        <div class="trends-chips">{chips_html}</div>
+        {body}
     </div>
     """, unsafe_allow_html=True)
 
@@ -1774,7 +1792,14 @@ def main():
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(f"""
     <div class="how-to">
-        <b>Lock {lock_n}</b> · auto-refresh · auto-grade on
+        <b>How to use</b> · Lock <b>{lock_n}</b><br>
+        ① Load games → pick slate ·
+        ② Fetch odds (0.5 HR only) ·
+        ③ Prices save to 🔒 Lock ·
+        ④ Methods tag players ·
+        ⑤ Board = TAKE IT / WATCH / PASS ·
+        ⑥ Results auto-grade vs MLB HRs ·
+        ⑦ Tracker / Lock Lab / Backtest = what hit
     </div>
     """, unsafe_allow_html=True)
     if "auto_grade_ran" not in st.session_state:
@@ -1814,7 +1839,7 @@ def main():
         if learn_bits:
             st.markdown(
                 '<div class="info-box"><b>📡 After we grade</b><br>'
-                + " · ".join(learn_bits[:6])
+                + "<br>".join(learn_bits[:6])
                 + "</div>",
                 unsafe_allow_html=True,
             )
