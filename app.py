@@ -269,6 +269,30 @@ def has_dk_or_mgm(meths):
         if m.startswith("Match "): return True
     return False
 
+def is_dk_family(m):
+    m = str(m)
+    return m in ("DK 10", "DK FD-style") or m.startswith("DK ")
+
+def is_mgm_family(m):
+    m = str(m)
+    if m.startswith("MGM"): return True
+    if m in ("Last one left", "Stayed in the group") or "Stayed in group" in m: return True
+    if m.startswith("Match "): return True
+    return False
+
+def is_fd_family(m):
+    m = str(m)
+    return m.startswith("FD") or m in ("FD Pattern", "FD 600")
+
+def has_dk_mgm_fd(meths):
+    """Trifecta: DK + MGM + FD tags. Score bonus only — does NOT gate TAKE IT."""
+    ms = list(meths or [])
+    return (
+        any(is_dk_family(m) for m in ms)
+        and any(is_mgm_family(m) for m in ms)
+        and any(is_fd_family(m) for m in ms)
+    )
+
 def method_tag_class(m):
     m = str(m)
     if m.startswith("DK"): return "tag-dk"
@@ -294,7 +318,10 @@ def girl_magic_score(core_count, edge, methods):
     if "Multi-book method" in ms or "Multi-book Shorten" in ms: bonus += 4
     if "Same on 3+ books" in ms: bonus += 2
     if "FD 600" in ms: bonus += 2
-    return min(100, method_pts + edge_pts + min(12, bonus))
+    # trifecta: DK + MGM + FD all present -> score boost only (does NOT change TAKE IT)
+    if has_dk_mgm_fd(methods):
+        bonus += 12
+    return min(100, method_pts + edge_pts + min(18, bonus))
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -1675,11 +1702,12 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         row["is_bet"] = is_bet
         fams = strong_method_families(display_meths)
         strong_n = len(fams)
+        tri = " · 💎 DK+MGM+FD" if has_dk_mgm_fd(display_meths) else ""
         if is_bet:
-            why = f"Score {score}/100 · {core_count} core · {strong_n} strong families · edge {int(edge)}"
+            why = f"Score {score}/100 · {core_count} core · {strong_n} strong families · edge {int(edge)}{tri}"
         else:
             why = (
-                f"Score {score}/100 · {core_count} core · {strong_n} strong families · edge {int(edge)} "
+                f"Score {score}/100 · {core_count} core · {strong_n} strong families · edge {int(edge)}{tri} "
                 f"(TAKE IT needs a heavier stack — see Code tab)"
             )
         row["why"] = why
@@ -2905,7 +2933,7 @@ def main():
 
             '<div class="glossary-block">'
             "<h4>Score · Edge · +EV lean</h4>"
-            "<b>Score (0–100)</b> — strength meter. More tricks + better price → higher.<br>"
+            "<b>Score (0–100)</b> — strength meter. More tricks + better price → higher. <b>💎 DK+MGM+FD</b> (all three) adds a score bonus — ranks higher, does <b>not</b> change TAKE IT rules.<br>"
             "<b>Edge</b> — best price minus the middle of the books. Bigger = longer number vs consensus.<br>"
             "<b>+EV lean</b> — “this tag has been hitting enough in our grades that the price is okay.” "
             "Not Kelly. Not bankroll advice."
