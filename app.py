@@ -2637,52 +2637,88 @@ def main():
 
     if nav == TAB_LABELS[17]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        st.caption("Plain-English guide. Read this once - then the tabs make sense.")
+        st.caption("Girl Magic cheat sheet — short blocks, real examples.")
         st.markdown(
             '<div class="glossary-block">'
-            "<h4>🟢 Board - TAKE IT vs PASS vs WATCH</h4>"
-            "<b>What you're looking at:</b> players the app thinks are worth a 0.5 HR bet (one home run).<br><br>"
-            "<b>🟢 TAKE IT</b> = green light to bet.<br>"
-            "Needs <b>at least 2 of our tricks</b> (methods) <b>and</b> the price looks longer than what the other books agree on (edge at least 60).<br>"
-            "We only show a few per team and per game so the list stays short.<br><br>"
-            "<b>⚪ PASS</b> = has tricks, but the price is not long enough yet - do not force it.<br><br>"
-            "<b>👀 WATCH</b> = has <b>at least 1 trick</b>. We do not always bet these - we <b>track</b> them so we learn who actually hits.<br>"
-            "WATCH feeds auto-grade and the Backtest tab."
+            "<h4>🟢 The Board (start here)</h4>"
+            "We only care about <b>0.5 HR</b> — one home run, Over.<br><br>"
+            "<b>🟢 TAKE IT</b> — green light.<br>"
+            "• At least <b>2 tricks</b> (tags)<br>"
+            "• <b>Edge ≥ 60</b> (best book is longer than the middle of the books)<br>"
+            "• Short list on purpose (caps per team / game)<br><br>"
+            "<b>⚪ PASS</b> — has 2+ tricks, but edge is short. Don’t force it.<br><br>"
+            "<b>👀 WATCH</b> — has <b>1+</b> trick. Not always a bet. We track these to learn who hits.<br>"
+            "WATCH + TAKE IT feed Results → auto-grade → Tracker / Backtest."
             "</div>"
+
             '<div class="glossary-block">'
-            "<h4>Score · edge · +EV lean</h4>"
-            "<b>Score (0-100)</b> = quick strength number. More tricks + better price → higher score.<br>"
-            "<b>Edge</b> = how much longer the best book is vs the middle of the books.<br>"
-            "<b>+EV lean</b> = this kind of tag has been hitting enough in our graded history that this price looks okay. Not bankroll math."
+            "<h4>Score · Edge · +EV lean</h4>"
+            "<b>Score (0–100)</b> — strength meter. More tricks + better price → higher.<br>"
+            "<b>Edge</b> — best price minus the middle of the books. Bigger = longer number vs consensus.<br>"
+            "<b>+EV lean</b> — “this tag has been hitting enough in our grades that the price is okay.” "
+            "Not Kelly. Not bankroll advice."
             "</div>"
+
             '<div class="glossary-block">'
-            "<h4>🎰 BetMGM</h4>"
-            "MGM prices ending in <b>00, 25, 50, or 75</b>. <b>Pair</b> = 2 teammates same ending. <b>Group of 3</b> only - not 4+. "
-            "<b>MGM Exact</b> = 2 or 3 teammates at the exact same number."
+            "<h4>🎰 BetMGM (same team only)</h4>"
+            "We only care about endings <b>00 · 25 · 50 · 75</b>.<br><br>"
+            "<b>Pair</b> — exactly <b>2 teammates</b> with the same ending.<br>"
+            "<b>Group of 3</b> — exactly <b>3 teammates</b> same ending. Not 4+.<br>"
+            "<b>MGM Exact</b> — 2 or 3 teammates at the <b>exact same number</b> (e.g. both +525).<br>"
+            "<b>Stayed in the group</b> — still in a pair/group across fetches.<br>"
+            "<b>Last one left</b> — was in a group early; still tagged when others drop.<br><br>"
+            "A lone +525 with no teammate partner is <b>not</b> an MGM method tag."
             "</div>"
+
             '<div class="glossary-block">'
-            "<h4>🎯 DK · 💙 FD · 🤝 Exact</h4>"
-            "<b>DK 10</b> ends in 10. <b>DK FD-style</b> = FD-type endings on DK. "
-            "<b>FD Pattern</b> = +400+ ending 10/20/30/60/70/90 and needs DK or MGM too. "
-            "<b>Exact / All books same</b> = same number on 2+ (or 3+) of DK/FD/MGM/HardRock. <b>Books tight</b> = those books within about 50 points (e.g. +450 to +475) — not exact, but bunched."
+            "<h4>🎯 DraftKings</h4>"
+            "<b>DK 10</b> — price ends in 10 (+110, +310, +510…).<br>"
+            "<b>DK FD-style</b> — DK using FanDuel-type endings (10/20/30/60/70/90)."
             "</div>"
+
             '<div class="glossary-block">'
-            "<h4>🔒 Lock · 🧠 Lock Lab</h4>"
-            "<b>Lock</b> = last pregame prices we saved. "
-            "<b>Lock Lab</b> = today's real HRs matched to Lock - best place to see what endings and methods actually went, best price book, and cross-tags."
+            "<h4>💙 FanDuel</h4>"
+            "<b>FD Pattern</b> — price <b>+400 or higher</b> and ends in 10 / 20 / 30 / 60 / 70 / 90.<br>"
+            "Also needs a <b>DK or MGM</b> trick on that player (FD alone doesn’t count).<br>"
+            "<b>FD 600</b> — specifically +600 (we watch this number)."
             "</div>"
+
             '<div class="glossary-block">'
-            "<h4>📡 Tracker · 📊 Results · Auto-grade</h4>"
-            "<b>Results</b> = TAKE IT and WATCH plays we logged (PENDING then HIT/MISS). "
-            "<b>Auto-grade</b> uses MLB box scores. <b>Tracker</b> = hit rate by tag after enough graded plays."
+            "<h4>🤝 Same / tight prices (across books)</h4>"
+            "Looks at <b>DK · FD · MGM · HardRock</b>.<br><br>"
+            "<b>Exact Match</b> — same number on <b>2</b> of those books.<br>"
+            "<b>All books same</b> — same number on <b>3+</b> (e.g. all +650).<br>"
+            "<b>Books tight</b> — not exact, but within about <b>50 points</b> "
+            "(e.g. +450 to +475). Bunched, not random scatter."
             "</div>"
+
             '<div class="glossary-block">'
-            "<h4>🧪 Backtest</h4>"
-            "Last two weeks of graded TAKE IT vs WATCH hit rates."
+            "<h4>🔒 Lock vs 🧠 Lock Lab</h4>"
+            "<b>Lock</b> — frozen <b>pregame</b> prices (first number we saw per book). Live odds should not overwrite.<br>"
+            "<b>Lock Lab</b> — who actually went yard today, matched back to Lock. "
+            "Best place to see endings / books on real HRs — not the same as “methods that fired.”"
             "</div>"
+
             '<div class="glossary-block">'
-            "<h4>Books</h4>"
-            "Main methods: FanDuel, DraftKings, BetMGM. Value price books (prefer to bet the number): <b>DK, FD, Hard Rock</b> — often longest. Caesars compare. Bet365 on hold."
+            "<h4>📊 Results · Auto-grade · 📡 Tracker · 🧪 Backtest</h4>"
+            "<b>Results</b> — every TAKE IT / WATCH we logged → PENDING → HIT or MISS.<br>"
+            "<b>Auto-grade</b> — checks MLB box scores so you don’t grade everything by hand.<br>"
+            "<b>Tracker</b> — hit rate by tag / book / ending after enough grades.<br>"
+            "<b>Backtest</b> — TAKE IT % vs WATCH % (needs a real sample — ignore n=2 days)."
+            "</div>"
+
+            '<div class="glossary-block">'
+            "<h4>📚 Books we care about</h4>"
+            "<b>Methods focus:</b> DraftKings · FanDuel · BetMGM<br>"
+            "<b>Often best number to bet:</b> DK · FD · Hard Rock<br>"
+            "<b>Compare:</b> Caesars · Hard Rock vs others<br>"
+            "<b>Bet365:</b> on hold until the feed is solid (850s / pairs later)"
+            "</div>"
+
+            '<div class="glossary-block">'
+            "<h4>⚡ Quick flow</h4>"
+            "① Load games → ② Fetch (0.5 HR) → ③ Lock saves pregame → "
+            "④ Tags fire → ⑤ Board TAKE / WATCH / PASS → ⑥ Grade results → ⑦ Learn in Tracker / Lab"
             "</div>",
             unsafe_allow_html=True,
         )
