@@ -147,6 +147,12 @@ BOOK_CLUSTER_GAP = 50  # max spread across focus books to count as 'tight'
 REFRESH_MINUTES = 20
 FD_MIN = 400
 MOVE_PRICE_MIN = 500
+# 0.5 HR Over sanity — reject absurd API longshots (not real pregame 1HR prices)
+MAX_HR_AMERICAN = 2500
+# Never show / lock / tag these players (name match, Jr. stripped)
+PLAYER_BLOCKLIST = {
+    "chandler simpson",
+}
 MOVE_MIN = 40
 BIG_MOVE = 100
 PENDING_PAGE = 40
@@ -325,6 +331,17 @@ def clean_name(name):
         parts = parts[:-1]
     return " ".join(parts)
 
+def is_blocked_player(name):
+    n = clean_name(name).lower().strip()
+    if n in PLAYER_BLOCKLIST:
+        return True
+    for blocked in PLAYER_BLOCKLIST:
+        bp = blocked.split()
+        np = n.split()
+        if len(bp) >= 2 and len(np) >= 2 and np[0] == bp[0] and np[-1] == bp[-1]:
+            return True
+    return False
+
 def get_initials(name):
     name = clean_name(name)
     parts = name.split()
@@ -477,9 +494,17 @@ def update_pregame_lock(df):
         # FIRST write wins — never replace an existing book price once locked
         if book in entry["books"] and entry["books"][book].get("price") is not None:
             continue
+        try:
+            ip = int(price)
+        except Exception:
+            continue
+        if ip > MAX_HR_AMERICAN:
+            continue
+        if is_blocked_player(player):
+            continue
         entry["books"][book] = {
-            "price": int(price),
-            "ending": last_two(price),
+            "price": ip,
+            "ending": last_two(ip),
             "seen_at": ts,
             "locked": True,
         }
@@ -1121,7 +1146,16 @@ def flatten_oddsapi(data):
                 player = o.get("description")
                 price = o.get("price")
                 if not player or price is None: continue
-                rows.append({"event": event, "book": bk, "player": player, "price": int(price), "point": 0.5, "team": "", "source": "oddsapi"})
+                try:
+                    price = int(price)
+                except Exception:
+                    continue
+                # only Over 0.5; drop absurd longshots (wrong market / junk)
+                if price > MAX_HR_AMERICAN:
+                    continue
+                if is_blocked_player(player):
+                    continue
+                rows.append({"event": event, "book": bk, "player": player, "price": price, "point": 0.5, "team": "", "source": "oddsapi"})
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
@@ -1155,6 +1189,10 @@ def fetch_sgo_hr_props(sgo_key):
                     if price is None: continue
                     try: price = int(str(price).replace("+", ""))
                     except Exception: continue
+                    if price > MAX_HR_AMERICAN:
+                        continue
+                    if is_blocked_player(pname):
+                        continue
                     found.add(b)
                     rows.append({"event": event_name, "book": b, "player": pname, "price": price, "point": 0.5, "team": team, "source": "sgo"})
     except Exception as e:
@@ -1603,6 +1641,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     ev_board = []
     watch_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
+        if is_blocked_player(player): continue
         if lineup_names and name_in_lineup(player, lineup_names) is False: continue
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
@@ -2465,7 +2504,10 @@ def main():
 
     if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">🔍 Search · by book / price / ending</div>', unsafe_allow_html=True)
-        st.caption("Filter the pregame lock — e.g. HardRock best odds first. Does not change Board or methods.")
+        st.caption(
+            f"Pregame Lock only · 0.5 HR Over · prices above +{MAX_HR_AMERICAN} are dropped as junk. "
+            "Sort “best odds first” shows the longest numbers on top — not the most likely HRs."
+        )
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
             st.info("Fetch pregame so Lock has prices, then search here.")
@@ -2506,6 +2548,8 @@ def main():
 
             rows = []
             for player, entry in lock.items():
+                if is_blocked_player(player):
+                    continue
                 if name_q and name_q.lower() not in player.lower():
                     continue
                 event = entry.get("event") or ""
@@ -2532,6 +2576,8 @@ def main():
                         if end is None or int(end) != int(ending_pick):
                             continue
                     if min_price and abs(int(price)) < int(min_price):
+                        continue
+                    if int(price) > MAX_HR_AMERICAN:
                         continue
                     rows.append({
                         "player": player,
