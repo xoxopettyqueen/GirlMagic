@@ -731,45 +731,49 @@ def build_whats_going_today(rows):
 def render_whats_going_today():
     rows = load_results()
     mlb_hr, n_graded, by_book, on_list = build_whats_going_today(rows)
-    # Prefer main books in a fixed order
-    order = ["DK", "FD", "MGM", "HardRock", "Caesars"]
-    sections = []
-    used = set()
+    order = ["DK", "FD", "MGM", "HardRock"]
+    cols_html = []
     for bl in order:
-        if bl not in by_book:
+        items = by_book.get(bl) or []
+        if not items:
             continue
-        used.add(bl)
-        parts = []
-        for end, cnt in by_book[bl][:6]:
+        chips = []
+        for end, cnt in items[:5]:
             hot = end in (0, 10, 25, 50, 75)
-            parts.append(
-                f'<span class="trend-chip {"hot" if hot else ""}">'
+            chips.append(
+                f'<span class="trend-chip {"hot" if hot else ""}" style="padding:3px 8px;font-size:0.72rem">'
                 f'{end:02d}: <span class="chip-count">{cnt}</span></span>'
             )
-        sections.append(
-            f'<div style="margin:6px 0 2px;font-size:0.78rem;font-weight:700;color:#f9a8d4">{bl}</div>'
-            f'<div class="trends-chips">{"".join(parts)}</div>'
+        cols_html.append(
+            f'<div style="flex:1;min-width:100px">'
+            f'<div style="font-size:0.72rem;font-weight:800;color:#f9a8d4;margin-bottom:4px">{bl}</div>'
+            f'<div style="display:flex;flex-wrap:wrap;gap:4px">{"".join(chips)}</div>'
+            f'</div>'
         )
+    # any other books in one extra col
+    extra = []
     for bl, items in sorted(by_book.items()):
-        if bl in used:
+        if bl in order:
             continue
-        parts = []
-        for end, cnt in items[:4]:
-            parts.append(
-                f'<span class="trend-chip">{end:02d}: <span class="chip-count">{cnt}</span></span>'
-            )
-        sections.append(
-            f'<div style="margin:6px 0 2px;font-size:0.78rem;font-weight:700;color:#e9d5ff">{bl}</div>'
-            f'<div class="trends-chips">{"".join(parts)}</div>'
+        for end, cnt in items[:3]:
+            extra.append(f'{bl} {end:02d}:{cnt}')
+    if extra:
+        cols_html.append(
+            f'<div style="flex:1;min-width:90px">'
+            f'<div style="font-size:0.72rem;font-weight:800;color:#e9d5ff;margin-bottom:4px">Other</div>'
+            f'<div style="font-size:0.72rem;color:#fce7f3">{" · ".join(extra[:6])}</div>'
+            f'</div>'
         )
-    body = "".join(sections) if sections else (
-        '<span class="trend-chip">No book endings matched yet — lock + grades fill this</span>'
+    body = (
+        f'<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">{"".join(cols_html)}</div>'
+        if cols_html else
+        '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">No book endings matched yet</div>'
     )
     st.markdown(f"""
-    <div class="trends-today">
-        <div class="trends-today-header">
+    <div class="trends-today" style="padding:12px 14px">
+        <div class="trends-today-header" style="margin-bottom:4px">
             <div class="trends-today-title">🔥 What's Going Today</div>
-            <div class="trends-today-sub">{mlb_hr} HRs today · {on_list} were on our list</div>
+            <div class="trends-today-sub">{mlb_hr} HRs · {on_list} on our list</div>
         </div>
         {body}
     </div>
@@ -1791,15 +1795,9 @@ def main():
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(f"""
-    <div class="how-to">
-        <b>How to use</b> · Lock <b>{lock_n}</b><br>
-        ① Load games → pick slate ·
-        ② Fetch odds (0.5 HR only) ·
-        ③ Prices save to 🔒 Lock ·
-        ④ Methods tag players ·
-        ⑤ Board = TAKE IT / WATCH / PASS ·
-        ⑥ Results auto-grade vs MLB HRs ·
-        ⑦ Tracker / Lock Lab / Backtest = what hit
+    <div class="how-to" style="padding:10px 14px;font-size:0.78rem;line-height:1.35">
+        <b>How to use</b> · Lock <b>{lock_n}</b> ·
+        ① Load → ② Fetch → ③ Lock saves → ④ Tags → ⑤ Board (TAKE/WATCH/PASS) → ⑥ Grade → ⑦ Tracker / Lab
     </div>
     """, unsafe_allow_html=True)
     if "auto_grade_ran" not in st.session_state:
@@ -1838,8 +1836,9 @@ def main():
                 break
         if learn_bits:
             st.markdown(
-                '<div class="info-box"><b>📡 After we grade</b><br>'
-                + "<br>".join(learn_bits[:6])
+                '<div class="info-box" style="padding:10px 14px;font-size:0.82rem;line-height:1.55">'
+                '<b>📡 After we grade</b><br>'
+                + "<br>".join(learn_bits[:5])
                 + "</div>",
                 unsafe_allow_html=True,
             )
@@ -2442,109 +2441,4 @@ def main():
             <div class="petty-box"><div class="petty-num">{wa_pct}</div><div class="petty-label">👀 WATCH %</div></div>
             <div class="petty-box"><div class="petty-num">{wa[2]}</div><div class="petty-label">WATCH n</div></div>
             <div class="petty-box"><div class="petty-num">{n_graded}</div><div class="petty-label">Graded 14d</div></div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown("#### Last 14 days")
-        if not daily:
-            st.info("No graded TAKE IT / WATCH rows yet. Fetch → let WATCH log → auto-grade after games.")
-        else:
-            for day in daily:
-                ti_s = fmt_rate(*day["take_it"])
-                wa_s = fmt_rate(*day["watch"])
-                st.markdown(
-                    f'<div class="card"><b>{day["date"]}</b><br>'
-                    f'🟢 TAKE IT: {ti_s}<br>👀 WATCH: {wa_s}</div>',
-                    unsafe_allow_html=True,
-                )
-
-        st.markdown("#### Methods on TAKE IT (graded)")
-        chips_ti = []
-        for name, s in sorted(method_by_src["take_it"].items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
-            t = s["hit"] + s["miss"]
-            if t < 5:
-                continue
-            pct = 100 * s["hit"] / t
-            chips_ti.append(
-                f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
-                f'<div class="rate-name">{name}</div>'
-                f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
-            )
-        st.markdown("".join(chips_ti) if chips_ti else "_(Need more graded TAKE IT)_", unsafe_allow_html=True)
-
-        st.markdown("#### Methods on WATCH (graded)")
-        chips_wa = []
-        for name, s in sorted(method_by_src["watch"].items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
-            t = s["hit"] + s["miss"]
-            if t < 5:
-                continue
-            pct = 100 * s["hit"] / t
-            chips_wa.append(
-                f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
-                f'<div class="rate-name">{name}</div>'
-                f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
-            )
-        st.markdown("".join(chips_wa) if chips_wa else "_(Need more graded WATCH)_", unsafe_allow_html=True)
-
-        st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
-
-    if nav == TAB_LABELS[17]:
-        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        st.caption("Plain-English guide. Read this once - then the tabs make sense.")
-        st.markdown(
-            '<div class="glossary-block">'
-            "<h4>🟢 Board - TAKE IT vs PASS vs WATCH</h4>"
-            "<b>What you're looking at:</b> players the app thinks are worth a 0.5 HR bet (one home run).<br><br>"
-            "<b>🟢 TAKE IT</b> = green light to bet.<br>"
-            "Needs <b>at least 2 of our tricks</b> (methods) <b>and</b> the price looks longer than what the other books agree on (edge at least 60).<br>"
-            "We only show a few per team and per game so the list stays short.<br><br>"
-            "<b>⚪ PASS</b> = has tricks, but the price is not long enough yet - do not force it.<br><br>"
-            "<b>👀 WATCH</b> = has <b>at least 1 trick</b>. We do not always bet these - we <b>track</b> them so we learn who actually hits.<br>"
-            "WATCH feeds auto-grade and the Backtest tab."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>Score · edge · +EV lean</h4>"
-            "<b>Score (0-100)</b> = quick strength number. More tricks + better price → higher score.<br>"
-            "<b>Edge</b> = how much longer the best book is vs the middle of the books.<br>"
-            "<b>+EV lean</b> = this kind of tag has been hitting enough in our graded history that this price looks okay. Not bankroll math."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>🎰 BetMGM</h4>"
-            "MGM prices ending in <b>00, 25, 50, or 75</b>. <b>Pair</b> = 2 teammates same ending. <b>Group of 3</b> only - not 4+. "
-            "<b>MGM Exact</b> = 2 or 3 teammates at the exact same number."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>🎯 DK · 💙 FD · 🤝 Exact</h4>"
-            "<b>DK 10</b> ends in 10. <b>DK FD-style</b> = FD-type endings on DK. "
-            "<b>FD Pattern</b> = +400+ ending 10/20/30/60/70/90 and needs DK or MGM too. "
-            "<b>Exact</b> = same price across books (not MGM teammate exact)."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>🔒 Lock · 🧠 Lock Lab</h4>"
-            "<b>Lock</b> = last pregame prices we saved. "
-            "<b>Lock Lab</b> = today's real HRs matched to Lock - best place to see what endings and methods actually went, best price book, and cross-tags."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>📡 Tracker · 📊 Results · Auto-grade</h4>"
-            "<b>Results</b> = TAKE IT and WATCH plays we logged (PENDING then HIT/MISS). "
-            "<b>Auto-grade</b> uses MLB box scores. <b>Tracker</b> = hit rate by tag after enough graded plays."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>🧪 Backtest</h4>"
-            "Last two weeks of graded TAKE IT vs WATCH hit rates."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>Books</h4>"
-            "Main methods: FanDuel, DraftKings, BetMGM. Value price books (prefer to bet the number): <b>DK, FD, Hard Rock</b> — often longest. Caesars compare. Bet365 on hold."
-            "</div>",
-            unsafe_allow_html=True,
-        )
-
-    st.markdown(
-        '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls We Rolling</div>',
-        unsafe_allow_html=True,
-    )
-
-
-if __name__ == "__main__":
-    main()
+        </d
