@@ -152,7 +152,7 @@ BIG_MOVE = 100
 PENDING_PAGE = 40
 EV_MIN_N = 12
 BOARD_MAX_PER_TEAM = 3
-BOARD_MAX_PER_GAME = 6
+BOARD_MAX_PER_GAME = 4
 # Tags that help unlock TAKE IT (method-first). Last one left is NOT included.
 TAKE_IT_STRONG = {
     "DK 10", "DK FD-style", "FD Pattern", "FD 600",
@@ -207,20 +207,52 @@ def normalize_method_name(m):
 def count_core_methods(meths):
     return len({normalize_method_name(m) for m in meths if is_core_method(m)})
 
-def qualifies_take_it(core_count, methods):
-    """Method-first TAKE IT. Edge is not required.
-    - 4+ core, or
-    - 3+ core + >=1 strong tag, or
-    - 2+ core + >=2 strong tags
-    Last one left does not count as strong.
-    """
+def strong_method_families(methods):
+    """Collapse related tags so MGM 00 + Match 00 count as one family, not two."""
     ms = {normalize_method_name(m) for m in (methods or [])}
-    strong_n = len(ms & TAKE_IT_STRONG)
-    if core_count >= 4:
+    families = set()
+    for m in ms:
+        if m not in TAKE_IT_STRONG and m not in {
+            "MGM 00", "MGM 25", "MGM 50", "MGM 75",
+            "Match 00", "Match 25", "Match 50", "Match 75",
+        }:
+            continue
+        if m.startswith("Match ") or m in ("MGM 00", "MGM 25", "MGM 50", "MGM 75"):
+            families.add("mgm_ending")
+        elif m in ("MGM Exact",):
+            families.add("mgm_exact")
+        elif m in ("Stayed in the group",):
+            families.add("mgm_sticky")
+        elif m in ("DK 10", "DK FD-style"):
+            families.add("dk")
+        elif m in ("FD Pattern", "FD 600"):
+            families.add("fd")
+        elif m in ("Exact Match", "All books same", "Books tight"):
+            families.add("price_sync")
+        elif m in ("Multi-book method", "Multi-book Shorten", "Same on 3+ books"):
+            families.add("multi_book")
+        elif m in TAKE_IT_STRONG:
+            families.add(m)
+    return families
+
+
+def qualifies_take_it(core_count, methods):
+    """Stricter method-first TAKE IT so the board is not all green.
+    Uses strong *families* (not raw tag count).
+    - 5+ core and 2+ strong families, or
+    - 4+ core and 3+ strong families, or
+    - 3+ core and 3+ strong families including dk or mgm_exact or mgm_sticky
+    Last one left never helps.
+    """
+    fams = strong_method_families(methods)
+    n = len(fams)
+    has_mgm_quality = bool(fams & {"mgm_exact", "mgm_sticky", "mgm_ending"})
+    has_dk = "dk" in fams
+    if core_count >= 5 and n >= 2:
         return True
-    if core_count >= 3 and strong_n >= 1:
+    if core_count >= 4 and n >= 3:
         return True
-    if core_count >= 2 and strong_n >= 2:
+    if core_count >= 3 and n >= 3 and (has_mgm_quality or has_dk):
         return True
     return False
 
@@ -1528,14 +1560,14 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             continue
         is_bet = qualifies_take_it(core_count, display_meths)
         row["is_bet"] = is_bet
-        strong_n = len({normalize_method_name(m) for m in display_meths} & TAKE_IT_STRONG)
+        fams = strong_method_families(display_meths)
+        strong_n = len(fams)
         if is_bet:
-            why = f"Score {score}/100 · {core_count} core · {strong_n} strong · edge {int(edge)}"
+            why = f"Score {score}/100 · {core_count} core · {strong_n} strong families · edge {int(edge)}"
         else:
             why = (
-                f"Score {score}/100 · {core_count} core · {strong_n} strong · edge {int(edge)} "
-                f"(need 4+ core, or 3+ with a strong tag, or 2+ with 2 strong — "
-                f"Last one left does not count as strong)"
+                f"Score {score}/100 · {core_count} core · {strong_n} strong families · edge {int(edge)} "
+                f"(TAKE IT needs a heavier stack — see Code tab)"
             )
         row["why"] = why
         conf, bars, level = get_confidence(score, is_bet)
@@ -2192,11 +2224,15 @@ def main():
             item["ev_value"] = ev
         else:
             item["ev_lean"] = item["ev_value"] = None
-    take_n = len([e for e in ev_board if e["is_bet"]])
-    pass_n = len([e for e in ev_board if not e["is_bet"]])
-    take_names = {e["player"] for e in ev_board}
-    # WATCH = 1+ core but not already on the 2+ core board list
-    watch_only = [w for w in watch_board if w["player"] not in take_names]
+    takes_all = [e for e in ev_board if e.get("is_bet")]
+    passes_all = [e for e in ev_board if not e.get("is_bet")]
+    take_n = len(takes_all)  # already post tighten_board
+    pass_n = len(passes_all)
+    multi_names = {e["player"] for e in ev_board}
+    watch_only = [
+        w for w in watch_board
+        if w["player"] not in multi_names and (w.get("method_count") or 0) < METHODS_MIN
+    ]
     watch_n = len(watch_only)
     st.markdown(f"""
     <div class="petty-row">
@@ -2223,7 +2259,7 @@ def main():
     )
     if nav == TAB_LABELS[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
-        st.caption("🟢 TAKE IT = strong method stacks (capped 3/team) · ⚪ PASS = 2+ methods but didn’t make cut · 👀 WATCH = 1 method only")
+        st.caption("🟢 TAKE IT = heavy stacks only (max 3/team · 4/game) · ⚪ PASS = 2+ methods not shortlisted · 👀 WATCH = 1 method only")
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
@@ -2268,7 +2304,7 @@ def main():
                             _render_board_card(item, "🟢 TAKE IT", "bet")
             else:
                 st.markdown("#### 🟢 TAKE IT")
-                st.caption("None right now (need a strong stack: 4+ core, or 3+ with a strong tag, or 2+ with 2 strong).")
+                st.caption("None right now — need a heavier method stack (see Code).")
 
             if passes:
                 st.markdown("#### ⚪ PASS · 2+ methods, not on TAKE IT shortlist")
