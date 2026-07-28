@@ -1296,15 +1296,89 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         for player, info in sorted(late_bucket.items()):
             kind = info["kind"]
             lock_note = locked_price_str(player)
-            reason = f"{kind} · {', '.join(sorted(set(info['books'])))}"
-            if lock_note and kind == "Gone Missing": reason += f"<br>🔒 {lock_note}"
+            books_s = ", ".join(sorted(set(info["books"])))
+            reason = f"{kind} · {books_s}"
+            if lock_note and kind == "Gone Missing":
+                reason += f"<br>🔒 last lock: {lock_note}"
             results.append({"type": "late", "label": player, "reason": reason, "methods": [kind]})
             methods_map[player].append(kind)
-    if lineup_names:
-        for player in sorted(all_players_now):
-            if name_in_lineup(player, lineup_names) is False:
-                results.append({"type": "late", "label": player, "reason": "⚠️ Not in RotoWire lineup", "methods": ["Not in lineup"]})
-                methods_map[player].append("Not in lineup")
+
+    # Lock had them on DK/FD/MGM — current fetch does not (true "missing from books")
+    lock = st.session_state.get("pregame_lock") or load_pregame()
+    FOCUS_LATE = ("draftkings", "fanduel", "betmgm", "hardrockbet")
+    now_by_player = defaultdict(set)
+    for _, r in df.iterrows():
+        bk = str(r.get("book") or "").lower()
+        try:
+            bk = normalize_book(bk)
+        except Exception:
+            pass
+        now_by_player[clean_name(r["player"])].add(bk)
+    for pname, entry in (lock or {}).items():
+        if entry.get("date") and entry.get("date") != today_az():
+            continue
+        books = entry.get("books") or {}
+        missing = []
+        for b, info in books.items():
+            if info.get("price") is None:
+                continue
+            bk = str(b).lower()
+            try:
+                bk = normalize_book(bk)
+            except Exception:
+                pass
+            if not any(k in bk for k in FOCUS_LATE):
+                continue
+            if bk not in now_by_player.get(clean_name(pname), set()) and not any(
+                k in x for x in now_by_player.get(clean_name(pname), set()) for k in (bk,)
+            ):
+                # also check substring match
+                present = now_by_player.get(clean_name(pname), set())
+                if not any(bk in p or p in bk for p in present):
+                    missing.append(book_label(b))
+        if not missing:
+            continue
+        # skip if already on feed under another name form
+        if clean_name(pname) in {clean_name(p) for p in all_players_now}:
+            # on feed somewhere — only flag if focus books specifically missing
+            present = now_by_player.get(clean_name(pname), set())
+            missing = []
+            for b, info in books.items():
+                if info.get("price") is None:
+                    continue
+                bk = str(b).lower()
+                try:
+                    bk = normalize_book(bk)
+                except Exception:
+                    pass
+                if not any(k in bk for k in FOCUS_LATE):
+                    continue
+                if not any(bk in p or p in bk for p in present):
+                    missing.append(f"{book_label(b)} {format_odds(info['price'])}")
+            if not missing:
+                continue
+        else:
+            missing = []
+            for b, info in books.items():
+                if info.get("price") is None:
+                    continue
+                bk = str(b).lower()
+                try:
+                    bk = normalize_book(bk)
+                except Exception:
+                    pass
+                if any(k in bk for k in FOCUS_LATE):
+                    missing.append(f"{book_label(b)} {format_odds(info['price'])}")
+        if not missing:
+            continue
+        reason = "Missing from books now · had on Lock: " + ", ".join(missing[:6])
+        results.append({
+            "type": "late",
+            "label": pname,
+            "reason": reason,
+            "methods": ["Gone Missing"],
+        })
+
     if len(phist) >= 2:
         prev_snap, curr_snap = phist[-2], phist[-1]
         player_up, player_down = defaultdict(list), defaultdict(list)
@@ -2234,19 +2308,22 @@ def main():
         if w["player"] not in multi_names and (w.get("method_count") or 0) < METHODS_MIN
     ]
     watch_n = len(watch_only)
+    dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
+    fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
+    mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
     st.markdown(f"""
     <div class="petty-row">
         <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">🟢 TAKE IT</div></div>
         <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">👀 WATCH</div></div>
         <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">⚪ PASS</div></div>
-        <div class="petty-box"><div class="petty-num">{len(aggregate_by_player([r for r in results if r['type']=='mgm']))}</div><div class="petty-label">🎰 MGM</div></div>
-        <div class="petty-box"><div class="petty-num">{len(fallen)}</div><div class="petty-label">💀 Fallen</div></div>
-        <div class="petty-box"><div class="petty-num">{lock_n}</div><div class="petty-label">🔒 Lock</div></div>
+        <div class="petty-box"><div class="petty-num">{dk_n}</div><div class="petty-label">🎯 DK</div></div>
+        <div class="petty-box"><div class="petty-num">{fd_n}</div><div class="petty-label">💙 FD</div></div>
+        <div class="petty-box"><div class="petty-num">{mgm_n}</div><div class="petty-label">🎰 MGM</div></div>
     </div>
     """, unsafe_allow_html=True)
     TAB_LABELS = [
         "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact", "💅 Names",
-        "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "💀 Fallen", "🔒 Lock",
+        "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "🔒 Lock",
         "🔍 Search",
         "🧠 Lock Lab", "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
     ]
@@ -2363,13 +2440,13 @@ def main():
         for r in aggregate_by_player(fade)[:15]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
     if nav == TAB_LABELS[9]:
-        show_player_cards("late", "👻 Late / Gone", "One card per player · lock prices when gone", results)
+        show_player_cards(
+            "late",
+            "👻 Late / Missing books",
+            "Gone from DK / FD / MGM (or HardRock) vs last fetch or Lock — not a RotoWire list",
+            results,
+        )
     if nav == TAB_LABELS[10]:
-        st.markdown('<div class="queen-banner">💀 Fallen</div>', unsafe_allow_html=True)
-        for r in fallen[:30]:
-            st.markdown(f'<div class="card"><b>{r["label"]}</b> · was {r.get("old_score", 0)}<br>{r["reason"]}</div>', unsafe_allow_html=True)
-        if not fallen: st.info("None")
-    if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">🔒 Pregame Lock</div>', unsafe_allow_html=True)
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
@@ -2386,7 +2463,7 @@ def main():
                     st.markdown(f'<div class="card"><b>{player}</b><br>' + "<br>".join(lines) + "</div>", unsafe_allow_html=True)
                 i += 1
 
-    if nav == TAB_LABELS[12]:
+    if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">🔍 Search · by book / price / ending</div>', unsafe_allow_html=True)
         st.caption("Filter the pregame lock — e.g. HardRock best odds first. Does not change Board or methods.")
         lock = st.session_state.get("pregame_lock") or load_pregame()
@@ -2491,7 +2568,7 @@ def main():
                 if len(rows) > 150:
                     st.caption(f"Showing first 150 of {len(rows)}")
 
-    if nav == TAB_LABELS[13]:
+    if nav == TAB_LABELS[12]:
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
         st.caption("Today's homers matched to what we locked before first pitch.")
         lab = build_lock_lab()
@@ -2560,7 +2637,7 @@ def main():
             with st.expander(f"Not in Lock ({len(lab['unmatched'])})"):
                 st.write(", ".join(lab["unmatched"][:50]))
 
-    if nav == TAB_LABELS[14]:
+    if nav == TAB_LABELS[13]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption("What has been hitting after we grade it.")
         def chips_from_stats(stats, min_n=TRACKER_MIN_N):
@@ -2580,7 +2657,7 @@ def main():
         st.markdown("#### By ending")
         chips = chips_from_stats(ending_stats)
         st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
-    if nav == TAB_LABELS[15]:
+    if nav == TAB_LABELS[14]:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB…"):
@@ -2649,7 +2726,7 @@ def main():
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
-    if nav == TAB_LABELS[16]:
+    if nav == TAB_LABELS[15]:
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
         rows_bt = load_results()
@@ -2717,7 +2794,7 @@ def main():
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
-    if nav == TAB_LABELS[17]:
+    if nav == TAB_LABELS[16]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.caption("Girl Magic cheat sheet — short blocks, real examples.")
         st.markdown(
