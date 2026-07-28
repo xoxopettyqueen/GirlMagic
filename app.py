@@ -2587,32 +2587,79 @@ def main():
                         "event": event,
                     })
 
-            if sort_pick.startswith("Best"):
-                rows.sort(key=lambda r: r["price"], reverse=True)
-            elif sort_pick.startswith("Lowest"):
-                rows.sort(key=lambda r: r["price"])
+            # Book = All → one card per player (all books under them)
+            # Book = specific → one row per matching book line
+            if book_key is None:
+                by_player = {}
+                for r in rows:
+                    p = r["player"]
+                    if p not in by_player:
+                        by_player[p] = {"event": r.get("event") or "", "lines": [], "best": r["price"]}
+                    by_player[p]["lines"].append(r)
+                    if r["price"] > by_player[p]["best"]:
+                        by_player[p]["best"] = r["price"]
+                cards = []
+                for p, info in by_player.items():
+                    lines_sorted = sorted(info["lines"], key=lambda x: -x["price"])
+                    line_bits = []
+                    for r in lines_sorted:
+                        end = r.get("ending")
+                        end_s = f" ends {int(end):02d}" if end is not None else ""
+                        line_bits.append(f"{book_label(r['book'])} <b>{format_odds(r['price'])}</b>{end_s}")
+                    cards.append({
+                        "player": p,
+                        "event": info["event"],
+                        "best": info["best"],
+                        "html_lines": " · ".join(line_bits),
+                    })
+                if sort_pick.startswith("Best"):
+                    cards.sort(key=lambda c: c["best"], reverse=True)
+                elif sort_pick.startswith("Lowest"):
+                    cards.sort(key=lambda c: c["best"])
+                else:
+                    cards.sort(key=lambda c: c["player"])
+                st.markdown(f"**{len(cards)}** player(s) · {len(rows)} book lines")
+                if not cards:
+                    st.info("Nothing matched — loosen filters.")
+                else:
+                    cols = st.columns(2)
+                    for idx, c in enumerate(cards[:120]):
+                        ev = c.get("event") or ""
+                        with cols[idx % 2]:
+                            st.markdown(
+                                f'<div class="card"><b>{c["player"]}</b>'
+                                + (f"<br><small>{ev}</small>" if ev else "")
+                                + f"<br>{c['html_lines']}</div>",
+                                unsafe_allow_html=True,
+                            )
+                    if len(cards) > 120:
+                        st.caption(f"Showing first 120 of {len(cards)} players")
             else:
-                rows.sort(key=lambda r: r["player"])
-
-            st.markdown(f"**{len(rows)}** result(s)")
-            if not rows:
-                st.info("Nothing matched — loosen filters.")
-            else:
-                cols = st.columns(2)
-                for idx, r in enumerate(rows[:150]):
-                    end = r.get("ending")
-                    end_s = f" · ends {int(end):02d}" if end is not None else ""
-                    ev = r.get("event") or ""
-                    with cols[idx % 2]:
-                        st.markdown(
-                            f'<div class="card"><b>{r["player"]}</b> · {book_label(r["book"])} '
-                            f'<b>{format_odds(r["price"])}</b>{end_s}'
-                            + (f"<br><small>{ev}</small>" if ev else "")
-                            + "</div>",
-                            unsafe_allow_html=True,
-                        )
-                if len(rows) > 150:
-                    st.caption(f"Showing first 150 of {len(rows)}")
+                if sort_pick.startswith("Best"):
+                    rows.sort(key=lambda r: r["price"], reverse=True)
+                elif sort_pick.startswith("Lowest"):
+                    rows.sort(key=lambda r: r["price"])
+                else:
+                    rows.sort(key=lambda r: r["player"])
+                st.markdown(f"**{len(rows)}** result(s)")
+                if not rows:
+                    st.info("Nothing matched — loosen filters.")
+                else:
+                    cols = st.columns(2)
+                    for idx, r in enumerate(rows[:150]):
+                        end = r.get("ending")
+                        end_s = f" · ends {int(end):02d}" if end is not None else ""
+                        ev = r.get("event") or ""
+                        with cols[idx % 2]:
+                            st.markdown(
+                                f'<div class="card"><b>{r["player"]}</b> · {book_label(r["book"])} '
+                                f'<b>{format_odds(r["price"])}</b>{end_s}'
+                                + (f"<br><small>{ev}</small>" if ev else "")
+                                + "</div>",
+                                unsafe_allow_html=True,
+                            )
+                    if len(rows) > 150:
+                        st.caption(f"Showing first 150 of {len(rows)}")
 
     if nav == TAB_LABELS[12]:
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
