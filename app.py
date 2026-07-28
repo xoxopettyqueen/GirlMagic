@@ -151,13 +151,22 @@ MOVE_MIN = 40
 BIG_MOVE = 100
 PENDING_PAGE = 40
 EV_MIN_N = 12
-BOARD_MAX_PER_TEAM = 2
+BOARD_MAX_PER_TEAM = 3
 BOARD_MAX_PER_GAME = 6
+# Tags that help unlock TAKE IT (method-first). Last one left is NOT included.
+TAKE_IT_STRONG = {
+    "DK 10", "DK FD-style", "FD Pattern", "FD 600",
+    "MGM Exact", "Stayed in the group",
+    "Match 00", "Match 25", "Match 50", "Match 75",
+    "MGM 00", "MGM 25", "MGM 50", "MGM 75",
+    "Exact Match", "All books same", "Books tight",
+    "Multi-book method", "Multi-book Shorten", "Same on 3+ books",
+}
 TRACKER_MIN_N = 10
 PERSONAL_STRONG = {
     "DK 10", "DK FD-style", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
     "Match 00", "Match 25", "Match 50", "Match 75", "MGM 00", "MGM 25", "MGM 50", "MGM 75",
-    "Last one left", "Stayed in the group", "Multi-book Shorten", "Same on 3+ books", "Multi-book method",
+    "Stayed in the group", "Multi-book Shorten", "Same on 3+ books", "Multi-book method",
     "All books same", "Books tight",
 }
 NOISE_METHODS = {
@@ -198,6 +207,23 @@ def normalize_method_name(m):
 def count_core_methods(meths):
     return len({normalize_method_name(m) for m in meths if is_core_method(m)})
 
+def qualifies_take_it(core_count, methods):
+    """Method-first TAKE IT. Edge is not required.
+    - 4+ core, or
+    - 3+ core + >=1 strong tag, or
+    - 2+ core + >=2 strong tags
+    Last one left does not count as strong.
+    """
+    ms = {normalize_method_name(m) for m in (methods or [])}
+    strong_n = len(ms & TAKE_IT_STRONG)
+    if core_count >= 4:
+        return True
+    if core_count >= 3 and strong_n >= 1:
+        return True
+    if core_count >= 2 and strong_n >= 2:
+        return True
+    return False
+
 def has_dk_or_mgm(meths):
     for m in meths:
         if m in ("DK 10", "DK FD-style"): return True
@@ -226,7 +252,6 @@ def girl_magic_score(core_count, edge, methods):
     edge_pts = min(40, max(0, int((edge / 180) * 40)))
     bonus = 0
     ms = {normalize_method_name(m) for m in methods}
-    if "Last one left" in ms: bonus += 5
     if "Stayed in the group" in ms: bonus += 3
     if "Multi-book method" in ms or "Multi-book Shorten" in ms: bonus += 4
     if "Same on 3+ books" in ms: bonus += 2
@@ -566,8 +591,10 @@ def log_bet_this(ev_board, watch_board=None):
         if item.get("is_bet"):
             append_row(item, "take_it")
     for item in watch_board:
-        # don't double-log someone already TAKE IT
+        # don't double-log TAKE IT; don't log 2+ core as WATCH (those are PASS/TAKE)
         if item.get("is_bet"):
+            continue
+        if (item.get("method_count") or 0) >= METHODS_MIN:
             continue
         append_row(item, "watch")
 
@@ -1168,17 +1195,24 @@ def build_team_map(df):
     return tm
 
 def tighten_board(ev_board):
-    if not ev_board: return []
-    ranked = sorted(ev_board, key=lambda x: (not x["is_bet"], -x["method_count"], -x["score"], -x["edge"]))
-    per_team, per_game, out = defaultdict(int), defaultdict(int), []
+    """Cap only TAKE IT (is_bet). PASS stays full so multi-method short-edge never falls into WATCH."""
+    if not ev_board:
+        return []
+    takes = [x for x in ev_board if x.get("is_bet")]
+    passes = [x for x in ev_board if not x.get("is_bet")]
+    ranked = sorted(takes, key=lambda x: (-x["method_count"], -x["score"], -x["edge"]))
+    per_team, per_game, out_takes = defaultdict(int), defaultdict(int), []
     for item in ranked:
         team = item.get("team") or "UNK"
         game = item.get("event") or (item.get("events") or ["UNK"])[0]
-        if per_team[team] >= BOARD_MAX_PER_TEAM or per_game[game] >= BOARD_MAX_PER_GAME: continue
-        out.append(item)
+        if per_team[team] >= BOARD_MAX_PER_TEAM or per_game[game] >= BOARD_MAX_PER_GAME:
+            continue
+        out_takes.append(item)
         per_team[team] += 1
         per_game[game] += 1
-    return out
+    # PASS: sort but do not hard-cap (show the real short-edge multi-method list)
+    passes = sorted(passes, key=lambda x: (-x["method_count"], -x["score"], -x["edge"]))
+    return out_takes + passes
 
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if df.empty: return [], [], [], []
@@ -1486,15 +1520,24 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "events": list(player_events.get(player, [])),
             "event": next(iter(player_events.get(player, [])), ""),
         }
-        # WATCH: 1+ core method - logged for learning / auto-grade
+        # WATCH list starts as 1+ core; refined at display/log time
         if core_count >= 1:
             watch_board.append(dict(row))
-        # TAKE IT board: still 2+ core
+        # PASS / TAKE IT pool: 2+ core (method-first, edge not required)
         if core_count < METHODS_MIN:
             continue
-        is_bet = edge >= EDGE_MIN
+        is_bet = qualifies_take_it(core_count, display_meths)
         row["is_bet"] = is_bet
-        row["why"] = f"Score {score}/100 · {core_count} core · edge {int(edge)}" + ("." if is_bet else f" (need {EDGE_MIN}+).")
+        strong_n = len({normalize_method_name(m) for m in display_meths} & TAKE_IT_STRONG)
+        if is_bet:
+            why = f"Score {score}/100 · {core_count} core · {strong_n} strong · edge {int(edge)}"
+        else:
+            why = (
+                f"Score {score}/100 · {core_count} core · {strong_n} strong · edge {int(edge)} "
+                f"(need 4+ core, or 3+ with a strong tag, or 2+ with 2 strong — "
+                f"Last one left does not count as strong)"
+            )
+        row["why"] = why
         conf, bars, level = get_confidence(score, is_bet)
         row["bars"], row["level"] = bars, level
         ev_board.append(row)
@@ -2180,7 +2223,7 @@ def main():
     )
     if nav == TAB_LABELS[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
-        st.caption("🟢 TAKE IT = 2+ methods + edge ≥ 60 · 👀 WATCH = 1+ method (track) · ⚪ PASS = 2+ methods but edge short")
+        st.caption("🟢 TAKE IT = strong method stacks (capped 3/team) · ⚪ PASS = 2+ methods but didn’t make cut · 👀 WATCH = 1 method only")
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
@@ -2201,9 +2244,12 @@ def main():
 
         takes = [e for e in ev_board if e.get("is_bet")]
         passes = [e for e in ev_board if not e.get("is_bet")]
-        take_names = {e["player"] for e in ev_board}
-        watches = [w for w in watch_board if w["player"] not in take_names]
-        # sort watches: more core methods / score first
+        # WATCH = strictly under 2 core methods (never dump capped PASS into WATCH)
+        multi_names = {e["player"] for e in ev_board}  # anyone with 2+ core already classified
+        watches = [
+            w for w in watch_board
+            if w["player"] not in multi_names and (w.get("method_count") or 0) < METHODS_MIN
+        ]
         watches = sorted(watches, key=lambda x: (-x.get("method_count", 0), -x.get("score", 0)))
 
         if not takes and not passes and not watches:
@@ -2222,16 +2268,16 @@ def main():
                             _render_board_card(item, "🟢 TAKE IT", "bet")
             else:
                 st.markdown("#### 🟢 TAKE IT")
-                st.caption("None right now (need 2+ methods + edge ≥ 60).")
+                st.caption("None right now (need a strong stack: 4+ core, or 3+ with a strong tag, or 2+ with 2 strong).")
 
             if passes:
-                st.markdown("#### ⚪ PASS · 2+ methods, edge short")
+                st.markdown("#### ⚪ PASS · 2+ methods, not on TAKE IT shortlist")
                 cols = st.columns(2)
                 for idx, item in enumerate(passes):
                     with cols[idx % 2]:
                         _render_board_card(item, "⚪ PASS", "skip")
 
-            st.markdown("#### 👀 WATCH · 1+ method (track for auto-grade)")
+            st.markdown("#### 👀 WATCH · 1 method only (track for auto-grade)")
             if not watches:
                 st.caption("None with exactly 1 core method right now — or everyone with methods is already TAKE IT / PASS.")
             else:
@@ -2666,7 +2712,7 @@ def main():
             "<b>Group of 3</b> — exactly <b>3 teammates</b> same ending. Not 4+.<br>"
             "<b>MGM Exact</b> — 2 or 3 teammates at the <b>exact same number</b> (e.g. both +525).<br>"
             "<b>Stayed in the group</b> — still in a pair/group across fetches.<br>"
-            "<b>Last one left</b> — was in a group early; still tagged when others drop.<br><br>"
+            "<b>Last one left</b> — was in a group early; still shows as a tag but is <b>not</b> a strong unlock for TAKE IT.<br><br>"
             "A lone +525 with no teammate partner is <b>not</b> an MGM method tag."
             "</div>"
 
