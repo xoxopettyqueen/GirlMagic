@@ -143,6 +143,7 @@ METHODS_MIN = 2
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
 OUTLIER_GAP = 150
+BOOK_CLUSTER_GAP = 50  # max spread across focus books to count as 'tight'
 REFRESH_MINUTES = 20
 FD_MIN = 400
 MOVE_PRICE_MIN = 500
@@ -157,6 +158,7 @@ PERSONAL_STRONG = {
     "DK 10", "DK FD-style", "FD Pattern", "FD 600", "Exact Match", "MGM Exact",
     "Match 00", "Match 25", "Match 50", "Match 75", "MGM 00", "MGM 25", "MGM 50", "MGM 75",
     "Last one left", "Stayed in the group", "Multi-book Shorten", "Same on 3+ books", "Multi-book method",
+    "All books same", "Books tight",
 }
 NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing", "Not in lineup", "In lineup · missing books",
@@ -174,6 +176,7 @@ TRACKER_ALWAYS = {
     "Multi-book method", "Stayed in the group", "Last one left", "MGM Exact", "DK 10",
     "FD Pattern", "FD 600", "Exact Match", "Match 00", "Match 25", "Match 50", "Match 75",
     "MGM 00", "MGM 25", "MGM 50", "MGM 75", "DK FD-style", "Multi-book Shorten",
+    "All books same", "Books tight",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
 MGM_ENDINGS = (0, 25, 50, 75)
@@ -207,7 +210,7 @@ def method_tag_class(m):
     if m.startswith("DK"): return "tag-dk"
     if m.startswith("MGM") or m in ("Last one left", "Stayed in the group") or "Stayed in group" in m: return "tag-mgm"
     if m.startswith("FD"): return "tag-fd"
-    if m in ("Exact Match", "MGM Exact") or m.startswith("Match "): return "tag-match"
+    if m in ("Exact Match", "MGM Exact", "All books same", "Books tight") or m.startswith("Match "): return "tag-match"
     if "Multi-book" in m or m == "Same on 3+ books": return "tag-strong"
     return ""
 
@@ -1338,12 +1341,61 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 tnote = f" · {team}" if team else ""
                 results.append({"type": "mgm", "label": " + ".join(names), "reason": f"MGM Exact {format_odds(price)} ({len(names)}){tnote}", "event": event, "methods": ["MGM Exact"]})
                 for n in names: methods_map[n].append("MGM Exact")
+    FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet")
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
-        if len(g) < 2: continue
-        prices = g["price"].dropna().tolist()
-        if len(set(prices)) == 1:
-            results.append({"type": "match", "label": player, "reason": f"Same price {format_odds(prices[0])} on {', '.join(g['book'])}", "event": g["event"].iloc[0], "methods": ["Exact Match"]})
-            methods_map[player].append("Exact Match")
+        if len(g) < 2:
+            continue
+        # Prefer focus books only for cluster tags
+        focus_rows = []
+        for _, r in g.iterrows():
+            bk = str(r.get("book") or "").lower()
+            try:
+                bk = normalize_book(bk)
+            except Exception:
+                pass
+            if any(k in bk for k in FOCUS_KEYS) or bk in FOCUS_KEYS:
+                if r.get("price") is not None:
+                    focus_rows.append((bk, int(r["price"])))
+        if len(focus_rows) < 2:
+            prices = [int(p) for p in g["price"].dropna().tolist()]
+            books = list(g["book"].astype(str))
+            if len(prices) >= 2 and len(set(prices)) == 1:
+                results.append({
+                    "type": "match", "label": player,
+                    "reason": f"Same price {format_odds(prices[0])} on {', '.join(books)}",
+                    "event": g["event"].iloc[0], "methods": ["Exact Match"],
+                })
+                methods_map[player].append("Exact Match")
+            continue
+        # one price per book (if dupes, keep first)
+        by_bk = {}
+        for bk, p in focus_rows:
+            if bk not in by_bk:
+                by_bk[bk] = p
+        prices = list(by_bk.values())
+        labels = [book_label(b) for b in by_bk.keys()]
+        if len(prices) < 2:
+            continue
+        lo, hi = min(prices), max(prices)
+        spread = hi - lo
+        ev0 = g["event"].iloc[0]
+        if spread == 0:
+            tag = "All books same" if len(prices) >= 3 else "Exact Match"
+            results.append({
+                "type": "match", "label": player,
+                "reason": f"{tag}: {format_odds(lo)} on {', '.join(labels)}",
+                "event": ev0, "methods": [tag],
+            })
+            methods_map[player].append(tag)
+            if tag != "Exact Match":
+                methods_map[player].append("Exact Match")
+        elif spread <= BOOK_CLUSTER_GAP and len(prices) >= 2:
+            results.append({
+                "type": "match", "label": player,
+                "reason": f"Books tight: {format_odds(lo)}–{format_odds(hi)} (gap {spread}) on {', '.join(labels)}",
+                "event": ev0, "methods": ["Books tight"],
+            })
+            methods_map[player].append("Books tight")
     for _, row in df.iterrows():
         if row["book"] != "fanduel": continue
         player = row["player"]
@@ -1723,9 +1775,21 @@ def lock_player_summary(player, lock_entry):
     end_vals = list(ends_by_book.values())
     if len(end_vals) >= 2 and len(set(end_vals)) == 1:
         tags.append(f"Same end {end_vals[0]:02d}")
-    prices = list(price_map.values())
-    if len(prices) >= 2 and len(set(prices)) == 1:
-        tags.append("Exact Match")
+    # Focus books for cluster tags
+    focus_prices = []
+    for bl, p in price_map.items():
+        if bl in ("DK", "FD", "MGM", "HardRock"):
+            focus_prices.append(int(p))
+    pool = focus_prices if len(focus_prices) >= 2 else list(price_map.values())
+    if len(pool) >= 2:
+        lo, hi = min(pool), max(pool)
+        spread = hi - lo
+        if spread == 0:
+            tags.append("All books same" if len(pool) >= 3 else "Exact Match")
+            if "Exact Match" not in tags:
+                tags.append("Exact Match")
+        elif spread <= BOOK_CLUSTER_GAP:
+            tags.append("Books tight")
     return list(dict.fromkeys(tags)), lines, ends_by_book, best_book, best_price, price_map
 
 
@@ -2600,7 +2664,7 @@ def main():
             "<h4>🎯 DK · 💙 FD · 🤝 Exact</h4>"
             "<b>DK 10</b> ends in 10. <b>DK FD-style</b> = FD-type endings on DK. "
             "<b>FD Pattern</b> = +400+ ending 10/20/30/60/70/90 and needs DK or MGM too. "
-            "<b>Exact</b> = same price across books (not MGM teammate exact)."
+            "<b>Exact / All books same</b> = same number on 2+ (or 3+) of DK/FD/MGM/HardRock. <b>Books tight</b> = those books within about 50 points (e.g. +450 to +475) — not exact, but bunched."
             "</div>"
             '<div class="glossary-block">'
             "<h4>🔒 Lock · 🧠 Lock Lab</h4>"
