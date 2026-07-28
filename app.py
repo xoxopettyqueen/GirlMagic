@@ -1996,6 +1996,7 @@ def main():
     TAB_LABELS = [
         "👑 Board", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact", "💅 Names",
         "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "💀 Fallen", "🔒 Lock",
+        "🔍 Search",
         "🧠 Lock Lab", "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
     ]
     nav = st.radio(
@@ -2130,7 +2131,113 @@ def main():
                 with cols[i % 2]:
                     st.markdown(f'<div class="card"><b>{player}</b><br>' + "<br>".join(lines) + "</div>", unsafe_allow_html=True)
                 i += 1
+
     if nav == TAB_LABELS[12]:
+        st.markdown('<div class="queen-banner">🔍 Search · by book / price / ending</div>', unsafe_allow_html=True)
+        st.caption("Filter the pregame lock — e.g. HardRock best odds first. Does not change Board or methods.")
+        lock = st.session_state.get("pregame_lock") or load_pregame()
+        if not lock:
+            st.info("Fetch pregame so Lock has prices, then search here.")
+        else:
+            BOOK_OPTS = [
+                ("All", None),
+                ("HardRock", "hardrock"),
+                ("BetMGM", "betmgm"),
+                ("DraftKings", "draftkings"),
+                ("FanDuel", "fanduel"),
+                ("Caesars", "caesars"),
+            ]
+            c1, c2, c3, c4 = st.columns(4)
+            with c1:
+                book_label_pick = st.selectbox(
+                    "Book",
+                    [x[0] for x in BOOK_OPTS],
+                    index=1,
+                    key="search_book",
+                )
+            with c2:
+                sort_pick = st.selectbox(
+                    "Sort",
+                    ["Best odds first (highest)", "Lowest first", "Name A–Z"],
+                    key="search_sort",
+                )
+            with c3:
+                ending_pick = st.selectbox(
+                    "Ending",
+                    ["Any", "00", "10", "25", "50", "75", "20", "30", "60", "70", "90"],
+                    key="search_end",
+                )
+            with c4:
+                min_price = st.number_input("Min price (+)", min_value=0, value=0, step=50, key="search_min")
+            name_q = st.text_input("Player name contains", key="search_name")
+
+            book_key = dict(BOOK_OPTS).get(book_label_pick)
+
+            rows = []
+            for player, entry in lock.items():
+                if name_q and name_q.lower() not in player.lower():
+                    continue
+                event = entry.get("event") or ""
+                for b, info in (entry.get("books") or {}).items():
+                    price = info.get("price")
+                    if price is None:
+                        continue
+                    bl = str(b).lower()
+                    if book_key:
+                        if book_key == "hardrock" and "hardrock" not in bl:
+                            continue
+                        if book_key == "betmgm" and "betmgm" not in bl and bl != "mgm":
+                            continue
+                        if book_key == "draftkings" and "draftkings" not in bl:
+                            continue
+                        if book_key == "fanduel" and "fanduel" not in bl:
+                            continue
+                        if book_key == "caesars" and "caesars" not in bl and "williamhill" not in bl:
+                            continue
+                    end = info.get("ending")
+                    if end is None:
+                        end = last_two(price)
+                    if ending_pick != "Any":
+                        if end is None or int(end) != int(ending_pick):
+                            continue
+                    if min_price and abs(int(price)) < int(min_price):
+                        continue
+                    rows.append({
+                        "player": player,
+                        "book": b,
+                        "price": int(price),
+                        "ending": end,
+                        "event": event,
+                    })
+
+            if sort_pick.startswith("Best"):
+                rows.sort(key=lambda r: r["price"], reverse=True)
+            elif sort_pick.startswith("Lowest"):
+                rows.sort(key=lambda r: r["price"])
+            else:
+                rows.sort(key=lambda r: r["player"])
+
+            st.markdown(f"**{len(rows)}** result(s)")
+            if not rows:
+                st.info("Nothing matched — loosen filters.")
+            else:
+                cols = st.columns(2)
+                for idx, r in enumerate(rows[:150]):
+                    end = r.get("ending")
+                    end_s = f" · ends {int(end):02d}" if end is not None else ""
+                    ev = r.get("event") or ""
+                    with cols[idx % 2]:
+                        st.markdown(
+                            f'<div class="card"><b>{r["player"]}</b> · {book_label(r["book"])} '
+                            f'<b>{format_odds(r["price"])}</b>{end_s}'
+                            + (f"<br><small>{ev}</small>" if ev else "")
+                            + "</div>",
+                            unsafe_allow_html=True,
+                        )
+                if len(rows) > 150:
+                    st.caption(f"Showing first 150 of {len(rows)}")
+
+    if nav == TAB_LABELS[13]:
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
         st.caption("Today's homers matched to what we locked before first pitch.")
         lab = build_lock_lab()
@@ -2199,7 +2306,7 @@ def main():
             with st.expander(f"Not in Lock ({len(lab['unmatched'])})"):
                 st.write(", ".join(lab["unmatched"][:50]))
 
-    if nav == TAB_LABELS[13]:
+    if nav == TAB_LABELS[14]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption("What has been hitting after we grade it.")
         def chips_from_stats(stats, min_n=TRACKER_MIN_N):
@@ -2219,7 +2326,7 @@ def main():
         st.markdown("#### By ending")
         chips = chips_from_stats(ending_stats)
         st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
-    if nav == TAB_LABELS[14]:
+    if nav == TAB_LABELS[15]:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB…"):
@@ -2288,7 +2395,7 @@ def main():
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
-    if nav == TAB_LABELS[15]:
+    if nav == TAB_LABELS[16]:
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
         rows_bt = load_results()
@@ -2356,7 +2463,7 @@ def main():
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
-    if nav == TAB_LABELS[16]:
+    if nav == TAB_LABELS[17]:
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.caption("Plain-English guide. Read this once - then the tabs make sense.")
         st.markdown(
