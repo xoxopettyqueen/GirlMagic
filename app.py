@@ -665,7 +665,9 @@ def auto_grade_pending():
 
 
 def build_whats_going_today(rows):
-    """Real MLB HRs today + endings from graded / lock. Count how many HRs were on our WATCH/TAKE list."""
+    """Today's MLB HRs + ending/book from grades or Lock (best among DK/FD/MGM/HardRock).
+    Not the same as MGM pair methods — those stay pair/trio-only on the Board.
+    """
     today = today_az()
     hr_names, _final, _msg = fetch_mlb_hr_hitters()
 
@@ -675,8 +677,39 @@ def build_whats_going_today(rows):
     our_list = [r for r in todays if r.get("source") in ("take_it", "watch")]
     lock = st.session_state.get("pregame_lock") or load_pregame()
 
-    ending_counts, book_ending = Counter(), Counter()
+    # Players who appeared in an MGM pair/trio in history this session
+    pair_players = set()
+    for snap in st.session_state.get("mgm_history") or []:
+        for g in snap:
+            if len(g.get("players") or []) in (2, 3):
+                pair_players.update(g["players"])
+
+    FOCUS = {"DK", "FD", "MGM", "HardRock"}
+    book_ending = Counter()
+    pair_ending = Counter()  # MGM endings only when player was in a pair/trio
     on_our_list = 0
+
+    def _pick_best_from_lock(entry):
+        """Longest American odds among DK / FD / MGM / HardRock only."""
+        books = entry.get("books") or {}
+        best_bl, best_p, best_end = None, None, None
+        for b, info in books.items():
+            p = info.get("price")
+            if p is None:
+                continue
+            bl = book_label(b)
+            if bl not in FOCUS:
+                continue
+            p = int(p)
+            end = info.get("ending")
+            if end is None:
+                end = last_two(p)
+            dec = american_to_decimal(p)
+            if dec is None:
+                continue
+            if best_p is None or dec > american_to_decimal(best_p):
+                best_bl, best_p, best_end = bl, p, end
+        return best_bl, best_p, best_end
 
     for r in hits_logged:
         ending = r.get("ending")
@@ -689,8 +722,13 @@ def build_whats_going_today(rows):
             continue
         ending = int(ending)
         bl = book_label(book)
-        ending_counts[ending] += 1
+        if bl not in FOCUS:
+            # still show under Other via label as-is
+            pass
         book_ending[(bl, ending)] += 1
+        pname = clean_name(r.get("player") or "")
+        if bl == "MGM" and any(names_match(pname, p) for p in pair_players):
+            pair_ending[ending] += 1
 
     for hr in hr_names:
         if any(names_match(hr, r.get("player") or "") for r in our_list):
@@ -699,38 +737,34 @@ def build_whats_going_today(rows):
         if already:
             continue
         entry = None
+        matched_name = None
         for pname, data in lock.items():
             if names_match(hr, pname):
                 entry = data
+                matched_name = pname
                 break
         if not entry:
             continue
-        end = entry.get("mgm_ending")
-        book = "betmgm" if end is not None else ""
-        if end is None:
-            for b, info in (entry.get("books") or {}).items():
-                if info.get("ending") is not None:
-                    end = info["ending"]
-                    book = b
-                    break
-        if end is None:
+        bl, _p, end = _pick_best_from_lock(entry)
+        if bl is None or end is None:
             continue
         end = int(end)
-        bl = book_label(book)
-        ending_counts[end] += 1
         book_ending[(bl, end)] += 1
+        if bl == "MGM" and matched_name and any(names_match(matched_name, p) for p in pair_players):
+            pair_ending[end] += 1
 
-    # Group by book only (DK / FD / MGM / HardRock) — no duplicate "Ends XX" chips
     by_book = defaultdict(list)
     for (bl, end), cnt in book_ending.items():
         by_book[bl].append((int(end), int(cnt)))
     for bl in by_book:
         by_book[bl].sort(key=lambda x: (-x[1], x[0]))
-    return len(hr_names), len(graded), dict(by_book), on_our_list
+    pair_list = sorted(pair_ending.items(), key=lambda x: (-x[1], x[0]))
+    return len(hr_names), len(graded), dict(by_book), on_our_list, pair_list
+
 
 def render_whats_going_today():
     rows = load_results()
-    mlb_hr, n_graded, by_book, on_list = build_whats_going_today(rows)
+    mlb_hr, n_graded, by_book, on_list, pair_list = build_whats_going_today(rows)
     order = ["DK", "FD", "MGM", "HardRock"]
     cols_html = []
     for bl in order:
@@ -767,15 +801,29 @@ def render_whats_going_today():
     if cols_html:
         body = '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">%s</div>' % ("".join(cols_html))
     else:
-        body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">No book endings matched yet</div>'
+        body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">No endings matched yet</div>'
+
+    pair_note = ""
+    if pair_list:
+        bits = ["%02d:%s" % (e, c) for e, c in pair_list[:5]]
+        pair_note = (
+            '<div style="margin-top:8px;font-size:0.72rem;color:#fcd34d">'
+            'MGM pair/trio only (method): %s'
+            '</div>' % (" · ".join(bits))
+        )
+
     title = "What's Going Today"
+    sub = (
+        "%s HRs · %s on our list · best price among DK/FD/MGM/HardRock "
+        "(not MGM pair rules)"
+    ) % (mlb_hr, on_list)
     html = (
         '<div class="trends-today" style="padding:12px 14px">'
         '<div class="trends-today-header" style="margin-bottom:4px">'
         '<div class="trends-today-title">🔥 %s</div>'
-        '<div class="trends-today-sub">%s HRs · %s on our list</div>'
-        '</div>%s</div>'
-    ) % (title, mlb_hr, on_list, body)
+        '<div class="trends-today-sub">%s</div>'
+        '</div>%s%s</div>'
+    ) % (title, sub, body, pair_note)
     st.markdown(html, unsafe_allow_html=True)
 
 
