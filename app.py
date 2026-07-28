@@ -388,25 +388,45 @@ def save_pregame(data):
     except Exception: pass
 
 def update_pregame_lock(df):
-    if df is None or df.empty: return load_pregame()
+    """Merge pregame prices only. FIRST price per player+book wins for the day.
+    Live/in-game fetches must NOT overwrite locked numbers (would poison methods).
+    """
+    if df is None or df.empty:
+        return load_pregame()
     lock = load_pregame()
     today, ts = today_az(), now_utc_iso()
     for _, r in df.iterrows():
         player = clean_name(r["player"])
         book = str(r["book"]).lower()
+        try:
+            book = normalize_book(book)
+        except Exception:
+            pass
         price = r["price"]
         event = r.get("event") or ""
-        if player not in lock:
+        if price is None:
+            continue
+        if player not in lock or lock[player].get("date") != today:
             lock[player] = {"date": today, "event": event, "books": {}, "locked_at": ts, "updated_at": ts}
         entry = lock[player]
-        if event: entry["event"] = event
+        if event and not entry.get("event"):
+            entry["event"] = event
         entry["date"] = today
         entry["updated_at"] = ts
         entry.setdefault("books", {})
-        entry["books"][book] = {"price": int(price) if price is not None else None, "ending": last_two(price), "seen_at": ts}
+        # FIRST write wins — never replace an existing book price once locked
+        if book in entry["books"] and entry["books"][book].get("price") is not None:
+            continue
+        entry["books"][book] = {
+            "price": int(price),
+            "ending": last_two(price),
+            "seen_at": ts,
+            "locked": True,
+        }
         if "betmgm" in book or book == "mgm":
-            entry["mgm_price"] = int(price) if price is not None else entry.get("mgm_price")
-            entry["mgm_ending"] = last_two(price)
+            if entry.get("mgm_price") is None:
+                entry["mgm_price"] = int(price)
+                entry["mgm_ending"] = last_two(price)
     save_pregame(lock)
     st.session_state["pregame_lock"] = lock
     return lock
@@ -510,17 +530,32 @@ def log_bet_this(ev_board, watch_board=None):
         if already(player, source):
             return
         locked = get_locked(player)
+        # Prefer FROZEN pregame lock prices — never learn from live numbers
         price = item.get("best_price")
+        book = item.get("best_book") or ""
+        lock_books = locked.get("books") or {}
+        if lock_books:
+            best_p, best_b = None, None
+            for b, info in lock_books.items():
+                p = info.get("price")
+                if p is None:
+                    continue
+                p = int(p)
+                if best_p is None or (american_to_decimal(p) or 0) > (american_to_decimal(best_p) or 0):
+                    best_p, best_b = p, b
+            if best_p is not None:
+                price, book = best_p, best_b
         rows.append({
             "id": f"{today}_{player}_{source}_{int(item.get('score') or 0)}",
             "date": today, "time": now_az(), "player": player,
             "score": item.get("score", 0), "edge": int(item.get("edge") or 0),
-            "best_price": price, "best_book": item.get("best_book", ""),
+            "best_price": price, "best_book": book,
             "ending": last_two(price) if price is not None else None,
             "mgm_locked": locked.get("mgm_price"), "mgm_ending": locked.get("mgm_ending"),
             "methods": [normalize_method_name(m) for m in (item.get("methods") or [])],
             "core": item.get("method_count", 0),
             "result": "PENDING", "source": source, "logged_at": now_utc_iso(),
+            "price_source": "pregame_lock" if lock_books else "live_fetch",
         })
         added += 1
 
@@ -1673,7 +1708,7 @@ def lock_player_summary(player, lock_entry):
             end = int(end)
             ends_by_book[bl] = end
             if bl == "MGM" and end in MGM_ENDINGS:
-                tags.append(f"MGM {end:02d}")
+                tags.append(f"MGM end {end:02d}")  # price ending only — pair/trio is Board method
             if bl == "DK" and end == 10:
                 tags.append("DK 10")
             if bl == "DK" and end in FD_ENDINGS:
