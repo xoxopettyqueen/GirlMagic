@@ -179,6 +179,7 @@ SUPPORT_ONLY = {
     "DK 10",           # 0% on graded TAKE IT — benched for scoring
     "Match 00", "MGM 00",
     "Last one left",   # tag OK, never unlocks TAKE IT
+    "FD+MGM classic",  # FD Pattern/600 + MGM 25/50/75 — track, learn timing
 }
 TRACKER_MIN_N = 10
 # Name magic can still use a slightly wider set
@@ -204,7 +205,7 @@ TRACKER_ALWAYS = {
     "Multi-book method", "Stayed in the group", "Last one left", "MGM Exact", "DK 10",
     "FD Pattern", "FD 600", "Exact Match", "Match 00", "Match 25", "Match 50", "Match 75",
     "MGM 00", "MGM 25", "MGM 50", "MGM 75", "DK FD-style", "Multi-book Shorten",
-    "All books same", "Books tight",
+    "All books same", "Books tight", "FD+MGM classic",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
 MGM_ENDINGS = (0, 25, 50, 75)
@@ -511,16 +512,67 @@ def save_pregame(data):
         with open(PREGAME_FILE, "w") as f: json.dump(data, f, indent=2)
     except Exception: pass
 
+def _book_slot_normalize(info):
+    """Migrate old {price, ending, seen_at} → first/latest/close shape."""
+    if not isinstance(info, dict):
+        return {}
+    out = dict(info)
+    p = out.get("latest_price")
+    if p is None:
+        p = out.get("price")
+    if p is not None:
+        try:
+            p = int(p)
+        except Exception:
+            p = None
+    first = out.get("first_price")
+    if first is None:
+        first = p
+    if first is not None:
+        try:
+            first = int(first)
+        except Exception:
+            first = p
+    latest = out.get("latest_price")
+    if latest is None:
+        latest = p if p is not None else first
+    if latest is not None:
+        try:
+            latest = int(latest)
+        except Exception:
+            latest = first
+    close = out.get("close_price")
+    if close is not None:
+        try:
+            close = int(close)
+        except Exception:
+            close = None
+    out["first_price"] = first
+    out["latest_price"] = latest
+    out["close_price"] = close
+    # canonical "price" = best research number: close > latest > first
+    use = close if close is not None else (latest if latest is not None else first)
+    out["price"] = use
+    out["ending"] = last_two(use) if use is not None else out.get("ending")
+    out.setdefault("first_at", out.get("seen_at") or out.get("first_at"))
+    out.setdefault("latest_at", out.get("seen_at") or out.get("latest_at"))
+    return out
+
+
 def update_pregame_lock(df):
-    """Merge pregame prices only. FIRST price per player+book wins for the day.
-    Live/in-game fetches must NOT overwrite locked numbers (would poison methods).
+    """Timing lock: first (open) never changes; latest updates each pregame fetch;
+    close freezes when a book disappears from the feed (post-live / pulled).
     """
     if df is None or df.empty:
         return load_pregame()
     lock = load_pregame()
     today, ts = today_az(), now_utc_iso()
+    seen_keys = set()  # (player, book) present this fetch
+
     for _, r in df.iterrows():
         player = clean_name(r["player"])
+        if is_blocked_player(player):
+            continue
         book = str(r["book"]).lower()
         try:
             book = normalize_book(book)
@@ -530,51 +582,158 @@ def update_pregame_lock(df):
         event = r.get("event") or ""
         if price is None:
             continue
-        if player not in lock or lock[player].get("date") != today:
-            lock[player] = {"date": today, "event": event, "books": {}, "locked_at": ts, "updated_at": ts}
-        entry = lock[player]
-        if event and not entry.get("event"):
-            entry["event"] = event
-        entry["date"] = today
-        entry["updated_at"] = ts
-        entry.setdefault("books", {})
-        # FIRST write wins — never replace an existing book price once locked
-        if book in entry["books"] and entry["books"][book].get("price") is not None:
-            continue
         try:
             ip = int(price)
         except Exception:
             continue
         if ip > MAX_HR_AMERICAN:
             continue
-        if is_blocked_player(player):
-            continue
-        entry["books"][book] = {
-            "price": ip,
-            "ending": last_two(ip),
-            "seen_at": ts,
-            "locked": True,
-        }
+
+        if player not in lock or lock[player].get("date") != today:
+            lock[player] = {
+                "date": today, "event": event, "books": {},
+                "locked_at": ts, "updated_at": ts,
+            }
+        entry = lock[player]
+        if event:
+            entry["event"] = event
+        entry["date"] = today
+        entry["updated_at"] = ts
+        entry.setdefault("books", {})
+        seen_keys.add((player, book))
+
+        prev = _book_slot_normalize(entry["books"].get(book) or {})
+        if prev.get("first_price") is None:
+            # OPEN — first pull of the day
+            entry["books"][book] = {
+                "first_price": ip,
+                "first_at": ts,
+                "latest_price": ip,
+                "latest_at": ts,
+                "close_price": None,
+                "close_at": None,
+                "price": ip,
+                "ending": last_two(ip),
+                "seen_at": ts,
+                "locked": True,
+            }
+        else:
+            # Keep open; walk latest (even if close already set, still track live path pre-close)
+            first = int(prev["first_price"])
+            close = prev.get("close_price")
+            entry["books"][book] = {
+                "first_price": first,
+                "first_at": prev.get("first_at") or ts,
+                "latest_price": ip,
+                "latest_at": ts,
+                "close_price": close,
+                "close_at": prev.get("close_at"),
+                "price": int(close) if close is not None else ip,
+                "ending": last_two(int(close) if close is not None else ip),
+                "seen_at": ts,
+                "locked": True,
+            }
         if "betmgm" in book or book == "mgm":
-            if entry.get("mgm_price") is None:
-                entry["mgm_price"] = int(price)
-                entry["mgm_ending"] = last_two(price)
+            slot = entry["books"][book]
+            if entry.get("mgm_first") is None:
+                entry["mgm_first"] = slot["first_price"]
+            entry["mgm_price"] = slot.get("close_price") or slot["latest_price"]
+            entry["mgm_ending"] = last_two(entry["mgm_price"])
+
+    # CLOSE: books we had today but not in this fetch → freeze latest as close
+    for player, entry in list(lock.items()):
+        if entry.get("date") != today:
+            continue
+        books = entry.get("books") or {}
+        for book, raw in list(books.items()):
+            slot = _book_slot_normalize(raw)
+            if (player, book) in seen_keys:
+                entry["books"][book] = slot
+                continue
+            if slot.get("close_price") is not None:
+                entry["books"][book] = slot
+                continue
+            latest = slot.get("latest_price") or slot.get("first_price")
+            if latest is None:
+                continue
+            slot["close_price"] = int(latest)
+            slot["close_at"] = ts
+            slot["price"] = int(latest)
+            slot["ending"] = last_two(int(latest))
+            entry["books"][book] = slot
+            if "betmgm" in book or book == "mgm":
+                entry["mgm_price"] = int(latest)
+                entry["mgm_ending"] = last_two(int(latest))
+
     save_pregame(lock)
     st.session_state["pregame_lock"] = lock
     return lock
 
+
 def get_locked(player):
     lock = st.session_state.get("pregame_lock") or load_pregame()
     return lock.get(clean_name(player)) or lock.get(player) or {}
+
 
 def locked_price_str(player):
     entry = get_locked(player)
     books = entry.get("books") or {}
     parts = []
     for b, info in sorted(books.items()):
-        p = info.get("price")
-        if p is not None: parts.append(f"{book_label(b)} {format_odds(p)}")
+        slot = _book_slot_normalize(info)
+        use = slot.get("close_price")
+        if use is None:
+            use = slot.get("latest_price")
+        if use is None:
+            use = slot.get("first_price")
+        if use is not None:
+            parts.append(f"{book_label(b)} {format_odds(use)}")
     return " · ".join(parts)
+
+
+def format_az_from_iso(iso):
+    if not iso:
+        return ""
+    try:
+        dt = datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
+        return dt.astimezone(timezone(timedelta(hours=-7))).strftime("%I:%M %p")
+    except Exception:
+        return ""
+
+
+def lock_movement_rows(lock=None):
+    """Open → latest / open → close moves from the timing lock (500+ filter)."""
+    lock = lock if lock is not None else (st.session_state.get("pregame_lock") or load_pregame())
+    up, down = defaultdict(list), defaultdict(list)
+    today = today_az()
+    for player, entry in lock.items():
+        if entry.get("date") != today:
+            continue
+        for book, raw in (entry.get("books") or {}).items():
+            slot = _book_slot_normalize(raw)
+            first = slot.get("first_price")
+            latest = slot.get("latest_price")
+            close = slot.get("close_price")
+            if first is None:
+                continue
+            # prefer close vs open if closed; else latest vs open
+            end_p = close if close is not None else latest
+            if end_p is None or end_p == first:
+                continue
+            if abs(first) < MOVE_PRICE_MIN and abs(end_p) < MOVE_PRICE_MIN:
+                continue
+            delta = int(end_p) - int(first)
+            if abs(delta) < MOVE_MIN:
+                continue
+            phase = "close" if close is not None else "latest"
+            t0 = format_az_from_iso(slot.get("first_at")) or "?"
+            t1 = format_az_from_iso(slot.get("close_at") if close is not None else slot.get("latest_at")) or "?"
+            line = (
+                f"{book_label(book)} open {format_odds(first)} ({t0}) → "
+                f"{phase} {format_odds(end_p)} ({t1}) ({delta:+d})"
+            )
+            (up if delta > 0 else down)[player].append(line)
+    return up, down
 
 def load_history():
     if not os.path.exists(HISTORY_FILE): return
@@ -1484,6 +1643,25 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             results.append({"type": "hist", "move_dir": "up", "label": player, "reason": "<br>".join(moves), "methods": ["Price moved"]})
         for player, moves in sorted(player_down.items()):
             results.append({"type": "hist", "move_dir": "down", "label": player, "reason": "<br>".join(moves), "methods": ["Price moved"]})
+    # Lock timing moves: open → latest/close (survives MGM drop)
+    try:
+        lock_up, lock_down = lock_movement_rows()
+        for player, moves in sorted(lock_up.items()):
+            if player not in all_players_now and player not in lock_up:
+                pass
+            results.append({
+                "type": "hist", "move_dir": "up", "label": player,
+                "reason": "🔒 from open<br>" + "<br>".join(moves),
+                "methods": ["Price moved"],
+            })
+        for player, moves in sorted(lock_down.items()):
+            results.append({
+                "type": "hist", "move_dir": "down", "label": player,
+                "reason": "🔒 from open<br>" + "<br>".join(moves),
+                "methods": ["Price moved"],
+            })
+    except Exception:
+        pass
     for player, g in df.groupby("player"):
         by_book = {r["book"]: r["price"] for _, r in g.iterrows()}
         fd = by_book.get("fanduel")
@@ -1633,6 +1811,18 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if price >= FD_MIN and last in FD_ENDINGS:
             results.append({"type": "fd", "label": player, "reason": f"FD ends {last:02d} (with DK/MGM) → {format_odds(row['price'])}", "event": row["event"], "methods": ["FD Pattern"]})
             methods_map[player].append("FD Pattern")
+    # FD+MGM classic combo (support tag — study timing before promoting)
+    for player, ms in list(methods_map.items()):
+        ms_set = set(ms)
+        has_fd = ("FD Pattern" in ms_set) or ("FD 600" in ms_set)
+        has_mgm_classic = bool(ms_set & {"MGM 25", "MGM 50", "MGM 75", "Match 25", "Match 50", "Match 75"})
+        if has_fd and has_mgm_classic and "FD+MGM classic" not in ms_set:
+            methods_map[player].append("FD+MGM classic")
+            results.append({
+                "type": "fd", "label": player,
+                "reason": "FD Pattern/600 + MGM classic 25/50/75 (combo — tracking)",
+                "event": "", "methods": ["FD+MGM classic"],
+            })
     signal_book_n = {}  # player -> # of method-books (DK/MGM/FD) for sorting Signals
     for player, ms in list(methods_map.items()):
         core = [m for m in set(ms) if is_core_method(m)]
@@ -1979,28 +2169,50 @@ def filter_events_today(events):
 
 
 
-def lock_player_summary(player, lock_entry):
-    """Tags from a pregame lock entry. Also picks longest price (best for bettor)."""
+def lock_player_summary(player, lock_entry, price_mode="close"):
+    """Tags from lock. price_mode: close | latest | first.
+    lines show open → now/close when they differ.
+    """
     books = lock_entry.get("books") or {}
     tags, lines, ends_by_book = [], [], {}
     best_book, best_price, best_key = None, None, None
-    price_map = {}  # bl -> price
+    price_map = {}  # bl -> research price
+    primary_end = None  # one ending for Lab chips (DK/FD/MGM best)
+    primary_prices = {}
+
     for b, info in books.items():
-        p = info.get("price")
-        end = info.get("ending")
-        if end is None and p is not None:
-            end = last_two(p)
+        slot = _book_slot_normalize(info)
+        first = slot.get("first_price")
+        latest = slot.get("latest_price")
+        close = slot.get("close_price")
+        if price_mode == "first":
+            p = first
+        elif price_mode == "latest":
+            p = latest if latest is not None else first
+        else:
+            p = close if close is not None else (latest if latest is not None else first)
         if p is None:
             continue
         p = int(p)
         bl = book_label(b)
         price_map[bl] = p
-        lines.append(f"{bl} {format_odds(p)}")
+        t0 = format_az_from_iso(slot.get("first_at"))
+        t1 = format_az_from_iso(slot.get("close_at") or slot.get("latest_at"))
+        if first is not None and first != p:
+            lines.append(
+                f"{bl} open {format_odds(first)}"
+                + (f" ({t0})" if t0 else "")
+                + f" → {format_odds(p)}"
+                + (f" ({t1})" if t1 else "")
+            )
+        else:
+            lines.append(f"{bl} {format_odds(p)}" + (f" · {t0 or t1}" if (t0 or t1) else ""))
+        end = last_two(p)
         if end is not None:
             end = int(end)
             ends_by_book[bl] = end
             if bl == "MGM" and end in MGM_ENDINGS:
-                tags.append(f"MGM end {end:02d}")  # price ending only — pair/trio is Board method
+                tags.append(f"MGM end {end:02d}")
             if bl == "DK" and end == 10:
                 tags.append("DK 10")
             if bl == "DK" and end in FD_ENDINGS:
@@ -2009,17 +2221,18 @@ def lock_player_summary(player, lock_entry):
                 tags.append("FD Pattern")
             if bl == "FD" and abs(p) == 600:
                 tags.append("FD 600")
-        # longest American odds = best for someone betting the over
+        if bl in ("DK", "FD", "MGM"):
+            primary_prices[bl] = p
         if best_price is None or american_to_decimal(p) > american_to_decimal(best_price):
             best_price, best_book, best_key = p, bl, b
+    # primary ending for 1-chip-per-HR: longest among DK/FD/MGM
+    if primary_prices:
+        pb = max(primary_prices.items(), key=lambda x: american_to_decimal(x[1]))
+        primary_end = (pb[0], last_two(pb[1]), pb[1])
     end_vals = list(ends_by_book.values())
     if len(end_vals) >= 2 and len(set(end_vals)) == 1:
         tags.append(f"Same end {end_vals[0]:02d}")
-    # Focus books for cluster tags
-    focus_prices = []
-    for bl, p in price_map.items():
-        if bl in ("DK", "FD", "MGM", "HardRock"):
-            focus_prices.append(int(p))
+    focus_prices = [int(p) for bl, p in price_map.items() if bl in ("DK", "FD", "MGM", "HardRock")]
     pool = focus_prices if len(focus_prices) >= 2 else list(price_map.values())
     if len(pool) >= 2:
         lo, hi = min(pool), max(pool)
@@ -2030,7 +2243,12 @@ def lock_player_summary(player, lock_entry):
                 tags.append("Exact Match")
         elif spread <= BOOK_CLUSTER_GAP:
             tags.append("Books tight")
-    return list(dict.fromkeys(tags)), lines, ends_by_book, best_book, best_price, price_map
+    # combo on lock tags
+    has_fd = any(t in ("FD Pattern", "FD 600") for t in tags)
+    has_mgm = any(t.startswith("MGM end") and t[-2:] in ("25", "50", "75") for t in tags)
+    if has_fd and has_mgm:
+        tags.append("FD+MGM classic")
+    return list(dict.fromkeys(tags)), lines, ends_by_book, best_book, best_price, price_map, primary_end
 
 
 def build_lock_lab():
@@ -2055,11 +2273,20 @@ def build_lock_lab():
         if not entry:
             unmatched.append(hr)
             continue
-        tags, lines, ends_by_book, best_book, best_price, price_map = lock_player_summary(hr, entry)
+        tags, lines, ends_by_book, best_book, best_price, price_map, primary_end = lock_player_summary(
+            hr, entry, price_mode="close"
+        )
+        # 1 chip per HR for primary books (DK/FD/MGM best price) — no multi-book inflation
+        if primary_end:
+            bl, end, _p = primary_end
+            if end is not None:
+                ending_counter[int(end)] += 1
+                book_end_counter[(bl, int(end))] += 1
+                book_appear[bl] += 1
+        # still track full book×ending for noise warnings (HardRock/Caesars)
         for bl, end in ends_by_book.items():
-            ending_counter[end] += 1
-            book_end_counter[(bl, end)] += 1
-            book_appear[bl] += 1
+            if bl in ("HardRock", "Caesars"):
+                book_end_counter[(bl, end)] += 1
         for t in tags:
             tag_counter[t] += 1
         if best_book:
@@ -2512,6 +2739,7 @@ def main():
         show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
     if nav == TAB_LABELS[7]:
         st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
+        st.caption("Fetch-to-fetch + 🔒 open → now/close from Lock.")
         for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
             st.markdown(f"#### {title}")
             items = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == move_dir])
@@ -2538,21 +2766,65 @@ def main():
             results,
         )
     if nav == TAB_LABELS[10]:
-        st.markdown('<div class="queen-banner">🔒 Pregame Lock</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
+        st.caption(
+            "Open = first pull (never changes) · Now = latest pregame fetch · "
+            "Close = frozen when the book drops off the feed (often at first pitch)."
+        )
         lock = st.session_state.get("pregame_lock") or load_pregame()
         if not lock:
             st.info("Fetch pregame to build lock.")
         else:
             q = st.text_input("Filter", key="lock_q")
+            show_moved = st.checkbox("Only show open → now/close movers", value=False, key="lock_movers")
             cols = st.columns(2)
             i = 0
+            today = today_az()
             for player, entry in sorted(lock.items()):
-                if q and q.lower() not in player.lower(): continue
-                lines = [f"{book_label(b)} {format_odds(info['price'])}" for b, info in sorted((entry.get("books") or {}).items()) if info.get("price") is not None]
-                if not lines: continue
+                if entry.get("date") and entry.get("date") != today:
+                    continue
+                if q and q.lower() not in player.lower():
+                    continue
+                lines = []
+                moved = False
+                for b, info in sorted((entry.get("books") or {}).items()):
+                    slot = _book_slot_normalize(info)
+                    first = slot.get("first_price")
+                    latest = slot.get("latest_price")
+                    close = slot.get("close_price")
+                    if first is None and latest is None:
+                        continue
+                    t0 = format_az_from_iso(slot.get("first_at"))
+                    tL = format_az_from_iso(slot.get("latest_at"))
+                    tC = format_az_from_iso(slot.get("close_at"))
+                    bl = book_label(b)
+                    bit = f"<b>{bl}</b> open {format_odds(first)}" + (f" <small>({t0})</small>" if t0 else "")
+                    if latest is not None and latest != first:
+                        moved = True
+                        d = int(latest) - int(first)
+                        bit += f"<br>→ now {format_odds(latest)}" + (f" <small>({tL})</small>" if tL else "") + f" ({d:+d})"
+                    if close is not None:
+                        if close != first:
+                            moved = True
+                        d2 = int(close) - int(first)
+                        bit += f"<br>→ close {format_odds(close)}" + (f" <small>({tC})</small>" if tC else "") + f" ({d2:+d})"
+                    lines.append(bit)
+                if not lines:
+                    continue
+                if show_moved and not moved:
+                    continue
+                ev = entry.get("event") or ""
                 with cols[i % 2]:
-                    st.markdown(f'<div class="card"><b>{player}</b><br>' + "<br>".join(lines) + "</div>", unsafe_allow_html=True)
+                    st.markdown(
+                        f'<div class="card"><b>{player}</b>'
+                        + (f"<br><small>{ev}</small>" if ev else "")
+                        + "<br>" + "<br>".join(lines)
+                        + "</div>",
+                        unsafe_allow_html=True,
+                    )
                 i += 1
+            if i == 0:
+                st.info("No lock rows matched.")
 
     if nav == TAB_LABELS[11]:
         st.markdown('<div class="queen-banner">🔍 Search · by book / price / ending</div>', unsafe_allow_html=True)
@@ -2606,7 +2878,12 @@ def main():
                     continue
                 event = entry.get("event") or ""
                 for b, info in (entry.get("books") or {}).items():
-                    price = info.get("price")
+                    slot = _book_slot_normalize(info)
+                    price = slot.get("close_price")
+                    if price is None:
+                        price = slot.get("latest_price")
+                    if price is None:
+                        price = slot.get("first_price")
                     if price is None:
                         continue
                     bl = str(b).lower()
@@ -2986,7 +3263,8 @@ def main():
             "<h4>💙 FanDuel</h4>"
             "<b>FD Pattern</b> — price <b>+400 or higher</b> and ends in 10 / 20 / 30 / 60 / 70 / 90.<br>"
             "Also needs a <b>DK or MGM</b> trick on that player (FD alone doesn’t count).<br>"
-            "<b>FD 600</b> — specifically +600. <b>Premium</b> — best TAKE IT rate in recent grades."
+            "<b>FD 600</b> — specifically +600. <b>Premium</b> — best TAKE IT rate in recent grades.<br>"
+            "<b>FD+MGM classic</b> — FD Pattern/600 <b>and</b> MGM 25/50/75 on the same player (tracking combo)."
             "</div>"
 
             '<div class="glossary-block">'
@@ -3000,9 +3278,9 @@ def main():
 
             '<div class="glossary-block">'
             "<h4>🔒 Lock vs 🧠 Lock Lab</h4>"
-            "<b>Lock</b> — frozen <b>pregame</b> prices (first number we saw per book). Live odds should not overwrite.<br>"
-            "<b>Lock Lab</b> — who actually went yard today, matched back to Lock. "
-            "Best place to see endings / books on real HRs — not the same as “methods that fired.”"
+            "<b>Lock</b> — <b>Open</b> = first pull (never changes) · <b>Now</b> = latest pregame · <b>Close</b> = last number before the book vanishes (often first pitch).<br>"
+            "<b>Movement</b> — open → now/close (and fetch-to-fetch). Study morning vs lineup vs final hour.<br>"
+            "<b>Lock Lab</b> — HRs matched to Lock. Ending chips = <b>1 per HR</b> (best of DK/FD/MGM at close)."
             "</div>"
 
             '<div class="glossary-block">'
