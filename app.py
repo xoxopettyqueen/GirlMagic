@@ -1877,6 +1877,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     for _, r in df.iterrows(): player_events[r["player"]].add(r["event"])
     ev_board = []
     watch_board = []
+    coverage_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if is_blocked_player(player): continue
         if lineup_names and name_in_lineup(player, lineup_names) is False: continue
@@ -1908,6 +1909,22 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         # WATCH list starts as 1+ core; refined at display/log time
         if core_count >= 1:
             watch_board.append(dict(row))
+        # COVERAGE = support/noise tags only (0 premium) — eyes only, never TAKE IT
+        elif display_meths:
+            support_tags = [
+                m for m in display_meths
+                if m in SUPPORT_ONLY or m in ("DK 10", "MGM 00", "Match 00", "DK FD-style", "FD Pattern", "FD+MGM classic")
+                or m.startswith("MGM end")
+            ]
+            if support_tags:
+                cov = dict(row)
+                cov["methods"] = support_tags
+                cov["why"] = (
+                    f"Coverage only · no premium core · tags: {', '.join(support_tags[:6])}"
+                    " · not a bet — so we don't miss weak-tag names on Lab days"
+                )
+                cov["bars"], cov["level"] = 1, "low"
+                coverage_board.append(cov)
         # PASS / TAKE IT pool: 2+ PREMIUM core (support tags do not count)
         if core_count < METHODS_MIN:
             continue
@@ -2073,7 +2090,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if record_history:
         st.session_state["prev_ev"] = current_ev
         save_history(prev_ev=current_ev)
-    return results, ev_board, fallen, watch_board
+    return results, ev_board, fallen, watch_board, coverage_board
 
 
 def build_backtest_stats(rows, days=14):
@@ -2600,9 +2617,9 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
-    results, ev_board, fallen, watch_board = (
+    results, ev_board, fallen, watch_board, coverage_board = (
         run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
-        if not df.empty else ([], [], [], [])
+        if not df.empty else ([], [], [], [], [])
     )
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
@@ -2626,6 +2643,16 @@ def main():
         if w["player"] not in multi_names and (w.get("method_count") or 0) < METHODS_MIN
     ]
     watch_n = len(watch_only)
+    cov_names = multi_names | {w["player"] for w in watch_only}
+    coverage_only = [
+        c for c in coverage_board
+        if c["player"] not in cov_names
+    ]
+    coverage_only = sorted(
+        coverage_only,
+        key=lambda x: (-len(x.get("methods") or []), -x.get("score", 0), x.get("player") or ""),
+    )
+    coverage_n = len(coverage_only)
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
     mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
@@ -2634,6 +2661,7 @@ def main():
         <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">🟢 TAKE IT</div></div>
         <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">👀 WATCH</div></div>
         <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">⚪ PASS</div></div>
+        <div class="petty-box"><div class="petty-num">{coverage_n}</div><div class="petty-label">👁️ COVERAGE</div></div>
         <div class="petty-box"><div class="petty-num">{dk_n}</div><div class="petty-label">🎯 DK</div></div>
         <div class="petty-box"><div class="petty-num">{fd_n}</div><div class="petty-label">💙 FD</div></div>
         <div class="petty-box"><div class="petty-num">{mgm_n}</div><div class="petty-label">🎰 MGM</div></div>
@@ -2654,7 +2682,10 @@ def main():
     )
     if nav == TAB_LABELS[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
-        st.caption("🟢 TAKE IT = premium stacks + edge (or 75+Stayed soft edge) · ⚪ PASS = 2+ premium not shortlisted · 👀 WATCH = 1 premium · support tags never unlock TAKE IT")
+        st.caption(
+            "🟢 TAKE IT = premium + edge · ⚪ PASS = 2+ premium not shortlisted · "
+            "👀 WATCH = 1 premium · 👁️ COVERAGE = support tags only (DK 10, MGM 00, etc.) — eyes only, never a bet"
+        )
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
@@ -2683,7 +2714,7 @@ def main():
         ]
         watches = sorted(watches, key=lambda x: (-x.get("method_count", 0), -x.get("score", 0)))
 
-        if not takes and not passes and not watches:
+        if not takes and not passes and not watches and not coverage_only:
             st.info("Fetch while pregame — board fills when methods fire.")
         else:
             if takes:
@@ -2708,14 +2739,27 @@ def main():
                     with cols[idx % 2]:
                         _render_board_card(item, "⚪ PASS", "skip")
 
-            st.markdown("#### 👀 WATCH · 1 method only (track for auto-grade)")
+            st.markdown("#### 👀 WATCH · 1 premium method (track for auto-grade)")
             if not watches:
-                st.caption("None with exactly 1 core method right now — or everyone with methods is already TAKE IT / PASS.")
+                st.caption("None with exactly 1 premium method right now.")
             else:
                 cols = st.columns(2)
                 for idx, item in enumerate(watches[:40]):
                     with cols[idx % 2]:
                         _render_board_card(item, "👀 WATCH", "card")
+
+            st.markdown("#### 👁️ COVERAGE · support tags only (not a bet)")
+            st.caption(
+                "DK 10 · MGM 00 · FD Pattern alone · Exact / tight without premium — "
+                "so names like DeLuca still show up. Never upgrades to TAKE IT."
+            )
+            if not coverage_only:
+                st.caption("No support-only names right now.")
+            else:
+                cols = st.columns(2)
+                for idx, item in enumerate(coverage_only[:40]):
+                    with cols[idx % 2]:
+                        _render_board_card(item, "👁️ COVERAGE", "card")
 
     if nav == TAB_LABELS[1]:
         show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
