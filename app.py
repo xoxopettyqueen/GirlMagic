@@ -1,5 +1,6 @@
 """
 Girl Magic Odds ✨
+- GitHub-backed results (survives Streamlit Cloud wipe)
 - No Digits tab (folded into MGM)
 - MGM: pairs + groups of 3 + Exact 2-3 only
 - One card per player on every method tab
@@ -12,6 +13,7 @@ import pandas as pd
 import requests
 import json
 import os
+import base64
 from collections import defaultdict, Counter
 import statistics
 from datetime import datetime, timezone, timedelta
@@ -771,16 +773,103 @@ def save_history(prev_ev=None):
         with open(HISTORY_FILE, "w") as f: json.dump(payload, f)
     except Exception: pass
 
-def load_results():
-    if not os.path.exists(RESULTS_FILE): return []
+def _gh_repo():
+    return (st.secrets.get("GITHUB_REPO") or "").strip()
+
+def _gh_token():
+    return (st.secrets.get("GITHUB_TOKEN") or "").strip()
+
+def _gh_headers():
+    return {
+        "Authorization": f"Bearer {_gh_token()}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+
+def _gh_branch():
+    return (st.secrets.get("GITHUB_BRANCH") or "main").strip() or "main"
+
+def _load_results_github():
+    """Load graded results from GitHub so Cloud redeploys don't wipe Tracker/Backtest."""
+    repo, token = _gh_repo(), _gh_token()
+    if not repo or not token:
+        return None
+    url = f"https://api.github.com/repos/{repo}/contents/{RESULTS_FILE}"
     try:
-        with open(RESULTS_FILE, "r") as f: return json.load(f)
-    except Exception: return []
+        r = requests.get(url, headers=_gh_headers(), params={"ref": _gh_branch()}, timeout=20)
+        if r.status_code == 404:
+            return []
+        if r.status_code != 200:
+            return None
+        data = r.json()
+        st.session_state["_results_sha"] = data.get("sha")
+        content = base64.b64decode(data["content"]).decode("utf-8")
+        rows = json.loads(content)
+        return rows if isinstance(rows, list) else []
+    except Exception:
+        return None
+
+def _save_results_github(rows):
+    repo, token = _gh_repo(), _gh_token()
+    if not repo or not token:
+        return False
+    url = f"https://api.github.com/repos/{repo}/contents/{RESULTS_FILE}"
+    body = {
+        "message": f"girl magic results {today_az()} {now_az()}",
+        "content": base64.b64encode(json.dumps(rows, indent=2).encode("utf-8")).decode("utf-8"),
+        "branch": _gh_branch(),
+    }
+    sha = st.session_state.get("_results_sha")
+    if sha:
+        body["sha"] = sha
+    try:
+        r = requests.put(url, headers=_gh_headers(), json=body, timeout=25)
+        if r.status_code in (200, 201):
+            st.session_state["_results_sha"] = r.json().get("content", {}).get("sha")
+            return True
+        if r.status_code == 409:
+            cur = requests.get(url, headers=_gh_headers(), params={"ref": _gh_branch()}, timeout=20)
+            if cur.status_code == 200:
+                body["sha"] = cur.json().get("sha")
+                r2 = requests.put(url, headers=_gh_headers(), json=body, timeout=25)
+                if r2.status_code in (200, 201):
+                    st.session_state["_results_sha"] = r2.json().get("content", {}).get("sha")
+                    return True
+        return False
+    except Exception:
+        return False
+
+def load_results():
+    gh = _load_results_github()
+    if gh is not None:
+        return gh
+    if not os.path.exists(RESULTS_FILE):
+        return []
+    try:
+        with open(RESULTS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return []
 
 def save_results(rows):
     try:
-        with open(RESULTS_FILE, "w") as f: json.dump(rows, f, indent=2)
-    except Exception: pass
+        with open(RESULTS_FILE, "w") as f:
+            json.dump(rows, f, indent=2)
+    except Exception:
+        pass
+    if _gh_token() and _gh_repo():
+        ok = _save_results_github(rows)
+        if not ok:
+            # don't spam every button click — one soft flag per session
+            if not st.session_state.get("_gh_save_warned"):
+                st.session_state["_gh_save_warned"] = True
+                try:
+                    st.warning(
+                        "Results saved for this session only — GitHub save failed. "
+                        "Check GITHUB_TOKEN, GITHUB_REPO, and GITHUB_BRANCH in secrets."
+                    )
+                except Exception:
+                    pass
 
 def set_result_status(row_id, status):
     rows = load_results()
