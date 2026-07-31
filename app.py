@@ -2808,11 +2808,56 @@ def main():
         else:
             if takes:
                 st.markdown("#### 🟢 TAKE IT")
+                # Away @ Home → commence_time from loaded events (order board by tip time)
+                commence_by_event = {}
+                for e in st.session_state.get("events", []):
+                    key = f"{e.get('away_team')} @ {e.get('home_team')}"
+                    t = e.get("commence_time") or ""
+                    if t:
+                        commence_by_event[key] = t
+
                 by_game = defaultdict(list)
                 for item in takes:
                     by_game[item.get("event") or "Game"].append(item)
-                for game, items in by_game.items():
-                    st.markdown(f"**{game}**")
+
+                def _resolve_commence(game_name):
+                    t = commence_by_event.get(game_name)
+                    if t:
+                        return t
+                    for k, v in commence_by_event.items():
+                        if k in game_name or game_name in k:
+                            return v
+                    return None
+
+                def _game_sort_key(game_name):
+                    t = _resolve_commence(game_name)
+                    if not t:
+                        return (1, 9e18, game_name)  # unknown → bottom
+                    try:
+                        dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
+                        return (0, dt.timestamp(), game_name)
+                    except Exception:
+                        return (1, 9e18, game_name)
+
+                def _fmt_game_header(game_name):
+                    t = _resolve_commence(game_name)
+                    if not t:
+                        return game_name
+                    try:
+                        dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(
+                            timezone(timedelta(hours=-7))
+                        )
+                        try:
+                            hhmm = dt.strftime("%-I:%M %p")
+                        except Exception:
+                            hhmm = dt.strftime("%I:%M %p").lstrip("0")
+                        return f"{game_name} · {hhmm} AZ"
+                    except Exception:
+                        return game_name
+
+                for game in sorted(by_game.keys(), key=_game_sort_key):
+                    items = sorted(by_game[game], key=lambda x: -x.get("score", 0))
+                    st.markdown(f"**{_fmt_game_header(game)}**")
                     cols = st.columns(2)
                     for idx, item in enumerate(items):
                         with cols[idx % 2]:
