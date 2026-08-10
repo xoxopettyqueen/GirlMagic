@@ -2822,5 +2822,52 @@
     "source": "watch",
     "logged_at": "2026-08-10T21:00:11.945514+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-10_Cesar Prieto_take_it_41",
+    "date": "2026-08-10",
+    "time": "02:06 PM",
+    "player": "Cesar Prieto",
+    "score": 41,
+    "edge": 40,
+    "best_price": 1150,
+    "best_book": "betmgm",
+    "ending": 50,
+    "mgm_locked": 1150,
+    "mgm_ending": 50,
+    "methods": [
+      "MGM 50",
+      "Last one left",
+      "Stayed in the group",
+      "Match 50"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-08-10T21:06:07.730710+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-10_Brett Baty_watch_26",
+    "date": "2026-08-10",
+    "time": "02:06 PM",
+    "player": "Brett Baty",
+    "score": 26,
+    "edge": 20,
+    "best_price": 620,
+    "best_book": "draftkings",
+    "ending": 20,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM Exact",
+      "DK FD-style",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-10T21:06:07.730860+00:00",
+    "price_source": "pregame_lock"
   }
 ]
