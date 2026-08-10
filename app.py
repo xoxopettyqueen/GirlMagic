@@ -504,15 +504,26 @@ def simple_ev_lean(p_win, american):
     return ev > 0, ev
 
 def load_pregame():
-    if not os.path.exists(PREGAME_FILE): return {}
-    try:
-        with open(PREGAME_FILE, "r") as f: return json.load(f)
-    except Exception: return {}
+    """Local first; if empty, pull GitHub so Cloud restarts keep lock."""
+    local = _load_local_json(PREGAME_FILE, {})
+    if not isinstance(local, dict):
+        local = {}
+    if local:
+        st.session_state["_pregame_source"] = "local"
+        return local
+    gh = _load_pregame_github()
+    if isinstance(gh, dict) and gh:
+        st.session_state["_pregame_source"] = "github"
+        _save_local_json(PREGAME_FILE, gh)
+        return gh
+    st.session_state["_pregame_source"] = "empty"
+    return {}
+
 
 def save_pregame(data):
-    try:
-        with open(PREGAME_FILE, "w") as f: json.dump(data, f, indent=2)
-    except Exception: pass
+    _save_local_json(PREGAME_FILE, data)
+    if _gh_configured():
+        _save_pregame_github(data)
 
 def _book_slot_normalize(info):
     """Migrate old {price, ending, seen_at} → first/latest/close shape."""
@@ -789,43 +800,52 @@ def _gh_headers():
 def _gh_branch():
     return (st.secrets.get("GITHUB_BRANCH") or "main").strip() or "main"
 
-def _load_results_github():
-    """Load graded results from GitHub so Cloud redeploys don't wipe Tracker/Backtest."""
-    repo, token = _gh_repo(), _gh_token()
-    if not repo or not token:
-        return None
-    url = f"https://api.github.com/repos/{repo}/contents/{RESULTS_FILE}"
+def _gh_configured():
+    return bool(_gh_repo() and _gh_token())
+
+
+def _gh_load_json(filename, sha_key):
+    """Load a JSON file from GitHub. Returns (data, status).
+    status: ok | missing | error | unconfigured
+    missing → file 404 (not an error). error → auth/network/parse failure.
+    """
+    if not _gh_configured():
+        return None, "unconfigured"
+    url = f"https://api.github.com/repos/{_gh_repo()}/contents/{filename}"
     try:
         r = requests.get(url, headers=_gh_headers(), params={"ref": _gh_branch()}, timeout=20)
         if r.status_code == 404:
-            return []
+            return None, "missing"
         if r.status_code != 200:
-            return None
+            st.session_state["_gh_last_err"] = f"GET {filename} HTTP {r.status_code}"
+            return None, "error"
         data = r.json()
-        st.session_state["_results_sha"] = data.get("sha")
+        st.session_state[sha_key] = data.get("sha")
         content = base64.b64decode(data["content"]).decode("utf-8")
-        rows = json.loads(content)
-        return rows if isinstance(rows, list) else []
-    except Exception:
-        return None
+        parsed = json.loads(content)
+        return parsed, "ok"
+    except Exception as e:
+        st.session_state["_gh_last_err"] = f"GET {filename}: {e}"
+        return None, "error"
 
-def _save_results_github(rows):
-    repo, token = _gh_repo(), _gh_token()
-    if not repo or not token:
+
+def _gh_save_json(filename, payload, sha_key, msg_prefix):
+    """Save JSON to GitHub. Returns True on success."""
+    if not _gh_configured():
         return False
-    url = f"https://api.github.com/repos/{repo}/contents/{RESULTS_FILE}"
+    url = f"https://api.github.com/repos/{_gh_repo()}/contents/{filename}"
     body = {
-        "message": f"girl magic results {today_az()} {now_az()}",
-        "content": base64.b64encode(json.dumps(rows, indent=2).encode("utf-8")).decode("utf-8"),
+        "message": f"{msg_prefix} {today_az()} {now_az()}",
+        "content": base64.b64encode(json.dumps(payload, indent=2).encode("utf-8")).decode("utf-8"),
         "branch": _gh_branch(),
     }
-    sha = st.session_state.get("_results_sha")
+    sha = st.session_state.get(sha_key)
     if sha:
         body["sha"] = sha
     try:
         r = requests.put(url, headers=_gh_headers(), json=body, timeout=25)
         if r.status_code in (200, 201):
-            st.session_state["_results_sha"] = r.json().get("content", {}).get("sha")
+            st.session_state[sha_key] = r.json().get("content", {}).get("sha")
             return True
         if r.status_code == 409:
             cur = requests.get(url, headers=_gh_headers(), params={"ref": _gh_branch()}, timeout=20)
@@ -833,43 +853,144 @@ def _save_results_github(rows):
                 body["sha"] = cur.json().get("sha")
                 r2 = requests.put(url, headers=_gh_headers(), json=body, timeout=25)
                 if r2.status_code in (200, 201):
-                    st.session_state["_results_sha"] = r2.json().get("content", {}).get("sha")
+                    st.session_state[sha_key] = r2.json().get("content", {}).get("sha")
                     return True
+        st.session_state["_gh_last_err"] = f"PUT {filename} HTTP {r.status_code}"
         return False
-    except Exception:
+    except Exception as e:
+        st.session_state["_gh_last_err"] = f"PUT {filename}: {e}"
         return False
 
-def load_results():
-    gh = _load_results_github()
-    if gh is not None:
-        return gh
-    if not os.path.exists(RESULTS_FILE):
-        return []
+
+def _load_local_json(filename, default):
+    if not os.path.exists(filename):
+        return default
     try:
-        with open(RESULTS_FILE, "r") as f:
+        with open(filename, "r") as f:
             return json.load(f)
     except Exception:
-        return []
+        return default
+
+
+def _save_local_json(filename, payload):
+    try:
+        with open(filename, "w") as f:
+            json.dump(payload, f, indent=2)
+        return True
+    except Exception:
+        return False
+
+
+def _merge_results_lists(a, b):
+    """Union by id; prefer graded HIT/MISS over PENDING; keep newest logged_at."""
+    by_id = {}
+    for row in (a or []) + (b or []):
+        if not isinstance(row, dict):
+            continue
+        rid = row.get("id")
+        if not rid:
+            # fallback key
+            rid = f"{row.get('date')}_{row.get('player')}_{row.get('source')}_{row.get('best_price')}"
+            row = dict(row)
+            row["id"] = rid
+        prev = by_id.get(rid)
+        if prev is None:
+            by_id[rid] = row
+            continue
+        # prefer non-PENDING
+        pr, cr = prev.get("result"), row.get("result")
+        if pr == "PENDING" and cr in ("HIT", "MISS"):
+            by_id[rid] = row
+        elif cr == "PENDING" and pr in ("HIT", "MISS"):
+            pass
+        else:
+            # newer logged_at wins
+            if str(row.get("logged_at") or "") >= str(prev.get("logged_at") or ""):
+                by_id[rid] = row
+    return list(by_id.values())
+
+
+def _load_results_github():
+    data, status = _gh_load_json(RESULTS_FILE, "_results_sha")
+    st.session_state["_results_gh_status"] = status
+    if status == "ok" and isinstance(data, list):
+        return data
+    if status == "missing":
+        return []  # explicit empty remote — caller may still merge local
+    return None  # error / unconfigured
+
+
+def _save_results_github(rows):
+    ok = _gh_save_json(RESULTS_FILE, rows, "_results_sha", "girl magic results")
+    st.session_state["_results_gh_save"] = "ok" if ok else "fail"
+    return ok
+
+
+def load_results():
+    """Prefer the richer of local + GitHub. Never throw away local for an empty remote."""
+    local = _load_local_json(RESULTS_FILE, [])
+    if not isinstance(local, list):
+        local = []
+    gh = _load_results_github()
+    status = st.session_state.get("_results_gh_status", "unconfigured")
+
+    if gh is None:
+        # unconfigured or error → local only
+        st.session_state["_results_source"] = "local" if local else "empty"
+        return local
+
+    if not gh and local:
+        # remote missing/empty but we have local (pre-GitHub day or failed upload)
+        st.session_state["_results_source"] = "local>github_empty"
+        return local
+
+    if gh and not local:
+        st.session_state["_results_source"] = "github"
+        # mirror to local so session is fast
+        _save_local_json(RESULTS_FILE, gh)
+        return gh
+
+    if gh and local:
+        merged = _merge_results_lists(local, gh)
+        st.session_state["_results_source"] = "merged"
+        return merged
+
+    st.session_state["_results_source"] = "empty"
+    return []
+
 
 def save_results(rows):
-    try:
-        with open(RESULTS_FILE, "w") as f:
-            json.dump(rows, f, indent=2)
-    except Exception:
-        pass
-    if _gh_token() and _gh_repo():
+    _save_local_json(RESULTS_FILE, rows)
+    if _gh_configured():
         ok = _save_results_github(rows)
-        if not ok:
-            # don't spam every button click — one soft flag per session
-            if not st.session_state.get("_gh_save_warned"):
-                st.session_state["_gh_save_warned"] = True
-                try:
-                    st.warning(
-                        "Results saved for this session only — GitHub save failed. "
-                        "Check GITHUB_TOKEN, GITHUB_REPO, and GITHUB_BRANCH in secrets."
-                    )
-                except Exception:
-                    pass
+        if not ok and not st.session_state.get("_gh_save_warned"):
+            st.session_state["_gh_save_warned"] = True
+            try:
+                err = st.session_state.get("_gh_last_err") or "unknown"
+                st.warning(
+                    "Results saved on this server only — GitHub save failed. "
+                    f"Check GITHUB_TOKEN / GITHUB_REPO / GITHUB_BRANCH. ({err})"
+                )
+            except Exception:
+                pass
+    else:
+        st.session_state["_results_gh_save"] = "no_secrets"
+
+
+def _load_pregame_github():
+    data, status = _gh_load_json(PREGAME_FILE, "_pregame_sha")
+    st.session_state["_pregame_gh_status"] = status
+    if status == "ok" and isinstance(data, dict):
+        return data
+    if status == "missing":
+        return {}
+    return None
+
+
+def _save_pregame_github(data):
+    ok = _gh_save_json(PREGAME_FILE, data, "_pregame_sha", "girl magic pregame lock")
+    st.session_state["_pregame_gh_save"] = "ok" if ok else "fail"
+    return ok
 
 def set_result_status(row_id, status):
     rows = load_results()
@@ -3268,10 +3389,27 @@ def main():
         n_all = len(rows)
         n_pending_all = sum(1 for r in rows if r.get("result") == "PENDING")
         n_today = sum(1 for r in rows if r.get("date") == today_az())
+        src = st.session_state.get("_results_source", "?")
+        gh_st = st.session_state.get("_results_gh_status", "unconfigured")
+        gh_save = st.session_state.get("_results_gh_save", "—")
+        lock_src = st.session_state.get("_pregame_source", "?")
+        lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
+        secrets_ok = "yes" if _gh_configured() else "NO — add GITHUB_TOKEN + GITHUB_REPO"
         st.caption(
-            f"{n_all} logged · {n_pending_all} waiting · {n_today} today. "
-            "Empty usually means we only fetched after games went live."
+            f"{n_all} logged · {n_pending_all} waiting · {n_today} today · "
+            f"source={src} · GH load={gh_st} · GH save={gh_save} · "
+            f"lock={lock_n} ({lock_src}) · secrets={secrets_ok}"
         )
+        if not _gh_configured():
+            st.warning(
+                "GitHub secrets missing — Results & Lock only live on this server and wipe on reboot. "
+                "Add GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH in Streamlit Secrets."
+            )
+        elif n_all == 0:
+            st.info(
+                "No rows yet. Fetch **pregame** so TAKE IT / WATCH log here, then auto-grade after games. "
+                "If you had data before, check that girl_magic_results.json exists in your GitHub repo."
+            )
         today_only = st.checkbox("Today only", value=False)
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
         pending = sorted([r for r in rows_view if r.get("result") == "PENDING"], key=pending_sort_key)
