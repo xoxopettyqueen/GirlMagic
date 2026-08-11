@@ -2525,10 +2525,11 @@
       "Match 50"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-08-10T20:17:47.475597+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "manual"
   },
   {
     "id": "2026-08-10_Ketel Marte_take_it_41",
