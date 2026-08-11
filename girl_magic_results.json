@@ -1437,10 +1437,11 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-10T15:29:58.641452+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "manual"
   },
   {
     "id": "2026-08-10_Tim Tawa_watch_21",
