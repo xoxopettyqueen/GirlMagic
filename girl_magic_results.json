@@ -443,10 +443,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-10T14:59:04.658922+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "manual"
   },
   {
     "id": "2026-08-10_Jackson Chourio_watch_21",
