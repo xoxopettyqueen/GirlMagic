@@ -2827,10 +2827,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-10T21:00:11.945405+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "manual"
   },
   {
     "id": "2026-08-10_Ryan Jeffers_watch_19",
