@@ -1675,10 +1675,11 @@
       "Match 75"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-10T15:49:59.252294+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "manual"
   },
   {
     "id": "2026-08-10_Ben Rortvedt_watch_19",
