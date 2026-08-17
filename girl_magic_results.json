@@ -8820,5 +8820,26 @@
     "source": "watch",
     "logged_at": "2026-08-17T01:58:00.095526+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-16_Christian Encarnacion-Strand_watch_10",
+    "date": "2026-08-16",
+    "time": "07:17 PM",
+    "player": "Christian Encarnacion-Strand",
+    "score": 10,
+    "edge": 0,
+    "best_price": 510,
+    "best_book": "draftkings",
+    "ending": 10,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK 10"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-17T02:17:49.464604+00:00",
+    "price_source": "pregame_lock"
   }
 ]
