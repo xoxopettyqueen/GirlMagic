@@ -8755,5 +8755,70 @@
     "logged_at": "2026-08-12T19:18:12.206888+00:00",
     "price_source": "pregame_lock",
     "graded_by": "mlb_auto"
+  },
+  {
+    "id": "2026-08-16_Brett Baty_watch_10",
+    "date": "2026-08-16",
+    "time": "06:58 PM",
+    "player": "Brett Baty",
+    "score": 10,
+    "edge": -120,
+    "best_price": 1060,
+    "best_book": "draftkings",
+    "ending": 60,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "FD Pattern",
+      "DK FD-style"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-17T01:58:00.095272+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-16_Esteury Ruiz_watch_10",
+    "date": "2026-08-16",
+    "time": "06:58 PM",
+    "player": "Esteury Ruiz",
+    "score": 10,
+    "edge": 0,
+    "best_price": 710,
+    "best_book": "draftkings",
+    "ending": 10,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK 10"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-17T01:58:00.095419+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-16_Jorge Polanco_watch_36",
+    "date": "2026-08-16",
+    "time": "06:58 PM",
+    "player": "Jorge Polanco",
+    "score": 36,
+    "edge": 120,
+    "best_price": 770,
+    "best_book": "draftkings",
+    "ending": 70,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "FD Pattern",
+      "DK FD-style"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-17T01:58:00.095526+00:00",
+    "price_source": "pregame_lock"
   }
 ]
