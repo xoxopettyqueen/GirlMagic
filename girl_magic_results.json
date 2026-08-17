@@ -8965,10 +8965,11 @@
       "FD+MGM classic"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-17T14:34:13.164934+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-17_Bo Bichette_take_it_45",
@@ -9722,10 +9723,11 @@
       "Match 25"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-17T16:17:15.524663+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-17_Jordan Beck_take_it_59",
@@ -10378,10 +10380,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-17T16:37:00.469382+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-17_Rafael Flores_watch_14",
@@ -10601,10 +10604,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-17T17:41:06.597785+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-17_Willi Castro_watch_26",
@@ -10889,10 +10893,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-17T20:01:43.805078+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-17_Maikel Garcia_watch_28",
@@ -10933,10 +10938,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-17T20:01:43.805390+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-17_Nathan Church_watch_14",
@@ -10956,10 +10962,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-17T20:01:43.805456+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-17_Esmerlyn Valdez_watch_17",
