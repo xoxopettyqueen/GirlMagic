@@ -10960,5 +10960,32 @@
     "source": "watch",
     "logged_at": "2026-08-17T20:01:43.805456+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-17_Esmerlyn Valdez_watch_17",
+    "date": "2026-08-17",
+    "time": "01:02 PM",
+    "player": "Esmerlyn Valdez",
+    "score": 17,
+    "edge": 20,
+    "best_price": 520,
+    "best_book": "fanduel",
+    "ending": 20,
+    "mgm_locked": 475,
+    "mgm_ending": 75,
+    "methods": [
+      "FD Pattern",
+      "Stayed in the group",
+      "Last one left",
+      "Books tight",
+      "Match 75",
+      "FD+MGM classic",
+      "MGM 75"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-17T20:02:29.507080+00:00",
+    "price_source": "pregame_lock"
   }
 ]
