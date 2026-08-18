@@ -69,7 +69,10 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .petty-box{flex:1;min-width:68px;background:#1a0f28;border:1px solid #f472b6;border-radius:12px;padding:10px 6px;text-align:center}
 .petty-num{font-size:1.3rem;font-weight:800;color:#f9a8d4}
 .petty-label{font-size:.55rem;color:#e9d5ff;margin-top:3px}
-.rate-chip{display:inline-block;background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin:4px;text-align:center;min-width:72px}
+.rate-chip{display:inline-block;background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin:4px;text-align:center;min-width:72px;vertical-align:top}
+.rate-chip.beat{border:2px solid #34d399;background:linear-gradient(155deg,#0c2418,#1a0f28);box-shadow:0 0 0 1px rgba(52,211,153,.25)}
+.rate-chip.beat .rate-pct{color:#6ee7b7}
+.rate-beat{font-size:.55rem;color:#34d399;font-weight:700;margin-top:2px}
 .rate-pct{font-size:1.1rem;font-weight:800;color:#f9a8d4}
 .rate-name{font-size:.65rem;color:#e9d5ff}
 .rate-n{font-size:.6rem;color:#c084fc}
@@ -193,7 +196,7 @@ SUPPORT_ONLY = {
     "Last one left",        # never unlocks
     "FD+MGM classic",
 }
-TRACKER_MIN_N = 10
+TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
 # Name magic can still use a slightly wider set
 PERSONAL_STRONG = {
     "DK 10", "FD 600", "FD Pattern", "Multi-book Shorten",
@@ -1377,6 +1380,7 @@ def render_whats_going_today():
 
 
 def build_tracker_stats(rows):
+    """Signal methods (tags) vs best book taken vs ending on best price — kept separate."""
     done = [r for r in rows if r.get("result") in ("HIT", "MISS") and r.get("source") != "manual_hr"]
     method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
@@ -1397,10 +1401,12 @@ def build_tracker_stats(rows):
             if nm in TRACKER_BLOCKLIST: continue
             if is_hit: method_stats[nm]["hit"] += 1
             else: method_stats[nm]["miss"] += 1
+        # Best book we took (price source) — not the signal method
         bb = book_label(r.get("best_book"))
         if bb != "Untagged":
             if is_hit: book_stats[bb]["hit"] += 1
             else: book_stats[bb]["miss"] += 1
+        # Ending on best_price (same row as book above)
         end = r.get("ending")
         if end is None and r.get("best_price") is not None: end = last_two(r["best_price"])
         if end is not None:
@@ -1408,6 +1414,24 @@ def build_tracker_stats(rows):
             if is_hit: ending_stats[key]["hit"] += 1
             else: ending_stats[key]["miss"] += 1
     return method_stats, book_stats, ending_stats
+
+
+def take_it_baseline_rate(rows):
+    """Overall TAKE IT hit rate for Tracker highlight (green if method beats this)."""
+    hits = misses = 0
+    for r in rows:
+        if r.get("result") not in ("HIT", "MISS"):
+            continue
+        if r.get("source") != "take_it":
+            continue
+        if r["result"] == "HIT":
+            hits += 1
+        else:
+            misses += 1
+    n = hits + misses
+    if n == 0:
+        return None, 0
+    return 100.0 * hits / n, n
 
 def method_hit_rate(method_stats, method_name):
     s = method_stats.get(method_name)
@@ -3380,24 +3404,75 @@ def main():
 
     if nav == TAB_LABELS[13]:
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
-        st.caption("What has been hitting after we grade it.")
-        def chips_from_stats(stats, min_n=TRACKER_MIN_N):
+        st.caption(
+            "What has been hitting after we grade it. "
+            f"Buckets with n &lt; {TRACKER_MIN_N} are hidden. "
+            "Green border = beats overall TAKE IT %."
+        )
+        baseline, baseline_n = take_it_baseline_rate(load_results())
+        if baseline is not None:
+            st.markdown(
+                f'<div class="info-box"><b>Baseline TAKE IT:</b> {baseline:.0f}% '
+                f'(n={baseline_n}). Signal methods above this get a green border.</div>',
+                unsafe_allow_html=True,
+            )
+        else:
+            st.markdown(
+                '<div class="info-box">No graded TAKE IT yet — baseline appears after HIT/MISS.</div>',
+                unsafe_allow_html=True,
+            )
+
+        def chips_from_stats(stats, min_n=TRACKER_MIN_N, compare_baseline=False):
             out = []
-            for name, s in sorted(stats.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+            for name, s in sorted(
+                stats.items(),
+                key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"])),
+            ):
                 t = s["hit"] + s["miss"]
-                if t < min_n: continue
+                if t < min_n:
+                    continue
                 pct = 100 * s["hit"] / t
-                out.append(f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div><div class="rate-name">{name}</div><div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays</div></div>')
+                beat = (
+                    compare_baseline
+                    and baseline is not None
+                    and pct > baseline + 0.5
+                )
+                cls = "rate-chip beat" if beat else "rate-chip"
+                beat_html = '<div class="rate-beat">▲ beats TAKE IT</div>' if beat else ""
+                out.append(
+                    f'<div class="{cls}">'
+                    f'<div class="rate-pct">{pct:.0f}%</div>'
+                    f'<div class="rate-name">{name}</div>'
+                    f'<div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays</div>'
+                    f"{beat_html}</div>"
+                )
             return out
-        st.markdown("#### By method")
-        chips = chips_from_stats(method_stats)
-        st.markdown("".join(chips) if chips else "_(Need more graded plays)_", unsafe_allow_html=True)
-        st.markdown("#### By best book")
-        chips = chips_from_stats(book_stats)
-        st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
-        st.markdown("#### By ending")
-        chips = chips_from_stats(ending_stats)
-        st.markdown("".join(chips) if chips else "_(No data)_", unsafe_allow_html=True)
+
+        # Signal method = Girl Magic tags (why we cared)
+        st.markdown("#### By signal method")
+        st.caption("Tags on the pick (MGM 50, DK 10, Multi-book Shorten, …) — not which book you bet.")
+        chips = chips_from_stats(method_stats, compare_baseline=True)
+        st.markdown(
+            "".join(chips) if chips else f"_(Need graded plays with n ≥ {TRACKER_MIN_N})_",
+            unsafe_allow_html=True,
+        )
+
+        # Best book = where the logged best_price lived
+        st.markdown("#### By best book we took")
+        st.caption("Which sportsbook held the best price on the graded row — separate from the signal tag.")
+        chips = chips_from_stats(book_stats, compare_baseline=False)
+        st.markdown(
+            "".join(chips) if chips else f"_(Need n ≥ {TRACKER_MIN_N})_",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("#### By ending on best price")
+        st.caption("Last two digits of the best_price we logged (not MGM-only unless that was best).")
+        chips = chips_from_stats(ending_stats, compare_baseline=False)
+        st.markdown(
+            "".join(chips) if chips else f"_(Need n ≥ {TRACKER_MIN_N})_",
+            unsafe_allow_html=True,
+        )
     if nav == TAB_LABELS[14]:
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
