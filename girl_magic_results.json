@@ -14157,5 +14157,78 @@
     "source": "watch",
     "logged_at": "2026-08-18T17:14:30.215714+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-18_Jacob Young_take_it_45",
+    "date": "2026-08-18",
+    "time": "10:30 AM",
+    "player": "Jacob Young",
+    "score": 45,
+    "edge": 100,
+    "best_price": 1500,
+    "best_book": "fanduel",
+    "ending": 0,
+    "mgm_locked": 1150,
+    "mgm_ending": 50,
+    "methods": [
+      "Last one left",
+      "Match 50",
+      "MGM 50",
+      "DK FD-style",
+      "Stayed in the group"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-08-18T17:30:49.002572+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-18_Christian Walker_watch_16",
+    "date": "2026-08-18",
+    "time": "10:30 AM",
+    "player": "Christian Walker",
+    "score": 16,
+    "edge": 27,
+    "best_price": 437,
+    "best_book": "draftkings",
+    "ending": 37,
+    "mgm_locked": 360,
+    "mgm_ending": 60,
+    "methods": [
+      "MGM Exact",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-18T17:30:49.003146+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-18_Ian Happ_watch_23",
+    "date": "2026-08-18",
+    "time": "10:30 AM",
+    "player": "Ian Happ",
+    "score": 23,
+    "edge": 45,
+    "best_price": 470,
+    "best_book": "fanduel",
+    "ending": 70,
+    "mgm_locked": 375,
+    "mgm_ending": 75,
+    "methods": [
+      "FD Pattern",
+      "MGM Exact",
+      "FD+MGM classic",
+      "Match 75",
+      "Stayed in the group",
+      "MGM 75"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-18T17:30:49.003505+00:00",
+    "price_source": "pregame_lock"
   }
 ]
