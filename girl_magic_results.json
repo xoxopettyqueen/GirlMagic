@@ -18021,5 +18021,77 @@
     "source": "watch",
     "logged_at": "2026-08-19T17:27:13.600837+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-19_Ernie Clement_watch_32",
+    "date": "2026-08-19",
+    "time": "10:32 AM",
+    "player": "Ernie Clement",
+    "score": 32,
+    "edge": 100,
+    "best_price": 1300,
+    "best_book": "hardrockbet",
+    "ending": 0,
+    "mgm_locked": 1000,
+    "mgm_ending": 0,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T17:32:12.902174+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-19_Mickey Gasper_watch_25",
+    "date": "2026-08-19",
+    "time": "10:32 AM",
+    "player": "Mickey Gasper",
+    "score": 25,
+    "edge": 0,
+    "best_price": 800,
+    "best_book": "betmgm",
+    "ending": 0,
+    "mgm_locked": 800,
+    "mgm_ending": 0,
+    "methods": [
+      "FD Pattern",
+      "DK FD-style",
+      "MGM 00",
+      "Stayed in the group",
+      "Match 00"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T17:32:12.902882+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-19_Taylor Trammell_watch_19",
+    "date": "2026-08-19",
+    "time": "10:32 AM",
+    "player": "Taylor Trammell",
+    "score": 19,
+    "edge": 30,
+    "best_price": 710,
+    "best_book": "fanduel",
+    "ending": 10,
+    "mgm_locked": 575,
+    "mgm_ending": 75,
+    "methods": [
+      "FD Pattern",
+      "FD+MGM classic",
+      "Match 75",
+      "Stayed in the group",
+      "MGM 75"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T17:32:12.903356+00:00",
+    "price_source": "pregame_lock"
   }
 ]
