@@ -18248,5 +18248,52 @@
     "source": "watch",
     "logged_at": "2026-08-19T18:23:11.896579+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-19_Garrett Stubbs_watch_10",
+    "date": "2026-08-19",
+    "time": "11:26 AM",
+    "player": "Garrett Stubbs",
+    "score": 10,
+    "edge": 0,
+    "best_price": 1300,
+    "best_book": "hardrockbet",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T18:26:31.002168+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-19_Jarren Duran_watch_20",
+    "date": "2026-08-19",
+    "time": "11:26 AM",
+    "player": "Jarren Duran",
+    "score": 20,
+    "edge": 25,
+    "best_price": 600,
+    "best_book": "betmgm",
+    "ending": 0,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "Books tight",
+      "MGM 00",
+      "FD 600",
+      "Stayed in the group",
+      "Match 00"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T18:26:31.002503+00:00",
+    "price_source": "pregame_lock"
   }
 ]
