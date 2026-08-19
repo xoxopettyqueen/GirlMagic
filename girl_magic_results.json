@@ -14683,5 +14683,73 @@
     "source": "watch",
     "logged_at": "2026-08-18T19:28:17.880833+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-18_Alejandro Kirk_watch_10",
+    "date": "2026-08-18",
+    "time": "05:09 PM",
+    "player": "Alejandro Kirk",
+    "score": 10,
+    "edge": 0,
+    "best_price": 710,
+    "best_book": "draftkings",
+    "ending": 10,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK 10"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T00:09:09.241620+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-18_Daylen Lile_watch_14",
+    "date": "2026-08-18",
+    "time": "05:09 PM",
+    "player": "Daylen Lile",
+    "score": 14,
+    "edge": 3,
+    "best_price": 550,
+    "best_book": "betmgm",
+    "ending": 50,
+    "mgm_locked": 550,
+    "mgm_ending": 50,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T00:09:09.241821+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-18_Pedro Ramirez_watch_33",
+    "date": "2026-08-18",
+    "time": "05:09 PM",
+    "player": "Pedro Ramirez",
+    "score": 33,
+    "edge": 40,
+    "best_price": 870,
+    "best_book": "fanduel",
+    "ending": 70,
+    "mgm_locked": 575,
+    "mgm_ending": 75,
+    "methods": [
+      "FD Pattern",
+      "FD+MGM classic",
+      "DK FD-style",
+      "Match 75",
+      "Stayed in the group",
+      "MGM 75"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T00:09:09.242175+00:00",
+    "price_source": "pregame_lock"
   }
 ]
