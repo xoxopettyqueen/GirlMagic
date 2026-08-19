@@ -18114,5 +18114,27 @@
     "source": "watch",
     "logged_at": "2026-08-19T17:37:06.296019+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-19_Charles McAdoo_watch_28",
+    "date": "2026-08-19",
+    "time": "10:57 AM",
+    "player": "Charles McAdoo",
+    "score": 28,
+    "edge": 65,
+    "best_price": 940,
+    "best_book": "draftkings",
+    "ending": 40,
+    "mgm_locked": 800,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM Exact",
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-19T17:57:02.411538+00:00",
+    "price_source": "pregame_lock"
   }
 ]
