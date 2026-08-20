@@ -18565,5 +18565,96 @@
     "source": "watch",
     "logged_at": "2026-08-20T18:41:39.939961+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-20_Brandon Nimmo_watch_10",
+    "date": "2026-08-20",
+    "time": "12:01 PM",
+    "player": "Brandon Nimmo",
+    "score": 10,
+    "edge": 0,
+    "best_price": 650,
+    "best_book": "betmgm",
+    "ending": 50,
+    "mgm_locked": 650,
+    "mgm_ending": 50,
+    "methods": [
+      "MGM Exact",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-20T19:01:30.230176+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-20_Julio Rodriguez_watch_14",
+    "date": "2026-08-20",
+    "time": "12:01 PM",
+    "player": "Julio Rodriguez",
+    "score": 14,
+    "edge": 0,
+    "best_price": 425,
+    "best_book": "caesars",
+    "ending": 25,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten",
+      "Exact Match"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-20T19:01:30.230573+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-20_Wade Meckler_watch_35",
+    "date": "2026-08-20",
+    "time": "12:01 PM",
+    "player": "Wade Meckler",
+    "score": 35,
+    "edge": 100,
+    "best_price": 1200,
+    "best_book": "draftkings",
+    "ending": 0,
+    "mgm_locked": 900,
+    "mgm_ending": 0,
+    "methods": [
+      "Stayed in the group",
+      "FD Pattern",
+      "Match 00",
+      "Last one left",
+      "MGM 00"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-20T19:01:30.230909+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-20_Yainer Diaz_watch_25",
+    "date": "2026-08-20",
+    "time": "12:01 PM",
+    "player": "Yainer Diaz",
+    "score": 25,
+    "edge": 70,
+    "best_price": 820,
+    "best_book": "draftkings",
+    "ending": 20,
+    "mgm_locked": 525,
+    "mgm_ending": 25,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-20T19:01:30.230999+00:00",
+    "price_source": "pregame_lock"
   }
 ]
