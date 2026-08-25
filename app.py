@@ -143,8 +143,9 @@ def normalize_book(key):
         return "bet365"
     return BOOK_ALIASES.get(k, k)
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
-# ── Board gates (tightened from Tracker 2026-08-11) ───────────
-# 1 Promote · 2 Demote 75/00 · 3 priority required · 4 EDGE 80 · 5 ending 50 focus
+# ── Board gates (re-eval Tracker 2026-08-25) ─────────────────
+# Baseline TAKE IT ~11% (n=256). Promote 25s / Exact / multi-book / FD combos.
+# Demote 50s from priority (10% / 9% on TAKE). DK 10 = core only (6% on TAKE alone).
 EDGE_MIN = 80
 EDGE_SOFT = 40  # heavy stacks that still include a PRIORITY method
 METHODS_MIN = 2
@@ -168,33 +169,33 @@ EV_MIN_N = 12
 BOARD_MAX_PER_TEAM = 3
 BOARD_MAX_PER_GAME = 4
 
-# PRIORITY = must have ≥1 to unlock TAKE IT (tracker: DK 10 · 50s · Shorten · FD)
+# PRIORITY = must have ≥1 to unlock TAKE IT (Tracker 8/25 winners)
 PRIORITY_METHODS = {
-    "DK 10",
-    "Match 50", "MGM 50",
-    "Multi-book Shorten",
+    "Match 25", "MGM 25",          # 15% / 18% on TAKE IT — promote
     "FD Pattern", "FD 600",
+    "Multi-book method",           # 14%
+    "FD+MGM classic",              # 14%
+    "MGM Exact",                   # 14% — restore from support
 }
-# PREMIUM = counts as core (still need PRIORITY + edge for TAKE IT)
+# PREMIUM = counts as core (still need ≥1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
-    "DK 10",
+    "Match 25", "MGM 25",
     "FD 600", "FD Pattern",
-    "Multi-book Shorten",
-    "Match 50", "MGM 50",
-    "Match 25", "MGM 25",  # secondary — core OK, not priority alone
+    "Multi-book method",
+    "FD+MGM classic",
+    "MGM Exact",
+    "DK 10",                       # core OK, not priority alone (weak on TAKE IT)
+    "Multi-book Shorten",          # soft demote from priority
+    "Match 50", "MGM 50",          # core OK, not priority (below baseline)
 }
 # SUPPORT = tagged / WATCH / Tracker only — never core, never unlocks alone
-# Demoted from premium: 75s, 00s, Last one left, Stayed alone, MGM Exact alone
 SUPPORT_ONLY = {
     "Books tight", "Exact Match", "All books same",
     "DK FD-style", "Same on 3+ books",
-    "Multi-book method",
-    "Match 75", "MGM 75",   # 0% tracker — demoted
-    "Match 00", "MGM 00",   # 0% — demoted
-    "MGM Exact",            # 0% on TAKE IT alone — demoted
-    "Stayed in the group",  # alone not enough
-    "Last one left",        # never unlocks
-    "FD+MGM classic",
+    "Match 75", "MGM 75",
+    "Match 00", "MGM 00",
+    "Stayed in the group",
+    "Last one left",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
 # Name magic can still use a slightly wider set
@@ -262,15 +263,19 @@ def strong_method_families(methods):
     for m in ms:
         if m not in TAKE_IT_STRONG:
             continue
-        if m in ("Match 50", "MGM 50"):
-            families.add("mgm_50")  # step 5: 50 is the ending that pays
-        elif m in ("Match 25", "MGM 25"):
-            families.add("mgm_25")
+        if m in ("Match 25", "MGM 25"):
+            families.add("mgm_25")  # 8/25: strongest ending signal
+        elif m in ("Match 50", "MGM 50"):
+            families.add("mgm_50")
+        elif m == "MGM Exact":
+            families.add("mgm_exact")
         elif m == "DK 10":
             families.add("dk_10")
         elif m in ("FD 600", "FD Pattern"):
             families.add("fd")
-        elif m == "Multi-book Shorten":
+        elif m == "FD+MGM classic":
+            families.add("fd_mgm")
+        elif m in ("Multi-book method", "Multi-book Shorten"):
             families.add("multi_book")
         else:
             families.add(m)
@@ -278,12 +283,12 @@ def strong_method_families(methods):
 
 
 def qualifies_take_it(core_count, methods, edge=0):
-    """Tightened TAKE IT (Tracker 2026-08-11):
-    1 Promote: DK 10 · Match/MGM 50 · Multi-book Shorten · FD Pattern/600
-    2 Demote: 75s · 00s · Last one left · Stayed alone · MGM Exact alone
-    3 Rule: ≥2 premium core AND ≥1 PRIORITY method
-    4 Edge ≥ 80 (or ≥40 with 3+ core + priority + 2 families)
-    5 Ending focus: 50 strong; 75/00 support-only
+    """TAKE IT (Tracker re-eval 2026-08-25):
+    1 PRIORITY (≥1): Match/MGM 25 · FD Pattern/600 · Multi-book method · FD+MGM classic · MGM Exact
+    2 Core (≥2 premium): priority set + DK 10 + Multi-book Shorten + Match/MGM 50
+    3 Demoted from priority: 50s · DK 10 alone · Multi-book Shorten alone
+    4 Support only: 75s · 00s · Stayed · Last one left · Exact/tight
+    5 Edge ≥ 80 (or ≥40 with 3+ core + priority + 2 families)
     """
     ms = {normalize_method_name(m) for m in (methods or [])}
     if not (ms & PRIORITY_METHODS):
@@ -2187,7 +2192,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         else:
             miss = []
             if not has_pri:
-                miss.append("need priority (DK 10 / 50-match / Shorten / FD)")
+                miss.append("need priority (25-match / FD / Multi-book method / Exact / FD+MGM)")
             if edge < EDGE_MIN:
                 miss.append(f"edge ≥{EDGE_MIN}")
             why = (
@@ -2936,7 +2941,7 @@ def main():
     if nav == TAB_LABELS[0]:
         st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
         st.caption(
-            "🟢 TAKE IT = 2+ premium + ≥1 priority (DK 10 / 50-match / Shorten / FD) + edge ≥80 · "
+            "🟢 TAKE IT = 2+ premium + ≥1 priority (25-match / FD / Multi-book method / Exact / FD+MGM) + edge ≥80 · "
             "⚪ PASS = 2+ premium missing priority or edge · "
             "👀 WATCH = 1 premium · 👁️ COVERAGE = 75s/00s/Exact/Stayed alone — eyes only"
         )
@@ -3049,7 +3054,7 @@ def main():
 
             st.markdown("#### 👁️ COVERAGE · support tags only (not a bet)")
             st.caption(
-                "75s · 00s · MGM Exact · Stayed alone · Last one left · Exact / tight — "
+                "75s · 00s · Stayed alone · Last one left · Exact / tight — "
                 "support tags only. Never upgrades to TAKE IT without priority + edge."
             )
             if not coverage_only:
@@ -3450,7 +3455,7 @@ def main():
 
         # Signal method = Girl Magic tags (why we cared)
         st.markdown("#### By signal method")
-        st.caption("Tags on the pick (MGM 50, DK 10, Multi-book Shorten, …) — not which book you bet.")
+        st.caption("Tags on the pick (MGM 25, FD Pattern, Multi-book method, Exact, …) — not which book you bet.")
         chips = chips_from_stats(method_stats, compare_baseline=True)
         st.markdown(
             "".join(chips) if chips else f"_(Need graded plays with n ≥ {TRACKER_MIN_N})_",
@@ -3634,14 +3639,14 @@ def main():
             '<div class="glossary-block">'
             "<h4>🟢 The Board (start here)</h4>"
             "We only care about <b>0.5 HR</b> — one home run, Over.<br><br>"
-            "<b>🟢 TAKE IT</b> — green light (tightened from Tracker 8/11).<br>"
-            "• <b>Priority (need ≥1):</b> DK 10 · Match/MGM <b>50</b> · Multi-book Shorten · FD Pattern · FD 600<br>"
-            "• <b>Premium core (need ≥2):</b> priority tags + Match/MGM 25<br>"
+            "<b>🟢 TAKE IT</b> — green light (re-eval Tracker 8/25 · baseline ~11%).<br>"
+            "• <b>Priority (need ≥1):</b> Match/MGM <b>25</b> · FD Pattern · FD 600 · Multi-book method · FD+MGM classic · MGM Exact<br>"
+            "• <b>Premium core (need ≥2):</b> priority tags + DK 10 + Multi-book Shorten + Match/MGM 50<br>"
             "• <b>Edge ≥ 80</b> (or ≥40 with 3+ core + priority + 2 families)<br>"
             "• Short list on purpose (caps per team / game)<br><br>"
             "<b>⚪ PASS</b> — 2+ premium but missing priority and/or edge.<br><br>"
             "<b>👀 WATCH</b> — 1 premium method. We track these to learn.<br>"
-            "<b>Support only (never unlock TAKE IT alone):</b> Match/MGM 75 · 00s · MGM Exact · "
+            "<b>Support only (never unlock TAKE IT alone):</b> Match/MGM 75 · 00s · "
             "Stayed in the group · Last one left · Books tight · Exact Match<br>"
             "WATCH + TAKE IT feed Results → auto-grade → Tracker / Backtest."
             "</div>"
@@ -3657,19 +3662,20 @@ def main():
 
             '<div class="glossary-block">'
             "<h4>🎰 BetMGM (same team only)</h4>"
-            "We track endings <b>00 · 25 · 50 · 75</b> — but only <b>50</b> (and 25 as secondary core) unlock TAKE IT.<br><br>"
+            "We track endings <b>00 · 25 · 50 · 75</b>. <b>25</b> is the unlock ending (8/25 tracker); 50 is core only.<br><br>"
             "<b>Pair</b> — exactly <b>2 teammates</b> with the same ending.<br>"
             "<b>Group of 3</b> — exactly <b>3 teammates</b> same ending. Not 4+.<br>"
-            "<b>Match/MGM 50</b> — <b>PRIORITY</b>. Best ending in the tracker (~17%).<br>"
-            "<b>Match/MGM 25</b> — premium core, not priority alone.<br>"
-            "<b>Match/MGM 75 · 00 · MGM Exact · Stayed · Last one left</b> — "
-            "<b>support only</b> (0% or weak alone in grades). Still shown on tabs.<br><br>"
+            "<b>Match/MGM 25</b> — <b>PRIORITY</b> (~15% overall · ~18% on TAKE IT).<br>"
+            "<b>MGM Exact</b> — <b>PRIORITY</b> (~14%). Same MGM price on 2–3 teammates.<br>"
+            "<b>Match/MGM 50</b> — premium core, not priority alone (below baseline in 8/25 sample).<br>"
+            "<b>Match/MGM 75 · 00 · Stayed · Last one left</b> — "
+            "<b>support only</b>. Still shown on tabs.<br><br>"
             "A lone +525 with no teammate partner is <b>not</b> an MGM method tag."
             "</div>"
 
             '<div class="glossary-block">'
             "<h4>🎯 DraftKings</h4>"
-            "<b>DK 10</b> — ends in 10. <b>PRIORITY</b> — best overall rate in the tracker (~20%, ~33% on WATCH).<br>"
+            "<b>DK 10</b> — ends in 10. <b>Premium core</b>, not priority alone (weak ~6% when forced onto TAKE IT; still fine as a second tag).<br>"
             "<b>DK FD-style</b> — DK using FanDuel-type endings (support only)."
             "</div>"
 
@@ -3678,7 +3684,7 @@ def main():
             "<b>FD Pattern</b> — price <b>+400 or higher</b> and ends in 10 / 20 / 30 / 60 / 70 / 90. "
             "<b>PRIORITY</b> when paired with DK/MGM on the player.<br>"
             "<b>FD 600</b> — specifically +600. <b>PRIORITY</b>.<br>"
-            "<b>FD+MGM classic</b> — FD Pattern/600 <b>and</b> MGM 25/50/75 on the same player (tracking combo)."
+            "<b>FD+MGM classic</b> — FD Pattern/600 <b>and</b> MGM 25/50/75 on the same player. <b>PRIORITY</b> (~14%)."
             "</div>"
 
             '<div class="glossary-block">'
