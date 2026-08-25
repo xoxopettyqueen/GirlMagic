@@ -26039,5 +26039,74 @@
     "source": "watch",
     "logged_at": "2026-08-25T16:31:47.065344+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-25_Ceddanne Rafaela_take_it_45",
+    "date": "2026-08-25",
+    "time": "09:39 AM",
+    "player": "Ceddanne Rafaela",
+    "score": 45,
+    "edge": 100,
+    "best_price": 1000,
+    "best_book": "draftkings",
+    "ending": 0,
+    "mgm_locked": 675,
+    "mgm_ending": 75,
+    "methods": [
+      "FD Pattern",
+      "Stayed in the group",
+      "Match 75",
+      "MGM 75",
+      "FD+MGM classic"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-08-25T16:39:56.849772+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-25_Jonathan Aranda_watch_11",
+    "date": "2026-08-25",
+    "time": "09:39 AM",
+    "player": "Jonathan Aranda",
+    "score": 11,
+    "edge": 7,
+    "best_price": 600,
+    "best_book": "betmgm",
+    "ending": 0,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM Exact"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-25T16:39:56.852029+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-25_Luis Campusano_watch_14",
+    "date": "2026-08-25",
+    "time": "09:39 AM",
+    "player": "Luis Campusano",
+    "score": 14,
+    "edge": 0,
+    "best_price": 750,
+    "best_book": "caesars",
+    "ending": 50,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "Books tight",
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-25T16:39:56.852645+00:00",
+    "price_source": "pregame_lock"
   }
 ]
