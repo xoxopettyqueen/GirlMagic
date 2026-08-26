@@ -22240,10 +22240,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-24T15:43:36.601438+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-24_Henry Bolte_watch_15",
@@ -24182,10 +24183,11 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.368323+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Drew Cavanaugh_watch_30",
@@ -24528,10 +24530,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.370244+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Jordan Beck_watch_35",
@@ -24643,10 +24646,11 @@
       "Match 75"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.370825+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Lawrence Butler_watch_16",
@@ -25684,10 +25688,11 @@
       "MGM 50"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-25T16:31:47.059810+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Bryson Stott_take_it_58",
@@ -25897,10 +25902,11 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T16:31:47.063336+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_J.T. Realmuto_watch_23",
@@ -26081,10 +26087,11 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T16:39:56.852029+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Luis Campusano_watch_14",
