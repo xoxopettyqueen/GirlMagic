@@ -29978,5 +29978,31 @@
     "source": "watch",
     "logged_at": "2026-08-28T18:01:09.884234+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-28_Jake McCarthy_take_it_82",
+    "date": "2026-08-28",
+    "time": "11:21 AM",
+    "player": "Jake McCarthy",
+    "score": 82,
+    "edge": 160,
+    "best_price": 1060,
+    "best_book": "draftkings",
+    "ending": 60,
+    "mgm_locked": 725,
+    "mgm_ending": 25,
+    "methods": [
+      "DK FD-style",
+      "Multi-book Shorten",
+      "Match 25",
+      "MGM 25",
+      "Stayed in the group",
+      "MGM Exact"
+    ],
+    "core": 4,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-08-28T18:21:01.041776+00:00",
+    "price_source": "pregame_lock"
   }
 ]
