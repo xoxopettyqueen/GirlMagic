@@ -31162,5 +31162,123 @@
     "source": "watch",
     "logged_at": "2026-08-28T20:52:13.788324+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-28_Ezequiel Duran_take_it_72",
+    "date": "2026-08-28",
+    "time": "02:19 PM",
+    "player": "Ezequiel Duran",
+    "score": 72,
+    "edge": 70,
+    "best_price": 900,
+    "best_book": "draftkings",
+    "ending": 0,
+    "mgm_locked": 625,
+    "mgm_ending": 25,
+    "methods": [
+      "Multi-book method",
+      "Match 25",
+      "Last one left",
+      "FD Pattern",
+      "MGM 25",
+      "FD+MGM classic",
+      "Stayed in the group"
+    ],
+    "core": 5,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-08-28T21:19:46.497343+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-28_Henry Davis_watch_18",
+    "date": "2026-08-28",
+    "time": "02:19 PM",
+    "player": "Henry Davis",
+    "score": 18,
+    "edge": 40,
+    "best_price": 850,
+    "best_book": "betmgm",
+    "ending": 50,
+    "mgm_locked": 850,
+    "mgm_ending": 50,
+    "methods": [
+      "FD Pattern",
+      "DK FD-style"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-28T21:19:46.501795+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-28_Oneil Cruz_watch_18",
+    "date": "2026-08-28",
+    "time": "02:19 PM",
+    "player": "Oneil Cruz",
+    "score": 18,
+    "edge": 25,
+    "best_price": 500,
+    "best_book": "betmgm",
+    "ending": 0,
+    "mgm_locked": 500,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 00",
+      "Match 00",
+      "Last one left",
+      "FD Pattern",
+      "Stayed in the group"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-28T21:19:46.503255+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-28_Royce Lewis_watch_10",
+    "date": "2026-08-28",
+    "time": "02:19 PM",
+    "player": "Royce Lewis",
+    "score": 10,
+    "edge": 0,
+    "best_price": 525,
+    "best_book": "betmgm",
+    "ending": 25,
+    "mgm_locked": 525,
+    "mgm_ending": 25,
+    "methods": [
+      "MGM Exact"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-28T21:19:46.503928+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-28_William Contreras_watch_20",
+    "date": "2026-08-28",
+    "time": "02:19 PM",
+    "player": "William Contreras",
+    "score": 20,
+    "edge": 45,
+    "best_price": 470,
+    "best_book": "fanduel",
+    "ending": 70,
+    "mgm_locked": 400,
+    "mgm_ending": 0,
+    "methods": [
+      "Match 00",
+      "FD Pattern",
+      "MGM 00"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-28T21:19:46.504749+00:00",
+    "price_source": "pregame_lock"
   }
 ]
