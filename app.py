@@ -1,6 +1,6 @@
 """
 Girl Magic Odds ✨
-- GitHub-backed results (survives Streamlit Cloud wipe)
+- GitHub-backed results + lock + movement history (survives Streamlit sleep/wipe)
 - No Digits tab (folded into MGM)
 - MGM: pairs + groups of 3 + Exact 2-3 only
 - One card per player on every method tab
@@ -35,7 +35,7 @@ st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="w
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
-.stApp{background:linear-gradient(165deg,#0a0410 0%,#160a22 40%,#1f0b30 100%);color:#fce7f3;font-family:'Inter',sans-serif}
+.stApp{background:#0b0612;color:#fce7f3;font-family:'Inter',sans-serif}
 /* medium width - not full bleed, not phone-narrow on desktop */
 .main .block-container,
 [data-testid="stMainBlockContainer"],
@@ -57,18 +57,19 @@ div[role="radiogroup"] label{
   padding:5px 9px!important;font-size:0.7rem!important;color:#f9a8d4!important;
 }
 
-h1{font-family:'Playfair Display',serif!important;font-weight:900!important;background:linear-gradient(90deg,#f9a8d4,#e879f9,#c084fc,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:2.5rem!important;margin-bottom:2px!important}
+h1{font-family:'Playfair Display',serif!important;font-weight:900!important;color:#f8f4ff!important;-webkit-text-fill-color:#f8f4ff!important;background:none!important;font-size:2.35rem!important;margin:2px 0 4px!important}
+.kicker{color:#f9a8d4;font-size:.68rem;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;margin:0}
 .subtitle{color:#f9a8d4;font-size:.9rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
-.tagline{color:#e9d5ff;font-size:.85rem;font-style:italic;margin-bottom:14px;opacity:.95}
-.how-to{background:linear-gradient(135deg,#1a0f28 0%,#2a1040 100%);border:1px solid #f472b6;border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:.85rem;line-height:1.45}
+.tagline{color:#c4b5d6;font-size:.88rem;font-style:italic;margin:0 0 12px;opacity:.95}
+.how-to{background:#16101f;border:1px solid #2a2038;border-radius:999px;padding:8px 16px;margin-bottom:14px;font-size:.78rem;line-height:1.4;color:#d8c8ea}
 .how-to b{color:#f9a8d4}
 .info-box{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:.88rem}
 .warning-box{background:#3b0764;border:2px solid #f472b6;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:.9rem}
 .stButton>button{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important;border:none!important;border-radius:10px!important;font-weight:700!important}
-.petty-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.petty-box{flex:1;min-width:68px;background:#1a0f28;border:1px solid #f472b6;border-radius:12px;padding:10px 6px;text-align:center}
-.petty-num{font-size:1.3rem;font-weight:800;color:#f9a8d4}
-.petty-label{font-size:.55rem;color:#e9d5ff;margin-top:3px}
+.petty-row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 16px}
+.petty-box{flex:1;min-width:88px;background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:14px 8px;text-align:center}
+.petty-num{font-size:1.7rem;font-weight:800;color:#f472b6;line-height:1}
+.petty-label{font-size:.62rem;color:#c4b5d6;margin-top:6px;letter-spacing:.8px;text-transform:uppercase}
 .rate-chip{display:inline-block;background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin:4px;text-align:center;min-width:72px;vertical-align:top}
 .rate-chip.beat{border:2px solid #34d399;background:linear-gradient(155deg,#0c2418,#1a0f28);box-shadow:0 0 0 1px rgba(52,211,153,.25)}
 .rate-chip.beat .rate-pct{color:#6ee7b7}
@@ -76,12 +77,18 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;back
 .rate-pct{font-size:1.1rem;font-weight:800;color:#f9a8d4}
 .rate-name{font-size:.65rem;color:#e9d5ff}
 .rate-n{font-size:.6rem;color:#c084fc}
-.card{background:linear-gradient(155deg,#1a0f28,#251438);border:1px solid #f472b6;border-radius:12px;padding:10px 12px;color:#fdf2f8;position:relative;font-size:.9rem;margin-bottom:8px}
-.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:12px 0 0 12px;background:#f472b6}
-.bet{background:linear-gradient(155deg,#0c2418,#143d28)!important;border-color:#34d399!important}
-.skip{background:#14101c!important;border-color:#4b5563!important;opacity:.85}
-.score-pill{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-weight:800;font-size:.9rem;padding:2px 10px;border-radius:12px;margin-left:6px}
-.tag{display:inline-block;background:#3b0764;color:#f9a8d4;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;margin:2px 3px 2px 0;border:1px solid #a855f7}
+.card{background:#16101f;border:1px solid #2a2038;border-radius:18px;padding:12px 14px;color:#fdf2f8;position:relative;font-size:.88rem;margin-bottom:10px}
+.card::before{display:none}
+.bet{background:#0d1c18!important;border-color:#1d4a3a!important}
+.skip{background:#16101f!important;border-color:#2a2038!important;opacity:1}
+.watch-card{background:#141018!important;border-color:#2a2038!important}
+.score-pill{display:inline-block;background:#ec4899;color:#fff;font-weight:800;font-size:.72rem;padding:3px 9px;border-radius:999px;float:right}
+.card-kicker{font-size:.62rem;letter-spacing:1.2px;text-transform:uppercase;color:#f9a8d4;font-weight:700;margin-bottom:4px}
+.card-name{font-size:1.05rem;font-weight:800;color:#fff;margin:0}
+.card-meta{font-size:.72rem;color:#9ca3af;margin:2px 0 6px}
+.card-line{font-size:.86rem;color:#e5e7eb;margin:1px 0}
+.card-foot{font-size:.68rem;color:#9ca3af;margin-top:8px}
+.tag{display:inline-block;background:#1b1226;color:#e9d5ff;font-size:.62rem;font-weight:700;padding:3px 8px;border-radius:999px;margin:2px 3px 2px 0;border:1px solid #3b0764}
 .tag-dk{background:#064e3b;color:#6ee7b7;border-color:#34d399}
 .tag-mgm{background:#422006;color:#fcd34d;border-color:#f59e0b}
 .tag-fd{background:#1e3a5f;color:#93c5fd;border-color:#3b82f6}
@@ -766,41 +773,127 @@ def lock_movement_rows(lock=None):
             (up if delta > 0 else down)[player].append(line)
     return up, down
 
-def load_history():
-    if not os.path.exists(HISTORY_FILE): return
-    try:
-        with open(HISTORY_FILE, "r") as f: data = json.load(f)
-        saved_at = data.get("saved_at")
-        if saved_at:
+def _apply_history_payload(data):
+    """Load snaps into session. Skip if older than HISTORY_MAX_AGE_HOURS."""
+    if not data or not isinstance(data, dict):
+        return False
+    saved_at = data.get("saved_at")
+    if saved_at:
+        try:
             age = datetime.now(timezone.utc) - datetime.fromisoformat(saved_at)
-            if age > timedelta(hours=HISTORY_MAX_AGE_HOURS): return
+            if age > timedelta(hours=HISTORY_MAX_AGE_HOURS):
+                return False
+        except Exception:
+            pass
+    try:
         pr = []
         for snap in data.get("presence_history", []):
             s = set()
             for item in snap:
-                if len(item) >= 3: s.add((item[0], item[1], item[2]))
-                elif len(item) == 2: s.add((item[0], item[1], ""))
+                if len(item) >= 3:
+                    s.add((item[0], item[1], item[2]))
+                elif len(item) == 2:
+                    s.add((item[0], item[1], ""))
             pr.append(s)
         st.session_state["presence_history"] = pr[-12:]
-        ph = [{tuple(k.split("||", 1)): v for k, v in snap.items()} for snap in data.get("price_history", [])]
+        ph = []
+        for snap in data.get("price_history", []):
+            if isinstance(snap, dict):
+                ph.append({tuple(k.split("||", 1)): v for k, v in snap.items()})
         st.session_state["price_history"] = ph[-8:]
         mh = []
         for snap in data.get("mgm_history", []):
-            mh.append([{"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": frozenset(g["players"])} for g in snap])
+            mh.append([
+                {
+                    "event": g["event"],
+                    "ending": g["ending"],
+                    "team": g.get("team", ""),
+                    "players": frozenset(g["players"]),
+                }
+                for g in snap
+            ])
         st.session_state["mgm_history"] = mh[-8:]
-        if "prev_ev" in data: st.session_state["prev_ev"] = data["prev_ev"]
-    except Exception: pass
+        if "prev_ev" in data:
+            st.session_state["prev_ev"] = data["prev_ev"]
+        return True
+    except Exception:
+        return False
+
+
+def _build_history_payload(prev_ev=None):
+    ph = [{f"{a}||{b}": v for (a, b), v in snap.items()} for snap in st.session_state.get("price_history", [])]
+    pr = [[[a, b, e] for (a, b, e) in snap] for snap in st.session_state.get("presence_history", [])]
+    mh = [
+        [{"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": list(g["players"])} for g in snap]
+        for snap in st.session_state.get("mgm_history", [])
+    ]
+    payload = {
+        "saved_at": now_utc_iso(),
+        "price_history": ph,
+        "presence_history": pr,
+        "mgm_history": mh,
+    }
+    if prev_ev is not None:
+        payload["prev_ev"] = prev_ev
+    elif "prev_ev" in st.session_state:
+        payload["prev_ev"] = st.session_state["prev_ev"]
+    return payload
+
+
+def load_history():
+    """Prefer GitHub history (survives Streamlit sleep), else local file."""
+    local = None
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r") as f:
+                local = json.load(f)
+        except Exception:
+            local = None
+
+    gh, status = None, "unconfigured"
+    if _gh_configured():
+        gh, status = _gh_load_json(HISTORY_FILE, "_history_sha")
+    st.session_state["_history_gh_status"] = status
+
+    chosen = None
+    if isinstance(gh, dict) and isinstance(local, dict):
+        if str(gh.get("saved_at") or "") >= str(local.get("saved_at") or ""):
+            chosen = gh
+            st.session_state["_history_source"] = "github"
+        else:
+            chosen = local
+            st.session_state["_history_source"] = "local"
+    elif isinstance(gh, dict):
+        chosen = gh
+        st.session_state["_history_source"] = "github"
+    elif isinstance(local, dict):
+        chosen = local
+        st.session_state["_history_source"] = "local"
+    else:
+        st.session_state["_history_source"] = "empty"
+        return
+
+    if _apply_history_payload(chosen) and chosen is gh:
+        try:
+            with open(HISTORY_FILE, "w") as f:
+                json.dump(chosen, f)
+        except Exception:
+            pass
+
 
 def save_history(prev_ev=None):
+    """Write movement snaps locally AND to GitHub so sleep does not wipe Late/Fallen/Moves."""
     try:
-        ph = [{f"{a}||{b}": v for (a, b), v in snap.items()} for snap in st.session_state.get("price_history", [])]
-        pr = [[[a, b, e] for (a, b, e) in snap] for snap in st.session_state.get("presence_history", [])]
-        mh = [[{"event": g["event"], "ending": g["ending"], "team": g.get("team", ""), "players": list(g["players"])} for g in snap] for snap in st.session_state.get("mgm_history", [])]
-        payload = {"saved_at": now_utc_iso(), "price_history": ph, "presence_history": pr, "mgm_history": mh}
-        if prev_ev is not None: payload["prev_ev"] = prev_ev
-        elif "prev_ev" in st.session_state: payload["prev_ev"] = st.session_state["prev_ev"]
-        with open(HISTORY_FILE, "w") as f: json.dump(payload, f)
-    except Exception: pass
+        payload = _build_history_payload(prev_ev)
+        with open(HISTORY_FILE, "w") as f:
+            json.dump(payload, f)
+        if _gh_configured():
+            ok = _gh_save_json(HISTORY_FILE, payload, "_history_sha", "girl magic history")
+            st.session_state["_history_gh_save"] = "ok" if ok else "fail"
+        else:
+            st.session_state["_history_gh_save"] = "no_secrets"
+    except Exception:
+        pass
 
 def _gh_repo():
     return (st.secrets.get("GITHUB_REPO") or "").strip()
@@ -2680,9 +2773,9 @@ def main():
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     else:
         refresh_count = 0
-    st.markdown("<h1>👑 Girl Magic Odds</h1>", unsafe_allow_html=True)
-    st.markdown('<p class="subtitle">Boss Bitch • HBIC • Me & My Girls We Rolling</p>', unsafe_allow_html=True)
-    st.markdown('<p class="tagline">Where odds intuition meets Petty precision.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
+    st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
+    st.markdown('<p class="tagline">Where odds intuition meets Petty precision. 0.5 HR Over only.</p>', unsafe_allow_html=True)
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     st.markdown(f"""
     <div class="how-to" style="padding:10px 14px;font-size:0.78rem;line-height:1.35">
@@ -2939,11 +3032,10 @@ def main():
         key="main_nav",
     )
     if nav == TAB_LABELS[0]:
-        st.markdown('<div class="queen-banner">👑 Strict Board</div>', unsafe_allow_html=True)
+        st.markdown("### The Board")
         st.caption(
-            "🟢 TAKE IT = 2+ premium + ≥1 priority (25-match / FD / Multi-book method / Exact / FD+MGM) + edge ≥80 · "
-            "⚪ PASS = 2+ premium missing priority or edge · "
-            "👀 WATCH = 1 premium · 👁️ COVERAGE = 75s/00s/Exact/Stayed alone — eyes only"
+            "Green is TAKE IT. PASS has two premium cores but is missing priority or edge. "
+            "WATCH is one premium method — we track it to learn."
         )
 
         def _render_board_card(item, label, cls):
@@ -2951,15 +3043,24 @@ def main():
             meter = make_meter(item.get("bars", 1), item.get("level", "low"))
             ev_s = ""
             if item.get("ev_lean") is True:
-                ev_s = f"<br><b>+EV lean</b> from past {item.get('method_rate_name')} plays"
+                ev_s = f" · +EV lean ({item.get('method_rate_name')})"
             team = item.get("team") or ""
+            game = item.get("event") or ""
+            meta = " · ".join([x for x in (team, game) if x])
+            pack = item.get("median")
+            pack_s = f" · pack {format_odds(pack)}" if pack is not None else ""
             st.markdown(
                 f'<div class="card {cls}">'
-                f'<b>{label}</b> - <b>{item["player"]}</b>{(" · " + team) if team else ""}'
-                f'<span class="score-pill">{item.get("score", 0)}</span><br>{meter}'
-                f'Best {format_odds(item.get("best_price"))} {book_label(item.get("best_book"))}'
-                f' · consensus {format_odds(item.get("median"))} · edge <b>{int(item.get("edge") or 0)}</b><br>'
-                f'{tags}{ev_s}<br><small>{item.get("why", "")}</small></div>',
+                f'<div class="card-kicker">{label}</div>'
+                f'<span class="score-pill">{item.get("score", 0)}</span>'
+                f'<div class="card-name">{item["player"]}</div>'
+                f'<div class="card-meta">{meta}</div>'
+                f'{meter}'
+                f'<div class="card-line"><b>Best {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}</div>'
+                f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium</div>'
+                f'<div style="margin-top:6px">{tags}</div>'
+                f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
+                f'</div>',
                 unsafe_allow_html=True,
             )
 
@@ -2977,7 +3078,7 @@ def main():
             st.info("Fetch while pregame — board fills when methods fire.")
         else:
             if takes:
-                st.markdown("#### 🟢 TAKE IT")
+                st.markdown("#### Take it")
                 # Away @ Home → commence_time from loaded events (order board by tip time)
                 commence_by_event = {}
                 for e in st.session_state.get("events", []):
@@ -3031,26 +3132,26 @@ def main():
                     cols = st.columns(2)
                     for idx, item in enumerate(items):
                         with cols[idx % 2]:
-                            _render_board_card(item, "🟢 TAKE IT", "bet")
+                            _render_board_card(item, "TAKE IT", "bet")
             else:
-                st.markdown("#### 🟢 TAKE IT")
+                st.markdown("#### Take it")
                 st.caption("None right now — need a heavier method stack (see Code).")
 
             if passes:
-                st.markdown("#### ⚪ PASS · 2+ methods, not on TAKE IT shortlist")
+                st.markdown("#### Pass")
                 cols = st.columns(2)
                 for idx, item in enumerate(passes):
                     with cols[idx % 2]:
-                        _render_board_card(item, "⚪ PASS", "skip")
+                        _render_board_card(item, "PASS", "skip")
 
-            st.markdown("#### 👀 WATCH · 1 premium method (track for auto-grade)")
+            st.markdown("#### Watch")
             if not watches:
                 st.caption("None with exactly 1 premium method right now.")
             else:
                 cols = st.columns(2)
                 for idx, item in enumerate(watches[:40]):
                     with cols[idx % 2]:
-                        _render_board_card(item, "👀 WATCH", "card")
+                        _render_board_card(item, "WATCH", "watch-card")
 
             st.markdown("#### 👁️ COVERAGE · support tags only (not a bet)")
             st.caption(
@@ -3063,7 +3164,7 @@ def main():
                 cols = st.columns(2)
                 for idx, item in enumerate(coverage_only[:40]):
                     with cols[idx % 2]:
-                        _render_board_card(item, "👁️ COVERAGE", "card")
+                        _render_board_card(item, "COVERAGE", "watch-card")
 
     if nav == TAB_LABELS[1]:
         show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
@@ -3494,15 +3595,17 @@ def main():
         gh_save = st.session_state.get("_results_gh_save", "—")
         lock_src = st.session_state.get("_pregame_source", "?")
         lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
+        hist_src = st.session_state.get("_history_source", "?")
+        hist_save = st.session_state.get("_history_gh_save", "—")
         secrets_ok = "yes" if _gh_configured() else "NO — add GITHUB_TOKEN + GITHUB_REPO"
         st.caption(
             f"{n_all} logged · {n_pending_all} waiting · {n_today} today · "
             f"source={src} · GH load={gh_st} · GH save={gh_save} · "
-            f"lock={lock_n} ({lock_src}) · secrets={secrets_ok}"
+            f"lock={lock_n} ({lock_src}) · hist={hist_src}/{hist_save} · secrets={secrets_ok}"
         )
         if not _gh_configured():
             st.warning(
-                "GitHub secrets missing — Results & Lock only live on this server and wipe on reboot. "
+                "GitHub secrets missing — Results, Lock, and movement history wipe on reboot. "
                 "Add GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH in Streamlit Secrets."
             )
         elif n_all == 0:
