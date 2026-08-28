@@ -24829,10 +24829,11 @@
       "FD 600"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.371714+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Pedro Ramirez_watch_35",
@@ -24945,10 +24946,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.372259+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Vaughn Grissom_watch_23",
@@ -28409,10 +28411,11 @@
       "FD 600"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-08-28T17:13:30.240137+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Elly De La Cruz_take_it_45",
@@ -29266,10 +29269,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.248172+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Nolan Gorman_watch_27",
