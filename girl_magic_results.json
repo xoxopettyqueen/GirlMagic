@@ -36891,5 +36891,48 @@
     "source": "watch",
     "logged_at": "2026-08-30T21:20:47.872182+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-30_Alex Bregman_watch_10",
+    "date": "2026-08-30",
+    "time": "03:54 PM",
+    "player": "Alex Bregman",
+    "score": 10,
+    "edge": 1,
+    "best_price": 451,
+    "best_book": "draftkings",
+    "ending": 51,
+    "mgm_locked": 350,
+    "mgm_ending": 50,
+    "methods": [
+      "MGM Exact"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-30T22:54:27.516556+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-30_Miguel Amaya_watch_22",
+    "date": "2026-08-30",
+    "time": "03:54 PM",
+    "player": "Miguel Amaya",
+    "score": 22,
+    "edge": 55,
+    "best_price": 700,
+    "best_book": "hardrockbet",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-30T22:54:27.516781+00:00",
+    "price_source": "pregame_lock"
   }
 ]
