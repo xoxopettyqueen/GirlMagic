@@ -36732,5 +36732,71 @@
     "source": "watch",
     "logged_at": "2026-08-30T19:23:23.484188+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-30_Edwin Arroyo_watch_21",
+    "date": "2026-08-30",
+    "time": "02:20 PM",
+    "player": "Edwin Arroyo",
+    "score": 21,
+    "edge": 50,
+    "best_price": 1000,
+    "best_book": "betmgm",
+    "ending": 0,
+    "mgm_locked": 1000,
+    "mgm_ending": 0,
+    "methods": [
+      "FD Pattern",
+      "MGM 00",
+      "Match 00"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-30T21:20:47.871676+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-30_Matt McLain_watch_12",
+    "date": "2026-08-30",
+    "time": "02:20 PM",
+    "player": "Matt McLain",
+    "score": 12,
+    "edge": 10,
+    "best_price": 510,
+    "best_book": "draftkings",
+    "ending": 10,
+    "mgm_locked": 360,
+    "mgm_ending": 60,
+    "methods": [
+      "DK 10"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-30T21:20:47.871940+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-30_Seiya Suzuki_watch_17",
+    "date": "2026-08-30",
+    "time": "02:20 PM",
+    "player": "Seiya Suzuki",
+    "score": 17,
+    "edge": 35,
+    "best_price": 375,
+    "best_book": "hardrockbet",
+    "ending": 75,
+    "mgm_locked": 340,
+    "mgm_ending": 40,
+    "methods": [
+      "MGM Exact",
+      "Books tight"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-08-30T21:20:47.872182+00:00",
+    "price_source": "pregame_lock"
   }
 ]
