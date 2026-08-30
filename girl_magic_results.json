@@ -8035,10 +8035,11 @@
       "MGM 25"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-12T19:18:12.202908+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-12_Josh Lowe_take_it_45",
@@ -12153,10 +12154,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-18T16:00:41.184241+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-18_Christian Yelich_watch_26",
@@ -16914,10 +16916,11 @@
       "Stayed in the group"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-19T16:13:53.685954+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-19_Jonah Heim_take_it_60",
@@ -17020,10 +17023,11 @@
       "Stayed in the group"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-19T16:13:53.686520+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-19_Nathan Church_take_it_55",
@@ -17193,10 +17197,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-19T16:13:53.687638+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-19_Christian Yelich_watch_16",
@@ -17699,10 +17704,11 @@
       "Stayed in the group"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-19T17:27:13.596910+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-19_Caleb Durbin_take_it_59",
@@ -18669,10 +18675,11 @@
       "FD+MGM classic"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-20T18:41:39.938929+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-20_Corey Seager_watch_29",
@@ -18981,10 +18988,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-20T21:27:39.144312+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-20_Daylen Lile_watch_14",
@@ -19076,10 +19084,11 @@
       "DK 10"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-20T21:27:39.145170+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-20_Samuel Basallo_watch_21",
@@ -19982,10 +19991,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-21T15:16:39.463549+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-21_Jeff McNeil_watch_14",
@@ -21350,10 +21360,11 @@
       "MGM 50"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-21T17:21:13.105999+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-21_Jonah Heim_take_it_61",
@@ -21433,10 +21444,11 @@
       "Stayed in the group"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-21T17:21:13.106524+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-21_Dane Myers_take_it_45",
@@ -24034,10 +24046,11 @@
       "Match 75"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.366913+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Austin Wells_watch_14",
@@ -24231,10 +24244,11 @@
       "FD 600"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.367972+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Cole Young_watch_47",
@@ -24471,10 +24485,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.369127+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Ian Happ_watch_21",
@@ -24588,10 +24603,11 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.369919+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Jeff McNeil_watch_35",
@@ -24612,10 +24628,11 @@
       "FD 600"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.370027+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Jimmy Crooks_watch_30",
@@ -24799,10 +24816,11 @@
       "DK 10"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.370930+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Leody Taveras_watch_35",
@@ -24823,10 +24841,11 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.371034+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Luis Lara_watch_12",
@@ -24845,10 +24864,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-25T15:59:37.371145+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Manny Machado_watch_26",
@@ -25154,10 +25174,11 @@
       "MGM 50"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-25T16:20:31.780734+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-25_Jos\u00e9 Caballero_take_it_48",
@@ -26308,10 +26329,11 @@
       "FD Pattern"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-26T20:29:10.565395+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Colton Cowser_take_it_74",
@@ -26335,10 +26357,11 @@
       "FD Pattern"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-26T20:29:10.565619+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Gunnar Henderson_take_it_71",
@@ -26468,10 +26491,11 @@
       "FD Pattern"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-26T20:29:10.566738+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Joe Mack_take_it_67",
@@ -26519,10 +26543,11 @@
       "FD Pattern"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-26T20:29:10.567136+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Freddie Freeman_take_it_64",
@@ -26859,10 +26884,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-26T20:29:10.569842+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Bryan Torres_watch_26",
@@ -26906,10 +26932,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-26T20:29:10.570228+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Carson Benge_watch_12",
@@ -26978,10 +27005,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-26T20:29:10.570793+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Jarren Duran_watch_39",
@@ -27119,10 +27147,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-26T20:29:10.573008+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Luis Robert Jr._watch_14",
@@ -27376,10 +27405,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-26T20:29:10.575207+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-26_Yainer Diaz_watch_35",
@@ -27534,10 +27564,11 @@
       "Match 25"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-27T15:47:45.958247+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-27_Tim Tawa_take_it_66",
@@ -27830,10 +27861,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-27T15:47:45.959627+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-27_Cody Bellinger_watch_23",
@@ -27900,10 +27932,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-27T15:47:45.959937+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-27_Ernie Clement_watch_32",
@@ -28113,10 +28146,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-27T15:47:45.960894+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-27_Luis Robert Jr._watch_13",
@@ -28289,10 +28323,11 @@
       "MGM Exact"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-28T17:13:30.237065+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Isaac Paredes_take_it_64",
@@ -28369,10 +28404,11 @@
       "FD+MGM classic"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-28T17:13:30.237781+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Carson Kelly_take_it_86",
@@ -28422,10 +28458,11 @@
       "FD+MGM classic"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-28T17:13:30.238237+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Drew Romo_take_it_74",
@@ -28894,10 +28931,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.242258+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Christian Walker_watch_13",
@@ -29011,10 +29049,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.243292+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Dylan Crews_watch_15",
@@ -29059,10 +29098,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.243695+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Esmerlyn Valdez_watch_14",
@@ -29107,10 +29147,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.244130+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Geraldo Perdomo_watch_10",
@@ -29201,10 +29242,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.244924+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Jake Cronenworth_watch_18",
@@ -29271,10 +29313,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.245584+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Jonathan Aranda_watch_16",
@@ -29440,10 +29483,11 @@
       "MGM 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T17:13:30.247618+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Luke Keaschall_watch_27",
@@ -29974,10 +30018,11 @@
       "MGM Exact"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-28T18:01:09.878962+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Ivan Herrera_take_it_40",
@@ -30196,10 +30241,11 @@
       "DK 10"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T18:01:09.883151+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Ryan Waldschmidt_watch_25",
@@ -30605,10 +30651,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T20:32:26.211503+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Freddy Fermin_watch_30",
@@ -31008,10 +31055,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T20:32:26.215362+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Travis Bazzana_watch_25",
@@ -31200,10 +31248,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T20:41:22.234614+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Jorbit Vivas_watch_17",
@@ -31269,10 +31318,11 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T20:41:22.237257+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Taylor Trammell_watch_15",
@@ -31324,10 +31374,11 @@
       "MGM Exact"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-28T20:52:13.776992+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Abimelec Ortiz_take_it_45",
@@ -31440,10 +31491,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-28T20:52:13.786816+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-28_Petey Halpin_watch_10",
@@ -32065,10 +32117,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T07:46:00.790460+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Daylen Lile_watch_17",
@@ -33008,10 +33061,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T07:46:00.796902+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Sam Antonacci_watch_20",
@@ -33753,10 +33807,11 @@
       "FD Pattern"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-29T16:52:24.637157+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Jacob Gonzalez_take_it_42",
@@ -33918,10 +33973,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T16:52:24.640001+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Carlos Cortes_watch_25",
@@ -33944,10 +34000,11 @@
       "Stayed in the group"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T16:52:24.640293+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Christian Yelich_watch_13",
@@ -33968,10 +34025,11 @@
       "Match 75"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T16:52:24.640537+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Cody Freeman_watch_14",
@@ -33989,10 +34047,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T16:52:24.640783+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Cooper Pratt_watch_26",
@@ -34082,10 +34141,11 @@
       "Stayed in the group"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T16:52:24.643035+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Jordan Lawlar_watch_18",
@@ -34503,10 +34563,11 @@
       "Match 75"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-29T23:39:29.554059+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Bryson Stott_take_it_57",
@@ -34615,10 +34676,11 @@
       "DK FD-style"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T23:39:29.555248+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Gunnar Henderson_watch_13",
@@ -34663,10 +34725,11 @@
       "Match 75"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T23:39:29.555531+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-29_Samuel Basallo_watch_14",
@@ -34711,10 +34774,11 @@
       "Stayed in the group"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-29T23:39:29.556058+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Nick Loftin_take_it_88",
@@ -34769,10 +34833,11 @@
       "MGM Exact"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T16:58:42.344437+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Luke Keaschall_take_it_76",
@@ -34935,10 +35000,11 @@
       "Last one left"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T16:58:42.345906+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Bo Bichette_take_it_61",
@@ -34959,10 +35025,11 @@
       "MGM Exact"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T16:58:42.346140+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Marcus Semien_take_it_61",
@@ -34983,10 +35050,11 @@
       "MGM Exact"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T16:58:42.346377+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Jackson Merrill_take_it_58",
@@ -35108,10 +35176,11 @@
       "MGM Exact"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T16:58:42.347610+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Manny Machado_take_it_44",
@@ -35182,10 +35251,11 @@
       "Stayed in the group"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T16:58:42.348307+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Tommy White_take_it_40",
@@ -35207,10 +35277,11 @@
       "FD Pattern"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T16:58:42.348543+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_A.J. Ewing_watch_27",
@@ -35229,10 +35300,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.348821+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Angel Genao_watch_24",
@@ -35319,10 +35391,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.349812+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Brooks Lee_watch_40",
@@ -35436,10 +35509,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.351011+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_David Hamilton_watch_41",
@@ -35457,10 +35531,11 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.351255+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Denzer Guzman_watch_40",
@@ -35526,10 +35601,11 @@
       "Stayed in the group"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.351973+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_George Springer_watch_20",
@@ -35596,10 +35672,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.352702+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Jake Bauers_watch_17",
@@ -35618,10 +35695,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.352937+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Jake Cronenworth_watch_45",
@@ -35708,10 +35786,11 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.353913+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Kevin McGonigle_watch_13",
@@ -35733,10 +35812,11 @@
       "Last one left"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.354138+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Leody Taveras_watch_29",
@@ -35755,10 +35835,11 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.354344+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Mike Trout_watch_22",
@@ -35967,10 +36048,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.356554+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Trent Grisham_watch_25",
@@ -36128,10 +36210,11 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T16:58:42.358130+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Zach Neto_watch_34",
@@ -36177,10 +36260,11 @@
       "MGM Exact"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-08-30T18:18:57.150399+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Jose Siri_take_it_73",
@@ -36270,10 +36354,11 @@
       "Books tight"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T18:18:57.152245+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Colt Keith_watch_15",
@@ -36296,10 +36381,11 @@
       "Last one left"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T18:18:57.152389+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Derek Hill_watch_25",
@@ -36413,10 +36499,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T18:18:57.153346+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_John Rave_watch_14",
@@ -36456,10 +36543,11 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T18:18:57.153628+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Jose Fermin_watch_19",
@@ -36523,10 +36611,11 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T18:18:57.154261+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Josh Lowe_take_it_76",
@@ -36577,10 +36666,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T19:23:23.481746+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Colton Cowser_watch_16",
@@ -36599,10 +36689,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T19:23:23.482095+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Edmundo Sosa_watch_16",
@@ -36621,10 +36712,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "watch",
     "logged_at": "2026-08-30T19:23:23.482655+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Elly De La Cruz_watch_10",
@@ -36686,10 +36778,11 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-08-30T19:23:23.483685+00:00",
-    "price_source": "pregame_lock"
+    "price_source": "pregame_lock",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-08-30_Nico Hoerner_watch_22",
