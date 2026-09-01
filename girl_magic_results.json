@@ -42675,5 +42675,76 @@
     "source": "watch",
     "logged_at": "2026-09-01T16:22:59.182187+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Bryan Reynolds_take_it_49",
+    "date": "2026-09-01",
+    "time": "09:42 AM",
+    "player": "Bryan Reynolds",
+    "score": 49,
+    "edge": 55,
+    "best_price": 880,
+    "best_book": "fanduel",
+    "ending": 80,
+    "mgm_locked": 825,
+    "mgm_ending": 25,
+    "methods": [
+      "Stayed in the group",
+      "Match 25",
+      "MGM 25",
+      "Multi-book Shorten"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-01T16:42:06.727407+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Cole Carrigg_watch_32",
+    "date": "2026-09-01",
+    "time": "09:42 AM",
+    "player": "Cole Carrigg",
+    "score": 32,
+    "edge": 70,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "ending": 50,
+    "mgm_locked": 500,
+    "mgm_ending": 0,
+    "methods": [
+      "Match 00",
+      "Multi-book Shorten",
+      "MGM 00",
+      "DK FD-style",
+      "Stayed in the group"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-01T16:42:06.730588+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Ketel Marte_watch_20",
+    "date": "2026-09-01",
+    "time": "09:42 AM",
+    "player": "Ketel Marte",
+    "score": 20,
+    "edge": 29,
+    "best_price": 479,
+    "best_book": "draftkings",
+    "ending": 79,
+    "mgm_locked": 475,
+    "mgm_ending": 75,
+    "methods": [
+      "Books tight",
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-01T16:42:06.732755+00:00",
+    "price_source": "pregame_lock"
   }
 ]
