@@ -40180,5 +40180,27 @@
     "source": "watch",
     "logged_at": "2026-09-01T00:32:45.367119+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-08-31_Dylan Beavers_watch_14",
+    "date": "2026-08-31",
+    "time": "05:48 PM",
+    "player": "Dylan Beavers",
+    "score": 14,
+    "edge": 0,
+    "best_price": 425,
+    "best_book": "caesars",
+    "ending": 25,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Exact Match",
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-01T00:48:36.863404+00:00",
+    "price_source": "pregame_lock"
   }
 ]
