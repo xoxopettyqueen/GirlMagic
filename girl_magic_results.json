@@ -44569,5 +44569,28 @@
     "source": "watch",
     "logged_at": "2026-09-02T01:38:26.182347+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Juan Soto_watch_11",
+    "date": "2026-09-01",
+    "time": "07:42 PM",
+    "player": "Juan Soto",
+    "score": 11,
+    "edge": 5,
+    "best_price": 430,
+    "best_book": "draftkings",
+    "ending": 30,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Books tight",
+      "DK FD-style",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-02T02:42:01.804335+00:00",
+    "price_source": "pregame_lock"
   }
 ]
