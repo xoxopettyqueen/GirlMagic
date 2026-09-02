@@ -44414,5 +44414,118 @@
     "source": "watch",
     "logged_at": "2026-09-01T22:46:23.104859+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Jazz Chisholm Jr._take_it_44",
+    "date": "2026-09-01",
+    "time": "06:38 PM",
+    "player": "Jazz Chisholm Jr.",
+    "score": 44,
+    "edge": 45,
+    "best_price": 520,
+    "best_book": "fanduel",
+    "ending": 20,
+    "mgm_locked": 380,
+    "mgm_ending": 80,
+    "methods": [
+      "FD Pattern",
+      "Multi-book method",
+      "MGM Exact"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-02T01:38:26.180278+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Jordan Lawlar_watch_41",
+    "date": "2026-09-01",
+    "time": "06:38 PM",
+    "player": "Jordan Lawlar",
+    "score": 41,
+    "edge": 140,
+    "best_price": 1300,
+    "best_book": "fanduel",
+    "ending": 0,
+    "mgm_locked": 900,
+    "mgm_ending": 0,
+    "methods": [
+      "DK FD-style",
+      "MGM Exact"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-02T01:38:26.181084+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Jose Fermin_watch_25",
+    "date": "2026-09-01",
+    "time": "06:38 PM",
+    "player": "Jose Fermin",
+    "score": 25,
+    "edge": 50,
+    "best_price": 800,
+    "best_book": "hardrockbet",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-02T01:38:26.181346+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Thomas Saggese_watch_29",
+    "date": "2026-09-01",
+    "time": "06:38 PM",
+    "player": "Thomas Saggese",
+    "score": 29,
+    "edge": 80,
+    "best_price": 700,
+    "best_book": "hardrockbet",
+    "ending": 0,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "FD 600",
+      "DK FD-style"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-02T01:38:26.181960+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-01_Vaughn Grissom_watch_43",
+    "date": "2026-09-01",
+    "time": "06:38 PM",
+    "player": "Vaughn Grissom",
+    "score": 43,
+    "edge": 120,
+    "best_price": 1020,
+    "best_book": "draftkings",
+    "ending": 20,
+    "mgm_locked": 775,
+    "mgm_ending": 75,
+    "methods": [
+      "Multi-book Shorten",
+      "DK FD-style",
+      "Stayed in the group",
+      "Match 75",
+      "MGM 75"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-02T01:38:26.182347+00:00",
+    "price_source": "pregame_lock"
   }
 ]
