@@ -45550,5 +45550,73 @@
     "source": "watch",
     "logged_at": "2026-09-03T16:40:12.726558+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-03_Javier Sanoja_take_it_40",
+    "date": "2026-09-03",
+    "time": "10:09 AM",
+    "player": "Javier Sanoja",
+    "score": 40,
+    "edge": 80,
+    "best_price": 1120,
+    "best_book": "fanduel",
+    "ending": 20,
+    "mgm_locked": 775,
+    "mgm_ending": 75,
+    "methods": [
+      "Stayed in the group",
+      "Match 75",
+      "MGM 75",
+      "FD+MGM classic",
+      "FD Pattern"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-03T17:09:16.507070+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-03_Graham Pauley_watch_14",
+    "date": "2026-09-03",
+    "time": "10:09 AM",
+    "player": "Graham Pauley",
+    "score": 14,
+    "edge": 20,
+    "best_price": 820,
+    "best_book": "draftkings",
+    "ending": 20,
+    "mgm_locked": 700,
+    "mgm_ending": 0,
+    "methods": [
+      "FD Pattern",
+      "DK FD-style"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-03T17:09:16.508224+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-03_Jared Triolo_watch_14",
+    "date": "2026-09-03",
+    "time": "10:09 AM",
+    "player": "Jared Triolo",
+    "score": 14,
+    "edge": -100,
+    "best_price": 1100,
+    "best_book": "caesars",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-03T17:09:16.508973+00:00",
+    "price_source": "pregame_lock"
   }
 ]
