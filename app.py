@@ -211,14 +211,15 @@ BOARD_MAX_PER_TEAM = 3
 BOARD_MAX_PER_GAME = 4
 
 # PRIORITY = must have >=1 to unlock TAKE IT (Tracker 9/03 volume)
+# Tracker 9/05: only tags that beat 13% baseline unlock TAKE IT
 PRIORITY_METHODS = {
     "Match 25", "MGM 25",
     "DK 10",
     "FD 600",
-    "Multi-book method",
     "FD+MGM classic",
     "MGM Exact",
 }
+TAKE_HOT_ENDS = {10, 25, 75, 90}  # 21 / 17 / 14 / 14. 00=11 40=5 stay off TAKE.
 # PREMIUM = counts as core (still need >=1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
@@ -355,6 +356,12 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     ms = {normalize_method_name(m) for m in (methods or [])}
     if not (ms & PRIORITY_METHODS):
         return False
+    try:
+        end = last_two(best_price)
+        if end is not None and end not in TAKE_HOT_ENDS:
+            return False
+    except Exception:
+        pass
     if long_price_block(best_price, methods, book_prices):
         return False
     fams = strong_method_families(methods)
