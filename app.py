@@ -573,6 +573,12 @@ def render_shop_tab(df):
     </div>
     """, unsafe_allow_html=True)
     view = st.radio("Call", ["All", "TAKE + LEAN", "TAKE", "LEAN", "DON'T", "MARKET"], horizontal=True, key="shop_filter")
+    hunt = st.radio(
+        "Odds size",
+        ["All sizes", "Sweet +400-699", "Long hunt +700-999", "Flyers +1000+"],
+        horizontal=True,
+        key="shop_hunt",
+    )
     c1, c2, c3, c4 = st.columns(4)
     book_opts = ["Any"] + [lab for _, lab in SHOP_BOOKS]
     with c1:
@@ -615,6 +621,17 @@ def render_shop_tab(df):
     if q.strip():
         qq = q.strip().lower()
         shown = [r for r in shown if qq in (r.get("player") or "").lower() or qq in (r.get("event") or "").lower()]
+    def _bp(r):
+        try:
+            return abs(int(r.get("best") or 0))
+        except Exception:
+            return 0
+    if hunt == "Sweet +400-699":
+        shown = [r for r in shown if 400 <= _bp(r) <= 699]
+    elif hunt == "Long hunt +700-999":
+        shown = [r for r in shown if 700 <= _bp(r) <= 999]
+    elif hunt == "Flyers +1000+":
+        shown = [r for r in shown if _bp(r) >= 1000]
     st.caption(f"Showing {len(shown)} of {len(shop)} players")
     heat = ending_heat_from_results(load_results(), min_n=20)
     if heat:
