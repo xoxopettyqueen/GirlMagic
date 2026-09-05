@@ -467,6 +467,8 @@ def build_shop_board(df):
             "best": best, "best_book": best_book, "median": med, "fair": fair,
             "fair_prob": fair_p, "edge": edge, "action": action, "why": why,
             "cls": cls, "n_books": len(book_px),
+            "ending": last_two(best) if best is not None else None,
+            "bucket": price_bucket(best),
         })
     rows.sort(key=lambda x: (-x.get("edge", 0), x.get("player") or ""))
     return rows
@@ -513,14 +515,50 @@ def render_shop_tab(df):
         <div class="petty-box"><div class="petty-num">{len(shop)}</div><div class="petty-label">PLAYERS</div></div>
     </div>
     """, unsafe_allow_html=True)
-    view = st.radio("Shop filter", ["All", "TAKE + LEAN", "DON'T", "3+ books"], horizontal=True, key="shop_filter")
+    view = st.radio("Call", ["All", "TAKE + LEAN", "TAKE", "LEAN", "DON'T", "MARKET"], horizontal=True, key="shop_filter")
+    c1, c2, c3, c4 = st.columns(4)
+    book_opts = ["Any"] + [lab for _, lab in SHOP_BOOKS]
+    with c1:
+        book_f = st.selectbox("Best book", book_opts, key="shop_best_book")
+    with c2:
+        has_f = st.selectbox("Has book", book_opts, key="shop_has_book")
+    ends = sorted({f"{int(r['ending']):02d}" for r in shop if r.get("ending") is not None})
+    with c3:
+        end_f = st.multiselect("Best ends in", ends, key="shop_ends")
+    with c4:
+        min_gap = st.slider("Min gap vs fair", 0, 300, 0, 10, key="shop_min_gap")
+    c5, c6, c7 = st.columns(3)
+    with c5:
+        min_books = st.selectbox("Min books posted", [1, 2, 3, 4, 5], index=0, key="shop_min_books")
+    buckets = sorted({r.get("bucket") for r in shop if r.get("bucket")})
+    with c6:
+        buck_f = st.multiselect("Price bucket", buckets, key="shop_buckets")
+    with c7:
+        q = st.text_input("Player search", key="shop_q")
+
     shown = shop
     if view == "TAKE + LEAN":
-        shown = [r for r in shop if r["action"] in ("TAKE", "LEAN")]
-    elif view == "DON'T":
-        shown = [r for r in shop if r["action"] == "DON'T"]
-    elif view == "3+ books":
-        shown = [r for r in shop if r["n_books"] >= 3]
+        shown = [r for r in shown if r["action"] in ("TAKE", "LEAN")]
+    elif view in ("TAKE", "LEAN", "DON'T", "MARKET"):
+        shown = [r for r in shown if r["action"] == view]
+    if book_f != "Any":
+        want = {lab: key for key, lab in SHOP_BOOKS}.get(book_f)
+        shown = [r for r in shown if r.get("best_book") == want]
+    if has_f != "Any":
+        want = {lab: key for key, lab in SHOP_BOOKS}.get(has_f)
+        shown = [r for r in shown if want in (r.get("books") or {})]
+    if end_f:
+        shown = [r for r in shown if r.get("ending") is not None and f"{int(r['ending']):02d}" in end_f]
+    if min_gap:
+        shown = [r for r in shown if int(r.get("edge") or 0) >= min_gap]
+    if min_books:
+        shown = [r for r in shown if int(r.get("n_books") or 0) >= min_books]
+    if buck_f:
+        shown = [r for r in shown if r.get("bucket") in buck_f]
+    if q.strip():
+        qq = q.strip().lower()
+        shown = [r for r in shown if qq in (r.get("player") or "").lower() or qq in (r.get("event") or "").lower()]
+    st.caption(f"Showing {len(shown)} of {len(shop)} players")
     heat = ending_heat_from_results(load_results(), min_n=20)
     if heat:
         st.markdown("#### Endings that have been hitting (graded best price)")
