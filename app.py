@@ -1,4 +1,4 @@
-"""
+""
 Girl Magic Odds ✨
 - GitHub-backed results + lock + movement history (survives Streamlit sleep/wipe)
 - No Digits tab (folded into MGM)
@@ -552,7 +552,7 @@ def ending_heat_from_results(rows, min_n=20):
 
 def render_shop_tab(df):
     st.markdown("### Odds Shop")
-    st.caption("Fair = mean implied of posted Overs. TAKE ≥80 long vs fair. DON'T = 40+ short. Not a who-goes-yard call.")
+    st.caption("Shop the number. Green = longest book. Pink = short vs the pack. Call is price-only — Board still decides the play.")
     if df is None or getattr(df, "empty", True):
         st.info("Fetch 0.5 HR first — Shop fills from the live slate.")
         return
@@ -574,7 +574,7 @@ def render_shop_tab(df):
                 f'<div class="l">n={m.get("n")} · heavy {m.get("heavy_digit")}</div></div>'
             )
         st.markdown("#### Book authenticity")
-        st.caption("First digits of that book's whole 0.5 HR board vs Benford. Low = templated/capped board, not a player call.")
+        st.caption("Book vibe for this slate. Low score = the board looks templated. Not a player call.")
         st.markdown('<div class="bf-meter">' + "".join(chips) + "</div>", unsafe_allow_html=True)
     take_s = sum(1 for r in shop if r["action"] == "TAKE")
     lean_s = sum(1 for r in shop if r["action"] == "LEAN")
@@ -672,7 +672,7 @@ def render_shop_tab(df):
         "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>",
         unsafe_allow_html=True,
     )
-    st.caption("Green = longest book. Red = short vs fair. TAKE ≥80 over fair. DON'T = 40+ short.")
+    st.caption("TAKE = worth the number vs the pack. LEAN = close. DON’T = you’re buying a short or a flyer.")
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -2762,15 +2762,15 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         else:
             miss = []
             if not has_pri:
-                miss.append("need priority (25-match / FD / Multi-book method / Exact / FD+MGM)")
+                miss.append("pattern stack isn’t complete")
             if edge < EDGE_MIN:
-                miss.append(f"edge ≥{EDGE_MIN}")
+                miss.append("price isn’t long enough vs the pack")
             lp = long_price_block(best, display_meths, book_px)
             if lp:
-                miss.append(lp)
+                miss.append("number is too long / thin for a green light")
             why = (
-                f"Score {score}/100 · {core_count} premium · {strong_n} families · "
-                f"edge {int(edge)}{tri} · PASS ({' · '.join(miss) if miss else 'filtered'})"
+                f"Score {score}/100 · PASS — "
+                + (" · ".join(miss) if miss else "filtered")
             )
         row["why"] = why
         conf, bars, level = get_confidence(score, is_bet)
@@ -3493,10 +3493,7 @@ def main():
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown("### The Board")
-        st.caption(
-            "Green is TAKE IT. PASS has two premium cores but is missing priority or edge. "
-            "WATCH is one premium method — we track it to learn."
-        )
+        st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don’t force it.")
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
@@ -3598,7 +3595,7 @@ def main():
                             _render_board_card(item, "TAKE IT", "bet")
             else:
                 st.markdown("#### Take it")
-                st.caption("None right now — need a heavier method stack (see Code).")
+                st.caption("Nothing cleared right now. Check Shop or wait for the next fetch.")
 
             if passes:
                 st.markdown("#### Pass")
@@ -3609,7 +3606,7 @@ def main():
 
             st.markdown("#### Watch")
             if not watches:
-                st.caption("None with exactly 1 premium method right now.")
+                st.caption("No WATCH names on this fetch.")
             else:
                 cols = st.columns(2)
                 for idx, item in enumerate(watches[:40]):
@@ -3641,10 +3638,7 @@ def main():
         show_player_cards("match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
     if page == "Methods:Names":
         st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
-        st.caption(
-            f"Same / cross initials · same first or last name · "
-            f"both need {NAME_METHODS_MIN}+ core methods + a strong tag · different teams · max {NAME_MAX_PAIRS} pairs each"
-        )
+        st.caption("Name echoes across different teams. Cute extra — not the green light by itself.")
         show_player_cards("same_init", "💅 Same Initials", "Same first+last initial (e.g. MM) · different teams", results)
         show_player_cards("cross", "🔄 Cross Initials", "One last initial = other first initial · different teams", results)
         show_player_cards("last", "👩‍👧 Same Last Name", "Exact last name · different teams", results)
@@ -4021,7 +4015,7 @@ def main():
 
         # Signal method = Girl Magic tags (why we cared)
         st.markdown("#### By signal method")
-        st.caption("Tags on the pick (MGM 25, FD Pattern, Multi-book method, Exact, …) — not which book you bet.")
+        st.caption("How the tagged names actually graded — not which window you clicked.")
         chips = chips_from_stats(method_stats, compare_baseline=True)
         st.markdown(
             "".join(chips) if chips else f"_(Need graded plays with n ≥ {TRACKER_MIN_N})_",
@@ -4295,69 +4289,35 @@ def main():
             st.caption("Most natural: %s · Most artificial: %s" % (pack.get("most_natural"), pack.get("most_artificial")))
 
     if page == "Code:":
-        st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
-        st.caption("Girl Magic cheat sheet — short blocks, real examples.")
+        st.markdown('<div class="queen-banner">How to run it</div>', unsafe_allow_html=True)
+        st.caption("What you do. The tags stay on the cards — we don’t print the keys here.")
         st.markdown(
             '<div class="glossary-block">'
-            "<h4>🟢 The Board (start here)</h4>"
-            "We only care about <b>0.5 HR</b> — one home run, Over.<br><br>"
-            "<b>🟢 TAKE IT</b> — green light (re-eval Tracker 8/25 · baseline ~11%).<br>"
-            "• <b>Priority (need ≥1):</b> Match/MGM <b>25</b> · FD Pattern · FD 600 · Multi-book method · FD+MGM classic · MGM Exact<br>"
-            "• <b>Premium core (need ≥2):</b> priority tags + DK 10 + Multi-book Shorten + Match/MGM 50<br>"
-            "• <b>Edge ≥ 80</b> (or ≥40 with 3+ core + priority + 2 families)<br>"
-            "• Short list on purpose (caps per team / game)<br><br>"
-            "<b>⚪ PASS</b> — 2+ premium but missing priority and/or edge.<br><br>"
-            "<b>👀 WATCH</b> — 1 premium method. We track these to learn.<br>"
-            "<b>Support only (never unlock TAKE IT alone):</b> Match/MGM 75 · 00s · "
-            "Stayed in the group · Last one left · Books tight · Exact Match<br>"
-            "WATCH + TAKE IT feed Results → auto-grade → Tracker / Backtest."
+            "<h4>Start of day</h4>"
+            "Open <b>Slate</b> → Load Games → pick today’s cards → Fetch.<br>"
+            "Lock saves the pregame number. Don’t chase live once first pitch hits."
             "</div>"
-
             '<div class="glossary-block">'
-            "<h4>Score · Edge · +EV lean</h4>"
-            "<b>Score (0–100)</b> — strength meter. More tricks + better price → higher. <b>💎 DK+MGM+FD</b> (all three) adds a score bonus — ranks higher, does <b>not</b> change TAKE IT rules.<br>"
-            "<b>Edge</b> — best price minus the middle of the books. Bigger = longer number vs consensus. "
-            "<b>TAKE IT needs edge ≥ 80</b> after the tracker showed 8% TAKE IT vs 9% WATCH at the old 60 floor.<br>"
-            "<b>+EV lean</b> — “this tag has been hitting enough in our grades that the price is okay.” "
-            "Not Kelly. Not bankroll advice."
+            "<h4>The Board</h4>"
+            "<b>TAKE IT</b> — play it. Short list on purpose.<br>"
+            "<b>PASS</b> — something fired, not enough to green-light.<br>"
+            "<b>WATCH</b> — on the radar so we can grade it later.<br>"
+            "If it’s not green, don’t talk yourself into it."
             "</div>"
-
             '<div class="glossary-block">'
-            "<h4>🎰 BetMGM (same team only)</h4>"
-            "We track endings <b>00 · 25 · 50 · 75</b>. <b>25</b> is the unlock ending (8/25 tracker); 50 is core only.<br><br>"
-            "<b>Pair</b> — exactly <b>2 teammates</b> with the same ending.<br>"
-            "<b>Group of 3</b> — exactly <b>3 teammates</b> same ending. Not 4+.<br>"
-            "<b>Match/MGM 25</b> — <b>PRIORITY</b> (~15% overall · ~18% on TAKE IT).<br>"
-            "<b>MGM Exact</b> — <b>PRIORITY</b> (~14%). Same MGM price on 2–3 teammates.<br>"
-            "<b>Match/MGM 50</b> — premium core, not priority alone (below baseline in 8/25 sample).<br>"
-            "<b>Match/MGM 75 · 00 · Stayed · Last one left</b> — "
-            "<b>support only</b>. Still shown on tabs.<br><br>"
-            "A lone +525 with no teammate partner is <b>not</b> an MGM method tag."
+            "<h4>Shop</h4>"
+            "Where you buy the number. Compare books, skip flyers, filter by ending or book.<br>"
+            "Shop says if the <b>price</b> is worth it. Board says if the <b>name</b> is worth it."
             "</div>"
-
             '<div class="glossary-block">'
-            "<h4>🎯 DraftKings</h4>"
-            "<b>DK 10</b> — ends in 10. <b>Premium core</b>, not priority alone (weak ~6% when forced onto TAKE IT; still fine as a second tag).<br>"
-            "<b>DK FD-style</b> — DK using FanDuel-type endings (support only)."
+            "<h4>After the games</h4>"
+            "<b>Grade</b> auto-reads box scores. Tracker is how we learn without guessing.<br>"
+            "Backtest is TAKE IT vs WATCH — ignore tiny days."
             "</div>"
-
             '<div class="glossary-block">'
-            "<h4>💙 FanDuel</h4>"
-            "<b>FD Pattern</b> — price <b>+400 or higher</b> and ends in 10 / 20 / 30 / 60 / 70 / 90. "
-            "<b>PRIORITY</b> when paired with DK/MGM on the player.<br>"
-            "<b>FD 600</b> — specifically +600. <b>PRIORITY</b>.<br>"
-            "<b>FD+MGM classic</b> — FD Pattern/600 <b>and</b> MGM 25/50/75 on the same player. <b>PRIORITY</b> (~14%)."
+            "<h4>Energy / vibe tags</h4>"
+            "That’s board texture (cloned numbers vs messy ones). Fun extra. Not the green light."
             "</div>"
-
-            '<div class="glossary-block">'
-            "<h4>🤝 Same / tight prices (across books)</h4>"
-            "Looks at <b>DK · FD · MGM · HardRock</b>.<br><br>"
-            "<b>Exact Match</b> — same number on <b>2</b> of those books.<br>"
-            "<b>All books same</b> — same number on <b>3+</b> (e.g. all +650).<br>"
-            "<b>Books tight</b> — within ~<b>50 points</b> (e.g. +450 to +475). "
-            "<b>Support only</b> — common on WATCH, weak when forced onto TAKE IT."
-            "</div>"
-
             '<div class="glossary-block">'
             "<h4>🔒 Lock vs 🧠 Lock Lab</h4>"
             "<b>Lock</b> — <b>Open</b> = first pull (never changes) · <b>Now</b> = latest pregame · <b>Close</b> = last number before the book vanishes (often first pitch).<br>"
