@@ -558,24 +558,8 @@ def render_shop_tab(df):
         return
     shop = build_shop_board(df)
     book_meter = benford_book_meter(df)
-    lock_map = st.session_state.get("pregame_lock") or {}
     for r in shop:
-        rec = lock_map.get(r["player"]) or {}
-        r["benford"] = prop_benford_flag(r.get("books"), book_meter, rec.get("books") if isinstance(rec, dict) else None)
-    if book_meter:
-        chips = []
-        for bk, lab in SHOP_BOOKS:
-            m = book_meter.get(bk)
-            if not m:
-                continue
-            chips.append(
-                f'<div class="bf-chip"><div class="n">{m["score100"]}</div>'
-                f'<div class="l">{lab} · {m.get("alignment_label","")}</div>'
-                f'<div class="l">n={m.get("n")} · heavy {m.get("heavy_digit")}</div></div>'
-            )
-        st.markdown("#### Book authenticity")
-        st.caption("Book vibe for this slate. Low score = the board looks templated. Not a player call.")
-        st.markdown('<div class="bf-meter">' + "".join(chips) + "</div>", unsafe_allow_html=True)
+        r["benford"] = prop_benford_flag(r.get("books"), book_meter, None)
     take_s = sum(1 for r in shop if r["action"] == "TAKE")
     lean_s = sum(1 for r in shop if r["action"] == "LEAN")
     dont_s = sum(1 for r in shop if r["action"] == "DON'T")
@@ -663,16 +647,112 @@ def render_shop_tab(df):
             + f"<td>{fair_s}</td>"
             f'<td class="shop-best">{format_odds(r["best"])} {book_label(r.get("best_book"))}</td>'
             f'<td>{int(r.get("edge") or 0):+d}</td>'
-            f'<td class="{r["cls"]}">{r["action"]}</td>'
-            f'<td class="{(r.get("benford") or {}).get("cls","")}">{(r.get("benford") or {}).get("tag","")}</td></tr>'
+            f'<td class="{r["cls"]}">{r["action"]}</td></tr>'
         )
     st.markdown(
         '<div class="shop-wrap"><table class="shop-table"><thead><tr>'
-        "<th>Player</th>" + heads + "<th>Fair</th><th>Best</th><th>Gap</th><th>Call</th><th>Energy</th>"
+        "<th>Player</th>" + heads + "<th>Fair</th><th>Best</th><th>Gap</th><th>Call</th>"
         "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>",
         unsafe_allow_html=True,
     )
     st.caption("TAKE = worth the number vs the pack. LEAN = close. DON’T = you’re buying a short or a flyer.")
+
+def _benford_bars(res):
+    actual = res.get("actual_distribution") or {}
+    expected = res.get("expected_distribution") or {}
+    bits = []
+    for d in range(1, 10):
+        a = float(actual.get(str(d), 0)) * 100
+        e = float(expected.get(str(d), 0)) * 100
+        bits.append(
+            f'<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:.78rem">'
+            f'<div style="width:14px;color:#c4b5d6">{d}</div>'
+            f'<div style="flex:1;background:#1a1224;border-radius:6px;height:10px;position:relative">'
+            f'<div style="width:{min(100,e*2):.1f}%;height:10px;background:#4c1d95;border-radius:6px;opacity:.5"></div>'
+            f'<div style="width:{min(100,a*2):.1f}%;height:10px;background:#f472b6;border-radius:6px;margin-top:-10px"></div>'
+            f'</div>'
+            f'<div style="width:90px;color:#e9d5ff">{a:.0f}% <span style="opacity:.5">({e:.0f})</span></div>'
+            f'</div>'
+        )
+    return "".join(bits)
+
+def _benford_card(res, title):
+    n = res.get("n") or 0
+    score = int(round((res.get("benford_score") or 0) * 100))
+    if n < 25:
+        vibe = "Too few numbers"
+    elif score >= 70:
+        vibe = "Looks natural"
+    elif score >= 45:
+        vibe = "A little bunched"
+    else:
+        vibe = "Bunched / templated"
+    st.markdown(
+        f'<div class="card">'
+        f'<div class="card-kicker">{vibe}</div>'
+        f'<span class="score-pill">{score}</span>'
+        f'<div class="card-name">{title}</div>'
+        f'<div class="card-meta">n={n} · pink = this pile · purple = Benford</div>'
+        f'{_benford_bars(res)}'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+def render_digits_tab(df):
+    st.markdown("### Digits")
+    st.caption(
+        "Benford on a pile of odds — first digit 1 should show up more than 9. "
+        "HR boards sit in +400–+900 so they often look bunched. Compare books and days, not one player."
+    )
+    if not HAS_BENFORD:
+        st.warning("Need benford.py next to app.py.")
+        return
+    live_all, live_best = [], []
+    if df is not None and not getattr(df, "empty", True):
+        try:
+            live_all = [int(x) for x in df["price"].dropna().tolist()]
+        except Exception:
+            live_all = []
+        live_best = [r["best"] for r in build_shop_board(df) if r.get("best") is not None]
+    lock = st.session_state.get("pregame_lock") or load_pregame() or {}
+    lock_px = []
+    if isinstance(lock, dict):
+        for rec in lock.values():
+            if not isinstance(rec, dict):
+                continue
+            for info in (rec.get("books") or {}).values():
+                try:
+                    if isinstance(info, dict) and info.get("price") is not None:
+                        lock_px.append(int(info["price"]))
+                    elif isinstance(info, (int, float)):
+                        lock_px.append(int(info))
+                except Exception:
+                    pass
+    graded, hits = [], []
+    for r in load_results():
+        if r.get("result") not in ("HIT", "MISS") or r.get("best_price") is None:
+            continue
+        try:
+            px = int(r["best_price"])
+        except Exception:
+            continue
+        graded.append(px)
+        if r["result"] == "HIT":
+            hits.append(px)
+    _benford_card(analyze_benford(live_all, "live_all"), "Today — every posted number")
+    _benford_card(analyze_benford(live_best, "live_best"), "Today — best number only")
+    _benford_card(analyze_benford(lock_px, "lock"), "Lock — pregame book prices")
+    _benford_card(analyze_benford(graded, "graded"), "History — graded bests")
+    _benford_card(analyze_benford(hits, "hits"), "History — only the hits")
+    st.markdown("#### By book today")
+    meter = benford_book_meter(df)
+    if not meter:
+        st.caption("Fetch first.")
+        return
+    cols = st.columns(min(3, max(1, len(meter))))
+    for i, (bk, res) in enumerate(meter.items()):
+        with cols[i % len(cols)]:
+            _benford_card(res, book_label(bk))
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -798,21 +878,12 @@ def prop_benford_flag(book_prices, book_meter=None, lock_prices=None):
                 book_art = True
             if str(d) == str(m.get("heavy_digit")) and (m.get("heavy_delta") or 0) >= 0.08:
                 heavy_hit = True
-    if template:
-        tag, cls, aligned = "Benford-Broken", "bf-broken", False
-        note = f"same first digit {top_d} on {len(ds)} books — template"
-    elif cluster >= 0.75 and len(ds) >= 3:
-        tag, cls, aligned = "Benford-Broken", "bf-broken", False
-        note = f"cluster on {top_d} ({top_n}/{len(ds)})"
-    elif book_art and heavy_hit:
-        tag, cls, aligned = "Benford-Broken", "bf-broken", False
-        note = "book's forced first digit"
-    elif drift:
-        tag, cls, aligned = "Drift", "bf-drift", None
-        note = "first digit moved off lock"
+    if template or (cluster >= 0.75 and len(ds) >= 3) or (book_art and heavy_hit):
+        tag, cls, aligned = "Fake", "bf-broken", False
+        note = ""
     else:
-        tag, cls, aligned = "Benford-Aligned", "bf-ok", True
-        note = "digits not cloned across books"
+        tag, cls, aligned = "Authentic", "bf-ok", True
+        note = ""
     return {
         "tag": tag,
         "cls": cls,
@@ -3478,7 +3549,7 @@ def main():
         <div class="petty-box"><div class="petty-num">{take_n + pass_n + watch_n + coverage_n}</div><div class="petty-label">ON SLATE</div></div>
     </div>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Board", "Shop", "Methods", "Lines", "Grade", "Code"]
+    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Code"]
     main = st.radio(
         "Section",
         MAIN_TABS,
@@ -3492,7 +3563,7 @@ def main():
     elif main == "Lines":
         sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines")
     elif main == "Grade":
-        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Benford"], horizontal=True, label_visibility="collapsed", key="sub_grade")
+        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest"], horizontal=True, label_visibility="collapsed", key="sub_grade")
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown("### The Board")
@@ -3509,8 +3580,6 @@ def main():
             meta = " · ".join([x for x in (team, game) if x])
             pack = item.get("median")
             pack_s = f" · pack {format_odds(pack)}" if pack is not None else ""
-            bf = item.get("benford") or {}
-            bf_s = f'<div class="{bf.get("cls","bf-none")}">{bf.get("tag","")} · {bf.get("note","")}</div>' if bf.get("tag") else ""
             st.markdown(
                 f'<div class="card {cls}">'
                 f'<div class="card-kicker">{label}</div>'
@@ -3520,7 +3589,6 @@ def main():
                 f'{meter}'
                 f'<div class="card-line"><b>Best {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}</div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium</div>'
-                f'{bf_s}'
                 f'<div style="margin-top:6px">{tags}</div>'
                 f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
                 f'</div>',
@@ -3631,6 +3699,8 @@ def main():
 
     if page == "Shop:":
         render_shop_tab(df)
+    if page == "Digits:":
+        render_digits_tab(df)
     if page == "Methods:DK":
         show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
     if page == "Methods:MGM":
@@ -4222,9 +4292,9 @@ def main():
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
 
-    if page == "Grade:Benford":
-        st.markdown("### Benford Energy")
-        st.caption("First digits vs natural Benford. Score 1 = natural. Thin samples lie. This is a pattern check, not a who-goes-yard call.")
+    if page == "Grade:Vibe":
+        st.markdown("### Board vibe")
+        st.caption("Are today’s numbers all the same flavor, or mixed? Low score = copy-paste board. Not who goes yard.")
         if not HAS_BENFORD:
             st.warning("Upload benford.py next to app.py.")
         else:
@@ -4316,10 +4386,6 @@ def main():
             "<h4>After the games</h4>"
             "<b>Grade</b> auto-reads box scores. Tracker is how we learn without guessing.<br>"
             "Backtest is TAKE IT vs WATCH — ignore tiny days."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>Energy / vibe tags</h4>"
-            "That’s board texture (cloned numbers vs messy ones). Fun extra. Not the green light."
             "</div>"
             '<div class="glossary-block">'
             "<h4>🔒 Lock vs 🧠 Lock Lab</h4>"
