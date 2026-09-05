@@ -50395,5 +50395,96 @@
     "source": "watch",
     "logged_at": "2026-09-04T22:27:16.414308+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-04_Andres Chaparro_take_it_60",
+    "date": "2026-09-04",
+    "time": "05:59 PM",
+    "player": "Andres Chaparro",
+    "score": 60,
+    "edge": 110,
+    "best_price": 710,
+    "best_book": "draftkings",
+    "ending": 10,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "Multi-book method",
+      "FD 600",
+      "DK 10"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-05T00:59:23.328957+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-04_Cody Bellinger_watch_19",
+    "date": "2026-09-04",
+    "time": "05:59 PM",
+    "player": "Cody Bellinger",
+    "score": 19,
+    "edge": 9,
+    "best_price": 575,
+    "best_book": "betmgm",
+    "ending": 75,
+    "mgm_locked": 575,
+    "mgm_ending": 75,
+    "methods": [
+      "MGM 75",
+      "Match 75",
+      "Multi-book Shorten",
+      "Stayed in the group"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-05T00:59:23.329579+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-04_Connor Norby_watch_27",
+    "date": "2026-09-04",
+    "time": "05:59 PM",
+    "player": "Connor Norby",
+    "score": 27,
+    "edge": 62,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "ending": 50,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-05T00:59:23.330111+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-04_Manny Machado_watch_15",
+    "date": "2026-09-04",
+    "time": "05:59 PM",
+    "player": "Manny Machado",
+    "score": 15,
+    "edge": 25,
+    "best_price": 600,
+    "best_book": "hardrockbet",
+    "ending": 0,
+    "mgm_locked": 500,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 00",
+      "Match 00",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-05T00:59:23.331283+00:00",
+    "price_source": "pregame_lock"
   }
 ]
