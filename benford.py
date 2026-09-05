@@ -2402,25 +2402,35 @@ def expand_underdog_against_slate(tokens):
     return out
 
 
+def _x_bearer():
+    try:
+        return (st.secrets.get("X_BEARER_TOKEN") or st.secrets.get("TWITTER_BEARER") or "").strip()
+    except Exception:
+        return ""
+
+
 def fetch_underdog_x():
-    urls = (
-        "https://r.jina.ai/https://x.com/UnderdogMLB",
-    )
-    text, err = "", "blocked"
-    for u in urls:
-        try:
-            r = requests.get(u, timeout=12, headers={"User-Agent": "Mozilla/5.0 GirlMagic"})
-            if r.status_code == 200 and len(r.text) > 400:
-                text = r.text
-                break
-            err = f"HTTP {r.status_code}"
-        except Exception:
-            err = "blocked"
-    if not text:
+    """Official X API only. Add X_BEARER_TOKEN to Streamlit secrets."""
+    token = _x_bearer()
+    if not token:
+        return set(), "UnderdogMLB off (add X_BEARER_TOKEN)"
+    uid = "1449055868880818178"  # @UnderdogMLB
+    url = f"https://api.x.com/2/users/{uid}/tweets"
+    try:
+        r = requests.get(
+            url,
+            headers={"Authorization": f"Bearer {token}"},
+            params={"max_results": 20, "tweet.fields": "created_at,text"},
+            timeout=15,
+        )
+        if r.status_code != 200:
+            return set(), f"UnderdogMLB X HTTP {r.status_code}"
+        texts = [t.get("text") or "" for t in (r.json().get("data") or [])]
+        tokens = parse_underdog_names("\n".join(texts))
+        names = expand_underdog_against_slate(tokens)
+        return names, f"UnderdogMLB {len(names)}"
+    except Exception:
         return set(), "UnderdogMLB X blocked"
-    tokens = parse_underdog_names(text)
-    names = expand_underdog_against_slate(tokens)
-    return names, f"UnderdogMLB {len(names)}"
 
 
 def fetch_all_lineups():
@@ -3626,6 +3636,10 @@ def main():
         lm = st.session_state.get("lineup_msg") or ""
         ln = st.session_state.get("lineup_names") or set()
         if lm:
+            if "HTTPSConnection" in lm or "Max retries" in lm:
+                lm = f"{len(ln)} used · MLB orders · UnderdogMLB off"
+            if len(lm) > 90:
+                lm = lm[:87] + "..."
             st.caption(lm)
         lock_now = st.session_state.get("pregame_lock") or {}
         if ln and lock_now:
