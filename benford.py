@@ -148,3 +148,4 @@ if __name__ == "__main__":
 
     demo = [650, 550, 700, 800, 450, 600, 1200, 525, 475, 900, 575, 1000, 710]
     print(json.dumps(analyze_benford(demo, "demo_odds"), indent=2))
+    
