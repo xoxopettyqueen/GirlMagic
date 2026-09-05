@@ -665,42 +665,38 @@ def render_shop_tab(df):
     )
     st.caption("TAKE = worth the number vs the pack. LEAN = close. DON'T = you're buying a short or a flyer.")
 
+# From Tracker: 4-6 cash, 1-2 die
+_DIGIT_GOOD = {4, 5, 6}
+_DIGIT_BAD = {1, 2}
+
 def _benford_bars(res):
     actual = res.get("actual_distribution") or {}
-    expected = res.get("expected_distribution") or {}
     bits = []
     for d in range(1, 10):
         a = float(actual.get(str(d), 0)) * 100
-        e = float(expected.get(str(d), 0)) * 100
+        if d in _DIGIT_GOOD:
+            col, mark = "#34d399", "good"
+        elif d in _DIGIT_BAD:
+            col, mark = "#fb7185", "fade"
+        else:
+            col, mark = "#c084fc", "mid"
         bits.append(
-            f'<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:.78rem">'
-            f'<div style="width:14px;color:#c4b5d6">{d}</div>'
-            f'<div style="flex:1;background:#1a1224;border-radius:6px;height:10px;position:relative">'
-            f'<div style="width:{min(100,e*2):.1f}%;height:10px;background:#4c1d95;border-radius:6px;opacity:.5"></div>'
-            f'<div style="width:{min(100,a*2):.1f}%;height:10px;background:#f472b6;border-radius:6px;margin-top:-10px"></div>'
+            f'<div style="display:flex;align-items:center;gap:8px;margin:4px 0;font-size:.78rem">'
+            f'<div style="width:72px;color:#e9d5ff">{_digit_lane(d)}</div>'
+            f'<div style="flex:1;background:#1a1224;border-radius:6px;height:12px">'
+            f'<div style="width:{min(100,a*3):.1f}%;height:12px;background:{col};border-radius:6px"></div>'
             f'</div>'
-            f'<div style="width:90px;color:#e9d5ff">{a:.0f}% <span style="opacity:.5">({e:.0f})</span></div>'
+            f'<div style="width:70px;color:{col};font-weight:700">{a:.0f}% {mark}</div>'
             f'</div>'
         )
     return "".join(bits)
 
 def _benford_card(res, title):
     n = res.get("n") or 0
-    score = int(round((res.get("benford_score") or 0) * 100))
-    if n < 25:
-        vibe = "Too few numbers"
-    elif score >= 70:
-        vibe = "Looks natural"
-    elif score >= 45:
-        vibe = "A little bunched"
-    else:
-        vibe = "Bunched / templated"
     st.markdown(
         f'<div class="card">'
-        f'<div class="card-kicker">{vibe}</div>'
-        f'<span class="score-pill">{score}</span>'
         f'<div class="card-name">{title}</div>'
-        f'<div class="card-meta">n={n} · pink = this pile · purple = Benford</div>'
+        f'<div class="card-meta">{n} numbers in this pile. Green = cash pond. Red = fade.</div>'
         f'{_benford_bars(res)}'
         f'</div>',
         unsafe_allow_html=True,
@@ -751,7 +747,7 @@ def digits_playbook(hits_res, graded_res, live_res):
 
 def render_digits_tab(df):
     st.markdown("### Digits")
-    st.caption("One job: which odds shapes have been cashing. Not who to pick.")
+    st.caption("Looking for: which PRICE SHAPE cashes. Green pond = +400 to +600. Red pond = +1000 and the 2s. Not who to pick.")
     if not HAS_BENFORD:
         st.warning("Need benford.py next to app.py.")
         return
