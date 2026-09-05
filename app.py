@@ -725,36 +725,26 @@ def digits_playbook(hits_res, graded_res, live_res):
         notes.append("Not enough hits logged yet - treat this as a sketch.")
     hit_ranked = sorted(h.items(), key=lambda kv: -kv[1])
     hot = [d for d, p in hit_ranked if p >= 0.14][:3]
-    cold = [d for d, p in sorted(h.items(), key=lambda kv: kv[1]) if p <= 0.05][:3]
+    if 1 not in hot and h.get(1, 1) <= 0.12:
+        dont.append("Leave +1000 and longer alone. Those almost never cash in our log.")
     for d in hot:
-        extra = ""
-        if g.get(d, 0) and h.get(d, 0) > g.get(d, 0) + 0.03:
-            extra = " - hits even harder than we log it"
-        do.append(f"Lean {_digit_lane(d)} (digit {d} is {h[d]*100:.0f}% of hits{extra})")
-    for d in cold:
-        if d == 1:
-            dont.append("Skip +1000+ flyers (digit 1 almost never shows up on hits)")
-        elif d == 2:
-            dont.append("Skip the weird 2s")
-        else:
-            dont.append(f"Don't hunt {_digit_lane(d)} just because it's long")
-    if live.get(1, 0) >= 0.18 and h.get(1, 0) <= 0.12:
-        dont.append("Today's board is hanging a lot of 1s. That's long junk, not value.")
+        do.append(f"Look at {_digit_lane(d)} if the Board already greened the name.")
+    if h.get(2, 0) <= 0.05:
+        dont.append("Ignore the +2000 / +2xx junk.")
     if live.get(5, 0) >= 0.15 or live.get(6, 0) >= 0.15:
-        notes.append("Today's menu is still +500 / +600 country. Shop there if Board is green.")
-    score = int(round((live_res.get("benford_score") or 0) * 100))
-    if score < 40:
-        notes.append("Whole slate looks templated. Don't pick a book off this tab - pick a price band.")
+        notes.append("Today the books are printing a lot of +500 and +600. That's the pond.")
+    notes.append("Same story at every book. Don't switch books because of this page.")
+    notes.append("Green light is still The Board. This page only says which PRICE shape has been hitting.")
     if not do:
-        do.append("No digit is carrying the hits yet.")
+        do.append("No price band is standing out yet.")
     if not dont:
-        dont.append("Nothing obvious to fade from digits alone.")
+        dont.append("Nothing extra to fade.")
     return do, dont, notes
 
 
 def render_digits_tab(df):
     st.markdown("### Digits")
-    st.caption("What to buy by first digit. Graphs are the proof. Box up top is the call.")
+    st.caption("One job: which odds shapes have been cashing. Not who to pick.")
     if not HAS_BENFORD:
         st.warning("Need benford.py next to app.py.")
         return
@@ -811,20 +801,21 @@ def render_digits_tab(df):
         '</div>',
         unsafe_allow_html=True,
     )
-    _benford_card(live_res, "Today - every posted number")
-    _benford_card(best_res, "Today - best number only")
-    _benford_card(lock_res, "Lock - pregame book prices")
-    _benford_card(graded_res, "History - graded bests")
-    _benford_card(hits_res, "History - only the hits")
-    st.markdown("#### By book today")
-    meter = benford_book_meter(df)
-    if not meter:
-        st.caption("Fetch first.")
-        return
-    cols = st.columns(min(3, max(1, len(meter))))
-    for i, (bk, res) in enumerate(meter.items()):
-        with cols[i % len(cols)]:
-            _benford_card(res, book_label(bk))
+    with st.expander("Show the charts", expanded=False):
+        _benford_card(live_res, "Today - every posted number")
+        _benford_card(best_res, "Today - best number only")
+        _benford_card(lock_res, "Lock - pregame book prices")
+        _benford_card(graded_res, "History - graded bests")
+        _benford_card(hits_res, "History - only the hits")
+        st.markdown("#### By book today")
+        meter = benford_book_meter(df)
+        if meter:
+            cols = st.columns(min(3, max(1, len(meter))))
+            for i, (bk, res) in enumerate(meter.items()):
+                with cols[i % len(cols)]:
+                    _benford_card(res, book_label(bk))
+        else:
+            st.caption("Fetch first.")
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
