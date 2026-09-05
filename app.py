@@ -576,6 +576,25 @@ def format_odds(p):
     try: return f"{int(p):+d}"
     except Exception: return str(p)
 
+def price_bucket(p):
+    try:
+        p = abs(int(p))
+    except Exception:
+        return None
+    if p < 400:
+        return "under +400"
+    if p < 500:
+        return "+400s"
+    if p < 600:
+        return "+500s"
+    if p < 700:
+        return "+600s"
+    if p < 800:
+        return "+700s"
+    if p < 1000:
+        return "+800-999"
+    return "+1000+"
+
 def last_two(p):
     try: return abs(int(p)) % 100
     except Exception: return None
@@ -1349,11 +1368,23 @@ def log_bet_this(ev_board, watch_board=None):
                     best_p, best_b = p, b
             if best_p is not None:
                 price, book = best_p, best_b
+        book_prices = {}
+        for b, info in (lock_books or {}).items():
+            try:
+                if info.get("price") is not None:
+                    book_prices[normalize_book(b)] = int(info.get("price"))
+            except Exception:
+                pass
+        if not book_prices:
+            book_prices = dict(item.get("book_prices") or {})
         rows.append({
             "id": f"{today}_{player}_{source}_{int(item.get('score') or 0)}",
             "date": today, "time": now_az(), "player": player,
             "score": item.get("score", 0), "edge": int(item.get("edge") or 0),
             "best_price": price, "best_book": book,
+            "median": item.get("median"),
+            "book_prices": book_prices,
+            "price_bucket": price_bucket(price),
             "ending": last_two(price) if price is not None else None,
             "mgm_locked": locked.get("mgm_price"), "mgm_ending": locked.get("mgm_ending"),
             "methods": [normalize_method_name(m) for m in (item.get("methods") or [])],
@@ -1675,6 +1706,9 @@ def build_tracker_stats(rows):
     method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     ending_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    bucket_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    number_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    book_end_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     for r in done:
         is_hit = r["result"] == "HIT"
         methods_to_count = set()
@@ -1703,7 +1737,24 @@ def build_tracker_stats(rows):
             key = f"{int(end):02d}"
             if is_hit: ending_stats[key]["hit"] += 1
             else: ending_stats[key]["miss"] += 1
-    return method_stats, book_stats, ending_stats
+        buck = r.get("price_bucket") or price_bucket(r.get("best_price"))
+        if buck:
+            if is_hit: bucket_stats[buck]["hit"] += 1
+            else: bucket_stats[buck]["miss"] += 1
+        try:
+            exact = str(int(r.get("best_price")))
+            if is_hit: number_stats[exact]["hit"] += 1
+            else: number_stats[exact]["miss"] += 1
+        except Exception:
+            pass
+        for bk, px in (r.get("book_prices") or {}).items():
+            try:
+                lab = f"{book_label(bk)} {int(px)%100:02d}"
+            except Exception:
+                continue
+            if is_hit: book_end_stats[lab]["hit"] += 1
+            else: book_end_stats[lab]["miss"] += 1
+    return method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats
 
 
 def take_it_baseline_rate(rows):
@@ -2431,8 +2482,15 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             display_meths = list(meths)
         score = girl_magic_score(core_count, edge, display_meths)
         conf, bars, level = get_confidence(score, core_count >= METHODS_MIN and edge >= EDGE_MIN)
+        book_px = {}
+        for bk, px in zip(books, prices):
+            try:
+                book_px[normalize_book(bk)] = int(px)
+            except Exception:
+                pass
         row = {
             "player": player, "best_price": best, "best_book": best_book, "median": med,
+            "book_prices": book_px,
             "edge": edge, "is_bet": False,
             "why": f"Score {score}/100 · {core_count} core · edge {int(edge)}",
             "methods": display_meths, "score": score, "bars": bars, "level": level,
@@ -2992,7 +3050,7 @@ def main():
             st.session_state["auto_grade_ran"] = True
     render_whats_going_today()
     try:
-        _ms, _bs, _es = build_tracker_stats(load_results())
+        _ms, _bs, _es, _bkt, _num, _be = build_tracker_stats(load_results())
         learn_bits = []
         for name, s in sorted(_bs.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
             t = s["hit"] + s["miss"]
@@ -3166,7 +3224,7 @@ def main():
     )
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
-    method_stats, book_stats, ending_stats = build_tracker_stats(load_results())
+    method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats = build_tracker_stats(load_results())
     for item in ev_board:
         p, n, mname = best_method_rate_for_player(item["methods"], method_stats)
         item["method_p"], item["method_n"], item["method_rate_name"] = p, n, mname
@@ -3774,6 +3832,30 @@ def main():
         chips = chips_from_stats(ending_stats, compare_baseline=False)
         st.markdown(
             "".join(chips) if chips else f"_(Need n ≥ {TRACKER_MIN_N})_",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("#### By price bucket")
+        st.caption("How long the number was when we logged it. Tells you if +500s cash more than +800s.")
+        chips = chips_from_stats(bucket_stats, min_n=15, compare_baseline=False)
+        st.markdown(
+            "".join(chips) if chips else "_(Need more graded prices)_",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("#### By exact number")
+        st.caption("The raw American we logged as best. Hidden under 15 plays.")
+        chips = chips_from_stats(number_stats, min_n=15, compare_baseline=False)
+        st.markdown(
+            "".join(chips) if chips else "_(Need repeats of the same number)_",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("#### By book × ending")
+        st.caption("Every posted book on the row when we logged it — DK 10, MGM 25, HR 00, etc.")
+        chips = chips_from_stats(book_end_stats, min_n=15, compare_baseline=False)
+        st.markdown(
+            "".join(chips) if chips else "_(Fills as new logs store every book price)_",
             unsafe_allow_html=True,
         )
     if page == "Grade:Results":
