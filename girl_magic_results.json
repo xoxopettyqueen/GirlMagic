@@ -57340,5 +57340,75 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-05_Austin Wells_take_it_44",
+    "date": "2026-09-05",
+    "time": "03:41 PM",
+    "player": "Austin Wells",
+    "score": 44,
+    "edge": 50,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 700,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 700,
+      "draftkings": 950,
+      "fanduel": 680,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "mgm_locked": 650,
+    "mgm_ending": 50,
+    "methods": [
+      "MGM Exact",
+      "Stayed in the group",
+      "MGM 50",
+      "Match 50"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-05T22:41:02.031660+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.4
+  },
+  {
+    "id": "2026-09-05_Christian Moore_watch_23",
+    "date": "2026-09-05",
+    "time": "03:41 PM",
+    "player": "Christian Moore",
+    "score": 23,
+    "edge": 60,
+    "best_price": 1060,
+    "best_book": "fanduel",
+    "median": 1000,
+    "book_prices": {
+      "betmgm": 750,
+      "caesars": 850,
+      "draftkings": 1020,
+      "fanduel": 1060,
+      "hardrockbet": 1000
+    },
+    "price_bucket": "+1000+",
+    "ending": 60,
+    "mgm_locked": 750,
+    "mgm_ending": 50,
+    "methods": [
+      "FD Pattern",
+      "DK FD-style"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-05T22:41:02.034650+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.6
   }
 ]
