@@ -2353,97 +2353,16 @@ def fetch_mlb_lineups():
         return set(), f"MLB lineups error: {e}"
 
 
-_UD_POS = {"C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", "SP", "RP", "P", "PH", "PR"}
-
-
-def parse_underdog_names(text):
-    found = set()
-    if not text:
-        return found
-    for raw in str(text).splitlines():
-        line = raw.strip()
-        parts = line.split()
-        if len(parts) < 3:
-            continue
-        pos = parts[-1].upper().rstrip(".,")
-        if pos not in _UD_POS:
-            continue
-        who = parts[:-1]
-        if who and "." in who[0]:
-            init = who[0].replace(".", "").strip()
-            last = clean_name(" ".join(who[1:]))
-            if init and last:
-                found.add(f"{init[0].upper()}. {last}")
-                found.add(last)
-        elif len(who) >= 2:
-            found.add(clean_name(" ".join(who)))
-    return found
-
-
-def expand_underdog_against_slate(tokens):
-    pool = []
-    lock = st.session_state.get("pregame_lock") or {}
-    pool.extend(lock.keys())
-    for rec in st.session_state.get("odds") or []:
-        if isinstance(rec, dict) and rec.get("player"):
-            pool.append(rec["player"])
-    out = set()
-    folded_pool = [(p, fold_name(clean_name(p)), clean_name(p).split()) for p in pool]
-    for tok in tokens:
-        out.add(clean_name(tok))
-        ft = fold_name(tok).replace(".", " ")
-        tparts = ft.split()
-        init, last = ("", tparts[0]) if len(tparts) == 1 else (tparts[0][:1], tparts[-1])
-        for raw, folded, parts in folded_pool:
-            if len(parts) < 2:
-                continue
-            if parts[-1].lower() == last and (not init or parts[0].lower().startswith(init)):
-                out.add(clean_name(raw))
-    return out
-
-
-def _x_bearer():
-    try:
-        return (st.secrets.get("X_BEARER_TOKEN") or st.secrets.get("TWITTER_BEARER") or "").strip()
-    except Exception:
-        return ""
-
-
-def fetch_underdog_x():
-    """Official X API only. Add X_BEARER_TOKEN to Streamlit secrets."""
-    token = _x_bearer()
-    if not token:
-        return set(), "UnderdogMLB off (add X_BEARER_TOKEN)"
-    uid = "1449055868880818178"  # @UnderdogMLB
-    url = f"https://api.x.com/2/users/{uid}/tweets"
-    try:
-        r = requests.get(
-            url,
-            headers={"Authorization": f"Bearer {token}"},
-            params={"max_results": 20, "tweet.fields": "created_at,text"},
-            timeout=15,
-        )
-        if r.status_code != 200:
-            return set(), f"UnderdogMLB X HTTP {r.status_code}"
-        texts = [t.get("text") or "" for t in (r.json().get("data") or [])]
-        tokens = parse_underdog_names("\n".join(texts))
-        names = expand_underdog_against_slate(tokens)
-        return names, f"UnderdogMLB {len(names)}"
-    except Exception:
-        return set(), "UnderdogMLB X blocked"
-
 
 def fetch_all_lineups():
     rw, rw_msg = fetch_rotowire_lineups()
     mlb, mlb_msg = fetch_mlb_lineups()
-    ud, ud_msg = fetch_underdog_x()
-    bits = [x for x in (rw_msg, mlb_msg, ud_msg) if x]
-    # 500+ RW names = whole site, not today's bats. Prefer MLB orders.
+    bits = [x for x in (rw_msg, mlb_msg) if x]
     if len(mlb) >= 40:
-        names = set(mlb) | set(ud)
+        names = set(mlb)
         note = "filter=MLB orders"
     else:
-        names = set(mlb) | set(ud) | set(rw)
+        names = set(mlb) | set(rw)
         note = "filter=merged"
     if not names:
         return set(), " · ".join(bits) or "No lineups yet"
@@ -3636,10 +3555,10 @@ def main():
         lm = st.session_state.get("lineup_msg") or ""
         ln = st.session_state.get("lineup_names") or set()
         if lm:
-            if "HTTPSConnection" in lm or "Max retries" in lm:
-                lm = f"{len(ln)} used · MLB orders · UnderdogMLB off"
-            if len(lm) > 90:
-                lm = lm[:87] + "..."
+            if "HTTPSConnection" in lm or "Max retries" in lm or "Underdog" in lm:
+                lm = f"{len(ln)} used · MLB orders"
+            if len(lm) > 80:
+                lm = lm[:77] + "..."
             st.caption(lm)
         lock_now = st.session_state.get("pregame_lock") or {}
         if ln and lock_now:
