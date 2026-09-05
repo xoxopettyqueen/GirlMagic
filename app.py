@@ -1,4 +1,4 @@
-""
+"""
 Girl Magic Odds ✨
 - GitHub-backed results + lock + movement history (survives Streamlit sleep/wipe)
 - No Digits tab (folded into MGM)
