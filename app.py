@@ -53,8 +53,12 @@ st.markdown("""
 }
 div[role="radiogroup"]{flex-wrap:wrap!important;gap:4px!important;margin:6px 0 12px!important}
 div[role="radiogroup"] label{
-  background:#1a0f28!important;border:1px solid #a855f7!important;border-radius:8px!important;
-  padding:5px 9px!important;font-size:0.7rem!important;color:#f9a8d4!important;
+  background:#16101f!important;border:1px solid #2a2038!important;border-radius:999px!important;
+  padding:6px 12px!important;font-size:0.72rem!important;color:#c4b5d6!important;
+}
+div[role="radiogroup"] label:has(input:checked),
+div[role="radiogroup"] [data-checked="true"]{
+  background:#2a1040!important;border-color:#ec4899!important;color:#fff!important;
 }
 
 h1{font-family:'Playfair Display',serif!important;font-weight:900!important;color:#f8f4ff!important;-webkit-text-fill-color:#f8f4ff!important;background:none!important;font-size:2.35rem!important;margin:2px 0 4px!important}
@@ -63,8 +67,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .tagline{color:#c4b5d6;font-size:.88rem;font-style:italic;margin:0 0 12px;opacity:.95}
 .how-to{background:#16101f;border:1px solid #2a2038;border-radius:999px;padding:8px 16px;margin-bottom:14px;font-size:.78rem;line-height:1.4;color:#d8c8ea}
 .how-to b{color:#f9a8d4}
-.info-box{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:.88rem}
-.warning-box{background:#3b0764;border:2px solid #f472b6;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:.9rem}
+.info-box{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:12px 14px;margin-bottom:10px;font-size:.82rem;color:#d8c8ea}
+.warning-box{background:#16101f;border:1px solid #4c1d95;border-radius:16px;padding:10px 14px;margin-bottom:10px;font-size:.82rem;color:#e9d5ff}
 .stButton>button{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important;border:none!important;border-radius:10px!important;font-weight:700!important}
 .petty-row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 16px}
 .petty-box{flex:1;min-width:88px;background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:14px 8px;text-align:center}
@@ -104,10 +108,10 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:6px 8px;font-size:.75rem}
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
 .footer{text-align:center;color:#f9a8d4;font-size:.9rem;margin-top:28px;opacity:.9;padding-bottom:16px}
-.glossary-block{background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:14px 16px;margin-bottom:12px;font-size:.88rem;line-height:1.55}
+.glossary-block{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:14px 16px;margin-bottom:12px;font-size:.88rem;line-height:1.55}
 .glossary-block h4{color:#f9a8d4;margin:0 0 8px 0;font-size:1rem}
 .glossary-block b{color:#fbcfe8}
-.trends-today{background:linear-gradient(135deg,#2a1040 0%,#1a0f28 50%,#3b0764 100%);border:1px solid #c084fc;border-radius:16px;padding:14px 18px;margin-bottom:18px}
+.trends-today{background:#16101f;border:1px solid #2a2038;border-radius:18px;padding:14px 16px;margin-bottom:12px}
 .trends-today-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
 .trends-today-title{color:#f9a8d4;font-weight:800;font-size:.95rem}
 .trends-today-sub{color:#e9d5ff;font-size:.72rem;opacity:.9}
@@ -1730,7 +1734,7 @@ def render_whats_going_today():
     html = (
         '<div class="trends-today" style="padding:12px 14px">'
         '<div class="trends-today-header" style="margin-bottom:4px">'
-        '<div class="trends-today-title">🔥 %s</div>'
+        '<div class="trends-today-title">%s</div>'
         '<div class="trends-today-sub">%s</div>'
         '</div>%s%s</div>'
     ) % (title, sub, body, pair_note)
@@ -3106,11 +3110,11 @@ def main():
             if len(learn_bits) >= 6:
                 break
         if learn_bits:
+            chips = "".join(f'<span class="trend-chip">{b}</span>' for b in learn_bits[:5])
             st.markdown(
-                '<div class="info-box" style="padding:10px 14px;font-size:0.82rem;line-height:1.55">'
-                '<b>📡 After we grade</b><br>'
-                + "<br>".join(learn_bits[:5])
-                + "</div>",
+                '<div class="trends-today" style="padding:10px 14px">'
+                '<div class="trends-today-title" style="margin-bottom:8px">After we grade</div>'
+                f'<div class="trends-chips">{chips}</div></div>',
                 unsafe_allow_html=True,
             )
     except Exception:
@@ -3240,16 +3244,17 @@ def main():
     dbg = st.session_state.get("fetch_debug") or {}
     if found or dbg.get("raw_books"):
         missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
-        st.markdown(
-            f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
-            + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
-            + "</div>",
-            unsafe_allow_html=True,
-        )
-        if missing:
-            st.markdown(f'<div class="warning-box">⚠️ Core missing from this feed: {", ".join(missing)}</div>', unsafe_allow_html=True)
-        if dbg.get("event_filter_wiped"):
-            st.caption(f"Note: event label filter would have dropped {dbg['event_filter_wiped']} rows — kept unfiltered.")
+        with st.expander("Feed debug", expanded=False):
+            st.markdown(
+                f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
+                + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
+                + "</div>",
+                unsafe_allow_html=True,
+            )
+            if missing:
+                st.caption("Core missing from this feed: " + ", ".join(missing))
+            if dbg.get("event_filter_wiped"):
+                st.caption(f"Event label filter would have dropped {dbg['event_filter_wiped']} rows — kept unfiltered.")
     odds = st.session_state.get("odds", [])
     prev = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
