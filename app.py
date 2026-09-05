@@ -573,12 +573,6 @@ def render_shop_tab(df):
     </div>
     """, unsafe_allow_html=True)
     view = st.radio("Call", ["All", "TAKE + LEAN", "TAKE", "LEAN", "DON'T", "MARKET"], horizontal=True, key="shop_filter")
-    hunt = st.radio(
-        "Odds size",
-        ["All sizes", "Sweet +400-699", "Long hunt +700-999", "Flyers +1000+"],
-        horizontal=True,
-        key="shop_hunt",
-    )
     c1, c2, c3, c4 = st.columns(4)
     book_opts = ["Any"] + [lab for _, lab in SHOP_BOOKS]
     with c1:
@@ -621,17 +615,6 @@ def render_shop_tab(df):
     if q.strip():
         qq = q.strip().lower()
         shown = [r for r in shown if qq in (r.get("player") or "").lower() or qq in (r.get("event") or "").lower()]
-    def _bp(r):
-        try:
-            return abs(int(r.get("best") or 0))
-        except Exception:
-            return 0
-    if hunt == "Sweet +400-699":
-        shown = [r for r in shown if 400 <= _bp(r) <= 699]
-    elif hunt == "Long hunt +700-999":
-        shown = [r for r in shown if 700 <= _bp(r) <= 999]
-    elif hunt == "Flyers +1000+":
-        shown = [r for r in shown if _bp(r) >= 1000]
     st.caption(f"Showing {len(shown)} of {len(shop)} players")
     heat = ending_heat_from_results(load_results(), min_n=20)
     if heat:
@@ -2370,89 +2353,27 @@ def fetch_mlb_lineups():
         return set(), f"MLB lineups error: {e}"
 
 
-_UD_POS = {"C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", "SP", "RP", "P", "PH", "PR"}
 
-
-def parse_underdog_names(text):
-    found = set()
-    if not text:
-        return found
-    for raw in str(text).splitlines():
-        line = raw.strip()
-        parts = line.split()
-        if len(parts) < 3:
-            continue
-        pos = parts[-1].upper().rstrip(".,")
-        if pos not in _UD_POS:
-            continue
-        who = parts[:-1]
-        if who and "." in who[0]:
-            init = who[0].replace(".", "").strip()
-            last = clean_name(" ".join(who[1:]))
-            if init and last:
-                found.add(f"{init[0].upper()}. {last}")
-                found.add(last)
-        elif len(who) >= 2:
-            found.add(clean_name(" ".join(who)))
-    return found
-
-
-def expand_underdog_against_slate(tokens):
-    pool = []
-    lock = st.session_state.get("pregame_lock") or {}
-    pool.extend(lock.keys())
-    for rec in st.session_state.get("odds") or []:
-        if isinstance(rec, dict) and rec.get("player"):
-            pool.append(rec["player"])
-    out = set()
-    folded_pool = [(p, fold_name(clean_name(p)), clean_name(p).split()) for p in pool]
-    for tok in tokens:
-        out.add(clean_name(tok))
-        ft = fold_name(tok).replace(".", " ")
-        tparts = ft.split()
-        init, last = ("", tparts[0]) if len(tparts) == 1 else (tparts[0][:1], tparts[-1])
-        for raw, folded, parts in folded_pool:
-            if len(parts) < 2:
-                continue
-            if parts[-1].lower() == last and (not init or parts[0].lower().startswith(init)):
-                out.add(clean_name(raw))
-    return out
-
-
-def fetch_underdog_x():
-    urls = (
-        "https://r.jina.ai/https://x.com/UnderdogMLB",
-        "https://nitter.poast.org/UnderdogMLB",
-        "https://nitter.privacydev.net/UnderdogMLB",
-    )
-    text, err = "", ""
-    for u in urls:
-        try:
-            r = requests.get(u, timeout=25, headers={"User-Agent": "Mozilla/5.0 GirlMagic"})
-            if r.status_code == 200 and len(r.text) > 200:
-                text = r.text
-                break
-            err = f"HTTP {r.status_code}"
-        except Exception as e:
-            err = str(e)
-    if not text:
-        return set(), f"UnderdogMLB X {err or 'blocked'}"
-    tokens = parse_underdog_names(text)
-    names = expand_underdog_against_slate(tokens)
-    return names, f"UnderdogMLB {len(names)}"
+def short_lineup_msg(msg, n=0):
+    raw = str(msg or "")
+    if any(x in raw.lower() for x in ("nitter", "httpsconnection", "underdog", "max retries")):
+        return f"{n} lineup names · MLB orders"
+    # keep first two source bits only
+    parts = [x.strip() for x in raw.replace("·", "|").split("|") if x.strip()]
+    keep = [x for x in parts if "nitter" not in x.lower() and "http" not in x.lower()][:3]
+    out = " · ".join(keep) if keep else raw
+    return out[:80]
 
 
 def fetch_all_lineups():
     rw, rw_msg = fetch_rotowire_lineups()
     mlb, mlb_msg = fetch_mlb_lineups()
-    ud, ud_msg = fetch_underdog_x()
-    bits = [x for x in (rw_msg, mlb_msg, ud_msg) if x]
-    # 500+ RW names = whole site, not today's bats. Prefer MLB orders.
+    bits = [x for x in (rw_msg, mlb_msg) if x]
     if len(mlb) >= 40:
-        names = set(mlb) | set(ud)
+        names = set(mlb)
         note = "filter=MLB orders"
     else:
-        names = set(mlb) | set(ud) | set(rw)
+        names = set(mlb) | set(rw)
         note = "filter=merged"
     if not names:
         return set(), " · ".join(bits) or "No lineups yet"
@@ -3632,6 +3553,7 @@ def main():
         with b1:
             if st.button("Lineups", use_container_width=True):
                 names, msg = fetch_all_lineups()
+                msg = short_lineup_msg(msg, len(names))
                 st.session_state["lineup_names"] = names
                 st.session_state["lineup_msg"] = msg
                 (st.success if names else st.warning)(msg)
@@ -3642,8 +3564,9 @@ def main():
                 st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
                 st.rerun()
         auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
-        lm = st.session_state.get("lineup_msg") or ""
         ln = st.session_state.get("lineup_names") or set()
+        lm = short_lineup_msg(st.session_state.get("lineup_msg") or "", len(ln))
+        st.session_state["lineup_msg"] = lm
         if lm:
             st.caption(lm)
         lock_now = st.session_state.get("pregame_lock") or {}
@@ -3711,7 +3634,7 @@ def main():
                     names, msg = fetch_all_lineups()
                     if names:
                         st.session_state["lineup_names"] = names
-                        st.session_state["lineup_msg"] = msg
+                        st.session_state["lineup_msg"] = short_lineup_msg(msg, len(names))
                 df, found = do_fetch(odds_key, sgo_key, chosen, options)
             if df is not None and not df.empty:
                 update_pregame_lock(df)
