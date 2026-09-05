@@ -57228,5 +57228,30 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-05_Ronald Acuna Jr._shop_lean_40",
+    "date": "2026-09-05",
+    "time": "03:25 PM",
+    "player": "Ronald Acuna Jr.",
+    "score": 0,
+    "edge": 40,
+    "best_price": 600,
+    "best_book": "hardrockbet",
+    "median": 562,
+    "book_prices": {
+      "caesars": 525,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-05T22:25:30.986688+00:00",
+    "price_source": "shop"
   }
 ]
