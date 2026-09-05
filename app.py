@@ -3069,12 +3069,6 @@ def main():
     st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision. 0.5 HR Over only.</p>', unsafe_allow_html=True)
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
-    st.markdown(f"""
-    <div class="how-to" style="padding:10px 14px;font-size:0.78rem;line-height:1.35">
-        <b>How to use</b> · Lock <b>{lock_n}</b> ·
-        ① Load → ② Fetch → ③ Lock saves → ④ Tags → ⑤ Board (TAKE/WATCH/PASS) → ⑥ Grade → ⑦ Tracker / Lab
-    </div>
-    """, unsafe_allow_html=True)
     if "auto_grade_ran" not in st.session_state:
         st.session_state["auto_grade_ran"] = False
     if not st.session_state["auto_grade_ran"]:
@@ -3091,170 +3085,145 @@ def main():
         except Exception:
             st.session_state["auto_grade_ran"] = True
     render_whats_going_today()
-    try:
-        _ms, _bs, _es, _bkt, _num, _be = build_tracker_stats(load_results())
-        learn_bits = []
-        for name, s in sorted(_bs.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
-            t = s["hit"] + s["miss"]
-            if t < 8:
-                continue
-            pct = 100 * s["hit"] / t
-            learn_bits.append(f"<b>{name}</b> best book → {pct:.0f}% hit · {t} plays")
-        for name, s in sorted(_ms.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
-            t = s["hit"] + s["miss"]
-            if t < 10:
-                continue
-            pct = 100 * s["hit"] / t
-            if pct >= 40:
-                learn_bits.append(f"<b>{name}</b> → {pct:.0f}% hit · {t} plays")
-            if len(learn_bits) >= 6:
-                break
-        if learn_bits:
-            chips = "".join(f'<span class="trend-chip">{b}</span>' for b in learn_bits[:5])
-            st.markdown(
-                '<div class="trends-today" style="padding:10px 14px">'
-                '<div class="trends-today-title" style="margin-bottom:8px">After we grade</div>'
-                f'<div class="trends-chips">{chips}</div></div>',
-                unsafe_allow_html=True,
-            )
-    except Exception:
-        pass
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
     if not odds_key:
         st.warning("Add The Odds API key.")
         st.stop()
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        if st.button("① Load Games", type="primary"):
-            raw = fetch_events_oddsapi(odds_key)
-            st.session_state["events"] = filter_events_today(raw)
-            st.session_state["events_raw_count"] = len(raw or [])
-    with c2:
-        if st.button("📋 Lineups"):
-            names, msg = fetch_rotowire_lineups()
-            st.session_state["lineup_names"] = names
-            (st.success if names else st.warning)(msg)
-    with c3:
-        if st.button("⚡ Auto-grade MLB"):
-            with st.spinner("MLB box scores…"):
-                h, m, s, msg = auto_grade_pending()
-            st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
-            st.rerun()
-    with c4:
-        auto_lineups = st.checkbox("Lineups on fetch", value=True)
-    events = st.session_state.get("events", [])
-    if not events:
-        st.info("Click **Load Games** once.")
-        st.stop()
-    def _game_label(e):
-        away = e.get("away_team") or "?"
-        home = e.get("home_team") or "?"
-        t = e.get("commence_time") or ""
-        hhmm = ""
-        if t:
-            try:
-                # show AZ time so it matches your day
-                dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
-                hhmm = dt.strftime("%-I:%M %p")
-            except Exception:
-                try:
-                    dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
-                    hhmm = dt.strftime("%I:%M %p").lstrip("0")
-                except Exception:
-                    hhmm = ""
-        base = f"{away} @ {home}"
-        return f"{base} · {hhmm}" if hhmm else base
+    last_ft = st.session_state.get("last_fetch_time") or "no fetch yet"
+    ev_n = len(st.session_state.get("events") or [])
+    with st.expander(f"Slate · {ev_n} games · lock {lock_n} · {last_ft}", expanded=ev_n == 0):
+            c1, c2, c3, c4 = st.columns(4)
+            with c1:
+                if st.button("① Load Games", type="primary"):
+                    raw = fetch_events_oddsapi(odds_key)
+                    st.session_state["events"] = filter_events_today(raw)
+                    st.session_state["events_raw_count"] = len(raw or [])
+            with c2:
+                if st.button("📋 Lineups"):
+                    names, msg = fetch_rotowire_lineups()
+                    st.session_state["lineup_names"] = names
+                    (st.success if names else st.warning)(msg)
+            with c3:
+                if st.button("⚡ Auto-grade MLB"):
+                    with st.spinner("MLB box scores…"):
+                        h, m, s, msg = auto_grade_pending()
+                    st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
+                    st.rerun()
+            with c4:
+                auto_lineups = st.checkbox("Lineups on fetch", value=True)
+            events = st.session_state.get("events", [])
+            if not events:
+                st.info("Click **Load Games** once.")
+                st.stop()
+            def _game_label(e):
+                away = e.get("away_team") or "?"
+                home = e.get("home_team") or "?"
+                t = e.get("commence_time") or ""
+                hhmm = ""
+                if t:
+                    try:
+                        # show AZ time so it matches your day
+                        dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
+                        hhmm = dt.strftime("%-I:%M %p")
+                    except Exception:
+                        try:
+                            dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
+                            hhmm = dt.strftime("%I:%M %p").lstrip("0")
+                        except Exception:
+                            hhmm = ""
+                base = f"{away} @ {home}"
+                return f"{base} · {hhmm}" if hhmm else base
 
-    # safety: re-filter if stale events from yesterday still in session
-    events = filter_events_today(events)
-    st.session_state["events"] = events
+            # safety: re-filter if stale events from yesterday still in session
+            events = filter_events_today(events)
+            st.session_state["events"] = events
 
-    options = {}
-    for e in events:
-        lab = _game_label(e)
-        if lab in options:
-            lab = f"{lab} · {str(e.get('id', ''))[:6]}"
-        options[lab] = e["id"]
+            options = {}
+            for e in events:
+                lab = _game_label(e)
+                if lab in options:
+                    lab = f"{lab} · {str(e.get('id', ''))[:6]}"
+                options[lab] = e["id"]
 
-    raw_n = st.session_state.get("events_raw_count")
-    st.markdown(
-        f'<p class="games-hint">② Today · {len(options)} games'
-        + (f" · feed had {raw_n}" if raw_n else "")
-        + " · live games often have no HR props</p>",
-        unsafe_allow_html=True,
-    )
-
-    default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
-    c_sel, c_btn = st.columns([4, 1])
-    with c_sel:
-        chosen = st.multiselect(
-            "Games",
-            list(options.keys()),
-            default=default_sel,
-            label_visibility="collapsed",
-        )
-    with c_btn:
-        if st.button("Clear games"):
-            st.session_state["selected_games"] = []
-            st.rerun()
-    st.session_state["selected_games"] = chosen
-    manual_fetch = st.button("③ Fetch now", type="primary")
-    if "last_refresh_count" not in st.session_state:
-        st.session_state["last_refresh_count"] = refresh_count
-    auto_fetch = HAS_AUTOREFRESH and refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
-    first_load = bool(chosen) and not st.session_state.get("odds") and st.session_state.get("auto_once") is not False
-    if auto_fetch:
-        st.session_state["last_refresh_count"] = refresh_count
-    if first_load:
-        st.session_state["auto_once"] = False
-        auto_fetch = True
-    if (manual_fetch or auto_fetch) and chosen:
-        with st.spinner("Fetching…"):
-            if auto_lineups or not st.session_state.get("lineup_names"):
-                names, msg = fetch_rotowire_lineups()
-                if names: st.session_state["lineup_names"] = names
-            df, found = do_fetch(odds_key, sgo_key, chosen, options)
-        if df is not None and not df.empty:
-            update_pregame_lock(df)
-            if "odds" in st.session_state:
-                st.session_state["previous_odds"] = st.session_state["odds"]
-            st.session_state["odds"] = df.to_dict("records")
-            st.session_state["found_books"] = sorted(found)
-            st.session_state["last_selected"] = list(chosen)
-            st.session_state["new_fetch"] = True
-            st.session_state["last_fetch_time"] = now_az()
-            st.success(f"Loaded {len(df)} props · {now_az()} AZ")
-        else:
-            dbg = st.session_state.get("fetch_debug") or {}
-            raw = ", ".join(dbg.get("raw_books") or []) or "none"
-            kept = ", ".join(dbg.get("kept_books") or []) or "none"
-            st.warning(
-                "No preferred-book 0.5 HR props after fetch. "
-                "This is not always 'games live' — check debug below."
-            )
-            st.caption(
-                f"API games OK: {dbg.get('http_ok', 0)} · fail: {dbg.get('http_fail', 0)} · "
-                f"rows before filter: {dbg.get('row_count_pre_filter', 0)} · SGO: {dbg.get('sgo_rows', 0)} · "
-                f"raw books: {raw} · kept: {kept}"
-            )
-    if st.session_state.get("last_fetch_time"):
-        st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
-    found = st.session_state.get("found_books", [])
-    dbg = st.session_state.get("fetch_debug") or {}
-    if found or dbg.get("raw_books"):
-        missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
-        with st.expander("Feed debug", expanded=False):
+            raw_n = st.session_state.get("events_raw_count")
             st.markdown(
-                f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
-                + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
-                + "</div>",
+                f'<p class="games-hint">② Today · {len(options)} games'
+                + (f" · feed had {raw_n}" if raw_n else "")
+                + " · live games often have no HR props</p>",
                 unsafe_allow_html=True,
             )
-            if missing:
-                st.caption("Core missing from this feed: " + ", ".join(missing))
-            if dbg.get("event_filter_wiped"):
-                st.caption(f"Event label filter would have dropped {dbg['event_filter_wiped']} rows — kept unfiltered.")
+
+            default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
+            c_sel, c_btn = st.columns([4, 1])
+            with c_sel:
+                chosen = st.multiselect(
+                    "Games",
+                    list(options.keys()),
+                    default=default_sel,
+                    label_visibility="collapsed",
+                )
+            with c_btn:
+                if st.button("Clear games"):
+                    st.session_state["selected_games"] = []
+                    st.rerun()
+            st.session_state["selected_games"] = chosen
+            manual_fetch = st.button("③ Fetch now", type="primary")
+            if "last_refresh_count" not in st.session_state:
+                st.session_state["last_refresh_count"] = refresh_count
+            auto_fetch = HAS_AUTOREFRESH and refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
+            first_load = bool(chosen) and not st.session_state.get("odds") and st.session_state.get("auto_once") is not False
+            if auto_fetch:
+                st.session_state["last_refresh_count"] = refresh_count
+            if first_load:
+                st.session_state["auto_once"] = False
+                auto_fetch = True
+            if (manual_fetch or auto_fetch) and chosen:
+                with st.spinner("Fetching…"):
+                    if auto_lineups or not st.session_state.get("lineup_names"):
+                        names, msg = fetch_rotowire_lineups()
+                        if names: st.session_state["lineup_names"] = names
+                    df, found = do_fetch(odds_key, sgo_key, chosen, options)
+                if df is not None and not df.empty:
+                    update_pregame_lock(df)
+                    if "odds" in st.session_state:
+                        st.session_state["previous_odds"] = st.session_state["odds"]
+                    st.session_state["odds"] = df.to_dict("records")
+                    st.session_state["found_books"] = sorted(found)
+                    st.session_state["last_selected"] = list(chosen)
+                    st.session_state["new_fetch"] = True
+                    st.session_state["last_fetch_time"] = now_az()
+                    st.success(f"Loaded {len(df)} props · {now_az()} AZ")
+                else:
+                    dbg = st.session_state.get("fetch_debug") or {}
+                    raw = ", ".join(dbg.get("raw_books") or []) or "none"
+                    kept = ", ".join(dbg.get("kept_books") or []) or "none"
+                    st.warning(
+                        "No preferred-book 0.5 HR props after fetch. "
+                        "This is not always 'games live' — check debug below."
+                    )
+                    st.caption(
+                        f"API games OK: {dbg.get('http_ok', 0)} · fail: {dbg.get('http_fail', 0)} · "
+                        f"rows before filter: {dbg.get('row_count_pre_filter', 0)} · SGO: {dbg.get('sgo_rows', 0)} · "
+                        f"raw books: {raw} · kept: {kept}"
+                    )
+            if st.session_state.get("last_fetch_time"):
+                st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
+            found = st.session_state.get("found_books", [])
+            dbg = st.session_state.get("fetch_debug") or {}
+            if found or dbg.get("raw_books"):
+                missing = [CORE_BOOKS[b] for b in CORE_BOOKS if b not in found]
+                with st.expander("Feed debug", expanded=False):
+                    st.markdown(
+                        f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
+                        + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
+                        + "</div>",
+                        unsafe_allow_html=True,
+                    )
+                    if missing:
+                        st.caption("Core missing from this feed: " + ", ".join(missing))
+                    if dbg.get("event_filter_wiped"):
+                        st.caption(f"Event label filter would have dropped {dbg['event_filter_wiped']} rows — kept unfiltered.")
     odds = st.session_state.get("odds", [])
     prev = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
@@ -3302,13 +3271,10 @@ def main():
     mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
     st.markdown(f"""
     <div class="petty-row">
-        <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">🟢 TAKE IT</div></div>
-        <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">👀 WATCH</div></div>
-        <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">⚪ PASS</div></div>
-        <div class="petty-box"><div class="petty-num">{coverage_n}</div><div class="petty-label">👁️ COVERAGE</div></div>
-        <div class="petty-box"><div class="petty-num">{dk_n}</div><div class="petty-label">🎯 DK</div></div>
-        <div class="petty-box"><div class="petty-num">{fd_n}</div><div class="petty-label">💙 FD</div></div>
-        <div class="petty-box"><div class="petty-num">{mgm_n}</div><div class="petty-label">🎰 MGM</div></div>
+        <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">TAKE IT</div></div>
+        <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">PASS</div></div>
+        <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">WATCH</div></div>
+        <div class="petty-box"><div class="petty-num">{take_n + pass_n + watch_n + coverage_n}</div><div class="petty-label">ON SLATE</div></div>
     </div>
     """, unsafe_allow_html=True)
     MAIN_TABS = ["Board", "Shop", "Methods", "Lines", "Grade", "Code"]
