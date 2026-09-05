@@ -164,11 +164,9 @@ def normalize_book(key):
         return "bet365"
     return BOOK_ALIASES.get(k, k)
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
-# ── Board gates (re-eval Tracker 2026-09-03) ─────────────────
-# Baseline TAKE IT ~12% (n=525). Priority = volume winners that beat baseline.
-# Promote: 25s · DK 10 · FD 600 · Multi-book · FD+MGM · Exact
-# Demote FD Pattern from priority (12% flat). 50s / Shorten = core only.
-# Support only: 75s · 00s · Stayed · Last one left · tight / Exact Match
+# ── Board gates (re-eval Tracker 2026-08-25) ─────────────────
+# Baseline TAKE IT ~11% (n=256). Promote 25s / Exact / multi-book / FD combos.
+# Demote 50s from priority (10% / 9% on TAKE). DK 10 = core only (6% on TAKE alone).
 EDGE_MIN = 80
 EDGE_SOFT = 40  # heavy stacks that still include a PRIORITY method
 METHODS_MIN = 2
@@ -192,35 +190,34 @@ EV_MIN_N = 12
 BOARD_MAX_PER_TEAM = 3
 BOARD_MAX_PER_GAME = 4
 
-# PRIORITY = must have ≥1 to unlock TAKE IT (Tracker 9/03 volume winners)
+# PRIORITY = must have ≥1 to unlock TAKE IT (Tracker 9/03 volume)
 PRIORITY_METHODS = {
-    "Match 25", "MGM 25",          # 16% · n=174 — strongest ending signal
-    "DK 10",                       # 15% · n=131 — promote (volume beats baseline)
-    "FD 600",                      # 14% · n=65
-    "Multi-book method",           # 14% · n=346
-    "FD+MGM classic",              # 14% · n=390
-    "MGM Exact",                   # 14% · n=498
+    "Match 25", "MGM 25",
+    "DK 10",
+    "FD 600",
+    "Multi-book method",
+    "FD+MGM classic",
+    "MGM Exact",
 }
 # PREMIUM = counts as core (still need ≥1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
     "DK 10",
-    "FD 600",
-    "FD Pattern",                  # 12% flat — core OK, not priority alone
+    "FD 600", "FD Pattern",
     "Multi-book method",
     "FD+MGM classic",
     "MGM Exact",
-    "Multi-book Shorten",          # 12% — core only
-    "Match 50", "MGM 50",          # 10% — core only, not priority
+    "Multi-book Shorten",
+    "Match 50", "MGM 50",
 }
 # SUPPORT = tagged / WATCH / Tracker only — never core, never unlocks alone
 SUPPORT_ONLY = {
     "Books tight", "Exact Match", "All books same",
     "DK FD-style", "Same on 3+ books",
-    "Match 75", "MGM 75",          # 13% slight beat — support, not priority
-    "Match 00", "MGM 00",          # 7% — soft
-    "Stayed in the group",         # 11% under baseline
-    "Last one left",               # 8% under baseline
+    "Match 75", "MGM 75",
+    "Match 00", "MGM 00",
+    "Stayed in the group",
+    "Last one left",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
 # Name magic can still use a slightly wider set
@@ -308,11 +305,11 @@ def strong_method_families(methods):
 
 
 def qualifies_take_it(core_count, methods, edge=0):
-    """TAKE IT (Tracker re-eval 2026-09-03 · baseline ~12% n=525):
-    1 PRIORITY (≥1): Match/MGM 25 · DK 10 · FD 600 · Multi-book method · FD+MGM classic · MGM Exact
-    2 Core (≥2 premium): priority set + FD Pattern + Multi-book Shorten + Match/MGM 50
-    3 Demoted from priority: FD Pattern (12% flat) · 50s · Shorten alone
-    4 Support only: 75s · 00s · Stayed · Last one left · Exact/tight · DK FD-style
+    """TAKE IT (Tracker re-eval 2026-08-25):
+    1 PRIORITY (≥1): Match/MGM 25 · FD Pattern/600 · Multi-book method · FD+MGM classic · MGM Exact
+    2 Core (≥2 premium): priority set + DK 10 + Multi-book Shorten + Match/MGM 50
+    3 Demoted from priority: 50s · DK 10 alone · Multi-book Shorten alone
+    4 Support only: 75s · 00s · Stayed · Last one left · Exact/tight
     5 Edge ≥ 80 (or ≥40 with 3+ core + priority + 2 families)
     """
     ms = {normalize_method_name(m) for m in (methods or [])}
@@ -389,6 +386,7 @@ def girl_magic_score(core_count, edge, methods):
         bonus += 12
     return min(100, method_pts + edge_pts + min(18, bonus))
 
+
 def american_implied(p):
     try:
         p = int(p)
@@ -410,7 +408,6 @@ def implied_to_american(prob):
     return int(round((1.0 - prob) / prob * 100))
 
 def no_vig_fair_american(prices):
-    """Consensus fair from mean implied of posted Overs (same side, so not a true two-way no-vig)."""
     imps = [american_implied(p) for p in prices]
     imps = [x for x in imps if x]
     if len(imps) < 2:
@@ -439,7 +436,6 @@ SHOP_BOOKS = [
 ]
 
 def build_shop_board(df):
-    """One row per player: book prices, median fair, no-vig fair, best, take/don't."""
     if df is None or getattr(df, "empty", True):
         return []
     rows = []
@@ -454,7 +450,7 @@ def build_shop_board(df):
             except Exception:
                 continue
         prices = list(book_px.values())
-        if len(prices) < 1:
+        if not prices:
             continue
         books = list(book_px.keys())
         best, best_book = smart_best(prices, books) if len(prices) >= 2 else (prices[0], books[0])
@@ -467,26 +463,15 @@ def build_shop_board(df):
         action, why, cls = shop_price_action(best, fair)
         edge = (int(best) - int(fair)) if best is not None and fair is not None else 0
         rows.append({
-            "player": player,
-            "event": event or "",
-            "team": (g["team"].dropna().astype(str).iloc[0] if "team" in g and g["team"].notna().any() else ""),
-            "books": book_px,
-            "best": best,
-            "best_book": best_book,
-            "median": med,
-            "fair": fair,
-            "fair_prob": fair_p,
-            "edge": edge,
-            "action": action,
-            "why": why,
-            "cls": cls,
-            "n_books": len(book_px),
+            "player": player, "event": event or "", "books": book_px,
+            "best": best, "best_book": best_book, "median": med, "fair": fair,
+            "fair_prob": fair_p, "edge": edge, "action": action, "why": why,
+            "cls": cls, "n_books": len(book_px),
         })
     rows.sort(key=lambda x: (-x.get("edge", 0), x.get("player") or ""))
     return rows
 
 def ending_heat_from_results(rows, min_n=20):
-    """Hit rate by last-two of logged best_price."""
     stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     for r in rows or []:
         if r.get("result") not in ("HIT", "MISS"):
@@ -502,19 +487,81 @@ def ending_heat_from_results(rows, min_n=20):
         else:
             stats[key]["miss"] += 1
     out = []
-    for name, s in stats.items():
-        t = s["hit"] + s["miss"]
+    for name, stt in stats.items():
+        t = stt["hit"] + stt["miss"]
         if t < min_n:
             continue
-        out.append({
-            "ending": name,
-            "pct": 100.0 * s["hit"] / t,
-            "hit": s["hit"],
-            "miss": s["miss"],
-            "n": t,
-        })
+        out.append({"ending": name, "pct": 100.0 * stt["hit"] / t, "hit": stt["hit"], "miss": stt["miss"], "n": t})
     out.sort(key=lambda x: (-x["pct"], -x["n"]))
     return out
+
+def render_shop_tab(df):
+    st.markdown("### Odds Shop")
+    st.caption("Fair = mean implied of posted Overs. TAKE ≥80 long vs fair. DON'T = 40+ short. Not a who-goes-yard call.")
+    if df is None or getattr(df, "empty", True):
+        st.info("Fetch 0.5 HR first — Shop fills from the live slate.")
+        return
+    shop = build_shop_board(df)
+    take_s = sum(1 for r in shop if r["action"] == "TAKE")
+    lean_s = sum(1 for r in shop if r["action"] == "LEAN")
+    dont_s = sum(1 for r in shop if r["action"] == "DON'T")
+    st.markdown(f"""
+    <div class="petty-row">
+        <div class="petty-box"><div class="petty-num">{take_s}</div><div class="petty-label">TAKE PRICE</div></div>
+        <div class="petty-box"><div class="petty-num">{lean_s}</div><div class="petty-label">LEAN</div></div>
+        <div class="petty-box"><div class="petty-num">{dont_s}</div><div class="petty-label">DON'T</div></div>
+        <div class="petty-box"><div class="petty-num">{len(shop)}</div><div class="petty-label">PLAYERS</div></div>
+    </div>
+    """, unsafe_allow_html=True)
+    view = st.radio("Shop filter", ["All", "TAKE + LEAN", "DON'T", "3+ books"], horizontal=True, key="shop_filter")
+    shown = shop
+    if view == "TAKE + LEAN":
+        shown = [r for r in shop if r["action"] in ("TAKE", "LEAN")]
+    elif view == "DON'T":
+        shown = [r for r in shop if r["action"] == "DON'T"]
+    elif view == "3+ books":
+        shown = [r for r in shop if r["n_books"] >= 3]
+    heat = ending_heat_from_results(load_results(), min_n=20)
+    if heat:
+        st.markdown("#### Endings that have been hitting (graded best price)")
+        chips = []
+        for h in heat[:12]:
+            chips.append(
+                f'<div class="rate-chip"><div class="rate-pct">{h["pct"]:.0f}%</div>'
+                f'<div class="rate-name">ends {h["ending"]}</div>'
+                f'<div class="rate-n">{h["hit"]}H · {h["miss"]}M · n={h["n"]}</div></div>'
+            )
+        st.markdown("".join(chips), unsafe_allow_html=True)
+    heads = "".join(f"<th>{lab}</th>" for _, lab in SHOP_BOOKS)
+    body = []
+    for r in shown[:80]:
+        cells = []
+        for key, _lab in SHOP_BOOKS:
+            px = r["books"].get(key)
+            if px is None:
+                cells.append("<td>—</td>")
+                continue
+            cls = "shop-best" if key == r.get("best_book") else ""
+            if r.get("fair") is not None and key != r.get("best_book") and int(px) <= int(r["fair"]) - 40:
+                cls = "shop-short"
+            cells.append(f'<td class="{cls}">{format_odds(px)}</td>')
+        fair_s = format_odds(r["fair"]) if r.get("fair") is not None else "—"
+        body.append(
+            "<tr>"
+            f'<td><div class="shop-name">{r["player"]}</div><div class="shop-game">{r.get("event") or ""}</div></td>'
+            + "".join(cells)
+            + f"<td>{fair_s}</td>"
+            f'<td class="shop-best">{format_odds(r["best"])} {book_label(r.get("best_book"))}</td>'
+            f'<td>{int(r.get("edge") or 0):+d}</td>'
+            f'<td class="{r["cls"]}">{r["action"]}</td></tr>'
+        )
+    st.markdown(
+        '<div class="shop-wrap"><table class="shop-table"><thead><tr>'
+        "<th>Player</th>" + heads + "<th>Fair</th><th>Best</th><th>Gap</th><th>Call</th>"
+        "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>",
+        unsafe_allow_html=True,
+    )
+    st.caption("Green = longest book. Red = short vs fair. TAKE ≥80 over fair. DON'T = 40+ short.")
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -2430,7 +2477,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         else:
             miss = []
             if not has_pri:
-                miss.append("need priority (25s / DK 10 / FD 600 / Multi-book / Exact / FD+MGM)")
+                miss.append("need priority (25-match / FD / Multi-book method / Exact / FD+MGM)")
             if edge < EDGE_MIN:
                 miss.append(f"edge ≥{EDGE_MIN}")
             why = (
@@ -3163,20 +3210,23 @@ def main():
         <div class="petty-box"><div class="petty-num">{mgm_n}</div><div class="petty-label">🎰 MGM</div></div>
     </div>
     """, unsafe_allow_html=True)
-    TAB_LABELS = [
-        "👑 Board", "🛒 Shop", "🎯 DK", "🎰 MGM", "💙 FD", "🤝 Exact", "💅 Names",
-        "📈 Signals", "⏳ Moves", "📉 Trends", "👻 Late", "🔒 Lock",
-        "🔍 Search",
-        "🧠 Lock Lab", "📡 Tracker", "📊 Results", "🧪 Backtest", "📖 Code",
-    ]
-    nav = st.radio(
+    MAIN_TABS = ["Board", "Shop", "Methods", "Lines", "Grade", "Code"]
+    main = st.radio(
         "Section",
-        TAB_LABELS,
+        MAIN_TABS,
         horizontal=True,
         label_visibility="collapsed",
         key="main_nav",
     )
-    if nav == TAB_LABELS[0]:
+    sub = None
+    if main == "Methods":
+        sub = st.radio("Methods", ["DK", "MGM", "FD", "Exact", "Names", "Signals"], horizontal=True, label_visibility="collapsed", key="sub_methods")
+    elif main == "Lines":
+        sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines")
+    elif main == "Grade":
+        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest"], horizontal=True, label_visibility="collapsed", key="sub_grade")
+    page = f"{main}:{sub or ''}"
+    if page == "Board:":
         st.markdown("### The Board")
         st.caption(
             "Green is TAKE IT. PASS has two premium cores but is missing priority or edge. "
@@ -3311,104 +3361,17 @@ def main():
                     with cols[idx % 2]:
                         _render_board_card(item, "COVERAGE", "watch-card")
 
-    if nav == TAB_LABELS[1]:
-        st.markdown("### Odds Shop")
-        st.caption(
-            "Bee-style board: every book we have, consensus fair, longest number, "
-            "and TAKE / LEAN / MARKET / DON'T. Fair is mean implied of posted Overs — "
-            "not a two-way no-vig and not a prediction of who goes yard."
-        )
-        if df is None or getattr(df, "empty", True):
-            st.info("Fetch 0.5 HR first — Shop fills from the live slate.")
-        else:
-            shop = build_shop_board(df)
-            take_s = sum(1 for r in shop if r["action"] == "TAKE")
-            lean_s = sum(1 for r in shop if r["action"] == "LEAN")
-            dont_s = sum(1 for r in shop if r["action"] == "DON'T")
-            st.markdown(f"""
-            <div class="petty-row">
-                <div class="petty-box"><div class="petty-num">{take_s}</div><div class="petty-label">TAKE PRICE</div></div>
-                <div class="petty-box"><div class="petty-num">{lean_s}</div><div class="petty-label">LEAN</div></div>
-                <div class="petty-box"><div class="petty-num">{dont_s}</div><div class="petty-label">DON'T</div></div>
-                <div class="petty-box"><div class="petty-num">{len(shop)}</div><div class="petty-label">PLAYERS</div></div>
-            </div>
-            """, unsafe_allow_html=True)
-
-            view = st.radio(
-                "Shop filter",
-                ["All", "TAKE + LEAN", "DON'T", "3+ books"],
-                horizontal=True,
-                key="shop_filter",
-            )
-            shown = shop
-            if view == "TAKE + LEAN":
-                shown = [r for r in shop if r["action"] in ("TAKE", "LEAN")]
-            elif view == "DON'T":
-                shown = [r for r in shop if r["action"] == "DON'T"]
-            elif view == "3+ books":
-                shown = [r for r in shop if r["n_books"] >= 3]
-
-            heat = ending_heat_from_results(load_results(), min_n=20)
-            if heat:
-                st.markdown("#### Endings that have been hitting (graded best price)")
-                chips = []
-                for h in heat[:12]:
-                    chips.append(
-                        f'<div class="rate-chip">'
-                        f'<div class="rate-pct">{h["pct"]:.0f}%</div>'
-                        f'<div class="rate-name">ends {h["ending"]}</div>'
-                        f'<div class="rate-n">{h["hit"]}H · {h["miss"]}M · n={h["n"]}</div></div>'
-                    )
-                st.markdown("".join(chips), unsafe_allow_html=True)
-                st.caption("Same sample as Tracker endings — use it to shop numbers, not as a crystal ball.")
-
-            heads = "".join(f"<th>{lab}</th>" for _, lab in SHOP_BOOKS)
-            body = []
-            for r in shown[:80]:
-                cells = []
-                for key, _lab in SHOP_BOOKS:
-                    px = r["books"].get(key)
-                    if px is None:
-                        cells.append("<td>—</td>")
-                        continue
-                    cls = "shop-best" if key == r.get("best_book") else ""
-                    if r.get("fair") is not None and int(px) <= int(r["fair"]) - 40:
-                        cls = "shop-short"
-                    if key == r.get("best_book"):
-                        cls = "shop-best"
-                    cells.append(f'<td class="{cls}">{format_odds(px)}</td>')
-                fair_s = format_odds(r["fair"]) if r.get("fair") is not None else "—"
-                body.append(
-                    "<tr>"
-                    f'<td><div class="shop-name">{r["player"]}</div>'
-                    f'<div class="shop-game">{r.get("event") or ""}</div></td>'
-                    + "".join(cells)
-                    + f"<td>{fair_s}</td>"
-                    f'<td class="shop-best">{format_odds(r["best"])} {book_label(r.get("best_book"))}</td>'
-                    f'<td>{int(r.get("edge") or 0):+d}</td>'
-                    f'<td class="{r["cls"]}">{r["action"]}</td>'
-                    "</tr>"
-                )
-            st.markdown(
-                '<div class="shop-wrap"><table class="shop-table"><thead><tr>'
-                "<th>Player</th>" + heads + "<th>Fair</th><th>Best</th><th>Gap</th><th>Call</th>"
-                "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>",
-                unsafe_allow_html=True,
-            )
-            st.caption(
-                "TAKE = best is ≥80 longer than fair. LEAN = +40 to +79. "
-                "DON'T = 40+ shorter than fair. Red cells are short vs fair. Green cell is the longest book."
-            )
-
-    if nav == TAB_LABELS[2]:
+    if page == "Shop:":
+        render_shop_tab(df)
+    if page == "Methods:DK":
         show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
-    if nav == TAB_LABELS[3]:
+    if page == "Methods:MGM":
         show_player_cards("mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2-3 · all on one card", results)
-    if nav == TAB_LABELS[4]:
+    if page == "Methods:FD":
         show_player_cards("fd", "💙 FanDuel", f"≥+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
-    if nav == TAB_LABELS[5]:
+    if page == "Methods:Exact":
         show_player_cards("match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
-    if nav == TAB_LABELS[6]:
+    if page == "Methods:Names":
         st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
         st.caption(
             f"Same / cross initials · same first or last name · "
@@ -3418,9 +3381,9 @@ def main():
         show_player_cards("cross", "🔄 Cross Initials", "One last initial = other first initial · different teams", results)
         show_player_cards("last", "👩‍👧 Same Last Name", "Exact last name · different teams", results)
         show_player_cards("first", "👯 Same First Name", "Exact first name · different teams", results)
-    if nav == TAB_LABELS[7]:
+    if page == "Methods:Signals":
         show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
-    if nav == TAB_LABELS[8]:
+    if page == "Lines:Moves":
         st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
         st.caption("Fetch-to-fetch + 🔒 open → now/close from Lock.")
         for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
@@ -3431,7 +3394,7 @@ def main():
                 with cols[idx % 2]:
                     st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
             if not items: st.info("None")
-    if nav == TAB_LABELS[9]:
+    if page == "Lines:Trends":
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
         fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
@@ -3441,14 +3404,14 @@ def main():
         st.markdown("#### 🔴 Fade")
         for r in aggregate_by_player(fade)[:15]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-    if nav == TAB_LABELS[10]:
+    if page == "Lines:Late":
         show_player_cards(
             "late",
             "👻 Late / Missing books",
             "Gone from DK / FD / MGM (or HardRock) vs last fetch or Lock — not a RotoWire list",
             results,
         )
-    if nav == TAB_LABELS[11]:
+    if page == "Lines:Lock":
         st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
         st.caption(
             "Open = first pull (never changes) · Now = latest pregame fetch · "
@@ -3509,7 +3472,7 @@ def main():
             if i == 0:
                 st.info("No lock rows matched.")
 
-    if nav == TAB_LABELS[12]:
+    if page == "Lines:Search":
         st.markdown('<div class="queen-banner">🔍 Search · by book / price / ending</div>', unsafe_allow_html=True)
         st.caption(
             f"Pregame Lock only · 0.5 HR Over · prices above +{MAX_HR_AMERICAN} are dropped as junk. "
@@ -3673,7 +3636,7 @@ def main():
                     if len(rows) > 150:
                         st.caption(f"Showing first 150 of {len(rows)}")
 
-    if nav == TAB_LABELS[13]:
+    if page == "Grade:Lock Lab":
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
         st.caption("Today's homers matched to what we locked before first pitch.")
         lab = build_lock_lab()
@@ -3742,7 +3705,7 @@ def main():
             with st.expander(f"Not in Lock ({len(lab['unmatched'])})"):
                 st.write(", ".join(lab["unmatched"][:50]))
 
-    if nav == TAB_LABELS[14]:
+    if page == "Grade:Tracker":
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption(
             "What has been hitting after we grade it. "
@@ -3790,7 +3753,7 @@ def main():
 
         # Signal method = Girl Magic tags (why we cared)
         st.markdown("#### By signal method")
-        st.caption("Tags on the pick (MGM 25, DK 10, FD 600, Multi-book method, Exact, …) — not which book you bet.")
+        st.caption("Tags on the pick (MGM 25, FD Pattern, Multi-book method, Exact, …) — not which book you bet.")
         chips = chips_from_stats(method_stats, compare_baseline=True)
         st.markdown(
             "".join(chips) if chips else f"_(Need graded plays with n ≥ {TRACKER_MIN_N})_",
@@ -3813,7 +3776,7 @@ def main():
             "".join(chips) if chips else f"_(Need n ≥ {TRACKER_MIN_N})_",
             unsafe_allow_html=True,
         )
-    if nav == TAB_LABELS[15]:
+    if page == "Grade:Results":
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB…"):
@@ -3901,7 +3864,7 @@ def main():
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
-    if nav == TAB_LABELS[16]:
+    if page == "Grade:Backtest":
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
         rows_bt = load_results()
@@ -3969,22 +3932,22 @@ def main():
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
-    if nav == TAB_LABELS[17]:
+    if page == "Code:":
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
         st.caption("Girl Magic cheat sheet — short blocks, real examples.")
         st.markdown(
             '<div class="glossary-block">'
             "<h4>🟢 The Board (start here)</h4>"
             "We only care about <b>0.5 HR</b> — one home run, Over.<br><br>"
-            "<b>🟢 TAKE IT</b> — green light (re-eval Tracker 9/03 · baseline ~12% n=525).<br>"
-            "• <b>Priority (need ≥1):</b> Match/MGM <b>25</b> · <b>DK 10</b> · FD 600 · Multi-book method · FD+MGM classic · MGM Exact<br>"
-            "• <b>Premium core (need ≥2):</b> priority tags + FD Pattern + Multi-book Shorten + Match/MGM 50<br>"
+            "<b>🟢 TAKE IT</b> — green light (re-eval Tracker 8/25 · baseline ~11%).<br>"
+            "• <b>Priority (need ≥1):</b> Match/MGM <b>25</b> · FD Pattern · FD 600 · Multi-book method · FD+MGM classic · MGM Exact<br>"
+            "• <b>Premium core (need ≥2):</b> priority tags + DK 10 + Multi-book Shorten + Match/MGM 50<br>"
             "• <b>Edge ≥ 80</b> (or ≥40 with 3+ core + priority + 2 families)<br>"
             "• Short list on purpose (caps per team / game)<br><br>"
             "<b>⚪ PASS</b> — 2+ premium but missing priority and/or edge.<br><br>"
             "<b>👀 WATCH</b> — 1 premium method. We track these to learn.<br>"
             "<b>Support only (never unlock TAKE IT alone):</b> Match/MGM 75 · 00s · "
-            "Stayed in the group · Last one left · Books tight · Exact Match · DK FD-style<br>"
+            "Stayed in the group · Last one left · Books tight · Exact Match<br>"
             "WATCH + TAKE IT feed Results → auto-grade → Tracker / Backtest."
             "</div>"
 
@@ -3999,12 +3962,12 @@ def main():
 
             '<div class="glossary-block">'
             "<h4>🎰 BetMGM (same team only)</h4>"
-            "We track endings <b>00 · 25 · 50 · 75</b>. <b>25</b> is the unlock ending (9/03 tracker · 16%); 50 is core only.<br><br>"
+            "We track endings <b>00 · 25 · 50 · 75</b>. <b>25</b> is the unlock ending (8/25 tracker); 50 is core only.<br><br>"
             "<b>Pair</b> — exactly <b>2 teammates</b> with the same ending.<br>"
             "<b>Group of 3</b> — exactly <b>3 teammates</b> same ending. Not 4+.<br>"
-            "<b>Match/MGM 25</b> — <b>PRIORITY</b> (~16% · n=174).<br>"
-            "<b>MGM Exact</b> — <b>PRIORITY</b> (~14% · n=498). Same MGM price on 2–3 teammates.<br>"
-            "<b>Match/MGM 50</b> — premium core, not priority alone (~10% under baseline).<br>"
+            "<b>Match/MGM 25</b> — <b>PRIORITY</b> (~15% overall · ~18% on TAKE IT).<br>"
+            "<b>MGM Exact</b> — <b>PRIORITY</b> (~14%). Same MGM price on 2–3 teammates.<br>"
+            "<b>Match/MGM 50</b> — premium core, not priority alone (below baseline in 8/25 sample).<br>"
             "<b>Match/MGM 75 · 00 · Stayed · Last one left</b> — "
             "<b>support only</b>. Still shown on tabs.<br><br>"
             "A lone +525 with no teammate partner is <b>not</b> an MGM method tag."
@@ -4012,15 +3975,15 @@ def main():
 
             '<div class="glossary-block">'
             "<h4>🎯 DraftKings</h4>"
-            "<b>DK 10</b> — ends in 10. <b>PRIORITY</b> (9/03 · ~15% · n=131 — volume beats baseline).<br>"
-            "<b>DK FD-style</b> — DK using FanDuel-type endings (support only · ~10%)."
+            "<b>DK 10</b> — ends in 10. <b>Premium core</b>, not priority alone (weak ~6% when forced onto TAKE IT; still fine as a second tag).<br>"
+            "<b>DK FD-style</b> — DK using FanDuel-type endings (support only)."
             "</div>"
 
             '<div class="glossary-block">'
             "<h4>💙 FanDuel</h4>"
             "<b>FD Pattern</b> — price <b>+400 or higher</b> and ends in 10 / 20 / 30 / 60 / 70 / 90. "
-            "<b>Premium core</b> only (9/03 · 12% flat — not priority alone).<br>"
-            "<b>FD 600</b> — specifically +600. <b>PRIORITY</b> (~14%).<br>"
+            "<b>PRIORITY</b> when paired with DK/MGM on the player.<br>"
+            "<b>FD 600</b> — specifically +600. <b>PRIORITY</b>.<br>"
             "<b>FD+MGM classic</b> — FD Pattern/600 <b>and</b> MGM 25/50/75 on the same player. <b>PRIORITY</b> (~14%)."
             "</div>"
 
@@ -4057,17 +4020,9 @@ def main():
             "</div>"
 
             '<div class="glossary-block">'
-            "<h4>🛒 Odds Shop</h4>"
-            "Bee-style board. Columns = DK / FD / MGM / HardRock / Caesars.<br>"
-            "<b>Fair</b> = mean implied of posted Overs, converted back to American. Same-side only — not a two-way no-vig.<br>"
-            "<b>TAKE</b> = best ≥80 longer than fair. <b>LEAN</b> = +40 to +79. <b>DON'T</b> = 40+ shorter than fair.<br>"
-            "Green cell = longest book. Red cell = short vs fair."
-            "</div>"
-
-            '<div class="glossary-block">'
             "<h4>⚡ Quick flow</h4>"
             "① Load games → ② Fetch (0.5 HR) → ③ Lock saves pregame → "
-            "④ Tags fire → ⑤ Board + Shop → ⑥ Grade results → ⑦ Learn in Tracker / Lab"
+            "④ Tags fire → ⑤ Board TAKE / WATCH / PASS → ⑥ Grade results → ⑦ Learn in Tracker / Lab"
             "</div>",
             unsafe_allow_html=True,
         )
