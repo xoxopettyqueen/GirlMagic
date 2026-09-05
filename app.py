@@ -3353,27 +3353,24 @@ def main():
     ev_n = len(st.session_state.get("events") or [])
     with st.sidebar:
         st.markdown("**Slate**")
-        st.caption(f"{ev_n} games · lock {lock_n}")
-        st.caption(str(last_ft))
-        c1, c2, c3, c4 = st.columns(4)
-        with c1:
-            if st.button("① Load Games", type="primary"):
-                raw = fetch_events_oddsapi(odds_key)
-                st.session_state["events"] = filter_events_today(raw)
-                st.session_state["events_raw_count"] = len(raw or [])
-        with c2:
-            if st.button("📋 Lineups"):
+        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft}")
+        if st.button("Load games", type="primary", use_container_width=True):
+            raw = fetch_events_oddsapi(odds_key)
+            st.session_state["events"] = filter_events_today(raw)
+            st.session_state["events_raw_count"] = len(raw or [])
+        b1, b2 = st.columns(2)
+        with b1:
+            if st.button("Lineups", use_container_width=True):
                 names, msg = fetch_rotowire_lineups()
                 st.session_state["lineup_names"] = names
                 (st.success if names else st.warning)(msg)
-        with c3:
-            if st.button("⚡ Auto-grade MLB"):
+        with b2:
+            if st.button("Grade", use_container_width=True):
                 with st.spinner("MLB box scores…"):
                     h, m, s, msg = auto_grade_pending()
                 st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
                 st.rerun()
-        with c4:
-            auto_lineups = st.checkbox("Lineups on fetch", value=True)
+        auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
         events = st.session_state.get("events", [])
         if not events:
             st.info("Click **Load Games** once.")
@@ -3408,29 +3405,17 @@ def main():
                 lab = f"{lab} · {str(e.get('id', ''))[:6]}"
             options[lab] = e["id"]
 
-        raw_n = st.session_state.get("events_raw_count")
-        st.markdown(
-            f'<p class="games-hint">② Today · {len(options)} games'
-            + (f" · feed had {raw_n}" if raw_n else "")
-            + " · live games often have no HR props</p>",
-            unsafe_allow_html=True,
-        )
-
         default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
-        c_sel, c_btn = st.columns([4, 1])
-        with c_sel:
-            chosen = st.multiselect(
-                "Games",
-                list(options.keys()),
-                default=default_sel,
-                label_visibility="collapsed",
-            )
-        with c_btn:
-            if st.button("Clear games"):
-                st.session_state["selected_games"] = []
-                st.rerun()
+        chosen = st.multiselect(
+            "Games",
+            list(options.keys()),
+            default=default_sel,
+        )
+        if st.button("Clear", use_container_width=True):
+            st.session_state["selected_games"] = []
+            st.rerun()
         st.session_state["selected_games"] = chosen
-        manual_fetch = st.button("③ Fetch now", type="primary")
+        manual_fetch = st.button("Fetch", type="primary", use_container_width=True)
         if "last_refresh_count" not in st.session_state:
             st.session_state["last_refresh_count"] = refresh_count
         auto_fetch = HAS_AUTOREFRESH and refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
