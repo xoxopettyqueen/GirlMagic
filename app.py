@@ -560,7 +560,7 @@ def ending_heat_from_results(rows, min_n=20):
 
 def render_shop_tab(df):
     st.markdown("### Odds Shop")
-    st.caption("TAKE and LEAN get logged and auto-graded. DON'T does not. Board TAKE IT still wins if both fire.")
+    st.caption("Price vs fair. TAKE / LEAN log on their own (even if Board already has the name). Grade them under Grade → Shop.")
     if df is None or getattr(df, "empty", True):
         st.info("Fetch 0.5 HR first - Shop fills from the live slate.")
         return
@@ -1798,10 +1798,11 @@ def log_shop_calls(df):
     today = today_az()
     added = 0
 
-    def already(player):
+    def already_shop(player, source):
         return any(
-            r.get("date") == today and r.get("player") == player
-            and r.get("source") != "manual_hr"
+            r.get("date") == today
+            and r.get("player") == player
+            and r.get("source") == source
             for r in rows
         )
 
@@ -1809,9 +1810,11 @@ def log_shop_calls(df):
         if r.get("action") not in ("TAKE", "LEAN"):
             continue
         player = r.get("player")
-        if not player or already(player):
+        if not player:
             continue
         src = "shop_take" if r["action"] == "TAKE" else "shop_lean"
+        if already_shop(player, src):
+            continue
         price = r.get("best")
         rows.append({
             "id": f"{today}_{player}_{src}_{int(r.get('edge') or 0)}",
@@ -3255,6 +3258,68 @@ def build_backtest_stats(rows, days=14):
     return overall, daily, method_by_src, len(graded)
 
 
+def build_shop_grade_stats(rows, days=14):
+    """Separate Shop report card: shop_take vs shop_lean (not Board methods)."""
+    today = today_az()
+    try:
+        today_dt = datetime.strptime(today, "%Y-%m-%d")
+    except Exception:
+        today_dt = datetime.now()
+    cutoff = (today_dt - timedelta(days=days)).strftime("%Y-%m-%d")
+    shop_src = ("shop_take", "shop_lean")
+    graded = [
+        r for r in rows
+        if r.get("result") in ("HIT", "MISS")
+        and r.get("source") in shop_src
+        and (r.get("date") or "") >= cutoff
+    ]
+
+    def rate(subset):
+        h = sum(1 for r in subset if r["result"] == "HIT")
+        m = sum(1 for r in subset if r["result"] == "MISS")
+        t = h + m
+        pct = (100.0 * h / t) if t else None
+        return h, m, t, pct
+
+    overall = {src: rate([r for r in graded if r.get("source") == src]) for src in shop_src}
+
+    by_date = {}
+    for r in graded:
+        d = r.get("date") or ""
+        by_date.setdefault(d, {"shop_take": [], "shop_lean": []})
+        src = r.get("source")
+        if src in by_date[d]:
+            by_date[d][src].append(r)
+    daily = []
+    for d in sorted(by_date.keys(), reverse=True):
+        daily.append({
+            "date": d,
+            "shop_take": rate(by_date[d]["shop_take"]),
+            "shop_lean": rate(by_date[d]["shop_lean"]),
+        })
+
+    book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    ending_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    bucket_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
+    for r in graded:
+        is_hit = r["result"] == "HIT"
+        bl = book_label(r.get("best_book"))
+        end = r.get("ending")
+        if end is None and r.get("best_price") is not None:
+            end = last_two(r.get("best_price"))
+        buck = r.get("price_bucket") or price_bucket(r.get("best_price"))
+        targets = [(book_stats, bl)]
+        if end is not None:
+            targets.append((ending_stats, f"{int(end):02d}"))
+        if buck:
+            targets.append((bucket_stats, buck))
+        for store, key in targets:
+            if not key:
+                continue
+            store[key]["hit" if is_hit else "miss"] += 1
+
+    return overall, daily, book_stats, ending_stats, bucket_stats, len(graded)
+
 
 
 def event_is_today(e):
@@ -3758,7 +3823,7 @@ def main():
     elif main == "Lines":
         sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines")
     elif main == "Grade":
-        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest"], horizontal=True, label_visibility="collapsed", key="sub_grade")
+        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade")
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown("### The Board")
@@ -4365,7 +4430,17 @@ def main():
                 "If you had data before, check that girl_magic_results.json exists in your GitHub repo."
             )
         today_only = st.checkbox("Today only", value=False)
+        src_f = st.radio(
+            "Log type",
+            ["All", "Board (TAKE IT / WATCH)", "Shop (TAKE / LEAN)"],
+            horizontal=True,
+            key="results_src_filter",
+        )
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
+        if src_f.startswith("Board"):
+            rows_view = [r for r in rows_view if r.get("source") in ("take_it", "watch")]
+        elif src_f.startswith("Shop"):
+            rows_view = [r for r in rows_view if r.get("source") in ("shop_take", "shop_lean")]
         pending = sorted([r for r in rows_view if r.get("result") == "PENDING"], key=pending_sort_key)
         done = [r for r in rows_view if r.get("result") in ("HIT", "MISS")]
         hits = sum(1 for r in done if r["result"] == "HIT")
@@ -4397,7 +4472,8 @@ def main():
             rid = r["id"]
             endg = r.get("ending")
             end_s = f" ends {int(endg):02d}" if endg is not None else ""
-            st.markdown(f"**{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s}")
+            src_lab = {"take_it": "Board TAKE IT", "watch": "Board WATCH", "shop_take": "Shop TAKE", "shop_lean": "Shop LEAN"}.get(r.get("source"), r.get("source") or "")
+            st.markdown(f"**{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s} · {src_lab}")
             c1, c2, _ = st.columns([1, 1, 4])
             with c1:
                 if st.button("🟢 HIT", key=f"hit_{rid}"):
@@ -4414,7 +4490,8 @@ def main():
             auto = " · auto" if r.get("graded_by") == "mlb_auto" else ""
             endg = r.get("ending")
             end_s = f" ends {int(endg):02d}" if endg is not None else ""
-            st.markdown(f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s}{auto}")
+            src_lab = {"take_it": "Board TAKE IT", "watch": "Board WATCH", "shop_take": "Shop TAKE", "shop_lean": "Shop LEAN"}.get(r.get("source"), r.get("source") or "")
+            st.markdown(f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s} · {src_lab}{auto}")
             if st.button("↩️ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
@@ -4486,6 +4563,76 @@ def main():
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
 
+
+    if page == "Grade:Shop":
+        st.markdown('<div class="queen-banner">🛒 Shop report card</div>', unsafe_allow_html=True)
+        st.caption(
+            "This is the price side only. Shop TAKE / LEAN log even if the same name is on The Board. "
+            "Board Backtest stays methods-only."
+        )
+        rows_sh = load_results()
+        overall_s, daily_s, book_s, end_s, buck_s, n_shop = build_shop_grade_stats(rows_sh, days=14)
+
+        def fmt_rate(h, m, t, pct):
+            if t == 0 or pct is None:
+                return "-"
+            return f"{pct:.0f}% · {h}H / {m}M · n={t}"
+
+        tk = overall_s.get("shop_take", (0, 0, 0, None))
+        ln = overall_s.get("shop_lean", (0, 0, 0, None))
+        tk_pct = f"{tk[3]:.0f}" if tk[3] is not None else "-"
+        ln_pct = f"{ln[3]:.0f}" if ln[3] is not None else "-"
+        st.markdown(f"""
+        <div class="petty-row">
+            <div class="petty-box"><div class="petty-num">{tk_pct}</div><div class="petty-label">SHOP TAKE %</div></div>
+            <div class="petty-box"><div class="petty-num">{tk[2]}</div><div class="petty-label">TAKE n</div></div>
+            <div class="petty-box"><div class="petty-num">{ln_pct}</div><div class="petty-label">SHOP LEAN %</div></div>
+            <div class="petty-box"><div class="petty-num">{ln[2]}</div><div class="petty-label">LEAN n</div></div>
+            <div class="petty-box"><div class="petty-num">{n_shop}</div><div class="petty-label">Graded 14d</div></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("#### Last 14 days")
+        if not daily_s:
+            st.info("No graded Shop TAKE / LEAN yet. Fetch pregame → Shop logs TAKE/LEAN → auto-grade after games.")
+        else:
+            for day in daily_s:
+                st.markdown(
+                    f'<div class="card"><b>{day["date"]}</b><br>'
+                    f'Shop TAKE: {fmt_rate(*day["shop_take"])}<br>'
+                    f'Shop LEAN: {fmt_rate(*day["shop_lean"])}</div>',
+                    unsafe_allow_html=True,
+                )
+
+        def chips_from(stats, min_n=8):
+            out = []
+            for name, s in sorted(
+                stats.items(),
+                key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"])),
+            ):
+                t = s["hit"] + s["miss"]
+                if t < min_n:
+                    continue
+                pct = 100 * s["hit"] / t
+                out.append(
+                    f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
+                    f'<div class="rate-name">{name}</div>'
+                    f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
+                )
+            return out
+
+        st.markdown("#### By best book we bought")
+        chips = chips_from(book_s)
+        st.markdown("".join(chips) if chips else "_(Need more graded Shop rows)_", unsafe_allow_html=True)
+
+        st.markdown("#### By ending on Shop best price")
+        chips = chips_from(end_s)
+        st.markdown("".join(chips) if chips else "_(Need more graded endings)_", unsafe_allow_html=True)
+
+        st.markdown("#### By price bucket")
+        chips = chips_from(buck_s, min_n=6)
+        st.markdown("".join(chips) if chips else "_(Need more graded prices)_", unsafe_allow_html=True)
+        st.caption("Shop TAKE should beat Shop LEAN if the gap-vs-fair call is real. Ignore tiny n.")
 
     if page == "Grade:Vibe":
         st.markdown("### Board vibe")
@@ -4575,12 +4722,14 @@ def main():
             '<div class="glossary-block">'
             "<h4>Shop</h4>"
             "Where you buy the number. Compare books, skip flyers, filter by ending or book.<br>"
-            "Shop says if the <b>price</b> is worth it. Board says if the <b>name</b> is worth it."
+            "Shop says if the <b>price</b> is worth it. Board says if the <b>name</b> is worth it.<br>"
+            "Shop TAKE / LEAN log as their own rows. Grade them under <b>Grade → Shop</b>."
             "</div>"
             '<div class="glossary-block">'
             "<h4>After the games</h4>"
             "<b>Grade</b> auto-reads box scores. Tracker is how we learn without guessing.<br>"
-            "Backtest is TAKE IT vs WATCH - ignore tiny days."
+            "<b>Backtest</b> = Board TAKE IT vs WATCH (methods).<br>"
+            "<b>Grade → Shop</b> = Shop TAKE vs Shop LEAN (price vs fair). Same name can be on both."
             "</div>"
             '<div class="glossary-block">'
             "<h4>🔒 Lock vs 🧠 Lock Lab</h4>"
