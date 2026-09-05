@@ -59122,5 +59122,55 @@
     "source": "shop_lean",
     "logged_at": "2026-09-05T22:59:13.815945+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-05_Spencer Torkelson_shop_lean_81",
+    "date": "2026-09-05",
+    "time": "04:03 PM",
+    "player": "Spencer Torkelson",
+    "score": 0,
+    "edge": 81,
+    "best_price": 900,
+    "best_book": "hardrockbet",
+    "median": 825,
+    "book_prices": {
+      "caesars": 750,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-05T23:03:59.310247+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-05_Drake Baldwin_shop_lean_53",
+    "date": "2026-09-05",
+    "time": "04:03 PM",
+    "player": "Drake Baldwin",
+    "score": 0,
+    "edge": 53,
+    "best_price": 800,
+    "best_book": "hardrockbet",
+    "median": 750,
+    "book_prices": {
+      "caesars": 700,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-05T23:03:59.318668+00:00",
+    "price_source": "shop"
   }
 ]
