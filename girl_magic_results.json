@@ -57498,5 +57498,105 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-05_Trea Turner_shop_lean_81",
+    "date": "2026-09-05",
+    "time": "03:58 PM",
+    "player": "Trea Turner",
+    "score": 0,
+    "edge": 81,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 775,
+    "book_prices": {
+      "caesars": 700,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-05T22:58:30.798071+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-05_Hector Rodriguez_shop_lean_54",
+    "date": "2026-09-05",
+    "time": "03:58 PM",
+    "player": "Hector Rodriguez",
+    "score": 0,
+    "edge": 54,
+    "best_price": 600,
+    "best_book": "hardrockbet",
+    "median": 550,
+    "book_prices": {
+      "caesars": 500,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-05T22:58:30.806002+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-05_Austin Riley_shop_lean_53",
+    "date": "2026-09-05",
+    "time": "03:58 PM",
+    "player": "Austin Riley",
+    "score": 0,
+    "edge": 53,
+    "best_price": 800,
+    "best_book": "hardrockbet",
+    "median": 750,
+    "book_prices": {
+      "caesars": 700,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-05T22:58:30.806983+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-05_Jackson Chourio_shop_lean_43",
+    "date": "2026-09-05",
+    "time": "03:58 PM",
+    "player": "Jackson Chourio",
+    "score": 0,
+    "edge": 43,
+    "best_price": 450,
+    "best_book": "hardrockbet",
+    "median": 410,
+    "book_prices": {
+      "caesars": 370,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-05T22:58:30.813219+00:00",
+    "price_source": "shop"
   }
 ]
