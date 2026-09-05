@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Girl Magic Odds ✨
 - GitHub-backed results + lock + movement history (survives Streamlit sleep/wipe)
@@ -552,7 +553,7 @@ def ending_heat_from_results(rows, min_n=20):
 
 def render_shop_tab(df):
     st.markdown("### Odds Shop")
-    st.caption("Shop the number. Green = longest book. Pink = short vs the pack. Call is price-only - Board still decides the play.")
+    st.caption("TAKE and LEAN get logged and auto-graded. DON'T does not. Board TAKE IT still wins if both fire.")
     if df is None or getattr(df, "empty", True):
         st.info("Fetch 0.5 HR first - Shop fills from the live slate.")
         return
@@ -1774,6 +1775,50 @@ def log_bet_this(ev_board, watch_board=None):
             continue
         append_row(item, "watch")
 
+    if added:
+        save_results(rows)
+    return added
+
+
+def log_shop_calls(df):
+    """Shop TAKE / LEAN -> Results so auto-grade can score the price call."""
+    if df is None or getattr(df, "empty", True):
+        return 0
+    shop = build_shop_board(df)
+    rows = load_results()
+    today = today_az()
+    added = 0
+
+    def already(player):
+        return any(
+            r.get("date") == today and r.get("player") == player
+            and r.get("source") != "manual_hr"
+            for r in rows
+        )
+
+    for r in shop:
+        if r.get("action") not in ("TAKE", "LEAN"):
+            continue
+        player = r.get("player")
+        if not player or already(player):
+            continue
+        src = "shop_take" if r["action"] == "TAKE" else "shop_lean"
+        price = r.get("best")
+        rows.append({
+            "id": f"{today}_{player}_{src}_{int(r.get('edge') or 0)}",
+            "date": today, "time": now_az(), "player": player,
+            "score": 0, "edge": int(r.get("edge") or 0),
+            "best_price": price, "best_book": r.get("best_book"),
+            "median": r.get("median"),
+            "book_prices": dict(r.get("books") or {}),
+            "price_bucket": price_bucket(price),
+            "ending": last_two(price) if price is not None else None,
+            "methods": [f"Shop {r['action']}"],
+            "core": 0,
+            "result": "PENDING", "source": src, "logged_at": now_utc_iso(),
+            "price_source": "shop",
+        })
+        added += 1
     if added:
         save_results(rows)
     return added
@@ -3564,6 +3609,8 @@ def main():
             )
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
+    if not df.empty:
+        log_shop_calls(df)
     method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats = build_tracker_stats(load_results())
     for item in ev_board:
         p, n, mname = best_method_rate_for_player(item["methods"], method_stats)
