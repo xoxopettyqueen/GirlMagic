@@ -50486,5 +50486,59 @@
     "source": "watch",
     "logged_at": "2026-09-05T00:59:23.331283+00:00",
     "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-04_Griffin Conine_watch_36",
+    "date": "2026-09-04",
+    "time": "06:41 PM",
+    "player": "Griffin Conine",
+    "score": 36,
+    "edge": 100,
+    "best_price": 1300,
+    "best_book": "hardrockbet",
+    "median": 1200.0,
+    "book_prices": {
+      "caesars": 1100,
+      "hardrockbet": 1300
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-05T01:41:37.271208+00:00",
+    "price_source": "pregame_lock"
+  },
+  {
+    "id": "2026-09-04_Kazuma Okamoto_watch_19",
+    "date": "2026-09-04",
+    "time": "06:41 PM",
+    "player": "Kazuma Okamoto",
+    "score": 19,
+    "edge": 25,
+    "best_price": 800,
+    "best_book": "hardrockbet",
+    "median": 775.0,
+    "book_prices": {
+      "caesars": 750,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-05T01:41:37.271873+00:00",
+    "price_source": "pregame_lock"
   }
 ]
