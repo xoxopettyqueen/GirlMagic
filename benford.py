@@ -2354,6 +2354,17 @@ def fetch_mlb_lineups():
 
 
 
+def short_lineup_msg(msg, n=0):
+    raw = str(msg or "")
+    if any(x in raw.lower() for x in ("nitter", "httpsconnection", "underdog", "max retries")):
+        return f"{n} lineup names · MLB orders"
+    # keep first two source bits only
+    parts = [x.strip() for x in raw.replace("·", "|").split("|") if x.strip()]
+    keep = [x for x in parts if "nitter" not in x.lower() and "http" not in x.lower()][:3]
+    out = " · ".join(keep) if keep else raw
+    return out[:80]
+
+
 def fetch_all_lineups():
     rw, rw_msg = fetch_rotowire_lineups()
     mlb, mlb_msg = fetch_mlb_lineups()
@@ -3542,6 +3553,7 @@ def main():
         with b1:
             if st.button("Lineups", use_container_width=True):
                 names, msg = fetch_all_lineups()
+                msg = short_lineup_msg(msg, len(names))
                 st.session_state["lineup_names"] = names
                 st.session_state["lineup_msg"] = msg
                 (st.success if names else st.warning)(msg)
@@ -3552,13 +3564,10 @@ def main():
                 st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
                 st.rerun()
         auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
-        lm = st.session_state.get("lineup_msg") or ""
         ln = st.session_state.get("lineup_names") or set()
+        lm = short_lineup_msg(st.session_state.get("lineup_msg") or "", len(ln))
+        st.session_state["lineup_msg"] = lm
         if lm:
-            if "HTTPSConnection" in lm or "Max retries" in lm or "Underdog" in lm:
-                lm = f"{len(ln)} used · MLB orders"
-            if len(lm) > 80:
-                lm = lm[:77] + "..."
             st.caption(lm)
         lock_now = st.session_state.get("pregame_lock") or {}
         if ln and lock_now:
@@ -3625,7 +3634,7 @@ def main():
                     names, msg = fetch_all_lineups()
                     if names:
                         st.session_state["lineup_names"] = names
-                        st.session_state["lineup_msg"] = msg
+                        st.session_state["lineup_msg"] = short_lineup_msg(msg, len(names))
                 df, found = do_fetch(odds_key, sgo_key, chosen, options)
             if df is not None and not df.empty:
                 update_pregame_lock(df)
