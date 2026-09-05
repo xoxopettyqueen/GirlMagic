@@ -2303,14 +2303,11 @@ def fetch_rotowire_lineups():
         soup = BeautifulSoup(r.content, "html.parser")
         names = set()
         for sel in (
+            "div.lineup.is-confirmed div.lineup__player a",
+            "div.lineup.is-confirmed li.lineup__player a",
             "div.lineup__player a",
             "li.lineup__player a",
             "a.lineup__player-link",
-            ".lineup__player a",
-            ".lineup__player",
-            "a[href*='/baseball/player/']",
-            "a[href*='/player.php']",
-            "a[href*='/player/']",
         ):
             for el in soup.select(sel):
                 t = el.get_text(" ", strip=True)
@@ -2325,32 +2322,41 @@ def fetch_rotowire_lineups():
 
 
 def fetch_mlb_lineups():
-    """Official posted batting orders when MLB has them. Empty until lineups drop."""
+    """Posted batting-order names from each game boxscore (works pre-game once posted)."""
     names = set()
-    url = (
-        "https://statsapi.mlb.com/api/v1/schedule"
-        f"?sportId=1&date={today_mlb_date()}&hydrate=lineups,probablePitcher"
-    )
     try:
-        r = requests.get(url, timeout=20, headers={"User-Agent": "GirlMagic/1.0"})
-        if r.status_code != 200:
-            return set(), f"MLB lineups HTTP {r.status_code}"
-        data = r.json()
-        for day in data.get("dates") or []:
+        sch = requests.get(
+            f"https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={today_mlb_date()}",
+            timeout=20,
+            headers={"User-Agent": "GirlMagic/1.0"},
+        )
+        if sch.status_code != 200:
+            return set(), f"MLB schedule HTTP {sch.status_code}"
+        pks = []
+        for day in (sch.json().get("dates") or []):
             for g in day.get("games") or []:
-                for lu in g.get("lineups") or []:
-                    for p in lu.get("players") or lu if isinstance(lu, list) else []:
-                        if not isinstance(p, dict):
+                if g.get("gamePk"):
+                    pks.append(g["gamePk"])
+        for pk in pks:
+            try:
+                bx = requests.get(
+                    f"https://statsapi.mlb.com/api/v1/game/{pk}/boxscore",
+                    timeout=15,
+                    headers={"User-Agent": "GirlMagic/1.0"},
+                )
+                if bx.status_code != 200:
+                    continue
+                teams = (bx.json().get("teams") or {})
+                for side in ("away", "home"):
+                    players = ((teams.get(side) or {}).get("players") or {})
+                    for p in players.values():
+                        if not p.get("battingOrder"):
                             continue
-                        nm = (p.get("fullName") or (p.get("person") or {}).get("fullName"))
+                        nm = (p.get("person") or {}).get("fullName")
                         if nm:
                             names.add(clean_name(nm))
-                for side in ("home", "away"):
-                    team = ((g.get("teams") or {}).get(side) or {})
-                    for p in team.get("lineup") or []:
-                        nm = (p.get("fullName") or (p.get("person") or {}).get("fullName"))
-                        if nm:
-                            names.add(clean_name(nm))
+            except Exception:
+                continue
         return names, f"MLB {len(names)}"
     except Exception as e:
         return set(), f"MLB lineups error: {e}"
@@ -2408,7 +2414,8 @@ def expand_underdog_against_slate(tokens):
 def fetch_underdog_x():
     urls = (
         "https://r.jina.ai/https://x.com/UnderdogMLB",
-        "https://r.jina.ai/http://x.com/UnderdogMLB",
+        "https://nitter.poast.org/UnderdogMLB",
+        "https://nitter.privacydev.net/UnderdogMLB",
     )
     text, err = "", ""
     for u in urls:
@@ -2431,11 +2438,17 @@ def fetch_all_lineups():
     rw, rw_msg = fetch_rotowire_lineups()
     mlb, mlb_msg = fetch_mlb_lineups()
     ud, ud_msg = fetch_underdog_x()
-    names = set(rw) | set(mlb) | set(ud)
     bits = [x for x in (rw_msg, mlb_msg, ud_msg) if x]
+    # 500+ RW names = whole site, not today's bats. Prefer MLB orders.
+    if len(mlb) >= 40:
+        names = set(mlb) | set(ud)
+        note = "filter=MLB orders"
+    else:
+        names = set(mlb) | set(ud) | set(rw)
+        note = "filter=merged"
     if not names:
         return set(), " · ".join(bits) or "No lineups yet"
-    return names, f"{len(names)} lineup names · " + " · ".join(bits)
+    return names, f"{len(names)} used · " + " · ".join(bits) + " · " + note
 
 @st.cache_data(ttl=180, show_spinner=False)
 def _fetch_events_oddsapi_cached(api_key):
