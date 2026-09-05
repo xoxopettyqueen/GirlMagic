@@ -15,6 +15,15 @@ import json
 import os
 import base64
 from collections import defaultdict, Counter
+try:
+    from benford import analyze_benford, analyze_many
+    HAS_BENFORD = True
+except ImportError:
+    HAS_BENFORD = False
+    def analyze_benford(*a, **k):
+        return {}
+    def analyze_many(*a, **k):
+        return {}
 import statistics
 from datetime import datetime, timezone, timedelta
 
@@ -548,6 +557,25 @@ def render_shop_tab(df):
         st.info("Fetch 0.5 HR first — Shop fills from the live slate.")
         return
     shop = build_shop_board(df)
+    book_meter = benford_book_meter(df)
+    lock_map = st.session_state.get("pregame_lock") or {}
+    for r in shop:
+        rec = lock_map.get(r["player"]) or {}
+        r["benford"] = prop_benford_flag(r.get("books"), book_meter, rec.get("books") if isinstance(rec, dict) else None)
+    if book_meter:
+        chips = []
+        for bk, lab in SHOP_BOOKS:
+            m = book_meter.get(bk)
+            if not m:
+                continue
+            chips.append(
+                f'<div class="bf-chip"><div class="n">{m["score100"]}</div>'
+                f'<div class="l">{lab} · {m.get("alignment_label","")}</div>'
+                f'<div class="l">n={m.get("n")} · heavy {m.get("heavy_digit")}</div></div>'
+            )
+        st.markdown("#### Book authenticity")
+        st.caption("First digits of that book's whole 0.5 HR board vs Benford. Low = templated/capped board, not a player call.")
+        st.markdown('<div class="bf-meter">' + "".join(chips) + "</div>", unsafe_allow_html=True)
     take_s = sum(1 for r in shop if r["action"] == "TAKE")
     lean_s = sum(1 for r in shop if r["action"] == "LEAN")
     dont_s = sum(1 for r in shop if r["action"] == "DON'T")
@@ -635,11 +663,12 @@ def render_shop_tab(df):
             + f"<td>{fair_s}</td>"
             f'<td class="shop-best">{format_odds(r["best"])} {book_label(r.get("best_book"))}</td>'
             f'<td>{int(r.get("edge") or 0):+d}</td>'
-            f'<td class="{r["cls"]}">{r["action"]}</td></tr>'
+            f'<td class="{r["cls"]}">{r["action"]}</td>'
+            f'<td class="{(r.get("benford") or {}).get("cls","")}">{(r.get("benford") or {}).get("tag","")}</td></tr>'
         )
     st.markdown(
         '<div class="shop-wrap"><table class="shop-table"><thead><tr>'
-        "<th>Player</th>" + heads + "<th>Fair</th><th>Best</th><th>Gap</th><th>Call</th>"
+        "<th>Player</th>" + heads + "<th>Fair</th><th>Best</th><th>Gap</th><th>Call</th><th>Energy</th>"
         "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>",
         unsafe_allow_html=True,
     )
@@ -680,6 +709,119 @@ def price_bucket(p):
 def last_two(p):
     try: return abs(int(p)) % 100
     except Exception: return None
+
+
+def _prices_by_book(df):
+    out = defaultdict(list)
+    if df is None or getattr(df, "empty", True):
+        return out
+    for _, r in df.iterrows():
+        try:
+            out[normalize_book(r.get("book"))].append(int(r["price"]))
+        except Exception:
+            continue
+    return out
+
+
+def benford_book_meter(df):
+    """Book Authenticity Meter — first digits of that book's whole 0.5 HR board."""
+    if not HAS_BENFORD:
+        return {}
+    pack = {}
+    for bk, vals in _prices_by_book(df).items():
+        if not vals:
+            continue
+        res = analyze_benford(vals, label=book_label(bk))
+        res["score100"] = int(round((res.get("benford_score") or 0) * 100))
+        # digit this book over-uses vs Benford
+        delta = res.get("delta") or {}
+        heavy = max(delta.items(), key=lambda kv: kv[1]) if delta else ("?", 0)
+        res["heavy_digit"] = str(heavy[0])
+        res["heavy_delta"] = heavy[1]
+        pack[bk] = res
+    return pack
+
+
+def prop_benford_flag(book_prices, book_meter=None, lock_prices=None):
+    """Tiny tag for one player. n is small — this is cluster/template, not a proof."""
+    book_prices = book_prices or {}
+    digits = []
+    for bk, px in book_prices.items():
+        d = None
+        try:
+            from benford import first_significant_digit
+            d = first_significant_digit(px)
+        except Exception:
+            try:
+                d = int(str(abs(int(px)))[0])
+            except Exception:
+                d = None
+        if d:
+            digits.append((normalize_book(bk), d, int(px)))
+    if not digits:
+        return {
+            "tag": "No read",
+            "cls": "bf-none",
+            "cluster": 0,
+            "note": "no prices",
+            "aligned": None,
+        }
+    ds = [d for _, d, _ in digits]
+    from collections import Counter as _C
+    top_d, top_n = _C(ds).most_common(1)[0]
+    cluster = round(top_n / len(ds), 2)
+    template = len(set(ds)) == 1 and len(ds) >= 3
+    drift = False
+    if lock_prices:
+        for bk, d, px in digits:
+            lp = None
+            info = (lock_prices or {}).get(bk)
+            if isinstance(info, dict):
+                lp = info.get("price")
+            elif isinstance(info, (int, float)):
+                lp = info
+            if lp is None:
+                continue
+            try:
+                ld = int(str(abs(int(lp)))[0])
+            except Exception:
+                continue
+            if ld != d:
+                drift = True
+                break
+    heavy_hit = False
+    book_art = False
+    if book_meter:
+        for bk, d, _px in digits:
+            m = book_meter.get(bk) or {}
+            if m.get("alignment_flag") is False and (m.get("n") or 0) >= 25:
+                book_art = True
+            if str(d) == str(m.get("heavy_digit")) and (m.get("heavy_delta") or 0) >= 0.08:
+                heavy_hit = True
+    if template:
+        tag, cls, aligned = "Benford-Broken", "bf-broken", False
+        note = f"same first digit {top_d} on {len(ds)} books — template"
+    elif cluster >= 0.75 and len(ds) >= 3:
+        tag, cls, aligned = "Benford-Broken", "bf-broken", False
+        note = f"cluster on {top_d} ({top_n}/{len(ds)})"
+    elif book_art and heavy_hit:
+        tag, cls, aligned = "Benford-Broken", "bf-broken", False
+        note = "book's forced first digit"
+    elif drift:
+        tag, cls, aligned = "Drift", "bf-drift", None
+        note = "first digit moved off lock"
+    else:
+        tag, cls, aligned = "Benford-Aligned", "bf-ok", True
+        note = "digits not cloned across books"
+    return {
+        "tag": tag,
+        "cls": cls,
+        "cluster": cluster,
+        "note": note,
+        "aligned": aligned,
+        "first_digits": ds,
+        "top_digit": top_d,
+    }
 
 def book_label(b):
     b = str(b or "").lower()
@@ -1473,6 +1615,9 @@ def log_bet_this(ev_board, watch_board=None):
             "core": item.get("method_count", 0),
             "result": "PENDING", "source": source, "logged_at": now_utc_iso(),
             "price_source": "pregame_lock" if lock_books else "live_fetch",
+            "benford_tag": (item.get("benford") or {}).get("tag"),
+            "benford_note": (item.get("benford") or {}).get("note"),
+            "benford_cluster": (item.get("benford") or {}).get("cluster"),
         })
         added += 1
 
@@ -3277,6 +3422,16 @@ def main():
         run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
         if not df.empty else ([], [], [], [], [])
     )
+    book_meter = benford_book_meter(df) if not df.empty else {}
+    lock_all = st.session_state.get("pregame_lock") or {}
+    for lst in (ev_board, watch_board, coverage_board):
+        for item in lst:
+            rec = lock_all.get(item.get("player")) or {}
+            item["benford"] = prop_benford_flag(
+                item.get("book_prices") or {},
+                book_meter,
+                rec.get("books") if isinstance(rec, dict) else None,
+            )
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats = build_tracker_stats(load_results())
@@ -3334,7 +3489,7 @@ def main():
     elif main == "Lines":
         sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines")
     elif main == "Grade":
-        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest"], horizontal=True, label_visibility="collapsed", key="sub_grade")
+        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Benford"], horizontal=True, label_visibility="collapsed", key="sub_grade")
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown("### The Board")
@@ -3354,6 +3509,8 @@ def main():
             meta = " · ".join([x for x in (team, game) if x])
             pack = item.get("median")
             pack_s = f" · pack {format_odds(pack)}" if pack is not None else ""
+            bf = item.get("benford") or {}
+            bf_s = f'<div class="{bf.get("cls","bf-none")}">{bf.get("tag","")} · {bf.get("note","")}</div>' if bf.get("tag") else ""
             st.markdown(
                 f'<div class="card {cls}">'
                 f'<div class="card-kicker">{label}</div>'
@@ -3363,6 +3520,7 @@ def main():
                 f'{meter}'
                 f'<div class="card-line"><b>Best {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}</div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium</div>'
+                f'{bf_s}'
                 f'<div style="margin-top:6px">{tags}</div>'
                 f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
                 f'</div>',
@@ -4065,6 +4223,76 @@ def main():
         st.markdown("".join(chips_wa) if chips_wa else "_(Need more graded WATCH)_", unsafe_allow_html=True)
 
         st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
+
+
+    if page == "Grade:Benford":
+        st.markdown("### Benford Energy")
+        st.caption("First digits vs natural Benford. Score 1 = natural. Thin samples lie. This is a pattern check, not a who-goes-yard call.")
+        if not HAS_BENFORD:
+            st.warning("Upload benford.py next to app.py.")
+        else:
+            live_all, live_best = [], []
+            if df is not None and not getattr(df, "empty", True):
+                try:
+                    live_all = [int(x) for x in df["price"].dropna().tolist()]
+                except Exception:
+                    live_all = []
+                shop_rows = build_shop_board(df)
+                live_best = [r["best"] for r in shop_rows if r.get("best") is not None]
+            lock = st.session_state.get("pregame_lock") or load_pregame()
+            lock_px = []
+            if isinstance(lock, dict):
+                for rec in lock.values() if not isinstance(next(iter(lock.values()), None), dict) or True else []:
+                    pass
+                # lock shape: player -> {books: {bk: {price}}}
+                for rec in lock.values():
+                    if not isinstance(rec, dict):
+                        continue
+                    books = rec.get("books") or {}
+                    for info in books.values():
+                        if isinstance(info, dict) and info.get("price") is not None:
+                            try:
+                                lock_px.append(int(info["price"]))
+                            except Exception:
+                                pass
+                        elif isinstance(info, (int, float)):
+                            lock_px.append(int(info))
+            graded = []
+            hits_only = []
+            for r in load_results():
+                if r.get("result") not in ("HIT", "MISS"):
+                    continue
+                if r.get("best_price") is None:
+                    continue
+                try:
+                    px = int(r["best_price"])
+                except Exception:
+                    continue
+                graded.append(px)
+                if r.get("result") == "HIT":
+                    hits_only.append(px)
+            pack = analyze_many({
+                "live_all_posted": live_all,
+                "live_best": live_best,
+                "lock_prices": lock_px,
+                "graded_best": graded,
+                "graded_hits": hits_only,
+            })
+            sets = pack.get("sets") or {}
+            for name, res in sets.items():
+                score = res.get("benford_score", 0)
+                st.markdown(
+                    f'<div class="card">'
+                    f'<div class="card-kicker">{res.get("alignment_label")}</div>'
+                    f'<span class="score-pill">{score:.2f}</span>'
+                    f'<div class="card-name">{name}</div>'
+                    f'<div class="card-meta">n={res.get("n")} · MAD {res.get("mad")} · {res.get("alignment_note")}</div>'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
+            st.markdown("#### Raw JSON")
+            st.json(pack)
+            st.caption("Most natural: %s · Most artificial: %s" % (pack.get("most_natural"), pack.get("most_artificial")))
 
     if page == "Code:":
         st.markdown('<div class="queen-banner">📖 The Code</div>', unsafe_allow_html=True)
