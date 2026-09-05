@@ -173,6 +173,12 @@ LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
 # Demote 50s from priority (10% / 9% on TAKE). DK 10 = core only (6% on TAKE alone).
 EDGE_MIN = 80
 EDGE_SOFT = 40  # heavy stacks that still include a PRIORITY method
+# Price lanes from Tracker 9/04: +400s 21% · +500s 19% · +600s 15% · +700s 11% · +1000+ 5%
+SWEET_PRICE_MAX = 699   # +500–650 is the long number that still hits
+LONG_PRICE = 700        # needs extra filters
+JUNK_PRICE = 1000       # never TAKE IT — 5% graded
+LONG_OK_ENDS = {10, 25, 50, 70, 75, 90}
+LONG_DEAD_ENDS = {0, 30, 40}
 METHODS_MIN = 2
 NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
@@ -308,23 +314,43 @@ def strong_method_families(methods):
     return families
 
 
-def qualifies_take_it(core_count, methods, edge=0):
-    """TAKE IT (Tracker re-eval 2026-08-25):
-    1 PRIORITY (≥1): Match/MGM 25 · FD Pattern/600 · Multi-book method · FD+MGM classic · MGM Exact
-    2 Core (≥2 premium): priority set + DK 10 + Multi-book Shorten + Match/MGM 50
-    3 Demoted from priority: 50s · DK 10 alone · Multi-book Shorten alone
-    4 Support only: 75s · 00s · Stayed · Last one left · Exact/tight
-    5 Edge ≥ 80 (or ≥40 with 3+ core + priority + 2 families)
+
+def long_price_block(best_price, methods=None, book_prices=None):
+    """Why a long number cannot be TAKE IT. None = price is fine."""
+    try:
+        p = abs(int(best_price))
+    except Exception:
+        return None
+    end = last_two(p)
+    books = {normalize_book(b) for b in (book_prices or {})}
+    real = books & {"draftkings", "fanduel", "betmgm"}
+    if p >= JUNK_PRICE:
+        return f"+{p} is junk lane (graded ~5%)"
+    if p >= LONG_PRICE:
+        if end in LONG_DEAD_ENDS:
+            return f"+{p} ends {end:02d} — dead ending on long price"
+        if end not in LONG_OK_ENDS:
+            return f"+{p} needs ending 10/25/50/70/75/90"
+        if len(real) < 2:
+            return f"+{p} needs DK/FD/MGM on at least 2 books — not HR-only"
+        if not has_priority_method(methods or []):
+            return f"+{p} needs a priority tag"
+    return None
+
+def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None):
+    """TAKE IT + long-price lane (Tracker 9/04).
+    +400–699: normal gate. +700–999: priority + live ending + 2 real books.
+    +1000+: never TAKE IT.
     """
     ms = {normalize_method_name(m) for m in (methods or [])}
     if not (ms & PRIORITY_METHODS):
         return False
+    if long_price_block(best_price, methods, book_prices):
+        return False
     fams = strong_method_families(methods)
     n = len(fams)
-    # Primary: 2+ core · 1+ priority · edge ≥ 80
     if core_count >= METHODS_MIN and edge >= EDGE_MIN:
         return True
-    # Heavy stack soft edge — still requires priority
     if core_count >= 3 and n >= 2 and edge >= EDGE_SOFT:
         return True
     return False
@@ -419,10 +445,24 @@ def no_vig_fair_american(prices):
     avg = sum(imps) / len(imps)
     return implied_to_american(avg), avg
 
-def shop_price_action(best, fair):
+def shop_price_action(best, fair, book_prices=None):
     if best is None or fair is None:
         return "WATCH", "no fair", "shop-mkt"
+    try:
+        bp = abs(int(best))
+    except Exception:
+        bp = 0
     gap = int(best) - int(fair)
+    if bp >= JUNK_PRICE:
+        return "DON'T", f"+{bp} junk lane · fair {format_odds(fair)}", "shop-dont"
+    if bp >= LONG_PRICE:
+        end = last_two(bp)
+        books = {normalize_book(b) for b in (book_prices or {})}
+        real = books & {"draftkings", "fanduel", "betmgm"}
+        if end in LONG_DEAD_ENDS or (end not in LONG_OK_ENDS) or len(real) < 2:
+            if gap >= 40:
+                return "LEAN", f"longshot lean {format_odds(best)} · fair {format_odds(fair)}", "shop-lean"
+            return "DON'T", f"long + bad shape {format_odds(best)}", "shop-dont"
     if gap >= EDGE_MIN:
         return "TAKE", f"take at {format_odds(best)} · fair {format_odds(fair)} · +{gap}", "shop-take"
     if gap >= 40:
@@ -464,7 +504,7 @@ def build_shop_board(df):
             med = int(best) if best is not None else None
         fair_nv, fair_p = no_vig_fair_american(prices)
         fair = fair_nv if fair_nv is not None else med
-        action, why, cls = shop_price_action(best, fair)
+        action, why, cls = shop_price_action(best, fair, book_px)
         edge = (int(best) - int(fair)) if best is not None and fair is not None else 0
         rows.append({
             "player": player, "event": event or "", "books": book_px,
@@ -2562,7 +2602,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         # PASS / TAKE IT pool: 2+ PREMIUM core (support tags do not count)
         if core_count < METHODS_MIN:
             continue
-        is_bet = qualifies_take_it(core_count, display_meths, edge)
+        is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px)
         row["is_bet"] = is_bet
         fams = strong_method_families(display_meths)
         strong_n = len(fams)
@@ -2580,6 +2620,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 miss.append("need priority (25-match / FD / Multi-book method / Exact / FD+MGM)")
             if edge < EDGE_MIN:
                 miss.append(f"edge ≥{EDGE_MIN}")
+            lp = long_price_block(best, display_meths, book_px)
+            if lp:
+                miss.append(lp)
             why = (
                 f"Score {score}/100 · {core_count} premium · {strong_n} families · "
                 f"edge {int(edge)}{tri} · PASS ({' · '.join(miss) if miss else 'filtered'})"
