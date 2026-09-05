@@ -976,6 +976,13 @@ def book_label(b):
     if b in ("untagged", "unknown", "-", ""): return "Untagged"
     return b.title() if b else "Untagged"
 
+def fold_name(name):
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(name or ""))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return " ".join(s.lower().split())
+
+
 def clean_name(name):
     name = str(name).strip()
     suffixes = {"jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"}
@@ -1081,15 +1088,23 @@ def event_matches_chosen(ev, chosen):
     return False
 
 def name_in_lineup(player, lineup_names):
-    if not lineup_names: return None
+    if not lineup_names:
+        return None
     cn = clean_name(player)
-    if cn in lineup_names: return True
-    parts = cn.split()
+    folded = fold_name(cn)
+    lined = {fold_name(x) for x in lineup_names}
+    if folded in lined or fold_name(player) in lined:
+        return True
+    parts = folded.split()
     if len(parts) >= 2:
-        last, fi = parts[-1].lower(), parts[0][0].lower()
-        for ln in lineup_names:
+        last, first = parts[-1], parts[0]
+        fi = first[0]
+        f3 = first[:3]
+        for ln in lined:
             lp = ln.split()
-            if len(lp) >= 2 and lp[-1].lower() == last and lp[0][0].lower() == fi:
+            if len(lp) < 2:
+                continue
+            if lp[-1] == last and (lp[0][0] == fi or lp[0][:3] == f3):
                 return True
     return False
 
@@ -2292,18 +2307,135 @@ def fetch_rotowire_lineups():
             "li.lineup__player a",
             "a.lineup__player-link",
             ".lineup__player a",
+            ".lineup__player",
             "a[href*='/baseball/player/']",
+            "a[href*='/player.php']",
             "a[href*='/player/']",
         ):
             for el in soup.select(sel):
-                t = el.get_text(strip=True)
-                if t and len(t.split()) >= 2:
+                t = el.get_text(" ", strip=True)
+                t = " ".join(t.replace("\n", " ").split())
+                if t and len(t.split()) >= 2 and not t.lower().startswith("http"):
                     names.add(clean_name(t))
         if not names:
             return set(), "RotoWire 0 names - site may block Streamlit or changed layout"
-        return names, f"RotoWire · {len(names)} names"
+        return names, f"RotoWire {len(names)}"
     except Exception as e:
         return set(), f"RotoWire error: {e}"
+
+
+def fetch_mlb_lineups():
+    """Official posted batting orders when MLB has them. Empty until lineups drop."""
+    names = set()
+    url = (
+        "https://statsapi.mlb.com/api/v1/schedule"
+        f"?sportId=1&date={today_mlb_date()}&hydrate=lineups,probablePitcher"
+    )
+    try:
+        r = requests.get(url, timeout=20, headers={"User-Agent": "GirlMagic/1.0"})
+        if r.status_code != 200:
+            return set(), f"MLB lineups HTTP {r.status_code}"
+        data = r.json()
+        for day in data.get("dates") or []:
+            for g in day.get("games") or []:
+                for lu in g.get("lineups") or []:
+                    for p in lu.get("players") or lu if isinstance(lu, list) else []:
+                        if not isinstance(p, dict):
+                            continue
+                        nm = (p.get("fullName") or (p.get("person") or {}).get("fullName"))
+                        if nm:
+                            names.add(clean_name(nm))
+                for side in ("home", "away"):
+                    team = ((g.get("teams") or {}).get(side) or {})
+                    for p in team.get("lineup") or []:
+                        nm = (p.get("fullName") or (p.get("person") or {}).get("fullName"))
+                        if nm:
+                            names.add(clean_name(nm))
+        return names, f"MLB {len(names)}"
+    except Exception as e:
+        return set(), f"MLB lineups error: {e}"
+
+
+_UD_POS = {"C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", "SP", "RP", "P", "PH", "PR"}
+
+
+def parse_underdog_names(text):
+    found = set()
+    if not text:
+        return found
+    for raw in str(text).splitlines():
+        line = raw.strip()
+        parts = line.split()
+        if len(parts) < 3:
+            continue
+        pos = parts[-1].upper().rstrip(".,")
+        if pos not in _UD_POS:
+            continue
+        who = parts[:-1]
+        if who and "." in who[0]:
+            init = who[0].replace(".", "").strip()
+            last = clean_name(" ".join(who[1:]))
+            if init and last:
+                found.add(f"{init[0].upper()}. {last}")
+                found.add(last)
+        elif len(who) >= 2:
+            found.add(clean_name(" ".join(who)))
+    return found
+
+
+def expand_underdog_against_slate(tokens):
+    pool = []
+    lock = st.session_state.get("pregame_lock") or {}
+    pool.extend(lock.keys())
+    for rec in st.session_state.get("odds") or []:
+        if isinstance(rec, dict) and rec.get("player"):
+            pool.append(rec["player"])
+    out = set()
+    folded_pool = [(p, fold_name(clean_name(p)), clean_name(p).split()) for p in pool]
+    for tok in tokens:
+        out.add(clean_name(tok))
+        ft = fold_name(tok).replace(".", " ")
+        tparts = ft.split()
+        init, last = ("", tparts[0]) if len(tparts) == 1 else (tparts[0][:1], tparts[-1])
+        for raw, folded, parts in folded_pool:
+            if len(parts) < 2:
+                continue
+            if parts[-1].lower() == last and (not init or parts[0].lower().startswith(init)):
+                out.add(clean_name(raw))
+    return out
+
+
+def fetch_underdog_x():
+    urls = (
+        "https://r.jina.ai/https://x.com/UnderdogMLB",
+        "https://r.jina.ai/http://x.com/UnderdogMLB",
+    )
+    text, err = "", ""
+    for u in urls:
+        try:
+            r = requests.get(u, timeout=25, headers={"User-Agent": "Mozilla/5.0 GirlMagic"})
+            if r.status_code == 200 and len(r.text) > 200:
+                text = r.text
+                break
+            err = f"HTTP {r.status_code}"
+        except Exception as e:
+            err = str(e)
+    if not text:
+        return set(), f"UnderdogMLB X {err or 'blocked'}"
+    tokens = parse_underdog_names(text)
+    names = expand_underdog_against_slate(tokens)
+    return names, f"UnderdogMLB {len(names)}"
+
+
+def fetch_all_lineups():
+    rw, rw_msg = fetch_rotowire_lineups()
+    mlb, mlb_msg = fetch_mlb_lineups()
+    ud, ud_msg = fetch_underdog_x()
+    names = set(rw) | set(mlb) | set(ud)
+    bits = [x for x in (rw_msg, mlb_msg, ud_msg) if x]
+    if not names:
+        return set(), " · ".join(bits) or "No lineups yet"
+    return names, f"{len(names)} lineup names · " + " · ".join(bits)
 
 @st.cache_data(ttl=180, show_spinner=False)
 def _fetch_events_oddsapi_cached(api_key):
@@ -2879,7 +3011,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     coverage_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if is_blocked_player(player): continue
-        if lineup_names and name_in_lineup(player, lineup_names) is False: continue
+        if lineup_names and len(lineup_names) >= 40 and name_in_lineup(player, lineup_names) is False: continue
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
         if len(prices) < 1: continue
@@ -3004,7 +3136,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if count_core_methods(ms) >= NAME_METHODS_MIN and _has_strong(ms)
     ]
     if lineup_names:
-        pool = [p for p in pool if name_in_lineup(p, lineup_names) is not False]
+        if len(lineup_names) >= 40:
+            pool = [p for p in pool if name_in_lineup(p, lineup_names) is not False]
 
     n_pairs = 0
     # Same initials (first+last)
@@ -3477,8 +3610,9 @@ def main():
         b1, b2 = st.columns(2)
         with b1:
             if st.button("Lineups", use_container_width=True):
-                names, msg = fetch_rotowire_lineups()
+                names, msg = fetch_all_lineups()
                 st.session_state["lineup_names"] = names
+                st.session_state["lineup_msg"] = msg
                 (st.success if names else st.warning)(msg)
         with b2:
             if st.button("Grade", use_container_width=True):
@@ -3487,6 +3621,15 @@ def main():
                 st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
                 st.rerun()
         auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
+        lm = st.session_state.get("lineup_msg") or ""
+        ln = st.session_state.get("lineup_names") or set()
+        if lm:
+            st.caption(lm)
+        lock_now = st.session_state.get("pregame_lock") or {}
+        if ln and lock_now:
+            lock_fold = {fold_name(clean_name(k)) for k in lock_now}
+            missing_lock = sum(1 for n in ln if fold_name(n) not in lock_fold)
+            st.caption(f"{missing_lock} lineup names have no lock price yet")
         events = st.session_state.get("events", [])
         if not events:
             st.info("Click **Load Games** once.")
@@ -3544,8 +3687,10 @@ def main():
         if (manual_fetch or auto_fetch) and chosen:
             with st.spinner("Fetching..."):
                 if auto_lineups or not st.session_state.get("lineup_names"):
-                    names, msg = fetch_rotowire_lineups()
-                    if names: st.session_state["lineup_names"] = names
+                    names, msg = fetch_all_lineups()
+                    if names:
+                        st.session_state["lineup_names"] = names
+                        st.session_state["lineup_msg"] = msg
                 df, found = do_fetch(odds_key, sgo_key, chosen, options)
             if df is not None and not df.empty:
                 update_pregame_lock(df)
