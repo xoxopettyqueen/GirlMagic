@@ -65429,37 +65429,163 @@
     "benford_cluster": 0.6
   },
   {
-    "id": "2026-09-06_Mickey Moniak_watch_13",
+    "id": "2026-09-06_Enrique Hern\u00e1ndez_shop_take_101",
     "date": "2026-09-06",
     "time": "09:06 AM",
-    "player": "Mickey Moniak",
-    "score": 13,
-    "edge": 15,
-    "best_price": 410,
+    "player": "Enrique Hern\u00e1ndez",
+    "score": 0,
+    "edge": 101,
+    "best_price": 750,
     "best_book": "fanduel",
-    "median": 395.0,
+    "median": 690,
     "book_prices": {
-      "caesars": 370,
-      "draftkings": 390,
-      "fanduel": 410,
-      "hardrockbet": 400
+      "betmgm": 525,
+      "caesars": 625,
+      "draftkings": 690,
+      "fanduel": 750,
+      "hardrockbet": 700
     },
-    "price_bucket": "+400s",
-    "ending": 10,
-    "mgm_locked": null,
-    "mgm_ending": null,
+    "price_bucket": "+700s",
+    "ending": 50,
     "methods": [
-      "FD Pattern",
-      "DK FD-style",
-      "Books tight"
+      "Shop TAKE"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-06T16:06:24.559359+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Authentic",
-    "benford_note": "",
-    "benford_cluster": 0.5
+    "source": "shop_take",
+    "logged_at": "2026-09-06T16:06:26.736409+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Ezequiel Tovar_shop_lean_61",
+    "date": "2026-09-06",
+    "time": "09:06 AM",
+    "player": "Ezequiel Tovar",
+    "score": 0,
+    "edge": 61,
+    "best_price": 740,
+    "best_book": "draftkings",
+    "median": 680,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 740,
+      "fanduel": 710,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 40,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T16:06:26.750894+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Nick Morabito_shop_lean_53",
+    "date": "2026-09-06",
+    "time": "09:06 AM",
+    "player": "Nick Morabito",
+    "score": 0,
+    "edge": 53,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 800,
+    "book_prices": {
+      "caesars": 750,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T16:06:26.757596+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Jasson Dom\u00ednguez_shop_lean_48",
+    "date": "2026-09-06",
+    "time": "09:06 AM",
+    "player": "Jasson Dom\u00ednguez",
+    "score": 0,
+    "edge": 48,
+    "best_price": 680,
+    "best_book": "fanduel",
+    "median": 650,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 575,
+      "fanduel": 680
+    },
+    "price_bucket": "+600s",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T16:06:26.760078+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Brett Sullivan_shop_lean_45",
+    "date": "2026-09-06",
+    "time": "09:06 AM",
+    "player": "Brett Sullivan",
+    "score": 0,
+    "edge": 45,
+    "best_price": 690,
+    "best_book": "draftkings",
+    "median": 680,
+    "book_prices": {
+      "caesars": 575,
+      "draftkings": 690,
+      "fanduel": 680
+    },
+    "price_bucket": "+600s",
+    "ending": 90,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T16:06:26.763817+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Sal Stewart_shop_lean_41",
+    "date": "2026-09-06",
+    "time": "09:06 AM",
+    "player": "Sal Stewart",
+    "score": 0,
+    "edge": 41,
+    "best_price": 397,
+    "best_book": "draftkings",
+    "median": 360,
+    "book_prices": {
+      "betmgm": 310,
+      "caesars": 370,
+      "draftkings": 397,
+      "fanduel": 360,
+      "hardrockbet": 350
+    },
+    "price_bucket": "under +400",
+    "ending": 97,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T16:06:26.767171+00:00",
+    "price_source": "shop"
   }
 ]
