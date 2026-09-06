@@ -67455,5 +67455,41 @@
     "source": "shop_lean",
     "logged_at": "2026-09-06T19:15:20.620761+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Jake Cronenworth_watch_39",
+    "date": "2026-09-06",
+    "time": "12:15 PM",
+    "player": "Jake Cronenworth",
+    "score": 39,
+    "edge": 100,
+    "best_price": 1000,
+    "best_book": "hardrockbet",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 775,
+      "caesars": 850,
+      "draftkings": 980,
+      "fanduel": 900,
+      "hardrockbet": 1000
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 775,
+    "mgm_ending": 75,
+    "methods": [
+      "MGM 75",
+      "Multi-book Shorten",
+      "Match 75",
+      "Stayed in the group"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T19:15:26.799964+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.4
   }
 ]
