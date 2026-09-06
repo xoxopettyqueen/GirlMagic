@@ -66776,174 +66776,131 @@
     "price_source": "shop"
   },
   {
-    "id": "2026-09-06_Brian Serven_take_it_69",
+    "id": "2026-09-06_Austin Riley_shop_lean_81",
     "date": "2026-09-06",
     "time": "11:00 AM",
-    "player": "Brian Serven",
-    "score": 69,
-    "edge": 100,
-    "best_price": 1100,
+    "player": "Austin Riley",
+    "score": 0,
+    "edge": 81,
+    "best_price": 850,
     "best_book": "hardrockbet",
-    "median": 1000,
+    "median": 775,
     "book_prices": {
-      "betmgm": 725,
-      "caesars": 850,
-      "draftkings": 1020,
-      "fanduel": 1000,
-      "hardrockbet": 1100
-    },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": 725,
-    "mgm_ending": 25,
-    "methods": [
-      "Match 25",
-      "Stayed in the group",
-      "DK FD-style",
-      "Multi-book Shorten",
-      "MGM Exact",
-      "MGM 25"
-    ],
-    "core": 4,
-    "result": "PENDING",
-    "source": "take_it",
-    "logged_at": "2026-09-06T18:00:04.613940+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Authentic",
-    "benford_note": "",
-    "benford_cluster": 0.6
-  },
-  {
-    "id": "2026-09-06_Angel Martinez_watch_19",
-    "date": "2026-09-06",
-    "time": "11:00 AM",
-    "player": "Angel Martinez",
-    "score": 19,
-    "edge": 25,
-    "best_price": 575,
-    "best_book": "hardrockbet",
-    "median": 550.0,
-    "book_prices": {
-      "caesars": 525,
-      "hardrockbet": 575
-    },
-    "price_bucket": "+500s",
-    "ending": 75,
-    "mgm_locked": null,
-    "mgm_ending": null,
-    "methods": [
-      "Multi-book Shorten"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-06T18:00:04.615430+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
-  },
-  {
-    "id": "2026-09-06_Austin Wells_watch_27",
-    "date": "2026-09-06",
-    "time": "11:00 AM",
-    "player": "Austin Wells",
-    "score": 27,
-    "edge": 0,
-    "best_price": 700,
-    "best_book": "betmgm",
-    "median": 690,
-    "book_prices": {
-      "betmgm": 700,
       "caesars": 700,
-      "draftkings": 690,
-      "fanduel": 600,
-      "hardrockbet": 650
+      "hardrockbet": 850
     },
-    "price_bucket": "+700s",
-    "ending": 0,
-    "mgm_locked": 700,
-    "mgm_ending": 0,
+    "price_bucket": "+800-999",
+    "ending": 50,
     "methods": [
-      "FD 600",
-      "MGM 00",
-      "Match 00",
-      "Stayed in the group",
-      "DK FD-style"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-06T18:00:04.615839+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.6
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:00:06.903443+00:00",
+    "price_source": "shop"
   },
   {
-    "id": "2026-09-06_Cody Bellinger_watch_22",
+    "id": "2026-09-06_Daulton Varsho_shop_lean_81",
     "date": "2026-09-06",
     "time": "11:00 AM",
-    "player": "Cody Bellinger",
-    "score": 22,
-    "edge": 42,
-    "best_price": 600,
-    "best_book": "betmgm",
-    "median": 550,
+    "player": "Daulton Varsho",
+    "score": 0,
+    "edge": 81,
+    "best_price": 900,
+    "best_book": "hardrockbet",
+    "median": 825,
     "book_prices": {
-      "betmgm": 600,
-      "caesars": 525,
-      "draftkings": 592,
-      "fanduel": 520,
+      "caesars": 750,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:00:06.904218+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Drake Baldwin_shop_lean_40",
+    "date": "2026-09-06",
+    "time": "11:00 AM",
+    "player": "Drake Baldwin",
+    "score": 0,
+    "edge": 40,
+    "best_price": 550,
+    "best_book": "hardrockbet",
+    "median": 512,
+    "book_prices": {
+      "caesars": 475,
       "hardrockbet": 550
     },
-    "price_bucket": "+600s",
-    "ending": 0,
-    "mgm_locked": 600,
-    "mgm_ending": 0,
+    "price_bucket": "+500s",
+    "ending": 50,
     "methods": [
-      "FD Pattern",
-      "Stayed in the group",
-      "MGM 00",
-      "Match 00"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-06T18:00:04.616605+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.8
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:00:06.919186+00:00",
+    "price_source": "shop"
   },
   {
-    "id": "2026-09-06_Mauricio Dubon_watch_25",
+    "id": "2026-09-06_Ronald Acuna Jr._shop_lean_40",
     "date": "2026-09-06",
     "time": "11:00 AM",
-    "player": "Mauricio Dubon",
-    "score": 25,
-    "edge": 50,
-    "best_price": 1200,
+    "player": "Ronald Acuna Jr.",
+    "score": 0,
+    "edge": 40,
+    "best_price": 550,
     "best_book": "hardrockbet",
-    "median": 1150.0,
+    "median": 512,
     "book_prices": {
-      "caesars": 1100,
-      "hardrockbet": 1200
+      "caesars": 475,
+      "hardrockbet": 550
     },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": null,
-    "mgm_ending": null,
+    "price_bucket": "+500s",
+    "ending": 50,
     "methods": [
-      "Multi-book Shorten"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-06T18:00:04.619020+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Authentic",
-    "benford_note": "",
-    "benford_cluster": 1.0
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:00:06.921050+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Ty France_shop_lean_40",
+    "date": "2026-09-06",
+    "time": "11:00 AM",
+    "player": "Ty France",
+    "score": 0,
+    "edge": 40,
+    "best_price": 610,
+    "best_book": "draftkings",
+    "median": 575,
+    "book_prices": {
+      "betmgm": 575,
+      "caesars": 575,
+      "draftkings": 610,
+      "fanduel": 520,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+600s",
+    "ending": 10,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:00:06.921822+00:00",
+    "price_source": "shop"
   }
 ]
