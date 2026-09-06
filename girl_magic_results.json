@@ -67709,5 +67709,83 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-06_Teoscar Hern\u00e1ndez_shop_take_110",
+    "date": "2026-09-06",
+    "time": "03:36 PM",
+    "player": "Teoscar Hern\u00e1ndez",
+    "score": 0,
+    "edge": 110,
+    "best_price": 600,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 400,
+      "caesars": 400,
+      "draftkings": 600,
+      "fanduel": 590,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-06T22:36:00.010982+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Miguel Vargas_shop_lean_43",
+    "date": "2026-09-06",
+    "time": "03:36 PM",
+    "player": "Miguel Vargas",
+    "score": 0,
+    "edge": 43,
+    "best_price": 450,
+    "best_book": "hardrockbet",
+    "median": 410,
+    "book_prices": {
+      "caesars": 370,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T22:36:00.012426+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Kyle Teel_shop_lean_40",
+    "date": "2026-09-06",
+    "time": "03:36 PM",
+    "player": "Kyle Teel",
+    "score": 0,
+    "edge": 40,
+    "best_price": 550,
+    "best_book": "hardrockbet",
+    "median": 512,
+    "book_prices": {
+      "caesars": 475,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T22:36:00.013164+00:00",
+    "price_source": "shop"
   }
 ]
