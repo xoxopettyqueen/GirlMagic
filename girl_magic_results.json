@@ -67073,5 +67073,143 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-06_Carlos Cortes_watch_25",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Carlos Cortes",
+    "score": 25,
+    "edge": 30,
+    "best_price": 800,
+    "best_book": "betmgm",
+    "median": 720,
+    "book_prices": {
+      "betmgm": 800,
+      "caesars": 700,
+      "draftkings": 720,
+      "fanduel": 700,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": 800,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 00",
+      "Match 00",
+      "Stayed in the group",
+      "DK FD-style",
+      "Last one left",
+      "MGM Exact"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T18:26:13.015756+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.8
+  },
+  {
+    "id": "2026-09-06_Jesus Sanchez_watch_16",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Jesus Sanchez",
+    "score": 16,
+    "edge": 12,
+    "best_price": 550,
+    "best_book": "hardrockbet",
+    "median": 537.5,
+    "book_prices": {
+      "caesars": 525,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T18:26:13.017748+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-06_Nick Fortes_watch_52",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Nick Fortes",
+    "score": 52,
+    "edge": 160,
+    "best_price": 1460,
+    "best_book": "draftkings",
+    "median": 1300,
+    "book_prices": {
+      "betmgm": 900,
+      "caesars": 1100,
+      "draftkings": 1460,
+      "fanduel": 1300,
+      "hardrockbet": 1400
+    },
+    "price_bucket": "+1000+",
+    "ending": 60,
+    "mgm_locked": 900,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 00",
+      "Match 00",
+      "Stayed in the group",
+      "DK FD-style",
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T18:26:13.020517+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.8
+  },
+  {
+    "id": "2026-09-06_Tristan Peters_watch_20",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Tristan Peters",
+    "score": 20,
+    "edge": 30,
+    "best_price": 600,
+    "best_book": "betmgm",
+    "median": 570,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 525,
+      "draftkings": 524,
+      "fanduel": 570,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T18:26:13.021012+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.6
   }
 ]
