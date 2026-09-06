@@ -67672,5 +67672,42 @@
     "benford_note": "",
     "benford_cluster": 0.4,
     "graded_by": "mlb_auto"
+  },
+  {
+    "id": "2026-09-06_Jacob Young_watch_38",
+    "date": "2026-09-06",
+    "time": "03:35 PM",
+    "player": "Jacob Young",
+    "score": 38,
+    "edge": 60,
+    "best_price": 1060,
+    "best_book": "draftkings",
+    "median": 1000,
+    "book_prices": {
+      "betmgm": 1000,
+      "caesars": 950,
+      "draftkings": 1060,
+      "fanduel": 920,
+      "hardrockbet": 1000
+    },
+    "price_bucket": "+1000+",
+    "ending": 60,
+    "mgm_locked": 1000,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 00",
+      "Match 00",
+      "Stayed in the group",
+      "FD Pattern",
+      "DK FD-style"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T22:35:58.428550+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.6
   }
 ]
