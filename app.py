@@ -186,7 +186,8 @@ EDGE_SOFT = 40  # heavy stacks that still include a PRIORITY method
 # Price lanes from Tracker 9/04: +400s 21% · +500s 19% · +600s 15% · +700s 11% · +1000+ 5%
 SWEET_PRICE_MAX = 699   # +500-650 is the long number that still hits
 LONG_PRICE = 700        # needs extra filters
-JUNK_PRICE = 1000       # never TAKE IT - 5% graded
+JUNK_PRICE = 1000       # flyer lane starts here
+FLYER_MAX = 1500        # +1000-1500 TAKE IT only with a priority tag
 LONG_OK_ENDS = {10, 25, 50, 70, 75, 90}
 LONG_DEAD_ENDS = {0, 30, 40}
 METHODS_MIN = 2
@@ -335,8 +336,14 @@ def long_price_block(best_price, methods=None, book_prices=None):
     end = last_two(p)
     books = {normalize_book(b) for b in (book_prices or {})}
     real = books & {"draftkings", "fanduel", "betmgm"}
+    if p > FLYER_MAX:
+        return f"+{p} is past +{FLYER_MAX} - leave it"
     if p >= JUNK_PRICE:
-        return f"+{p} is junk lane (graded ~5%)"
+        if not has_priority_method(methods or []):
+            return f"+{p} flyer needs a priority tag"
+        if len(real) < 2:
+            return f"+{p} flyer needs DK/FD/MGM on at least 2 books"
+        return None
     if p >= LONG_PRICE:
         if end in LONG_DEAD_ENDS:
             return f"+{p} ends {end:02d} - dead ending on long price"
@@ -349,16 +356,22 @@ def long_price_block(best_price, methods=None, book_prices=None):
     return None
 
 def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None):
-    """TAKE IT + long-price lane (Tracker 9/04).
-    +400-699: normal gate. +700-999: priority + live ending + 2 real books.
-    +1000+: never TAKE IT.
+    """TAKE IT + long-price lane.
+    +400-699: normal gate. +700-999: priority + hot ending + 2 real books.
+    +1000-1500: priority tag required (00 endings allowed in this lane only).
+    +1501+: never TAKE IT.
     """
     ms = {normalize_method_name(m) for m in (methods or [])}
     if not (ms & PRIORITY_METHODS):
         return False
     try:
+        p_abs = abs(int(best_price)) if best_price is not None else 0
+    except Exception:
+        p_abs = 0
+    flyer = JUNK_PRICE <= p_abs <= FLYER_MAX
+    try:
         end = last_two(best_price)
-        if end is not None and end not in TAKE_HOT_ENDS:
+        if end is not None and end not in TAKE_HOT_ENDS and not flyer:
             return False
     except Exception:
         pass
@@ -3827,7 +3840,7 @@ def main():
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown("### The Board")
-        st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it.")
+        st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it. +1000–1500 can go green only with a priority tag.")
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
