@@ -65025,5 +65025,140 @@
     "source": "shop_lean",
     "logged_at": "2026-09-06T15:43:11.848708+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Nick Loftin_take_it_69",
+    "date": "2026-09-06",
+    "time": "08:55 AM",
+    "player": "Nick Loftin",
+    "score": 69,
+    "edge": 100,
+    "best_price": 1000,
+    "best_book": "hardrockbet",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 725,
+      "caesars": 850,
+      "draftkings": 940,
+      "fanduel": 900,
+      "hardrockbet": 1000
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 725,
+    "mgm_ending": 25,
+    "methods": [
+      "Match 25",
+      "Stayed in the group",
+      "Multi-book Shorten",
+      "MGM Exact",
+      "MGM 25"
+    ],
+    "core": 4,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-06T15:55:14.018077+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.4
+  },
+  {
+    "id": "2026-09-06_Blaze Alexander_watch_32",
+    "date": "2026-09-06",
+    "time": "08:55 AM",
+    "player": "Blaze Alexander",
+    "score": 32,
+    "edge": 100,
+    "best_price": 1000,
+    "best_book": "hardrockbet",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 750,
+      "draftkings": 950,
+      "fanduel": 900,
+      "hardrockbet": 1000
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM Exact"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T15:55:14.023438+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.4
+  },
+  {
+    "id": "2026-09-06_Luis Torrens_watch_14",
+    "date": "2026-09-06",
+    "time": "08:55 AM",
+    "player": "Luis Torrens",
+    "score": 14,
+    "edge": 0,
+    "best_price": 900,
+    "best_book": "draftkings",
+    "median": 900,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 900,
+      "fanduel": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Exact Match",
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T15:55:14.030483+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.67
+  },
+  {
+    "id": "2026-09-06_Mike Busch_watch_12",
+    "date": "2026-09-06",
+    "time": "08:55 AM",
+    "player": "Mike Busch",
+    "score": 12,
+    "edge": 9,
+    "best_price": 600,
+    "best_book": "betmgm",
+    "median": 531,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 425,
+      "draftkings": 531,
+      "fanduel": 540,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM Exact"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-06T15:55:14.031634+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.6
   }
 ]
