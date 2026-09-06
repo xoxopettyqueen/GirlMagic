@@ -447,6 +447,168 @@ def girl_magic_score(core_count, edge, methods):
     return min(100, method_pts + edge_pts + min(18, bonus))
 
 
+# ── Petty layer (display only — never gates TAKE IT) ─────────
+PETTY_FAMILIES = {
+    "Classic Girl Magic": {
+        "MGM 25", "MGM 50", "MGM Exact", "Match 25", "Match 50",
+        "FD Pattern", "FD 600", "DK 10", "FD+MGM classic",
+    },
+    "Petty Pressure": {
+        "Multi-book Shorten", "Multi-book method", "Books tight",
+        "Exact Match", "All books same", "Same on 3+ books",
+    },
+    "Drama Queens": {
+        "Gone Missing", "Just Appeared", "Added Late",
+        "FADE · FD highest", "FADE · Shot way up", "FADE · Drop >100",
+    },
+    "Cute But Not Serious": {
+        "Match 75", "MGM 75", "Same First", "Same Last",
+        "Cross Init", "Same Init", "Double Init",
+    },
+}
+FAMILY_EMOJI = {
+    "Classic Girl Magic": "👑",
+    "Petty Pressure": "💅",
+    "Drama Queens": "🎭",
+    "Cute But Not Serious": "🧸",
+}
+PETTY_COPY = {
+    "TAKE IT": "Run it, baddie",
+    "TAKE": "Run it, baddie",
+    "LEAN": "Cute but maybe",
+    "DON'T": "Girl no",
+    "WATCH": "Keep an eye, queen",
+    "PASS": "Not today, babe",
+    "Board": "The Petty Board",
+    "Shop": "Petty Price Lab",
+    "Score": "Petty Score",
+    "Take it": "Run it, baddie",
+}
+
+
+def petty_on():
+    return bool(st.session_state.get("petty_mode", True))
+
+
+def petty_label(key):
+    if not petty_on():
+        return key
+    return PETTY_COPY.get(key, key)
+
+
+def petty_family_for_method(method):
+    m = normalize_method_name(method)
+    for fam, members in PETTY_FAMILIES.items():
+        if m in members:
+            return fam
+    return None
+
+
+def petty_family_summary(method_list):
+    hits, seen = [], set()
+    for m in method_list or []:
+        fam = petty_family_for_method(m)
+        if fam and fam not in seen:
+            seen.add(fam)
+            hits.append(fam)
+    order = list(PETTY_FAMILIES.keys())
+    hits.sort(key=lambda f: order.index(f) if f in order else 99)
+    return hits
+
+
+def petty_family_chips(method_list):
+    return " ".join(
+        f'<span class="tag tag-family">{FAMILY_EMOJI.get(f, "✨")} {f}</span>'
+        for f in petty_family_summary(method_list)
+    )
+
+
+def petty_score(methods, edge, core_count, benford_flag=None):
+    """Original score + combo / Benford tweaks. Cap 100. Does not change TAKE IT."""
+    base = girl_magic_score(core_count, edge, methods or [])
+    ms = {normalize_method_name(m) for m in (methods or [])}
+    extra = 0
+    if {"FD Pattern", "MGM 25"} <= ms or {"FD Pattern", "Match 25"} <= ms:
+        extra += 8
+    if {"Multi-book Shorten", "FD 600"} <= ms:
+        extra += 10
+    if {"Stayed in the group", "Last one left"} <= ms:
+        extra += 6
+    tag = ""
+    if isinstance(benford_flag, dict):
+        tag = str(benford_flag.get("tag") or "")
+    if tag.lower() == "authentic":
+        extra += 4
+    elif tag.lower() == "fake":
+        extra -= 10
+    return max(0, min(100, base + extra))
+
+
+def petty_notes_for(item):
+    notes = []
+    methods = item.get("methods") or []
+    ms = {normalize_method_name(m) for m in methods}
+    if has_dk_mgm_fd(methods):
+        notes.append("trifecta present 👑")
+    end = last_two(item.get("best_price"))
+    try:
+        p = abs(int(item.get("best_price"))) if item.get("best_price") is not None else 0
+    except Exception:
+        p = 0
+    if p >= 700 and end in (10, 25, 75, 90):
+        notes.append("long number but hot ending")
+    bf = item.get("benford") or {}
+    if str(bf.get("tag", "")).lower() == "authentic":
+        notes.append("Benford says shape is real")
+    if "Stayed in the group" in ms:
+        notes.append("MGM group streak")
+    if "FD Pattern" in ms or "FD 600" in ms:
+        notes.append("FD pattern consistency")
+    bucket = price_bucket(item.get("best_price"))
+    if str(bf.get("tag", "")).lower() == "authentic" and end in (10, 25, 75, 90) and bucket in ("+400s", "+500s", "+600s"):
+        notes.append("Benford Boost: +EV shape today")
+    return notes
+
+
+def collect_petty_alerts(ev_board, results):
+    alerts = []
+    for r in results or []:
+        meths = r.get("methods") or []
+        if r.get("type") == "mgm_exact" or "MGM Exact" in meths:
+            alerts.append(f"MGM Exact · {r.get('label')}")
+        if "Multi-book Shorten" in meths:
+            alerts.append(f"Multi-book Shorten · {r.get('label')}")
+        reason = str(r.get("reason") or "")
+        if "FD under MGM" in meths and ("by 1" in reason or "100" in reason):
+            try:
+                # only shout 100+
+                if "by 1" in reason or "by 10" in reason or "by 11" in reason or "by 12" in reason:
+                    pass
+            except Exception:
+                pass
+            import re as _re
+            m = _re.search(r"by (\d+)", reason)
+            if m and int(m.group(1)) >= 100:
+                alerts.append(f"FD under MGM by {m.group(1)} · {r.get('label')}")
+    for item in ev_board or []:
+        ms = set(item.get("methods") or [])
+        if "DK 10" in ms and ("FD Pattern" in ms or "FD 600" in ms):
+            alerts.append(f"DK 10 + FD Pattern · {item.get('player')}")
+        bf = item.get("benford") or {}
+        if str(bf.get("tag", "")).lower() == "fake":
+            alerts.append(f"Benford Fake · {item.get('player')}")
+        books = item.get("book_prices") or {}
+        fd, mgm = books.get("fanduel"), books.get("betmgm")
+        if fd is not None and mgm is not None and int(mgm) - int(fd) >= 100:
+            alerts.append(f"FD under MGM by {int(mgm) - int(fd)} · {item.get('player')}")
+    seen, out = set(), []
+    for a in alerts:
+        if a not in seen:
+            seen.add(a)
+            out.append(a)
+    return out[:10]
+
+
 def american_implied(p):
     try:
         p = int(p)
@@ -2988,6 +3150,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if not display_meths:
             display_meths = list(meths)
         score = girl_magic_score(core_count, edge, display_meths)
+        # Petty score is display/ranking only — is_bet still uses qualifies_take_it
+        score = petty_score(display_meths, edge, core_count, None)
         conf, bars, level = get_confidence(score, core_count >= METHODS_MIN and edge >= EDGE_MIN)
         book_px = {}
         for bk, px in zip(books, prices):
@@ -3599,6 +3763,14 @@ def main():
     st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
     st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision. 0.5 HR Over only.</p>', unsafe_allow_html=True)
+    st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
+    st.markdown("""
+    <style>
+    .tag-family{background:#2a1040;color:#f9a8d4;border-color:#e879f9}
+    .alert-strip{background:#3b0764;border:1px solid #f472b6;border-radius:12px;padding:8px 12px;margin:8px 0 12px;font-size:.82rem}
+    .petty-note{color:#e9d5ff;font-size:.72rem;margin-top:3px}
+    </style>
+    """, unsafe_allow_html=True)
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     if "auto_grade_ran" not in st.session_state:
         st.session_state["auto_grade_ran"] = False
@@ -3814,15 +3986,21 @@ def main():
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
     mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
+    alerts = collect_petty_alerts(ev_board, results)
+    if alerts:
+        st.markdown(
+            '<div class="alert-strip">' + "<br>".join(f"🚨 Petty Alert: {a}" for a in alerts[:8]) + "</div>",
+            unsafe_allow_html=True,
+        )
     st.markdown(f"""
     <div class="petty-row">
-        <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">TAKE IT</div></div>
-        <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">PASS</div></div>
-        <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">WATCH</div></div>
+        <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">{petty_label("TAKE IT")}</div></div>
+        <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">{petty_label("PASS")}</div></div>
+        <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">{petty_label("WATCH")}</div></div>
         <div class="petty-box"><div class="petty-num">{take_n + pass_n + watch_n + coverage_n}</div><div class="petty-label">ON SLATE</div></div>
     </div>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Code"]
+    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Analytics", "Code"]
     main = st.radio(
         "Section",
         MAIN_TABS,
@@ -3839,11 +4017,13 @@ def main():
         sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade")
     page = f"{main}:{sub or ''}"
     if page == "Board:":
-        st.markdown("### The Board")
+        st.markdown(f"### {petty_label('Board')}")
         st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it. +1000–1500 can go green only with a priority tag.")
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
+            fams = petty_family_chips(item.get("methods") or [])
+            notes = "".join(f'<div class="petty-note">• {n}</div>' for n in petty_notes_for(item))
             meter = make_meter(item.get("bars", 1), item.get("level", "low"))
             ev_s = ""
             if item.get("ev_lean") is True:
@@ -3853,16 +4033,19 @@ def main():
             meta = " · ".join([x for x in (team, game) if x])
             pack = item.get("median")
             pack_s = f" · pack {format_odds(pack)}" if pack is not None else ""
+            show_label = petty_label(label) if label in PETTY_COPY or label in ("TAKE IT", "PASS", "WATCH", "Take it") else label
             st.markdown(
                 f'<div class="card {cls}">'
-                f'<div class="card-kicker">{label}</div>'
-                f'<span class="score-pill">{item.get("score", 0)}</span>'
+                f'<div class="card-kicker">{show_label}</div>'
+                f'<span class="score-pill">{petty_label("Score")} {item.get("score", 0)}</span>'
                 f'<div class="card-name">{item["player"]}</div>'
                 f'<div class="card-meta">{meta}</div>'
                 f'{meter}'
                 f'<div class="card-line"><b>Best {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}</div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium</div>'
-                f'<div style="margin-top:6px">{tags}</div>'
+                f'<div style="margin-top:6px">{fams}</div>'
+                f'<div style="margin-top:4px">{tags}</div>'
+                f'{notes}'
                 f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
                 f'</div>',
                 unsafe_allow_html=True,
@@ -4715,6 +4898,82 @@ def main():
             st.markdown("#### Raw JSON")
             st.json(pack)
             st.caption("Most natural: %s · Most artificial: %s" % (pack.get("most_natural"), pack.get("most_artificial")))
+
+    if page == "Analytics:":
+        st.markdown("### Petty Analytics 📊")
+        st.caption("This week of graded HITs. Not predictive. Just what already went.")
+        rows = load_results()
+        today = today_az()
+        try:
+            end = datetime.strptime(today, "%Y-%m-%d").date()
+        except Exception:
+            end = datetime.now().date()
+        start = end - timedelta(days=6)
+        week = []
+        for r in rows or []:
+            d = str(r.get("date") or "")[:10]
+            try:
+                dd = datetime.strptime(d, "%Y-%m-%d").date()
+            except Exception:
+                continue
+            if start <= dd <= end:
+                week.append(r)
+        hits = [r for r in week if r.get("result") == "HIT"]
+        graded = [r for r in week if r.get("result") in ("HIT", "MISS")]
+        endings, books, buckets, families, methods_c, fade, names = Counter(), Counter(), Counter(), Counter(), Counter(), Counter(), Counter()
+        for r in hits:
+            endn = r.get("ending")
+            if endn is None:
+                endn = last_two(r.get("best_price"))
+            if endn is not None:
+                endings[f"{int(endn):02d}"] += 1
+            books[book_label(r.get("best_book"))] += 1
+            bkt = price_bucket(r.get("best_price"))
+            if bkt:
+                buckets[bkt] += 1
+            names[r.get("player") or ""] += 1
+            for m in r.get("methods") or []:
+                nm = normalize_method_name(m)
+                methods_c[nm] += 1
+                fam = petty_family_for_method(nm)
+                if fam:
+                    families[fam] += 1
+        for r in graded:
+            if r.get("result") != "MISS":
+                continue
+            for m in r.get("methods") or []:
+                if str(m).startswith("FADE") or m == "Multi-book Lengthen":
+                    fade[r.get("player") or ""] += 1
+        st.caption(f"{len(hits)} HR of {len(graded)} graded this week")
+        a, b = st.columns(2)
+        with a:
+            st.markdown("**Top endings**")
+            for k, n in endings.most_common(8):
+                st.write(f"{k} · {n}")
+            st.markdown("**Top books**")
+            for k, n in books.most_common(8):
+                st.write(f"{k} · {n}")
+            st.markdown("**Top buckets**")
+            for k, n in buckets.most_common(8):
+                st.write(f"{k} · {n}")
+        with b:
+            st.markdown("**Petty Families**")
+            for k, n in families.most_common(6):
+                st.write(f"{k} · {n}")
+            st.markdown("**Top methods**")
+            for k, n in methods_c.most_common(10):
+                st.write(f"{k} · {n}")
+            st.markdown("**Petty Picks (2+ hits)**")
+            picks = [(k, n) for k, n in names.most_common() if k and n >= 2]
+            if not picks:
+                st.write("None yet")
+            for k, n in picks[:12]:
+                st.write(f"{k} · {n}")
+            st.markdown("**Fade list**")
+            if not fade:
+                st.write("None")
+            for k, n in fade.most_common(8):
+                st.write(f"{k} · {n}")
 
     if page == "Code:":
         st.markdown('<div class="queen-banner">How to run it</div>', unsafe_allow_html=True)
