@@ -67380,69 +67380,80 @@
     "benford_cluster": 1.0
   },
   {
-    "id": "2026-09-06_George Lombard Jr._watch_30",
+    "id": "2026-09-06_Adael Amador_shop_take_94",
+    "date": "2026-09-06",
+    "time": "12:15 PM",
+    "player": "Adael Amador",
+    "score": 0,
+    "edge": 94,
+    "best_price": 870,
+    "best_book": "fanduel",
+    "median": 775,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 800,
+      "fanduel": 870,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-06T19:15:20.614009+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_George Lombard Jr._shop_lean_81",
     "date": "2026-09-06",
     "time": "12:15 PM",
     "player": "George Lombard Jr.",
-    "score": 30,
-    "edge": 75,
+    "score": 0,
+    "edge": 81,
     "best_price": 900,
     "best_book": "hardrockbet",
-    "median": 825.0,
+    "median": 825,
     "book_prices": {
       "caesars": 750,
       "hardrockbet": 900
     },
     "price_bucket": "+800-999",
     "ending": 0,
-    "mgm_locked": null,
-    "mgm_ending": null,
     "methods": [
-      "Multi-book Shorten"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-06T19:15:18.133715+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.5
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T19:15:20.615992+00:00",
+    "price_source": "shop"
   },
   {
-    "id": "2026-09-06_Jake Cronenworth_watch_39",
+    "id": "2026-09-06_Jeremy Pena_shop_lean_53",
     "date": "2026-09-06",
     "time": "12:15 PM",
-    "player": "Jake Cronenworth",
-    "score": 39,
-    "edge": 100,
-    "best_price": 1000,
+    "player": "Jeremy Pena",
+    "score": 0,
+    "edge": 53,
+    "best_price": 850,
     "best_book": "hardrockbet",
-    "median": 900,
+    "median": 800,
     "book_prices": {
-      "betmgm": 775,
-      "caesars": 850,
-      "draftkings": 980,
-      "fanduel": 900,
-      "hardrockbet": 1000
+      "caesars": 750,
+      "hardrockbet": 850
     },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": 775,
-    "mgm_ending": 75,
+    "price_bucket": "+800-999",
+    "ending": 50,
     "methods": [
-      "MGM 75",
-      "Multi-book Shorten",
-      "Match 75",
-      "Stayed in the group"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-06T19:15:18.134635+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.4
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T19:15:20.620761+00:00",
+    "price_source": "shop"
   }
 ]
