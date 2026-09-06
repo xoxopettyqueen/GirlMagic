@@ -67211,5 +67211,109 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-06_Matt Olson_shop_lean_98",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Matt Olson",
+    "score": 0,
+    "edge": 98,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "median": 662,
+    "book_prices": {
+      "caesars": 575,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:26:15.105392+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Jhonny Pereda_shop_lean_55",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Jhonny Pereda",
+    "score": 0,
+    "edge": 55,
+    "best_price": 940,
+    "best_book": "draftkings",
+    "median": 870,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 940,
+      "fanduel": 870
+    },
+    "price_bucket": "+800-999",
+    "ending": 40,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:26:15.115866+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Sam Antonacci_shop_lean_49",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Sam Antonacci",
+    "score": 0,
+    "edge": 49,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "betmgm": 700,
+      "caesars": 750,
+      "draftkings": 800,
+      "fanduel": 760,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:26:15.118282+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-06_Pete Crow-Armstrong_shop_lean_40",
+    "date": "2026-09-06",
+    "time": "11:26 AM",
+    "player": "Pete Crow-Armstrong",
+    "score": 0,
+    "edge": 40,
+    "best_price": 550,
+    "best_book": "hardrockbet",
+    "median": 512,
+    "book_prices": {
+      "caesars": 475,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-06T18:26:15.120863+00:00",
+    "price_source": "shop"
   }
 ]
