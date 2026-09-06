@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds ✨
+Girl Magic Odds âœ¨
 - GitHub-backed results + lock + movement history (survives Streamlit sleep/wipe)
 - No Digits tab (folded into MGM)
 - MGM: pairs + groups of 3 + Exact 2-3 only
 - One card per player on every method tab
-- +EV language (no Kelly) · Tracker Multi-book · What's Going Today
-- Auto-grade (stronger name match) · MLB HRs on banner · lock · undo · strict board
+- +EV language (no Kelly) Â· Tracker Multi-book Â· What's Going Today
+- Auto-grade (stronger name match) Â· MLB HRs on banner Â· lock Â· undo Â· strict board
 """
 
 import streamlit as st
@@ -40,7 +40,7 @@ try:
 except ImportError:
     HAS_BS4 = False
 
-st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Girl Magic Odds âœ¨", page_icon="ðŸ‘‘", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
@@ -178,12 +178,12 @@ def normalize_book(key):
         return "bet365"
     return BOOK_ALIASES.get(k, k)
 LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
-# ── Board gates (re-eval Tracker 2026-08-25) ─────────────────
+# â”€â”€ Board gates (re-eval Tracker 2026-08-25) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Baseline TAKE IT ~11% (n=256). Promote 25s / Exact / multi-book / FD combos.
 # Demote 50s from priority (10% / 9% on TAKE). DK 10 = core only (6% on TAKE alone).
 EDGE_MIN = 80
 EDGE_SOFT = 40  # heavy stacks that still include a PRIORITY method
-# Price lanes from Tracker 9/04: +400s 21% · +500s 19% · +600s 15% · +700s 11% · +1000+ 5%
+# Price lanes from Tracker 9/04: +400s 21% Â· +500s 19% Â· +600s 15% Â· +700s 11% Â· +1000+ 5%
 SWEET_PRICE_MAX = 699   # +500-650 is the long number that still hits
 LONG_PRICE = 700        # needs extra filters
 JUNK_PRICE = 1000       # flyer lane starts here
@@ -251,15 +251,15 @@ PERSONAL_STRONG = {
     "Multi-book method", "Same on 3+ books", "All books same",
 }
 NOISE_METHODS = {
-    "Just Appeared", "Added Late", "Gone Missing", "Not in lineup", "In lineup · missing books",
-    "Price moved", "Multi-book Lengthen", "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest",
+    "Just Appeared", "Added Late", "Gone Missing", "Not in lineup", "In lineup Â· missing books",
+    "Price moved", "Multi-book Lengthen", "FADE Â· Shot way up", "FADE Â· Drop >100", "FADE Â· FD highest",
     "FD under MGM", "Shortening", "Lengthening", "Stuck price", "Outlier higher",
     "HOT", "HardRock highest", "MLB auto HR", "Was DK 10", "Manual HR log",
 }
 TRACKER_BLOCKLIST = {
     "HOT", "HardRock highest", "MLB auto HR", "Was DK 10", "Manual HR log",
     "Just Appeared", "Added Late", "Gone Missing", "Not in lineup", "Price moved",
-    "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest", "FD under MGM",
+    "FADE Â· Shot way up", "FADE Â· Drop >100", "FADE Â· FD highest", "FD under MGM",
     "Multi-book Lengthen", "Stuck price", "Outlier higher",
 }
 TRACKER_ALWAYS = {
@@ -447,7 +447,7 @@ def girl_magic_score(core_count, edge, methods):
     return min(100, method_pts + edge_pts + min(18, bonus))
 
 
-# ── Petty layer (display only — never gates TAKE IT) ─────────
+# â”€â”€ Petty layer (display only â€” never gates TAKE IT) â”€â”€â”€â”€â”€â”€â”€â”€â”€
 PETTY_FAMILIES = {
     "Classic Girl Magic": {
         "MGM 25", "MGM 50", "MGM Exact", "Match 25", "Match 50",
@@ -459,7 +459,7 @@ PETTY_FAMILIES = {
     },
     "Drama Queens": {
         "Gone Missing", "Just Appeared", "Added Late",
-        "FADE · FD highest", "FADE · Shot way up", "FADE · Drop >100",
+        "FADE Â· FD highest", "FADE Â· Shot way up", "FADE Â· Drop >100",
     },
     "Cute But Not Serious": {
         "Match 75", "MGM 75", "Same First", "Same Last",
@@ -467,10 +467,10 @@ PETTY_FAMILIES = {
     },
 }
 FAMILY_EMOJI = {
-    "Classic Girl Magic": "👑",
-    "Petty Pressure": "💅",
-    "Drama Queens": "🎭",
-    "Cute But Not Serious": "🧸",
+    "Classic Girl Magic": "ðŸ‘‘",
+    "Petty Pressure": "ðŸ’…",
+    "Drama Queens": "ðŸŽ­",
+    "Cute But Not Serious": "ðŸ§¸",
 }
 PETTY_COPY = {
     "TAKE IT": "Run it, baddie",
@@ -518,7 +518,7 @@ def petty_family_summary(method_list):
 
 def petty_family_chips(method_list):
     return " ".join(
-        f'<span class="tag tag-family">{FAMILY_EMOJI.get(f, "✨")} {f}</span>'
+        f'<span class="tag tag-family">{FAMILY_EMOJI.get(f, "âœ¨")} {f}</span>'
         for f in petty_family_summary(method_list)
     )
 
@@ -549,7 +549,7 @@ def petty_notes_for(item):
     methods = item.get("methods") or []
     ms = {normalize_method_name(m) for m in methods}
     if has_dk_mgm_fd(methods):
-        notes.append("trifecta present 👑")
+        notes.append("trifecta present ðŸ‘‘")
     end = last_two(item.get("best_price"))
     try:
         p = abs(int(item.get("best_price"))) if item.get("best_price") is not None else 0
@@ -575,9 +575,9 @@ def collect_petty_alerts(ev_board, results):
     for r in results or []:
         meths = r.get("methods") or []
         if r.get("type") == "mgm_exact" or "MGM Exact" in meths:
-            alerts.append(f"MGM Exact · {r.get('label')}")
+            alerts.append(f"MGM Exact Â· {r.get('label')}")
         if "Multi-book Shorten" in meths:
-            alerts.append(f"Multi-book Shorten · {r.get('label')}")
+            alerts.append(f"Multi-book Shorten Â· {r.get('label')}")
         reason = str(r.get("reason") or "")
         if "FD under MGM" in meths and ("by 1" in reason or "100" in reason):
             try:
@@ -589,18 +589,18 @@ def collect_petty_alerts(ev_board, results):
             import re as _re
             m = _re.search(r"by (\d+)", reason)
             if m and int(m.group(1)) >= 100:
-                alerts.append(f"FD under MGM by {m.group(1)} · {r.get('label')}")
+                alerts.append(f"FD under MGM by {m.group(1)} Â· {r.get('label')}")
     for item in ev_board or []:
         ms = set(item.get("methods") or [])
         if "DK 10" in ms and ("FD Pattern" in ms or "FD 600" in ms):
-            alerts.append(f"DK 10 + FD Pattern · {item.get('player')}")
+            alerts.append(f"DK 10 + FD Pattern Â· {item.get('player')}")
         bf = item.get("benford") or {}
         if str(bf.get("tag", "")).lower() == "fake":
-            alerts.append(f"Benford Fake · {item.get('player')}")
+            alerts.append(f"Benford Fake Â· {item.get('player')}")
         books = item.get("book_prices") or {}
         fd, mgm = books.get("fanduel"), books.get("betmgm")
         if fd is not None and mgm is not None and int(mgm) - int(fd) >= 100:
-            alerts.append(f"FD under MGM by {int(mgm) - int(fd)} · {item.get('player')}")
+            alerts.append(f"FD under MGM by {int(mgm) - int(fd)} Â· {item.get('player')}")
     seen, out = set(), []
     for a in alerts:
         if a not in seen:
@@ -646,22 +646,22 @@ def shop_price_action(best, fair, book_prices=None):
         bp = 0
     gap = int(best) - int(fair)
     if bp >= JUNK_PRICE:
-        return "DON'T", f"+{bp} junk lane · fair {format_odds(fair)}", "shop-dont"
+        return "DON'T", f"+{bp} junk lane Â· fair {format_odds(fair)}", "shop-dont"
     if bp >= LONG_PRICE:
         end = last_two(bp)
         books = {normalize_book(b) for b in (book_prices or {})}
         real = books & {"draftkings", "fanduel", "betmgm"}
         if end in LONG_DEAD_ENDS or (end not in LONG_OK_ENDS) or len(real) < 2:
             if gap >= 40:
-                return "LEAN", f"longshot lean {format_odds(best)} · fair {format_odds(fair)}", "shop-lean"
+                return "LEAN", f"longshot lean {format_odds(best)} Â· fair {format_odds(fair)}", "shop-lean"
             return "DON'T", f"long + bad shape {format_odds(best)}", "shop-dont"
     if gap >= EDGE_MIN:
-        return "TAKE", f"take at {format_odds(best)} · fair {format_odds(fair)} · +{gap}", "shop-take"
+        return "TAKE", f"take at {format_odds(best)} Â· fair {format_odds(fair)} Â· +{gap}", "shop-take"
     if gap >= 40:
-        return "LEAN", f"lean {format_odds(best)} · fair {format_odds(fair)} · +{gap}", "shop-lean"
+        return "LEAN", f"lean {format_odds(best)} Â· fair {format_odds(fair)} Â· +{gap}", "shop-lean"
     if gap <= -40:
-        return "DON'T", f"don't take {format_odds(best)} · fair {format_odds(fair)} · {gap}", "shop-dont"
-    return "MARKET", f"market {format_odds(best)} · fair {format_odds(fair)} · {gap:+d}", "shop-mkt"
+        return "DON'T", f"don't take {format_odds(best)} Â· fair {format_odds(fair)} Â· {gap}", "shop-dont"
+    return "MARKET", f"market {format_odds(best)} Â· fair {format_odds(fair)} Â· {gap:+d}", "shop-mkt"
 
 SHOP_BOOKS = [
     ("draftkings", "DK"),
@@ -735,7 +735,7 @@ def ending_heat_from_results(rows, min_n=20):
 
 def render_shop_tab(df):
     st.markdown("### Odds Shop")
-    st.caption("Price vs fair. TAKE / LEAN log on their own (even if Board already has the name). Grade them under Grade → Shop.")
+    st.caption("Price vs fair. TAKE / LEAN log on their own (even if Board already has the name). Grade them under Grade â†’ Shop.")
     if df is None or getattr(df, "empty", True):
         st.info("Fetch 0.5 HR first - Shop fills from the live slate.")
         return
@@ -806,7 +806,7 @@ def render_shop_tab(df):
             chips.append(
                 f'<div class="rate-chip"><div class="rate-pct">{h["pct"]:.0f}%</div>'
                 f'<div class="rate-name">ends {h["ending"]}</div>'
-                f'<div class="rate-n">{h["hit"]}H · {h["miss"]}M · n={h["n"]}</div></div>'
+                f'<div class="rate-n">{h["hit"]}H Â· {h["miss"]}M Â· n={h["n"]}</div></div>'
             )
         st.markdown("".join(chips), unsafe_allow_html=True)
     heads = "".join(f"<th>{lab}</th>" for _, lab in SHOP_BOOKS)
@@ -1488,7 +1488,7 @@ def locked_price_str(player):
             use = slot.get("first_price")
         if use is not None:
             parts.append(f"{book_label(b)} {format_odds(use)}")
-    return " · ".join(parts)
+    return " Â· ".join(parts)
 
 
 def format_az_from_iso(iso):
@@ -2090,11 +2090,11 @@ def _fetch_mlb_hr_hitters_cached(dates_key):
             except Exception as e:
                 errors.append(f"live {pk}: {e}")
 
-    msg = f"{games_checked} live/final · {len(hr_names)} HR"
+    msg = f"{games_checked} live/final Â· {len(hr_names)} HR"
     if hr_names:
-        msg += " · e.g. " + ", ".join(sorted(hr_names)[:5])
+        msg += " Â· e.g. " + ", ".join(sorted(hr_names)[:5])
     if errors and not hr_names:
-        msg += " · " + "; ".join(errors[:2])
+        msg += " Â· " + "; ".join(errors[:2])
     # sets not cache-friendly in return for some streamlit - use frozenset
     return frozenset(hr_names), frozenset(final_players), msg
 
@@ -2134,7 +2134,7 @@ def auto_grade_pending():
             skipped += 1
 
     save_results(rows)
-    return hits, misses, skipped, f"{msg} · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
+    return hits, misses, skipped, f"{msg} Â· PENDING {pending_n} Â· matched {hits} HIT / {misses} MISS"
 
 
 def build_whats_going_today(rows):
@@ -2269,7 +2269,7 @@ def render_whats_going_today():
             '<div style="flex:1;min-width:90px">'
             '<div style="font-size:0.72rem;font-weight:800;color:#e9d5ff;margin-bottom:4px">Other</div>'
             '<div style="font-size:0.72rem;color:#fce7f3">%s</div>'
-            '</div>' % (" · ".join(extra[:6]))
+            '</div>' % (" Â· ".join(extra[:6]))
         )
     if cols_html:
         body = '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">%s</div>' % ("".join(cols_html))
@@ -2282,12 +2282,12 @@ def render_whats_going_today():
         pair_note = (
             '<div style="margin-top:8px;font-size:0.72rem;color:#fcd34d">'
             'MGM pair/trio only (method): %s'
-            '</div>' % (" · ".join(bits))
+            '</div>' % (" Â· ".join(bits))
         )
 
     title = "What's Going Today"
     sub = (
-        "%s HRs · %s on our list · best price among DK/FD/MGM/HardRock "
+        "%s HRs Â· %s on our list Â· best price among DK/FD/MGM/HardRock "
         "(not MGM pair rules)"
     ) % (mlb_hr, on_list)
     html = (
@@ -2422,7 +2422,7 @@ def aggregate_by_player(items):
     return out
 
 def _price_line_for_card(prices):
-    """DK · FD · HardRock · MGM order for signal cards."""
+    """DK Â· FD Â· HardRock Â· MGM order for signal cards."""
     if not prices:
         return ""
     order = [("draftkings", "DK"), ("fanduel", "FD"), ("hardrockbet", "HardRock"), ("betmgm", "MGM"), ("caesars", "Caesars")]
@@ -2431,7 +2431,7 @@ def _price_line_for_card(prices):
         p = prices.get(key)
         if p is not None:
             parts.append(f"{lab} {format_odds(p)}")
-    return " · ".join(parts)
+    return " Â· ".join(parts)
 
 def show_player_cards(typ, banner, explain, results):
     st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
@@ -2538,11 +2538,11 @@ def fetch_mlb_lineups():
 def short_lineup_msg(msg, n=0):
     raw = str(msg or "")
     if any(x in raw.lower() for x in ("nitter", "httpsconnection", "underdog", "max retries")):
-        return f"{n} lineup names · MLB orders"
+        return f"{n} lineup names Â· MLB orders"
     # keep first two source bits only
-    parts = [x.strip() for x in raw.replace("·", "|").split("|") if x.strip()]
+    parts = [x.strip() for x in raw.replace("Â·", "|").split("|") if x.strip()]
     keep = [x for x in parts if "nitter" not in x.lower() and "http" not in x.lower()][:3]
-    out = " · ".join(keep) if keep else raw
+    out = " Â· ".join(keep) if keep else raw
     return out[:80]
 
 
@@ -2557,8 +2557,8 @@ def fetch_all_lineups():
         names = set(mlb) | set(rw)
         note = "filter=merged"
     if not names:
-        return set(), " · ".join(bits) or "No lineups yet"
-    return names, f"{len(names)} used · " + " · ".join(bits) + " · " + note
+        return set(), " Â· ".join(bits) or "No lineups yet"
+    return names, f"{len(names)} used Â· " + " Â· ".join(bits) + " Â· " + note
 
 @st.cache_data(ttl=180, show_spinner=False)
 def _fetch_events_oddsapi_cached(api_key):
@@ -2795,9 +2795,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             kind = info["kind"]
             lock_note = locked_price_str(player)
             books_s = ", ".join(sorted(set(info["books"])))
-            reason = f"{kind} · {books_s}"
+            reason = f"{kind} Â· {books_s}"
             if lock_note and kind == "Gone Missing":
-                reason += f"<br>🔒 last lock: {lock_note}"
+                reason += f"<br>ðŸ”’ last lock: {lock_note}"
             results.append({"type": "late", "label": player, "reason": reason, "methods": [kind]})
             methods_map[player].append(kind)
 
@@ -2869,7 +2869,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     missing.append(f"{book_label(b)} {format_odds(info['price'])}")
         if not missing:
             continue
-        reason = "Missing from books now · had on Lock: " + ", ".join(missing[:6])
+        reason = "Missing from books now Â· had on Lock: " + ", ".join(missing[:6])
         results.append({
             "type": "late",
             "label": pname,
@@ -2890,9 +2890,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             line = f"{book}: {format_odds(prev_price)} -> {format_odds(curr_price)} ({int(abs(delta))} pts)"
             (player_up if delta > 0 else player_down)[player].append(line)
             if delta >= BIG_MOVE:
-                results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"🔴 Shot up on {book}: {format_odds(prev_price)} -> {format_odds(curr_price)}", "methods": ["FADE · Shot way up"], "gap": abs(int(delta))})
+                results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"ðŸ”´ Shot up on {book}: {format_odds(prev_price)} -> {format_odds(curr_price)}", "methods": ["FADE Â· Shot way up"], "gap": abs(int(delta))})
             elif delta <= -BIG_MOVE:
-                results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"🔴 Drop >100 on {book}: {format_odds(prev_price)} -> {format_odds(curr_price)}", "methods": ["FADE · Drop >100"], "gap": abs(int(delta))})
+                results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"ðŸ”´ Drop >100 on {book}: {format_odds(prev_price)} -> {format_odds(curr_price)}", "methods": ["FADE Â· Drop >100"], "gap": abs(int(delta))})
         for player, moves in sorted(player_up.items()):
             results.append({"type": "hist", "move_dir": "up", "label": player, "reason": "<br>".join(moves), "methods": ["Price moved"]})
         for player, moves in sorted(player_down.items()):
@@ -2905,13 +2905,13 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 pass
             results.append({
                 "type": "hist", "move_dir": "up", "label": player,
-                "reason": "🔒 from open<br>" + "<br>".join(moves),
+                "reason": "ðŸ”’ from open<br>" + "<br>".join(moves),
                 "methods": ["Price moved"],
             })
         for player, moves in sorted(lock_down.items()):
             results.append({
                 "type": "hist", "move_dir": "down", "label": player,
-                "reason": "🔒 from open<br>" + "<br>".join(moves),
+                "reason": "ðŸ”’ from open<br>" + "<br>".join(moves),
                 "methods": ["Price moved"],
             })
     except Exception:
@@ -2924,9 +2924,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if fd is not None and mgm_price is not None:
             gap = mgm_price - fd
             if 10 <= gap <= 100:
-                results.append({"type": "trend", "trend_kind": "good", "label": player, "reason": f"💚 FD under MGM by {int(gap)} · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}", "methods": ["FD under MGM"], "gap": int(gap)})
+                results.append({"type": "trend", "trend_kind": "good", "label": player, "reason": f"ðŸ’š FD under MGM by {int(gap)} Â· FD {format_odds(fd)} Â· MGM {format_odds(mgm_price)}", "methods": ["FD under MGM"], "gap": int(gap)})
         if fd is not None and others and fd > max(others):
-            results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"🔴 FD highest · {format_odds(fd)}", "methods": ["FADE · FD highest"], "gap": 0})
+            results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"ðŸ”´ FD highest Â· {format_odds(fd)}", "methods": ["FADE Â· FD highest"], "gap": 0})
     for _, row in df.iterrows():
         if row["book"] != "draftkings": continue
         d = last_two(row["price"])
@@ -2982,9 +2982,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 meth.append("Last one left")
                 extra.append("Last one left")
         kind = "pair" if len(names) == 2 else "group of 3"
-        tnote = f" · {team}" if team else " · same team"
+        tnote = f" Â· {team}" if team else " Â· same team"
         reason = f"MGM {kind} ends {d:02d}{tnote}"
-        if extra: reason += " • " + " + ".join(sorted(set(extra)))
+        if extra: reason += " â€¢ " + " + ".join(sorted(set(extra)))
         results.append({"type": "mgm", "label": " + ".join(names), "reason": reason, "event": grp["event"], "methods": list(set(meth))})
         for n in names: methods_map[n].extend(meth)
     if not mgm.empty:
@@ -2995,7 +2995,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             for price, pg in g.groupby("price"):
                 names = sorted(pg["player"].unique())
                 if len(names) not in (2, 3): continue
-                tnote = f" · {team}" if team else ""
+                tnote = f" Â· {team}" if team else ""
                 results.append({"type": "mgm", "label": " + ".join(names), "reason": f"MGM Exact {format_odds(price)} ({len(names)}){tnote}", "event": event, "methods": ["MGM Exact"]})
                 for n in names: methods_map[n].append("MGM Exact")
     FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet")
@@ -3150,7 +3150,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if not display_meths:
             display_meths = list(meths)
         score = girl_magic_score(core_count, edge, display_meths)
-        # Petty score is display/ranking only — is_bet still uses qualifies_take_it
+        # Petty score is display/ranking only â€” is_bet still uses qualifies_take_it
         score = petty_score(display_meths, edge, core_count, None)
         conf, bars, level = get_confidence(score, core_count >= METHODS_MIN and edge >= EDGE_MIN)
         book_px = {}
@@ -3163,7 +3163,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "player": player, "best_price": best, "best_book": best_book, "median": med,
             "book_prices": book_px,
             "edge": edge, "is_bet": False,
-            "why": f"Score {score}/100 · {core_count} core · edge {int(edge)}",
+            "why": f"Score {score}/100 Â· {core_count} core Â· edge {int(edge)}",
             "methods": display_meths, "score": score, "bars": bars, "level": level,
             "method_count": core_count, "team": team_map.get(player, ""),
             "events": list(player_events.get(player, [])),
@@ -3183,8 +3183,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 cov = dict(row)
                 cov["methods"] = support_tags
                 cov["why"] = (
-                    f"Coverage only · no premium core · tags: {', '.join(support_tags[:6])}"
-                    " · not a bet - so we don't miss weak-tag names on Lab days"
+                    f"Coverage only Â· no premium core Â· tags: {', '.join(support_tags[:6])}"
+                    " Â· not a bet - so we don't miss weak-tag names on Lab days"
                 )
                 cov["bars"], cov["level"] = 1, "low"
                 coverage_board.append(cov)
@@ -3196,11 +3196,11 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         fams = strong_method_families(display_meths)
         strong_n = len(fams)
         has_pri = has_priority_method(display_meths)
-        tri = " · 💎 DK+MGM+FD" if has_dk_mgm_fd(display_meths) else ""
-        pri_note = " · priority ✓" if (is_bet and has_pri) else ""
+        tri = " Â· ðŸ’Ž DK+MGM+FD" if has_dk_mgm_fd(display_meths) else ""
+        pri_note = " Â· priority âœ“" if (is_bet and has_pri) else ""
         if is_bet:
             why = (
-                f"Score {score}/100 · {core_count} premium · {strong_n} families · "
+                f"Score {score}/100 Â· {core_count} premium Â· {strong_n} families Â· "
                 f"edge {int(edge)}{tri}{pri_note}"
             )
         else:
@@ -3213,8 +3213,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if lp:
                 miss.append("number is too long / thin for a green light")
             why = (
-                f"Score {score}/100 · PASS - "
-                + (" · ".join(miss) if miss else "filtered")
+                f"Score {score}/100 Â· PASS - "
+                + (" Â· ".join(miss) if miss else "filtered")
             )
         row["why"] = why
         conf, bars, level = get_confidence(score, is_bet)
@@ -3232,13 +3232,13 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         reasons = []
         if player not in all_players_now:
             reasons.append("Left feed (often MGM after pitch)")
-            if lock_note: reasons.append(f"🔒 {lock_note}")
+            if lock_note: reasons.append(f"ðŸ”’ {lock_note}")
         else:
             reasons.append("Dropped filters")
         if old.get("is_bet"): reasons.insert(0, "Was TAKE IT")
-        fallen.append({"type": "fallen", "label": player, "reason": " · ".join(reasons), "methods": ["Fallen Off"], "old_score": old.get("score", 0)})
+        fallen.append({"type": "fallen", "label": player, "reason": " Â· ".join(reasons), "methods": ["Fallen Off"], "old_score": old.get("score", 0)})
         results.append(fallen[-1])
-    # ── Name Magic (only with methods · prefer different teams) ──
+    # â”€â”€ Name Magic (only with methods Â· prefer different teams) â”€â”€
     pev = defaultdict(set)
     for _, r in df.iterrows():
         pev[r["player"]].add(r["event"])
@@ -3281,7 +3281,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     continue
                 results.append({
                     "type": "same_init", "label": f"{a} + {b}",
-                    "reason": f"Same initials {k} · different teams",
+                    "reason": f"Same initials {k} Â· different teams",
                     "methods": ["Same Initials"], "event": "",
                 })
                 n_pairs += 1
@@ -3302,9 +3302,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 continue
             if li_a == fi_b or li_b == fi_a:
                 if li_a == fi_b:
-                    rsn = f"Cross initials ({li_a}<->{fi_b}) · different teams"
+                    rsn = f"Cross initials ({li_a}<->{fi_b}) Â· different teams"
                 else:
-                    rsn = f"Cross initials ({li_b}<->{fi_a}) · different teams"
+                    rsn = f"Cross initials ({li_b}<->{fi_a}) Â· different teams"
                 results.append({
                     "type": "cross", "label": f"{a} + {b}",
                     "reason": rsn,
@@ -3334,7 +3334,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     continue
                 results.append({
                     "type": "last", "label": f"{a} + {b}",
-                    "reason": f"Same last name · {last.title()} · different teams",
+                    "reason": f"Same last name Â· {last.title()} Â· different teams",
                     "methods": ["Same Last Name"], "event": "",
                 })
                 n_last += 1
@@ -3358,7 +3358,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     continue
                 results.append({
                     "type": "first", "label": f"{a} + {b}",
-                    "reason": f"Same first name · {first.title()} · different teams",
+                    "reason": f"Same first name Â· {first.title()} Â· different teams",
                     "methods": ["Same First Name"], "event": "",
                 })
                 n_first += 1
@@ -3561,7 +3561,7 @@ def lock_player_summary(player, lock_entry, price_mode="close"):
                 + (f" ({t1})" if t1 else "")
             )
         else:
-            lines.append(f"{bl} {format_odds(p)}" + (f" · {t0 or t1}" if (t0 or t1) else ""))
+            lines.append(f"{bl} {format_odds(p)}" + (f" Â· {t0 or t1}" if (t0 or t1) else ""))
         end = last_two(p)
         if end is not None:
             end = int(end)
@@ -3638,7 +3638,7 @@ def build_lock_lab():
                 ending_counter[int(end)] += 1
                 book_end_counter[(bl, int(end))] += 1
                 book_appear[bl] += 1
-        # still track full book×ending for noise warnings (HardRock/Caesars)
+        # still track full bookÃ—ending for noise warnings (HardRock/Caesars)
         for bl, end in ends_by_book.items():
             if bl in ("HardRock", "Caesars"):
                 book_end_counter[(bl, end)] += 1
@@ -3675,14 +3675,14 @@ def build_lock_lab():
     if tag_counter:
         top_tags = tag_counter.most_common(5)
         insights.append(
-            "🔥 <b>Methods showing up most on HRs:</b> "
+            "ðŸ”¥ <b>Methods showing up most on HRs:</b> "
             + ", ".join(f"{t} ({c})" for t, c in top_tags)
         )
     if focus_best_wins:
         tot = sum(focus_best_wins.values()) or 1
         ranked = focus_best_wins.most_common()
         insights.append(
-            "💰 <b>Best price (longest) among DK / FD / HardRock / MGM"
+            "ðŸ’° <b>Best price (longest) among DK / FD / HardRock / MGM"
             + (" / Bet365" if any(b == "Bet365" for b, _ in ranked) else "")
             + " on HRs:</b> "
             + ", ".join(f"{b} won {c}/{tot} ({100*c/tot:.0f}%)" for b, c in ranked)
@@ -3691,10 +3691,10 @@ def build_lock_lab():
         tot = sum(best_book_wins.values()) or 1
         ranked = best_book_wins.most_common(5)
         insights.append(
-            "📚 <b>Longest price among every book in Lock:</b> "
+            "ðŸ“š <b>Longest price among every book in Lock:</b> "
             + ", ".join(f"{b} {c}/{tot}" for b, c in ranked)
         )
-    # best book×ending combos among our classic endings
+    # best bookÃ—ending combos among our classic endings
     classic = []
     for (bl, end), c in book_end_counter.most_common():
         if bl in ("MGM", "DK", "FD") and (end in MGM_ENDINGS or end == 10 or end in FD_ENDINGS):
@@ -3703,27 +3703,27 @@ def build_lock_lab():
             break
     if classic:
         insights.append(
-            "🎯 <b>Classic endings on HRs:</b> "
-            + ", ".join(f"{bl} {end:02d}×{c}" for (bl, end), c in classic)
+            "ðŸŽ¯ <b>Classic endings on HRs:</b> "
+            + ", ".join(f"{bl} {end:02d}Ã—{c}" for (bl, end), c in classic)
         )
     if cross_counter:
         top_cross = cross_counter.most_common(4)
         insights.append(
-            "✨ <b>Cross-methods (2+ tags on same HR):</b> "
+            "âœ¨ <b>Cross-methods (2+ tags on same HR):</b> "
             + ", ".join(" + ".join(tags) + f" ({c})" for tags, c in top_cross)
         )
         insights.append(
-            f"🧩 <b>{multi_tag_n}/{len(matched)}</b> Lock-matched HRs had 2+ of our tags - "
+            f"ðŸ§© <b>{multi_tag_n}/{len(matched)}</b> Lock-matched HRs had 2+ of our tags - "
             "those are the cross-method hits to study."
         )
     # watch-outs
     watch = []
     for (bl, end), c in book_end_counter.most_common(8):
         if bl in ("HardRock", "Caesars") and c >= 5:
-            watch.append(f"{bl} ending {end:02d} showed {c}× (noisy book - don't treat as a core trick yet)")
+            watch.append(f"{bl} ending {end:02d} showed {c}Ã— (noisy book - don't treat as a core trick yet)")
     other_ends = [(e, c) for e, c in ending_counter.most_common() if e not in MGM_ENDINGS and e != 10 and e not in FD_ENDINGS and c >= 3]
     for e, c in other_ends[:3]:
-        watch.append(f"Ending {e:02d} showed {c}× on HRs - not in our official list; watch if it keeps repeating")
+        watch.append(f"Ending {e:02d} showed {c}Ã— on HRs - not in our official list; watch if it keeps repeating")
     if not matched:
         insights.append("No HRs matched Lock yet - need pregame fetches so Lock is full.")
     if len(matched) < len(hr_names) * 0.5 and hr_names:
@@ -3760,10 +3760,10 @@ def main():
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     else:
         refresh_count = 0
-    st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
+    st.markdown('<p class="kicker">â™› Boss Â· HBIC Â· We Rolling</p>', unsafe_allow_html=True)
     st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
     st.markdown('<p class="tagline">Where odds intuition meets Petty precision. 0.5 HR Over only.</p>', unsafe_allow_html=True)
-    st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
+    st.toggle("Petty Mode ðŸ’…", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
     st.markdown("""
     <style>
     .tag-family{background:#2a1040;color:#f9a8d4;border-color:#e879f9}
@@ -3782,7 +3782,7 @@ def main():
                     h, m, s, msg = auto_grade_pending()
                 st.session_state["auto_grade_ran"] = True
                 if h or m:
-                    st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
+                    st.caption(f"âš¡ Auto-grade: {h} HIT Â· {m} MISS Â· {s} still open")
             else:
                 st.session_state["auto_grade_ran"] = True
         except Exception:
@@ -3797,7 +3797,7 @@ def main():
     ev_n = len(st.session_state.get("events") or [])
     with st.sidebar:
         st.markdown("**Slate**")
-        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft}")
+        st.caption(f"{ev_n} games Â· lock {lock_n} Â· {last_ft}")
         if st.button("Load games", type="primary", use_container_width=True):
             raw = fetch_events_oddsapi(odds_key)
             st.session_state["events"] = filter_events_today(raw)
@@ -3814,7 +3814,7 @@ def main():
             if st.button("Grade", use_container_width=True):
                 with st.spinner("MLB box scores..."):
                     h, m, s, msg = auto_grade_pending()
-                st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
+                st.success(f"{h} HIT Â· {m} MISS Â· {s} still open - {msg}")
                 st.rerun()
         auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
         ln = st.session_state.get("lineup_names") or set()
@@ -3848,7 +3848,7 @@ def main():
                     except Exception:
                         hhmm = ""
             base = f"{away} @ {home}"
-            return f"{base} · {hhmm}" if hhmm else base
+            return f"{base} Â· {hhmm}" if hhmm else base
 
         # safety: re-filter if stale events from yesterday still in session
         events = filter_events_today(events)
@@ -3858,7 +3858,7 @@ def main():
         for e in events:
             lab = _game_label(e)
             if lab in options:
-                lab = f"{lab} · {str(e.get('id', ''))[:6]}"
+                lab = f"{lab} Â· {str(e.get('id', ''))[:6]}"
             options[lab] = e["id"]
 
         default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
@@ -3898,7 +3898,7 @@ def main():
                 st.session_state["last_selected"] = list(chosen)
                 st.session_state["new_fetch"] = True
                 st.session_state["last_fetch_time"] = now_az()
-                st.success(f"Loaded {len(df)} props · {now_az()} AZ")
+                st.success(f"Loaded {len(df)} props Â· {now_az()} AZ")
             else:
                 dbg = st.session_state.get("fetch_debug") or {}
                 raw = ", ".join(dbg.get("raw_books") or []) or "none"
@@ -3908,9 +3908,9 @@ def main():
                     "This is not always 'games live' - check debug below."
                 )
                 st.caption(
-                    f"API games OK: {dbg.get('http_ok', 0)} · fail: {dbg.get('http_fail', 0)} · "
-                    f"rows before filter: {dbg.get('row_count_pre_filter', 0)} · SGO: {dbg.get('sgo_rows', 0)} · "
-                    f"raw books: {raw} · kept: {kept}"
+                    f"API games OK: {dbg.get('http_ok', 0)} Â· fail: {dbg.get('http_fail', 0)} Â· "
+                    f"rows before filter: {dbg.get('row_count_pre_filter', 0)} Â· SGO: {dbg.get('sgo_rows', 0)} Â· "
+                    f"raw books: {raw} Â· kept: {kept}"
                 )
         if st.session_state.get("last_fetch_time"):
             st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
@@ -3989,7 +3989,7 @@ def main():
     alerts = collect_petty_alerts(ev_board, results)
     if alerts:
         st.markdown(
-            '<div class="alert-strip">' + "<br>".join(f"🚨 Petty Alert: {a}" for a in alerts[:8]) + "</div>",
+            '<div class="alert-strip">' + "<br>".join(f"ðŸš¨ Petty Alert: {a}" for a in alerts[:8]) + "</div>",
             unsafe_allow_html=True,
         )
     st.markdown(f"""
@@ -4018,21 +4018,21 @@ def main():
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown(f"### {petty_label('Board')}")
-        st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it. +1000–1500 can go green only with a priority tag.")
+        st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it. +1000â€“1500 can go green only with a priority tag.")
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
             fams = petty_family_chips(item.get("methods") or [])
-            notes = "".join(f'<div class="petty-note">• {n}</div>' for n in petty_notes_for(item))
+            notes = "".join(f'<div class="petty-note">â€¢ {n}</div>' for n in petty_notes_for(item))
             meter = make_meter(item.get("bars", 1), item.get("level", "low"))
             ev_s = ""
             if item.get("ev_lean") is True:
-                ev_s = f" · +EV lean ({item.get('method_rate_name')})"
+                ev_s = f" Â· +EV lean ({item.get('method_rate_name')})"
             team = item.get("team") or ""
             game = item.get("event") or ""
-            meta = " · ".join([x for x in (team, game) if x])
+            meta = " Â· ".join([x for x in (team, game) if x])
             pack = item.get("median")
-            pack_s = f" · pack {format_odds(pack)}" if pack is not None else ""
+            pack_s = f" Â· pack {format_odds(pack)}" if pack is not None else ""
             show_label = petty_label(label) if label in PETTY_COPY or label in ("TAKE IT", "PASS", "WATCH", "Take it") else label
             st.markdown(
                 f'<div class="card {cls}">'
@@ -4042,7 +4042,7 @@ def main():
                 f'<div class="card-meta">{meta}</div>'
                 f'{meter}'
                 f'<div class="card-line"><b>Best {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}</div>'
-                f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium</div>'
+                f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> Â· {item.get("method_count", 0)} premium</div>'
                 f'<div style="margin-top:6px">{fams}</div>'
                 f'<div style="margin-top:4px">{tags}</div>'
                 f'{notes}'
@@ -4109,7 +4109,7 @@ def main():
                             hhmm = dt.strftime("%-I:%M %p")
                         except Exception:
                             hhmm = dt.strftime("%I:%M %p").lstrip("0")
-                        return f"{game_name} · {hhmm} AZ"
+                        return f"{game_name} Â· {hhmm} AZ"
                     except Exception:
                         return game_name
 
@@ -4140,9 +4140,9 @@ def main():
                     with cols[idx % 2]:
                         _render_board_card(item, "WATCH", "watch-card")
 
-            st.markdown("#### 👁️ COVERAGE · support tags only (not a bet)")
+            st.markdown("#### ðŸ‘ï¸ COVERAGE Â· support tags only (not a bet)")
             st.caption(
-                "75s · 00s · Stayed alone · Last one left · Exact / tight - "
+                "75s Â· 00s Â· Stayed alone Â· Last one left Â· Exact / tight - "
                 "support tags only. Never upgrades to TAKE IT without priority + edge."
             )
             if not coverage_only:
@@ -4158,26 +4158,26 @@ def main():
     if page == "Digits:":
         render_digits_tab(df)
     if page == "Methods:DK":
-        show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
+        show_player_cards("dk", "ðŸŽ¯ DraftKings", "One card per player Â· DK 10 + FD-style", results)
     if page == "Methods:MGM":
-        show_player_cards("mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2-3 · all on one card", results)
+        show_player_cards("mgm", "ðŸŽ° BetMGM", "Pairs / groups of 3 Â· classic endings Â· Exact 2-3 Â· all on one card", results)
     if page == "Methods:FD":
-        show_player_cards("fd", "💙 FanDuel", f">=+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
+        show_player_cards("fd", "ðŸ’™ FanDuel", f">=+{FD_MIN} pattern or +600 Â· needs DK/MGM Â· one card per player", results)
     if page == "Methods:Exact":
-        show_player_cards("match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
+        show_player_cards("match", "ðŸ¤ Exact (all books)", "Same price across books Â· one card per player", results)
     if page == "Methods:Names":
-        st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ’… Name Magic</div>', unsafe_allow_html=True)
         st.caption("Name echoes across different teams. Cute extra - not the green light by itself.")
-        show_player_cards("same_init", "💅 Same Initials", "Same first+last initial (e.g. MM) · different teams", results)
-        show_player_cards("cross", "🔄 Cross Initials", "One last initial = other first initial · different teams", results)
-        show_player_cards("last", "👩‍👧 Same Last Name", "Exact last name · different teams", results)
-        show_player_cards("first", "👯 Same First Name", "Exact first name · different teams", results)
+        show_player_cards("same_init", "ðŸ’… Same Initials", "Same first+last initial (e.g. MM) Â· different teams", results)
+        show_player_cards("cross", "ðŸ”„ Cross Initials", "One last initial = other first initial Â· different teams", results)
+        show_player_cards("last", "ðŸ‘©â€ðŸ‘§ Same Last Name", "Exact last name Â· different teams", results)
+        show_player_cards("first", "ðŸ‘¯ Same First Name", "Exact first name Â· different teams", results)
     if page == "Methods:Signals":
-        show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
+        show_player_cards("signal", "ðŸ“ˆ Signals", "Multi-book method Â· one card per player", results)
     if page == "Lines:Moves":
-        st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
-        st.caption("Fetch-to-fetch + 🔒 open -> now/close from Lock.")
-        for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
+        st.markdown('<div class="queen-banner">â³ Moves (500+)</div>', unsafe_allow_html=True)
+        st.caption("Fetch-to-fetch + ðŸ”’ open -> now/close from Lock.")
+        for move_dir, title in (("up", "ðŸ”´ UP"), ("down", "ðŸŸ¢ DOWN")):
             st.markdown(f"#### {title}")
             items = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == move_dir])
             cols = st.columns(2)
@@ -4186,26 +4186,26 @@ def main():
                     st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
             if not items: st.info("None")
     if page == "Lines:Trends":
-        st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ“‰ Trends</div>', unsafe_allow_html=True)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
         fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
-        st.markdown("#### 💚 FD under MGM")
+        st.markdown("#### ðŸ’š FD under MGM")
         for r in aggregate_by_player(good)[:15]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-        st.markdown("#### 🔴 Fade")
+        st.markdown("#### ðŸ”´ Fade")
         for r in aggregate_by_player(fade)[:15]:
             st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
     if page == "Lines:Late":
         show_player_cards(
             "late",
-            "👻 Late / Missing books",
+            "ðŸ‘» Late / Missing books",
             "Gone from DK / FD / MGM (or HardRock) vs last fetch or Lock - not a RotoWire list",
             results,
         )
     if page == "Lines:Lock":
-        st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ”’ Pregame Lock Â· open / now / close</div>', unsafe_allow_html=True)
         st.caption(
-            "Open = first pull (never changes) · Now = latest pregame fetch · "
+            "Open = first pull (never changes) Â· Now = latest pregame fetch Â· "
             "Close = frozen when the book drops off the feed (often at first pitch)."
         )
         lock = st.session_state.get("pregame_lock") or load_pregame()
@@ -4264,9 +4264,9 @@ def main():
                 st.info("No lock rows matched.")
 
     if page == "Lines:Search":
-        st.markdown('<div class="queen-banner">🔍 Search · by book / price / ending</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ” Search Â· by book / price / ending</div>', unsafe_allow_html=True)
         st.caption(
-            f"Pregame Lock only · 0.5 HR Over · prices above +{MAX_HR_AMERICAN} are dropped as junk. "
+            f"Pregame Lock only Â· 0.5 HR Over Â· prices above +{MAX_HR_AMERICAN} are dropped as junk. "
             "Sort best-odds-first shows the longest numbers on top - not the most likely HRs."
         )
         lock = st.session_state.get("pregame_lock") or load_pregame()
@@ -4376,7 +4376,7 @@ def main():
                         "player": p,
                         "event": info["event"],
                         "best": info["best"],
-                        "html_lines": " · ".join(line_bits),
+                        "html_lines": " Â· ".join(line_bits),
                     })
                 if sort_pick.startswith("Best"):
                     cards.sort(key=lambda c: c["best"], reverse=True)
@@ -4384,7 +4384,7 @@ def main():
                     cards.sort(key=lambda c: c["best"])
                 else:
                     cards.sort(key=lambda c: c["player"])
-                st.markdown(f"**{len(cards)}** player(s) · {len(rows)} book lines")
+                st.markdown(f"**{len(cards)}** player(s) Â· {len(rows)} book lines")
                 if not cards:
                     st.info("Nothing matched - loosen filters.")
                 else:
@@ -4414,11 +4414,11 @@ def main():
                     cols = st.columns(2)
                     for idx, r in enumerate(rows[:150]):
                         end = r.get("ending")
-                        end_s = f" · ends {int(end):02d}" if end is not None else ""
+                        end_s = f" Â· ends {int(end):02d}" if end is not None else ""
                         ev = r.get("event") or ""
                         with cols[idx % 2]:
                             st.markdown(
-                                f'<div class="card"><b>{r["player"]}</b> · {book_label(r["book"])} '
+                                f'<div class="card"><b>{r["player"]}</b> Â· {book_label(r["book"])} '
                                 f'<b>{format_odds(r["price"])}</b>{end_s}'
                                 + (f"<br><small>{ev}</small>" if ev else "")
                                 + "</div>",
@@ -4428,7 +4428,7 @@ def main():
                         st.caption(f"Showing first 150 of {len(rows)}")
 
     if page == "Grade:Lock Lab":
-        st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ§  Lock Lab Â· Who went & what Lock had</div>', unsafe_allow_html=True)
         st.caption("Today's homers matched to what we locked before first pitch.")
         lab = build_lock_lab()
         st.markdown(f"""
@@ -4472,14 +4472,14 @@ def main():
             )
         st.markdown("".join(tag_chips) if tag_chips else "_(None)_", unsafe_allow_html=True)
 
-        st.markdown("#### Who went · most tags first")
+        st.markdown("#### Who went Â· most tags first")
         if not lab["matched"]:
             st.info("No HR names matched Lock. Fetch pregame more so Lock fills.")
         else:
             # one column: st.columns(2) on mobile stacks left then right and wrecks sort order
             for m in lab["matched"][:40]:
                 tags_html = render_method_tags(m["tags"]) if m["tags"] else "<i>no standard tags</i>"
-                prices = " · ".join(m["lines"][:6])
+                prices = " Â· ".join(m["lines"][:6])
                 ev = m["event"]
                 best = ""
                 if m.get("best_book") and m.get("best_price") is not None:
@@ -4487,7 +4487,7 @@ def main():
                 tn = m.get("tag_n", len(m.get("tags") or []))
                 tag_line = f"{tn} tag" + ("s" if tn != 1 else "")
                 st.markdown(
-                    f'<div class="card"><b>{m["hr_name"]}</b> · <span class="score-pill">{tag_line}</span>'
+                    f'<div class="card"><b>{m["hr_name"]}</b> Â· <span class="score-pill">{tag_line}</span>'
                     + (f"<br><small>{ev}</small>" if ev else "")
                     + f"<br>{prices}{best}<br>{tags_html}</div>",
                     unsafe_allow_html=True,
@@ -4497,7 +4497,7 @@ def main():
                 st.write(", ".join(lab["unmatched"][:50]))
 
     if page == "Grade:Tracker":
-        st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ“¡ Tracker</div>', unsafe_allow_html=True)
         st.caption(
             "What has been hitting after we grade it. "
             f"Buckets with n &lt; {TRACKER_MIN_N} are hidden. "
@@ -4532,12 +4532,12 @@ def main():
                     and pct > baseline + 0.5
                 )
                 cls = "rate-chip beat" if beat else "rate-chip"
-                beat_html = '<div class="rate-beat">▲ beats TAKE IT</div>' if beat else ""
+                beat_html = '<div class="rate-beat">â–² beats TAKE IT</div>' if beat else ""
                 out.append(
                     f'<div class="{cls}">'
                     f'<div class="rate-pct">{pct:.0f}%</div>'
                     f'<div class="rate-name">{name}</div>'
-                    f'<div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays</div>'
+                    f'<div class="rate-n">{s["hit"]} hit Â· {s["miss"]} miss Â· {t} plays</div>'
                     f"{beat_html}</div>"
                 )
             return out
@@ -4584,7 +4584,7 @@ def main():
             unsafe_allow_html=True,
         )
 
-        st.markdown("#### By book × ending")
+        st.markdown("#### By book Ã— ending")
         st.caption("Every posted book on the row when we logged it - DK 10, MGM 25, HR 00, etc.")
         chips = chips_from_stats(book_end_stats, min_n=15, compare_baseline=False)
         st.markdown(
@@ -4592,11 +4592,11 @@ def main():
             unsafe_allow_html=True,
         )
     if page == "Grade:Results":
-        st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
-        if st.button("⚡ Run auto-grade now", type="primary"):
+        st.markdown('<div class="queen-banner">ðŸ“Š Results</div>', unsafe_allow_html=True)
+        if st.button("âš¡ Run auto-grade now", type="primary"):
             with st.spinner("MLB..."):
                 h, m, s, msg = auto_grade_pending()
-            st.success(f"{h} HIT · {m} MISS · {s} open - {msg}")
+            st.success(f"{h} HIT Â· {m} MISS Â· {s} open - {msg}")
             st.rerun()
         rows = load_results()
         n_all = len(rows)
@@ -4611,9 +4611,9 @@ def main():
         hist_save = st.session_state.get("_history_gh_save", "-")
         secrets_ok = "yes" if _gh_configured() else "NO - add GITHUB_TOKEN + GITHUB_REPO"
         st.caption(
-            f"{n_all} logged · {n_pending_all} waiting · {n_today} today · "
-            f"source={src} · GH load={gh_st} · GH save={gh_save} · "
-            f"lock={lock_n} ({lock_src}) · hist={hist_src}/{hist_save} · secrets={secrets_ok}"
+            f"{n_all} logged Â· {n_pending_all} waiting Â· {n_today} today Â· "
+            f"source={src} Â· GH load={gh_st} Â· GH save={gh_save} Â· "
+            f"lock={lock_n} ({lock_src}) Â· hist={hist_src}/{hist_save} Â· secrets={secrets_ok}"
         )
         if not _gh_configured():
             st.warning(
@@ -4669,30 +4669,30 @@ def main():
             endg = r.get("ending")
             end_s = f" ends {int(endg):02d}" if endg is not None else ""
             src_lab = {"take_it": "Board TAKE IT", "watch": "Board WATCH", "shop_take": "Shop TAKE", "shop_lean": "Shop LEAN"}.get(r.get("source"), r.get("source") or "")
-            st.markdown(f"**{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s} · {src_lab}")
+            st.markdown(f"**{r['player']}** Â· {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s} Â· {src_lab}")
             c1, c2, _ = st.columns([1, 1, 4])
             with c1:
-                if st.button("🟢 HIT", key=f"hit_{rid}"):
+                if st.button("ðŸŸ¢ HIT", key=f"hit_{rid}"):
                     set_result_status(rid, "HIT")
                     st.rerun()
             with c2:
-                if st.button("🔴 MISS", key=f"miss_{rid}"):
+                if st.button("ðŸ”´ MISS", key=f"miss_{rid}"):
                     set_result_status(rid, "MISS")
                     st.rerun()
-        st.markdown("#### Graded - ↩️ Undo")
+        st.markdown("#### Graded - â†©ï¸ Undo")
         for r in reversed(done[-40:]):
             rid = r["id"]
-            icon = "🟢" if r["result"] == "HIT" else "🔴"
-            auto = " · auto" if r.get("graded_by") == "mlb_auto" else ""
+            icon = "ðŸŸ¢" if r["result"] == "HIT" else "ðŸ”´"
+            auto = " Â· auto" if r.get("graded_by") == "mlb_auto" else ""
             endg = r.get("ending")
             end_s = f" ends {int(endg):02d}" if endg is not None else ""
             src_lab = {"take_it": "Board TAKE IT", "watch": "Board WATCH", "shop_take": "Shop TAKE", "shop_lean": "Shop LEAN"}.get(r.get("source"), r.get("source") or "")
-            st.markdown(f"{icon} **{r['player']}** · {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s} · {src_lab}{auto}")
-            if st.button("↩️ Undo", key=f"undo_{rid}"):
+            st.markdown(f"{icon} **{r['player']}** Â· {format_odds(r.get('best_price'))} {book_label(r.get('best_book'))}{end_s} Â· {src_lab}{auto}")
+            if st.button("â†©ï¸ Undo", key=f"undo_{rid}"):
                 undo_result(rid, r.get("source"))
                 st.rerun()
     if page == "Grade:Backtest":
-        st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ§ª Backtest Â· TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
         rows_bt = load_results()
         overall, daily, method_by_src, n_graded = build_backtest_stats(rows_bt, days=14)
@@ -4700,7 +4700,7 @@ def main():
         def fmt_rate(h, m, t, pct):
             if t == 0 or pct is None:
                 return "-"
-            return f"{pct:.0f}% · {h}H / {m}M · n={t}"
+            return f"{pct:.0f}% Â· {h}H / {m}M Â· n={t}"
 
         ti = overall.get("take_it", (0, 0, 0, None))
         wa = overall.get("watch", (0, 0, 0, None))
@@ -4708,9 +4708,9 @@ def main():
         wa_pct = f"{wa[3]:.0f}" if wa[3] is not None else "-"
         st.markdown(f"""
         <div class="petty-row">
-            <div class="petty-box"><div class="petty-num">{ti_pct}</div><div class="petty-label">🟢 TAKE IT %</div></div>
+            <div class="petty-box"><div class="petty-num">{ti_pct}</div><div class="petty-label">ðŸŸ¢ TAKE IT %</div></div>
             <div class="petty-box"><div class="petty-num">{ti[2]}</div><div class="petty-label">TAKE n</div></div>
-            <div class="petty-box"><div class="petty-num">{wa_pct}</div><div class="petty-label">👀 WATCH %</div></div>
+            <div class="petty-box"><div class="petty-num">{wa_pct}</div><div class="petty-label">ðŸ‘€ WATCH %</div></div>
             <div class="petty-box"><div class="petty-num">{wa[2]}</div><div class="petty-label">WATCH n</div></div>
             <div class="petty-box"><div class="petty-num">{n_graded}</div><div class="petty-label">Graded 14d</div></div>
         </div>
@@ -4725,7 +4725,7 @@ def main():
                 wa_s = fmt_rate(*day["watch"])
                 st.markdown(
                     f'<div class="card"><b>{day["date"]}</b><br>'
-                    f'🟢 TAKE IT: {ti_s}<br>👀 WATCH: {wa_s}</div>',
+                    f'ðŸŸ¢ TAKE IT: {ti_s}<br>ðŸ‘€ WATCH: {wa_s}</div>',
                     unsafe_allow_html=True,
                 )
 
@@ -4739,7 +4739,7 @@ def main():
             chips_ti.append(
                 f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
                 f'<div class="rate-name">{name}</div>'
-                f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
+                f'<div class="rate-n">{s["hit"]}H Â· {s["miss"]}M Â· n={t}</div></div>'
             )
         st.markdown("".join(chips_ti) if chips_ti else "_(Need more graded TAKE IT)_", unsafe_allow_html=True)
 
@@ -4753,7 +4753,7 @@ def main():
             chips_wa.append(
                 f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
                 f'<div class="rate-name">{name}</div>'
-                f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
+                f'<div class="rate-n">{s["hit"]}H Â· {s["miss"]}M Â· n={t}</div></div>'
             )
         st.markdown("".join(chips_wa) if chips_wa else "_(Need more graded WATCH)_", unsafe_allow_html=True)
 
@@ -4761,7 +4761,7 @@ def main():
 
 
     if page == "Grade:Shop":
-        st.markdown('<div class="queen-banner">🛒 Shop report card</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">ðŸ›’ Shop report card</div>', unsafe_allow_html=True)
         st.caption(
             "This is the price side only. Shop TAKE / LEAN log even if the same name is on The Board. "
             "Board Backtest stays methods-only."
@@ -4772,7 +4772,7 @@ def main():
         def fmt_rate(h, m, t, pct):
             if t == 0 or pct is None:
                 return "-"
-            return f"{pct:.0f}% · {h}H / {m}M · n={t}"
+            return f"{pct:.0f}% Â· {h}H / {m}M Â· n={t}"
 
         tk = overall_s.get("shop_take", (0, 0, 0, None))
         ln = overall_s.get("shop_lean", (0, 0, 0, None))
@@ -4790,7 +4790,7 @@ def main():
 
         st.markdown("#### Last 14 days")
         if not daily_s:
-            st.info("No graded Shop TAKE / LEAN yet. Fetch pregame → Shop logs TAKE/LEAN → auto-grade after games.")
+            st.info("No graded Shop TAKE / LEAN yet. Fetch pregame â†’ Shop logs TAKE/LEAN â†’ auto-grade after games.")
         else:
             for day in daily_s:
                 st.markdown(
@@ -4813,7 +4813,7 @@ def main():
                 out.append(
                     f'<div class="rate-chip"><div class="rate-pct">{pct:.0f}%</div>'
                     f'<div class="rate-name">{name}</div>'
-                    f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
+                    f'<div class="rate-n">{s["hit"]}H Â· {s["miss"]}M Â· n={t}</div></div>'
                 )
             return out
 
@@ -4891,151 +4891,412 @@ def main():
                     f'<div class="card-kicker">{res.get("alignment_label")}</div>'
                     f'<span class="score-pill">{score:.2f}</span>'
                     f'<div class="card-name">{name}</div>'
-                    f'<div class="card-meta">n={res.get("n")} · MAD {res.get("mad")} · {res.get("alignment_note")}</div>'
+                    f'<div class="card-meta">n={res.get("n")} Â· MAD {res.get("mad")} Â· {res.get("alignment_note")}</div>'
                     f'</div>',
                     unsafe_allow_html=True,
                 )
             st.markdown("#### Raw JSON")
             st.json(pack)
-            st.caption("Most natural: %s · Most artificial: %s" % (pack.get("most_natural"), pack.get("most_artificial")))
+            st.caption("Most natural: %s Â· Most artificial: %s" % (pack.get("most_natural"), pack.get("most_artificial")))
 
     if page == "Analytics:":
-        st.markdown("### Petty Analytics 📊")
-        st.caption("This week of graded HITs. Not predictive. Just what already went.")
-        rows = load_results()
+        # Display-only recap. Does not change TAKE IT / fetch / grade math.
+        st.markdown("""
+        <style>
+        .pa-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(236,72,153,.25)}
+        .pa-hero h3{font-family:'Playfair Display',serif;margin:0;color:#fff;font-size:1.55rem}
+        .pa-quote{color:#fce7f3;font-style:italic;margin:6px 0 0;font-size:.92rem}
+        .pa-card{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:12px 14px;margin-bottom:10px}
+        .pa-h{font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:#f9a8d4;font-weight:800;margin:0 0 8px}
+        .pa-sub{font-size:.62rem;color:#9ca3af;margin:-4px 0 8px}
+        .pa-row{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:.84rem}
+        .pa-bar{height:6px;border-radius:99px;background:#2a2038;flex:1;overflow:hidden}
+        .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#a855f7);box-shadow:0 0 8px rgba(244,114,182,.45)}
+        .pa-n{font-weight:800;color:#f9a8d4;min-width:28px;text-align:right}
+        .pa-pct{color:#c4b5d6;font-size:.72rem}
+        .pa-foot{text-align:center;color:#f9a8d4;font-size:.78rem;margin:18px 0 8px;opacity:.9}
+        @keyframes pa-spark{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
+        .pa-spark{animation:pa-spark 2.4s ease-in-out infinite}
+        </style>
+        """, unsafe_allow_html=True)
+        hero_take = "Run it, baddie" if petty_on() else "TAKE IT"
+        st.markdown(
+            f'<div class="pa-hero pa-spark"><h3>ðŸ‘‘ Petty Analytics</h3>'
+            f'<p class="pa-quote">â€œIf the odds look ugly, they probably lying.â€</p>'
+            f'<p class="pa-quote" style="font-size:.75rem;opacity:.85">Recap only. {hero_take} rules did not change.</p></div>',
+            unsafe_allow_html=True,
+        )
+
+        rows = load_results() or []
         today = today_az()
         try:
             end = datetime.strptime(today, "%Y-%m-%d").date()
         except Exception:
             end = datetime.now().date()
         start = end - timedelta(days=6)
-        week = []
-        for r in rows or []:
+        last_start = start - timedelta(days=7)
+        last_end = start - timedelta(days=1)
+
+        def _row_day(r):
             d = str(r.get("date") or "")[:10]
             try:
-                dd = datetime.strptime(d, "%Y-%m-%d").date()
+                return datetime.strptime(d, "%Y-%m-%d").date()
             except Exception:
-                continue
-            if start <= dd <= end:
-                week.append(r)
-        hits = [r for r in week if r.get("result") == "HIT"]
-        graded = [r for r in week if r.get("result") in ("HIT", "MISS")]
-        endings, books, buckets, families, methods_c, fade, names = Counter(), Counter(), Counter(), Counter(), Counter(), Counter(), Counter()
-        for r in hits:
+                return None
+
+        def _in(r, a, b):
+            dd = _row_day(r)
+            return dd is not None and a <= dd <= b
+
+        def _ending(r):
             endn = r.get("ending")
             if endn is None:
                 endn = last_two(r.get("best_price"))
-            if endn is not None:
-                endings[f"{int(endn):02d}"] += 1
-            books[book_label(r.get("best_book"))] += 1
-            bkt = price_bucket(r.get("best_price"))
-            if bkt:
-                buckets[bkt] += 1
-            names[r.get("player") or ""] += 1
-            for m in r.get("methods") or []:
-                nm = normalize_method_name(m)
-                methods_c[nm] += 1
-                fam = petty_family_for_method(nm)
-                if fam:
-                    families[fam] += 1
-        for r in graded:
-            if r.get("result") != "MISS":
+            try:
+                return f"{int(endn):02d}" if endn is not None else None
+            except Exception:
+                return None
+
+        window = st.selectbox("Compare", ["This week vs last week", "This week only"], key="pa_window")
+        focus_src = st.selectbox(
+            "Log slice",
+            ["All graded", "Board TAKE IT / WATCH", "Shop TAKE / LEAN"],
+            key="pa_src",
+        )
+        week = [r for r in rows if _in(r, start, end)]
+        prevw = [r for r in rows if _in(r, last_start, last_end)]
+        if focus_src.startswith("Board"):
+            week = [r for r in week if r.get("source") in ("take_it", "watch")]
+            prevw = [r for r in prevw if r.get("source") in ("take_it", "watch")]
+        elif focus_src.startswith("Shop"):
+            week = [r for r in week if r.get("source") in ("shop_take", "shop_lean")]
+            prevw = [r for r in prevw if r.get("source") in ("shop_take", "shop_lean")]
+
+        hits = [r for r in week if r.get("result") == "HIT"]
+        graded = [r for r in week if r.get("result") in ("HIT", "MISS")]
+        prev_hits = [r for r in prevw if r.get("result") == "HIT"]
+        prev_graded = [r for r in prevw if r.get("result") in ("HIT", "MISS")]
+
+        def pack_hits(hit_rows, graded_rows):
+            endings = Counter(); books = Counter(); buckets = Counter()
+            families = Counter(); methods_c = Counter(); names = Counter()
+            end_g = Counter(); book_g = Counter(); buck_g = Counter(); meth_g = Counter()
+            fade = Counter(); cross = Counter()
+            for r in hit_rows:
+                e = _ending(r)
+                if e:
+                    endings[e] += 1
+                books[book_label(r.get("best_book"))] += 1
+                bkt = price_bucket(r.get("best_price"))
+                if bkt:
+                    buckets[bkt] += 1
+                if r.get("player"):
+                    names[r["player"]] += 1
+                seen_fam = set()
+                for m in r.get("methods") or []:
+                    nm = normalize_method_name(m)
+                    methods_c[nm] += 1
+                    fam = petty_family_for_method(nm)
+                    if fam and fam not in seen_fam:
+                        families[fam] += 1
+                        seen_fam.add(fam)
+                    if fam:
+                        cross[(fam, nm)] += 1
+            for r in graded_rows:
+                e = _ending(r)
+                if e:
+                    end_g[e] += 1
+                book_g[book_label(r.get("best_book"))] += 1
+                bkt = price_bucket(r.get("best_price"))
+                if bkt:
+                    buck_g[bkt] += 1
+                for m in r.get("methods") or []:
+                    nm = normalize_method_name(m)
+                    meth_g[nm] += 1
+                    if r.get("result") == "MISS" and (str(m).startswith("FADE") or m == "Multi-book Lengthen"):
+                        if r.get("player"):
+                            fade[r["player"]] += 1
+            return endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross
+
+        endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross = pack_hits(hits, graded)
+        p_end, p_book, p_buck, p_fam, p_meth, p_names, *_rest = pack_hits(prev_hits, prev_graded)
+
+        def arrow(now, then):
+            if window.endswith("only") or then == 0 and now == 0:
+                return ""
+            if now > then:
+                return " ðŸ”º"
+            if now < then:
+                return " ðŸ”»"
+            return " â†’"
+
+        def rate(n_hit, n_all):
+            if not n_all:
+                return "â€”"
+            return f"{100 * n_hit / n_all:.0f}%"
+
+        def bar_row(label, n, mx, extra="", crown=False):
+            w = 0 if mx <= 0 else int(100 * n / mx)
+            cr = "ðŸ‘‘ " if crown else ""
+            return (
+                f'<div class="pa-row"><span>{cr}{label}</span>'
+                f'<div class="pa-bar"><div class="pa-fill" style="width:{w}%"></div></div>'
+                f'<span class="pa-n">{n}</span><span class="pa-pct">{extra}</span></div>'
+            )
+
+        def section_html(title, subtitle, items, mx, rate_map=None, prev_map=None):
+            rows_h = []
+            for i, (k, n) in enumerate(items):
+                extra = ""
+                if rate_map is not None:
+                    extra = rate(n, rate_map.get(k, 0))
+                if prev_map is not None:
+                    extra += arrow(n, prev_map.get(k, 0))
+                rows_h.append(bar_row(k, n, mx, extra, crown=(i == 0)))
+            body = "".join(rows_h) if rows_h else '<div class="pa-pct">None yet</div>'
+            return f'<div class="pa-card"><div class="pa-h">{title}</div><div class="pa-sub">{subtitle}</div>{body}</div>'
+
+        week_rate = rate(len(hits), len(graded))
+        prev_rate = rate(len(prev_hits), len(prev_graded))
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("HRs this week", len(hits), delta=len(hits) - len(prev_hits) if not window.endswith("only") else None)
+        c2.metric("Graded", len(graded))
+        c3.metric("Hit rate", week_rate, delta=None if window.endswith("only") else f"last {prev_rate}")
+        c4.metric("Repeat names", sum(1 for n in names.values() if n >= 2))
+
+        filter_opts = ["(all)"]
+        filter_opts += [f"ending:{k}" for k, _ in endings.most_common(8)]
+        filter_opts += [f"book:{k}" for k, _ in books.most_common(6)]
+        filter_opts += [f"method:{k}" for k, _ in methods_c.most_common(8)]
+        filter_opts += [f"player:{k}" for k, _ in names.most_common(8) if k]
+        chosen = st.selectbox("Focus a line (filters the recap text below)", filter_opts, key="pa_focus")
+
+        def matches_focus(r):
+            if chosen == "(all)":
+                return True
+            kind, val = chosen.split(":", 1)
+            if kind == "ending":
+                return _ending(r) == val
+            if kind == "book":
+                return book_label(r.get("best_book")) == val
+            if kind == "method":
+                return val in {normalize_method_name(m) for m in (r.get("methods") or [])}
+            if kind == "player":
+                return r.get("player") == val
+            return True
+
+        focus_hits = [r for r in hits if matches_focus(r)]
+        if chosen != "(all)":
+            st.caption(f"Focus {chosen}: {len(focus_hits)} HR this slice")
+
+        # streaks: consecutive HIT dates
+        by_player_days = defaultdict(set)
+        for r in rows:
+            if r.get("result") != "HIT" or not r.get("player"):
                 continue
-            for m in r.get("methods") or []:
-                if str(m).startswith("FADE") or m == "Multi-book Lengthen":
-                    fade[r.get("player") or ""] += 1
-        st.caption(f"{len(hits)} HR of {len(graded)} graded this week")
-        a, b = st.columns(2)
-        with a:
-            st.markdown("**Top endings**")
-            for k, n in endings.most_common(8):
-                st.write(f"{k} · {n}")
-            st.markdown("**Top books**")
-            for k, n in books.most_common(8):
-                st.write(f"{k} · {n}")
-            st.markdown("**Top buckets**")
-            for k, n in buckets.most_common(8):
-                st.write(f"{k} · {n}")
-        with b:
-            st.markdown("**Petty Families**")
-            for k, n in families.most_common(6):
-                st.write(f"{k} · {n}")
-            st.markdown("**Top methods**")
-            for k, n in methods_c.most_common(10):
-                st.write(f"{k} · {n}")
-            st.markdown("**Petty Picks (2+ hits)**")
+            dd = _row_day(r)
+            if dd:
+                by_player_days[r["player"]].add(dd)
+        streaks = {}
+        for pl, days in by_player_days.items():
+            if not days:
+                continue
+            cur = 0
+            d = end
+            while d in days:
+                cur += 1
+                d = d - timedelta(days=1)
+            if cur >= 2:
+                streaks[pl] = cur
+
+        left, right = st.columns(2)
+        mx_e = max(endings.values() or [1])
+        mx_bk = max(books.values() or [1])
+        mx_bu = max(buckets.values() or [1])
+        mx_f = max(families.values() or [1])
+        mx_m = max(methods_c.values() or [1])
+        with left:
+            st.markdown(section_html(
+                "Hot Endings ðŸ”®", "Top endings Â· count of HRs Â· hit rate vs all graded with that ending",
+                endings.most_common(8), mx_e, end_g, p_end,
+            ), unsafe_allow_html=True)
+            st.markdown(section_html(
+                "Whoâ€™s Paying the Bills ðŸ’¸", "Top books Â· best-price book on the HIT row",
+                books.most_common(8), mx_bk, book_g, p_book,
+            ), unsafe_allow_html=True)
+            st.markdown(section_html(
+                "Money Lanes ðŸ’…", "Top buckets Â· efficiency = HR / graded in that lane",
+                buckets.most_common(8), mx_bu, buck_g, p_buck,
+            ), unsafe_allow_html=True)
+        with right:
             picks = [(k, n) for k, n in names.most_common() if k and n >= 2]
-            if not picks:
-                st.write("None yet")
-            for k, n in picks[:12]:
-                st.write(f"{k} · {n}")
-            st.markdown("**Fade list**")
-            if not fade:
-                st.write("None")
-            for k, n in fade.most_common(8):
-                st.write(f"{k} · {n}")
+            pick_rows = []
+            for i, (pl, n) in enumerate(picks[:12]):
+                st_s = f" Â· ðŸ”¥ {streaks[pl]}-day streak" if pl in streaks else ""
+                pick_rows.append(bar_row(f"{pl}{st_s}", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
+            st.markdown(
+                f'<div class="pa-card"><div class="pa-h">Repeat Offenders ðŸ’‹</div>'
+                f'<div class="pa-sub">Petty Picks (2+ hits)</div>'
+                f'{"".join(pick_rows) if pick_rows else "<div class=\"pa-pct\">None yet</div>"}</div>',
+                unsafe_allow_html=True,
+            )
+            st.markdown(section_html(
+                "The Girl Magic Pantheon ðŸ‘‘", "Petty Families Â· one family counted once per HIT",
+                families.most_common(6), mx_f, None, p_fam,
+            ), unsafe_allow_html=True)
+            st.markdown(section_html(
+                "Top methods", "Tag volume on HIT rows (a HR can wear more than one)",
+                methods_c.most_common(10), mx_m, meth_g, p_meth,
+            ), unsafe_allow_html=True)
+
+        st.markdown("**Family Ã— method crossover**")
+        top_m = [m for m, _ in methods_c.most_common(6)]
+        top_f = [f for f, _ in families.most_common(4)]
+        if top_m and top_f:
+            lines = []
+            for fam in top_f:
+                bits = [f"{m} {cross.get((fam, m), 0)}" for m in top_m if cross.get((fam, m), 0)]
+                if bits:
+                    lines.append(f"- **{fam}** â€” " + " Â· ".join(bits))
+            st.markdown("\n".join(lines) if lines else "_No overlap yet_")
+        else:
+            st.caption("Need more graded HRs for the matrix.")
+
+        if fade:
+            st.markdown("**Fade list** (MISS rows that already wore a fade / lengthen tag)")
+            st.write(", ".join(f"{k} ({n})" for k, n in fade.most_common(8)))
+
+        recap_lines = [
+            f"Girl Magic Petty Analytics Â· {today}",
+            f"Slice: {focus_src} Â· {window}",
+            f"HR {len(hits)} / graded {len(graded)} Â· rate {week_rate}",
+            "Top endings: " + ", ".join(f"{k} {n}" for k, n in endings.most_common(5)),
+            "Top books: " + ", ".join(f"{k} {n}" for k, n in books.most_common(5)),
+            "Top buckets: " + ", ".join(f"{k} {n}" for k, n in buckets.most_common(5)),
+            "Families: " + ", ".join(f"{k} {n}" for k, n in families.most_common(4)),
+            "Methods: " + ", ".join(f"{k} {n}" for k, n in methods_c.most_common(6)),
+            "Picks: " + ", ".join(f"{k} {n}" for k, n in picks[:8]),
+            "If the odds look ugly, they probably lying.",
+        ]
+        st.download_button(
+            "Export Petty Analytics Weekly Recap",
+            "\n".join(recap_lines),
+            file_name=f"petty_analytics_{today}.txt",
+            mime="text/plain",
+        )
+        st.markdown(
+            '<div class="pa-foot">Data graded by Girl Magic Odds âœ¨ â€” powered by petty intuition and math.</div>',
+            unsafe_allow_html=True,
+        )
 
     if page == "Code:":
-        st.markdown('<div class="queen-banner">How to run it</div>', unsafe_allow_html=True)
-        st.caption("What you do. The tags stay on the cards - we don't print the keys here.")
+        st.markdown('<div class="queen-banner">Girl Magic Â· How we run it</div>', unsafe_allow_html=True)
+        st.caption(
+            "This page is the user manual. Cards already show the tags. "
+            "We do not print the recipe here â€” only what each screen is for."
+        )
         st.markdown(
             '<div class="glossary-block">'
-            "<h4>Start of day</h4>"
-            "Open <b>Slate</b> -> Load Games -> pick today's cards -> Fetch.<br>"
-            "Lock saves the pregame number. Don't chase live once first pitch hits."
+            "<h4>One-sentence version</h4>"
+            "We only look at <b>0.5 HR Over</b> (one homer). "
+            "The Board says <b>who</b> is cleared. Shop says <b>which book / number</b> to buy. "
+            "Grade tells us if we were right so the girls can tighten tomorrow â€” not guess tonight."
             "</div>"
             '<div class="glossary-block">'
-            "<h4>The Board</h4>"
-            "<b>TAKE IT</b> - play it. Short list on purpose.<br>"
-            "<b>PASS</b> - something fired, not enough to green-light.<br>"
-            "<b>WATCH</b> - on the radar so we can grade it later.<br>"
-            "If it's not green, don't talk yourself into it."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>Shop</h4>"
-            "Where you buy the number. Compare books, skip flyers, filter by ending or book.<br>"
-            "Shop says if the <b>price</b> is worth it. Board says if the <b>name</b> is worth it.<br>"
-            "Shop TAKE / LEAN log as their own rows. Grade them under <b>Grade → Shop</b>."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>After the games</h4>"
-            "<b>Grade</b> auto-reads box scores. Tracker is how we learn without guessing.<br>"
-            "<b>Backtest</b> = Board TAKE IT vs WATCH (methods).<br>"
-            "<b>Grade → Shop</b> = Shop TAKE vs Shop LEAN (price vs fair). Same name can be on both."
-            "</div>"
-            '<div class="glossary-block">'
-            "<h4>🔒 Lock vs 🧠 Lock Lab</h4>"
-            "<b>Lock</b> - <b>Open</b> = first pull (never changes) · <b>Now</b> = latest pregame · <b>Close</b> = last number before the book vanishes (often first pitch).<br>"
-            "<b>Movement</b> - open -> now/close (and fetch-to-fetch). Study morning vs lineup vs final hour.<br>"
-            "<b>Lock Lab</b> - HRs matched to Lock. Ending chips = <b>1 per HR</b> (best of DK/FD/MGM at close)."
-            "</div>"
-
-            '<div class="glossary-block">'
-            "<h4>📊 Results · Auto-grade · 📡 Tracker · 🧪 Backtest</h4>"
-            "<b>Results</b> - every TAKE IT / WATCH we logged -> PENDING -> HIT or MISS.<br>"
-            "<b>Auto-grade</b> - checks MLB box scores so you don't grade everything by hand.<br>"
-            "<b>Tracker</b> - hit rate by tag / book / ending after enough grades.<br>"
-            "<b>Backtest</b> - TAKE IT % vs WATCH % (needs a real sample - ignore n=2 days)."
-            "</div>"
-
-            '<div class="glossary-block">'
-            "<h4>📚 Books we care about</h4>"
-            "<b>Methods focus:</b> DraftKings · FanDuel · BetMGM<br>"
-            "<b>Often best number to bet:</b> DK · FD · Hard Rock<br>"
-            "<b>Compare:</b> Caesars · Hard Rock vs others<br>"
-            "<b>Bet365:</b> on hold until the feed is solid (850s / pairs later)"
-            "</div>"
-
-            '<div class="glossary-block">'
-            "<h4>⚡ Quick flow</h4>"
-            "① Load games -> ② Fetch (0.5 HR) -> ③ Lock saves pregame -> "
-            "④ Tags fire -> ⑤ Board TAKE / WATCH / PASS -> ⑥ Grade results -> ⑦ Learn in Tracker / Lab"
+            "<h4>âš¡ Start of day</h4>"
+            "â‘  Sidebar â†’ <b>Load games</b><br>"
+            "â‘¡ Pick today's cards (don't leave it on every game if you only care about a few)<br>"
+            "â‘¢ <b>Fetch</b> â€” this is the only time new odds + lock snapshots save<br>"
+            "â‘£ Leave <b>Grab lineups on fetch</b> on so bench / DNP names don't clog the Board<br>"
+            "â‘¤ Read green first. Gray and eyes are not a dare."
             "</div>",
             unsafe_allow_html=True,
         )
 
+        with st.expander("The Board â€” green / gray / eyes", expanded=True):
+            st.markdown(
+                "- **TAKE IT** (Petty Mode: *Run it, baddie*) â€” cleared. Short list on purpose.\n"
+                "- **PASS** (*Not today, babe*) â€” something showed up, not enough to green-light.\n"
+                "- **WATCH** (*Keep an eye, queen*) â€” we log it so we can grade later. Not a play by itself.\n"
+                "- **COVERAGE** â€” on the slate, not in the three buckets above.\n\n"
+                "**Score** on the card is a rank, not a green light. "
+                "A high score with a gray card is still gray.\n\n"
+                "**Edge** = how far the best book sits from the pack. "
+                "Big edge with no premium tags is still a pass.\n\n"
+                "If Petty Mode is on, the words change. The math does not."
+            )
+        with st.expander("What the little tags mean (no recipes)"):
+            st.markdown(
+                "- Colored chips = **which book family** fired (DK green Â· MGM gold Â· FD blue Â· purple = match / group).\n"
+                "- **Family chips** (ðŸ‘‘ Classic Â· ðŸ’… Pressure Â· ðŸŽ­ Drama Â· ðŸ§¸ Cute) are vibe folders only. Cute is never the reason you fire.\n"
+                "- **Petty Notes** under a card are reminders (trifecta, long-but-hot, group streak). Not extra math.\n"
+                "- **ðŸš¨ Petty Alerts** at the top = â€œlook here first,â€ not â€œbet this automatically.â€\n"
+                "- Exact recipes stay on the cards and in the girlsâ€™ heads. This page will not list endings or pair rules."
+            )
+        with st.expander("Shop vs Board"):
+            st.markdown(
+                "- **Board** = is this *name* cleared today?\n"
+                "- **Shop** = is this *price* the one we want to buy, and on which book?\n"
+                "- Same player can be green on the Board and LEAN / DON'T in Shop (or the opposite).\n"
+                "- Shop TAKE / LEAN log as their **own** rows. Grade them under **Grade â†’ Shop**, not Board Backtest.\n"
+                "- Flyer numbers (very long prices) need extra tags. If Shop says DON'T, don't talk yourself into it."
+            )
+        with st.expander("Digits Â· Methods Â· Lines"):
+            st.markdown(
+                "- **Digits / MGM / DK / FD / Exact** = the pattern screens. One card per player. Same-team groups stay on the MGM side.\n"
+                "- **Names** = initial / name links. Only counts when it also matches a book method. Prefer different teams.\n"
+                "- **Signals** = books lining up or disagreeing. One card per player.\n"
+                "- **Moves** = price went up (red) or down (green). We only care about 500+ names.\n"
+                "- **Trends** = FD vs MGM gaps, fades we already defined. Biggest gaps first.\n"
+                "- **Late / Lock** = who showed up late, who dropped off the feed, last pregame number we saved.\n"
+                "- **Search** = find one name across books without scrolling the league."
+            )
+        with st.expander("Lock Â· why names vanish after first pitch"):
+            st.markdown(
+                "Some books (especially MGM) **pull the number once the game is live**. "
+                "That is why we snapshot **Lock** on every Fetch.\n\n"
+                "- **Open** = first time we saw them today (does not change).\n"
+                "- **Now** = latest pregame pull.\n"
+                "- **Close** = last number before the book disappeared.\n\n"
+                "Fallen Off / Gone Missing use that snapshot so we can still grade. "
+                "Do not chase live once first pitch hits."
+            )
+        with st.expander("Grade Â· Results Â· Tracker Â· Backtest Â· Analytics"):
+            st.markdown(
+                "- **Results** â€” every logged TAKE IT / WATCH / Shop call â†’ PENDING â†’ HIT or MISS. Page through all of them. Undo exists.\n"
+                "- **Log a HR** â€” someone went who was not on the Board. Still log them so What's Going Today and Analytics stay honest.\n"
+                "- **Auto-grade** â€” reads MLB box scores. Fix misses with Undo + HIT/MISS.\n"
+                "- **Tracker** â€” hit rate by tag / book / ending once the sample is big enough. Ignore tiny n.\n"
+                "- **Backtest** â€” Board TAKE IT % vs WATCH %. TAKE should beat WATCH. If it doesn't, we tighten gates â€” we don't invent new tricks mid-slate.\n"
+                "- **Grade â†’ Shop** â€” did buying the â€œfairerâ€ number actually hit more?\n"
+                "- **Analytics** â€” this week's HRs only: hot endings, books, families, repeat names, fade list. Looking backward, not predicting tonight."
+            )
+        with st.expander("What's Going Today banner"):
+            st.markdown(
+                "Built from **graded HITs** (Board + Shop + manual HR logs). "
+                "It shows which endings and books already went today. "
+                "It is a recap strip, not a second Board."
+            )
+        with st.expander("Books we actually use"):
+            st.markdown(
+                "- **Methods focus:** DraftKings Â· FanDuel Â· BetMGM\n"
+                "- **Often the number we buy:** DK Â· FD Â· Hard Rock\n"
+                "- **Compare lane:** Caesars Â· Hard Rock vs the pack\n"
+                "- **Bet365:** wired in the code, live when the feed actually sends it\n"
+                "- Other books can show for comparison. They do not unlock TAKE IT by themselves."
+            )
+        with st.expander("House rules so nobody gets cute"):
+            st.markdown(
+                "- Only **0.5 HR Over**. No 2+ lines. No unders.\n"
+                "- Green is the play list. Everything else is homework.\n"
+                "- Two-plus premium tags still matter more than one cute name match.\n"
+                "- If lineups say they are not hitting, they should not be on the Board.\n"
+                "- Don't grade off vibes. HIT / MISS / Undo exist so the Tracker stays clean.\n"
+                "- Secrets stay on the cards and in the group chat. This page is the map, not the vault."
+            )
+
     st.markdown(
-        '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls We Rolling</div>',
+        '<div class="footer">ðŸ‘‘ Girl Magic Â· Boss Bitch Â· HBIC Â· Me & My Girls We Rolling</div>',
         unsafe_allow_html=True,
     )
 
