@@ -73466,215 +73466,118 @@
     "price_source": "shop"
   },
   {
-    "id": "2026-09-07_Bryan Torres_watch_26",
+    "id": "2026-09-07_Dylan Crews_shop_take_102",
     "date": "2026-09-07",
     "time": "12:58 PM",
-    "player": "Bryan Torres",
-    "score": 26,
-    "edge": 55,
-    "best_price": 1040,
-    "best_book": "fanduel",
-    "median": 985.0,
-    "book_prices": {
-      "caesars": 950,
-      "draftkings": 970,
-      "fanduel": 1040,
-      "hardrockbet": 1000
-    },
-    "price_bucket": "+1000+",
-    "ending": 40,
-    "mgm_locked": null,
-    "mgm_ending": null,
-    "methods": [
-      "DK FD-style",
-      "Multi-book Shorten"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T19:58:15.557140+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.5
-  },
-  {
-    "id": "2026-09-07_Fernando Tatis Jr._watch_18",
-    "date": "2026-09-07",
-    "time": "12:58 PM",
-    "player": "Fernando Tatis Jr.",
-    "score": 18,
-    "edge": 40,
-    "best_price": 390,
-    "best_book": "fanduel",
-    "median": 350,
-    "book_prices": {
-      "betmgm": 340,
-      "caesars": 350,
-      "draftkings": 359,
-      "fanduel": 390,
-      "hardrockbet": 350
-    },
-    "price_bucket": "under +400",
-    "ending": 90,
-    "mgm_locked": 340,
-    "mgm_ending": 40,
-    "methods": [
-      "MGM Exact",
-      "Books tight"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T19:58:15.558764+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
-  },
-  {
-    "id": "2026-09-07_Ivan Herrera_watch_18",
-    "date": "2026-09-07",
-    "time": "12:58 PM",
-    "player": "Ivan Herrera",
-    "score": 18,
-    "edge": 40,
-    "best_price": 1120,
-    "best_book": "fanduel",
-    "median": 1080.0,
-    "book_prices": {
-      "caesars": 950,
-      "draftkings": 1060,
-      "fanduel": 1120,
-      "hardrockbet": 1100
-    },
-    "price_bucket": "+1000+",
-    "ending": 20,
-    "mgm_locked": null,
-    "mgm_ending": null,
-    "methods": [
-      "DK FD-style",
-      "FD Pattern"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T19:58:15.560213+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.75
-  },
-  {
-    "id": "2026-09-07_Keibert Ruiz_watch_21",
-    "date": "2026-09-07",
-    "time": "12:58 PM",
-    "player": "Keibert Ruiz",
-    "score": 21,
-    "edge": 10,
-    "best_price": 750,
-    "best_book": "caesars",
-    "median": 700,
-    "book_prices": {
-      "betmgm": 675,
-      "caesars": 750,
-      "draftkings": 710,
-      "fanduel": 700,
-      "hardrockbet": 700
-    },
-    "price_bucket": "+700s",
-    "ending": 50,
-    "mgm_locked": 675,
-    "mgm_ending": 75,
-    "methods": [
-      "Books tight",
-      "DK 10",
-      "Stayed in the group",
-      "Last one left",
-      "Match 75",
-      "MGM 75"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T19:58:15.561529+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.8
-  },
-  {
-    "id": "2026-09-07_Leonardo Bernal_watch_34",
-    "date": "2026-09-07",
-    "time": "12:58 PM",
-    "player": "Leonardo Bernal",
-    "score": 34,
-    "edge": 110,
-    "best_price": 1120,
-    "best_book": "fanduel",
-    "median": 1010.0,
-    "book_prices": {
-      "caesars": 950,
-      "draftkings": 1020,
-      "fanduel": 1120,
-      "hardrockbet": 1000
-    },
-    "price_bucket": "+1000+",
-    "ending": 20,
-    "mgm_locked": null,
-    "mgm_ending": null,
-    "methods": [
-      "DK FD-style",
-      "FD Pattern"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T19:58:15.562850+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.75
-  },
-  {
-    "id": "2026-09-07_Nathan Church_watch_31",
-    "date": "2026-09-07",
-    "time": "12:58 PM",
-    "player": "Nathan Church",
-    "score": 31,
-    "edge": 80,
-    "best_price": 1400,
+    "player": "Dylan Crews",
+    "score": 0,
+    "edge": 102,
+    "best_price": 650,
     "best_book": "hardrockbet",
-    "median": 1320.0,
+    "median": 525,
     "book_prices": {
-      "caesars": 1100,
-      "draftkings": 1340,
-      "fanduel": 1300,
-      "hardrockbet": 1400
+      "betmgm": 550,
+      "caesars": 525,
+      "draftkings": 511,
+      "fanduel": 520,
+      "hardrockbet": 650
     },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": null,
-    "mgm_ending": null,
+    "price_bucket": "+600s",
+    "ending": 50,
     "methods": [
-      "Multi-book Shorten"
+      "Shop TAKE"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T19:58:15.564135+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
+    "source": "shop_take",
+    "logged_at": "2026-09-07T19:58:17.634430+00:00",
+    "price_source": "shop"
   },
   {
-    "id": "2026-09-07_Xander Bogaerts_watch_25",
+    "id": "2026-09-07_Dustin Harris_shop_lean_81",
+    "date": "2026-09-07",
+    "time": "12:58 PM",
+    "player": "Dustin Harris",
+    "score": 0,
+    "edge": 81,
+    "best_price": 900,
+    "best_book": "hardrockbet",
+    "median": 825,
+    "book_prices": {
+      "caesars": 750,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T19:58:17.637614+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Ethan Salas_shop_lean_53",
+    "date": "2026-09-07",
+    "time": "12:58 PM",
+    "player": "Ethan Salas",
+    "score": 0,
+    "edge": 53,
+    "best_price": 800,
+    "best_book": "hardrockbet",
+    "median": 750,
+    "book_prices": {
+      "caesars": 700,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T19:58:17.644659+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Daylen Lile_shop_lean_51",
+    "date": "2026-09-07",
+    "time": "12:58 PM",
+    "player": "Daylen Lile",
+    "score": 0,
+    "edge": 51,
+    "best_price": 568,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 475,
+      "caesars": 525,
+      "draftkings": 568,
+      "fanduel": 500,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 68,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T19:58:17.646420+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Xander Bogaerts_shop_lean_42",
     "date": "2026-09-07",
     "time": "12:58 PM",
     "player": "Xander Bogaerts",
-    "score": 25,
-    "edge": 50,
+    "score": 0,
+    "edge": 42,
     "best_price": 750,
     "best_book": "hardrockbet",
     "median": 700,
@@ -73687,19 +73590,13 @@
     },
     "price_bucket": "+700s",
     "ending": 50,
-    "mgm_locked": 725,
-    "mgm_ending": 25,
     "methods": [
-      "DK FD-style",
-      "Multi-book Shorten"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T19:58:15.566486+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.6
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T19:58:17.647380+00:00",
+    "price_source": "shop"
   }
 ]
