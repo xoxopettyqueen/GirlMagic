@@ -210,6 +210,7 @@ PENDING_PAGE = 40
 EV_MIN_N = 12
 BOARD_MAX_PER_TEAM = 3
 BOARD_MAX_PER_GAME = 4
+TEAM_PICK_MIN_SCORE = 30  # floor pick: 1 per team when nobody greened; not TAKE IT
 
 # PRIORITY = must have >=1 to unlock TAKE IT (Tracker 9/03 volume)
 # Tracker 9/05: only tags that beat 13% baseline unlock TAKE IT
@@ -2744,6 +2745,62 @@ def tighten_board(ev_board):
     passes = sorted(passes, key=lambda x: (-x["method_count"], -x["score"], -x["edge"]))
     return out_takes + passes
 
+
+def _item_game(item):
+    return item.get("event") or (item.get("events") or [""])[0]
+
+
+def apply_team_picks(ev_board, watch_board, coverage_board):
+    """1 name per team when that team has zero TAKE ITs. Never sets is_bet."""
+    takes = [x for x in (ev_board or []) if x.get("is_bet")]
+    taken = {(_item_game(x), x.get("team") or "") for x in takes}
+    take_names = {x.get("player") for x in takes}
+
+    leftovers = []
+    for src, pool in (("PASS", ev_board), ("WATCH", watch_board), ("COVERAGE", coverage_board)):
+        for x in pool or []:
+            if x.get("is_bet") or x.get("player") in take_names:
+                continue
+            if src == "PASS" and x.get("is_bet"):
+                continue
+            if src == "PASS" and x.get("is_bet") is True:
+                continue
+            row = dict(x)
+            row["_pick_src"] = src
+            leftovers.append(row)
+
+    leftovers.sort(key=lambda x: (
+        0 if x.get("_pick_src") == "PASS" else 1 if x.get("_pick_src") == "WATCH" else 2,
+        -count_core_methods(x.get("methods") or []),
+        -(x.get("score") or 0),
+        -(x.get("edge") or 0),
+    ))
+
+    used = set(taken)
+    seen = set(take_names)
+    picks = []
+    for x in leftovers:
+        team = x.get("team") or ""
+        game = _item_game(x)
+        if not team or not game:
+            continue
+        key = (game, team)
+        if key in used or x.get("player") in seen:
+            continue
+        if (x.get("score") or 0) < TEAM_PICK_MIN_SCORE and not (x.get("methods") or []):
+            continue
+        x = dict(x)
+        x["team_pick"] = True
+        x["is_bet"] = False
+        x["why"] = (
+            f"TEAM PICK · best on {team} this game · not full TAKE IT · "
+            f"from {x.get('_pick_src')} · score {x.get('score', 0)}"
+        )
+        picks.append(x)
+        used.add(key)
+        seen.add(x.get("player"))
+    return picks
+
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if df.empty: return [], [], [], []
     if "team" not in df.columns: df["team"] = ""
@@ -3983,6 +4040,8 @@ def main():
         key=lambda x: (-len(x.get("methods") or []), -x.get("score", 0), x.get("player") or ""),
     )
     coverage_n = len(coverage_only)
+    team_picks = apply_team_picks(ev_board, watch_only, coverage_only)
+    pick_n = len(team_picks)
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
     mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
@@ -3995,6 +4054,7 @@ def main():
     st.markdown(f"""
     <div class="petty-row">
         <div class="petty-box"><div class="petty-num">{take_n}</div><div class="petty-label">{petty_label("TAKE IT")}</div></div>
+        <div class="petty-box"><div class="petty-num">{pick_n}</div><div class="petty-label">TEAM PICK</div></div>
         <div class="petty-box"><div class="petty-num">{pass_n}</div><div class="petty-label">{petty_label("PASS")}</div></div>
         <div class="petty-box"><div class="petty-num">{watch_n}</div><div class="petty-label">{petty_label("WATCH")}</div></div>
         <div class="petty-box"><div class="petty-num">{take_n + pass_n + watch_n + coverage_n}</div><div class="petty-label">ON SLATE</div></div>
@@ -4077,6 +4137,10 @@ def main():
                 by_game = defaultdict(list)
                 for item in takes:
                     by_game[item.get("event") or "Game"].append(item)
+                picks_by_game = defaultdict(list)
+                for item in team_picks:
+                    picks_by_game[_item_game(item) or "Game"].append(item)
+                all_games = set(by_game.keys()) | set(picks_by_game.keys())
 
                 def _resolve_commence(game_name):
                     t = commence_by_event.get(game_name)
@@ -4113,16 +4177,37 @@ def main():
                     except Exception:
                         return game_name
 
-                for game in sorted(by_game.keys(), key=_game_sort_key):
-                    items = sorted(by_game[game], key=lambda x: -x.get("score", 0))
+                for game in sorted(all_games, key=_game_sort_key):
+                    items = sorted(by_game.get(game, []), key=lambda x: -x.get("score", 0))
+                    picks = sorted(picks_by_game.get(game, []), key=lambda x: -x.get("score", 0))
                     st.markdown(f"**{_fmt_game_header(game)}**")
                     cols = st.columns(2)
-                    for idx, item in enumerate(items):
+                    idx = 0
+                    for item in items:
                         with cols[idx % 2]:
                             _render_board_card(item, "TAKE IT", "bet")
+                        idx += 1
+                    for item in picks:
+                        with cols[idx % 2]:
+                            _render_board_card(item, "TEAM PICK", "watch-card")
+                        idx += 1
+                    if not items and not picks:
+                        st.caption("No TAKE IT or team pick for this game.")
             else:
                 st.markdown("#### Take it")
-                st.caption("Nothing cleared right now. Check Shop or wait for the next fetch.")
+                if team_picks:
+                    st.caption("Nothing fully cleared. Team picks below — best name per side, not a green light.")
+                    picks_by_game = defaultdict(list)
+                    for item in team_picks:
+                        picks_by_game[_item_game(item) or "Game"].append(item)
+                    for game in sorted(picks_by_game.keys()):
+                        st.markdown(f"**{game}**")
+                        cols = st.columns(2)
+                        for idx, item in enumerate(sorted(picks_by_game[game], key=lambda x: -x.get("score", 0))):
+                            with cols[idx % 2]:
+                                _render_board_card(item, "TEAM PICK", "watch-card")
+                else:
+                    st.caption("Nothing cleared right now. Check Shop or wait for the next fetch.")
 
             if passes:
                 st.markdown("#### Pass")
