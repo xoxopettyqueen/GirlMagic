@@ -74584,5 +74584,142 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-07_Lawrence Butler_take_it_86",
+    "date": "2026-09-07",
+    "time": "03:17 PM",
+    "player": "Lawrence Butler",
+    "score": 86,
+    "edge": 20,
+    "best_price": 610,
+    "best_book": "draftkings",
+    "median": 590,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 575,
+      "draftkings": 610,
+      "fanduel": 590,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 10,
+    "mgm_locked": 525,
+    "mgm_ending": 25,
+    "methods": [
+      "MGM 25",
+      "DK 10",
+      "Multi-book method",
+      "Match 25",
+      "Stayed in the group",
+      "FD Pattern",
+      "Last one left",
+      "FD+MGM classic"
+    ],
+    "core": 6,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-07T22:17:03.144383+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-07_Jordan Walker_watch_20",
+    "date": "2026-09-07",
+    "time": "03:17 PM",
+    "player": "Jordan Walker",
+    "score": 20,
+    "edge": 27,
+    "best_price": 640,
+    "best_book": "draftkings",
+    "median": 612.5,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 640,
+      "fanduel": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 40,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-07T22:17:03.148124+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-07_Jung Hoo Lee_watch_31",
+    "date": "2026-09-07",
+    "time": "03:17 PM",
+    "player": "Jung Hoo Lee",
+    "score": 31,
+    "edge": 80,
+    "best_price": 1200,
+    "best_book": "hardrockbet",
+    "median": 1120.0,
+    "book_prices": {
+      "caesars": 1100,
+      "draftkings": 1140,
+      "fanduel": 1060,
+      "hardrockbet": 1200
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-07T22:17:03.148519+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-07_Nathan Church_watch_49",
+    "date": "2026-09-07",
+    "time": "03:17 PM",
+    "player": "Nathan Church",
+    "score": 49,
+    "edge": 160,
+    "best_price": 1360,
+    "best_book": "draftkings",
+    "median": 1200.0,
+    "book_prices": {
+      "caesars": 1100,
+      "draftkings": 1360,
+      "fanduel": 1100,
+      "hardrockbet": 1300
+    },
+    "price_bucket": "+1000+",
+    "ending": 60,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-07T22:17:03.149267+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
   }
 ]
