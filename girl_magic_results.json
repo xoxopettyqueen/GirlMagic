@@ -73111,5 +73111,35 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "graded_by": "mlb_auto"
+  },
+  {
+    "id": "2026-09-07_Kaelen Culpepper_watch_30",
+    "date": "2026-09-07",
+    "time": "12:05 PM",
+    "player": "Kaelen Culpepper",
+    "score": 30,
+    "edge": 75,
+    "best_price": 900,
+    "best_book": "hardrockbet",
+    "median": 825.0,
+    "book_prices": {
+      "caesars": 750,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-07T19:05:03.468401+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.5
   }
 ]
