@@ -1,134 +1,6 @@
 {
-  "saved_at": "2026-09-07T17:12:57.592569+00:00",
+  "saved_at": "2026-09-07T17:16:45.632878+00:00",
   "price_history": [
-    {
-      "Andres Chaparro||betmgm": 450,
-      "Andres Chaparro||caesars": 325,
-      "Andres Chaparro||draftkings": 374,
-      "Andres Chaparro||fanduel": 360,
-      "Andrew Benintendi||caesars": 525,
-      "Andrew Benintendi||hardrockbet": 475,
-      "Andr\u00e9s Chaparro||caesars": 390,
-      "Austin Wells||hardrockbet": 2500,
-      "Braden Montgomery||caesars": 625,
-      "Braden Montgomery||hardrockbet": 650,
-      "Brady House||betmgm": 525,
-      "Brady House||caesars": 525,
-      "Brady House||draftkings": 533,
-      "Brady House||fanduel": 490,
-      "Brady House||hardrockbet": 550,
-      "Brooks Lee||caesars": 625,
-      "Brooks Lee||hardrockbet": 650,
-      "CJ Abrams||betmgm": 425,
-      "CJ Abrams||caesars": 500,
-      "CJ Abrams||draftkings": 496,
-      "CJ Abrams||fanduel": 490,
-      "CJ Abrams||hardrockbet": 525,
-      "Chase Meidroth||caesars": 950,
-      "Chase Meidroth||hardrockbet": 900,
-      "Colson Montgomery||caesars": 265,
-      "Colson Montgomery||hardrockbet": 275,
-      "Daylen Lile||betmgm": 525,
-      "Dylan Crews||betmgm": 425,
-      "Dylan Crews||caesars": 525,
-      "Dylan Crews||draftkings": 513,
-      "Dylan Crews||fanduel": 490,
-      "Dylan Crews||hardrockbet": 575,
-      "Enrique Hernandez||caesars": 700,
-      "Enrique Hernandez||hardrockbet": 750,
-      "Enrique Hern\u00e1ndez||betmgm": 525,
-      "Enrique Hern\u00e1ndez||caesars": 700,
-      "Enrique Hern\u00e1ndez||draftkings": 840,
-      "Enrique Hern\u00e1ndez||fanduel": 820,
-      "Enrique Hern\u00e1ndez||hardrockbet": 750,
-      "Freddie Freeman||betmgm": 475,
-      "Freddie Freeman||caesars": 700,
-      "Freddie Freeman||draftkings": 760,
-      "Freddie Freeman||fanduel": 760,
-      "Freddie Freeman||hardrockbet": 700,
-      "Harry Ford||caesars": 750,
-      "Harry Ford-DUP||betmgm": 900,
-      "Harry Ford-DUP||caesars": 750,
-      "Harry Ford-DUP||draftkings": 790,
-      "Harry Ford-DUP||fanduel": 760,
-      "Jacob Young||betmgm": 1000,
-      "Jacob Young||caesars": 950,
-      "Jacob Young||draftkings": 1060,
-      "Jacob Young||fanduel": 920,
-      "Jacob Young||hardrockbet": 1000,
-      "James Wood||betmgm": 325,
-      "James Wood||caesars": 370,
-      "James Wood||draftkings": 366,
-      "James Wood||fanduel": 360,
-      "James Wood||hardrockbet": 375,
-      "Jeff McNeil||hardrockbet": 2000,
-      "Josh Bell||caesars": 425,
-      "Kaelen Culpepper||caesars": 700,
-      "Kaelen Culpepper||hardrockbet": 700,
-      "Kody Clemens||caesars": 370,
-      "Kyle Teel||caesars": 475,
-      "Kyle Teel||hardrockbet": 550,
-      "Kyle Tucker||betmgm": 475,
-      "Kyle Tucker||caesars": 700,
-      "Kyle Tucker||draftkings": 820,
-      "Kyle Tucker||fanduel": 730,
-      "Kyle Tucker||hardrockbet": 800,
-      "Luke Keaschall||caesars": 850,
-      "Luke Keaschall||hardrockbet": 900,
-      "Max Muncy||caesars": 475,
-      "Max Muncy||draftkings": 469,
-      "Max Muncy||fanduel": 490,
-      "Max Muncy||hardrockbet": 475,
-      "Miguel Rojas||betmgm": 900,
-      "Miguel Rojas||caesars": 1100,
-      "Miguel Rojas||draftkings": 1360,
-      "Miguel Rojas||fanduel": 1200,
-      "Miguel Rojas||hardrockbet": 1200,
-      "Miguel Vargas||caesars": 370,
-      "Miguel Vargas||hardrockbet": 450,
-      "Mookie Betts||betmgm": 425,
-      "Mookie Betts||caesars": 625,
-      "Mookie Betts||draftkings": 710,
-      "Mookie Betts||fanduel": 630,
-      "Mookie Betts||hardrockbet": 650,
-      "Munetaka Murakami||caesars": 320,
-      "Munetaka Murakami||hardrockbet": 350,
-      "Nasim Nunez||hardrockbet": 2000,
-      "Nasim Nu\u00f1ez||betmgm": 1450,
-      "Nasim Nu\u00f1ez||fanduel": 2500,
-      "Nasim Nu\u00f1ez||hardrockbet": 2000,
-      "Royce Lewis||caesars": 370,
-      "Royce Lewis||hardrockbet": 350,
-      "Ryan Jeffers||caesars": 500,
-      "Ryan Jeffers||hardrockbet": 450,
-      "Sam Antonacci||caesars": 950,
-      "Sam Antonacci||hardrockbet": 850,
-      "Shohei Ohtani||hardrockbet": 350,
-      "Teoscar Hernandez||caesars": 500,
-      "Teoscar Hernandez||hardrockbet": 525,
-      "Teoscar Hern\u00e1ndez||betmgm": 400,
-      "Teoscar Hern\u00e1ndez||caesars": 400,
-      "Teoscar Hern\u00e1ndez||draftkings": 600,
-      "Teoscar Hern\u00e1ndez||fanduel": 590,
-      "Teoscar Hern\u00e1ndez||hardrockbet": 525,
-      "Tommy Edman||betmgm": 390,
-      "Tommy Edman||caesars": 750,
-      "Tommy Edman||draftkings": 810,
-      "Tommy Edman||fanduel": 730,
-      "Tommy Edman||hardrockbet": 750,
-      "Trevor Larnach||caesars": 575,
-      "Trevor Larnach||hardrockbet": 600,
-      "Tristan Peters||caesars": 525,
-      "Tristan Peters||hardrockbet": 575,
-      "Walker Jenkins||hardrockbet": 750,
-      "Will Smith||betmgm": 450,
-      "Will Smith||caesars": 500,
-      "Will Smith||draftkings": 519,
-      "Will Smith||fanduel": 520,
-      "Will Smith||hardrockbet": 575,
-      "Yohandy Morales||caesars": 625,
-      "Zack Gelof||hardrockbet": 2000
-    },
     {
       "A.J. Ewing||betmgm": 900,
       "A.J. Ewing||caesars": 850,
@@ -6479,1901 +6351,914 @@
       "Zack Gelof||draftkings": 520,
       "Zack Gelof||fanduel": 520,
       "Zack Gelof||hardrockbet": 600
+    },
+    {
+      "A.J. Ewing||betmgm": 900,
+      "A.J. Ewing||caesars": 750,
+      "A.J. Ewing||draftkings": 860,
+      "A.J. Ewing||fanduel": 800,
+      "A.J. Ewing||hardrockbet": 850,
+      "Abimelec Ortiz||betmgm": 550,
+      "Abimelec Ortiz||caesars": 525,
+      "Abimelec Ortiz||draftkings": 558,
+      "Abimelec Ortiz||fanduel": 570,
+      "Abimelec Ortiz||hardrockbet": 575,
+      "Adam Frazier||hardrockbet": 1400,
+      "Adley Rutschman||caesars": 700,
+      "Adley Rutschman||hardrockbet": 700,
+      "Alec Bohm||caesars": 750,
+      "Alec Bohm||draftkings": 800,
+      "Alec Bohm||fanduel": 700,
+      "Alec Bohm||hardrockbet": 700,
+      "Alec Burleson||caesars": 625,
+      "Alec Burleson||draftkings": 579,
+      "Alec Burleson||fanduel": 610,
+      "Alec Burleson||hardrockbet": 650,
+      "Alejandro Kirk||betmgm": 375,
+      "Alejandro Kirk||caesars": 475,
+      "Alejandro Kirk||draftkings": 498,
+      "Alejandro Kirk||fanduel": 480,
+      "Alejandro Kirk||hardrockbet": 475,
+      "Alex Bregman||betmgm": 375,
+      "Alex Bregman||caesars": 625,
+      "Alex Bregman||draftkings": 630,
+      "Alex Bregman||fanduel": 560,
+      "Alex Bregman||hardrockbet": 575,
+      "Alex Freeland||betmgm": 650,
+      "Alex Freeland||caesars": 750,
+      "Alex Freeland||draftkings": 870,
+      "Alex Freeland||fanduel": 900,
+      "Alika Williams||betmgm": 1200,
+      "Alika Williams||caesars": 1100,
+      "Alika Williams||draftkings": 1180,
+      "Alika Williams||fanduel": 1100,
+      "Andrew Vaughn||betmgm": 400,
+      "Andrew Vaughn||caesars": 525,
+      "Andrew Vaughn||draftkings": 581,
+      "Andrew Vaughn||fanduel": 560,
+      "Andrew Vaughn||hardrockbet": 650,
+      "Angel Genao||betmgm": 1000,
+      "Angel Genao||caesars": 850,
+      "Angel Genao||draftkings": 950,
+      "Angel Genao||fanduel": 870,
+      "Angel Genao||hardrockbet": 1000,
+      "Angel Martinez||caesars": 625,
+      "Angel Martinez||hardrockbet": 750,
+      "Angel Mart\u00ednez||betmgm": 575,
+      "Angel Mart\u00ednez||caesars": 625,
+      "Angel Mart\u00ednez||draftkings": 593,
+      "Angel Mart\u00ednez||fanduel": 560,
+      "Angel Mart\u00ednez||hardrockbet": 750,
+      "Austin Hedges||betmgm": 800,
+      "Austin Hedges||caesars": 950,
+      "Austin Hedges||draftkings": 1040,
+      "Austin Hedges||fanduel": 1060,
+      "Austin Hedges||hardrockbet": 1000,
+      "Austin Riley||caesars": 575,
+      "Austin Riley||draftkings": 600,
+      "Austin Riley||fanduel": 600,
+      "Austin Riley||hardrockbet": 550,
+      "B.J. Murray Jr.||caesars": 850,
+      "B.J. Murray Jr.||hardrockbet": 850,
+      "Blaze Alexander||betmgm": 575,
+      "Blaze Alexander||caesars": 850,
+      "Blaze Alexander||draftkings": 900,
+      "Blaze Alexander||fanduel": 870,
+      "Blaze Alexander||hardrockbet": 1000,
+      "Bo Bichette||betmgm": 800,
+      "Bo Bichette||caesars": 750,
+      "Bo Bichette||draftkings": 850,
+      "Bo Bichette||fanduel": 800,
+      "Bo Bichette||hardrockbet": 850,
+      "Bobby Witt Jr.||betmgm": 475,
+      "Bobby Witt Jr.||caesars": 425,
+      "Bobby Witt Jr.||draftkings": 431,
+      "Bobby Witt Jr.||fanduel": 430,
+      "Bobby Witt Jr.||hardrockbet": 450,
+      "Brady House||betmgm": 575,
+      "Brady House||caesars": 625,
+      "Brady House||draftkings": 690,
+      "Brady House||fanduel": 680,
+      "Brady House||hardrockbet": 600,
+      "Brandon Marsh||caesars": 700,
+      "Brandon Marsh||draftkings": 750,
+      "Brandon Marsh||fanduel": 700,
+      "Brandon Marsh||hardrockbet": 650,
+      "Brayan Rocchio||betmgm": 775,
+      "Brayan Rocchio||caesars": 950,
+      "Brayan Rocchio||draftkings": 1060,
+      "Brayan Rocchio||fanduel": 1000,
+      "Brayan Rocchio||hardrockbet": 1000,
+      "Brett Bateman||caesars": 1300,
+      "Brett Bateman||hardrockbet": 1400,
+      "Brett Baty||betmgm": 800,
+      "Brett Baty||caesars": 700,
+      "Brett Baty||draftkings": 670,
+      "Brett Baty||fanduel": 630,
+      "Brett Baty||hardrockbet": 600,
+      "Brice Turang||betmgm": 600,
+      "Brice Turang||caesars": 700,
+      "Brice Turang||draftkings": 770,
+      "Brice Turang||fanduel": 750,
+      "Brice Turang||hardrockbet": 800,
+      "Brooks Lee||betmgm": 550,
+      "Brooks Lee||caesars": 625,
+      "Brooks Lee||draftkings": 599,
+      "Brooks Lee||fanduel": 600,
+      "Brooks Lee||hardrockbet": 650,
+      "Bryan Torres||caesars": 950,
+      "Bryan Torres||draftkings": 1020,
+      "Bryan Torres||fanduel": 1040,
+      "Bryan Torres||hardrockbet": 1000,
+      "Bryce Eldridge||caesars": 525,
+      "Bryce Eldridge||draftkings": 571,
+      "Bryce Eldridge||fanduel": 540,
+      "Bryce Eldridge||hardrockbet": 575,
+      "Bryce Harper||caesars": 350,
+      "Bryce Harper||draftkings": 390,
+      "Bryce Harper||fanduel": 380,
+      "Bryce Harper||hardrockbet": 350,
+      "Bryson Stott||caesars": 575,
+      "Bryson Stott||draftkings": 600,
+      "Bryson Stott||fanduel": 600,
+      "Bryson Stott||hardrockbet": 600,
+      "CJ Abrams||betmgm": 425,
+      "CJ Abrams||caesars": 400,
+      "CJ Abrams||draftkings": 427,
+      "CJ Abrams||fanduel": 420,
+      "CJ Abrams||hardrockbet": 450,
+      "Caleb Durbin||betmgm": 800,
+      "Caleb Durbin||caesars": 850,
+      "Caleb Durbin||draftkings": 1020,
+      "Caleb Durbin||fanduel": 900,
+      "Caleb Durbin||hardrockbet": 1000,
+      "Carlos Cortes||betmgm": 800,
+      "Carlos Cortes||caesars": 750,
+      "Carlos Cortes||draftkings": 830,
+      "Carlos Cortes||fanduel": 800,
+      "Carlos Cortes||hardrockbet": 650,
+      "Carson Benge||betmgm": 725,
+      "Carson Benge||caesars": 700,
+      "Carson Benge||draftkings": 670,
+      "Carson Benge||fanduel": 630,
+      "Carson Benge||hardrockbet": 700,
+      "Carson Kelly||betmgm": 500,
+      "Carson Kelly||caesars": 575,
+      "Carson Kelly||draftkings": 582,
+      "Carson Kelly||fanduel": 600,
+      "Carson Kelly||hardrockbet": 650,
+      "Carter Jensen||betmgm": 360,
+      "Carter Jensen||caesars": 400,
+      "Carter Jensen||draftkings": 393,
+      "Carter Jensen||fanduel": 390,
+      "Carter Jensen||hardrockbet": 400,
+      "Charles McAdoo||betmgm": 350,
+      "Charles McAdoo||caesars": 525,
+      "Charles McAdoo||draftkings": 600,
+      "Charles McAdoo||fanduel": 600,
+      "Charles McAdoo||hardrockbet": 700,
+      "Christian Encarnacion-Strand||betmgm": 400,
+      "Christian Encarnacion-Strand||caesars": 500,
+      "Christian Encarnacion-Strand||draftkings": 590,
+      "Christian Encarnacion-Strand||fanduel": 560,
+      "Christian Encarnacion-Strand||hardrockbet": 550,
+      "Christian Koss||caesars": 1500,
+      "Christian Koss||draftkings": 1480,
+      "Christian Koss||fanduel": 1600,
+      "Christian Koss||hardrockbet": 1500,
+      "Christian Moore||betmgm": 700,
+      "Christian Moore||caesars": 850,
+      "Christian Moore||draftkings": 900,
+      "Christian Moore||fanduel": 900,
+      "Christian Moore||hardrockbet": 1000,
+      "Christian Yelich||caesars": 750,
+      "Christian Yelich||draftkings": 850,
+      "Christian Yelich||fanduel": 800,
+      "Christian Yelich||hardrockbet": 850,
+      "Coby Mayo||betmgm": 360,
+      "Coby Mayo||caesars": 525,
+      "Coby Mayo||draftkings": 550,
+      "Coby Mayo||fanduel": 560,
+      "Coby Mayo||hardrockbet": 600,
+      "Colt Keith||betmgm": 725,
+      "Colt Keith||caesars": 700,
+      "Colt Keith||draftkings": 720,
+      "Colt Keith||fanduel": 630,
+      "Colt Keith||hardrockbet": 750,
+      "Cooper Pratt||betmgm": 1000,
+      "Cooper Pratt||caesars": 850,
+      "Cooper Pratt||draftkings": 910,
+      "Cooper Pratt||fanduel": 900,
+      "Cooper Pratt||hardrockbet": 1000,
+      "David Fry||betmgm": 500,
+      "David Fry||caesars": 625,
+      "David Fry||draftkings": 640,
+      "David Fry||fanduel": 600,
+      "David Fry||hardrockbet": 750,
+      "Daylen Lile||betmgm": 500,
+      "Daylen Lile||caesars": 500,
+      "Daylen Lile||draftkings": 532,
+      "Daylen Lile||fanduel": 520,
+      "Daylen Lile||hardrockbet": 525,
+      "Dillon Dingler||betmgm": 500,
+      "Dillon Dingler||caesars": 575,
+      "Dillon Dingler||draftkings": 600,
+      "Dillon Dingler||fanduel": 560,
+      "Dillon Dingler||hardrockbet": 575,
+      "Donovan Walton||betmgm": 875,
+      "Donovan Walton||caesars": 850,
+      "Donovan Walton||draftkings": 980,
+      "Donovan Walton||fanduel": 900,
+      "Donovan Walton||hardrockbet": 1000,
+      "Drake Baldwin||caesars": 850,
+      "Drake Baldwin||draftkings": 1000,
+      "Drake Baldwin||fanduel": 1000,
+      "Drake Baldwin||hardrockbet": 900,
+      "Drew Cavanaugh||caesars": 950,
+      "Drew Cavanaugh||draftkings": 1080,
+      "Drew Cavanaugh||fanduel": 1120,
+      "Drew Cavanaugh||hardrockbet": 1000,
+      "Drew Gilbert||caesars": 850,
+      "Drew Gilbert||draftkings": 930,
+      "Drew Gilbert||fanduel": 920,
+      "Drew Gilbert||hardrockbet": 850,
+      "Dustin Harris||caesars": 750,
+      "Dylan Beavers||betmgm": 825,
+      "Dylan Beavers||caesars": 850,
+      "Dylan Beavers||draftkings": 870,
+      "Dylan Beavers||fanduel": 900,
+      "Dylan Beavers||hardrockbet": 1000,
+      "Dylan Crews||betmgm": 600,
+      "Dylan Crews||caesars": 575,
+      "Dylan Crews||draftkings": 589,
+      "Dylan Crews||fanduel": 610,
+      "Dylan Crews||hardrockbet": 650,
+      "Edwin Arroyo||betmgm": 1200,
+      "Edwin Arroyo||caesars": 950,
+      "Edwin Arroyo||fanduel": 1100,
+      "Eli White||caesars": 750,
+      "Eli White||hardrockbet": 900,
+      "Elly De La Cruz||betmgm": 375,
+      "Elly De La Cruz||caesars": 425,
+      "Elly De La Cruz||draftkings": 485,
+      "Elly De La Cruz||fanduel": 500,
+      "Elly De La Cruz||hardrockbet": 450,
+      "Ernie Clement||betmgm": 650,
+      "Ernie Clement||caesars": 750,
+      "Ernie Clement||draftkings": 800,
+      "Ernie Clement||fanduel": 800,
+      "Ernie Clement||hardrockbet": 750,
+      "Eugenio Suarez||caesars": 425,
+      "Eugenio Suarez||hardrockbet": 475,
+      "Eugenio Su\u00e1rez||betmgm": 310,
+      "Eugenio Su\u00e1rez||caesars": 360,
+      "Eugenio Su\u00e1rez||draftkings": 459,
+      "Eugenio Su\u00e1rez||fanduel": 450,
+      "Eugenio Su\u00e1rez||hardrockbet": 475,
+      "Fernando Tatis Jr.||betmgm": 340,
+      "Fernando Tatis Jr.||caesars": 350,
+      "Fernando Tatis Jr.||draftkings": 376,
+      "Fernando Tatis Jr.||fanduel": 370,
+      "Fernando Tatis Jr.||hardrockbet": 350,
+      "Francisco Alvarez||betmgm": 625,
+      "Francisco Alvarez||caesars": 575,
+      "Francisco Alvarez||draftkings": 577,
+      "Francisco Alvarez||fanduel": 520,
+      "Francisco Alvarez||hardrockbet": 525,
+      "Francisco Lindor||betmgm": 450,
+      "Francisco Lindor||caesars": 425,
+      "Francisco Lindor||draftkings": 440,
+      "Francisco Lindor||fanduel": 420,
+      "Francisco Lindor||hardrockbet": 550,
+      "Freddie Freeman||betmgm": 400,
+      "Freddie Freeman||caesars": 500,
+      "Freddie Freeman||draftkings": 547,
+      "Freddie Freeman||fanduel": 520,
+      "Freddie Freeman||hardrockbet": 575,
+      "Freddy Fermin||caesars": 850,
+      "Freddy Fermin||draftkings": 910,
+      "Freddy Fermin||fanduel": 980,
+      "Gabriel Moreno||betmgm": 600,
+      "Gabriel Moreno||caesars": 625,
+      "Gabriel Moreno||draftkings": 586,
+      "Gabriel Moreno||fanduel": 560,
+      "Gabriel Moreno||hardrockbet": 650,
+      "Garrett Mitchell||caesars": 750,
+      "Garrett Mitchell||draftkings": 800,
+      "Garrett Mitchell||fanduel": 870,
+      "Garrett Mitchell||hardrockbet": 800,
+      "Gary S\u00e1nchez||betmgm": 340,
+      "Gary S\u00e1nchez||caesars": 290,
+      "George Springer||betmgm": 340,
+      "George Springer||caesars": 390,
+      "George Springer||draftkings": 420,
+      "George Springer||fanduel": 390,
+      "George Springer||hardrockbet": 350,
+      "Geraldo Perdomo||betmgm": 900,
+      "Geraldo Perdomo||caesars": 850,
+      "Geraldo Perdomo||draftkings": 930,
+      "Geraldo Perdomo||fanduel": 900,
+      "Geraldo Perdomo||hardrockbet": 1000,
+      "Gleyber Torres||betmgm": 725,
+      "Gleyber Torres||caesars": 850,
+      "Gleyber Torres||draftkings": 950,
+      "Gleyber Torres||fanduel": 900,
+      "Gleyber Torres||hardrockbet": 1000,
+      "Graham Pauley||betmgm": 900,
+      "Graham Pauley||caesars": 850,
+      "Graham Pauley||draftkings": 890,
+      "Graham Pauley||fanduel": 800,
+      "Graham Pauley||hardrockbet": 800,
+      "Griffin Conine||betmgm": 450,
+      "Griffin Conine||caesars": 400,
+      "Griffin Conine||draftkings": 423,
+      "Griffin Conine||fanduel": 370,
+      "Griffin Conine||hardrockbet": 375,
+      "Gunnar Henderson||betmgm": 475,
+      "Gunnar Henderson||caesars": 625,
+      "Gunnar Henderson||draftkings": 650,
+      "Gunnar Henderson||fanduel": 630,
+      "Gunnar Henderson||hardrockbet": 700,
+      "Ha-Seong Kim||caesars": 1100,
+      "Ha-Seong Kim||draftkings": 1100,
+      "Ha-Seong Kim||fanduel": 1200,
+      "Ha-Seong Kim||hardrockbet": 1000,
+      "Hector Rodriguez||caesars": 525,
+      "Hector Rodriguez||hardrockbet": 600,
+      "Henry Bolte||betmgm": 775,
+      "Henry Bolte||caesars": 750,
+      "Henry Bolte||draftkings": 900,
+      "Henry Bolte||fanduel": 830,
+      "Henry Bolte||hardrockbet": 900,
+      "Heriberto Hernandez||caesars": 425,
+      "Heriberto Hernandez||hardrockbet": 375,
+      "Heriberto Hern\u00e1ndez||betmgm": 400,
+      "Heriberto Hern\u00e1ndez||caesars": 360,
+      "Heriberto Hern\u00e1ndez||draftkings": 470,
+      "Heriberto Hern\u00e1ndez||fanduel": 400,
+      "Heriberto Hern\u00e1ndez||hardrockbet": 475,
+      "Ildemaro Vargas||betmgm": 550,
+      "Ildemaro Vargas||caesars": 750,
+      "Ildemaro Vargas||draftkings": 820,
+      "Ildemaro Vargas||fanduel": 800,
+      "Ildemaro Vargas||hardrockbet": 750,
+      "Isaac Collins||hardrockbet": 850,
+      "Isiah Kiner-Falefa||betmgm": 1200,
+      "Isiah Kiner-Falefa||caesars": 1300,
+      "Isiah Kiner-Falefa||draftkings": 1500,
+      "Isiah Kiner-Falefa||fanduel": 1500,
+      "Isiah Kiner-Falefa||hardrockbet": 1600,
+      "Ivan Herrera||caesars": 950,
+      "Ivan Herrera||draftkings": 1060,
+      "Ivan Herrera||fanduel": 1040,
+      "Ivan Herrera||hardrockbet": 1100,
+      "J.T. Realmuto||caesars": 700,
+      "J.T. Realmuto||draftkings": 750,
+      "J.T. Realmuto||fanduel": 650,
+      "J.T. Realmuto||hardrockbet": 650,
+      "JJ Bleday||betmgm": 340,
+      "JJ Bleday||caesars": 425,
+      "JJ Bleday||draftkings": 485,
+      "JJ Bleday||fanduel": 480,
+      "JJ Bleday||hardrockbet": 425,
+      "Jac Caglianone||hardrockbet": 425,
+      "Jackson Chourio||betmgm": 310,
+      "Jackson Chourio||caesars": 390,
+      "Jackson Chourio||draftkings": 391,
+      "Jackson Chourio||fanduel": 400,
+      "Jackson Chourio||hardrockbet": 425,
+      "Jackson Holliday||betmgm": 600,
+      "Jackson Holliday||caesars": 750,
+      "Jackson Holliday||draftkings": 890,
+      "Jackson Holliday||fanduel": 830,
+      "Jackson Holliday||hardrockbet": 900,
+      "Jackson Merrill||betmgm": 333,
+      "Jackson Merrill||caesars": 370,
+      "Jackson Merrill||draftkings": 386,
+      "Jackson Merrill||fanduel": 390,
+      "Jackson Merrill||hardrockbet": 400,
+      "Jacob Young||betmgm": 1200,
+      "Jacob Young||caesars": 1100,
+      "Jacob Young||draftkings": 1140,
+      "Jacob Young||fanduel": 1120,
+      "Jacob Young||hardrockbet": 1100,
+      "Jake Bauers||betmgm": 400,
+      "Jake Bauers||caesars": 380,
+      "Jake Cronenworth||betmgm": 575,
+      "Jake Cronenworth||caesars": 750,
+      "Jake Cronenworth||draftkings": 820,
+      "Jake Cronenworth||fanduel": 820,
+      "Jake Cronenworth||hardrockbet": 800,
+      "Jakob Marsee||betmgm": 800,
+      "Jakob Marsee||caesars": 850,
+      "Jakob Marsee||draftkings": 950,
+      "Jakob Marsee||fanduel": 900,
+      "Jakob Marsee||hardrockbet": 800,
+      "James Wood||betmgm": 340,
+      "James Wood||caesars": 350,
+      "James Wood||draftkings": 360,
+      "James Wood||fanduel": 350,
+      "James Wood||hardrockbet": 350,
+      "Jared Young||hardrockbet": 650,
+      "Jarren Duran||betmgm": 575,
+      "Jarren Duran||caesars": 575,
+      "Jarren Duran||draftkings": 598,
+      "Jarren Duran||fanduel": 560,
+      "Jarren Duran||hardrockbet": 600,
+      "Javier Sanoja||betmgm": 875,
+      "Javier Sanoja||caesars": 950,
+      "Javier Sanoja||draftkings": 1140,
+      "Javier Sanoja||fanduel": 1000,
+      "Javier Sanoja||hardrockbet": 1100,
+      "Jeff McNeil||betmgm": 650,
+      "Jeff McNeil||caesars": 750,
+      "Jeff McNeil||draftkings": 890,
+      "Jeff McNeil||fanduel": 830,
+      "Jeff McNeil||hardrockbet": 900,
+      "Jo Adell||caesars": 475,
+      "Jo Adell||hardrockbet": 450,
+      "Joe Mack||betmgm": 775,
+      "Joe Mack||caesars": 700,
+      "Joe Mack||draftkings": 720,
+      "Joe Mack||fanduel": 630,
+      "Joe Mack||hardrockbet": 700,
+      "Joey Ortiz||betmgm": 550,
+      "Joey Ortiz||caesars": 850,
+      "Joey Ortiz||draftkings": 940,
+      "Joey Ortiz||fanduel": 900,
+      "Joey Ortiz||hardrockbet": 1000,
+      "John Peck||caesars": 750,
+      "John Peck||hardrockbet": 900,
+      "John Rave||betmgm": 750,
+      "John Rave||caesars": 750,
+      "John Rave||draftkings": 790,
+      "John Rave||fanduel": 750,
+      "John Rave||hardrockbet": 750,
+      "Jonah Heim||betmgm": 650,
+      "Jonah Heim||caesars": 700,
+      "Jonah Heim||draftkings": 630,
+      "Jonah Heim||fanduel": 630,
+      "Jonah Heim||hardrockbet": 650,
+      "Jordan Lawlar||betmgm": 550,
+      "Jordan Lawlar||caesars": 625,
+      "Jordan Lawlar||draftkings": 680,
+      "Jordan Lawlar||fanduel": 630,
+      "Jordan Lawlar||hardrockbet": 700,
+      "Jordan Walker||caesars": 700,
+      "Jordan Walker||draftkings": 660,
+      "Jordan Walker||fanduel": 680,
+      "Jordan Walker||hardrockbet": 650,
+      "Jose Ramirez||caesars": 500,
+      "Jose Ramirez||hardrockbet": 475,
+      "Josh Bell||betmgm": 525,
+      "Josh Bell||caesars": 575,
+      "Josh Bell||draftkings": 600,
+      "Josh Bell||fanduel": 560,
+      "Josh Bell||hardrockbet": 575,
+      "Josh Lowe||betmgm": 725,
+      "Josh Lowe||caesars": 850,
+      "Josh Lowe||draftkings": 1020,
+      "Josh Lowe||fanduel": 900,
+      "Josh Lowe||hardrockbet": 1000,
+      "Joshua Baez||caesars": 750,
+      "Joshua Baez||draftkings": 740,
+      "Joshua Baez||fanduel": 760,
+      "Joshua Baez||hardrockbet": 750,
+      "Jos\u00e9 Ram\u00edrez||betmgm": 450,
+      "Jos\u00e9 Ram\u00edrez||caesars": 380,
+      "Jos\u00e9 Ram\u00edrez||draftkings": 453,
+      "Jos\u00e9 Ram\u00edrez||fanduel": 450,
+      "Jos\u00e9 Ram\u00edrez||hardrockbet": 475,
+      "Juan Brito||caesars": 750,
+      "Juan Soto||betmgm": 333,
+      "Juan Soto||caesars": 330,
+      "Juan Soto||draftkings": 358,
+      "Juan Soto||fanduel": 320,
+      "Juan Soto||hardrockbet": 425,
+      "Jung Hoo Lee||caesars": 1100,
+      "Jung Hoo Lee||draftkings": 1240,
+      "Jung Hoo Lee||fanduel": 1260,
+      "Jung Hoo Lee||hardrockbet": 1200,
+      "Justin Crawford||caesars": 1500,
+      "Justin Crawford||draftkings": 1400,
+      "Justin Crawford||fanduel": 1800,
+      "Justin Crawford||hardrockbet": 1200,
+      "Kaelen Culpepper||caesars": 850,
+      "Kaelen Culpepper||hardrockbet": 1000,
+      "Kazuma Okamoto||betmgm": 250,
+      "Kazuma Okamoto||caesars": 280,
+      "Kazuma Okamoto||draftkings": 319,
+      "Kazuma Okamoto||fanduel": 300,
+      "Kazuma Okamoto||hardrockbet": 300,
+      "Keibert Ruiz||betmgm": 675,
+      "Keibert Ruiz||caesars": 700,
+      "Keibert Ruiz||draftkings": 680,
+      "Keibert Ruiz||fanduel": 710,
+      "Keibert Ruiz||hardrockbet": 700,
+      "Ketel Marte||betmgm": 310,
+      "Ketel Marte||caesars": 330,
+      "Ketel Marte||draftkings": 313,
+      "Ketel Marte||fanduel": 320,
+      "Ketel Marte||hardrockbet": 375,
+      "Kevin McGonigle||betmgm": 625,
+      "Kevin McGonigle||caesars": 575,
+      "Kevin McGonigle||draftkings": 547,
+      "Kevin McGonigle||fanduel": 560,
+      "Kevin McGonigle||hardrockbet": 600,
+      "Kody Clemens||betmgm": 380,
+      "Kody Clemens||caesars": 390,
+      "Kody Clemens||draftkings": 452,
+      "Kody Clemens||fanduel": 420,
+      "Kody Clemens||hardrockbet": 425,
+      "Kyle Isbel||betmgm": 875,
+      "Kyle Isbel||caesars": 950,
+      "Kyle Isbel||draftkings": 1080,
+      "Kyle Isbel||fanduel": 1060,
+      "Kyle Isbel||hardrockbet": 1100,
+      "Kyle Schwarber||caesars": 210,
+      "Kyle Schwarber||draftkings": 225,
+      "Kyle Schwarber||fanduel": 220,
+      "Kyle Schwarber||hardrockbet": 300,
+      "Kyle Stowers||betmgm": 390,
+      "Kyle Stowers||caesars": 320,
+      "Kyle Stowers||draftkings": 331,
+      "Kyle Stowers||fanduel": 300,
+      "Kyle Stowers||hardrockbet": 300,
+      "Kyle Tucker||betmgm": 450,
+      "Kyle Tucker||caesars": 525,
+      "Kyle Tucker||draftkings": 600,
+      "Kyle Tucker||fanduel": 560,
+      "Kyle Tucker||hardrockbet": 600,
+      "Kyren Paris||caesars": 850,
+      "Kyren Paris||draftkings": 890,
+      "Kyren Paris||fanduel": 870,
+      "Kyren Paris||hardrockbet": 850,
+      "Lane Thomas||caesars": 700,
+      "Lane Thomas||hardrockbet": 650,
+      "Lawrence Butler||betmgm": 550,
+      "Lawrence Butler||caesars": 575,
+      "Lawrence Butler||draftkings": 581,
+      "Lawrence Butler||fanduel": 600,
+      "Lawrence Butler||hardrockbet": 600,
+      "Leonardo Bernal||caesars": 950,
+      "Leonardo Bernal||draftkings": 1020,
+      "Leonardo Bernal||fanduel": 1120,
+      "Leonardo Bernal||hardrockbet": 1000,
+      "Lourdes Gurriel Jr.||betmgm": 550,
+      "Lourdes Gurriel Jr.||caesars": 700,
+      "Lourdes Gurriel Jr.||draftkings": 660,
+      "Lourdes Gurriel Jr.||fanduel": 630,
+      "Lourdes Gurriel Jr.||hardrockbet": 650,
+      "Luis Arraez||caesars": 1100,
+      "Luis Arraez||hardrockbet": 1100,
+      "Luis Campusano||betmgm": 550,
+      "Luis Campusano||caesars": 525,
+      "Luis Campusano||draftkings": 490,
+      "Luis Campusano||fanduel": 540,
+      "Luis Campusano||hardrockbet": 550,
+      "Luis Lara||betmgm": 1000,
+      "Luis Lara||caesars": 850,
+      "Luis Lara||draftkings": 940,
+      "Luis Lara||fanduel": 800,
+      "Luis Lara||hardrockbet": 900,
+      "Luke Keaschall||betmgm": 650,
+      "Luke Keaschall||caesars": 750,
+      "Luke Keaschall||draftkings": 950,
+      "Luke Keaschall||fanduel": 870,
+      "Luke Keaschall||hardrockbet": 850,
+      "Manny Machado||betmgm": 340,
+      "Manny Machado||caesars": 390,
+      "Manny Machado||draftkings": 404,
+      "Manny Machado||fanduel": 420,
+      "Manny Machado||hardrockbet": 400,
+      "Marcus Semien||betmgm": 800,
+      "Marcus Semien||caesars": 850,
+      "Marcus Semien||draftkings": 870,
+      "Marcus Semien||fanduel": 800,
+      "Marcus Semien||hardrockbet": 750,
+      "Matt McLain||betmgm": 525,
+      "Matt McLain||caesars": 625,
+      "Matt McLain||draftkings": 690,
+      "Matt McLain||fanduel": 630,
+      "Matt McLain||hardrockbet": 700,
+      "Matt Olson||caesars": 500,
+      "Matt Olson||draftkings": 550,
+      "Matt Olson||fanduel": 500,
+      "Matt Olson||hardrockbet": 475,
+      "Matt Shaw||betmgm": 475,
+      "Matt Shaw||caesars": 700,
+      "Matt Shaw||draftkings": 880,
+      "Matt Shaw||fanduel": 870,
+      "Matt Shaw||hardrockbet": 900,
+      "Matthew Lugo||betmgm": 475,
+      "Matthew Lugo||caesars": 575,
+      "Matthew Lugo||draftkings": 670,
+      "Matthew Lugo||fanduel": 630,
+      "Matthew Lugo||hardrockbet": 650,
+      "Mauricio Dubon||caesars": 1300,
+      "Mauricio Dubon||hardrockbet": 1000,
+      "Mauricio Dub\u00f3n||caesars": 1300,
+      "Mauricio Dub\u00f3n||draftkings": 1300,
+      "Mauricio Dub\u00f3n||fanduel": 1400,
+      "Mauricio Dub\u00f3n||hardrockbet": 1100,
+      "Max Clark||caesars": 950,
+      "Max Clark||hardrockbet": 900,
+      "Max Muncy||betmgm": 310,
+      "Max Muncy||caesars": 370,
+      "Max Muncy||draftkings": 435,
+      "Max Muncy||fanduel": 360,
+      "Max Muncy||hardrockbet": 400,
+      "Max Muncy (2002)||caesars": 625,
+      "Michael Harris II||caesars": 700,
+      "Michael Harris II||draftkings": 750,
+      "Michael Harris II||fanduel": 700,
+      "Michael Harris II||hardrockbet": 650,
+      "Michael Massey||betmgm": 575,
+      "Michael Massey||caesars": 700,
+      "Michael Massey||draftkings": 640,
+      "Michael Massey||fanduel": 630,
+      "Michael Massey||hardrockbet": 600,
+      "Mickey Gasper||betmgm": 550,
+      "Mickey Gasper||caesars": 575,
+      "Mickey Gasper||draftkings": 577,
+      "Mickey Gasper||fanduel": 600,
+      "Mickey Gasper||hardrockbet": 600,
+      "Mike Busch||caesars": 450,
+      "Mike Busch||hardrockbet": 650,
+      "Mike Trout||betmgm": 525,
+      "Mike Trout||caesars": 500,
+      "Mike Trout||draftkings": 504,
+      "Mike Trout||fanduel": 520,
+      "Mike Trout||hardrockbet": 500,
+      "Moises Ballesteros||caesars": 850,
+      "Moises Ballesteros||hardrockbet": 1000,
+      "Mookie Betts||betmgm": 380,
+      "Mookie Betts||caesars": 500,
+      "Mookie Betts||draftkings": 560,
+      "Mookie Betts||fanduel": 520,
+      "Mookie Betts||hardrockbet": 575,
+      "Myles Straw||betmgm": 1200,
+      "Myles Straw||caesars": 950,
+      "Myles Straw||draftkings": 980,
+      "Myles Straw||fanduel": 900,
+      "Myles Straw||hardrockbet": 1000,
+      "Nasim Nunez||caesars": 1500,
+      "Nasim Nunez||hardrockbet": 1600,
+      "Nasim Nu\u00f1ez||betmgm": 1650,
+      "Nasim Nu\u00f1ez||caesars": 1500,
+      "Nasim Nu\u00f1ez||draftkings": 1860,
+      "Nasim Nu\u00f1ez||fanduel": 1600,
+      "Nasim Nu\u00f1ez||hardrockbet": 1600,
+      "Nate Furman||caesars": 1100,
+      "Nate Furman||hardrockbet": 1200,
+      "Nathan Church||caesars": 1300,
+      "Nathan Church||draftkings": 1400,
+      "Nathan Church||fanduel": 1300,
+      "Nathan Church||hardrockbet": 1400,
+      "Nathan Lukes||betmgm": 725,
+      "Nathan Lukes||caesars": 950,
+      "Nathan Lukes||draftkings": 1160,
+      "Nathan Lukes||fanduel": 1060,
+      "Nathan Lukes||hardrockbet": 1100,
+      "Nick Loftin||betmgm": 800,
+      "Nick Loftin||caesars": 850,
+      "Nick Loftin||draftkings": 860,
+      "Nick Loftin||fanduel": 870,
+      "Nick Loftin||hardrockbet": 1000,
+      "Nick Morabito||caesars": 1100,
+      "Nick Morabito||hardrockbet": 1100,
+      "Nico Hoerner||betmgm": 900,
+      "Nico Hoerner||caesars": 1100,
+      "Nico Hoerner||draftkings": 1400,
+      "Nico Hoerner||fanduel": 1400,
+      "Nico Hoerner||hardrockbet": 1300,
+      "Nolan Arenado||betmgm": 400,
+      "Nolan Arenado||caesars": 525,
+      "Nolan Arenado||draftkings": 520,
+      "Nolan Arenado||fanduel": 520,
+      "Nolan Arenado||hardrockbet": 550,
+      "Nolan Gorman||caesars": 750,
+      "Nolan Gorman||draftkings": 790,
+      "Nolan Gorman||fanduel": 790,
+      "Nolan Gorman||hardrockbet": 750,
+      "Oswald Peraza||hardrockbet": 850,
+      "Otto Lopez||betmgm": 800,
+      "Otto Lopez||caesars": 850,
+      "Otto Lopez||draftkings": 930,
+      "Otto Lopez||fanduel": 800,
+      "Otto Lopez||hardrockbet": 900,
+      "Owen Caissie||betmgm": 600,
+      "Owen Caissie||caesars": 575,
+      "Owen Caissie||draftkings": 630,
+      "Owen Caissie||fanduel": 560,
+      "Owen Caissie||hardrockbet": 550,
+      "Ozzie Albies||hardrockbet": 700,
+      "Pedro Ramirez||betmgm": 725,
+      "Pedro Ramirez||caesars": 850,
+      "Pedro Ramirez||draftkings": 1000,
+      "Pedro Ramirez||fanduel": 1000,
+      "Pedro Ramirez||hardrockbet": 1000,
+      "Pete Alonso||betmgm": 290,
+      "Pete Alonso||caesars": 390,
+      "Pete Alonso||draftkings": 437,
+      "Pete Alonso||fanduel": 400,
+      "Pete Alonso||hardrockbet": 350,
+      "Pete Crow-Armstrong||betmgm": 280,
+      "Pete Crow-Armstrong||caesars": 350,
+      "Pete Crow-Armstrong||draftkings": 372,
+      "Pete Crow-Armstrong||fanduel": 350,
+      "Pete Crow-Armstrong||hardrockbet": 300,
+      "Petey Halpin||betmgm": 900,
+      "Petey Halpin||caesars": 1100,
+      "Petey Halpin||draftkings": 1260,
+      "Petey Halpin||fanduel": 1300,
+      "Petey Halpin||hardrockbet": 1300,
+      "Rafael Devers||caesars": 370,
+      "Rafael Devers||draftkings": 373,
+      "Rafael Devers||fanduel": 370,
+      "Rafael Devers||hardrockbet": 350,
+      "Rece Hinds||caesars": 850,
+      "Rece Hinds||hardrockbet": 900,
+      "Riley Greene||betmgm": 425,
+      "Riley Greene||caesars": 400,
+      "Riley Greene||draftkings": 428,
+      "Riley Greene||fanduel": 400,
+      "Riley Greene||hardrockbet": 450,
+      "Roman Anthony||betmgm": 575,
+      "Roman Anthony||caesars": 425,
+      "Roman Anthony||draftkings": 495,
+      "Roman Anthony||fanduel": 520,
+      "Roman Anthony||hardrockbet": 550,
+      "Ronald Acuna Jr.||caesars": 575,
+      "Ronald Acuna Jr.||hardrockbet": 650,
+      "Ronald Acu\u00f1a Jr.||caesars": 450,
+      "Ronald Acu\u00f1a Jr.||draftkings": 650,
+      "Ronald Acu\u00f1a Jr.||fanduel": 700,
+      "Ronald Acu\u00f1a Jr.||hardrockbet": 650,
+      "Royce Lewis||betmgm": 500,
+      "Royce Lewis||caesars": 500,
+      "Royce Lewis||draftkings": 582,
+      "Royce Lewis||fanduel": 520,
+      "Royce Lewis||hardrockbet": 525,
+      "Ryan Jeffers||betmgm": 450,
+      "Ryan Jeffers||caesars": 525,
+      "Ryan Jeffers||draftkings": 573,
+      "Ryan Jeffers||fanduel": 480,
+      "Ryan Jeffers||hardrockbet": 600,
+      "Ryan Waldschmidt||betmgm": 950,
+      "Ryan Waldschmidt||caesars": 850,
+      "Ryan Waldschmidt||draftkings": 950,
+      "Ryan Waldschmidt||fanduel": 870,
+      "Ryan Waldschmidt||hardrockbet": 900,
+      "Sal Stewart||betmgm": 310,
+      "Sal Stewart||caesars": 425,
+      "Sal Stewart||draftkings": 463,
+      "Sal Stewart||fanduel": 450,
+      "Sal Stewart||hardrockbet": 425,
+      "Salvador Perez||betmgm": 475,
+      "Salvador Perez||caesars": 425,
+      "Salvador Perez||draftkings": 444,
+      "Salvador Perez||fanduel": 420,
+      "Salvador Perez||hardrockbet": 450,
+      "Samuel Basallo||betmgm": 475,
+      "Samuel Basallo||caesars": 475,
+      "Samuel Basallo||draftkings": 494,
+      "Samuel Basallo||fanduel": 480,
+      "Samuel Basallo||hardrockbet": 500,
+      "Seiya Suzuki||betmgm": 340,
+      "Seiya Suzuki||caesars": 475,
+      "Seiya Suzuki||draftkings": 475,
+      "Seiya Suzuki||fanduel": 450,
+      "Seiya Suzuki||hardrockbet": 450,
+      "Shay Whitcomb||caesars": 850,
+      "Shohei Ohtani||betmgm": 240,
+      "Shohei Ohtani||caesars": 265,
+      "Shohei Ohtani||draftkings": 298,
+      "Shohei Ohtani||fanduel": 290,
+      "Shohei Ohtani||hardrockbet": 275,
+      "Spencer Torkelson||betmgm": 475,
+      "Spencer Torkelson||caesars": 525,
+      "Spencer Torkelson||draftkings": 526,
+      "Spencer Torkelson||fanduel": 500,
+      "Spencer Torkelson||hardrockbet": 550,
+      "Steven Kwan||betmgm": 1200,
+      "Steven Kwan||caesars": 2000,
+      "Steven Kwan||draftkings": 2400,
+      "Steven Kwan||fanduel": 2500,
+      "Steven Kwan||hardrockbet": 2000,
+      "Teoscar Hernandez||caesars": 425,
+      "Teoscar Hernandez||hardrockbet": 475,
+      "Teoscar Hern\u00e1ndez||betmgm": 380,
+      "Teoscar Hern\u00e1ndez||caesars": 360,
+      "Teoscar Hern\u00e1ndez||draftkings": 456,
+      "Teoscar Hern\u00e1ndez||fanduel": 440,
+      "Teoscar Hern\u00e1ndez||hardrockbet": 475,
+      "Thomas Saggese||caesars": 1100,
+      "Thomas Saggese||draftkings": 1200,
+      "Thomas Saggese||fanduel": 1300,
+      "Thomas Saggese||hardrockbet": 1200,
+      "Tim Tawa||betmgm": 550,
+      "Tim Tawa||caesars": 625,
+      "Tim Tawa||draftkings": 590,
+      "Tim Tawa||fanduel": 560,
+      "Tim Tawa||hardrockbet": 650,
+      "Tommy Edman||betmgm": 425,
+      "Tommy Edman||caesars": 750,
+      "Tommy Edman||draftkings": 850,
+      "Tommy Edman||fanduel": 830,
+      "Tommy Edman||hardrockbet": 850,
+      "Trea Turner||caesars": 500,
+      "Trea Turner||draftkings": 550,
+      "Trea Turner||fanduel": 550,
+      "Trea Turner||hardrockbet": 450,
+      "Trevor Larnach||betmgm": 625,
+      "Trevor Larnach||caesars": 700,
+      "Trevor Larnach||draftkings": 830,
+      "Trevor Larnach||fanduel": 600,
+      "Trevor Larnach||hardrockbet": 700,
+      "Trevor Story||betmgm": 600,
+      "Trevor Story||caesars": 575,
+      "Trevor Story||draftkings": 575,
+      "Trevor Story||fanduel": 560,
+      "Trevor Story||hardrockbet": 575,
+      "Turner Hill||caesars": 1100,
+      "Turner Hill||hardrockbet": 1100,
+      "Ty France||betmgm": 450,
+      "Ty France||caesars": 500,
+      "Ty France||draftkings": 474,
+      "Ty France||fanduel": 490,
+      "Ty France||hardrockbet": 500,
+      "Tyler Heineman||betmgm": 1400,
+      "Tyler Heineman||caesars": 1300,
+      "Tyler Heineman||draftkings": 1640,
+      "Tyler Heineman||fanduel": 1700,
+      "Tyler Heineman||hardrockbet": 1600,
+      "Tyler Stephenson||betmgm": 425,
+      "Tyler Stephenson||caesars": 500,
+      "Tyler Stephenson||draftkings": 565,
+      "Tyler Stephenson||fanduel": 520,
+      "Tyler Stephenson||hardrockbet": 550,
+      "Tyrone Taylor||caesars": 700,
+      "Tyrone Taylor||hardrockbet": 750,
+      "Vaughn Grissom||betmgm": 1000,
+      "Vaughn Grissom||caesars": 850,
+      "Vaughn Grissom||draftkings": 870,
+      "Vaughn Grissom||fanduel": 900,
+      "Vaughn Grissom||hardrockbet": 900,
+      "Vinnie Pasquantino||betmgm": 425,
+      "Vinnie Pasquantino||caesars": 575,
+      "Vinnie Pasquantino||draftkings": 584,
+      "Vinnie Pasquantino||fanduel": 560,
+      "Vinnie Pasquantino||hardrockbet": 600,
+      "Vladimir Guerrero Jr.||betmgm": 425,
+      "Vladimir Guerrero Jr.||caesars": 390,
+      "Vladimir Guerrero Jr.||draftkings": 369,
+      "Vladimir Guerrero Jr.||fanduel": 370,
+      "Vladimir Guerrero Jr.||hardrockbet": 375,
+      "Wade Meckler||betmgm": 1200,
+      "Wade Meckler||caesars": 1300,
+      "Wade Meckler||draftkings": 1680,
+      "Wade Meckler||fanduel": 1700,
+      "Wade Meckler||hardrockbet": 1750,
+      "Walker Jenkins||hardrockbet": 1000,
+      "Will Smith||betmgm": 400,
+      "Will Smith||caesars": 425,
+      "Will Smith||draftkings": 444,
+      "Will Smith||fanduel": 440,
+      "Will Smith||hardrockbet": 450,
+      "William Contreras||betmgm": 380,
+      "William Contreras||caesars": 625,
+      "William Contreras||draftkings": 630,
+      "William Contreras||fanduel": 600,
+      "William Contreras||hardrockbet": 575,
+      "Wilyer Abreu||betmgm": 400,
+      "Wilyer Abreu||caesars": 400,
+      "Wilyer Abreu||draftkings": 409,
+      "Wilyer Abreu||fanduel": 430,
+      "Wilyer Abreu||hardrockbet": 450,
+      "Xander Bogaerts||betmgm": 725,
+      "Xander Bogaerts||caesars": 750,
+      "Xander Bogaerts||draftkings": 690,
+      "Xander Bogaerts||fanduel": 730,
+      "Xander Bogaerts||hardrockbet": 700,
+      "Zach McKinstry||betmgm": 900,
+      "Zach McKinstry||caesars": 1100,
+      "Zach McKinstry||draftkings": 1120,
+      "Zach McKinstry||fanduel": 1100,
+      "Zach McKinstry||hardrockbet": 1200,
+      "Zach Neto||betmgm": 525,
+      "Zach Neto||caesars": 500,
+      "Zach Neto||draftkings": 513,
+      "Zach Neto||fanduel": 520,
+      "Zach Neto||hardrockbet": 525,
+      "Zack Gelof||betmgm": 475,
+      "Zack Gelof||caesars": 525,
+      "Zack Gelof||draftkings": 520,
+      "Zack Gelof||fanduel": 520,
+      "Zack Gelof||hardrockbet": 600
     }
   ],
   "presence_history": [
-    [
-      [
-        "Christian Walker",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Donovan Walton",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Ezequiel Tovar",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Brandon Nimmo",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Munetaka Murakami",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Andres Chaparro",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Josh Naylor",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Tommy Edman",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Xander Bogaerts",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Cody Bellinger",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Alec Burleson",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Enrique Hern\u00e1ndez",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Austin Wells",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Christian Walker",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Donovan Walton",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Nick Loftin",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Wyatt Langford",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Bobby Witt Jr.",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Ryan McMahon",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Vinnie Pasquantino",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Luis Campusano",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Teoscar Hern\u00e1ndez",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Taylor Walls",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Andres Chaparro",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "James Wood",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Austin Wells",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Luke Keaschall",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Jake Cronenworth",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Zack Gelof",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Luis Campusano",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Teoscar Hern\u00e1ndez",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Tommy Troy",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Kazuma Okamoto",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Thomas Saggese",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Ryan McMahon",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Jazz Chisholm Jr.",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Logan O'Hoppe",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Jeremy Pe\u00f1a",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Ty France",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Gabriel Moreno",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Royce Lewis",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Carlos Cortes",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jake McCarthy",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Ezequiel Duran",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Ben Rice",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Randy Arozarena",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Thomas Saggese",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Corbin Carroll",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "James McCann",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Zack Gelof",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Salvador Perez",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Shohei Ohtani",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Logan O'Hoppe",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Geraldo Perdomo",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Gabriel Moreno",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Jake McCarthy",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Nathan Lukes",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Isaac Collins",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Cal Raleigh",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Justin Foscue",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Jacob Young",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "James McCann",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Jes\u00fas S\u00e1nchez",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Lawrence Butler",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Henry Bolte",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Brett Sullivan",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Nick Fortes",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Jake Burger",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Cam Smith",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Michael Massey",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Corbin Carroll",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Jose Altuve",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Brooks Lee",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Ezequiel Duran",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "CJ Abrams",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Spencer Jones",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Geraldo Perdomo",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Kyle Teel",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Freddie Freeman",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Elias D\u00edaz",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Henry Bolte",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Josh Bell",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "CJ Abrams",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Ben Rice",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Ernie Clement",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Brandon Valenzuela",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Vladimir Guerrero Jr.",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Andr\u00e9s Gim\u00e9nez",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Ryan Vilade",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Ryan Kreidler",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "John Rave",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Weston Wilson",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Alex Call",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Ildemaro Vargas",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Corey Seager",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Harry Ford-DUP",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Yordan Alvarez",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Nasim Nu\u00f1ez",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Jonathan Aranda",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Luke Maile",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Weston Wilson",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Mickey Moniak",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Enrique Hern\u00e1ndez",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Cody Freeman",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Josh Rojas",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Jasson Dom\u00ednguez",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Will Smith",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Fernando Tatis Jr.",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Mookie Betts",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Nolan Arenado",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Jordan Lawlar",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Royce Lewis",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Kyle Teel",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Ildemaro Vargas",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Troy Johnston",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Julio Rodr\u00edguez",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Brady House",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Harry Ford-DUP",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Nolan Gorman",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Manny Machado",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Nasim Nu\u00f1ez",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Tristan Peters",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Colson Montgomery",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Tommy Troy",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Josh Rojas",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Brady House",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Miguel Rojas",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Isaac Paredes",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Ketel Marte",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Yandy D\u00edaz",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Kyle Tucker",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Brandon Nimmo",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Sam Antonacci",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Fernando Tatis Jr.",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Mookie Betts",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Nolan Gorman",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Nick Loftin",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Bobby Witt Jr.",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Junior Caminero",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Christian V\u00e1zquez",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Trevor Larnach",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Sam Antonacci",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Munetaka Murakami",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Miguel Vargas",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "TJ Rumfield",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Victor Mesa Jr.",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Ketel Marte",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Yandy D\u00edaz",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Kody Clemens",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Brian Serven",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Chase Meidroth",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Nathan Lukes",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Miguel Rojas",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Ty France",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "TJ Rumfield",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Jackson Merrill",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Xander Bogaerts",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Ryan Jeffers",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Kody Clemens",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Brian Serven",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Chase Meidroth",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Austin Wells",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Andres Chaparro",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Salvador Perez",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Cody Freeman",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Andrew Benintendi",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Ivan Herrera",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Wyatt Langford",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Cole Young",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jeremy Pe\u00f1a",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Ryan Jeffers",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Cody Bellinger",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Braden Montgomery",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Carlos Cortes",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jose Altuve",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Ivan Herrera",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Andrew Benintendi",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Tommy Edman",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Christian Walker",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Donovan Walton",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Alika Williams",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Luis Campusano",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Teoscar Hern\u00e1ndez",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Cam Smith",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Alika Williams",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jonny DeLuca",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Corbin Carroll",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Braden Montgomery",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Justin Foscue",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Dylan Crews",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Dominic Canzone",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Alejandro Kirk",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Jake Burger",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Tommy Edman",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Sean Keys",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Jordan Walker",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Ryan McMahon",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Gabriel Moreno",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Freddie Freeman",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "J.P. Crawford",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Luke Maile",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Logan O'Hoppe",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Kazuma Okamoto",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Josh Naylor",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Ben Rice",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Jonny DeLuca",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Adael Amador",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Kyle Isbel",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Jordan Walker",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Vinnie Pasquantino",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Manny Machado",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Jacob Young",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "James McCann",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Josh Bell",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Jeff McNeil",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Vladimir Guerrero Jr.",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Geraldo Perdomo",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Sean Keys",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Andr\u00e9s Gim\u00e9nez",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Jake Cronenworth",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Vinnie Pasquantino",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "J.P. Crawford",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Manny Machado",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Tristan Peters",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Kazuma Okamoto",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Josh Naylor",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Elias D\u00edaz",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Henry Bolte",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Luke Keaschall",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Ezequiel Tovar",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Jake Cronenworth",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Brandon Nimmo",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Enrique Hern\u00e1ndez",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "George Springer",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Joshua Baez",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Xander Bogaerts",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Jordan Lawlar",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Royce Lewis",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "CJ Abrams",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "James Wood",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Mookie Betts",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Wyatt Langford",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Andr\u00e9s Gim\u00e9nez",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Tommy Troy",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Ildemaro Vargas",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Brooks Lee",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Harry Ford-DUP",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Munetaka Murakami",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Joshua Baez",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Nick Loftin",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Bobby Witt Jr.",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Nasim Nu\u00f1ez",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Zack Gelof",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Dylan Crews",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Brady House",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Weston Wilson",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jazz Chisholm Jr.",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Josh Rojas",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "James Wood",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Jordan Lawlar",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Isaac Collins",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Cal Raleigh",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Brooks Lee",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Lawrence Butler",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Corey Seager",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Zac Veen",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Sam Antonacci",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Denzel Clarke",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Randy Arozarena",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Dylan Crews",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Jazz Chisholm Jr.",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Nathan Lukes",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Ezequiel Duran",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Ketel Marte",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Yandy D\u00edaz",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Brandon Valenzuela",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Isaac Collins",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Cal Raleigh",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jackson Merrill",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Corey Seager",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Isaac Paredes",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Brandon Valenzuela",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Nick Fortes",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Cole Carrigg",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Randy Arozarena",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Fernando Tatis Jr.",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Ryan Vilade",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "John Rave",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Leonardo Bernal",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Kyle Isbel",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Salvador Perez",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Cody Freeman",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Jeremy Pe\u00f1a",
-        "betmgm",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Dominic Canzone",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jes\u00fas S\u00e1nchez",
-        "draftkings",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Ty France",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Jeff McNeil",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Brett Sullivan",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Kyle Tucker",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Spencer Jones",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Will Smith",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Cam Smith",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Cole Carrigg",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Carlos Cortes",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Kody Clemens",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Jonathan Aranda",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Brian Serven",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Chase Meidroth",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Cole Young",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Christian V\u00e1zquez",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Dominic Canzone",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Lawrence Butler",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jasson Dom\u00ednguez",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Julio Rodr\u00edguez",
-        "draftkings",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Nick Fortes",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Will Smith",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Ryan Vilade",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Bryan Torres",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "John Rave",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Jose Altuve",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Leonardo Bernal",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Kyle Isbel",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Kyle Teel",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Freddie Freeman",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Elias D\u00edaz",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Victor Mesa Jr.",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Jackson Merrill",
-        "betmgm",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Jeff McNeil",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Kyle Tucker",
-        "fanduel",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Spencer Jones",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Jonathan Aranda",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Justin Foscue",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Daylen Lile",
-        "betmgm",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Yordan Alvarez",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Ryan Kreidler",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Christian V\u00e1zquez",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Alex Call",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Jacob Young",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Julio Rodr\u00edguez",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jasson Dom\u00ednguez",
-        "fanduel",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Nathan Church",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Bryan Torres",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Junior Caminero",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Nolan Arenado",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Colson Montgomery",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Mickey Moniak",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Cole Young",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Victor Mesa Jr.",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Hunter Goodman",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Miguel Vargas",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Braden Montgomery",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Yordan Alvarez",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Luke Maile",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Josh Bell",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Colson Montgomery",
-        "draftkings",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Junior Caminero",
-        "fanduel",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Troy Johnston",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Vladimir Guerrero Jr.",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Adael Amador",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Nathan Church",
-        "fanduel",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Ryan Jeffers",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Sean Keys",
-        "betmgm",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Carter Jensen",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "J.P. Crawford",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jonah Heim",
-        "fanduel",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Nolan Arenado",
-        "fanduel",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Jake Burger",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Myles Straw",
-        "fanduel",
-        "Toronto Blue Jays @ Kansas City Royals"
-      ],
-      [
-        "Andrew Benintendi",
-        "betmgm",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Isaac Paredes",
-        "draftkings",
-        "Arizona Diamondbacks @ Houston Astros"
-      ],
-      [
-        "Miguel Rojas",
-        "draftkings",
-        "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Alika Williams",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
-        "Jonny DeLuca",
-        "betmgm",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
-        "Miguel Vargas",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Cody Bellinger",
-        "draftkings",
-        "New York Yankees @ San Diego Padres"
-      ],
-      [
-        "Tristan Peters",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
-        "Alec Burleson",
-        "draftkings",
-        "St. Louis Cardinals @ Colorado Rockies"
-      ],
-      [
-        "Luke Keaschall",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ]
-    ],
     [
       [
         "Donovan Walton",
@@ -29660,56 +28545,2471 @@
         "draftkings",
         "New York Mets @ Miami Marlins"
       ]
+    ],
+    [
+      [
+        "Alex Freeland",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Carson Kelly",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Pete Crow-Armstrong",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Keibert Ruiz",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Kazuma Okamoto",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Marcus Semien",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Trevor Story",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Brice Turang",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Luis Campusano",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Isiah Kiner-Falefa",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Henry Bolte",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Otto Lopez",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Alex Freeland",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Joshua Baez",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Nolan Arenado",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Nasim Nu\u00f1ez",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Matt Olson",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Dylan Crews",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Brady House",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Jake Cronenworth",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Jonah Heim",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Dylan Beavers",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Francisco Lindor",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "James Wood",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Luis Campusano",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "A.J. Ewing",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Alika Williams",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Austin Hedges",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Wade Meckler",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jarren Duran",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Matt Shaw",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Ty France",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Abimelec Ortiz",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Wilyer Abreu",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Michael Massey",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Brayan Rocchio",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Joshua Baez",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Nolan Arenado",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Salvador Perez",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Ty France",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Bryson Stott",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Joe Mack",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Griffin Conine",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Kyle Isbel",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Nathan Lukes",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Josh Lowe",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Zack Gelof",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Abimelec Ortiz",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Alejandro Kirk",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Jackson Chourio",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Blaze Alexander",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Michael Massey",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Ryan Waldschmidt",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Royce Lewis",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Bryce Eldridge",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Mike Trout",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Drew Gilbert",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Alec Bohm",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Gunnar Henderson",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Joey Ortiz",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Tim Tawa",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Jackson Chourio",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Kody Clemens",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Lawrence Butler",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Joe Mack",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Mookie Betts",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Nico Hoerner",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Josh Lowe",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Vaughn Grissom",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Zack Gelof",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Tommy Edman",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Eugenio Su\u00e1rez",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Angel Mart\u00ednez",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Ernie Clement",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Vladimir Guerrero Jr.",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Jakob Marsee",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Elly De La Cruz",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Jordan Lawlar",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Drew Gilbert",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Sal Stewart",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "John Rave",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Owen Caissie",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Roman Anthony",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Leonardo Bernal",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Jackson Holliday",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Heriberto Hern\u00e1ndez",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Daylen Lile",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Owen Caissie",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Trevor Larnach",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Michael Harris II",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Kyren Paris",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Eugenio Su\u00e1rez",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Vladimir Guerrero Jr.",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Jeff McNeil",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Carter Jensen",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "George Springer",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Bryan Torres",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Leonardo Bernal",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Charles McAdoo",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Tyler Heineman",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Luis Lara",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Tim Tawa",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Lawrence Butler",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Gabriel Moreno",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Graham Pauley",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Heriberto Hern\u00e1ndez",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Elly De La Cruz",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Otto Lopez",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Vaughn Grissom",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Fernando Tatis Jr.",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Ryan Jeffers",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Kyren Paris",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jake Bauers",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Tyler Heineman",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jeff McNeil",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "George Springer",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Graham Pauley",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Nathan Church",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Bryan Torres",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Nick Loftin",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Manny Machado",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Matt McLain",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "JJ Bleday",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Myles Straw",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Geraldo Perdomo",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Gabriel Moreno",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Matthew Lugo",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Pete Alonso",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Carson Benge",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Christian Encarnacion-Strand",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Otto Lopez",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Drew Cavanaugh",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Shohei Ohtani",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Fernando Tatis Jr.",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Javier Sanoja",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Zach Neto",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Spencer Torkelson",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Nathan Church",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Andrew Vaughn",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Bo Bichette",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Freddie Freeman",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "David Fry",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Nathan Lukes",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Edwin Arroyo",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Geraldo Perdomo",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Kevin McGonigle",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Kyle Tucker",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Max Muncy",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Zach McKinstry",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Austin Riley",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Matthew Lugo",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Colt Keith",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Jos\u00e9 Ram\u00edrez",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Riley Greene",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Caleb Durbin",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Alec Burleson",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Kevin McGonigle",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Andrew Vaughn",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Gleyber Torres",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Dillon Dingler",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Ildemaro Vargas",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Freddie Freeman",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Trevor Story",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Brice Turang",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Luke Keaschall",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Francisco Lindor",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "James Wood",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Zach McKinstry",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Juan Soto",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Austin Riley",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Brandon Marsh",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Alex Bregman",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Donovan Walton",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Steven Kwan",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Jackson Merrill",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Keibert Ruiz",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Xander Bogaerts",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Matt Olson",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Riley Greene",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Coby Mayo",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Dylan Crews",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Caleb Durbin",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Kyle Stowers",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Alec Burleson",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Brett Baty",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Nolan Arenado",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Jordan Lawlar",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Angel Genao",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Dillon Dingler",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Ildemaro Vargas",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Wade Meckler",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jarren Duran",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jonah Heim",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Ryan Jeffers",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Juan Soto",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Will Smith",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Brandon Marsh",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Brayan Rocchio",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Alex Bregman",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Donovan Walton",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Samuel Basallo",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Jackson Merrill",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "A.J. Ewing",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Lourdes Gurriel Jr.",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Mookie Betts",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Coby Mayo",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Ketel Marte",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Michael Massey",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Bryson Stott",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Brett Baty",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Angel Genao",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Christian Moore",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Alex Freeland",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Francisco Alvarez",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Thomas Saggese",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Matt Shaw",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Christian Koss",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Seiya Suzuki",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Alejandro Kirk",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Freddy Fermin",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Joe Mack",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Luis Campusano",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Samuel Basallo",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Bryce Eldridge",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Lourdes Gurriel Jr.",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Carson Kelly",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Josh Lowe",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Christian Koss",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Ketel Marte",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Kazuma Okamoto",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Petey Halpin",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Gunnar Henderson",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Jacob Young",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Christian Moore",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Tyler Stephenson",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Kyle Isbel",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Francisco Alvarez",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Thomas Saggese",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Teoscar Hern\u00e1ndez",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Vinnie Pasquantino",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Brooks Lee",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Carlos Cortes",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Carson Benge",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Freddy Fermin",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Trea Turner",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Jacob Young",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Jackson Chourio",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Angel Mart\u00ednez",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "CJ Abrams",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Carson Kelly",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Teoscar Hern\u00e1ndez",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Vinnie Pasquantino",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Roman Anthony",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Josh Bell",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Kazuma Okamoto",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Petey Halpin",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Zack Gelof",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Jackson Holliday",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Manny Machado",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Mickey Gasper",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "CJ Abrams",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Ernie Clement",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Pete Crow-Armstrong",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Carlos Cortes",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Jake Cronenworth",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Kyle Stowers",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Abimelec Ortiz",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Drake Baldwin",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Manny Machado",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Lawrence Butler",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Henry Bolte",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Alika Williams",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Owen Caissie",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Griffin Conine",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Nasim Nu\u00f1ez",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Bobby Witt Jr.",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Josh Bell",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Vaughn Grissom",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Christian Encarnacion-Strand",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Jake Cronenworth",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Luis Lara",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Mickey Gasper",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Joey Ortiz",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Kyle Schwarber",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Nico Hoerner",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Alika Williams",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Pete Crow-Armstrong",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Isiah Kiner-Falefa",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Royce Lewis",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Cooper Pratt",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Xander Bogaerts",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Brady House",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Wilyer Abreu",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Henry Bolte",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Pete Alonso",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Isiah Kiner-Falefa",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Nick Loftin",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Griffin Conine",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Nasim Nu\u00f1ez",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Bobby Witt Jr.",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Heriberto Hern\u00e1ndez",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Austin Hedges",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Jordan Walker",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Tyler Heineman",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Tommy Edman",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Brady House",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Tim Tawa",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Graham Pauley",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Dylan Beavers",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Kyle Schwarber",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Royce Lewis",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Mike Trout",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Drew Cavanaugh",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Austin Hedges",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Trevor Larnach",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Wilyer Abreu",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jeff McNeil",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Eugenio Su\u00e1rez",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Matthew Lugo",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Blaze Alexander",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Ryan Waldschmidt",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Gabriel Moreno",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Nolan Gorman",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Mike Trout",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Daylen Lile",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Brooks Lee",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Nathan Lukes",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Matt Shaw",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Salvador Perez",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Tommy Edman",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Dylan Beavers",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Kody Clemens",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Pedro Ramirez",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Sal Stewart",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Freddie Freeman",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Nolan Gorman",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Trevor Story",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Charles McAdoo",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Zach McKinstry",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "William Contreras",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Blaze Alexander",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Ryan Waldschmidt",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Geraldo Perdomo",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Jakob Marsee",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Marcus Semien",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Riley Greene",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Sal Stewart",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Daylen Lile",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "John Rave",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Tyler Stephenson",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Brooks Lee",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Kyle Isbel",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Salvador Perez",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Kody Clemens",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Justin Crawford",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Colt Keith",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Fernando Tatis Jr.",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Javier Sanoja",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Alec Bohm",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Jung Hoo Lee",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Jakob Marsee",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Alex Bregman",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Joey Ortiz",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Jordan Lawlar",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Nico Hoerner",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Tyler Stephenson",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "John Rave",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Ty France",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Ha-Seong Kim",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "David Fry",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Ryan Jeffers",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Caleb Durbin",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Kyle Tucker",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Justin Crawford",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Kevin McGonigle",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Angel Genao",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Bryce Harper",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Ernie Clement",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Mookie Betts",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Elly De La Cruz",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Ildemaro Vargas",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Charles McAdoo",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Jung Hoo Lee",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Ivan Herrera",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Gary S\u00e1nchez",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Samuel Basallo",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Christian Yelich",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Dillon Dingler",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Andrew Vaughn",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Lourdes Gurriel Jr.",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Brayan Rocchio",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Wade Meckler",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jarren Duran",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Jackson Merrill",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Ha-Seong Kim",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Seiya Suzuki",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Carter Jensen",
+        "draftkings",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Coby Mayo",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Gunnar Henderson",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Shohei Ohtani",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Brice Turang",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "JJ Bleday",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Cooper Pratt",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Myles Straw",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Trevor Larnach",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Michael Harris II",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Spencer Torkelson",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Christian Moore",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Bryce Harper",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Brett Baty",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "J.T. Realmuto",
+        "draftkings",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Dylan Crews",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Shohei Ohtani",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Matt McLain",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Vladimir Guerrero Jr.",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Ivan Herrera",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Spencer Torkelson",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Christian Yelich",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "JJ Bleday",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Pete Alonso",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Garrett Mitchell",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Jos\u00e9 Ram\u00edrez",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Pedro Ramirez",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Carter Jensen",
+        "fanduel",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Petey Halpin",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Carson Benge",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Trea Turner",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Ketel Marte",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Cooper Pratt",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Myles Straw",
+        "fanduel",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Matt McLain",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Juan Soto",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Max Muncy",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "J.T. Realmuto",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Donovan Walton",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Jos\u00e9 Ram\u00edrez",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Carlos Cortes",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Francisco Alvarez",
+        "betmgm",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Seiya Suzuki",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Jacob Young",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Zach Neto",
+        "draftkings",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Garrett Mitchell",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Gleyber Torres",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Pedro Ramirez",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Josh Bell",
+        "betmgm",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Jordan Walker",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Bo Bichette",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Kyle Stowers",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Luke Keaschall",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Rafael Devers",
+        "fanduel",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "Edwin Arroyo",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Drake Baldwin",
+        "fanduel",
+        "Atlanta Braves @ Philadelphia Phillies"
+      ],
+      [
+        "Alejandro Kirk",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Max Muncy",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Javier Sanoja",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Jackson Holliday",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "William Contreras",
+        "draftkings",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Steven Kwan",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Roman Anthony",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Christian Encarnacion-Strand",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Marcus Semien",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Rafael Devers",
+        "draftkings",
+        "St. Louis Cardinals @ San Francisco Giants"
+      ],
+      [
+        "David Fry",
+        "draftkings",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "Zach Neto",
+        "fanduel",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Kyle Tucker",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Will Smith",
+        "fanduel",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Gleyber Torres",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Nick Loftin",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Bobby Witt Jr.",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Colt Keith",
+        "draftkings",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Bo Bichette",
+        "fanduel",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "Teoscar Hern\u00e1ndez",
+        "betmgm",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "Keibert Ruiz",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Vinnie Pasquantino",
+        "betmgm",
+        "Arizona Diamondbacks @ Kansas City Royals"
+      ],
+      [
+        "Luke Keaschall",
+        "fanduel",
+        "Minnesota Twins @ Detroit Tigers"
+      ],
+      [
+        "Xander Bogaerts",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Jonah Heim",
+        "draftkings",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Luis Lara",
+        "betmgm",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "George Springer",
+        "betmgm",
+        "Toronto Blue Jays @ Athletics"
+      ],
+      [
+        "Angel Mart\u00ednez",
+        "betmgm",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "CJ Abrams",
+        "betmgm",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Francisco Lindor",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ],
+      [
+        "James Wood",
+        "draftkings",
+        "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Mickey Gasper",
+        "betmgm",
+        "Los Angeles Angels @ Boston Red Sox"
+      ],
+      [
+        "Will Smith",
+        "draftkings",
+        "Cincinnati Reds @ Los Angeles Dodgers"
+      ],
+      [
+        "William Contreras",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Steven Kwan",
+        "fanduel",
+        "Cleveland Guardians @ Baltimore Orioles"
+      ],
+      [
+        "A.J. Ewing",
+        "draftkings",
+        "New York Mets @ Miami Marlins"
+      ]
     ]
   ],
   "mgm_history": [
-    [
-      {
-        "event": "Washington Nationals @ Los Angeles Dodgers",
-        "ending": 25,
-        "team": "LOS ANGELES DODGERS",
-        "players": [
-          "Enrique Hern\u00e1ndez",
-          "Mookie Betts"
-        ]
-      },
-      {
-        "event": "Washington Nationals @ Los Angeles Dodgers",
-        "ending": 75,
-        "team": "LOS ANGELES DODGERS",
-        "players": [
-          "Freddie Freeman",
-          "Kyle Tucker"
-        ]
-      },
-      {
-        "event": "Washington Nationals @ Los Angeles Dodgers",
-        "ending": 0,
-        "team": "LOS ANGELES DODGERS",
-        "players": [
-          "Teoscar Hern\u00e1ndez",
-          "Miguel Rojas"
-        ]
-      },
-      {
-        "event": "Washington Nationals @ Los Angeles Dodgers",
-        "ending": 50,
-        "team": "WASHINGTON NATIONALS",
-        "players": [
-          "Andres Chaparro",
-          "Nasim Nu\u00f1ez"
-        ]
-      },
-      {
-        "event": "Washington Nationals @ Los Angeles Dodgers",
-        "ending": 0,
-        "team": "WASHINGTON NATIONALS",
-        "players": [
-          "Jacob Young",
-          "Harry Ford-DUP"
-        ]
-      }
-    ],
     [
       {
         "event": "Arizona Diamondbacks @ Kansas City Royals",
@@ -31412,6 +32712,241 @@
           "Dylan Crews"
         ]
       }
+    ],
+    [
+      {
+        "event": "Arizona Diamondbacks @ Kansas City Royals",
+        "ending": 0,
+        "team": "ARIZONA DIAMONDBACKS",
+        "players": [
+          "Nolan Arenado",
+          "Geraldo Perdomo",
+          "Gabriel Moreno"
+        ]
+      },
+      {
+        "event": "Chicago Cubs @ Milwaukee Brewers",
+        "ending": 75,
+        "team": "CHICAGO CUBS",
+        "players": [
+          "Matt Shaw",
+          "Alex Bregman"
+        ]
+      },
+      {
+        "event": "Chicago Cubs @ Milwaukee Brewers",
+        "ending": 0,
+        "team": "CHICAGO CUBS",
+        "players": [
+          "Carson Kelly",
+          "Nico Hoerner"
+        ]
+      },
+      {
+        "event": "Cincinnati Reds @ Los Angeles Dodgers",
+        "ending": 25,
+        "team": "CINCINNATI REDS",
+        "players": [
+          "Matt McLain",
+          "Tyler Stephenson"
+        ]
+      },
+      {
+        "event": "Cincinnati Reds @ Los Angeles Dodgers",
+        "ending": 50,
+        "team": "LOS ANGELES DODGERS",
+        "players": [
+          "Alex Freeland",
+          "Kyle Tucker"
+        ]
+      },
+      {
+        "event": "Cincinnati Reds @ Los Angeles Dodgers",
+        "ending": 0,
+        "team": "LOS ANGELES DODGERS",
+        "players": [
+          "Will Smith",
+          "Freddie Freeman"
+        ]
+      },
+      {
+        "event": "Cleveland Guardians @ Baltimore Orioles",
+        "ending": 75,
+        "team": "BALTIMORE ORIOLES",
+        "players": [
+          "Gunnar Henderson",
+          "Samuel Basallo",
+          "Blaze Alexander"
+        ]
+      },
+      {
+        "event": "Cleveland Guardians @ Baltimore Orioles",
+        "ending": 0,
+        "team": "BALTIMORE ORIOLES",
+        "players": [
+          "Christian Encarnacion-Strand",
+          "Jackson Holliday"
+        ]
+      },
+      {
+        "event": "Cleveland Guardians @ Baltimore Orioles",
+        "ending": 75,
+        "team": "CLEVELAND GUARDIANS",
+        "players": [
+          "Angel Mart\u00ednez",
+          "Brayan Rocchio"
+        ]
+      },
+      {
+        "event": "Los Angeles Angels @ Boston Red Sox",
+        "ending": 75,
+        "team": "BOSTON RED SOX",
+        "players": [
+          "Roman Anthony",
+          "Jarren Duran"
+        ]
+      },
+      {
+        "event": "Los Angeles Angels @ Boston Red Sox",
+        "ending": 25,
+        "team": "LOS ANGELES ANGELS",
+        "players": [
+          "Zach Neto",
+          "Mike Trout",
+          "Josh Lowe"
+        ]
+      },
+      {
+        "event": "Minnesota Twins @ Detroit Tigers",
+        "ending": 0,
+        "team": "DETROIT TIGERS",
+        "players": [
+          "Dillon Dingler",
+          "Zach McKinstry"
+        ]
+      },
+      {
+        "event": "Minnesota Twins @ Detroit Tigers",
+        "ending": 50,
+        "team": "MINNESOTA TWINS",
+        "players": [
+          "Brooks Lee",
+          "Ryan Jeffers",
+          "Luke Keaschall"
+        ]
+      },
+      {
+        "event": "Minnesota Twins @ Detroit Tigers",
+        "ending": 25,
+        "team": "MINNESOTA TWINS",
+        "players": [
+          "Josh Bell",
+          "Trevor Larnach"
+        ]
+      },
+      {
+        "event": "New York Mets @ Miami Marlins",
+        "ending": 75,
+        "team": "MIAMI MARLINS",
+        "players": [
+          "Joe Mack",
+          "Javier Sanoja"
+        ]
+      },
+      {
+        "event": "New York Mets @ Miami Marlins",
+        "ending": 25,
+        "team": "NEW YORK METS",
+        "players": [
+          "Carson Benge",
+          "Francisco Alvarez"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 0,
+        "team": "OAKLAND ATHLETICS",
+        "players": [
+          "Carlos Cortes",
+          "Alika Williams"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 75,
+        "team": "OAKLAND ATHLETICS",
+        "players": [
+          "Henry Bolte",
+          "Donovan Walton",
+          "Zack Gelof"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 50,
+        "team": "OAKLAND ATHLETICS",
+        "players": [
+          "Jeff McNeil",
+          "Lawrence Butler",
+          "Jonah Heim"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 50,
+        "team": "TORONTO BLUE JAYS",
+        "players": [
+          "Charles McAdoo",
+          "Ernie Clement",
+          "Kazuma Okamoto"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 25,
+        "team": "TORONTO BLUE JAYS",
+        "players": [
+          "Nathan Lukes",
+          "Vladimir Guerrero Jr."
+        ]
+      },
+      {
+        "event": "Washington Nationals @ San Diego Padres",
+        "ending": 50,
+        "team": "SAN DIEGO PADRES",
+        "players": [
+          "Luis Campusano",
+          "Ty France"
+        ]
+      },
+      {
+        "event": "Washington Nationals @ San Diego Padres",
+        "ending": 50,
+        "team": "WASHINGTON NATIONALS",
+        "players": [
+          "Abimelec Ortiz",
+          "Nasim Nu\u00f1ez"
+        ]
+      },
+      {
+        "event": "Washington Nationals @ San Diego Padres",
+        "ending": 75,
+        "team": "WASHINGTON NATIONALS",
+        "players": [
+          "Keibert Ruiz",
+          "Brady House"
+        ]
+      },
+      {
+        "event": "Washington Nationals @ San Diego Padres",
+        "ending": 0,
+        "team": "WASHINGTON NATIONALS",
+        "players": [
+          "Jacob Young",
+          "Daylen Lile",
+          "Dylan Crews"
+        ]
+      }
     ]
   ],
   "prev_ev": {
@@ -31433,6 +32968,7 @@
       "methods": [
         "Stayed in the group",
         "FD Pattern",
+        "Last one left",
         "FD+MGM classic",
         "Match 75",
         "MGM 75"
@@ -31440,7 +32976,7 @@
       "edge": 130,
       "is_bet": true,
       "method_count": 2,
-      "score": 51,
+      "score": 57,
       "events": [
         "Cleveland Guardians @ Baltimore Orioles"
       ]
@@ -31505,13 +33041,14 @@
         "Multi-book method",
         "Match 25",
         "Stayed in the group",
+        "Last one left",
         "FD+MGM classic",
         "DK FD-style"
       ],
       "edge": 130,
       "is_bet": false,
       "method_count": 5,
-      "score": 96,
+      "score": 100,
       "events": [
         "Minnesota Twins @ Detroit Tigers"
       ]
@@ -31522,13 +33059,50 @@
         "Multi-book method",
         "Stayed in the group",
         "FD Pattern",
+        "Last one left",
         "FD+MGM classic",
         "MGM 50"
       ],
       "edge": 100,
       "is_bet": false,
       "method_count": 5,
-      "score": 79,
+      "score": 85,
+      "events": [
+        "Minnesota Twins @ Detroit Tigers"
+      ]
+    },
+    "Brooks Lee": {
+      "methods": [
+        "Match 50",
+        "FD 600",
+        "Multi-book method",
+        "Stayed in the group",
+        "Last one left",
+        "FD+MGM classic",
+        "MGM 50"
+      ],
+      "edge": 50,
+      "is_bet": false,
+      "method_count": 5,
+      "score": 76,
+      "events": [
+        "Minnesota Twins @ Detroit Tigers"
+      ]
+    },
+    "Josh Bell": {
+      "methods": [
+        "MGM 25",
+        "Multi-book method",
+        "Match 25",
+        "Stayed in the group",
+        "FD Pattern",
+        "Last one left",
+        "FD+MGM classic"
+      ],
+      "edge": 25,
+      "is_bet": false,
+      "method_count": 5,
+      "score": 76,
       "events": [
         "Minnesota Twins @ Detroit Tigers"
       ]
@@ -31551,40 +33125,6 @@
         "New York Mets @ Miami Marlins"
       ]
     },
-    "Brooks Lee": {
-      "methods": [
-        "Match 50",
-        "FD 600",
-        "Multi-book method",
-        "Stayed in the group",
-        "FD+MGM classic",
-        "MGM 50"
-      ],
-      "edge": 50,
-      "is_bet": false,
-      "method_count": 5,
-      "score": 70,
-      "events": [
-        "Minnesota Twins @ Detroit Tigers"
-      ]
-    },
-    "Josh Bell": {
-      "methods": [
-        "MGM 25",
-        "Multi-book method",
-        "Match 25",
-        "Stayed in the group",
-        "FD Pattern",
-        "FD+MGM classic"
-      ],
-      "edge": 25,
-      "is_bet": false,
-      "method_count": 5,
-      "score": 70,
-      "events": [
-        "Minnesota Twins @ Detroit Tigers"
-      ]
-    },
     "Francisco Alvarez": {
       "methods": [
         "MGM 25",
@@ -31605,9 +33145,10 @@
     "Gunnar Henderson": {
       "methods": [
         "Multi-book method",
-        "MGM Exact",
         "Stayed in the group",
+        "MGM Exact",
         "FD Pattern",
+        "Last one left",
         "FD+MGM classic",
         "Match 75",
         "MGM 75"
@@ -31615,7 +33156,7 @@
       "edge": 70,
       "is_bet": false,
       "method_count": 4,
-      "score": 62,
+      "score": 68,
       "events": [
         "Cleveland Guardians @ Baltimore Orioles"
       ]
@@ -31766,12 +33307,13 @@
       "methods": [
         "Match 50",
         "Stayed in the group",
+        "Last one left",
         "MGM 50"
       ],
       "edge": 75,
       "is_bet": false,
       "method_count": 2,
-      "score": 39,
+      "score": 45,
       "events": [
         "Minnesota Twins @ Detroit Tigers"
       ]
