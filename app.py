@@ -1247,13 +1247,29 @@ def make_meter(bars, level):
         html += f'<div class="meter-bar {filled}"></div>'
     return html + "</div>"
 
+def _strip_game_clock(s):
+    """'Away @ Home · 10:36 AM' -> 'Away @ Home' so fetch filter doesn't drop games."""
+    s = str(s or "").strip()
+    if " · " in s:
+        left, right = s.rsplit(" · ", 1)
+        if any(ch.isdigit() for ch in right) and ("am" in right.lower() or "pm" in right.lower() or ":" in right):
+            return left.strip()
+    return s
+
+
 def event_matches_chosen(ev, chosen):
-    if not chosen: return True
-    if ev in chosen: return True
-    ev_l = str(ev).lower()
-    for c in chosen:
+    if not chosen:
+        return True
+    ev_base = _strip_game_clock(ev)
+    ev_l = ev_base.lower()
+    chosen_bases = [_strip_game_clock(c) for c in chosen]
+    if ev in chosen or ev_base in chosen or ev_base in chosen_bases:
+        return True
+    if ev_l in {c.lower() for c in chosen_bases}:
+        return True
+    for c in chosen_bases:
         parts_c = [p.strip() for p in str(c).lower().split("@")]
-        if len(parts_c) == 2 and parts_c[0] in ev_l and parts_c[1] in ev_l:
+        if len(parts_c) == 2 and parts_c[0] and parts_c[1] and parts_c[0] in ev_l and parts_c[1] in ev_l:
             return True
     return False
 
@@ -2622,40 +2638,56 @@ def flatten_oddsapi(data):
 def fetch_sgo_hr_props(sgo_key):
     rows, found = [], set()
     try:
-        r = requests.get(f"{SGO_BASE}/events", params={"apiKey": sgo_key, "leagueID": "MLB", "oddsAvailable": "true", "limit": 25}, timeout=25)
-        if r.status_code != 200: return rows, found
-        for ev in r.json().get("data", []):
-            if ev.get("status", {}).get("started"): continue
-            teams = ev.get("teams", {})
-            home = teams.get("home", {}).get("names", {}).get("long", "Home")
-            away = teams.get("away", {}).get("names", {}).get("long", "Away")
-            event_name = f"{away} @ {home}"
-            players_map = ev.get("players", {})
-            for odd_id, odd_data in ev.get("odds", {}).items():
-                if "batting_homeRuns" not in odd_id: continue
-                if "ou-over" not in odd_id and "-over" not in odd_id: continue
-                ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
-                if ou is None or abs(float(ou) - 0.5) > 0.01: continue
-                pid = odd_data.get("playerID") or odd_data.get("statEntityID")
-                if not pid or pid not in players_map: continue
-                pdata = players_map[pid]
-                pname = pdata.get("name")
-                if not pname: continue
-                team = clean_team(pdata.get("teamID") or "")
-                for bk, bd in odd_data.get("byBookmaker", {}).items():
-                    if not bd.get("available", True): continue
-                    b = normalize_book(bk)
-                    if b not in PREFERRED: continue
-                    price = bd.get("odds")
-                    if price is None: continue
-                    try: price = int(str(price).replace("+", ""))
-                    except Exception: continue
-                    if price > MAX_HR_AMERICAN:
-                        continue
-                    if is_blocked_player(pname):
-                        continue
-                    found.add(b)
-                    rows.append({"event": event_name, "book": b, "player": pname, "price": price, "point": 0.5, "team": team, "source": "sgo"})
+        cursor = None
+        pages = 0
+        while pages < 6:
+            pages += 1
+            params = {"apiKey": sgo_key, "leagueID": "MLB", "oddsAvailable": "true", "limit": 50}
+            if cursor:
+                params["cursor"] = cursor
+            r = requests.get(f"{SGO_BASE}/events", params=params, timeout=25)
+            if r.status_code != 200:
+                break
+            payload = r.json() if r.content else {}
+            batch = payload.get("data") or []
+            if not batch:
+                break
+            for ev in batch:
+                teams = ev.get("teams", {})
+                home = teams.get("home", {}).get("names", {}).get("long", "Home")
+                away = teams.get("away", {}).get("names", {}).get("long", "Away")
+                event_name = f"{away} @ {home}"
+                players_map = ev.get("players", {})
+                for odd_id, odd_data in ev.get("odds", {}).items():
+                    if "batting_homeRuns" not in odd_id: continue
+                    if "ou-over" not in odd_id and "-over" not in odd_id: continue
+                    ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
+                    if ou is None or abs(float(ou) - 0.5) > 0.01: continue
+                    pid = odd_data.get("playerID") or odd_data.get("statEntityID")
+                    if not pid or pid not in players_map: continue
+                    pdata = players_map[pid]
+                    pname = pdata.get("name")
+                    if not pname: continue
+                    team = clean_team(pdata.get("teamID") or "")
+                    for bk, bd in odd_data.get("byBookmaker", {}).items():
+                        if not bd.get("available", True): continue
+                        b = normalize_book(bk)
+                        if b not in PREFERRED: continue
+                        price = bd.get("odds")
+                        if price is None: continue
+                        try:
+                            price = int(str(price).replace("+", ""))
+                        except Exception:
+                            continue
+                        if price > MAX_HR_AMERICAN:
+                            continue
+                        if is_blocked_player(pname):
+                            continue
+                        found.add(b)
+                        rows.append({"event": event_name, "book": b, "player": pname, "price": price, "point": 0.5, "team": team, "source": "sgo"})
+            cursor = payload.get("nextCursor") or payload.get("next_cursor")
+            if not cursor:
+                break
     except Exception as e:
         st.warning(f"SGO note: {e}")
     return rows, found
@@ -3557,16 +3589,20 @@ def build_shop_grade_stats(rows, days=14):
 
 
 def event_is_today(e):
-    """True if commence_time falls on today in AZ or ET (covers late West Coast)."""
+    """Keep today's slate in AZ/ET, plus already-started cards still on the feed."""
     t = e.get("commence_time") or ""
     if not t:
-        return True  # keep if unknown
+        return True
     try:
         dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
     except Exception:
         return True
     az = today_az()
     et = today_mlb_date()
+    now = datetime.now(timezone.utc)
+    # already underway / just finished still counts as today's card
+    if dt <= now + timedelta(hours=6) and dt >= now - timedelta(hours=8):
+        return True
     for hours, day in [(-7, az), (-4, et)]:
         local = dt.astimezone(timezone(timedelta(hours=hours))).strftime("%Y-%m-%d")
         if local == day:
@@ -3919,14 +3955,22 @@ def main():
             options[lab] = e["id"]
 
         default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
+        raw_n = st.session_state.get("events_raw_count") or len(events)
+        st.caption(f"Showing {len(events)} today · API listed {raw_n}")
         chosen = st.multiselect(
             "Games",
             list(options.keys()),
             default=default_sel,
         )
-        if st.button("Clear", use_container_width=True):
-            st.session_state["selected_games"] = []
-            st.rerun()
+        s1, s2 = st.columns(2)
+        with s1:
+            if st.button("Select all", use_container_width=True):
+                st.session_state["selected_games"] = list(options.keys())
+                st.rerun()
+        with s2:
+            if st.button("Clear", use_container_width=True):
+                st.session_state["selected_games"] = []
+                st.rerun()
         st.session_state["selected_games"] = chosen
         manual_fetch = st.button("Fetch", type="primary", use_container_width=True)
         if "last_refresh_count" not in st.session_state:
@@ -4124,63 +4168,71 @@ def main():
         if not takes and not passes and not watches and not coverage_only:
             st.info("Fetch while pregame - board fills when methods fire.")
         else:
-            if takes:
-                st.markdown("#### Take it")
-                # Away @ Home -> commence_time from loaded events (order board by tip time)
-                commence_by_event = {}
-                for e in st.session_state.get("events", []):
-                    key = f"{e.get('away_team')} @ {e.get('home_team')}"
-                    t = e.get("commence_time") or ""
-                    if t:
-                        commence_by_event[key] = t
+            st.markdown("#### Take it")
+            commence_by_event = {}
+            slate_games = []
+            chosen_labs = st.session_state.get("last_selected") or st.session_state.get("selected_games") or []
+            for e in st.session_state.get("events", []):
+                key = f"{e.get('away_team')} @ {e.get('home_team')}"
+                t = e.get("commence_time") or ""
+                if t:
+                    commence_by_event[key] = t
+                lab = f"{key} · {t}" if t else key
+                if not chosen_labs or event_matches_chosen(key, chosen_labs) or event_matches_chosen(lab, chosen_labs):
+                    slate_games.append(key)
+            if not slate_games:
+                slate_games = list(commence_by_event.keys())
 
-                by_game = defaultdict(list)
-                for item in takes:
-                    by_game[item.get("event") or "Game"].append(item)
-                picks_by_game = defaultdict(list)
-                for item in team_picks:
-                    picks_by_game[_item_game(item) or "Game"].append(item)
-                all_games = set(by_game.keys()) | set(picks_by_game.keys())
+            by_game = defaultdict(list)
+            for item in takes:
+                by_game[_strip_game_clock(item.get("event") or "Game")].append(item)
+            picks_by_game = defaultdict(list)
+            for item in team_picks:
+                picks_by_game[_strip_game_clock(_item_game(item) or "Game")].append(item)
+            extra = [g for g in (set(by_game) | set(picks_by_game)) if g not in slate_games]
+            all_games = slate_games + extra
 
-                def _resolve_commence(game_name):
-                    t = commence_by_event.get(game_name)
-                    if t:
-                        return t
-                    for k, v in commence_by_event.items():
-                        if k in game_name or game_name in k:
-                            return v
-                    return None
+            def _resolve_commence(game_name):
+                t = commence_by_event.get(game_name)
+                if t:
+                    return t
+                for k, v in commence_by_event.items():
+                    if k in game_name or game_name in k:
+                        return v
+                return None
 
-                def _game_sort_key(game_name):
-                    t = _resolve_commence(game_name)
-                    if not t:
-                        return (1, 9e18, game_name)  # unknown -> bottom
+            def _game_sort_key(game_name):
+                t = _resolve_commence(game_name)
+                if not t:
+                    return (1, 9e18, game_name)
+                try:
+                    dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
+                    return (0, dt.timestamp(), game_name)
+                except Exception:
+                    return (1, 9e18, game_name)
+
+            def _fmt_game_header(game_name):
+                t = _resolve_commence(game_name)
+                if not t:
+                    return game_name
+                try:
+                    dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(
+                        timezone(timedelta(hours=-7))
+                    )
                     try:
-                        dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
-                        return (0, dt.timestamp(), game_name)
+                        hhmm = dt.strftime("%-I:%M %p")
                     except Exception:
-                        return (1, 9e18, game_name)
+                        hhmm = dt.strftime("%I:%M %p").lstrip("0")
+                    return f"{game_name} · {hhmm} AZ"
+                except Exception:
+                    return game_name
 
-                def _fmt_game_header(game_name):
-                    t = _resolve_commence(game_name)
-                    if not t:
-                        return game_name
-                    try:
-                        dt = datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(
-                            timezone(timedelta(hours=-7))
-                        )
-                        try:
-                            hhmm = dt.strftime("%-I:%M %p")
-                        except Exception:
-                            hhmm = dt.strftime("%I:%M %p").lstrip("0")
-                        return f"{game_name} · {hhmm} AZ"
-                    except Exception:
-                        return game_name
-
-                for game in sorted(all_games, key=_game_sort_key):
-                    items = sorted(by_game.get(game, []), key=lambda x: -x.get("score", 0))
-                    picks = sorted(picks_by_game.get(game, []), key=lambda x: -x.get("score", 0))
-                    st.markdown(f"**{_fmt_game_header(game)}**")
+            st.caption(f"{len(all_games)} games on this slate · scroll the list — empty games still get a header.")
+            for game in sorted(all_games, key=_game_sort_key):
+                items = sorted(by_game.get(game, []), key=lambda x: -x.get("score", 0))
+                picks = sorted(picks_by_game.get(game, []), key=lambda x: -x.get("score", 0))
+                st.markdown(f"**{_fmt_game_header(game)}**")
+                if items or picks:
                     cols = st.columns(2)
                     idx = 0
                     for item in items:
@@ -4191,23 +4243,8 @@ def main():
                         with cols[idx % 2]:
                             _render_board_card(item, "TEAM PICK", "watch-card")
                         idx += 1
-                    if not items and not picks:
-                        st.caption("No TAKE IT or team pick for this game.")
-            else:
-                st.markdown("#### Take it")
-                if team_picks:
-                    st.caption("Nothing fully cleared. Team picks below — best name per side, not a green light.")
-                    picks_by_game = defaultdict(list)
-                    for item in team_picks:
-                        picks_by_game[_item_game(item) or "Game"].append(item)
-                    for game in sorted(picks_by_game.keys()):
-                        st.markdown(f"**{game}**")
-                        cols = st.columns(2)
-                        for idx, item in enumerate(sorted(picks_by_game[game], key=lambda x: -x.get("score", 0))):
-                            with cols[idx % 2]:
-                                _render_board_card(item, "TEAM PICK", "watch-card")
                 else:
-                    st.caption("Nothing cleared right now. Check Shop or wait for the next fetch.")
+                    st.caption("On the slate · no TAKE IT or team pick yet.")
 
             if passes:
                 st.markdown("#### Pass")
