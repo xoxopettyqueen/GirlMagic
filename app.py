@@ -211,6 +211,7 @@ EV_MIN_N = 12
 BOARD_MAX_PER_TEAM = 3
 BOARD_MAX_PER_GAME = 4
 TEAM_PICK_MIN_SCORE = 30  # floor pick: 1 per team when nobody greened; not TAKE IT
+SCORE_TAKE_OVERRIDE = 85  # fat stack (Larnach 96) can green even on a dead 30 / long number ≤999
 
 # PRIORITY = must have >=1 to unlock TAKE IT (Tracker 9/03 volume)
 # Tracker 9/05: only tags that beat 13% baseline unlock TAKE IT
@@ -3281,16 +3282,32 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if core_count < METHODS_MIN:
             continue
         is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px)
+        has_pri = has_priority_method(display_meths)
+        score_override = False
+        try:
+            p_abs = abs(int(best)) if best is not None else 0
+        except Exception:
+            p_abs = 0
+        if (
+            not is_bet
+            and score >= SCORE_TAKE_OVERRIDE
+            and has_pri
+            and core_count >= METHODS_MIN
+            and p_abs
+            and p_abs <= 999
+        ):
+            is_bet = True
+            score_override = True
         row["is_bet"] = is_bet
         fams = strong_method_families(display_meths)
         strong_n = len(fams)
-        has_pri = has_priority_method(display_meths)
         tri = " · 💎 DK+MGM+FD" if has_dk_mgm_fd(display_meths) else ""
         pri_note = " · priority ✓" if (is_bet and has_pri) else ""
         if is_bet:
+            ov = " · score override (stack too fat to leave gray)" if score_override else ""
             why = (
                 f"Score {score}/100 · {core_count} premium · {strong_n} families · "
-                f"edge {int(edge)}{tri}{pri_note}"
+                f"edge {int(edge)}{tri}{pri_note}{ov}"
             )
         else:
             miss = []
