@@ -74721,5 +74721,86 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-07_Fernando Tatis Jr._shop_take_112",
+    "date": "2026-09-07",
+    "time": "03:17 PM",
+    "player": "Fernando Tatis Jr.",
+    "score": 0,
+    "edge": 112,
+    "best_price": 750,
+    "best_book": "fanduel",
+    "median": 625,
+    "book_prices": {
+      "caesars": 575,
+      "draftkings": 600,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-07T22:17:05.048410+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_James Wood_shop_take_104",
+    "date": "2026-09-07",
+    "time": "03:17 PM",
+    "player": "James Wood",
+    "score": 0,
+    "edge": 104,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 725,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 700,
+      "fanduel": 750,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-07T22:17:05.048872+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Joshua Baez_shop_lean_60",
+    "date": "2026-09-07",
+    "time": "03:17 PM",
+    "player": "Joshua Baez",
+    "score": 0,
+    "edge": 60,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "median": 695,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 690,
+      "fanduel": 630,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T22:17:05.053323+00:00",
+    "price_source": "shop"
   }
 ]
