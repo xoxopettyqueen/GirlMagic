@@ -62278,10 +62278,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-06T15:21:08.542193+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-06_Julio Rodr\u00edguez_shop_lean_54",
@@ -67901,13 +67902,14 @@
       "MGM 75"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-07T15:56:51.288162+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.6
+    "benford_cluster": 0.6,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Matt Shaw_take_it_64",
@@ -68081,13 +68083,14 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-07T15:56:51.291719+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.6
+    "benford_cluster": 0.6,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Blaze Alexander_watch_43",
@@ -68117,13 +68120,14 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-07T15:56:51.292292+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.6
+    "benford_cluster": 0.6,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Bo Bichette_watch_21",
@@ -68360,13 +68364,14 @@
       "Match 00"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-07T15:56:51.295146+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.6
+    "benford_cluster": 0.6,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Jakob Marsee_watch_32",
@@ -68633,13 +68638,14 @@
       "MGM Exact"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-07T15:56:51.297852+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Roman Anthony_watch_15",
@@ -68939,10 +68945,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T15:56:56.435079+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Luke Keaschall_shop_lean_121",
@@ -69217,10 +69224,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T15:56:56.439098+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Jake Cronenworth_shop_lean_92",
@@ -69301,10 +69309,11 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-07T15:56:56.440279+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Ryan Jeffers_shop_take_88",
@@ -69523,10 +69532,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T15:56:56.443433+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Alex Bregman_shop_lean_78",
@@ -69891,10 +69901,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T15:56:56.448566+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Ben Malgeri_shop_lean_66",
@@ -70028,10 +70039,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T15:56:56.450599+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Brady House_shop_lean_59",
@@ -70169,10 +70181,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T15:56:56.452595+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Ryan Waldschmidt_shop_lean_57",
@@ -71588,10 +71601,11 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-07T16:48:04.976458+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Michael Harris II_shop_take_102",
@@ -71837,13 +71851,14 @@
       "Multi-book Shorten"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-07T16:48:30.021629+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.6
+    "benford_cluster": 0.6,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Brayan Rocchio_watch_50",
@@ -71873,13 +71888,14 @@
       "Match 75"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-07T16:48:30.023041+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.4
+    "benford_cluster": 0.4,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Samuel Basallo_watch_17",
@@ -71910,13 +71926,14 @@
       "MGM 75"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-07T16:48:30.036916+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.8
+    "benford_cluster": 0.8,
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Zach McKinstry_watch_39",
@@ -72035,10 +72052,11 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-07T16:55:10.159865+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Drake Baldwin_shop_take_165",
@@ -72741,10 +72759,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T17:39:27.350850+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Jackson Holliday_shop_take_102",
@@ -72769,10 +72788,11 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-07T17:39:27.353414+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Gunnar Henderson_shop_take_97",
@@ -72797,10 +72817,11 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-07T17:39:27.354216+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Heriberto Hern\u00e1ndez_shop_take_94",
@@ -72911,10 +72932,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T17:39:27.360154+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Kyren Paris_shop_lean_66",
@@ -72996,10 +73018,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T17:39:27.371633+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Francisco Lindor_shop_lean_50",
@@ -73421,10 +73444,11 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-07T19:05:05.791071+00:00",
-    "price_source": "shop"
+    "price_source": "shop",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-07_Manny Machado_shop_lean_42",
