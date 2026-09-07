@@ -74802,5 +74802,85 @@
     "source": "shop_lean",
     "logged_at": "2026-09-07T22:17:05.053323+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Alex Freeland_shop_take_166",
+    "date": "2026-09-07",
+    "time": "03:28 PM",
+    "player": "Alex Freeland",
+    "score": 0,
+    "edge": 166,
+    "best_price": 970,
+    "best_book": "draftkings",
+    "median": 835,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 750,
+      "draftkings": 970,
+      "fanduel": 920
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-07T22:28:32.825314+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Jackson Merrill_shop_lean_115",
+    "date": "2026-09-07",
+    "time": "03:28 PM",
+    "player": "Jackson Merrill",
+    "score": 0,
+    "edge": 115,
+    "best_price": 800,
+    "best_book": "fanduel",
+    "median": 687,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 600,
+      "fanduel": 800,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T22:28:32.833216+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Will Smith_shop_lean_49",
+    "date": "2026-09-07",
+    "time": "03:28 PM",
+    "player": "Will Smith",
+    "score": 0,
+    "edge": 49,
+    "best_price": 450,
+    "best_book": "hardrockbet",
+    "median": 400,
+    "book_prices": {
+      "betmgm": 400,
+      "caesars": 360,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T22:28:32.846157+00:00",
+    "price_source": "shop"
   }
 ]
