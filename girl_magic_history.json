@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-09-07T17:09:48.215852+00:00",
+  "saved_at": "2026-09-07T17:11:22.130082+00:00",
   "price_history": [
     {
       "A.J. Ewing||hardrockbet": 1750,
@@ -5420,7 +5420,7 @@
       "Andrew Vaughn||fanduel": 560,
       "Andrew Vaughn||hardrockbet": 650,
       "Angel Genao||betmgm": 1000,
-      "Angel Genao||caesars": 950,
+      "Angel Genao||caesars": 850,
       "Angel Genao||draftkings": 950,
       "Angel Genao||fanduel": 870,
       "Angel Genao||hardrockbet": 1000,
@@ -5495,7 +5495,7 @@
       "Bryce Harper||caesars": 350,
       "Bryce Harper||hardrockbet": 350,
       "Bryson Stott||caesars": 575,
-      "Bryson Stott||hardrockbet": 650,
+      "Bryson Stott||hardrockbet": 600,
       "CJ Abrams||betmgm": 425,
       "CJ Abrams||caesars": 400,
       "CJ Abrams||draftkings": 427,
@@ -5525,7 +5525,7 @@
       "Carter Jensen||caesars": 400,
       "Carter Jensen||draftkings": 393,
       "Carter Jensen||fanduel": 390,
-      "Carter Jensen||hardrockbet": 425,
+      "Carter Jensen||hardrockbet": 400,
       "Charles McAdoo||betmgm": 350,
       "Charles McAdoo||caesars": 525,
       "Charles McAdoo||draftkings": 600,
@@ -5585,6 +5585,7 @@
       "Donovan Walton||fanduel": 900,
       "Donovan Walton||hardrockbet": 1000,
       "Drake Baldwin||caesars": 850,
+      "Drake Baldwin||hardrockbet": 900,
       "Drew Cavanaugh||caesars": 950,
       "Drew Cavanaugh||draftkings": 1080,
       "Drew Cavanaugh||fanduel": 1000,
@@ -5722,7 +5723,7 @@
       "Ivan Herrera||fanduel": 1000,
       "Ivan Herrera||hardrockbet": 1100,
       "J.T. Realmuto||caesars": 700,
-      "J.T. Realmuto||hardrockbet": 600,
+      "J.T. Realmuto||hardrockbet": 650,
       "JJ Bleday||betmgm": 340,
       "JJ Bleday||caesars": 425,
       "JJ Bleday||draftkings": 485,
@@ -5782,7 +5783,7 @@
       "Jeff McNeil||draftkings": 890,
       "Jeff McNeil||fanduel": 830,
       "Jeff McNeil||hardrockbet": 900,
-      "Jo Adell||caesars": 425,
+      "Jo Adell||caesars": 475,
       "Jo Adell||hardrockbet": 450,
       "Joe Mack||betmgm": 775,
       "Joe Mack||caesars": 700,
@@ -5913,7 +5914,7 @@
       "Lourdes Gurriel Jr.||fanduel": 630,
       "Lourdes Gurriel Jr.||hardrockbet": 650,
       "Luis Arraez||caesars": 1100,
-      "Luis Arraez||hardrockbet": 1200,
+      "Luis Arraez||hardrockbet": 1100,
       "Luis Campusano||betmgm": 550,
       "Luis Campusano||caesars": 525,
       "Luis Campusano||draftkings": 506,
@@ -5945,7 +5946,7 @@
       "Matt McLain||fanduel": 630,
       "Matt McLain||hardrockbet": 700,
       "Matt Olson||caesars": 500,
-      "Matt Olson||hardrockbet": 525,
+      "Matt Olson||hardrockbet": 475,
       "Matt Shaw||betmgm": 475,
       "Matt Shaw||caesars": 700,
       "Matt Shaw||draftkings": 880,
@@ -6047,6 +6048,7 @@
       "Owen Caissie||draftkings": 630,
       "Owen Caissie||fanduel": 560,
       "Owen Caissie||hardrockbet": 550,
+      "Ozzie Albies||hardrockbet": 800,
       "Pedro Ramirez||betmgm": 725,
       "Pedro Ramirez||caesars": 850,
       "Pedro Ramirez||draftkings": 1000,
@@ -7014,13 +7016,13 @@
         "San Francisco Giants @ New York Mets"
       ],
       [
-        "Ernie Clement",
-        "fanduel",
+        "Brandon Valenzuela",
+        "betmgm",
         "Toronto Blue Jays @ Kansas City Royals"
       ],
       [
-        "Brandon Valenzuela",
-        "betmgm",
+        "Ernie Clement",
+        "fanduel",
         "Toronto Blue Jays @ Kansas City Royals"
       ],
       [
@@ -9761,13 +9763,13 @@
         "New York Yankees @ San Diego Padres"
       ],
       [
-        "Brandon Valenzuela",
-        "betmgm",
+        "Ernie Clement",
+        "fanduel",
         "Toronto Blue Jays @ Kansas City Royals"
       ],
       [
-        "Ernie Clement",
-        "fanduel",
+        "Brandon Valenzuela",
+        "betmgm",
         "Toronto Blue Jays @ Kansas City Royals"
       ],
       [
@@ -11233,14 +11235,14 @@
     ],
     [
       [
-        "Brooks Lee",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
         "Donovan Walton",
         "draftkings",
         "Athletics @ Seattle Mariners"
+      ],
+      [
+        "Brooks Lee",
+        "fanduel",
+        "Minnesota Twins @ Chicago White Sox"
       ],
       [
         "Lawrence Butler",
@@ -11248,14 +11250,14 @@
         "Athletics @ Seattle Mariners"
       ],
       [
-        "Corey Seager",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
         "Ezequiel Tovar",
         "fanduel",
         "St. Louis Cardinals @ Colorado Rockies"
+      ],
+      [
+        "Corey Seager",
+        "draftkings",
+        "Tampa Bay Rays @ Texas Rangers"
       ],
       [
         "Ryan Vilade",
@@ -11543,14 +11545,14 @@
         "Washington Nationals @ Los Angeles Dodgers"
       ],
       [
-        "Nick Fortes",
-        "draftkings",
-        "Tampa Bay Rays @ Texas Rangers"
-      ],
-      [
         "Ryan McMahon",
         "draftkings",
         "New York Yankees @ San Diego Padres"
+      ],
+      [
+        "Nick Fortes",
+        "draftkings",
+        "Tampa Bay Rays @ Texas Rangers"
       ],
       [
         "Cole Carrigg",
@@ -11568,14 +11570,14 @@
         "Athletics @ Seattle Mariners"
       ],
       [
-        "Julio Rodr\u00edguez",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
         "Luis Campusano",
         "fanduel",
         "New York Yankees @ San Diego Padres"
+      ],
+      [
+        "Julio Rodr\u00edguez",
+        "betmgm",
+        "Athletics @ Seattle Mariners"
       ],
       [
         "Brady House",
@@ -12088,11 +12090,6 @@
         "Tampa Bay Rays @ Texas Rangers"
       ],
       [
-        "Luke Keaschall",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
         "Jake Cronenworth",
         "draftkings",
         "New York Yankees @ San Diego Padres"
@@ -12488,6 +12485,11 @@
         "New York Yankees @ San Diego Padres"
       ],
       [
+        "Carlos Cortes",
+        "fanduel",
+        "Athletics @ Seattle Mariners"
+      ],
+      [
         "Zack Gelof",
         "draftkings",
         "Athletics @ Seattle Mariners"
@@ -12618,21 +12620,21 @@
         "Athletics @ Seattle Mariners"
       ],
       [
-        "Carlos Cortes",
+        "Luke Keaschall",
         "fanduel",
-        "Athletics @ Seattle Mariners"
+        "Minnesota Twins @ Chicago White Sox"
       ]
     ],
     [
       [
-        "Brooks Lee",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
         "Donovan Walton",
         "draftkings",
         "Athletics @ Seattle Mariners"
+      ],
+      [
+        "Brooks Lee",
+        "fanduel",
+        "Minnesota Twins @ Chicago White Sox"
       ],
       [
         "Ezequiel Tovar",
@@ -12890,14 +12892,14 @@
         "Athletics @ Seattle Mariners"
       ],
       [
-        "Julio Rodr\u00edguez",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
         "Luis Campusano",
         "fanduel",
         "New York Yankees @ San Diego Padres"
+      ],
+      [
+        "Julio Rodr\u00edguez",
+        "betmgm",
+        "Athletics @ Seattle Mariners"
       ],
       [
         "Brady House",
@@ -13308,11 +13310,6 @@
         "Daylen Lile",
         "betmgm",
         "Washington Nationals @ Los Angeles Dodgers"
-      ],
-      [
-        "Luke Keaschall",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
       ],
       [
         "Jake Cronenworth",
@@ -13645,6 +13642,11 @@
         "New York Yankees @ San Diego Padres"
       ],
       [
+        "Carlos Cortes",
+        "fanduel",
+        "Athletics @ Seattle Mariners"
+      ],
+      [
         "Zack Gelof",
         "draftkings",
         "Athletics @ Seattle Mariners"
@@ -13760,21 +13762,21 @@
         "Athletics @ Seattle Mariners"
       ],
       [
-        "Carlos Cortes",
+        "Luke Keaschall",
         "fanduel",
-        "Athletics @ Seattle Mariners"
+        "Minnesota Twins @ Chicago White Sox"
       ]
     ],
     [
       [
-        "Brooks Lee",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
         "Donovan Walton",
         "draftkings",
         "Athletics @ Seattle Mariners"
+      ],
+      [
+        "Brooks Lee",
+        "fanduel",
+        "Minnesota Twins @ Chicago White Sox"
       ],
       [
         "Ezequiel Tovar",
@@ -14032,14 +14034,14 @@
         "Athletics @ Seattle Mariners"
       ],
       [
-        "Julio Rodr\u00edguez",
-        "betmgm",
-        "Athletics @ Seattle Mariners"
-      ],
-      [
         "Luis Campusano",
         "fanduel",
         "New York Yankees @ San Diego Padres"
+      ],
+      [
+        "Julio Rodr\u00edguez",
+        "betmgm",
+        "Athletics @ Seattle Mariners"
       ],
       [
         "Brady House",
@@ -14452,11 +14454,6 @@
         "Washington Nationals @ Los Angeles Dodgers"
       ],
       [
-        "Luke Keaschall",
-        "fanduel",
-        "Minnesota Twins @ Chicago White Sox"
-      ],
-      [
         "Jake Cronenworth",
         "draftkings",
         "New York Yankees @ San Diego Padres"
@@ -14782,6 +14779,11 @@
         "New York Yankees @ San Diego Padres"
       ],
       [
+        "Carlos Cortes",
+        "fanduel",
+        "Athletics @ Seattle Mariners"
+      ],
+      [
         "Zack Gelof",
         "draftkings",
         "Athletics @ Seattle Mariners"
@@ -14902,9 +14904,9 @@
         "Athletics @ Seattle Mariners"
       ],
       [
-        "Carlos Cortes",
+        "Luke Keaschall",
         "fanduel",
-        "Athletics @ Seattle Mariners"
+        "Minnesota Twins @ Chicago White Sox"
       ]
     ],
     [
@@ -15316,14 +15318,14 @@
         "Los Angeles Angels @ Boston Red Sox"
       ],
       [
-        "Matt Shaw",
-        "fanduel",
-        "Chicago Cubs @ Milwaukee Brewers"
-      ],
-      [
         "Ty France",
         "fanduel",
         "Washington Nationals @ San Diego Padres"
+      ],
+      [
+        "Matt Shaw",
+        "fanduel",
+        "Chicago Cubs @ Milwaukee Brewers"
       ],
       [
         "Abimelec Ortiz",
@@ -17858,14 +17860,14 @@
         "Los Angeles Angels @ Boston Red Sox"
       ],
       [
-        "Ty France",
-        "fanduel",
-        "Washington Nationals @ San Diego Padres"
-      ],
-      [
         "Matt Shaw",
         "fanduel",
         "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Ty France",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
       ],
       [
         "Abimelec Ortiz",
@@ -20405,14 +20407,14 @@
         "Los Angeles Angels @ Boston Red Sox"
       ],
       [
-        "Ty France",
-        "fanduel",
-        "Washington Nationals @ San Diego Padres"
-      ],
-      [
         "Matt Shaw",
         "fanduel",
         "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Ty France",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
       ],
       [
         "Abimelec Ortiz",
@@ -22952,14 +22954,14 @@
         "Los Angeles Angels @ Boston Red Sox"
       ],
       [
-        "Ty France",
-        "fanduel",
-        "Washington Nationals @ San Diego Padres"
-      ],
-      [
         "Matt Shaw",
         "fanduel",
         "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Ty France",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
       ],
       [
         "Abimelec Ortiz",
@@ -25499,14 +25501,14 @@
         "Los Angeles Angels @ Boston Red Sox"
       ],
       [
-        "Ty France",
-        "fanduel",
-        "Washington Nationals @ San Diego Padres"
-      ],
-      [
         "Matt Shaw",
         "fanduel",
         "Chicago Cubs @ Milwaukee Brewers"
+      ],
+      [
+        "Ty France",
+        "fanduel",
+        "Washington Nationals @ San Diego Padres"
       ],
       [
         "Abimelec Ortiz",
@@ -30499,9 +30501,9 @@
         "ending": 0,
         "team": "BALTIMORE ORIOLES",
         "players": [
-          "Gunnar Henderson",
+          "Blaze Alexander",
           "Jackson Holliday",
-          "Blaze Alexander"
+          "Gunnar Henderson"
         ]
       },
       {
@@ -30577,6 +30579,235 @@
         "players": [
           "Josh Bell",
           "Ryan Jeffers"
+        ]
+      },
+      {
+        "event": "New York Mets @ Miami Marlins",
+        "ending": 75,
+        "team": "MIAMI MARLINS",
+        "players": [
+          "Javier Sanoja",
+          "Joe Mack"
+        ]
+      },
+      {
+        "event": "New York Mets @ Miami Marlins",
+        "ending": 25,
+        "team": "NEW YORK METS",
+        "players": [
+          "Carson Benge",
+          "Francisco Alvarez"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 50,
+        "team": "OAKLAND ATHLETICS",
+        "players": [
+          "Donovan Walton",
+          "Lawrence Butler",
+          "Alika Williams"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 25,
+        "team": "OAKLAND ATHLETICS",
+        "players": [
+          "Henry Bolte",
+          "Jonah Heim",
+          "Jeff McNeil"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 50,
+        "team": "TORONTO BLUE JAYS",
+        "players": [
+          "Charles McAdoo",
+          "Ernie Clement",
+          "Kazuma Okamoto"
+        ]
+      },
+      {
+        "event": "Toronto Blue Jays @ Athletics",
+        "ending": 0,
+        "team": "TORONTO BLUE JAYS",
+        "players": [
+          "Nathan Lukes",
+          "Myles Straw"
+        ]
+      },
+      {
+        "event": "Washington Nationals @ San Diego Padres",
+        "ending": 50,
+        "team": "SAN DIEGO PADRES",
+        "players": [
+          "Luis Campusano",
+          "Ty France",
+          "Jake Cronenworth"
+        ]
+      },
+      {
+        "event": "Washington Nationals @ San Diego Padres",
+        "ending": 75,
+        "team": "WASHINGTON NATIONALS",
+        "players": [
+          "Abimelec Ortiz",
+          "Brady House"
+        ]
+      }
+    ],
+    [
+      {
+        "event": "Arizona Diamondbacks @ Kansas City Royals",
+        "ending": 0,
+        "team": "ARIZONA DIAMONDBACKS",
+        "players": [
+          "Nolan Arenado",
+          "Geraldo Perdomo",
+          "Gabriel Moreno"
+        ]
+      },
+      {
+        "event": "Atlanta Braves @ Philadelphia Phillies",
+        "ending": 25,
+        "team": "ATLANTA BRAVES",
+        "players": [
+          "Ozzie Albies",
+          "Austin Riley"
+        ]
+      },
+      {
+        "event": "Atlanta Braves @ Philadelphia Phillies",
+        "ending": 50,
+        "team": "PHILADELPHIA PHILLIES",
+        "players": [
+          "Bryson Stott",
+          "Justin Crawford",
+          "Alec Bohm"
+        ]
+      },
+      {
+        "event": "Atlanta Braves @ Philadelphia Phillies",
+        "ending": 75,
+        "team": "PHILADELPHIA PHILLIES",
+        "players": [
+          "Trea Turner",
+          "J.T. Realmuto"
+        ]
+      },
+      {
+        "event": "Chicago Cubs @ Milwaukee Brewers",
+        "ending": 75,
+        "team": "CHICAGO CUBS",
+        "players": [
+          "Matt Shaw",
+          "Alex Bregman"
+        ]
+      },
+      {
+        "event": "Chicago Cubs @ Milwaukee Brewers",
+        "ending": 0,
+        "team": "CHICAGO CUBS",
+        "players": [
+          "Carson Kelly",
+          "Nico Hoerner"
+        ]
+      },
+      {
+        "event": "Cincinnati Reds @ Los Angeles Dodgers",
+        "ending": 25,
+        "team": "CINCINNATI REDS",
+        "players": [
+          "Matt McLain",
+          "Tyler Stephenson"
+        ]
+      },
+      {
+        "event": "Cincinnati Reds @ Los Angeles Dodgers",
+        "ending": 25,
+        "team": "LOS ANGELES DODGERS",
+        "players": [
+          "Will Smith",
+          "Alex Freeland",
+          "Freddie Freeman"
+        ]
+      },
+      {
+        "event": "Cincinnati Reds @ Los Angeles Dodgers",
+        "ending": 0,
+        "team": "LOS ANGELES DODGERS",
+        "players": [
+          "Teoscar Hern\u00e1ndez",
+          "Mookie Betts",
+          "Tommy Edman"
+        ]
+      },
+      {
+        "event": "Cleveland Guardians @ Baltimore Orioles",
+        "ending": 75,
+        "team": "BALTIMORE ORIOLES",
+        "players": [
+          "Gunnar Henderson",
+          "Samuel Basallo",
+          "Blaze Alexander"
+        ]
+      },
+      {
+        "event": "Cleveland Guardians @ Baltimore Orioles",
+        "ending": 0,
+        "team": "BALTIMORE ORIOLES",
+        "players": [
+          "Christian Encarnacion-Strand",
+          "Jackson Holliday"
+        ]
+      },
+      {
+        "event": "Cleveland Guardians @ Baltimore Orioles",
+        "ending": 75,
+        "team": "CLEVELAND GUARDIANS",
+        "players": [
+          "Angel Mart\u00ednez",
+          "Brayan Rocchio"
+        ]
+      },
+      {
+        "event": "Los Angeles Angels @ Boston Red Sox",
+        "ending": 75,
+        "team": "BOSTON RED SOX",
+        "players": [
+          "Roman Anthony",
+          "Jarren Duran"
+        ]
+      },
+      {
+        "event": "Los Angeles Angels @ Boston Red Sox",
+        "ending": 25,
+        "team": "LOS ANGELES ANGELS",
+        "players": [
+          "Zach Neto",
+          "Mike Trout",
+          "Josh Lowe"
+        ]
+      },
+      {
+        "event": "Minnesota Twins @ Detroit Tigers",
+        "ending": 25,
+        "team": "DETROIT TIGERS",
+        "players": [
+          "Dillon Dingler",
+          "Colt Keith",
+          "Kevin McGonigle"
+        ]
+      },
+      {
+        "event": "Minnesota Twins @ Detroit Tigers",
+        "ending": 0,
+        "team": "DETROIT TIGERS",
+        "players": [
+          "Zach McKinstry",
+          "Spencer Torkelson"
         ]
       },
       {
@@ -30747,9 +30978,9 @@
         "ending": 75,
         "team": "BALTIMORE ORIOLES",
         "players": [
-          "Blaze Alexander",
+          "Gunnar Henderson",
           "Samuel Basallo",
-          "Gunnar Henderson"
+          "Blaze Alexander"
         ]
       },
       {
@@ -30785,8 +31016,8 @@
         "team": "LOS ANGELES ANGELS",
         "players": [
           "Zach Neto",
-          "Josh Lowe",
-          "Mike Trout"
+          "Mike Trout",
+          "Josh Lowe"
         ]
       },
       {
@@ -30813,237 +31044,8 @@
         "ending": 75,
         "team": "MIAMI MARLINS",
         "players": [
-          "Javier Sanoja",
-          "Joe Mack"
-        ]
-      },
-      {
-        "event": "New York Mets @ Miami Marlins",
-        "ending": 25,
-        "team": "NEW YORK METS",
-        "players": [
-          "Carson Benge",
-          "Francisco Alvarez"
-        ]
-      },
-      {
-        "event": "Toronto Blue Jays @ Athletics",
-        "ending": 50,
-        "team": "OAKLAND ATHLETICS",
-        "players": [
-          "Donovan Walton",
-          "Lawrence Butler",
-          "Alika Williams"
-        ]
-      },
-      {
-        "event": "Toronto Blue Jays @ Athletics",
-        "ending": 25,
-        "team": "OAKLAND ATHLETICS",
-        "players": [
-          "Henry Bolte",
-          "Jonah Heim",
-          "Jeff McNeil"
-        ]
-      },
-      {
-        "event": "Toronto Blue Jays @ Athletics",
-        "ending": 50,
-        "team": "TORONTO BLUE JAYS",
-        "players": [
-          "Charles McAdoo",
-          "Ernie Clement",
-          "Kazuma Okamoto"
-        ]
-      },
-      {
-        "event": "Toronto Blue Jays @ Athletics",
-        "ending": 0,
-        "team": "TORONTO BLUE JAYS",
-        "players": [
-          "Nathan Lukes",
-          "Myles Straw"
-        ]
-      },
-      {
-        "event": "Washington Nationals @ San Diego Padres",
-        "ending": 50,
-        "team": "SAN DIEGO PADRES",
-        "players": [
-          "Luis Campusano",
-          "Ty France",
-          "Jake Cronenworth"
-        ]
-      },
-      {
-        "event": "Washington Nationals @ San Diego Padres",
-        "ending": 75,
-        "team": "WASHINGTON NATIONALS",
-        "players": [
-          "Abimelec Ortiz",
-          "Brady House"
-        ]
-      }
-    ],
-    [
-      {
-        "event": "Arizona Diamondbacks @ Kansas City Royals",
-        "ending": 0,
-        "team": "ARIZONA DIAMONDBACKS",
-        "players": [
-          "Nolan Arenado",
-          "Geraldo Perdomo",
-          "Gabriel Moreno"
-        ]
-      },
-      {
-        "event": "Atlanta Braves @ Philadelphia Phillies",
-        "ending": 25,
-        "team": "ATLANTA BRAVES",
-        "players": [
-          "Ozzie Albies",
-          "Austin Riley"
-        ]
-      },
-      {
-        "event": "Atlanta Braves @ Philadelphia Phillies",
-        "ending": 50,
-        "team": "PHILADELPHIA PHILLIES",
-        "players": [
-          "Bryson Stott",
-          "Justin Crawford",
-          "Alec Bohm"
-        ]
-      },
-      {
-        "event": "Atlanta Braves @ Philadelphia Phillies",
-        "ending": 75,
-        "team": "PHILADELPHIA PHILLIES",
-        "players": [
-          "Trea Turner",
-          "J.T. Realmuto"
-        ]
-      },
-      {
-        "event": "Chicago Cubs @ Milwaukee Brewers",
-        "ending": 75,
-        "team": "CHICAGO CUBS",
-        "players": [
-          "Matt Shaw",
-          "Alex Bregman"
-        ]
-      },
-      {
-        "event": "Chicago Cubs @ Milwaukee Brewers",
-        "ending": 0,
-        "team": "CHICAGO CUBS",
-        "players": [
-          "Carson Kelly",
-          "Nico Hoerner"
-        ]
-      },
-      {
-        "event": "Cincinnati Reds @ Los Angeles Dodgers",
-        "ending": 25,
-        "team": "CINCINNATI REDS",
-        "players": [
-          "Matt McLain",
-          "Tyler Stephenson"
-        ]
-      },
-      {
-        "event": "Cincinnati Reds @ Los Angeles Dodgers",
-        "ending": 25,
-        "team": "LOS ANGELES DODGERS",
-        "players": [
-          "Will Smith",
-          "Alex Freeland",
-          "Freddie Freeman"
-        ]
-      },
-      {
-        "event": "Cincinnati Reds @ Los Angeles Dodgers",
-        "ending": 0,
-        "team": "LOS ANGELES DODGERS",
-        "players": [
-          "Teoscar Hern\u00e1ndez",
-          "Mookie Betts",
-          "Tommy Edman"
-        ]
-      },
-      {
-        "event": "Cleveland Guardians @ Baltimore Orioles",
-        "ending": 75,
-        "team": "BALTIMORE ORIOLES",
-        "players": [
-          "Blaze Alexander",
-          "Samuel Basallo",
-          "Gunnar Henderson"
-        ]
-      },
-      {
-        "event": "Cleveland Guardians @ Baltimore Orioles",
-        "ending": 0,
-        "team": "BALTIMORE ORIOLES",
-        "players": [
-          "Christian Encarnacion-Strand",
-          "Jackson Holliday"
-        ]
-      },
-      {
-        "event": "Cleveland Guardians @ Baltimore Orioles",
-        "ending": 75,
-        "team": "CLEVELAND GUARDIANS",
-        "players": [
-          "Angel Mart\u00ednez",
-          "Brayan Rocchio"
-        ]
-      },
-      {
-        "event": "Los Angeles Angels @ Boston Red Sox",
-        "ending": 75,
-        "team": "BOSTON RED SOX",
-        "players": [
-          "Roman Anthony",
-          "Jarren Duran"
-        ]
-      },
-      {
-        "event": "Los Angeles Angels @ Boston Red Sox",
-        "ending": 25,
-        "team": "LOS ANGELES ANGELS",
-        "players": [
-          "Zach Neto",
-          "Josh Lowe",
-          "Mike Trout"
-        ]
-      },
-      {
-        "event": "Minnesota Twins @ Detroit Tigers",
-        "ending": 25,
-        "team": "DETROIT TIGERS",
-        "players": [
-          "Dillon Dingler",
-          "Colt Keith",
-          "Kevin McGonigle"
-        ]
-      },
-      {
-        "event": "Minnesota Twins @ Detroit Tigers",
-        "ending": 0,
-        "team": "DETROIT TIGERS",
-        "players": [
-          "Zach McKinstry",
-          "Spencer Torkelson"
-        ]
-      },
-      {
-        "event": "New York Mets @ Miami Marlins",
-        "ending": 75,
-        "team": "MIAMI MARLINS",
-        "players": [
-          "Javier Sanoja",
-          "Joe Mack"
+          "Joe Mack",
+          "Javier Sanoja"
         ]
       },
       {
@@ -31203,9 +31205,9 @@
         "ending": 75,
         "team": "BALTIMORE ORIOLES",
         "players": [
-          "Blaze Alexander",
+          "Gunnar Henderson",
           "Samuel Basallo",
-          "Gunnar Henderson"
+          "Blaze Alexander"
         ]
       },
       {
@@ -31241,8 +31243,8 @@
         "team": "LOS ANGELES ANGELS",
         "players": [
           "Zach Neto",
-          "Josh Lowe",
-          "Mike Trout"
+          "Mike Trout",
+          "Josh Lowe"
         ]
       },
       {
@@ -31260,8 +31262,8 @@
         "team": "MINNESOTA TWINS",
         "players": [
           "Brooks Lee",
-          "Luke Keaschall",
-          "Ryan Jeffers"
+          "Ryan Jeffers",
+          "Luke Keaschall"
         ]
       },
       {
@@ -31278,8 +31280,8 @@
         "ending": 75,
         "team": "MIAMI MARLINS",
         "players": [
-          "Javier Sanoja",
-          "Joe Mack"
+          "Joe Mack",
+          "Javier Sanoja"
         ]
       },
       {
@@ -31362,8 +31364,8 @@
         "ending": 0,
         "team": "WASHINGTON NATIONALS",
         "players": [
-          "Daylen Lile",
           "Jacob Young",
+          "Daylen Lile",
           "Dylan Crews"
         ]
       }
@@ -31457,9 +31459,9 @@
         "ending": 75,
         "team": "BALTIMORE ORIOLES",
         "players": [
-          "Blaze Alexander",
+          "Gunnar Henderson",
           "Samuel Basallo",
-          "Gunnar Henderson"
+          "Blaze Alexander"
         ]
       },
       {
@@ -31495,8 +31497,8 @@
         "team": "LOS ANGELES ANGELS",
         "players": [
           "Zach Neto",
-          "Josh Lowe",
-          "Mike Trout"
+          "Mike Trout",
+          "Josh Lowe"
         ]
       },
       {
@@ -31514,8 +31516,8 @@
         "team": "MINNESOTA TWINS",
         "players": [
           "Brooks Lee",
-          "Luke Keaschall",
-          "Ryan Jeffers"
+          "Ryan Jeffers",
+          "Luke Keaschall"
         ]
       },
       {
@@ -31532,8 +31534,8 @@
         "ending": 75,
         "team": "MIAMI MARLINS",
         "players": [
-          "Javier Sanoja",
-          "Joe Mack"
+          "Joe Mack",
+          "Javier Sanoja"
         ]
       },
       {
@@ -31625,8 +31627,8 @@
         "ending": 0,
         "team": "WASHINGTON NATIONALS",
         "players": [
-          "Daylen Lile",
           "Jacob Young",
+          "Daylen Lile",
           "Dylan Crews"
         ]
       }
