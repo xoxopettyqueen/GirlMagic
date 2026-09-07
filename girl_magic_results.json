@@ -72073,5 +72073,33 @@
     "source": "shop_lean",
     "logged_at": "2026-09-07T17:04:58.689367+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-07_Brice Turang_shop_lean_74",
+    "date": "2026-09-07",
+    "time": "10:09 AM",
+    "player": "Brice Turang",
+    "score": 0,
+    "edge": 74,
+    "best_price": 800,
+    "best_book": "fanduel",
+    "median": 770,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 700,
+      "draftkings": 770,
+      "fanduel": 800,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-07T17:09:50.957837+00:00",
+    "price_source": "shop"
   }
 ]
