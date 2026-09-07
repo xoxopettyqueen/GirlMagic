@@ -72987,6 +72987,36 @@
     "price_source": "shop"
   },
   {
+    "id": "2026-09-07_Adley Rutschman_watch_14",
+    "date": "2026-09-07",
+    "time": "10:39 AM",
+    "player": "Adley Rutschman",
+    "score": 14,
+    "edge": -12,
+    "best_price": 625,
+    "best_book": "caesars",
+    "median": 612.5,
+    "book_prices": {
+      "caesars": 625,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 25,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-07T17:39:33.311258+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
     "id": "2026-09-07_Bobby Witt Jr._watch_14",
     "date": "2026-09-07",
     "time": "10:39 AM",
@@ -73013,39 +73043,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-07T17:39:33.349363+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
-  },
-  {
-    "id": "2026-09-07_Justin Crawford_watch_47",
-    "date": "2026-09-07",
-    "time": "10:39 AM",
-    "player": "Justin Crawford",
-    "score": 47,
-    "edge": 150,
-    "best_price": 1600,
-    "best_book": "fanduel",
-    "median": 1450.0,
-    "book_prices": {
-      "caesars": 1300,
-      "draftkings": 1300,
-      "fanduel": 1600,
-      "hardrockbet": 1600
-    },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": null,
-    "mgm_ending": null,
-    "methods": [
-      "Multi-book Shorten"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-07T17:39:33.363642+00:00",
+    "logged_at": "2026-09-07T17:39:33.314783+00:00",
     "price_source": "pregame_lock",
     "benford_tag": "Fake",
     "benford_note": "",
