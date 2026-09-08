@@ -4141,6 +4141,22 @@ def main():
         st.markdown(f"### {petty_label('Board')}")
         st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it. +1000–1500 can go green only with a priority tag.")
 
+        f1, f2, f3, f4 = st.columns([1.3, 1, 1, 1.2])
+        with f1:
+            show_kinds = st.multiselect(
+                "Show",
+                ["TAKE IT", "TEAM PICK", "PASS", "WATCH"],
+                default=["TAKE IT", "TEAM PICK"],
+                key="board_kinds",
+            )
+        with f2:
+            min_score = st.slider("Min score", 0, 100, 0, 5, key="board_min_score")
+        with f3:
+            sort_by = st.selectbox("Sort games", ["First pitch", "Highest score", "Biggest edge"], key="board_sort")
+        with f4:
+            time_win = st.selectbox("When", ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when")
+        name_q = st.text_input("Find a name", "", key="board_name").strip().lower()
+
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
             fams = petty_family_chips(item.get("methods") or [])
@@ -4244,10 +4260,49 @@ def main():
                 except Exception:
                     return game_name
 
-            st.caption(f"{len(all_games)} games on this slate · scroll the list — empty games still get a header.")
-            for game in sorted(all_games, key=_game_sort_key):
-                items = sorted(by_game.get(game, []), key=lambda x: -x.get("score", 0))
-                picks = sorted(picks_by_game.get(game, []), key=lambda x: -x.get("score", 0))
+            def _in_time_win(game_name):
+                if time_win == "All times":
+                    return True
+                t = _resolve_commence(game_name)
+                if not t:
+                    return True
+                try:
+                    dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
+                    now = datetime.now(timezone.utc)
+                    hours = (dt - now).total_seconds() / 3600.0
+                    if time_win == "Next 3 hours":
+                        return hours <= 3
+                    return hours > 3
+                except Exception:
+                    return True
+
+            def _keep_card(item):
+                if (item.get("score") or 0) < min_score:
+                    return False
+                if name_q and name_q not in (item.get("player") or "").lower():
+                    return False
+                return True
+
+            def _game_rank(game_name):
+                pool = by_game.get(game_name, []) + picks_by_game.get(game_name, [])
+                if sort_by == "Highest score":
+                    return (0, -(max((x.get("score") or 0) for x in pool) if pool else -1), game_name)
+                if sort_by == "Biggest edge":
+                    return (0, -(max((x.get("edge") or 0) for x in pool) if pool else -1), game_name)
+                return _game_sort_key(game_name)
+
+            visible_games = [g for g in all_games if _in_time_win(g)]
+            st.caption(
+                f"{len(visible_games)} games after filters · min score {min_score} · "
+                f"{', '.join(show_kinds) or 'nothing selected'}"
+            )
+            for game in sorted(visible_games, key=_game_rank):
+                items = [x for x in by_game.get(game, []) if _keep_card(x)] if "TAKE IT" in show_kinds else []
+                picks = [x for x in picks_by_game.get(game, []) if _keep_card(x)] if "TEAM PICK" in show_kinds else []
+                items = sorted(items, key=lambda x: -x.get("score", 0))
+                picks = sorted(picks, key=lambda x: -x.get("score", 0))
+                if not items and not picks and (name_q or min_score or time_win != "All times"):
+                    continue
                 st.markdown(f"**{_fmt_game_header(game)}**")
                 if items or picks:
                     cols = st.columns(2)
@@ -4263,21 +4318,27 @@ def main():
                 else:
                     st.caption("On the slate · no TAKE IT or team pick yet.")
 
-            if passes:
+            if passes and "PASS" in show_kinds:
+                shown_p = [x for x in passes if _keep_card(x)]
                 st.markdown("#### Pass")
-                cols = st.columns(2)
-                for idx, item in enumerate(passes):
-                    with cols[idx % 2]:
-                        _render_board_card(item, "PASS", "skip")
+                if not shown_p:
+                    st.caption("No PASS names match the filters.")
+                else:
+                    cols = st.columns(2)
+                    for idx, item in enumerate(shown_p):
+                        with cols[idx % 2]:
+                            _render_board_card(item, "PASS", "skip")
 
-            st.markdown("#### Watch")
-            if not watches:
-                st.caption("No WATCH names on this fetch.")
-            else:
-                cols = st.columns(2)
-                for idx, item in enumerate(watches[:40]):
-                    with cols[idx % 2]:
-                        _render_board_card(item, "WATCH", "watch-card")
+            if "WATCH" in show_kinds:
+                st.markdown("#### Watch")
+                shown_w = [x for x in watches if _keep_card(x)]
+                if not shown_w:
+                    st.caption("No WATCH names match the filters.")
+                else:
+                    cols = st.columns(2)
+                    for idx, item in enumerate(shown_w[:40]):
+                        with cols[idx % 2]:
+                            _render_board_card(item, "WATCH", "watch-card")
 
             st.markdown("#### 👁️ COVERAGE · support tags only (not a bet)")
             st.caption(
