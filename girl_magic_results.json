@@ -81801,5 +81801,117 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-08_Jacob Gonzalez_shop_lean_88",
+    "date": "2026-09-08",
+    "time": "09:58 AM",
+    "player": "Jacob Gonzalez",
+    "score": 0,
+    "edge": 88,
+    "best_price": 820,
+    "best_book": "fanduel",
+    "median": 800,
+    "book_prices": {
+      "betmgm": 550,
+      "caesars": 750,
+      "draftkings": 810,
+      "fanduel": 820,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 20,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T16:58:10.725469+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Mike Busch_shop_lean_58",
+    "date": "2026-09-08",
+    "time": "09:58 AM",
+    "player": "Mike Busch",
+    "score": 0,
+    "edge": 58,
+    "best_price": 680,
+    "best_book": "fanduel",
+    "median": 650,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 625,
+      "draftkings": 650,
+      "fanduel": 680,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T16:58:10.731906+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Tristan Peters_shop_lean_54",
+    "date": "2026-09-08",
+    "time": "09:58 AM",
+    "player": "Tristan Peters",
+    "score": 0,
+    "edge": 54,
+    "best_price": 790,
+    "best_book": "fanduel",
+    "median": 725,
+    "book_prices": {
+      "betmgm": 725,
+      "caesars": 700,
+      "draftkings": 720,
+      "fanduel": 790,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 90,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T16:58:10.736152+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Chase DeLauter_shop_lean_49",
+    "date": "2026-09-08",
+    "time": "09:58 AM",
+    "player": "Chase DeLauter",
+    "score": 0,
+    "edge": 49,
+    "best_price": 490,
+    "best_book": "fanduel",
+    "median": 450,
+    "book_prices": {
+      "betmgm": 400,
+      "caesars": 425,
+      "draftkings": 450,
+      "fanduel": 490,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+400s",
+    "ending": 90,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T16:58:10.739709+00:00",
+    "price_source": "shop"
   }
 ]
