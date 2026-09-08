@@ -3849,6 +3849,142 @@ def build_lock_lab():
     }
 
 
+# ── Numerology helpers (page only — does not change TAKE IT / Shop / Grade) ──
+_NUM_SOFT = {
+    1: "Leadership, ego, first-pitch energy.",
+    2: "Partnership, balance, DK/FD harmony.",
+    3: "Creativity, chaos, multi-book magic.",
+    4: "Structure, lock discipline.",
+    5: "Change, volatility, odds movement.",
+    6: "Responsibility, lineup loyalty.",
+    7: "Intuition, pattern-spotting.",
+    8: "Power, payout, dominance.",
+    9: "Completion, full-circle hits.",
+    11: "Master intuition — double vision.",
+    22: "Master builder — the long play.",
+    33: "Master teacher — the lesson hits.",
+}
+_NUM_PETTY = {
+    1: "Main character energy. First at-bat, first pitch, first in line.",
+    2: "Pair energy. You and your girl. DK and FD holding hands.",
+    3: "Chaos magic. Three books talking at once and somehow it slaps.",
+    4: "Lock it. No wandering. Structure is sexy today.",
+    5: "The line is gonna wiggle. Don’t panic — that’s the point.",
+    6: "Lineup loyalty. If they’re penciled in, they’re penciled in.",
+    7: "Intuition over impulse — trust your petty gut.",
+    8: "Power and payout. 8s been loud when they wanna be loud.",
+    9: "Full circle. If it started here, it ends here.",
+    11: "Master 11. You’re seeing the pattern before the book does.",
+    22: "Master 22. Build the parlay like architecture, not a vibe.",
+    33: "Master 33. Teach the slate who’s running it.",
+}
+_DAY_SOFT = {
+    1: "Today’s number 1 is first-pitch energy — lead, don’t chase.",
+    2: "Today’s number 2 wants pairs and balance.",
+    3: "Today’s number 3 is multi-book chaos. Stay cute, stay sharp.",
+    4: "Today’s number 4 is lock discipline. No extra clicks.",
+    5: "Today’s number 5 is movement day — watch the line, don’t marry it.",
+    6: "Today’s number 6 is lineup loyalty. Starters only.",
+    7: "Today’s number 7 means intuition over impulse — trust your petty gut.",
+    8: "Today’s number 8 is power and payout energy.",
+    9: "Today’s number 9 is completion — full-circle hits.",
+}
+_DAY_PETTY = {
+    1: "1 today. You are the first pitch. Everybody else can wait.",
+    2: "2 today. Find your pair. Solo heroics are mid.",
+    3: "3 today. The books are messy and that’s the fun.",
+    4: "4 today. If it ain’t locked, it ain’t loved.",
+    5: "5 today. The number moves. So do you.",
+    6: "6 today. If RotoWire didn’t write them down, we don’t either.",
+    7: "7 today. Intuition over impulse — trust your petty gut.",
+    8: "8 today. Power. Payout. Don’t whisper it.",
+    9: "9 today. Close the circle. Grade the slate. Then we party.",
+}
+_TREND_NOTE = {
+    1: "1s want the leadoff swing.",
+    2: "2s keep pairing up like they rehearsed it.",
+    3: "3s been chaotic in a cute way.",
+    4: "4s are the lock girls — slow, then sudden.",
+    5: "5s ride the move. Don’t fade the wiggle just to fade it.",
+    6: "6s stay loyal to the lineup card.",
+    7: "7s are the pattern-spotters. Quiet until they’re not.",
+    8: "8s been wild all week — power and payout energy.",
+    9: "9s close slates. Full-circle hits.",
+}
+
+
+def _num_reduce(n, keep_master=True):
+    try:
+        n = abs(int(n))
+    except Exception:
+        return None
+    while n > 9:
+        if keep_master and n in (11, 22, 33):
+            return n
+        n = sum(int(d) for d in str(n))
+    return n
+
+
+def _num_date_number(d):
+    raw = f"{d.year}{d.month:02d}{d.day:02d}"
+    total = sum(int(ch) for ch in raw)
+    return _num_reduce(total, keep_master=True), total, " + ".join(list(raw)) + f" = {total}"
+
+
+def _num_letter(ch):
+    return ((ord(ch.upper()) - 65) % 9) + 1 if ch.isalpha() else 0
+
+
+def _num_name_number(name):
+    return _num_reduce(sum(_num_letter(c) for c in clean_name(name)))
+
+
+def _num_initials(text):
+    letters = [c for c in str(text or "") if c.isalpha()]
+    if not letters:
+        return None
+    return _num_reduce(sum(_num_letter(c) for c in letters))
+
+
+def _num_meaning(n, petty):
+    return (_NUM_PETTY if petty else _NUM_SOFT).get(n, "")
+
+
+def _num_align(player_n, day_n):
+    if player_n is None or day_n is None:
+        return "neutral", "💜 Neutral"
+    pn = _num_reduce(player_n, keep_master=False)
+    dn = _num_reduce(day_n, keep_master=False)
+    if pn == dn:
+        return "strong", "💖 Strong match"
+    if pn and dn and abs(pn - dn) in (1, 8):
+        return "neutral", "💜 Neutral"
+    return "off", "🖤 Off-vibe"
+
+
+def _num_hits_window(rows, start_date, end_date):
+    ends, names = Counter(), Counter()
+    for r in rows:
+        if r.get("result") != "HIT":
+            continue
+        try:
+            d = datetime.strptime(r.get("date") or "", "%Y-%m-%d").date()
+        except Exception:
+            continue
+        if not (start_date <= d <= end_date):
+            continue
+        end = r.get("ending")
+        if end is None and r.get("best_price") is not None:
+            end = last_two(r.get("best_price"))
+        if end is not None:
+            red = _num_reduce(int(end), keep_master=False)
+            if red:
+                ends[red] += 1
+        nn = _num_name_number(r.get("player") or "")
+        if nn:
+            names[nn] += 1
+    return ends, names
+
 
 def main():
     if "history_loaded" not in st.session_state:
@@ -4121,7 +4257,7 @@ def main():
         <div class="petty-box"><div class="petty-num">{take_n + pass_n + watch_n + coverage_n}</div><div class="petty-label">ON SLATE</div></div>
     </div>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Analytics", "Code"]
+    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
     main = st.radio(
         "Section",
         MAIN_TABS,
@@ -5389,6 +5525,169 @@ def main():
         st.markdown(
             '<div class="pa-foot">Data graded by Girl Magic Odds - powered by petty intuition and math.</div>',
             unsafe_allow_html=True,
+        )
+
+    if page == "Numerology:":
+        petty_num = st.toggle("Petty Mode 💅", value=True, key="num_petty")
+        st.markdown('<div class="queen-banner">🔮 Numerology</div>', unsafe_allow_html=True)
+        st.caption("Flavor only. Does not change TAKE IT, Shop, or Grade.")
+        try:
+            default_d = datetime.strptime(today_az(), "%Y-%m-%d").date()
+        except Exception:
+            default_d = datetime.now().date()
+        pick = st.date_input("Read the number for this date", value=default_d, key="num_date")
+        day_n, _raw, formula = _num_date_number(pick)
+        day_key = _num_reduce(day_n, keep_master=False)
+        opener = (_DAY_PETTY if petty_num else _DAY_SOFT).get(day_key, _num_meaning(day_n, petty_num))
+        st.markdown(
+            f"""
+            <div class="card" style="text-align:center;padding:22px 16px">
+              <div style="font-family:'Playfair Display',serif;font-size:3.6rem;font-weight:900;line-height:1">{day_n}</div>
+              <div style="color:#f9a8d4;font-weight:700;margin-top:6px">{pick.strftime("%A, %B %d %Y")}</div>
+              <div style="margin-top:8px">{formula} → <b>{day_n}</b></div>
+              <div style="margin-top:10px">{opener}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        res_rows = load_results()
+        st.markdown("#### 1 · Daily breakdown")
+        ends, names_c = _num_hits_window(res_rows, pick - timedelta(days=6), pick)
+        cdf = pd.DataFrame({
+            "Number": list(range(1, 10)),
+            "HIT endings (reduced)": [ends.get(n, 0) for n in range(1, 10)],
+            "HIT name numbers": [names_c.get(n, 0) for n in range(1, 10)],
+        })
+        if cdf.iloc[:, 1:].sum().sum() == 0:
+            st.info("No graded HITs in this window yet — grade Results and this chart wakes up.")
+        else:
+            st.bar_chart(cdf.set_index("Number"))
+            if ends:
+                tn, tc = ends.most_common(1)[0]
+                extra = " · this is today’s number too" if tn == day_key else ""
+                st.info(f"Petty Pattern Notes: {tn}s led endings ({tc} HR). {_TREND_NOTE.get(tn, '')}{extra}")
+
+        st.markdown("#### 2 · Sports numerology sync")
+        labels = []
+        for e in st.session_state.get("events") or []:
+            away, home = e.get("away_team") or "", e.get("home_team") or ""
+            if away or home:
+                labels.append(f"{away} @ {home}")
+        if not labels:
+            labels = list(st.session_state.get("selected_games") or [])
+        games = []
+        for lab in labels:
+            gn = _num_initials(lab)
+            games.append({"Game": lab, "Team-initial #": gn, "Date + teams #": _num_reduce((gn or 0) + (day_n or 0))})
+        if not games:
+            st.info("Load Games + Fetch on Board first — we reuse that slate. No extra API.")
+        else:
+            repeat = Counter(g["Team-initial #"] for g in games if g["Team-initial #"] is not None)
+            chips = " · ".join(f"#{n} × {c}" for n, c in repeat.most_common())
+            st.caption(chips)
+            overlap = [g for g in games if g["Team-initial #"] == day_key]
+            if overlap:
+                st.success("Overlap with today: " + ", ".join(g["Game"] for g in overlap))
+            st.dataframe(pd.DataFrame(games), use_container_width=True, hide_index=True)
+
+        st.markdown("#### 3 · Player numerology grid")
+        q = st.text_input("Search a player", placeholder="Aaron Judge", key="num_search")
+        players = []
+        odds_rows = st.session_state.get("odds") or []
+        if odds_rows:
+            try:
+                ndf = pd.DataFrame(odds_rows)
+            except Exception:
+                ndf = pd.DataFrame()
+            if not ndf.empty and "player" in ndf.columns:
+                for p, g in ndf.groupby("player"):
+                    nn = _num_name_number(p)
+                    jersey = None
+                    if "jersey" in g.columns:
+                        try:
+                            jersey = int(pd.to_numeric(g["jersey"], errors="coerce").dropna().iloc[0])
+                        except Exception:
+                            jersey = None
+                    best = None
+                    try:
+                        best = int(g["price"].max())
+                    except Exception:
+                        pass
+                    players.append({
+                        "player": p, "name_n": nn, "jersey": jersey,
+                        "personal": _num_reduce(jersey) if jersey else nn, "best": best,
+                    })
+        if not players:
+            lock = st.session_state.get("pregame_lock") or {}
+            if not lock and os.path.exists(PREGAME_FILE):
+                try:
+                    with open(PREGAME_FILE) as f:
+                        lock = json.load(f)
+                except Exception:
+                    lock = {}
+            for p in lock:
+                nn = _num_name_number(p)
+                players.append({"player": p, "name_n": nn, "jersey": None, "personal": nn, "best": None})
+
+        if q.strip():
+            look = clean_name(q)
+            nn = _num_name_number(look)
+            a, lab = _num_align(nn, day_n)
+            st.markdown(f'<div class="card"><b>{look}</b> · {lab} · #{nn}<br>{_num_meaning(nn, petty_num)}</div>', unsafe_allow_html=True)
+            players = [p for p in players if q.lower() in p["player"].lower()]
+
+        if not players:
+            st.info("Fetch odds first so this grid can read The Board.")
+        else:
+            cols = st.columns(2)
+            ranked = sorted(players, key=lambda x: (0 if _num_align(x["personal"], day_n)[0] == "strong" else 1, x["player"]))
+            for i, p in enumerate(ranked):
+                a, lab = _num_align(p["personal"], day_n)
+                extra = f" · jersey {p['jersey']}" if p.get("jersey") else ""
+                odds_s = f" · {format_odds(p['best'])}" if p.get("best") is not None else ""
+                with cols[i % 2]:
+                    st.markdown(
+                        f'<div class="card"><b>{p["player"]}</b> · {lab} · #{p["personal"]}{extra}{odds_s}<br>'
+                        f'<small>Name #{p["name_n"]} · {_num_meaning(p["personal"], petty_num)}</small></div>',
+                        unsafe_allow_html=True,
+                    )
+
+        st.markdown("#### 4 · Numerology trends")
+        window = st.radio("Window", ["Day", "Week", "Month"], horizontal=True, key="num_window")
+        start = pick if window == "Day" else pick - timedelta(days=6 if window == "Week" else 29)
+        ends2, names2 = _num_hits_window(res_rows, start, pick)
+        tdf = pd.DataFrame({
+            "Number": list(range(1, 10)),
+            "Reduced endings": [ends2.get(n, 0) for n in range(1, 10)],
+            "Name numbers": [names2.get(n, 0) for n in range(1, 10)],
+        })
+        if tdf.iloc[:, 1:].sum().sum() == 0:
+            st.info("Grade some HITs and the chart fills in.")
+        else:
+            st.bar_chart(tdf.set_index("Number"))
+            lead = (ends2 or names2).most_common(1)
+            if lead:
+                n, c = lead[0]
+                st.info(f"Petty Pattern Notes: {_TREND_NOTE.get(n, '')} ({n} showed up {c}× this {window.lower()}).")
+
+        st.markdown("#### 5 · Petty numerology glossary")
+        gcols = st.columns(3)
+        for i, n in enumerate(range(1, 10)):
+            with gcols[i % 3]:
+                st.markdown(f'<div class="card"><b>{n}</b><br>{_num_meaning(n, petty_num)}</div>', unsafe_allow_html=True)
+
+        import io as _io
+        buf = _io.StringIO()
+        buf.write(f"GIRL MAGIC NUMEROLOGY REPORT · {pick.isoformat()}\n")
+        buf.write(f"Day number: {day_n} ({formula})\n{opener}\n\n")
+        for p in sorted(players, key=lambda x: x["player"]):
+            buf.write(f"- {p['player']} name#{p['name_n']} {_num_align(p['personal'], day_n)[1]}\n")
+        st.download_button(
+            "Export Numerology Report of the Day",
+            data=buf.getvalue(),
+            file_name=f"girl_magic_numerology_{pick.isoformat()}.txt",
+            mime="text/plain",
         )
 
     if page == "Code:":
