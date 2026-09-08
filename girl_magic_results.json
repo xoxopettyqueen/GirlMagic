@@ -84678,74 +84678,194 @@
     "benford_cluster": 1.0
   },
   {
-    "id": "2026-09-08_Royce Lewis_take_it_75",
+    "id": "2026-09-08_Andrew Vaughn_shop_take_199",
     "date": "2026-09-08",
     "time": "03:12 PM",
-    "player": "Royce Lewis",
-    "score": 75,
-    "edge": 47,
-    "best_price": 525,
-    "best_book": "betmgm",
-    "median": 428,
+    "player": "Andrew Vaughn",
+    "score": 0,
+    "edge": 199,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 850,
     "book_prices": {
-      "betmgm": 525,
+      "betmgm": 475,
+      "caesars": 850,
+      "draftkings": 950,
+      "fanduel": 830,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-08T22:12:40.853953+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Patrick Bailey_shop_take_127",
+    "date": "2026-09-08",
+    "time": "03:12 PM",
+    "player": "Patrick Bailey",
+    "score": 0,
+    "edge": 127,
+    "best_price": 790,
+    "best_book": "draftkings",
+    "median": 630,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 625,
+      "draftkings": 790,
+      "fanduel": 630,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 90,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-08T22:12:40.859312+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Travis Bazzana_shop_take_127",
+    "date": "2026-09-08",
+    "time": "03:12 PM",
+    "player": "Travis Bazzana",
+    "score": 0,
+    "edge": 127,
+    "best_price": 770,
+    "best_book": "draftkings",
+    "median": 680,
+    "book_prices": {
+      "betmgm": 500,
+      "caesars": 625,
+      "draftkings": 770,
+      "fanduel": 680,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-08T22:12:40.859690+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Jonah Heim_shop_take_84",
+    "date": "2026-09-08",
+    "time": "03:12 PM",
+    "player": "Jonah Heim",
+    "score": 0,
+    "edge": 84,
+    "best_price": 810,
+    "best_book": "draftkings",
+    "median": 730,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 810,
+      "fanduel": 710,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 10,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-08T22:12:40.864896+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Lars Nootbaar_shop_lean_54",
+    "date": "2026-09-08",
+    "time": "03:12 PM",
+    "player": "Lars Nootbaar",
+    "score": 0,
+    "edge": 54,
+    "best_price": 525,
+    "best_book": "hardrockbet",
+    "median": 475,
+    "book_prices": {
       "caesars": 425,
-      "draftkings": 428,
-      "fanduel": 420,
-      "hardrockbet": 475
+      "hardrockbet": 525
     },
     "price_bucket": "+500s",
     "ending": 25,
-    "mgm_locked": 525,
-    "mgm_ending": 25,
     "methods": [
-      "MGM 25",
-      "Stayed in the group",
-      "FD+MGM classic",
-      "Multi-book method",
-      "Match 25",
-      "FD Pattern"
+      "Shop LEAN"
     ],
-    "core": 5,
+    "core": 0,
     "result": "PENDING",
-    "source": "take_it",
-    "logged_at": "2026-09-08T22:12:38.483615+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.8
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T22:12:40.874884+00:00",
+    "price_source": "shop"
   },
   {
-    "id": "2026-09-08_Miguel Amaya_watch_36",
+    "id": "2026-09-08_Angel Mart\u00ednez_shop_lean_50",
     "date": "2026-09-08",
     "time": "03:12 PM",
-    "player": "Miguel Amaya",
-    "score": 36,
-    "edge": 100,
-    "best_price": 1200,
-    "best_book": "hardrockbet",
-    "median": 1100,
+    "player": "Angel Mart\u00ednez",
+    "score": 0,
+    "edge": 50,
+    "best_price": 700,
+    "best_book": "draftkings",
+    "median": 640,
     "book_prices": {
-      "betmgm": 875,
-      "caesars": 1100,
-      "draftkings": 1180,
-      "fanduel": 1100,
-      "hardrockbet": 1200
+      "caesars": 625,
+      "draftkings": 700,
+      "fanduel": 630,
+      "hardrockbet": 650
     },
-    "price_bucket": "+1000+",
+    "price_bucket": "+700s",
     "ending": 0,
-    "mgm_locked": 875,
-    "mgm_ending": 75,
     "methods": [
-      "Multi-book Shorten"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-08T22:12:38.495923+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.8
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T22:12:40.877554+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Jos\u00e9 Ram\u00edrez_shop_lean_49",
+    "date": "2026-09-08",
+    "time": "03:12 PM",
+    "player": "Jos\u00e9 Ram\u00edrez",
+    "score": 0,
+    "edge": 49,
+    "best_price": 523,
+    "best_book": "draftkings",
+    "median": 475,
+    "book_prices": {
+      "betmgm": 425,
+      "caesars": 475,
+      "draftkings": 523,
+      "fanduel": 480,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 23,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T22:12:40.878138+00:00",
+    "price_source": "shop"
   }
 ]
