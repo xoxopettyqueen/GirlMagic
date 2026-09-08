@@ -84462,5 +84462,137 @@
     "source": "shop_lean",
     "logged_at": "2026-09-08T21:44:45.594530+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Angel Mart\u00ednez_watch_19",
+    "date": "2026-09-08",
+    "time": "02:56 PM",
+    "player": "Angel Mart\u00ednez",
+    "score": 19,
+    "edge": 32,
+    "best_price": 670,
+    "best_book": "draftkings",
+    "median": 637.5,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 670,
+      "fanduel": 600,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 70,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD 600"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-08T21:56:39.540047+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-08_Jake McCarthy_watch_32",
+    "date": "2026-09-08",
+    "time": "02:56 PM",
+    "player": "Jake McCarthy",
+    "score": 32,
+    "edge": 100,
+    "best_price": 1000,
+    "best_book": "hardrockbet",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 850,
+      "draftkings": 910,
+      "fanduel": 900,
+      "hardrockbet": 1000
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 650,
+    "mgm_ending": 50,
+    "methods": [
+      "DK 10"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-08T21:56:39.545174+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.4
+  },
+  {
+    "id": "2026-09-08_Jorge Mateo_watch_14",
+    "date": "2026-09-08",
+    "time": "02:56 PM",
+    "player": "Jorge Mateo",
+    "score": 14,
+    "edge": 20,
+    "best_price": 900,
+    "best_book": "betmgm",
+    "median": 730.0,
+    "book_prices": {
+      "betmgm": 900,
+      "draftkings": 710,
+      "fanduel": 680,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": 900,
+    "mgm_ending": 0,
+    "methods": [
+      "DK 10"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-08T21:56:39.546310+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-08_Julio Rodr\u00edguez_watch_13",
+    "date": "2026-09-08",
+    "time": "02:56 PM",
+    "player": "Julio Rodr\u00edguez",
+    "score": 13,
+    "edge": 15,
+    "best_price": 490,
+    "best_book": "draftkings",
+    "median": 475.0,
+    "book_prices": {
+      "caesars": 475,
+      "draftkings": 490,
+      "fanduel": 470,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+400s",
+    "ending": 90,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern",
+      "Books tight"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-08T21:56:39.546952+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
   }
 ]
