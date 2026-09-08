@@ -75118,5 +75118,105 @@
     "logged_at": "2026-09-07T23:44:02.598366+00:00",
     "price_source": "shop",
     "graded_by": "mlb_auto"
+  },
+  {
+    "id": "2026-09-07_Jared Young_watch_30",
+    "date": "2026-09-07",
+    "time": "09:37 PM",
+    "player": "Jared Young",
+    "score": 30,
+    "edge": 90,
+    "best_price": 730,
+    "best_book": "draftkings",
+    "median": 640.0,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 730,
+      "fanduel": 630,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 30,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-08T04:37:35.890037+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-07_Jonah Heim_watch_23",
+    "date": "2026-09-07",
+    "time": "09:37 PM",
+    "player": "Jonah Heim",
+    "score": 23,
+    "edge": 42,
+    "best_price": 725,
+    "best_book": "betmgm",
+    "median": 637.5,
+    "book_prices": {
+      "betmgm": 725,
+      "caesars": 625,
+      "draftkings": 680,
+      "fanduel": 600,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 25,
+    "mgm_locked": 725,
+    "mgm_ending": 25,
+    "methods": [
+      "Multi-book Shorten"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-08T04:37:35.891390+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-07_Kevin McGonigle_watch_17",
+    "date": "2026-09-07",
+    "time": "09:37 PM",
+    "player": "Kevin McGonigle",
+    "score": 17,
+    "edge": 35,
+    "best_price": 600,
+    "best_book": "hardrockbet",
+    "median": 565.0,
+    "book_prices": {
+      "caesars": 525,
+      "draftkings": 570,
+      "fanduel": 560,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "Books tight",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-08T04:37:35.892313+00:00",
+    "price_source": "pregame_lock",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.75
   }
 ]
