@@ -4141,34 +4141,21 @@ def main():
         st.markdown(f"### {petty_label('Board')}")
         st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it.")
         st.markdown("#### Filter the board")
-        with st.sidebar:
-            st.markdown("---")
-            st.markdown("**Filter the board**")
-            show_kinds = st.multiselect(
-                "Show cards",
-                ["TAKE IT", "TEAM PICK", "PASS", "WATCH"],
-                default=["TAKE IT", "TEAM PICK"],
-                key="board_kinds",
-            )
-            min_score = st.slider("Min petty score", 0, 100, 0, 5, key="board_min_score")
-            sort_by = st.selectbox("Sort games", ["First pitch", "Highest score", "Biggest edge"], key="board_sort")
-            time_win = st.selectbox("First pitch", ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when")
-            name_q = st.text_input("Find a name", "", key="board_name").strip().lower()
         cfa, cfb, cfc, cfd = st.columns(4)
         with cfa:
             show_kinds = st.multiselect(
                 "Show cards",
                 ["TAKE IT", "TEAM PICK", "PASS", "WATCH"],
-                default=show_kinds,
+                default=["TAKE IT", "TEAM PICK"],
                 key="board_kinds_main",
             )
         with cfb:
-            min_score = st.slider("Min petty score", 0, 100, min_score, 5, key="board_min_score_main")
+            min_score = st.slider("Min petty score", 0, 100, 0, 5, key="board_min_score_main")
         with cfc:
-            sort_by = st.selectbox("Sort games", ["First pitch", "Highest score", "Biggest edge"], index=["First pitch", "Highest score", "Biggest edge"].index(sort_by) if sort_by in ("First pitch", "Highest score", "Biggest edge") else 0, key="board_sort_main")
+            sort_by = st.selectbox("Sort games", ["First pitch", "Highest score", "Biggest edge"], key="board_sort_main")
         with cfd:
-            time_win = st.selectbox("First pitch", ["All times", "Next 3 hours", "Later than 3 hours"], index=["All times", "Next 3 hours", "Later than 3 hours"].index(time_win) if time_win in ("All times", "Next 3 hours", "Later than 3 hours") else 0, key="board_when_main")
-        name_q = st.text_input("Find a name", name_q, key="board_name_main").strip().lower()
+            time_win = st.selectbox("First pitch", ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
+        name_q = st.text_input("Find a name", "", key="board_name_main").strip().lower()
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
