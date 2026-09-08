@@ -84222,5 +84222,139 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-08_Carson Kelly_shop_lean_145",
+    "date": "2026-09-08",
+    "time": "02:26 PM",
+    "player": "Carson Kelly",
+    "score": 0,
+    "edge": 145,
+    "best_price": 980,
+    "best_book": "fanduel",
+    "median": 852,
+    "book_prices": {
+      "betmgm": 725,
+      "fanduel": 980
+    },
+    "price_bucket": "+800-999",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T21:26:38.360919+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Colt Keith_shop_lean_56",
+    "date": "2026-09-08",
+    "time": "02:26 PM",
+    "player": "Colt Keith",
+    "score": 0,
+    "edge": 56,
+    "best_price": 680,
+    "best_book": "fanduel",
+    "median": 630,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 625,
+      "draftkings": 630,
+      "fanduel": 680,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T21:26:38.382593+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Hao-Yu Lee_shop_lean_53",
+    "date": "2026-09-08",
+    "time": "02:26 PM",
+    "player": "Hao-Yu Lee",
+    "score": 0,
+    "edge": 53,
+    "best_price": 800,
+    "best_book": "hardrockbet",
+    "median": 750,
+    "book_prices": {
+      "caesars": 700,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T21:26:38.386053+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Eduardo Valencia_shop_lean_48",
+    "date": "2026-09-08",
+    "time": "02:26 PM",
+    "player": "Eduardo Valencia",
+    "score": 0,
+    "edge": 48,
+    "best_price": 600,
+    "best_book": "hardrockbet",
+    "median": 526,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 525,
+      "draftkings": 526,
+      "fanduel": 520,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T21:26:38.388766+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Salvador Perez_shop_lean_40",
+    "date": "2026-09-08",
+    "time": "02:26 PM",
+    "player": "Salvador Perez",
+    "score": 0,
+    "edge": 40,
+    "best_price": 475,
+    "best_book": "hardrockbet",
+    "median": 430,
+    "book_prices": {
+      "betmgm": 390,
+      "caesars": 425,
+      "draftkings": 466,
+      "fanduel": 430,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T21:26:38.397819+00:00",
+    "price_source": "shop"
   }
 ]
