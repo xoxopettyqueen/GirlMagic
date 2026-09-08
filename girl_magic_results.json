@@ -84358,71 +84358,57 @@
     "price_source": "shop"
   },
   {
-    "id": "2026-09-08_Christian Koss_watch_13",
+    "id": "2026-09-08_Jake Burger_shop_lean_52",
     "date": "2026-09-08",
     "time": "02:32 PM",
-    "player": "Christian Koss",
-    "score": 13,
-    "edge": 0,
-    "best_price": 1700,
-    "best_book": "betmgm",
-    "median": 1260,
+    "player": "Jake Burger",
+    "score": 0,
+    "edge": 52,
+    "best_price": 547,
+    "best_book": "draftkings",
+    "median": 495,
     "book_prices": {
-      "betmgm": 1700,
-      "caesars": 1300,
-      "draftkings": 1200,
-      "fanduel": 1260,
-      "hardrockbet": 1200
-    },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": 1700,
-    "mgm_ending": 0,
-    "methods": [
-      "MGM 00",
-      "Match 00",
-      "FD Pattern",
-      "Stayed in the group"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-08T21:32:26.007035+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
-  },
-  {
-    "id": "2026-09-08_Dominic Canzone_watch_19",
-    "date": "2026-09-08",
-    "time": "02:32 PM",
-    "player": "Dominic Canzone",
-    "score": 19,
-    "edge": 26,
-    "best_price": 575,
-    "best_book": "hardrockbet",
-    "median": 549.0,
-    "book_prices": {
-      "caesars": 525,
-      "draftkings": 573,
-      "fanduel": 520,
-      "hardrockbet": 575
+      "caesars": 500,
+      "draftkings": 547,
+      "fanduel": 490,
+      "hardrockbet": 450
     },
     "price_bucket": "+500s",
-    "ending": 75,
-    "mgm_locked": null,
-    "mgm_ending": null,
+    "ending": 47,
     "methods": [
-      "Multi-book Shorten"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-08T21:32:26.009666+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T21:32:28.260151+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Joc Pederson_shop_lean_50",
+    "date": "2026-09-08",
+    "time": "02:32 PM",
+    "player": "Joc Pederson",
+    "score": 0,
+    "edge": 50,
+    "best_price": 520,
+    "best_book": "fanduel",
+    "median": 500,
+    "book_prices": {
+      "caesars": 500,
+      "draftkings": 383,
+      "fanduel": 520,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 20,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-08T21:32:28.262015+00:00",
+    "price_source": "shop"
   }
 ]
