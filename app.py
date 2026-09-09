@@ -2695,6 +2695,8 @@ def flatten_oddsapi(data):
                     continue
                 if price > MAX_HR_AMERICAN:
                     continue
+                if is_td and abs(int(price)) < 300:
+                    continue
                 if is_blocked_player(player):
                     continue
                 rows.append({"event": event, "book": bk, "player": player, "price": price, "point": 0.5, "team": "", "source": "oddsapi", "sport": "NFL" if is_td else "MLB"})
