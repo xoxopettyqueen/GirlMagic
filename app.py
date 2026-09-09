@@ -5901,21 +5901,24 @@ def main():
         if not show:
             st.info("Fetch the slate. This page only lists names whose PRICE or METHOD talks today.")
         else:
-            st.dataframe(
-                pd.DataFrame([{k: r[k] for k in ("Player", "Price", "End", "Name#", "End#", "Tags", "Why")} for r in show]),
-                use_container_width=True, hide_index=True, height=320,
-            )
-
-        with st.expander("How to read this"):
-            st.markdown(
-                f"""
-- **Name#** = letters in the name (A=1 … I=9), reduced. Jr does not count.
-- **End#** = last two digits of the price, reduced. +450 → 4+5=9.
-- **Name + price** = both equal today's {day_key}. That's the only "strong" we care about.
-- Tags are the same Girl Magic methods as the Board (DK 10, MGM 25/50/75, FD pattern, exact).
-- Numerology does **not** change TAKE IT. It's a second pair of eyes on the same {cfg['label']} prices.
-                """
-            )
+            cols = st.columns(2)
+            for i, r in enumerate(show[:24]):
+                tag_bits = [t.strip() for t in str(r.get("Tags") or "").split(",") if t.strip()][:4]
+                tags_html = "".join(f'<span class="tag tag-family">{t}</span>' for t in tag_bits)
+                vibe = "NAME + PRICE" if r["_score"] >= 3 else "HOOK"
+                with cols[i % 2]:
+                    st.markdown(
+                        f'<div class="card">'
+                        f'<div class="card-kicker">{vibe}</div>'
+                        f'<span class="score-pill">#{r["Name#"]}</span>'
+                        f'<div class="card-name">{r["Player"]}</div>'
+                        f'<div class="card-line"><b>{r["Price"]}</b> · ends {r["End"]} → #{r["End#"]}</div>'
+                        f'<div style="margin-top:6px">{tags_html}</div>'
+                        f'<div class="card-foot">{r["Why"]}</div>'
+                        f'</div>',
+                        unsafe_allow_html=True,
+                    )
+            st.caption(f"Name# = name letters · End# = last two of the price · today is {day_key} · not a TAKE IT rule")
 
     if page == "Code:":
         st.markdown("""
