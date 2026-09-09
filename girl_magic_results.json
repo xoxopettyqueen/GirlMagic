@@ -92390,139 +92390,243 @@
     "price_source": "shop"
   },
   {
-    "id": "2026-09-08_Alika Williams_watch_25",
+    "id": "2026-09-08_Abimelec Ortiz_shop_take_135",
     "date": "2026-09-08",
     "time": "06:50 PM",
-    "player": "Alika Williams",
-    "score": 25,
-    "edge": 50,
-    "best_price": 1800,
-    "best_book": "fanduel",
-    "median": 1150.0,
+    "player": "Abimelec Ortiz",
+    "score": 0,
+    "edge": 135,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 725,
     "book_prices": {
-      "caesars": 1100,
-      "draftkings": 1100,
-      "fanduel": 1800,
-      "hardrockbet": 1200
+      "caesars": 700,
+      "draftkings": 750,
+      "fanduel": 600,
+      "hardrockbet": 850
     },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": null,
-    "mgm_ending": null,
+    "price_bucket": "+800-999",
+    "ending": 50,
     "methods": [
-      "Multi-book Shorten"
+      "Shop TAKE"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-09T01:50:41.919902+00:00",
-    "price_source": "pregame_lock",
-    "sport": "MLB",
-    "team": "OAKLAND ATHLETICS",
-    "market": "batter_home_runs",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
+    "source": "shop_take",
+    "logged_at": "2026-09-09T01:50:44.129537+00:00",
+    "price_source": "shop"
   },
   {
-    "id": "2026-09-08_Brock Rodden_watch_19",
+    "id": "2026-09-08_Dylan Crews_shop_take_105",
     "date": "2026-09-08",
     "time": "06:50 PM",
-    "player": "Brock Rodden",
-    "score": 19,
-    "edge": 25,
+    "player": "Dylan Crews",
+    "score": 0,
+    "edge": 105,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "median": 675,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 650,
+      "fanduel": 520,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T01:50:44.132014+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_James Wood_shop_lean_76",
+    "date": "2026-09-08",
+    "time": "06:50 PM",
+    "player": "James Wood",
+    "score": 0,
+    "edge": 76,
+    "best_price": 450,
+    "best_book": "hardrockbet",
+    "median": 385,
+    "book_prices": {
+      "caesars": 390,
+      "draftkings": 380,
+      "fanduel": 300,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:50:44.133701+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Kazuma Okamoto_shop_lean_71",
+    "date": "2026-09-08",
+    "time": "06:50 PM",
+    "player": "Kazuma Okamoto",
+    "score": 0,
+    "edge": 71,
+    "best_price": 400,
+    "best_book": "fanduel",
+    "median": 315,
+    "book_prices": {
+      "caesars": 305,
+      "draftkings": 300,
+      "fanduel": 400,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+400s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:50:44.134025+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Harry Ford-DUP_shop_lean_65",
+    "date": "2026-09-08",
+    "time": "06:50 PM",
+    "player": "Harry Ford-DUP",
+    "score": 0,
+    "edge": 65,
     "best_price": 800,
     "best_book": "hardrockbet",
-    "median": 775.0,
+    "median": 725,
     "book_prices": {
-      "caesars": 750,
+      "caesars": 700,
+      "draftkings": 700,
+      "fanduel": 750,
       "hardrockbet": 800
     },
     "price_bucket": "+800-999",
     "ending": 0,
-    "mgm_locked": null,
-    "mgm_ending": null,
     "methods": [
-      "Multi-book Shorten"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-09T01:50:41.924500+00:00",
-    "price_source": "pregame_lock",
-    "sport": "MLB",
-    "team": "",
-    "market": "batter_home_runs",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.5
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:50:44.134596+00:00",
+    "price_source": "shop"
   },
   {
-    "id": "2026-09-08_Danny Jansen_watch_22",
+    "id": "2026-09-08_Nick Sogard_shop_lean_65",
     "date": "2026-09-08",
     "time": "06:50 PM",
-    "player": "Danny Jansen",
-    "score": 22,
-    "edge": 12,
-    "best_price": 650,
-    "best_book": "hardrockbet",
-    "median": 637.5,
+    "player": "Nick Sogard",
+    "score": 0,
+    "edge": 65,
+    "best_price": 830,
+    "best_book": "fanduel",
+    "median": 800,
     "book_prices": {
-      "caesars": 625,
-      "hardrockbet": 650
+      "draftkings": 680,
+      "fanduel": 830,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 30,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:50:44.134912+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Andrew Knizner_shop_lean_53",
+    "date": "2026-09-08",
+    "time": "06:50 PM",
+    "player": "Andrew Knizner",
+    "score": 0,
+    "edge": 53,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 800,
+    "book_prices": {
+      "caesars": 750,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:50:44.137788+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Julio Rodr\u00edguez_shop_lean_45",
+    "date": "2026-09-08",
+    "time": "06:50 PM",
+    "player": "Julio Rodr\u00edguez",
+    "score": 0,
+    "edge": 45,
+    "best_price": 500,
+    "best_book": "fanduel",
+    "median": 450,
+    "book_prices": {
+      "caesars": 425,
+      "draftkings": 450,
+      "fanduel": 500,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:50:44.140870+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Brady House_shop_lean_43",
+    "date": "2026-09-08",
+    "time": "06:50 PM",
+    "player": "Brady House",
+    "score": 0,
+    "edge": 43,
+    "best_price": 630,
+    "best_book": "fanduel",
+    "median": 587,
+    "book_prices": {
+      "caesars": 575,
+      "draftkings": 550,
+      "fanduel": 630,
+      "hardrockbet": 600
     },
     "price_bucket": "+600s",
-    "ending": 50,
-    "mgm_locked": null,
-    "mgm_ending": null,
+    "ending": 30,
     "methods": [
-      "Multi-book Shorten"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-09T01:50:41.926034+00:00",
-    "price_source": "pregame_lock",
-    "sport": "MLB",
-    "team": "",
-    "market": "batter_home_runs",
-    "benford_tag": "Authentic",
-    "benford_note": "",
-    "benford_cluster": 1.0
-  },
-  {
-    "id": "2026-09-08_Nicky Lopez_watch_25",
-    "date": "2026-09-08",
-    "time": "06:50 PM",
-    "player": "Nicky Lopez",
-    "score": 25,
-    "edge": 50,
-    "best_price": 1750,
-    "best_book": "hardrockbet",
-    "median": 1700,
-    "book_prices": {
-      "caesars": 1500,
-      "draftkings": 1700,
-      "hardrockbet": 1750
-    },
-    "price_bucket": "+1000+",
-    "ending": 50,
-    "mgm_locked": null,
-    "mgm_ending": null,
-    "methods": [
-      "Books tight",
-      "Multi-book Shorten"
-    ],
-    "core": 1,
-    "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-09T01:50:41.931679+00:00",
-    "price_source": "pregame_lock",
-    "sport": "MLB",
-    "team": "TEXAS RANGERS",
-    "market": "batter_home_runs",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 1.0
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:50:44.141995+00:00",
+    "price_source": "shop"
   }
 ]
