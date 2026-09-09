@@ -199,9 +199,9 @@ PREGAME_FILE = "girl_magic_pregame.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics"}
-CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
-VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet"}
-VALUE_BOOK_LABELS = {"DK", "FD", "HardRock"}
+CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics"}
+VALUE_BOOKS = {"draftkings", "fanduel", "betmgm", "fanatics"}
+VALUE_BOOK_LABELS = {"DK", "FD", "MGM", "Fanatics"}
 # Odds API uses different keys for the same books - map only
 BOOK_ALIASES = {
     "williamhill_us": "caesars",
@@ -256,15 +256,15 @@ SCORE_TAKE_OVERRIDE = 85  # fat stack (Larnach 96) can green even on a dead 30 /
 # PRIORITY = must have >=1 to unlock TAKE IT (Tracker 9/03 volume)
 # Tracker 9/05: only tags that beat 13% baseline unlock TAKE IT
 PRIORITY_METHODS = {
-    "Match 25", "MGM 25",
-    "Match 75", "MGM 75",
+    "MGM 25", "MGM 50", "MGM Exact",
     "DK 10",
-    "FD 600",
-    "FD+MGM classic",
-    "MGM Exact",
+    "FD Pattern", "FD 600", "FD+MGM classic",
+    "Multi-book Shorten",
     "Books tight",
 }
-TAKE_HOT_ENDS = {10, 25, 75}  # Tracker 9/08: 25/75/10 cash. 00 volume trap. 90 off TAKE.
+TAKE_HOT_ENDS = {10, 25, 50, 75, 90}
+TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}
+TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics"}
 # PREMIUM = counts as core (still need >=1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
@@ -399,40 +399,41 @@ def long_price_block(best_price, methods=None, book_prices=None):
             return f"+{p} needs a priority tag"
     return None
 
-def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None):
-    """TAKE IT + long-price lane.
-    +400-699: normal gate. +700-999: priority + hot ending + 2 real books.
-    +1000-1500: priority tag required (00 endings allowed in this lane only).
-    +1501+: never TAKE IT.
-    """
+def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None):
+    """Elite TAKE only. +700–999 = LEAN. +1000+ = WATCH. Boosts cannot unlock this."""
     ms = {normalize_method_name(m) for m in (methods or [])}
     if not (ms & PRIORITY_METHODS):
         return False
-    try:
-        p_abs = abs(int(best_price)) if best_price is not None else 0
-    except Exception:
-        p_abs = 0
-    flyer = JUNK_PRICE <= p_abs <= FLYER_MAX
-    if p_abs > FLYER_MAX:
+    if price_bucket(best_price) not in TAKE_STRONG_BUCKETS:
         return False
-    try:
-        end = last_two(best_price)
-        if flyer:
-            if end is not None and end not in TAKE_HOT_ENDS | {0}:
-                return False
-        elif end is not None and end not in TAKE_HOT_ENDS:
-            return False
-    except Exception:
-        pass
-    if long_price_block(best_price, methods, book_prices):
+    end = last_two(best_price)
+    if end is None or end not in TAKE_HOT_ENDS:
         return False
-    fams = strong_method_families(methods)
-    n = len(fams)
-    if core_count >= METHODS_MIN and edge >= EDGE_MIN:
-        return True
-    if core_count >= 3 and n >= 2 and edge >= EDGE_SOFT:
-        return True
-    return False
+    bk = normalize_book(best_book) if best_book else None
+    if not bk and book_prices:
+        best_dec = -1
+        for k, px in (book_prices or {}).items():
+            dec = american_to_decimal(px) or -1
+            if dec > best_dec:
+                best_dec, bk = dec, normalize_book(k)
+    if bk and bk not in TAKE_STRONG_BOOKS:
+        return False
+    if core_count < METHODS_MIN:
+        return False
+    return True
+
+
+def elite_take_ok(item):
+    """Benford + numerology required for TAKE. Never unlock TAKE by themselves."""
+    if not item.get("is_bet"):
+        return False
+    bf = item.get("benford") or {}
+    if bf.get("tag") != "Authentic" and bf.get("aligned") is not True:
+        return False
+    tag = str(item.get("num_tag") or "")
+    if "name+price" not in tag:
+        return False
+    return True
 
 def has_dk_or_mgm(meths):
     for m in meths:
@@ -716,6 +717,7 @@ SHOP_BOOKS = [
     ("draftkings", "DK"),
     ("fanduel", "FD"),
     ("betmgm", "MGM"),
+    ("fanatics", "FN"),
     ("hardrockbet", "HR"),
     ("caesars", "CZ"),
 ]
@@ -3400,7 +3402,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             bk = normalize_book(bk)
         except Exception:
             pass
-        if bk in ("draftkings", "fanduel", "hardrockbet", "betmgm", "caesars"):
+        if bk in ("draftkings", "fanduel", "hardrockbet", "betmgm", "caesars", "fanatics"):
             try:
                 price_by_player[r["player"]][bk] = int(r["price"])
             except Exception:
@@ -3479,24 +3481,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         # PASS / TAKE IT pool: 2+ PREMIUM core (support tags do not count)
         if core_count < METHODS_MIN:
             continue
-        is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px)
+        is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px, best_book)
         has_pri = has_priority_method(display_meths)
         score_override = False
-        try:
-            p_abs = abs(int(best)) if best is not None else 0
-        except Exception:
-            p_abs = 0
-        if (
-            not is_bet
-            and score >= SCORE_TAKE_OVERRIDE
-            and has_pri
-            and core_count >= METHODS_MIN
-            and p_abs
-            and p_abs <= FLYER_MAX
-            and last_two(best) in (TAKE_HOT_ENDS | ({0} if p_abs >= JUNK_PRICE else set()))
-        ):
-            is_bet = True
-            score_override = True
         row["is_bet"] = is_bet
         row["num_tag"] = numerology_board_tag(player, best)
         fams = strong_method_families(display_meths)
@@ -4458,6 +4445,19 @@ def main():
             )
             if not item.get("num_tag"):
                 item["num_tag"] = numerology_board_tag(item.get("player"), item.get("best_price"))
+            if item.get("is_bet") and not elite_take_ok(item):
+                item["is_bet"] = False
+                item["why"] = (item.get("why") or "") + " · LEAN — missing Authentic Benford or Num name+price"
+            bf = item.get("benford") or {}
+            authentic = bf.get("aligned") is True or bf.get("tag") == "Authentic"
+            num_strong = "name+price" in str(item.get("num_tag") or "")
+            if authentic:
+                item["score"] = min(100, int(item.get("score") or 0) + 6)
+            if num_strong:
+                item["score"] = min(100, int(item.get("score") or 0) + 6)
+            if item.get("is_bet") and not (authentic and num_strong):
+                item["is_bet"] = False
+                item["accuracy_hold"] = True
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     if not df.empty:
@@ -4531,6 +4531,20 @@ def main():
     if page == "Board:":
         st.markdown(f"### {petty_label('Board')}")
         st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it.")
+        elite = [e for e in ev_board if e.get("is_bet")]
+        if elite:
+            st.markdown("#### Petty Picks")
+            st.caption("Elite TAKE only — ending + bucket + method + book + Authentic + name+price.")
+            pc = st.columns(min(3, max(1, len(elite[:3]))))
+            for i, item in enumerate(elite[:6]):
+                with pc[i % len(pc)]:
+                    st.markdown(
+                        f'<div class="card bet"><div class="card-kicker">PETTY PICK</div>'
+                        f'<div class="card-name">{item["player"]}</div>'
+                        f'<div class="card-line"><b>{format_odds(item.get("best_price"))}</b> {book_label(item.get("best_book"))}</div>'
+                        f'<div class="note">{item.get("num_tag") or ""}</div></div>',
+                        unsafe_allow_html=True,
+                    )
         st.markdown("#### Filter the board")
         cfa, cfb, cfc, cfd = st.columns(4)
         with cfa:
@@ -4580,6 +4594,17 @@ def main():
                 f'</div>',
                 unsafe_allow_html=True,
             )
+
+        elite = [e for e in ev_board if e.get("is_bet")]
+        st.markdown("#### Petty Picks")
+        if elite:
+            st.caption("Elite TAKE — ending + lane + method + book + Benford + name+price.")
+            pc = st.columns(min(3, len(elite)))
+            for i, item in enumerate(elite[:6]):
+                with pc[i % len(pc)]:
+                    _render_board_card(item, "TAKE IT", "bet")
+        else:
+            st.caption("Nobody cleared every accuracy gate today.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
         passes = [e for e in ev_board if not e.get("is_bet")]
