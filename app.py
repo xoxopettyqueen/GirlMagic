@@ -4826,16 +4826,64 @@ def main():
     if page == "Methods:Signals":
         show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
     if page == "Lines:Moves":
-        st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
-        st.caption("Fetch-to-fetch + 🔒 open -> now/close from Lock.")
-        for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
-            st.markdown(f"#### {title}")
-            items = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == move_dir])
-            cols = st.columns(2)
-            for idx, r in enumerate(items[:20]):
-                with cols[idx % 2]:
-                    st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-            if not items: st.info("None")
+        st.markdown("""
+        <style>
+        .mv-hero{background:linear-gradient(135deg,#4c0519,#3b0764);border:1px solid #fb7185;border-radius:22px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 22px rgba(251,113,133,.25)}
+        .mv-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 6px;font-size:1.4rem}
+        .mv-hero p{color:#fecdd3;margin:0;font-size:.88rem}
+        .mv-up{border-color:#fb7185!important;box-shadow:0 0 14px rgba(239,68,68,.2)}
+        .mv-down{border-color:#4ade80!important;box-shadow:0 0 14px rgba(74,222,128,.2)}
+        .mv-arrow{font-size:1.2rem}
+        </style>
+        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="mv-hero"><h3>Market Motion 💸 — Who’s Moving and Why</h3>'
+            "<p>Up = odds lengthened (less likely). Down = odds shortened (more likely).</p>"
+            '<p style="margin-top:6px;color:#fda4af">Fetch-to-fetch magic — who’s climbing, who’s crashing.</p></div>',
+            unsafe_allow_html=True,
+        )
+        ups = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"])
+        downs = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"])
+        st.markdown("#### Top movers")
+        t1, t2 = st.columns(2)
+        with t1:
+            st.caption("Biggest climbs")
+            for r in ups[:3]:
+                st.markdown(f'<div class="card mv-up"><span class="mv-arrow">⬆</span> <b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>', unsafe_allow_html=True)
+        with t2:
+            st.caption("Biggest crashes")
+            for r in downs[:3]:
+                st.markdown(f'<div class="card mv-down"><span class="mv-arrow">⬇</span> <b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>', unsafe_allow_html=True)
+        left, right = st.columns(2)
+        with left:
+            st.markdown("#### 🔴 UP")
+            if not ups:
+                st.info("Nobody lengthened.")
+            for r in ups[:16]:
+                st.markdown(
+                    f'<div class="card mv-up" title="Longer number = they cooled it"><span class="mv-arrow">⬆</span> '
+                    f'<b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>',
+                    unsafe_allow_html=True,
+                )
+        with right:
+            st.markdown("#### 🟢 DOWN")
+            if not downs:
+                st.info("Nobody shortened.")
+            for r in downs[:16]:
+                st.markdown(
+                    f'<div class="card mv-down" title="Shorter number = they heated it"><span class="mv-arrow">⬇</span> '
+                    f'<b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>',
+                    unsafe_allow_html=True,
+                )
+        heat = Counter()
+        for r in ups + downs:
+            blob = str(r.get("reason") or "")
+            for lab, key in (("DK", "DK"), ("FD", "FD"), ("MGM", "MGM"), ("HardRock", "HardRock"), ("Fanatics", "Fanatics"), ("Caesars", "Caesars")):
+                if lab.lower() in blob.lower() or key.lower() in blob.lower():
+                    heat[lab] += 1
+        if heat:
+            chips = "".join(f'<span class="tag">{k} {n}</span>' for k, n in heat.most_common())
+            st.markdown(f'<div class="card"><b>Movement heatmap</b><div style="margin-top:6px">{chips}</div></div>', unsafe_allow_html=True)
     if page == "Lines:Trends":
         st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
