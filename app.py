@@ -172,6 +172,8 @@ li[role="option"]{color:#fce7f3!important}
   margin:0 0 16px 0;
 }
 .filter-shell h4{color:#f9a8d4;margin:0 0 8px 0;font-size:.95rem}
+.sport-row{margin:4px 0 10px 0}
+.sport-row .stCaption{color:#c4b5d6!important;padding-top:8px}
 .games-hint{color:#e9d5ff;font-size:.8rem;margin:4px 0 8px}
 .shop-wrap{overflow-x:auto;margin:8px 0 16px}
 .shop-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:.78rem}
@@ -4406,7 +4408,26 @@ def main():
         refresh_count = 0
     st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
     st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
-    sport = st.radio("Sport", ["MLB", "NFL"], horizontal=True, key="sport", help="Same Board / Shop / Grade. MLB = 0.5 HR. NFL = Anytime TD.")
+    if "sport" not in st.session_state:
+        st.session_state["sport"] = "MLB"
+    st.markdown('<div class="sport-row">', unsafe_allow_html=True)
+    sc1, sc2, sc3 = st.columns([1.1, 1.1, 4])
+    with sc1:
+        if st.button("⚾ MLB · 0.5 HR", use_container_width=True,
+                     type="primary" if st.session_state.get("sport") == "MLB" else "secondary",
+                     key="sport_mlb_btn"):
+            st.session_state["sport"] = "MLB"
+            st.rerun()
+    with sc2:
+        if st.button("🏈 NFL · Anytime TD", use_container_width=True,
+                     type="primary" if st.session_state.get("sport") == "NFL" else "secondary",
+                     key="sport_nfl_btn"):
+            st.session_state["sport"] = "NFL"
+            st.rerun()
+    with sc3:
+        st.caption("Same Board / Shop / Grade. Switch sport, then Load Games + Fetch.")
+    st.markdown("</div>", unsafe_allow_html=True)
+    sport = st.session_state.get("sport") or "MLB"
     if st.session_state.get("_sport_seen") != sport:
         for k in ("selected_games", "last_selected", "events", "odds", "previous_odds", "found_books", "last_fetch_time", "auto_once", "new_fetch", "lineup_names"):
             st.session_state.pop(k, None)
