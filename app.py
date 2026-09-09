@@ -2305,24 +2305,33 @@ def render_whats_going_today():
     rows = load_results()
     mlb_hr, n_graded, by_book, on_list, pair_list = build_whats_going_today(rows)
     if active_sport() == "NFL":
-        # Chips = current NFL slate only. Never MLB HIT/lock leftovers.
-        live = Counter()
-        for rec in st.session_state.get("odds") or []:
-            if str(rec.get("sport") or "") != "NFL":
+        pair_list = []
+        mlb_hr = 0
+        on_list = 0
+        hit_ends = Counter()
+        for r in rows:
+            blob = str(r.get("market") or r.get("sport") or "").lower()
+            if r.get("date") != today_az():
                 continue
-            bl = book_label(rec.get("book") or "")
-            end = last_two(rec.get("price"))
-            if bl in {"DK", "FD", "MGM", "HardRock"} and end is not None:
-                live[(bl, int(end))] += 1
+            if "td" not in blob and "nfl" not in blob:
+                continue
+            if r.get("source") in ("take_it", "watch"):
+                on_list += 1
+            if r.get("result") != "HIT":
+                continue
+            mlb_hr += 1
+            bl = book_label(r.get("best_book") or "")
+            end = r.get("ending")
+            if end is None:
+                end = last_two(r.get("best_price"))
+            if bl and end is not None:
+                hit_ends[(bl, int(end))] += 1
         by_book = defaultdict(list)
-        for (bl, end), cnt in live.items():
+        for (bl, end), cnt in hit_ends.items():
             by_book[bl].append((int(end), int(cnt)))
         for bl in by_book:
             by_book[bl].sort(key=lambda x: (-x[1], x[0]))
         by_book = dict(by_book)
-        pair_list = []
-        mlb_hr = sum(1 for r in rows if r.get("date") == today_az() and r.get("result") == "HIT" and "td" in str(r.get("market") or r.get("sport") or "").lower())
-        on_list = sum(1 for r in rows if r.get("date") == today_az() and r.get("source") in ("take_it", "watch") and "td" in str(r.get("market") or r.get("sport") or "").lower())
     order = ["DK", "FD", "MGM", "HardRock"]
     cols_html = []
     for bl in order:
@@ -2359,7 +2368,8 @@ def render_whats_going_today():
     if cols_html:
         body = '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">%s</div>' % ("".join(cols_html))
     else:
-        body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">No endings matched yet</div>'
+        empty_msg = "No NFL TDs graded yet. Mark HIT on Results and this banner fills." if active_sport() == "NFL" else "No endings matched yet"
+        body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">%s</div>' % empty_msg
 
     pair_note = ""
     if pair_list:
@@ -2373,7 +2383,7 @@ def render_whats_going_today():
     cfg = sport_cfg()
     title = "What's Going Today · %s" % active_sport()
     if active_sport() == "NFL":
-        sub = "%s %s HIT · %s on our list · live TD endings (+300 only)" % (mlb_hr, cfg["hits"], on_list)
+        sub = "%s %s scored today · %s were on our list · chips = graded TDs only" % (mlb_hr, cfg["hits"], on_list)
     else:
         sub = (
             "%s %s · %s on our list · best price among DK/FD/MGM/HardRock "
@@ -3389,6 +3399,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             is_bet = True
             score_override = True
         row["is_bet"] = is_bet
+        row["num_tag"] = numerology_board_tag(player, best)
         fams = strong_method_families(display_meths)
         strong_n = len(fams)
         tri = " · 💎 DK+MGM+FD" if has_dk_mgm_fd(display_meths) else ""
@@ -4069,6 +4080,25 @@ def _num_align(player_n, day_n):
     return "off", "🖤 Off-vibe"
 
 
+def numerology_board_tag(player, price):
+    """Display-only. Never counts as a method / never flips TAKE IT."""
+    try:
+        d = datetime.strptime(today_az(), "%Y-%m-%d").date()
+    except Exception:
+        return None
+    day = _num_reduce(_num_date_number(d)[0], keep_master=False)
+    nn = _num_name_number(player)
+    end = last_two(price)
+    en = _num_reduce(end, False) if end is not None else None
+    if nn == day and en == day:
+        return f"Num {day} name+price"
+    if en == day:
+        return f"Num {day} price"
+    if nn == day:
+        return f"Num {day} name"
+    return None
+
+
 def _num_hits_window(rows, start_date, end_date):
     ends, names = Counter(), Counter()
     for r in rows:
@@ -4319,6 +4349,8 @@ def main():
                 book_meter,
                 rec.get("books") if isinstance(rec, dict) else None,
             )
+            if not item.get("num_tag"):
+                item["num_tag"] = numerology_board_tag(item.get("player"), item.get("best_price"))
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     if not df.empty:
@@ -4411,6 +4443,8 @@ def main():
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
+            if item.get("num_tag"):
+                tags += f'<span class="tag tag-family">{item["num_tag"]}</span>'
             fams = petty_family_chips(item.get("methods") or [])
             notes = "".join(f'<div class="petty-note">• {n}</div>' for n in petty_notes_for(item))
             meter = make_meter(item.get("bars", 1), item.get("level", "low"))
