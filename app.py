@@ -156,6 +156,33 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 MLB_STATS = "https://statsapi.mlb.com/api/v1"
 REGIONS = "us,us2"
+# Sport profiles — MLB math stays the same; NFL only swaps feed + labels
+SPORT_CFG = {
+    "MLB": {
+        "key": "baseball_mlb",
+        "market": "batter_home_runs",
+        "label": "0.5 HR Over",
+        "hit": "HR",
+        "sgo": True,
+        "days": 1,
+    },
+    "NFL": {
+        "key": "americanfootball_nfl",
+        "market": "player_anytime_td",
+        "label": "Anytime TD Yes / 0.5",
+        "hit": "TD",
+        "sgo": False,
+        "days": 8,
+    },
+}
+
+def active_sport():
+    s = st.session_state.get("sport", "MLB")
+    return s if s in SPORT_CFG else "MLB"
+
+def sport_cfg():
+    return SPORT_CFG[active_sport()]
+
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
@@ -2579,24 +2606,28 @@ def fetch_all_lineups():
     return names, f"{len(names)} used · " + " · ".join(bits) + " · " + note
 
 @st.cache_data(ttl=180, show_spinner=False)
-def _fetch_events_oddsapi_cached(api_key):
-    r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events", params={"apiKey": api_key}, timeout=15)
+def _fetch_events_oddsapi_cached(api_key, sport_key="baseball_mlb"):
+    r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
     r.raise_for_status()
     return r.json()
 
 
-def fetch_events_oddsapi(api_key):
+def fetch_events_oddsapi(api_key, sport_key=None):
+    sport_key = sport_key or sport_cfg()["key"]
     try:
-        return _fetch_events_oddsapi_cached(api_key)
+        return _fetch_events_oddsapi_cached(api_key, sport_key)
     except Exception as e:
         st.error(f"Odds API events error: {e}")
         return []
 
-def fetch_odds_oddsapi(api_key, event_id):
+def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None):
+    cfg = sport_cfg()
+    sport_key = sport_key or cfg["key"]
+    market = market or cfg["market"]
     try:
         r = requests.get(
-            f"{ODDS_API_BASE}/sports/baseball_mlb/events/{event_id}/odds",
-            params={"apiKey": api_key, "regions": REGIONS, "markets": "batter_home_runs", "oddsFormat": "american"},
+            f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
+            params={"apiKey": api_key, "regions": REGIONS, "markets": market, "oddsFormat": "american"},
             timeout=20,
         )
         return r.json() if r.status_code == 200 else None
@@ -2614,13 +2645,25 @@ def flatten_oddsapi(data):
         if bk not in PREFERRED: continue
         for market in book.get("markets", []):
             # accept standard + alternate HR markets; still force 0.5 only
-            mkey = (market.get("key") or "")
-            if mkey and "home_run" not in mkey and "homer" not in mkey:
+            mkey = (market.get("key") or "").lower()
+            is_hr = ("home_run" in mkey) or ("homer" in mkey)
+            is_td = ("anytime_td" in mkey) or ("touchdown" in mkey)
+            if mkey and not is_hr and not is_td:
                 continue
             for o in market.get("outcomes", []):
-                if o.get("name", "").lower() != "over": continue
+                oname = str(o.get("name") or "").lower()
                 pt = o.get("point")
-                if pt is None or abs(float(pt) - 0.5) > 0.01: continue
+                if is_td:
+                    # Anytime TD Yes == Over 0.5 TD
+                    if oname not in ("yes", "over"):
+                        continue
+                    if oname == "over" and pt is not None and abs(float(pt) - 0.5) > 0.01:
+                        continue
+                else:
+                    if oname != "over":
+                        continue
+                    if pt is None or abs(float(pt) - 0.5) > 0.01:
+                        continue
                 player = o.get("description")
                 price = o.get("price")
                 if not player or price is None: continue
@@ -2628,12 +2671,11 @@ def flatten_oddsapi(data):
                     price = int(price)
                 except Exception:
                     continue
-                # only Over 0.5; drop absurd longshots (wrong market / junk)
                 if price > MAX_HR_AMERICAN:
                     continue
                 if is_blocked_player(player):
                     continue
-                rows.append({"event": event, "book": bk, "player": player, "price": price, "point": 0.5, "team": "", "source": "oddsapi"})
+                rows.append({"event": event, "book": bk, "player": player, "price": price, "point": 0.5, "team": "", "source": "oddsapi", "sport": "NFL" if is_td else "MLB"})
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
@@ -2721,9 +2763,11 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         rows, found = flatten_oddsapi(data)
         all_rows.extend(rows)
         all_found_raw.update(found)
-    sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
-    all_rows.extend(sgo_rows)
-    all_found_raw.update(sgo_found)
+    sgo_rows, sgo_found = [], set()
+    if sport_cfg().get("sgo"):
+        sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
+        all_rows.extend(sgo_rows)
+        all_found_raw.update(sgo_found)
     kept = {normalize_book(b) for b in all_found_raw} & PREFERRED
     st.session_state["fetch_debug"] = {
         "http_ok": http_ok,
@@ -3628,8 +3672,25 @@ def event_is_today(e):
 
 
 def filter_events_today(events):
-    today_only = [e for e in events if event_is_today(e)]
-    return today_only if today_only else events  # fallback if filter empty
+    days = sport_cfg().get("days", 1)
+    if days <= 1:
+        today_only = [e for e in events if event_is_today(e)]
+        return today_only if today_only else events
+    now = datetime.now(timezone.utc)
+    kept = []
+    for e in events:
+        t = e.get("commence_time") or ""
+        if not t:
+            kept.append(e)
+            continue
+        try:
+            dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
+        except Exception:
+            kept.append(e)
+            continue
+        if now - timedelta(hours=8) <= dt <= now + timedelta(days=days):
+            kept.append(e)
+    return kept if kept else events
 
 
 
@@ -4008,7 +4069,16 @@ def main():
         refresh_count = 0
     st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
     st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
-    st.markdown('<p class="tagline">Where odds intuition meets Petty precision. 0.5 HR Over only.</p>', unsafe_allow_html=True)
+    sport = st.radio("Sport", ["MLB", "NFL"], horizontal=True, key="sport", help="Same Board / Shop / Grade. MLB = 0.5 HR. NFL = Anytime TD.")
+    if st.session_state.get("_sport_seen") != sport:
+        for k in ("selected_games", "last_selected", "events", "odds", "previous_odds", "found_books", "last_fetch_time", "auto_once", "new_fetch", "lineup_names"):
+            st.session_state.pop(k, None)
+        st.session_state["_sport_seen"] = sport
+    cfg = sport_cfg()
+    st.markdown(
+        f'<p class="tagline">Where odds intuition meets Petty precision. {cfg["label"]} only.</p>',
+        unsafe_allow_html=True,
+    )
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
     st.markdown("""
     <style>
@@ -4045,7 +4115,7 @@ def main():
         st.markdown("**Slate**")
         st.caption(f"{ev_n} games · lock {lock_n} · {last_ft}")
         if st.button("Load games", type="primary", use_container_width=True):
-            raw = fetch_events_oddsapi(odds_key)
+            raw = fetch_events_oddsapi(odds_key, sport_cfg()["key"])
             st.session_state["events"] = filter_events_today(raw)
             st.session_state["events_raw_count"] = len(raw or [])
         b1, b2 = st.columns(2)
@@ -4137,7 +4207,7 @@ def main():
             auto_fetch = True
         if (manual_fetch or auto_fetch) and chosen:
             with st.spinner("Fetching..."):
-                if auto_lineups or not st.session_state.get("lineup_names"):
+                if sport_cfg().get("sgo") and (auto_lineups or not st.session_state.get("lineup_names")):
                     names, msg = fetch_all_lineups()
                     if names:
                         st.session_state["lineup_names"] = names
@@ -4158,7 +4228,7 @@ def main():
                 raw = ", ".join(dbg.get("raw_books") or []) or "none"
                 kept = ", ".join(dbg.get("kept_books") or []) or "none"
                 st.warning(
-                    "No preferred-book 0.5 HR props after fetch. "
+                    f"No preferred-book {sport_cfg()['label']} props after fetch. "
                     "This is not always 'games live' - check debug below."
                 )
                 st.caption(
