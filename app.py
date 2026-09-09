@@ -2203,9 +2203,17 @@ def build_whats_going_today(rows):
         hr_names, _final, _msg = fetch_mlb_hr_hitters()
 
     todays = [r for r in rows if r.get("date") == today]
-    hits_logged = [r for r in todays if r.get("result") == "HIT"]
-    graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
-    our_list = [r for r in todays if r.get("source") in ("take_it", "watch")]
+    if active_sport() == "NFL":
+        def _is_nfl_row(r):
+            m = str(r.get("market") or r.get("sport") or "").lower()
+            return "td" in m or "nfl" in m or m == "anytime_td"
+        hits_logged = [r for r in todays if r.get("result") == "HIT" and _is_nfl_row(r)]
+        graded = [r for r in todays if r.get("result") in ("HIT", "MISS") and _is_nfl_row(r)]
+        our_list = [r for r in todays if r.get("source") in ("take_it", "watch") and _is_nfl_row(r)]
+    else:
+        hits_logged = [r for r in todays if r.get("result") == "HIT"]
+        graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
+        our_list = [r for r in todays if r.get("source") in ("take_it", "watch")]
     lock = st.session_state.get("pregame_lock") or load_pregame()
 
     # Players who appeared in an MGM pair/trio in history this session
@@ -2296,6 +2304,25 @@ def build_whats_going_today(rows):
 def render_whats_going_today():
     rows = load_results()
     mlb_hr, n_graded, by_book, on_list, pair_list = build_whats_going_today(rows)
+    if active_sport() == "NFL":
+        # Chips = current NFL slate only. Never MLB HIT/lock leftovers.
+        live = Counter()
+        for rec in st.session_state.get("odds") or []:
+            if str(rec.get("sport") or "") != "NFL":
+                continue
+            bl = book_label(rec.get("book") or "")
+            end = last_two(rec.get("price"))
+            if bl in {"DK", "FD", "MGM", "HardRock"} and end is not None:
+                live[(bl, int(end))] += 1
+        by_book = defaultdict(list)
+        for (bl, end), cnt in live.items():
+            by_book[bl].append((int(end), int(cnt)))
+        for bl in by_book:
+            by_book[bl].sort(key=lambda x: (-x[1], x[0]))
+        by_book = dict(by_book)
+        pair_list = []
+        mlb_hr = sum(1 for r in rows if r.get("date") == today_az() and r.get("result") == "HIT" and "td" in str(r.get("market") or r.get("sport") or "").lower())
+        on_list = sum(1 for r in rows if r.get("date") == today_az() and r.get("source") in ("take_it", "watch") and "td" in str(r.get("market") or r.get("sport") or "").lower())
     order = ["DK", "FD", "MGM", "HardRock"]
     cols_html = []
     for bl in order:
@@ -2346,12 +2373,7 @@ def render_whats_going_today():
     cfg = sport_cfg()
     title = "What's Going Today · %s" % active_sport()
     if active_sport() == "NFL":
-        # Don't mix MLB box-score HRs into the NFL banner
-        mlb_hr = sum(1 for r in rows if r.get("date") == today_az() and r.get("result") == "HIT" and r.get("market") == "anytime_td")
-        sub = (
-            "%s %s graded HIT today · %s on our list · DK/FD/MGM/HardRock TD endings "
-            "(MLB homers hidden while NFL is on)"
-        ) % (mlb_hr, cfg["hits"], on_list)
+        sub = "%s %s HIT · %s on our list · live TD endings (+300 only)" % (mlb_hr, cfg["hits"], on_list)
     else:
         sub = (
             "%s %s · %s on our list · best price among DK/FD/MGM/HardRock "
