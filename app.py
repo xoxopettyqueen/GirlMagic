@@ -131,50 +131,9 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .trend-chip .chip-count{color:#f9a8d4;font-weight:900}
 /* keep game picker from eating the whole page */
 div[data-baseweb="select"]{max-width:100%}
-div[data-baseweb="select"] span{font-size:0.78rem!important;color:#fce7f3!important}
+div[data-baseweb="select"] span{font-size:0.78rem!important}
 .stMultiSelect{max-width:920px}
-.stMultiSelect [data-baseweb="tag"]{max-width:200px;background:linear-gradient(90deg,#db2777,#9333ea)!important;border:none!important;color:#fff!important}
-.stMultiSelect [data-baseweb="tag"] span{color:#fff!important}
-div[data-baseweb="select"]>div{
-  background:#1a0f28!important;
-  border:1px solid #a855f7!important;
-  border-radius:12px!important;
-  color:#fce7f3!important;
-  box-shadow:none!important;
-}
-div[data-baseweb="popover"] div[data-baseweb="menu"],
-ul[role="listbox"]{
-  background:#160a22!important;
-  border:1px solid #a855f7!important;
-  color:#fce7f3!important;
-}
-li[role="option"]{color:#fce7f3!important}
-.stSlider [data-testid="stTickBarMin"], .stSlider [data-testid="stTickBarMax"]{color:#c4b5d6!important}
-.stSlider [data-baseweb="slider"] div[role="slider"]{
-  background:#f472b6!important;border-color:#f9a8d4!important;
-}
-.stSlider [data-baseweb="slider"] div[data-testid="stThumbValue"]{color:#f9a8d4!important}
-.stSlider [data-baseweb="slider"]>div>div{background:#4c1d95!important}
-.stTextInput input, .stNumberInput input, textarea{
-  background:#1a0f28!important;
-  border:1px solid #7c3aed!important;
-  color:#fce7f3!important;
-  border-radius:12px!important;
-}
-.stTextInput label, .stSlider label, .stSelectbox label, .stMultiSelect label{
-  color:#f9a8d4!important;font-size:.78rem!important;font-weight:700!important;letter-spacing:.04em;
-}
-.filter-shell{
-  background:linear-gradient(155deg,#1a0f28,#251438);
-  border:1px solid #a855f7;
-  border-radius:16px;
-  padding:12px 14px 6px 14px;
-  margin:0 0 16px 0;
-}
-.filter-shell h4{color:#f9a8d4;margin:0 0 8px 0;font-size:.95rem}
-.sport-row{margin:4px 0 10px 0}
-div[data-testid="stSegmentedControl"] button{border-radius:999px!important}
-div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!important;opacity:1!important}
+.stMultiSelect [data-baseweb="tag"]{max-width:160px}
 .games-hint{color:#e9d5ff;font-size:.8rem;margin:4px 0 8px}
 .shop-wrap{overflow-x:auto;margin:8px 0 16px}
 .shop-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:.78rem}
@@ -197,60 +156,20 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 MLB_STATS = "https://statsapi.mlb.com/api/v1"
 REGIONS = "us,us2"
-# Sport profiles — MLB math stays the same; NFL only swaps feed + labels
-SPORT_CFG = {
-    "MLB": {
-        "key": "baseball_mlb",
-        "market": "batter_home_runs",
-        "label": "0.5 HR Over",
-        "hit": "HR",
-        "hits": "HRs",
-        "sgo": True,
-        "days": 1,
-        "when": "First pitch",
-        "lock_caption": "Today's homers matched to what we locked before first pitch.",
-        "lock_count": "MLB HR",
-        "shop_empty": "Fetch 0.5 HR first - Shop fills from the live slate.",
-    },
-    "NFL": {
-        "key": "americanfootball_nfl",
-        "market": "player_anytime_td",
-        "label": "Anytime TD Yes / 0.5",
-        "hit": "TD",
-        "hits": "TDs",
-        "sgo": False,
-        "days": 8,
-        "when": "Kickoff",
-        "lock_caption": "NFL Lock Lab uses TD prices we saved pre-kick. No MLB homers on this side.",
-        "lock_count": "NFL TD",
-        "shop_empty": "Fetch Anytime TD first - Shop fills from the NFL slate.",
-    },
-}
-
-def active_sport():
-    s = st.session_state.get("sport", "MLB")
-    return s if s in SPORT_CFG else "MLB"
-
-def sport_cfg():
-    return SPORT_CFG[active_sport()]
-
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
-PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics"}
-CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics"}
-VALUE_BOOKS = {"draftkings", "fanduel", "betmgm", "fanatics"}
-VALUE_BOOK_LABELS = {"DK", "FD", "MGM", "Fanatics"}
+PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars"}
+CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
+VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet"}
+VALUE_BOOK_LABELS = {"DK", "FD", "HardRock"}
 # Odds API uses different keys for the same books - map only
 BOOK_ALIASES = {
     "williamhill_us": "caesars",
     "hardrockbet_oh": "hardrockbet",
     "hardrockbet_nj": "hardrockbet",
-    "fanatics": "fanatics",
-    "fanaticssportsbook": "fanatics",
-    "fanatics_sportsbook": "fanatics",
 }
 
 def normalize_book(key):
@@ -297,15 +216,13 @@ SCORE_TAKE_OVERRIDE = 85  # fat stack (Larnach 96) can green even on a dead 30 /
 # PRIORITY = must have >=1 to unlock TAKE IT (Tracker 9/03 volume)
 # Tracker 9/05: only tags that beat 13% baseline unlock TAKE IT
 PRIORITY_METHODS = {
-    "MGM 25", "MGM 50", "MGM Exact",
+    "Match 25", "MGM 25",
     "DK 10",
-    "FD Pattern", "FD 600", "FD+MGM classic",
-    "Multi-book Shorten",
-    "Books tight",
+    "FD 600",
+    "FD+MGM classic",
+    "MGM Exact",
 }
-TAKE_HOT_ENDS = {10, 25, 50, 75, 90}
-TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}
-TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics"}
+TAKE_HOT_ENDS = {10, 25, 75, 90}  # 21 / 17 / 14 / 14. 00=11 40=5 stay off TAKE.
 # PREMIUM = counts as core (still need >=1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
@@ -440,57 +357,35 @@ def long_price_block(best_price, methods=None, book_prices=None):
             return f"+{p} needs a priority tag"
     return None
 
-def nfl_price_ok(best_price):
-    """NFL Anytime TD: +115 and up. No 799 cap — long TDs have hit."""
-    try:
-        p = abs(int(best_price))
-    except Exception:
-        return False
-    return p >= 115
-
-def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None):
-    """MLB: elite +400-699 + hot end + priority. NFL: 2 premium + priority-or-hot-end on TD prices."""
+def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None):
+    """TAKE IT + long-price lane.
+    +400-699: normal gate. +700-999: priority + hot ending + 2 real books.
+    +1000-1500: priority tag required (00 endings allowed in this lane only).
+    +1501+: never TAKE IT.
+    """
     ms = {normalize_method_name(m) for m in (methods or [])}
-    if core_count < METHODS_MIN:
-        return False
-    bk = normalize_book(best_book) if best_book else None
-    if not bk and book_prices:
-        best_dec = -1
-        for k, px in (book_prices or {}).items():
-            dec = american_to_decimal(px) or -1
-            if dec > best_dec:
-                best_dec, bk = dec, normalize_book(k)
-    if bk and bk not in TAKE_STRONG_BOOKS:
-        return False
-    if active_sport() == "NFL":
-        if not nfl_price_ok(best_price):
-            return False
-        end = last_two(best_price)
-        hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
-        pri = bool(ms & PRIORITY_METHODS)
-        # NFL methods are thinner; allow TAKE if priority OR a hot ending with 2+ premium
-        return pri or (hot and core_count >= METHODS_MIN)
     if not (ms & PRIORITY_METHODS):
         return False
-    if price_bucket(best_price) not in TAKE_STRONG_BUCKETS:
+    try:
+        p_abs = abs(int(best_price)) if best_price is not None else 0
+    except Exception:
+        p_abs = 0
+    flyer = JUNK_PRICE <= p_abs <= FLYER_MAX
+    try:
+        end = last_two(best_price)
+        if end is not None and end not in TAKE_HOT_ENDS and not flyer:
+            return False
+    except Exception:
+        pass
+    if long_price_block(best_price, methods, book_prices):
         return False
-    end = last_two(best_price)
-    if end is None or end not in TAKE_HOT_ENDS:
-        return False
-    return True
-
-
-def elite_take_ok(item):
-    """Benford + numerology required for TAKE. Never unlock TAKE by themselves."""
-    if not item.get("is_bet"):
-        return False
-    bf = item.get("benford") or {}
-    if bf.get("tag") != "Authentic" and bf.get("aligned") is not True:
-        return False
-    tag = str(item.get("num_tag") or "")
-    if "name+price" not in tag:
-        return False
-    return True
+    fams = strong_method_families(methods)
+    n = len(fams)
+    if core_count >= METHODS_MIN and edge >= EDGE_MIN:
+        return True
+    if core_count >= 3 and n >= 2 and edge >= EDGE_SOFT:
+        return True
+    return False
 
 def has_dk_or_mgm(meths):
     for m in meths:
@@ -774,7 +669,6 @@ SHOP_BOOKS = [
     ("draftkings", "DK"),
     ("fanduel", "FD"),
     ("betmgm", "MGM"),
-    ("fanatics", "FN"),
     ("hardrockbet", "HR"),
     ("caesars", "CZ"),
 ]
@@ -845,7 +739,7 @@ def render_shop_tab(df):
     st.markdown("### Odds Shop")
     st.caption("Price vs fair. TAKE / LEAN log on their own (even if Board already has the name). Grade them under Grade → Shop.")
     if df is None or getattr(df, "empty", True):
-        st.info(sport_cfg()["shop_empty"])
+        st.info("Fetch 0.5 HR first - Shop fills from the live slate.")
         return
     shop = build_shop_board(df)
     book_meter = benford_book_meter(df)
@@ -862,7 +756,6 @@ def render_shop_tab(df):
         <div class="petty-box"><div class="petty-num">{len(shop)}</div><div class="petty-label">PLAYERS</div></div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('<div class="filter-shell">', unsafe_allow_html=True)
     view = st.radio("Call", ["All", "TAKE + LEAN", "TAKE", "LEAN", "DON'T", "MARKET"], horizontal=True, key="shop_filter")
     c1, c2, c3, c4 = st.columns(4)
     book_opts = ["Any"] + [lab for _, lab in SHOP_BOOKS]
@@ -883,7 +776,6 @@ def render_shop_tab(df):
         buck_f = st.multiselect("Price bucket", buckets, key="shop_buckets")
     with c7:
         q = st.text_input("Player search", key="shop_q")
-    st.markdown("</div>", unsafe_allow_html=True)
 
     shown = shop
     if view == "TAKE + LEAN":
@@ -1031,25 +923,8 @@ def digits_playbook(hits_res, graded_res, live_res):
 
 
 def render_digits_tab(df):
-    st.markdown("""
-    <style>
-    .bf-hero{background:linear-gradient(135deg,#2e1065,#831843);border:1px solid #c084fc;border-radius:22px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(192,132,252,.25)}
-    .bf-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 6px;font-size:1.45rem}
-    .bf-hero p{color:#f5d0fe;margin:0;font-size:.88rem}
-    .bf-meter{height:10px;background:#1e1b4b;border-radius:999px;overflow:hidden;margin:8px 0}
-    .bf-meter span{display:block;height:100%;border-radius:999px}
-    .bf-heat{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin:8px 0 12px}
-    .bf-cell{text-align:center;border-radius:12px;padding:10px 4px;border:1px solid #3b0764;background:#16101f}
-    .bf-cell b{display:block;font-size:1.1rem;color:#fbcfe8}
-    .bf-cell:hover{box-shadow:0 0 12px #e879f9}
-    </style>
-    """, unsafe_allow_html=True)
-    st.markdown(
-        '<div class="bf-hero"><h3>Benford Energy Check 🔢✨</h3>'
-        "<p>Benford’s Law shows which numbers occur naturally — and which look forced.</p>"
-        '<p style="margin-top:6px;color:#f9a8d4">Benford spots fake odds faster than any algorithm.</p></div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown("### Digits")
+    st.caption("Looking for: which PRICE SHAPE cashes. Green pond = +400 to +600. Red pond = +1000 and the 2s. Not who to pick.")
     if not HAS_BENFORD:
         st.warning("Need benford.py next to app.py.")
         return
@@ -1091,43 +966,27 @@ def render_digits_tab(df):
     graded_res = analyze_benford(graded, "graded")
     hits_res = analyze_benford(hits, "hits")
     do, dont, notes = digits_playbook(hits_res, graded_res, live_res)
-    score = float(live_res.get("benford_score") or 0)
-    hue = "#22c55e" if score >= 0.7 else ("#eab308" if score >= 0.45 else "#ef4444")
-    mood = "Clean energy" if score >= 0.7 else ("Mixed energy" if score >= 0.45 else "Forced energy")
+    do_h = "".join(f"<li>{x}</li>" for x in do)
+    no_h = "".join(f"<li>{x}</li>" for x in dont)
+    note_h = "".join(f"<div class='card-meta'>{x}</div>" for x in notes)
     st.markdown(
-        f'<div class="card"><b>Benford Score</b> · {score:.2f} / 1 · {mood}'
-        f'<div class="bf-meter"><span style="width:{int(score*100)}%;background:{hue}"></span></div>'
-        f'<div class="note">{live_res.get("n") or 0} live prices in the pile</div></div>',
+        '<div class="trends-today">'
+        '<div class="trends-today-title">What to do</div>'
+        '<div class="card-line"><b>Do</b></div>'
+        f'<ul style="margin:6px 0 10px 18px;color:#e9d5ff">{do_h}</ul>'
+        "<div class='card-line'><b>Do not</b></div>"
+        f'<ul style="margin:6px 0 10px 18px;color:#e9d5ff">{no_h}</ul>'
+        f'{note_h}'
+        '<div class="card-foot">This is a price-band call. Board still picks the name.</div>'
+        '</div>',
         unsafe_allow_html=True,
     )
-    do_h = "".join(f"<div>✅ {x}</div>" for x in do)
-    no_h = "".join(f"<div>🚫 {x}</div>" for x in dont)
-    st.markdown(
-        f'<div class="card"><b>Do</b><div class="note">{do_h}</div>'
-        f'<b>Do not</b><div class="note">{no_h}</div>'
-        f'<div class="card-foot">Board still picks the name. This page picks the pond.</div></div>',
-        unsafe_allow_html=True,
-    )
-    dist = {int(k): float(v) for k, v in (live_res.get("actual_distribution") or {}).items()}
-    cells = []
-    for d in range(1, 10):
-        p = dist.get(d, 0)
-        glow = min(1.0, p * 4)
-        cells.append(
-            f'<div class="bf-cell" title="Digit {d} · {_digit_lane(d)} · {p:.0%}">'
-            f'<b>{d}</b><span class="note">{p:.0%}</span></div>'
-        )
-    st.markdown('<div class="card"><b>Benford Heatmap</b><div class="bf-heat">' + "".join(cells) + "</div></div>", unsafe_allow_html=True)
-    st.markdown("#### Benford vs Board")
-    c1, c2 = st.columns(2)
-    with c1:
-        _benford_card(live_res, "Live board prices")
-    with c2:
-        _benford_card(hits_res, "History hits")
-    with st.expander("More piles", expanded=False):
+    with st.expander("Show the charts", expanded=False):
+        _benford_card(live_res, "Today - every posted number")
         _benford_card(best_res, "Today - best number only")
         _benford_card(lock_res, "Lock - pregame book prices")
         _benford_card(graded_res, "History - graded bests")
+        _benford_card(hits_res, "History - only the hits")
         st.markdown("#### By book today")
         meter = benford_book_meter(df)
         if meter:
@@ -1284,7 +1143,6 @@ def book_label(b):
     if "draftkings" in b or b == "dk": return "DK"
     if "fanduel" in b or b == "fd": return "FD"
     if "hardrock" in b: return "HardRock"
-    if "fanatic" in b: return "Fanatics"
     if "caesars" in b or "williamhill" in b: return "Caesars"
     if b in ("untagged", "unknown", "-", ""): return "Untagged"
     return b.title() if b else "Untagged"
@@ -2102,9 +1960,6 @@ def log_bet_this(ev_board, watch_board=None):
             "core": item.get("method_count", 0),
             "result": "PENDING", "source": source, "logged_at": now_utc_iso(),
             "price_source": "pregame_lock" if lock_books else "live_fetch",
-            "sport": active_sport(),
-            "team": item.get("team") or "",
-            "market": "anytime_td" if active_sport() == "NFL" else "batter_home_runs",
             "benford_tag": (item.get("benford") or {}).get("tag"),
             "benford_note": (item.get("benford") or {}).get("note"),
             "benford_cluster": (item.get("benford") or {}).get("cluster"),
@@ -2272,111 +2127,26 @@ def fetch_mlb_hr_hitters(date_str=None):
 
 
 
-@st.cache_data(ttl=180, show_spinner=False)
-def fetch_nfl_td_scorers():
-    """Anytime TD scorers from ESPN public scoreboard + game summary. No extra paid API."""
-    scorers, finished = set(), set()
-    try:
-        day = datetime.strptime(today_az(), "%Y-%m-%d").strftime("%Y%m%d")
-    except Exception:
-        day = datetime.now().strftime("%Y%m%d")
-    try:
-        sb = requests.get(
-            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
-            params={"dates": day}, timeout=15,
-        ).json()
-    except Exception as e:
-        return set(), set(), f"ESPN scoreboard fail: {e}"
-    events = sb.get("events") or []
-    done_ids = []
-    for ev in events:
-        comp = (ev.get("competitions") or [{}])[0]
-        status = ((comp.get("status") or {}).get("type") or {})
-        eid = ev.get("id")
-        if status.get("completed") or str(status.get("name") or "").upper() in ("STATUS_FINAL", "STATUS_FINAL_OVERTIME"):
-            if eid:
-                done_ids.append(str(eid))
-    for eid in done_ids[:20]:
-        try:
-            sm = requests.get(
-                "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary",
-                params={"event": eid}, timeout=15,
-            ).json()
-        except Exception:
-            continue
-        for play in sm.get("scoringPlays") or []:
-            text = str(play.get("text") or play.get("shortText") or "").lower()
-            itype = str((play.get("type") or {}).get("text") or "").lower()
-            if "touchdown" not in text and "touchdown" not in itype and " td" not in f" {text}":
-                continue
-            if "extra point" in text or "two-point" in text:
-                continue
-            for ath in play.get("athletesInvolved") or []:
-                n = ath.get("displayName") or ath.get("fullName")
-                if n:
-                    scorers.add(clean_name(n))
-            # passing TD: first athlete is often the passer — still an anytime scorer only if they crossed
-            # boxscore rushing/receiving TDs are cleaner
-        box = ((sm.get("boxscore") or {}).get("players") or [])
-        for team_block in box:
-            for stat_group in team_block.get("statistics") or []:
-                name = str(stat_group.get("name") or stat_group.get("label") or "").lower()
-                keys = [str(k).lower() for k in (stat_group.get("labels") or stat_group.get("names") or [])]
-                td_idx = None
-                for i, k in enumerate(keys):
-                    if k in ("td", "tds", "touchdowns"):
-                        td_idx = i
-                        break
-                if td_idx is None and "rush" not in name and "receiv" not in name and "return" not in name:
-                    continue
-                for ath in stat_group.get("athletes") or []:
-                    n = (ath.get("athlete") or {}).get("displayName")
-                    if n:
-                        finished.add(clean_name(n))
-                    stats = ath.get("stats") or []
-                    if td_idx is not None and td_idx < len(stats):
-                        try:
-                            if float(stats[td_idx]) >= 1:
-                                if n:
-                                    scorers.add(clean_name(n))
-                        except Exception:
-                            pass
-    return scorers, finished, f"ESPN NFL {len(done_ids)} final · {len(scorers)} TD names"
-
-
 def auto_grade_pending():
+    hr_names, final_players, msg = fetch_mlb_hr_hitters()
     rows = load_results()
     hits = misses = skipped = 0
     pending_n = sum(1 for r in rows if r.get("result") == "PENDING")
-    if active_sport() == "NFL":
-        td_names, done_players, msg = fetch_nfl_td_scorers()
-        hit_set, miss_pool, tag = td_names, done_players, "nfl_auto"
-    else:
-        hr_names, final_players, msg = fetch_mlb_hr_hitters()
-        hit_set, miss_pool, tag = hr_names, final_players, "mlb_auto"
 
     for row in rows:
         if row.get("result") != "PENDING":
             continue
-        if active_sport() == "NFL":
-            blob = str(row.get("market") or row.get("sport") or "").lower()
-            if blob and "td" not in blob and "nfl" not in blob:
-                skipped += 1
-                continue
-        elif str(row.get("market") or "") == "anytime_td":
-            skipped += 1
-            continue
         player = row.get("player") or ""
-        if any(names_match(player, h) for h in hit_set):
+        if any(names_match(player, h) for h in hr_names):
             row["result"] = "HIT"
-            row["graded_by"] = tag
+            row["graded_by"] = "mlb_auto"
             if row.get("ending") is None and row.get("best_price") is not None:
                 row["ending"] = last_two(row["best_price"])
             hits += 1
             continue
-        if miss_pool and any(names_match(player, f) for f in miss_pool):
+        if final_players and any(names_match(player, f) for f in final_players):
             row["result"] = "MISS"
-            row["graded_by"] = tag
+            row["graded_by"] = "mlb_auto"
             misses += 1
         else:
             skipped += 1
@@ -2390,23 +2160,12 @@ def build_whats_going_today(rows):
     Not the same as MGM pair methods - those stay pair/trio-only on the Board.
     """
     today = today_az()
-    if active_sport() == "NFL":
-        hr_names, _final, _msg = [], False, "NFL mode · MLB homers off"
-    else:
-        hr_names, _final, _msg = fetch_mlb_hr_hitters()
+    hr_names, _final, _msg = fetch_mlb_hr_hitters()
 
     todays = [r for r in rows if r.get("date") == today]
-    if active_sport() == "NFL":
-        def _is_nfl_row(r):
-            m = str(r.get("market") or r.get("sport") or "").lower()
-            return "td" in m or "nfl" in m or m == "anytime_td"
-        hits_logged = [r for r in todays if r.get("result") == "HIT" and _is_nfl_row(r)]
-        graded = [r for r in todays if r.get("result") in ("HIT", "MISS") and _is_nfl_row(r)]
-        our_list = [r for r in todays if r.get("source") in ("take_it", "watch") and _is_nfl_row(r)]
-    else:
-        hits_logged = [r for r in todays if r.get("result") == "HIT"]
-        graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
-        our_list = [r for r in todays if r.get("source") in ("take_it", "watch")]
+    hits_logged = [r for r in todays if r.get("result") == "HIT"]
+    graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
+    our_list = [r for r in todays if r.get("source") in ("take_it", "watch")]
     lock = st.session_state.get("pregame_lock") or load_pregame()
 
     # Players who appeared in an MGM pair/trio in history this session
@@ -2497,34 +2256,6 @@ def build_whats_going_today(rows):
 def render_whats_going_today():
     rows = load_results()
     mlb_hr, n_graded, by_book, on_list, pair_list = build_whats_going_today(rows)
-    if active_sport() == "NFL":
-        pair_list = []
-        mlb_hr = 0
-        on_list = 0
-        hit_ends = Counter()
-        for r in rows:
-            blob = str(r.get("market") or r.get("sport") or "").lower()
-            if r.get("date") != today_az():
-                continue
-            if "td" not in blob and "nfl" not in blob:
-                continue
-            if r.get("source") in ("take_it", "watch"):
-                on_list += 1
-            if r.get("result") != "HIT":
-                continue
-            mlb_hr += 1
-            bl = book_label(r.get("best_book") or "")
-            end = r.get("ending")
-            if end is None:
-                end = last_two(r.get("best_price"))
-            if bl and end is not None:
-                hit_ends[(bl, int(end))] += 1
-        by_book = defaultdict(list)
-        for (bl, end), cnt in hit_ends.items():
-            by_book[bl].append((int(end), int(cnt)))
-        for bl in by_book:
-            by_book[bl].sort(key=lambda x: (-x[1], x[0]))
-        by_book = dict(by_book)
     order = ["DK", "FD", "MGM", "HardRock"]
     cols_html = []
     for bl in order:
@@ -2561,8 +2292,7 @@ def render_whats_going_today():
     if cols_html:
         body = '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">%s</div>' % ("".join(cols_html))
     else:
-        empty_msg = "No NFL TDs graded yet. Mark HIT on Results and this banner fills." if active_sport() == "NFL" else "No endings matched yet"
-        body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">%s</div>' % empty_msg
+        body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">No endings matched yet</div>'
 
     pair_note = ""
     if pair_list:
@@ -2573,15 +2303,11 @@ def render_whats_going_today():
             '</div>' % (" · ".join(bits))
         )
 
-    cfg = sport_cfg()
-    title = "What's Going Today · %s" % active_sport()
-    if active_sport() == "NFL":
-        sub = "%s %s scored today · %s were on our list · chips = graded TDs only" % (mlb_hr, cfg["hits"], on_list)
-    else:
-        sub = (
-            "%s %s · %s on our list · best price among DK/FD/MGM/HardRock "
-            "(not MGM pair rules)"
-        ) % (mlb_hr, cfg["hits"], on_list)
+    title = "What's Going Today"
+    sub = (
+        "%s HRs · %s on our list · best price among DK/FD/MGM/HardRock "
+        "(not MGM pair rules)"
+    ) % (mlb_hr, on_list)
     html = (
         '<div class="trends-today" style="padding:12px 14px">'
         '<div class="trends-today-header" style="margin-bottom:4px">'
@@ -2725,55 +2451,17 @@ def _price_line_for_card(prices):
             parts.append(f"{lab} {format_odds(p)}")
     return " · ".join(parts)
 
-def lines_dashboard_strip(results):
-    st.markdown("""
-    <style>
-    .mv-hero{background:linear-gradient(135deg,#4c0519,#3b0764);border:1px solid #fb7185;border-radius:22px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 22px rgba(251,113,133,.25)}
-    .mv-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 6px;font-size:1.4rem}
-    .mv-hero p{color:#fecdd3;margin:0;font-size:.88rem}
-    .mv-up{border-color:#fb7185!important;box-shadow:0 0 14px rgba(239,68,68,.2)}
-    .mv-down{border-color:#4ade80!important;box-shadow:0 0 14px rgba(74,222,128,.2)}
-    .bf-meter{height:10px;background:#1e1b4b;border-radius:999px;overflow:hidden;margin:8px 0}
-    .bf-meter span{display:block;height:100%;border-radius:999px}
-    </style>
-    """, unsafe_allow_html=True)
-    ups = sum(1 for r in results if r.get("type") == "hist" and r.get("move_dir") == "up")
-    downs = sum(1 for r in results if r.get("type") == "hist" and r.get("move_dir") == "down")
-    late = sum(1 for r in results if r.get("type") == "late")
-    good = sum(1 for r in results if r.get("type") == "trend" and r.get("trend_kind") == "good")
-    st.markdown(
-        f'<div class="petty-row">'
-        f'<div class="petty-box"><div class="petty-num">{ups + downs}</div><div class="petty-label">MOVES</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{late}</div><div class="petty-label">MISSING</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{good}</div><div class="petty-label">TRENDS</div></div>'
-        f'</div>',
-        unsafe_allow_html=True,
-    )
-
-
 def show_player_cards(typ, banner, explain, results):
-    st.markdown("""
-    <style>
-    .meth-hero{background:linear-gradient(135deg,#3b0764,#831843);border:1px solid #e879f9;border-radius:22px;padding:14px 16px;margin-bottom:10px;box-shadow:0 0 20px rgba(232,121,249,.22)}
-    .meth-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 4px;font-size:1.28rem}
-    .meth-hero p{color:#f5d0fe;margin:0;font-size:.84rem}
-    .meth-card{transition:box-shadow .15s ease}
-    .meth-card:hover{box-shadow:0 0 16px rgba(244,114,182,.35)}
-    </style>
-    """, unsafe_allow_html=True)
-    st.markdown(f'<div class="meth-hero"><h3>{banner}</h3><p>{explain}</p></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
+    st.caption(explain)
     items = aggregate_by_player([r for r in results if r["type"] == typ])
     if typ == "signal":
         items = sorted(items, key=lambda r: (-int(r.get("book_count") or 0), r.get("label") or ""))
-        st.caption("Sorted: most books first (3 → 2).")
-    st.markdown(
-        f'<div class="petty-row"><div class="petty-box"><div class="petty-num">{len(items)}</div>'
-        f'<div class="petty-label">ON THIS PATTERN</div></div></div>',
-        unsafe_allow_html=True,
-    )
+        st.caption("Sorted: most books first (3 -> 2). Order stays correct on mobile.")
     if not items:
-        st.info("Nobody wearing this tag yet.")
+        st.info("None.")
         return
+    # Row pairs (not one big 2-col) so mobile stacks 1->2->3->4 instead of all-left then all-right
     show_n = items[:40]
     for i in range(0, len(show_n), 2):
         cols = st.columns(2)
@@ -2784,14 +2472,9 @@ def show_player_cards(typ, banner, explain, results):
             with col:
                 tags = render_method_tags(r.get("methods", []))
                 price_line = _price_line_for_card(r.get("prices") or {})
-                price_html = f'<div class="note">{price_line}</div>' if price_line else ""
-                n_books = int(r.get("book_count") or 0)
-                meter = make_meter(min(5, max(1, n_books or 2)), "high" if n_books >= 3 else "mid")
+                price_html = f"<br><small>{price_line}</small>" if price_line else ""
                 st.markdown(
-                    f'<div class="card meth-card" title="{explain}">'
-                    f'<div class="card-name">{r["label"]}</div>'
-                    f'<div class="note">{r["reason"]}</div>{price_html}{meter}'
-                    f'<div style="margin-top:6px">{tags}</div></div>',
+                    f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}{price_html}<br>{tags}</div>',
                     unsafe_allow_html=True,
                 )
 
@@ -2896,28 +2579,24 @@ def fetch_all_lineups():
     return names, f"{len(names)} used · " + " · ".join(bits) + " · " + note
 
 @st.cache_data(ttl=180, show_spinner=False)
-def _fetch_events_oddsapi_cached(api_key, sport_key="baseball_mlb"):
-    r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
+def _fetch_events_oddsapi_cached(api_key):
+    r = requests.get(f"{ODDS_API_BASE}/sports/baseball_mlb/events", params={"apiKey": api_key}, timeout=15)
     r.raise_for_status()
     return r.json()
 
 
-def fetch_events_oddsapi(api_key, sport_key=None):
-    sport_key = sport_key or sport_cfg()["key"]
+def fetch_events_oddsapi(api_key):
     try:
-        return _fetch_events_oddsapi_cached(api_key, sport_key)
+        return _fetch_events_oddsapi_cached(api_key)
     except Exception as e:
         st.error(f"Odds API events error: {e}")
         return []
 
-def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None):
-    cfg = sport_cfg()
-    sport_key = sport_key or cfg["key"]
-    market = market or cfg["market"]
+def fetch_odds_oddsapi(api_key, event_id):
     try:
         r = requests.get(
-            f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
-            params={"apiKey": api_key, "regions": REGIONS, "markets": market, "oddsFormat": "american"},
+            f"{ODDS_API_BASE}/sports/baseball_mlb/events/{event_id}/odds",
+            params={"apiKey": api_key, "regions": REGIONS, "markets": "batter_home_runs", "oddsFormat": "american"},
             timeout=20,
         )
         return r.json() if r.status_code == 200 else None
@@ -2935,25 +2614,13 @@ def flatten_oddsapi(data):
         if bk not in PREFERRED: continue
         for market in book.get("markets", []):
             # accept standard + alternate HR markets; still force 0.5 only
-            mkey = (market.get("key") or "").lower()
-            is_hr = ("home_run" in mkey) or ("homer" in mkey)
-            is_td = ("anytime_td" in mkey) or ("touchdown" in mkey)
-            if mkey and not is_hr and not is_td:
+            mkey = (market.get("key") or "")
+            if mkey and "home_run" not in mkey and "homer" not in mkey:
                 continue
             for o in market.get("outcomes", []):
-                oname = str(o.get("name") or "").lower()
+                if o.get("name", "").lower() != "over": continue
                 pt = o.get("point")
-                if is_td:
-                    # Anytime TD Yes == Over 0.5 TD
-                    if oname not in ("yes", "over"):
-                        continue
-                    if oname == "over" and pt is not None and abs(float(pt) - 0.5) > 0.01:
-                        continue
-                else:
-                    if oname != "over":
-                        continue
-                    if pt is None or abs(float(pt) - 0.5) > 0.01:
-                        continue
+                if pt is None or abs(float(pt) - 0.5) > 0.01: continue
                 player = o.get("description")
                 price = o.get("price")
                 if not player or price is None: continue
@@ -2961,13 +2628,12 @@ def flatten_oddsapi(data):
                     price = int(price)
                 except Exception:
                     continue
+                # only Over 0.5; drop absurd longshots (wrong market / junk)
                 if price > MAX_HR_AMERICAN:
-                    continue
-                if is_td and abs(int(price)) < 115:
                     continue
                 if is_blocked_player(player):
                     continue
-                rows.append({"event": event, "book": bk, "player": player, "price": price, "point": 0.5, "team": "", "source": "oddsapi", "sport": "NFL" if is_td else "MLB"})
+                rows.append({"event": event, "book": bk, "player": player, "price": price, "point": 0.5, "team": "", "source": "oddsapi"})
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
@@ -3055,11 +2721,9 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         rows, found = flatten_oddsapi(data)
         all_rows.extend(rows)
         all_found_raw.update(found)
-    sgo_rows, sgo_found = [], set()
-    if sport_cfg().get("sgo"):
-        sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
-        all_rows.extend(sgo_rows)
-        all_found_raw.update(sgo_found)
+    sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
+    all_rows.extend(sgo_rows)
+    all_found_raw.update(sgo_found)
     kept = {normalize_book(b) for b in all_found_raw} & PREFERRED
     st.session_state["fetch_debug"] = {
         "http_ok": http_ok,
@@ -3151,22 +2815,13 @@ def apply_team_picks(ev_board, watch_board, coverage_board):
     for x in leftovers:
         team = x.get("team") or ""
         game = _item_game(x)
-        if not game:
+        if not team or not game:
             continue
-        # Odds API NFL props have no team — fall back to 2 names per game
-        if not team:
-            game_count = sum(1 for k in used if k[0] == game)
-            if game_count >= 2:
-                continue
-            key = (game, x.get("player"))
-        else:
-            key = (game, team)
+        key = (game, team)
         if key in used or x.get("player") in seen:
             continue
         if (x.get("score") or 0) < TEAM_PICK_MIN_SCORE and not (x.get("methods") or []):
             continue
-        if not team:
-            team = "this game"
         x = dict(x)
         x["team_pick"] = True
         x["is_bet"] = False
@@ -3547,7 +3202,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             bk = normalize_book(bk)
         except Exception:
             pass
-        if bk in ("draftkings", "fanduel", "hardrockbet", "betmgm", "caesars", "fanatics"):
+        if bk in ("draftkings", "fanduel", "hardrockbet", "betmgm", "caesars"):
             try:
                 price_by_player[r["player"]][bk] = int(r["price"])
             except Exception:
@@ -3626,11 +3281,24 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         # PASS / TAKE IT pool: 2+ PREMIUM core (support tags do not count)
         if core_count < METHODS_MIN:
             continue
-        is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px, best_book)
+        is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px)
         has_pri = has_priority_method(display_meths)
         score_override = False
+        try:
+            p_abs = abs(int(best)) if best is not None else 0
+        except Exception:
+            p_abs = 0
+        if (
+            not is_bet
+            and score >= SCORE_TAKE_OVERRIDE
+            and has_pri
+            and core_count >= METHODS_MIN
+            and p_abs
+            and p_abs <= 999
+        ):
+            is_bet = True
+            score_override = True
         row["is_bet"] = is_bet
-        row["num_tag"] = numerology_board_tag(player, best)
         fams = strong_method_families(display_meths)
         strong_n = len(fams)
         tri = " · 💎 DK+MGM+FD" if has_dk_mgm_fd(display_meths) else ""
@@ -3960,25 +3628,8 @@ def event_is_today(e):
 
 
 def filter_events_today(events):
-    days = sport_cfg().get("days", 1)
-    if days <= 1:
-        today_only = [e for e in events if event_is_today(e)]
-        return today_only if today_only else events
-    now = datetime.now(timezone.utc)
-    kept = []
-    for e in events:
-        t = e.get("commence_time") or ""
-        if not t:
-            kept.append(e)
-            continue
-        try:
-            dt = datetime.fromisoformat(t.replace("Z", "+00:00"))
-        except Exception:
-            kept.append(e)
-            continue
-        if now - timedelta(hours=8) <= dt <= now + timedelta(days=days):
-            kept.append(e)
-    return kept if kept else events
+    today_only = [e for e in events if event_is_today(e)]
+    return today_only if today_only else events  # fallback if filter empty
 
 
 
@@ -4065,42 +3716,9 @@ def lock_player_summary(player, lock_entry, price_mode="close"):
     return list(dict.fromkeys(tags)), lines, ends_by_book, best_book, best_price, price_map, primary_end
 
 
-def _todays_nfl_td_names():
-    """Who scored a TD today from graded Results (HIT)."""
-    names = []
-    seen = set()
-    today = today_az()
-    for r in load_results():
-        if r.get("date") != today:
-            continue
-        if r.get("result") != "HIT":
-            continue
-        blob = str(r.get("market") or r.get("sport") or "").lower()
-        is_nfl = "td" in blob or "nfl" in blob or blob == "anytime_td"
-        if not is_nfl and r.get("source") != "manual_hr":
-            # if sport toggle is NFL, still take HIT rows tagged NFL
-            if str(r.get("sport") or "").upper() != "NFL":
-                continue
-        player = clean_name(r.get("player") or "")
-        if not player or player.lower() in seen:
-            continue
-        seen.add(player.lower())
-        names.append(player)
-    return names
-
-
 def build_lock_lab():
-    """Today's hits matched to pregame Lock for learning. MLB = HRs. NFL = graded TDs."""
-    if active_sport() == "NFL":
-        hr_names = _todays_nfl_td_names()
-        mlb_msg = (
-            f"{len(hr_names)} graded NFL TD HIT(s) today. "
-            "Mark HIT on Results so Lock Lab can match pre-kick prices."
-            if hr_names else
-            "No graded NFL TDs yet. Grade HIT on Results (or Log a TD) — Lock already has pre-kick prices."
-        )
-    else:
-        hr_names, _fin, mlb_msg = fetch_mlb_hr_hitters()
+    """Today's MLB HRs matched to pregame Lock for learning."""
+    hr_names, _fin, mlb_msg = fetch_mlb_hr_hitters()
     lock = st.session_state.get("pregame_lock") or load_pregame()
     matched, unmatched = [], []
     ending_counter, tag_counter, book_end_counter = Counter(), Counter(), Counter()
@@ -4231,161 +3849,6 @@ def build_lock_lab():
     }
 
 
-# ── Numerology helpers (page only — does not change TAKE IT / Shop / Grade) ──
-_NUM_SOFT = {
-    1: "Leadership, ego, first-pitch energy.",
-    2: "Partnership, balance, DK/FD harmony.",
-    3: "Creativity, chaos, multi-book magic.",
-    4: "Structure, lock discipline.",
-    5: "Change, volatility, odds movement.",
-    6: "Responsibility, lineup loyalty.",
-    7: "Intuition, pattern-spotting.",
-    8: "Power, payout, dominance.",
-    9: "Completion, full-circle hits.",
-    11: "Master intuition — double vision.",
-    22: "Master builder — the long play.",
-    33: "Master teacher — the lesson hits.",
-}
-_NUM_PETTY = {
-    1: "Main character energy. First at-bat, first pitch, first in line.",
-    2: "Pair energy. You and your girl. DK and FD holding hands.",
-    3: "Chaos magic. Three books talking at once and somehow it slaps.",
-    4: "Lock it. No wandering. Structure is sexy today.",
-    5: "The line is gonna wiggle. Don’t panic — that’s the point.",
-    6: "Lineup loyalty. If they’re penciled in, they’re penciled in.",
-    7: "Intuition over impulse — trust your petty gut.",
-    8: "Power and payout. 8s been loud when they wanna be loud.",
-    9: "Full circle. If it started here, it ends here.",
-    11: "Master 11. You’re seeing the pattern before the book does.",
-    22: "Master 22. Build the parlay like architecture, not a vibe.",
-    33: "Master 33. Teach the slate who’s running it.",
-}
-_DAY_SOFT = {
-    1: "Today’s number 1 is first-pitch energy — lead, don’t chase.",
-    2: "Today’s number 2 wants pairs and balance.",
-    3: "Today’s number 3 is multi-book chaos. Stay cute, stay sharp.",
-    4: "Today’s number 4 is lock discipline. No extra clicks.",
-    5: "Today’s number 5 is movement day — watch the line, don’t marry it.",
-    6: "Today’s number 6 is lineup loyalty. Starters only.",
-    7: "Today’s number 7 means intuition over impulse — trust your petty gut.",
-    8: "Today’s number 8 is power and payout energy.",
-    9: "Today’s number 9 is completion — full-circle hits.",
-}
-_DAY_PETTY = {
-    1: "1 today. You are the first pitch. Everybody else can wait.",
-    2: "2 today. Find your pair. Solo heroics are mid.",
-    3: "3 today. The books are messy and that’s the fun.",
-    4: "4 today. If it ain’t locked, it ain’t loved.",
-    5: "5 today. The number moves. So do you.",
-    6: "6 today. If RotoWire didn’t write them down, we don’t either.",
-    7: "7 today. Intuition over impulse — trust your petty gut.",
-    8: "8 today. Power. Payout. Don’t whisper it.",
-    9: "9 today. Close the circle. Grade the slate. Then we party.",
-}
-_TREND_NOTE = {
-    1: "1s want the leadoff swing.",
-    2: "2s keep pairing up like they rehearsed it.",
-    3: "3s been chaotic in a cute way.",
-    4: "4s are the lock girls — slow, then sudden.",
-    5: "5s ride the move. Don’t fade the wiggle just to fade it.",
-    6: "6s stay loyal to the lineup card.",
-    7: "7s are the pattern-spotters. Quiet until they’re not.",
-    8: "8s been wild all week — power and payout energy.",
-    9: "9s close slates. Full-circle hits.",
-}
-
-
-def _num_reduce(n, keep_master=True):
-    try:
-        n = abs(int(n))
-    except Exception:
-        return None
-    while n > 9:
-        if keep_master and n in (11, 22, 33):
-            return n
-        n = sum(int(d) for d in str(n))
-    return n
-
-
-def _num_date_number(d):
-    raw = f"{d.year}{d.month:02d}{d.day:02d}"
-    total = sum(int(ch) for ch in raw)
-    return _num_reduce(total, keep_master=True), total, " + ".join(list(raw)) + f" = {total}"
-
-
-def _num_letter(ch):
-    return ((ord(ch.upper()) - 65) % 9) + 1 if ch.isalpha() else 0
-
-
-def _num_name_number(name):
-    return _num_reduce(sum(_num_letter(c) for c in clean_name(name)))
-
-
-def _num_initials(text):
-    letters = [c for c in str(text or "") if c.isalpha()]
-    if not letters:
-        return None
-    return _num_reduce(sum(_num_letter(c) for c in letters))
-
-
-def _num_meaning(n, petty):
-    return (_NUM_PETTY if petty else _NUM_SOFT).get(n, "")
-
-
-def _num_align(player_n, day_n):
-    if player_n is None or day_n is None:
-        return "neutral", "💜 Neutral"
-    pn = _num_reduce(player_n, keep_master=False)
-    dn = _num_reduce(day_n, keep_master=False)
-    if pn == dn:
-        return "strong", "💖 Strong match"
-    if pn and dn and abs(pn - dn) in (1, 8):
-        return "neutral", "💜 Neutral"
-    return "off", "🖤 Off-vibe"
-
-
-def numerology_board_tag(player, price):
-    """Display-only. Never counts as a method / never flips TAKE IT."""
-    try:
-        d = datetime.strptime(today_az(), "%Y-%m-%d").date()
-    except Exception:
-        return None
-    day = _num_reduce(_num_date_number(d)[0], keep_master=False)
-    nn = _num_name_number(player)
-    end = last_two(price)
-    en = _num_reduce(end, False) if end is not None else None
-    if nn == day and en == day:
-        return f"Num {day} name+price"
-    if en == day:
-        return f"Num {day} price"
-    if nn == day:
-        return f"Num {day} name"
-    return None
-
-
-def _num_hits_window(rows, start_date, end_date):
-    ends, names = Counter(), Counter()
-    for r in rows:
-        if r.get("result") != "HIT":
-            continue
-        try:
-            d = datetime.strptime(r.get("date") or "", "%Y-%m-%d").date()
-        except Exception:
-            continue
-        if not (start_date <= d <= end_date):
-            continue
-        end = r.get("ending")
-        if end is None and r.get("best_price") is not None:
-            end = last_two(r.get("best_price"))
-        if end is not None:
-            red = _num_reduce(int(end), keep_master=False)
-            if red:
-                ends[red] += 1
-        nn = _num_name_number(r.get("player") or "")
-        if nn:
-            names[nn] += 1
-    return ends, names
-
 
 def main():
     if "history_loaded" not in st.session_state:
@@ -4409,51 +3872,7 @@ def main():
         refresh_count = 0
     st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
     st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
-    if "sport" not in st.session_state:
-        qp = "MLB"
-        try:
-            qp = st.query_params.get("sport", "MLB")
-        except Exception:
-            qp = "MLB"
-        st.session_state["sport"] = qp if qp in SPORT_CFG else "MLB"
-    try:
-        sport_pick = st.segmented_control(
-            "Sport",
-            options=["MLB", "NFL"],
-            default=st.session_state.get("sport") or "MLB",
-            key="sport_pick",
-            help="MLB = 0.5 HR. NFL = Anytime TD. Stays on the sport you pick.",
-        )
-    except Exception:
-        sport_pick = st.radio(
-            "Sport",
-            ["MLB", "NFL"],
-            index=0 if st.session_state.get("sport") != "NFL" else 1,
-            horizontal=True,
-            key="sport_pick",
-            label_visibility="visible",
-        )
-    if sport_pick in SPORT_CFG and sport_pick != st.session_state.get("sport"):
-        st.session_state["sport"] = sport_pick
-        try:
-            st.query_params["sport"] = sport_pick
-        except Exception:
-            pass
-    sport = st.session_state.get("sport") if st.session_state.get("sport") in SPORT_CFG else "MLB"
-    try:
-        st.query_params["sport"] = sport
-    except Exception:
-        pass
-    if st.session_state.get("_sport_seen") != sport:
-        for k in ("selected_games", "last_selected", "events", "odds", "previous_odds", "found_books", "last_fetch_time", "auto_once", "new_fetch", "lineup_names"):
-            st.session_state.pop(k, None)
-        st.session_state["_sport_seen"] = sport
-        st.session_state["_autoload_events"] = True
-    cfg = sport_cfg()
-    st.markdown(
-        f'<p class="tagline">Where odds intuition meets Petty precision. {cfg["label"]} only.</p>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<p class="tagline">Where odds intuition meets Petty precision. 0.5 HR Over only.</p>', unsafe_allow_html=True)
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
     st.markdown("""
     <style>
@@ -4463,20 +3882,21 @@ def main():
     </style>
     """, unsafe_allow_html=True)
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
-    _ag = f"auto_grade_ran_{active_sport()}"
-    if not st.session_state.get(_ag):
+    if "auto_grade_ran" not in st.session_state:
+        st.session_state["auto_grade_ran"] = False
+    if not st.session_state["auto_grade_ran"]:
         try:
             pending_n = sum(1 for r in load_results() if r.get("result") == "PENDING")
             if pending_n:
                 with st.spinner(f"Auto-grading {pending_n} pending..."):
                     h, m, s, msg = auto_grade_pending()
-                st.session_state[_ag] = True
+                st.session_state["auto_grade_ran"] = True
                 if h or m:
                     st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
             else:
-                st.session_state[_ag] = True
+                st.session_state["auto_grade_ran"] = True
         except Exception:
-            st.session_state[_ag] = True
+            st.session_state["auto_grade_ran"] = True
     render_whats_going_today()
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
@@ -4488,47 +3908,39 @@ def main():
     with st.sidebar:
         st.markdown("**Slate**")
         st.caption(f"{ev_n} games · lock {lock_n} · {last_ft}")
-        if st.button("Load games", type="primary", use_container_width=True) or st.session_state.pop("_autoload_events", False):
-            raw = fetch_events_oddsapi(odds_key, sport_cfg()["key"])
+        if st.button("Load games", type="primary", use_container_width=True):
+            raw = fetch_events_oddsapi(odds_key)
             st.session_state["events"] = filter_events_today(raw)
             st.session_state["events_raw_count"] = len(raw or [])
-        if active_sport() == "MLB":
-            b1, b2 = st.columns(2)
-            with b1:
-                if st.button("Lineups", use_container_width=True):
-                    names, msg = fetch_all_lineups()
-                    msg = short_lineup_msg(msg, len(names))
-                    st.session_state["lineup_names"] = names
-                    st.session_state["lineup_msg"] = msg
-                    (st.success if names else st.warning)(msg)
-            with b2:
-                if st.button("Grade HRs", use_container_width=True):
-                    with st.spinner("MLB box scores..."):
-                        h, m, s, msg = auto_grade_pending()
-                    st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
-                    st.rerun()
-            auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
-            ln = st.session_state.get("lineup_names") or set()
-            lm = short_lineup_msg(st.session_state.get("lineup_msg") or "", len(ln))
-            st.session_state["lineup_msg"] = lm
-            if lm:
-                st.caption(lm)
-            lock_now = st.session_state.get("pregame_lock") or {}
-            if ln and lock_now:
-                lock_fold = {fold_name(clean_name(k)) for k in lock_now}
-                missing_lock = sum(1 for n in ln if fold_name(n) not in lock_fold)
-                st.caption(f"{missing_lock} lineup names have no lock price yet")
-        else:
-            auto_lineups = False
-            if st.button("Auto-grade TDs", type="primary", use_container_width=True):
-                with st.spinner("ESPN NFL box scores..."):
+        b1, b2 = st.columns(2)
+        with b1:
+            if st.button("Lineups", use_container_width=True):
+                names, msg = fetch_all_lineups()
+                msg = short_lineup_msg(msg, len(names))
+                st.session_state["lineup_names"] = names
+                st.session_state["lineup_msg"] = msg
+                (st.success if names else st.warning)(msg)
+        with b2:
+            if st.button("Grade", use_container_width=True):
+                with st.spinner("MLB box scores..."):
                     h, m, s, msg = auto_grade_pending()
                 st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
                 st.rerun()
-            st.caption("NFL grades itself from finished games. No RotoWire. No MLB lineups.")
+        auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
+        ln = st.session_state.get("lineup_names") or set()
+        lm = short_lineup_msg(st.session_state.get("lineup_msg") or "", len(ln))
+        st.session_state["lineup_msg"] = lm
+        if lm:
+            st.caption(lm)
+        lock_now = st.session_state.get("pregame_lock") or {}
+        if ln and lock_now:
+            lock_fold = {fold_name(clean_name(k)) for k in lock_now}
+            missing_lock = sum(1 for n in ln if fold_name(n) not in lock_fold)
+            st.caption(f"{missing_lock} lineup names have no lock price yet")
         events = st.session_state.get("events", [])
         if not events:
-            st.info(f"Click **Load games** for {active_sport()}. Then select games and Fetch.")
+            st.info("Click **Load Games** once.")
+            st.stop()
         def _game_label(e):
             away = e.get("away_team") or "?"
             home = e.get("home_team") or "?"
@@ -4589,7 +4001,7 @@ def main():
             auto_fetch = True
         if (manual_fetch or auto_fetch) and chosen:
             with st.spinner("Fetching..."):
-                if sport_cfg().get("sgo") and (auto_lineups or not st.session_state.get("lineup_names")):
+                if auto_lineups or not st.session_state.get("lineup_names"):
                     names, msg = fetch_all_lineups()
                     if names:
                         st.session_state["lineup_names"] = names
@@ -4610,7 +4022,7 @@ def main():
                 raw = ", ".join(dbg.get("raw_books") or []) or "none"
                 kept = ", ".join(dbg.get("kept_books") or []) or "none"
                 st.warning(
-                    f"No preferred-book {sport_cfg()['label']} props after fetch. "
+                    "No preferred-book 0.5 HR props after fetch. "
                     "This is not always 'games live' - check debug below."
                 )
                 st.caption(
@@ -4655,21 +4067,6 @@ def main():
                 book_meter,
                 rec.get("books") if isinstance(rec, dict) else None,
             )
-            if not item.get("num_tag"):
-                item["num_tag"] = numerology_board_tag(item.get("player"), item.get("best_price"))
-            if active_sport() != "NFL" and item.get("is_bet") and not elite_take_ok(item):
-                item["is_bet"] = False
-                item["why"] = (item.get("why") or "") + " · LEAN — missing Authentic Benford or Num name+price"
-            bf = item.get("benford") or {}
-            authentic = bf.get("aligned") is True or bf.get("tag") == "Authentic"
-            num_strong = "name+price" in str(item.get("num_tag") or "")
-            if authentic:
-                item["score"] = min(100, int(item.get("score") or 0) + 6)
-            if num_strong:
-                item["score"] = min(100, int(item.get("score") or 0) + 6)
-            if active_sport() != "NFL" and item.get("is_bet") and not (authentic and num_strong):
-                item["is_bet"] = False
-                item["accuracy_hold"] = True
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     if not df.empty:
@@ -4724,84 +4121,25 @@ def main():
         <div class="petty-box"><div class="petty-num">{take_n + pass_n + watch_n + coverage_n}</div><div class="petty-label">ON SLATE</div></div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("""
-    <style>
-    div[data-testid="stRadio"] > div{gap:6px!important;flex-wrap:wrap}
-    div[data-testid="stRadio"] label{
-      background:#16101f;border:1px solid #2a2038;border-radius:999px;padding:4px 12px!important;
-      color:#e9d5ff!important;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;
-    }
-    div[data-testid="stRadio"] label:hover{
-      transform:translateY(-2px);
-      border-color:#e879f9;
-      box-shadow:0 0 14px rgba(232,121,249,.45);
-      background:linear-gradient(90deg,#4c1d95,#9d174d)!important;
-    }
-    div[data-testid="stRadio"] label:active{transform:translateY(1px) scale(.98)}
-    div[data-testid="stRadio"] label[data-checked="true"],
-    div[data-testid="stRadio"] [aria-checked="true"] + div,
-    div[data-testid="stRadio"] label:has(input:checked){
-      border-color:#f472b6!important;
-      box-shadow:0 0 16px rgba(244,114,182,.55);
-      animation:gmPulse 1.6s ease-in-out infinite;
-      background:linear-gradient(90deg,#7c3aed,#db2777)!important;
-      color:#fff!important;
-    }
-    @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
-    </style>
-    """, unsafe_allow_html=True)
-    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
-    NAV_LABELS = {
-        "Board": "Board 💋",
-        "Shop": "Shop 🛍️",
-        "Digits": "Benford Energy 🔢",
-        "Methods": "Pattern Lab 🧩",
-        "Lines": "Motion 💸",
-        "Grade": "Grade 🧾",
-        "Analytics": "Heat 🔥",
-        "Numerology": "Magic Math 🔮",
-        "Code": "How We Run It",
-        "DK": "DK 🎯", "MGM": "MGM 🎰", "FD": "FD 💙", "Exact": "Exact 🎯",
-        "Names": "Names 💅", "Signals": "Signals 📡",
-        "Moves": "Moves 💸", "Trends": "Trends 💅", "Late": "Ghosts 👻",
-        "Lock": "Lock 🔒", "Search": "Search",
-        "Lock Lab": "Lock Lab", "Tracker": "Tracker", "Results": "Results",
-        "Backtest": "Backtest",
-    }
+    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Analytics", "Code"]
     main = st.radio(
         "Section",
         MAIN_TABS,
         horizontal=True,
         label_visibility="collapsed",
         key="main_nav",
-        format_func=lambda x: NAV_LABELS.get(x, x),
     )
     sub = None
     if main == "Methods":
-        sub = st.radio("Methods", ["DK", "MGM", "FD", "Exact", "Names", "Signals"], horizontal=True, label_visibility="collapsed", key="sub_methods", format_func=lambda x: NAV_LABELS.get(x, x))
+        sub = st.radio("Methods", ["DK", "MGM", "FD", "Exact", "Names", "Signals"], horizontal=True, label_visibility="collapsed", key="sub_methods")
     elif main == "Lines":
-        sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines", format_func=lambda x: NAV_LABELS.get(x, x))
+        sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines")
     elif main == "Grade":
-        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade", format_func=lambda x: NAV_LABELS.get(x, x))
+        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade")
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown(f"### {petty_label('Board')}")
         st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it.")
-        elite = [e for e in ev_board if e.get("is_bet")]
-        if elite:
-            st.markdown("#### Petty Picks")
-            st.caption("Elite TAKE only — ending + bucket + method + book + Authentic + name+price.")
-            pc = st.columns(min(3, max(1, len(elite[:3]))))
-            for i, item in enumerate(elite[:6]):
-                with pc[i % len(pc)]:
-                    st.markdown(
-                        f'<div class="card bet"><div class="card-kicker">PETTY PICK</div>'
-                        f'<div class="card-name">{item["player"]}</div>'
-                        f'<div class="card-line"><b>{format_odds(item.get("best_price"))}</b> {book_label(item.get("best_book"))}</div>'
-                        f'<div class="note">{item.get("num_tag") or ""}</div></div>',
-                        unsafe_allow_html=True,
-                    )
-        st.markdown('<div class="filter-shell">', unsafe_allow_html=True)
         st.markdown("#### Filter the board")
         cfa, cfb, cfc, cfd = st.columns(4)
         with cfa:
@@ -4814,16 +4152,13 @@ def main():
         with cfb:
             min_score = st.slider("Min petty score", 0, 100, 0, 5, key="board_min_score_main")
         with cfc:
-            sort_by = st.selectbox("Sort games", [sport_cfg()["when"], "Highest score", "Biggest edge"], key="board_sort_main")
+            sort_by = st.selectbox("Sort games", ["First pitch", "Highest score", "Biggest edge"], key="board_sort_main")
         with cfd:
-            time_win = st.selectbox(sport_cfg()["when"], ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
+            time_win = st.selectbox("First pitch", ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
         name_q = st.text_input("Find a name", "", key="board_name_main").strip().lower()
-        st.markdown("</div>", unsafe_allow_html=True)
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
-            if item.get("num_tag"):
-                tags += f'<span class="tag tag-family">{item["num_tag"]}</span>'
             fams = petty_family_chips(item.get("methods") or [])
             notes = "".join(f'<div class="petty-note">• {n}</div>' for n in petty_notes_for(item))
             meter = make_meter(item.get("bars", 1), item.get("level", "low"))
@@ -4852,17 +4187,6 @@ def main():
                 f'</div>',
                 unsafe_allow_html=True,
             )
-
-        elite = [e for e in ev_board if e.get("is_bet")]
-        st.markdown("#### Petty Picks")
-        if elite:
-            st.caption("Elite TAKE — ending + lane + method + book + Benford + name+price.")
-            pc = st.columns(min(3, len(elite)))
-            for i, item in enumerate(elite[:6]):
-                with pc[i % len(pc)]:
-                    _render_board_card(item, "TAKE IT", "bet")
-        else:
-            st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
         passes = [e for e in ev_board if not e.get("is_bet")]
@@ -5034,148 +4358,50 @@ def main():
     if page == "Digits:":
         render_digits_tab(df)
     if page == "Methods:DK":
-        show_player_cards("dk", "🎯 DK Rhythm Lab", "DK 10 and FD-style endings. One card per player. Hover a tag if you forget why it fired.", results)
+        show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
     if page == "Methods:MGM":
-        show_player_cards("mgm", "🎰 MGM Clique Check", "Didn’t leave the clique 💎 — pairs / trios / exact on the same team.", results)
+        show_player_cards("mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2-3 · all on one card", results)
     if page == "Methods:FD":
-        show_player_cards("fd", "💙 FanDuel Rhythm Board", f"+{FD_MIN}+ pattern or +600 · only with DK/MGM backup.", results)
+        show_player_cards("fd", "💙 FanDuel", f">=+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
     if page == "Methods:Exact":
-        show_player_cards("match", "🎯 Perfect Sync", "Same number across books. Perfect sync 🎯 — still not TAKE by itself.", results)
+        show_player_cards("match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
     if page == "Methods:Names":
-        st.markdown('<div class="meth-hero"><h3>💅 Name Map</h3><p>Cute extra across different teams. Not the green light.</p></div>', unsafe_allow_html=True)
-        show_player_cards("same_init", "💅 Same Initials", "Same first+last initial · different teams", results)
+        st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
+        st.caption("Name echoes across different teams. Cute extra - not the green light by itself.")
+        show_player_cards("same_init", "💅 Same Initials", "Same first+last initial (e.g. MM) · different teams", results)
         show_player_cards("cross", "🔄 Cross Initials", "One last initial = other first initial · different teams", results)
         show_player_cards("last", "👩‍👧 Same Last Name", "Exact last name · different teams", results)
         show_player_cards("first", "👯 Same First Name", "Exact first name · different teams", results)
     if page == "Methods:Signals":
-        show_player_cards("signal", "📡 Multi-Book Radar", "Same method lighting up on more than one book. Most books first.", results)
+        show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
     if page == "Lines:Moves":
-        st.markdown("""
-        <style>
-        .mv-hero{background:linear-gradient(135deg,#4c0519,#3b0764);border:1px solid #fb7185;border-radius:22px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 22px rgba(251,113,133,.25)}
-        .mv-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 6px;font-size:1.4rem}
-        .mv-hero p{color:#fecdd3;margin:0;font-size:.88rem}
-        .mv-up{border-color:#fb7185!important;box-shadow:0 0 14px rgba(239,68,68,.2)}
-        .mv-down{border-color:#4ade80!important;box-shadow:0 0 14px rgba(74,222,128,.2)}
-        .mv-arrow{font-size:1.2rem}
-        </style>
-        """, unsafe_allow_html=True)
-        st.markdown(
-            '<div class="mv-hero"><h3>Market Motion 💸 — Who’s Moving and Why</h3>'
-            "<p>Up = odds lengthened (less likely). Down = odds shortened (more likely).</p>"
-            '<p style="margin-top:6px;color:#fda4af">Odds in Motion 💸 — fetch-to-fetch magic.</p></div>',
-            unsafe_allow_html=True,
-        )
-        lines_dashboard_strip(results)
-        ups = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"])
-        downs = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"])
-        st.markdown("#### Top movers")
-        t1, t2 = st.columns(2)
-        with t1:
-            st.caption("Biggest climbs")
-            for r in ups[:3]:
-                st.markdown(f'<div class="card mv-up"><span class="mv-arrow">⬆</span> <b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>', unsafe_allow_html=True)
-        with t2:
-            st.caption("Biggest crashes")
-            for r in downs[:3]:
-                st.markdown(f'<div class="card mv-down"><span class="mv-arrow">⬇</span> <b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>', unsafe_allow_html=True)
-        left, right = st.columns(2)
-        with left:
-            st.markdown("#### 🔴 UP")
-            if not ups:
-                st.info("Nobody lengthened.")
-            for r in ups[:16]:
-                st.markdown(
-                    f'<div class="card mv-up" title="Longer number = they cooled it"><span class="mv-arrow">⬆</span> '
-                    f'<b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>',
-                    unsafe_allow_html=True,
-                )
-        with right:
-            st.markdown("#### 🟢 DOWN")
-            if not downs:
-                st.info("Nobody shortened.")
-            for r in downs[:16]:
-                st.markdown(
-                    f'<div class="card mv-down" title="Shorter number = they heated it"><span class="mv-arrow">⬇</span> '
-                    f'<b>{r["label"]}</b><div class="note">{r["reason"]}</div></div>',
-                    unsafe_allow_html=True,
-                )
-        heat = Counter()
-        for r in ups + downs:
-            blob = str(r.get("reason") or "")
-            for lab, key in (("DK", "DK"), ("FD", "FD"), ("MGM", "MGM"), ("HardRock", "HardRock"), ("Fanatics", "Fanatics"), ("Caesars", "Caesars")):
-                if lab.lower() in blob.lower() or key.lower() in blob.lower():
-                    heat[lab] += 1
-        if heat:
-            chips = "".join(f'<span class="tag">{k} {n}</span>' for k, n in heat.most_common())
-            st.markdown(f'<div class="card"><b>Movement heatmap</b><div style="margin-top:6px">{chips}</div></div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">⏳ Moves (500+)</div>', unsafe_allow_html=True)
+        st.caption("Fetch-to-fetch + 🔒 open -> now/close from Lock.")
+        for move_dir, title in (("up", "🔴 UP"), ("down", "🟢 DOWN")):
+            st.markdown(f"#### {title}")
+            items = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == move_dir])
+            cols = st.columns(2)
+            for idx, r in enumerate(items[:20]):
+                with cols[idx % 2]:
+                    st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+            if not items: st.info("None")
     if page == "Lines:Trends":
-        st.markdown(
-            '<div class="mv-hero"><h3>Pattern Detector 💅</h3>'
-            "<p>FD sitting under MGM is the crush. FD sitting on top is the fade.</p></div>",
-            unsafe_allow_html=True,
-        )
-        lines_dashboard_strip(results)
+        st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
         fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
-        g_items = aggregate_by_player(good)
-        f_items = aggregate_by_player(fade)
-        strength = min(100, 20 + len(g_items) * 8)
-        st.markdown(
-            f'<div class="card"><b>Trend strength</b> · {strength}/100'
-            f'<div class="bf-meter"><span style="width:{strength}%;background:#22c55e"></span></div>'
-            f'<div class="note">{len(g_items)} FD-under-MGM · {len(f_items)} fade</div></div>',
-            unsafe_allow_html=True,
-        )
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("#### 💚 Finally showed up 💅")
-            if not g_items:
-                st.info("No FD-under-MGM crush yet.")
-            for r in g_items[:15]:
-                st.markdown(
-                    f'<div class="card mv-down" title="FD cheaper than MGM"><b>{r["label"]}</b>'
-                    f'<div class="note">{r["reason"]}</div></div>',
-                    unsafe_allow_html=True,
-                )
-        with c2:
-            st.markdown("#### 🔴 Ghosted energy")
-            if not f_items:
-                st.info("Nothing to fade.")
-            for r in f_items[:15]:
-                st.markdown(
-                    f'<div class="card mv-up" title="Leave it"><b>{r["label"]}</b>'
-                    f'<div class="note">{r["reason"]}</div></div>',
-                    unsafe_allow_html=True,
-                )
+        st.markdown("#### 💚 FD under MGM")
+        for r in aggregate_by_player(good)[:15]:
+            st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
+        st.markdown("#### 🔴 Fade")
+        for r in aggregate_by_player(fade)[:15]:
+            st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
     if page == "Lines:Late":
-        st.markdown(
-            '<div class="mv-hero"><h3>Ghost Radar 👻</h3>'
-            "<p>Ghosted by the book 👻 — gone from DK / FD / MGM vs last fetch or Lock.</p></div>",
-            unsafe_allow_html=True,
+        show_player_cards(
+            "late",
+            "👻 Late / Missing books",
+            "Gone from DK / FD / MGM (or HardRock) vs last fetch or Lock - not a RotoWire list",
+            results,
         )
-        lines_dashboard_strip(results)
-        late_items = aggregate_by_player([r for r in results if r["type"] == "late"])
-        heat = Counter()
-        for r in late_items:
-            blob = str(r.get("reason") or "")
-            for lab in ("DK", "FD", "MGM", "HardRock", "Fanatics", "Caesars"):
-                if lab.lower() in blob.lower():
-                    heat[lab] += 1
-        if heat:
-            chips = "".join(f'<span class="tag">{k} {n}</span>' for k, n in heat.most_common())
-            st.markdown(f'<div class="card"><b>Missing heatmap</b><div style="margin-top:6px">{chips}</div></div>', unsafe_allow_html=True)
-        if not late_items:
-            st.info("Nobody ghosted. Cute.")
-        else:
-            cols = st.columns(2)
-            for i, r in enumerate(late_items[:24]):
-                with cols[i % 2]:
-                    st.markdown(
-                        f'<div class="card" title="Missing vs last snapshot"><b>👻 {r["label"]}</b>'
-                        f'<div class="note">{r["reason"]}</div></div>',
-                        unsafe_allow_html=True,
-                    )
     if page == "Lines:Lock":
         st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
         st.caption(
@@ -5403,11 +4629,11 @@ def main():
 
     if page == "Grade:Lock Lab":
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
-        st.caption(sport_cfg()["lock_caption"])
+        st.caption("Today's homers matched to what we locked before first pitch.")
         lab = build_lock_lab()
         st.markdown(f"""
         <div class="petty-row">
-            <div class="petty-box"><div class="petty-num">{lab["hr_count"]}</div><div class="petty-label">{sport_cfg()["lock_count"]}</div></div>
+            <div class="petty-box"><div class="petty-num">{lab["hr_count"]}</div><div class="petty-label">MLB HR</div></div>
             <div class="petty-box"><div class="petty-num">{len(lab["matched"])}</div><div class="petty-label">In Lock</div></div>
             <div class="petty-box"><div class="petty-num">{len(lab["unmatched"])}</div><div class="petty-label">Not in Lock</div></div>
             <div class="petty-box"><div class="petty-num">{lab["lock_n"]}</div><div class="petty-label">Lock size</div></div>
@@ -5425,22 +4651,21 @@ def main():
             for line in lab["watch"]:
                 st.markdown(f'<div class="warning-box">{line}</div>', unsafe_allow_html=True)
         if not lab.get("insights") and not lab.get("watch"):
-            st.info(f"Insights appear after {sport_cfg()['hits']} match Lock.")
+            st.info("Insights appear after HRs match Lock.")
 
-        hit_word = sport_cfg()["hits"]
-        st.markdown(f"#### Endings on today's {hit_word}")
+        st.markdown("#### Endings on today's HRs")
         chips = []
-        for (bl, end), cnt in sorted((lab.get("book_end_counter") or {}).items(), key=lambda x: -x[1])[:14]:
+        for (bl, end), cnt in sorted(lab["book_end_counter"].items(), key=lambda x: -x[1])[:14]:
             hot = end in (0, 25, 50, 75, 10) or cnt >= 2
             chips.append(
                 f'<span class="trend-chip {"hot" if hot else ""}">{bl} {end:02d}: '
                 f'<span class="chip-count">{cnt}</span></span>'
             )
-        st.markdown("".join(chips) if chips else f"_(No Lock ↔ {hit_word} matches yet)_", unsafe_allow_html=True)
+        st.markdown("".join(chips) if chips else "_(No Lock<->HR matches yet)_", unsafe_allow_html=True)
 
         st.markdown("#### Our tags that showed up")
         tag_chips = []
-        for tag, cnt in sorted((lab.get("tag_counter") or {}).items(), key=lambda x: -x[1])[:16]:
+        for tag, cnt in sorted(lab["tag_counter"].items(), key=lambda x: -x[1])[:16]:
             tag_chips.append(
                 f'<div class="rate-chip"><div class="rate-pct">{cnt}</div>'
                 f'<div class="rate-name">{tag}</div></div>'
@@ -5449,7 +4674,7 @@ def main():
 
         st.markdown("#### Who went · most tags first")
         if not lab["matched"]:
-            st.info(f"No {sport_cfg()['hit']} names matched Lock. Fetch pre-kick so Lock fills, then grade HIT.")
+            st.info("No HR names matched Lock. Fetch pregame more so Lock fills.")
         else:
             # one column: st.columns(2) on mobile stacks left then right and wrecks sort order
             for m in lab["matched"][:40]:
@@ -5474,48 +4699,10 @@ def main():
     if page == "Grade:Tracker":
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption(
-            f"{sport_cfg()['label']} + all graded sports in one file. "
-            f"n &lt; {TRACKER_MIN_N} hidden unless it is a core family. "
-            "HOT = over 15%. Δ is vs TAKE IT baseline."
+            "What has been hitting after we grade it. "
+            f"Buckets with n &lt; {TRACKER_MIN_N} are hidden. "
+            "Green border = beats overall TAKE IT %."
         )
-        today_rows = [r for r in load_results() if r.get("date") == today_az() and r.get("result") in ("HIT", "MISS")]
-        today_hits = [r for r in today_rows if r.get("result") == "HIT"]
-        if today_hits:
-            meth_c, book_c, end_c = Counter(), Counter(), Counter()
-            long_hits = []
-            overlap = 0
-            for r in today_hits:
-                ms = [normalize_method_name(m) for m in (r.get("methods") or []) if normalize_method_name(m) not in TRACKER_BLOCKLIST]
-                for m in ms:
-                    meth_c[m] += 1
-                if len(ms) >= 2:
-                    overlap += 1
-                book_c[book_label(r.get("best_book"))] += 1
-                end = r.get("ending")
-                if end is None and r.get("best_price") is not None:
-                    end = last_two(r["best_price"])
-                if end is not None:
-                    end_c[f"{int(end):02d}"] += 1
-                try:
-                    if abs(int(r.get("best_price"))) >= 700:
-                        long_hits.append(f"{r.get('player')} {format_odds(r.get('best_price'))}")
-                except Exception:
-                    pass
-            st.markdown("#### What stood out today")
-            bits = []
-            if meth_c:
-                bits.append("Methods on hits: " + ", ".join(f"{k} {n}" for k, n in meth_c.most_common(5)))
-            if book_c:
-                bits.append("Books: " + ", ".join(f"{k} {n}" for k, n in book_c.most_common(4)))
-            if end_c:
-                bits.append("Endings: " + ", ".join(f"{k} {n}" for k, n in end_c.most_common(5)))
-            bits.append(f"{overlap} hits wore 2+ tags")
-            if long_hits:
-                bits.append("Long prices that cashed: " + ", ".join(long_hits[:4]))
-            for line in bits:
-                st.markdown(f'<div class="info-box">{line}</div>', unsafe_allow_html=True)
-        else:
-            st.info("Grade a HIT today and this strip fills. Same Tracker for HR and TD.")
         baseline, baseline_n = take_it_baseline_rate(load_results())
         if baseline is not None:
             st.markdown(
@@ -5531,29 +4718,26 @@ def main():
 
         def chips_from_stats(stats, min_n=TRACKER_MIN_N, compare_baseline=False):
             out = []
-            base = baseline if baseline is not None else 11.0
             for name, s in sorted(
                 stats.items(),
                 key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"])),
             ):
                 t = s["hit"] + s["miss"]
-                always = str(name) in TRACKER_ALWAYS
-                if t < min_n and not always:
+                if t < min_n:
                     continue
                 pct = 100 * s["hit"] / t
-                delta = pct - base
-                hot = pct > 15
-                beat = compare_baseline and pct > base + 0.5
-                cls = "rate-chip beat" if beat or hot else "rate-chip"
-                sign = "+" if delta >= 0 else ""
-                badge = ' <span class="tag tag-strong">HOT</span>' if hot else ""
-                thin = " · thin n" if t < min_n else ""
-                beat_html = f'<div class="rate-beat">{sign}{delta:.0f} Δ vs {base:.0f}%</div>'
+                beat = (
+                    compare_baseline
+                    and baseline is not None
+                    and pct > baseline + 0.5
+                )
+                cls = "rate-chip beat" if beat else "rate-chip"
+                beat_html = '<div class="rate-beat">▲ beats TAKE IT</div>' if beat else ""
                 out.append(
                     f'<div class="{cls}">'
                     f'<div class="rate-pct">{pct:.0f}%</div>'
-                    f'<div class="rate-name">{name}{badge}</div>'
-                    f'<div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays{thin}</div>'
+                    f'<div class="rate-name">{name}</div>'
+                    f'<div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays</div>'
                     f"{beat_html}</div>"
                 )
             return out
@@ -6206,170 +5390,6 @@ def main():
             '<div class="pa-foot">Data graded by Girl Magic Odds - powered by petty intuition and math.</div>',
             unsafe_allow_html=True,
         )
-
-    if page == "Numerology:":
-        st.markdown("""
-        <style>
-        .num-ritual{background:linear-gradient(135deg,#3b0764 0%,#831843 55%,#1e1b4b 100%);border:1px solid #f472b6;border-radius:22px;padding:18px 20px;margin-bottom:12px;box-shadow:0 0 28px rgba(236,72,153,.25)}
-        .num-ritual h3{font-family:'Playfair Display',serif;color:#fff;margin:0;font-size:1.55rem}
-        .num-ritual .big{font-family:'Playfair Display',serif;font-size:4rem;line-height:1;color:#fbcfe8;text-shadow:0 0 18px #ec4899}
-        .num-ritual p{color:#fce7f3;margin:6px 0 0;font-size:.9rem}
-        .num-quote{color:#f9a8d4;font-style:italic;font-size:.82rem;margin-top:8px}
-        .num-chip{display:inline-block;background:#2a1040;border:1px solid #e879f9;color:#fbcfe8;border-radius:999px;padding:3px 10px;margin:2px;font-size:.72rem;font-weight:700}
-        .num-chip:hover{box-shadow:0 0 12px #f472b6}
-        .num-hot{border-color:#fbbf24;color:#fde68a}
-        </style>
-        """, unsafe_allow_html=True)
-        st.markdown('<div class="queen-banner">🔮 Numerology · odds first</div>', unsafe_allow_html=True)
-        cfg = sport_cfg()
-        try:
-            default_d = datetime.strptime(today_az(), "%Y-%m-%d").date()
-        except Exception:
-            default_d = datetime.now().date()
-        cdate, csearch = st.columns([1, 2])
-        with cdate:
-            pick = st.date_input("Date", value=default_d, key="num_date")
-        with csearch:
-            q = st.text_input("Player", placeholder="search", key="num_search")
-        day_n, _raw, formula = _num_date_number(pick)
-        day_key = _num_reduce(day_n, keep_master=False)
-        sport_line = "Kickoff number" if active_sport() == "NFL" else "First-pitch number"
-        st.markdown(
-            f'<div class="num-ritual"><div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">'
-            f'<div class="big">{day_n}</div>'
-            f'<div><h3>{sport_line}</h3>'
-            f'<p>{formula} → <b>{day_n}</b> · {cfg["label"]}</p>'
-            f'<p><b>{_NUM_SOFT.get(day_key, "")}</b></p>'
-            f'<div class="num-quote">The number is the vibe. The price is the receipt. We don’t green a name just because the math is cute.</div>'
-            f'</div></div></div>',
-            unsafe_allow_html=True,
-        )
-
-        method_map = {}
-        for item in (ev_board or []) + (watch_board or []) + (coverage_board or []):
-            method_map[item.get("player")] = item.get("methods") or []
-        odds_rows = st.session_state.get("odds") or []
-        ndf = pd.DataFrame(odds_rows) if odds_rows else pd.DataFrame()
-
-        plays = []
-        if not ndf.empty and "player" in ndf.columns:
-            for p, g in ndf.groupby("player"):
-                nn = _num_name_number(p)
-                try:
-                    best = int(g["price"].max())
-                except Exception:
-                    best = None
-                end = last_two(best) if best is not None else None
-                end_n = _num_reduce(end, False) if end is not None else None
-                meths = method_map.get(p) or []
-                # infer method-ish from price if flags empty
-                hooks = list(meths)
-                if end == 10:
-                    hooks.append("ends 10")
-                if end in (0, 25, 50, 75):
-                    hooks.append(f"classic {end:02d}")
-                if end_n == day_key:
-                    hooks.append(f"ending → {day_key}")
-                if nn == day_key:
-                    hooks.append(f"name → {day_key}")
-                name_hit = nn == day_key
-                price_hit = end_n == day_key
-                method_hit = bool(meths)
-                # only keep if odds hook exists
-                if not (price_hit or method_hit or end in (0, 10, 25, 50, 75)):
-                    if not q.strip():
-                        continue
-                why = []
-                if name_hit and price_hit:
-                    why.append(f"Name #{nn} and price {format_odds(best)} both reduce to today's {day_key}")
-                elif name_hit and method_hit:
-                    why.append(f"Name #{nn} matches today · tags: {', '.join(meths[:3])}")
-                elif price_hit:
-                    why.append(f"Price {format_odds(best)} ends {end:02d} → {end_n} = today")
-                elif method_hit:
-                    why.append("Method tag only — number is extra, not the reason")
-                elif end in (0, 10, 25, 50, 75):
-                    why.append(f"Classic book ending {end:02d} on {format_odds(best)}")
-                else:
-                    why.append("Search only")
-                score = (3 if name_hit and price_hit else 0) + (2 if name_hit and method_hit else 0) + (2 if price_hit else 0) + (1 if method_hit else 0)
-                plays.append({
-                    "Player": p,
-                    "Price": format_odds(best) if best is not None else "—",
-                    "End": f"{end:02d}" if end is not None else "—",
-                    "Name#": nn,
-                    "End#": end_n,
-                    "Tags": ", ".join(list(dict.fromkeys(hooks))[:4]),
-                    "Why": why[0],
-                    "_score": score,
-                })
-        if q.strip():
-            plays = [r for r in plays if q.lower() in r["Player"].lower()]
-
-        hot = [r for r in plays if r["_score"] >= 3]
-        mid = [r for r in plays if r["_score"] == 2]
-        st.markdown(
-            f'<div class="petty-row">'
-            f'<div class="petty-box"><div class="petty-num">{len(hot)}</div><div class="petty-label">NAME + PRICE</div></div>'
-            f'<div class="petty-box"><div class="petty-num">{len(mid)}</div><div class="petty-label">ONE HOOK</div></div>'
-            f'<div class="petty-box"><div class="petty-num">{len(plays)}</div><div class="petty-label">ON THIS LIST</div></div>'
-            f'</div>',
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            '<span class="num-chip num-hot">10 / 25 / 50 / 75 / 90</span>'
-            '<span class="num-chip">+400s +500s +600s</span>'
-            '<span class="num-chip">DK 10 · MGM 25/50 · FD 600</span>'
-            '<span class="num-chip">Benford boost</span>'
-            '<span class="num-chip">Name+price boost</span>',
-            unsafe_allow_html=True,
-        )
-        elite = [e for e in (ev_board or []) if e.get("is_bet")]
-        if elite:
-            st.markdown("#### Petty Picks 💋")
-            st.caption("Already cleared TAKE. Number is the bow, not the reason.")
-            pk = st.columns(min(3, len(elite[:3])))
-            for i, item in enumerate(elite[:6]):
-                with pk[i % len(pk)]:
-                    st.markdown(
-                        f'<div class="card bet"><div class="card-kicker">PETTY PICK</div>'
-                        f'<div class="card-name">{item["player"]}</div>'
-                        f'<div class="card-line"><b>{format_odds(item.get("best_price"))}</b> {book_label(item.get("best_book"))}</div>'
-                        f'<div class="note">{item.get("num_tag") or ""}</div></div>',
-                        unsafe_allow_html=True,
-                    )
-
-        view = st.radio("Show", ["Name + price", "Has a hook", "Search all hooks"], horizontal=True, key="num_view")
-        if view == "Name + price":
-            show = hot
-        elif view == "Has a hook":
-            show = hot + mid
-        else:
-            show = plays
-        show = sorted(show, key=lambda x: (-x["_score"], x["Player"]))[:24]
-        if not show:
-            st.info("Fetch the slate. Cute math with no price is just a diary entry.")
-        else:
-            cols = st.columns(2)
-            for i, r in enumerate(show):
-                tag_bits = [t.strip() for t in str(r.get("Tags") or "").split(",") if t.strip()][:4]
-                tags_html = "".join(f'<span class="tag tag-family">{t}</span>' for t in tag_bits)
-                vibe = "NAME + PRICE" if r["_score"] >= 3 else "HOOK"
-                meter = make_meter(min(5, max(1, r["_score"])), "high" if r["_score"] >= 3 else "mid")
-                with cols[i % 2]:
-                    st.markdown(
-                        f'<div class="card">'
-                        f'<div class="card-kicker">{vibe}</div>'
-                        f'<span class="score-pill">#{r["Name#"]}</span>'
-                        f'<div class="card-name">{r["Player"]}</div>'
-                        f'<div class="card-line"><b>{r["Price"]}</b> · ends {r["End"]} → #{r["End#"]}</div>'
-                        f'{meter}'
-                        f'<div style="margin-top:6px">{tags_html}</div>'
-                        f'<div class="card-foot">{r["Why"]}</div>'
-                        f'</div>',
-                        unsafe_allow_html=True,
-                    )
-            st.caption("Name# = letters. End# = last two of the price. Today’s number is flavor. TAKE IT still lives on the Board.")
 
     if page == "Code:":
         st.markdown("""
