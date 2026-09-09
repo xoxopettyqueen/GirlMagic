@@ -4062,9 +4062,42 @@ def lock_player_summary(player, lock_entry, price_mode="close"):
     return list(dict.fromkeys(tags)), lines, ends_by_book, best_book, best_price, price_map, primary_end
 
 
+def _todays_nfl_td_names():
+    """Who scored a TD today from graded Results (HIT)."""
+    names = []
+    seen = set()
+    today = today_az()
+    for r in load_results():
+        if r.get("date") != today:
+            continue
+        if r.get("result") != "HIT":
+            continue
+        blob = str(r.get("market") or r.get("sport") or "").lower()
+        is_nfl = "td" in blob or "nfl" in blob or blob == "anytime_td"
+        if not is_nfl and r.get("source") != "manual_hr":
+            # if sport toggle is NFL, still take HIT rows tagged NFL
+            if str(r.get("sport") or "").upper() != "NFL":
+                continue
+        player = clean_name(r.get("player") or "")
+        if not player or player.lower() in seen:
+            continue
+        seen.add(player.lower())
+        names.append(player)
+    return names
+
+
 def build_lock_lab():
-    """Today's MLB HRs matched to pregame Lock for learning."""
-    hr_names, _fin, mlb_msg = fetch_mlb_hr_hitters()
+    """Today's hits matched to pregame Lock for learning. MLB = HRs. NFL = graded TDs."""
+    if active_sport() == "NFL":
+        hr_names = _todays_nfl_td_names()
+        mlb_msg = (
+            f"{len(hr_names)} graded NFL TD HIT(s) today. "
+            "Mark HIT on Results so Lock Lab can match pre-kick prices."
+            if hr_names else
+            "No graded NFL TDs yet. Grade HIT on Results (or Log a TD) — Lock already has pre-kick prices."
+        )
+    else:
+        hr_names, _fin, mlb_msg = fetch_mlb_hr_hitters()
     lock = st.session_state.get("pregame_lock") or load_pregame()
     matched, unmatched = [], []
     ending_counter, tag_counter, book_end_counter = Counter(), Counter(), Counter()
@@ -5334,15 +5367,7 @@ def main():
     if page == "Grade:Lock Lab":
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
         st.caption(sport_cfg()["lock_caption"])
-        if active_sport() == "NFL":
-            lab = {
-                "hr_count": 0, "matched": [], "unmatched": [],
-                "lock_n": len(st.session_state.get("pregame_lock") or {}),
-                "insights": ["NFL is on. Homer Lock Lab stays on the MLB side. Grade TDs under Results."],
-                "watch": [], "mlb_msg": "",
-            }
-        else:
-            lab = build_lock_lab()
+        lab = build_lock_lab()
         st.markdown(f"""
         <div class="petty-row">
             <div class="petty-box"><div class="petty-num">{lab["hr_count"]}</div><div class="petty-label">{sport_cfg()["lock_count"]}</div></div>
@@ -5363,21 +5388,22 @@ def main():
             for line in lab["watch"]:
                 st.markdown(f'<div class="warning-box">{line}</div>', unsafe_allow_html=True)
         if not lab.get("insights") and not lab.get("watch"):
-            st.info("Insights appear after HRs match Lock.")
+            st.info(f"Insights appear after {sport_cfg()['hits']} match Lock.")
 
-        st.markdown("#### Endings on today's HRs")
+        hit_word = sport_cfg()["hits"]
+        st.markdown(f"#### Endings on today's {hit_word}")
         chips = []
-        for (bl, end), cnt in sorted(lab["book_end_counter"].items(), key=lambda x: -x[1])[:14]:
+        for (bl, end), cnt in sorted((lab.get("book_end_counter") or {}).items(), key=lambda x: -x[1])[:14]:
             hot = end in (0, 25, 50, 75, 10) or cnt >= 2
             chips.append(
                 f'<span class="trend-chip {"hot" if hot else ""}">{bl} {end:02d}: '
                 f'<span class="chip-count">{cnt}</span></span>'
             )
-        st.markdown("".join(chips) if chips else "_(No Lock<->HR matches yet)_", unsafe_allow_html=True)
+        st.markdown("".join(chips) if chips else f"_(No Lock ↔ {hit_word} matches yet)_", unsafe_allow_html=True)
 
         st.markdown("#### Our tags that showed up")
         tag_chips = []
-        for tag, cnt in sorted(lab["tag_counter"].items(), key=lambda x: -x[1])[:16]:
+        for tag, cnt in sorted((lab.get("tag_counter") or {}).items(), key=lambda x: -x[1])[:16]:
             tag_chips.append(
                 f'<div class="rate-chip"><div class="rate-pct">{cnt}</div>'
                 f'<div class="rate-name">{tag}</div></div>'
@@ -5386,7 +5412,7 @@ def main():
 
         st.markdown("#### Who went · most tags first")
         if not lab["matched"]:
-            st.info("No HR names matched Lock. Fetch pregame more so Lock fills.")
+            st.info(f"No {sport_cfg()['hit']} names matched Lock. Fetch pre-kick so Lock fills, then grade HIT.")
         else:
             # one column: st.columns(2) on mobile stacks left then right and wrecks sort order
             for m in lab["matched"][:40]:
