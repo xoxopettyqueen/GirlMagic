@@ -2665,6 +2665,32 @@ def _price_line_for_card(prices):
             parts.append(f"{lab} {format_odds(p)}")
     return " · ".join(parts)
 
+def lines_dashboard_strip(results):
+    st.markdown("""
+    <style>
+    .mv-hero{background:linear-gradient(135deg,#4c0519,#3b0764);border:1px solid #fb7185;border-radius:22px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 22px rgba(251,113,133,.25)}
+    .mv-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 6px;font-size:1.4rem}
+    .mv-hero p{color:#fecdd3;margin:0;font-size:.88rem}
+    .mv-up{border-color:#fb7185!important;box-shadow:0 0 14px rgba(239,68,68,.2)}
+    .mv-down{border-color:#4ade80!important;box-shadow:0 0 14px rgba(74,222,128,.2)}
+    .bf-meter{height:10px;background:#1e1b4b;border-radius:999px;overflow:hidden;margin:8px 0}
+    .bf-meter span{display:block;height:100%;border-radius:999px}
+    </style>
+    """, unsafe_allow_html=True)
+    ups = sum(1 for r in results if r.get("type") == "hist" and r.get("move_dir") == "up")
+    downs = sum(1 for r in results if r.get("type") == "hist" and r.get("move_dir") == "down")
+    late = sum(1 for r in results if r.get("type") == "late")
+    good = sum(1 for r in results if r.get("type") == "trend" and r.get("trend_kind") == "good")
+    st.markdown(
+        f'<div class="petty-row">'
+        f'<div class="petty-box"><div class="petty-num">{ups + downs}</div><div class="petty-label">MOVES</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{late}</div><div class="petty-label">MISSING</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{good}</div><div class="petty-label">TRENDS</div></div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+
 def show_player_cards(typ, banner, explain, results):
     st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
     st.caption(explain)
@@ -4839,9 +4865,10 @@ def main():
         st.markdown(
             '<div class="mv-hero"><h3>Market Motion 💸 — Who’s Moving and Why</h3>'
             "<p>Up = odds lengthened (less likely). Down = odds shortened (more likely).</p>"
-            '<p style="margin-top:6px;color:#fda4af">Fetch-to-fetch magic — who’s climbing, who’s crashing.</p></div>',
+            '<p style="margin-top:6px;color:#fda4af">Odds in Motion 💸 — fetch-to-fetch magic.</p></div>',
             unsafe_allow_html=True,
         )
+        lines_dashboard_strip(results)
         ups = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == "up"])
         downs = aggregate_by_player([r for r in results if r["type"] == "hist" and r.get("move_dir") == "down"])
         st.markdown("#### Top movers")
@@ -4885,22 +4912,72 @@ def main():
             chips = "".join(f'<span class="tag">{k} {n}</span>' for k, n in heat.most_common())
             st.markdown(f'<div class="card"><b>Movement heatmap</b><div style="margin-top:6px">{chips}</div></div>', unsafe_allow_html=True)
     if page == "Lines:Trends":
-        st.markdown('<div class="queen-banner">📉 Trends</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="mv-hero"><h3>Pattern Detector 💅</h3>'
+            "<p>FD sitting under MGM is the crush. FD sitting on top is the fade.</p></div>",
+            unsafe_allow_html=True,
+        )
+        lines_dashboard_strip(results)
         good = sorted([r for r in results if r["type"] == "trend" and r.get("trend_kind") == "good"], key=lambda r: r.get("gap", 0), reverse=True)
         fade = [r for r in results if r["type"] == "trend" and r.get("trend_kind") == "fade"]
-        st.markdown("#### 💚 FD under MGM")
-        for r in aggregate_by_player(good)[:15]:
-            st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-        st.markdown("#### 🔴 Fade")
-        for r in aggregate_by_player(fade)[:15]:
-            st.markdown(f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}</div>', unsafe_allow_html=True)
-    if page == "Lines:Late":
-        show_player_cards(
-            "late",
-            "👻 Late / Missing books",
-            "Gone from DK / FD / MGM (or HardRock) vs last fetch or Lock - not a RotoWire list",
-            results,
+        g_items = aggregate_by_player(good)
+        f_items = aggregate_by_player(fade)
+        strength = min(100, 20 + len(g_items) * 8)
+        st.markdown(
+            f'<div class="card"><b>Trend strength</b> · {strength}/100'
+            f'<div class="bf-meter"><span style="width:{strength}%;background:#22c55e"></span></div>'
+            f'<div class="note">{len(g_items)} FD-under-MGM · {len(f_items)} fade</div></div>',
+            unsafe_allow_html=True,
         )
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("#### 💚 Finally showed up 💅")
+            if not g_items:
+                st.info("No FD-under-MGM crush yet.")
+            for r in g_items[:15]:
+                st.markdown(
+                    f'<div class="card mv-down" title="FD cheaper than MGM"><b>{r["label"]}</b>'
+                    f'<div class="note">{r["reason"]}</div></div>',
+                    unsafe_allow_html=True,
+                )
+        with c2:
+            st.markdown("#### 🔴 Ghosted energy")
+            if not f_items:
+                st.info("Nothing to fade.")
+            for r in f_items[:15]:
+                st.markdown(
+                    f'<div class="card mv-up" title="Leave it"><b>{r["label"]}</b>'
+                    f'<div class="note">{r["reason"]}</div></div>',
+                    unsafe_allow_html=True,
+                )
+    if page == "Lines:Late":
+        st.markdown(
+            '<div class="mv-hero"><h3>Ghost Radar 👻</h3>'
+            "<p>Ghosted by the book 👻 — gone from DK / FD / MGM vs last fetch or Lock.</p></div>",
+            unsafe_allow_html=True,
+        )
+        lines_dashboard_strip(results)
+        late_items = aggregate_by_player([r for r in results if r["type"] == "late"])
+        heat = Counter()
+        for r in late_items:
+            blob = str(r.get("reason") or "")
+            for lab in ("DK", "FD", "MGM", "HardRock", "Fanatics", "Caesars"):
+                if lab.lower() in blob.lower():
+                    heat[lab] += 1
+        if heat:
+            chips = "".join(f'<span class="tag">{k} {n}</span>' for k, n in heat.most_common())
+            st.markdown(f'<div class="card"><b>Missing heatmap</b><div style="margin-top:6px">{chips}</div></div>', unsafe_allow_html=True)
+        if not late_items:
+            st.info("Nobody ghosted. Cute.")
+        else:
+            cols = st.columns(2)
+            for i, r in enumerate(late_items[:24]):
+                with cols[i % 2]:
+                    st.markdown(
+                        f'<div class="card" title="Missing vs last snapshot"><b>👻 {r["label"]}</b>'
+                        f'<div class="note">{r["reason"]}</div></div>',
+                        unsafe_allow_html=True,
+                    )
     if page == "Lines:Lock":
         st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
         st.caption(
