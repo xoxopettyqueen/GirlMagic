@@ -1997,6 +1997,8 @@ def log_bet_this(ev_board, watch_board=None):
             "core": item.get("method_count", 0),
             "result": "PENDING", "source": source, "logged_at": now_utc_iso(),
             "price_source": "pregame_lock" if lock_books else "live_fetch",
+            "sport": active_sport(),
+            "market": "anytime_td" if active_sport() == "NFL" else "batter_home_runs",
             "benford_tag": (item.get("benford") or {}).get("tag"),
             "benford_note": (item.get("benford") or {}).get("note"),
             "benford_cluster": (item.get("benford") or {}).get("cluster"),
@@ -2164,26 +2166,111 @@ def fetch_mlb_hr_hitters(date_str=None):
 
 
 
+@st.cache_data(ttl=180, show_spinner=False)
+def fetch_nfl_td_scorers():
+    """Anytime TD scorers from ESPN public scoreboard + game summary. No extra paid API."""
+    scorers, finished = set(), set()
+    try:
+        day = datetime.strptime(today_az(), "%Y-%m-%d").strftime("%Y%m%d")
+    except Exception:
+        day = datetime.now().strftime("%Y%m%d")
+    try:
+        sb = requests.get(
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+            params={"dates": day}, timeout=15,
+        ).json()
+    except Exception as e:
+        return set(), set(), f"ESPN scoreboard fail: {e}"
+    events = sb.get("events") or []
+    done_ids = []
+    for ev in events:
+        comp = (ev.get("competitions") or [{}])[0]
+        status = ((comp.get("status") or {}).get("type") or {})
+        eid = ev.get("id")
+        if status.get("completed") or str(status.get("name") or "").upper() in ("STATUS_FINAL", "STATUS_FINAL_OVERTIME"):
+            if eid:
+                done_ids.append(str(eid))
+    for eid in done_ids[:20]:
+        try:
+            sm = requests.get(
+                "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary",
+                params={"event": eid}, timeout=15,
+            ).json()
+        except Exception:
+            continue
+        for play in sm.get("scoringPlays") or []:
+            text = str(play.get("text") or play.get("shortText") or "").lower()
+            itype = str((play.get("type") or {}).get("text") or "").lower()
+            if "touchdown" not in text and "touchdown" not in itype and " td" not in f" {text}":
+                continue
+            if "extra point" in text or "two-point" in text:
+                continue
+            for ath in play.get("athletesInvolved") or []:
+                n = ath.get("displayName") or ath.get("fullName")
+                if n:
+                    scorers.add(clean_name(n))
+            # passing TD: first athlete is often the passer — still an anytime scorer only if they crossed
+            # boxscore rushing/receiving TDs are cleaner
+        box = ((sm.get("boxscore") or {}).get("players") or [])
+        for team_block in box:
+            for stat_group in team_block.get("statistics") or []:
+                name = str(stat_group.get("name") or stat_group.get("label") or "").lower()
+                keys = [str(k).lower() for k in (stat_group.get("labels") or stat_group.get("names") or [])]
+                td_idx = None
+                for i, k in enumerate(keys):
+                    if k in ("td", "tds", "touchdowns"):
+                        td_idx = i
+                        break
+                if td_idx is None and "rush" not in name and "receiv" not in name and "return" not in name:
+                    continue
+                for ath in stat_group.get("athletes") or []:
+                    n = (ath.get("athlete") or {}).get("displayName")
+                    if n:
+                        finished.add(clean_name(n))
+                    stats = ath.get("stats") or []
+                    if td_idx is not None and td_idx < len(stats):
+                        try:
+                            if float(stats[td_idx]) >= 1:
+                                if n:
+                                    scorers.add(clean_name(n))
+                        except Exception:
+                            pass
+    return scorers, finished, f"ESPN NFL {len(done_ids)} final · {len(scorers)} TD names"
+
+
 def auto_grade_pending():
-    hr_names, final_players, msg = fetch_mlb_hr_hitters()
     rows = load_results()
     hits = misses = skipped = 0
     pending_n = sum(1 for r in rows if r.get("result") == "PENDING")
+    if active_sport() == "NFL":
+        td_names, done_players, msg = fetch_nfl_td_scorers()
+        hit_set, miss_pool, tag = td_names, done_players, "nfl_auto"
+    else:
+        hr_names, final_players, msg = fetch_mlb_hr_hitters()
+        hit_set, miss_pool, tag = hr_names, final_players, "mlb_auto"
 
     for row in rows:
         if row.get("result") != "PENDING":
             continue
+        if active_sport() == "NFL":
+            blob = str(row.get("market") or row.get("sport") or "").lower()
+            if blob and "td" not in blob and "nfl" not in blob:
+                skipped += 1
+                continue
+        elif str(row.get("market") or "") == "anytime_td":
+            skipped += 1
+            continue
         player = row.get("player") or ""
-        if any(names_match(player, h) for h in hr_names):
+        if any(names_match(player, h) for h in hit_set):
             row["result"] = "HIT"
-            row["graded_by"] = "mlb_auto"
+            row["graded_by"] = tag
             if row.get("ending") is None and row.get("best_price") is not None:
                 row["ending"] = last_two(row["best_price"])
             hits += 1
             continue
-        if final_players and any(names_match(player, f) for f in final_players):
+        if miss_pool and any(names_match(player, f) for f in miss_pool):
             row["result"] = "MISS"
-            row["graded_by"] = "mlb_auto"
+            row["graded_by"] = tag
             misses += 1
         else:
             skipped += 1
@@ -4164,21 +4251,20 @@ def main():
     </style>
     """, unsafe_allow_html=True)
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
-    if "auto_grade_ran" not in st.session_state:
-        st.session_state["auto_grade_ran"] = False
-    if not st.session_state["auto_grade_ran"]:
+    _ag = f"auto_grade_ran_{active_sport()}"
+    if not st.session_state.get(_ag):
         try:
             pending_n = sum(1 for r in load_results() if r.get("result") == "PENDING")
             if pending_n:
                 with st.spinner(f"Auto-grading {pending_n} pending..."):
                     h, m, s, msg = auto_grade_pending()
-                st.session_state["auto_grade_ran"] = True
+                st.session_state[_ag] = True
                 if h or m:
                     st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
             else:
-                st.session_state["auto_grade_ran"] = True
+                st.session_state[_ag] = True
         except Exception:
-            st.session_state["auto_grade_ran"] = True
+            st.session_state[_ag] = True
     render_whats_going_today()
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
@@ -4194,31 +4280,40 @@ def main():
             raw = fetch_events_oddsapi(odds_key, sport_cfg()["key"])
             st.session_state["events"] = filter_events_today(raw)
             st.session_state["events_raw_count"] = len(raw or [])
-        b1, b2 = st.columns(2)
-        with b1:
-            if st.button("Lineups", use_container_width=True):
-                names, msg = fetch_all_lineups()
-                msg = short_lineup_msg(msg, len(names))
-                st.session_state["lineup_names"] = names
-                st.session_state["lineup_msg"] = msg
-                (st.success if names else st.warning)(msg)
-        with b2:
-            if st.button("Grade", use_container_width=True):
-                with st.spinner("MLB box scores..."):
+        if active_sport() == "MLB":
+            b1, b2 = st.columns(2)
+            with b1:
+                if st.button("Lineups", use_container_width=True):
+                    names, msg = fetch_all_lineups()
+                    msg = short_lineup_msg(msg, len(names))
+                    st.session_state["lineup_names"] = names
+                    st.session_state["lineup_msg"] = msg
+                    (st.success if names else st.warning)(msg)
+            with b2:
+                if st.button("Grade HRs", use_container_width=True):
+                    with st.spinner("MLB box scores..."):
+                        h, m, s, msg = auto_grade_pending()
+                    st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
+                    st.rerun()
+            auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
+            ln = st.session_state.get("lineup_names") or set()
+            lm = short_lineup_msg(st.session_state.get("lineup_msg") or "", len(ln))
+            st.session_state["lineup_msg"] = lm
+            if lm:
+                st.caption(lm)
+            lock_now = st.session_state.get("pregame_lock") or {}
+            if ln and lock_now:
+                lock_fold = {fold_name(clean_name(k)) for k in lock_now}
+                missing_lock = sum(1 for n in ln if fold_name(n) not in lock_fold)
+                st.caption(f"{missing_lock} lineup names have no lock price yet")
+        else:
+            auto_lineups = False
+            if st.button("Auto-grade TDs", type="primary", use_container_width=True):
+                with st.spinner("ESPN NFL box scores..."):
                     h, m, s, msg = auto_grade_pending()
                 st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
                 st.rerun()
-        auto_lineups = st.checkbox("Grab lineups on fetch", value=True)
-        ln = st.session_state.get("lineup_names") or set()
-        lm = short_lineup_msg(st.session_state.get("lineup_msg") or "", len(ln))
-        st.session_state["lineup_msg"] = lm
-        if lm:
-            st.caption(lm)
-        lock_now = st.session_state.get("pregame_lock") or {}
-        if ln and lock_now:
-            lock_fold = {fold_name(clean_name(k)) for k in lock_now}
-            missing_lock = sum(1 for n in ln if fold_name(n) not in lock_fold)
-            st.caption(f"{missing_lock} lineup names have no lock price yet")
+            st.caption("NFL grades itself from finished games. No RotoWire. No MLB lineups.")
         events = st.session_state.get("events", [])
         if not events:
             st.info("Click **Load Games** once.")
