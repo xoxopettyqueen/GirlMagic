@@ -109224,5 +109224,81 @@
     "source": "shop_lean",
     "logged_at": "2026-09-09T17:05:50.040726+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Grant McCray_watch_32",
+    "date": "2026-09-09",
+    "time": "10:25 AM",
+    "player": "Grant McCray",
+    "score": 32,
+    "edge": 100,
+    "best_price": 900,
+    "best_book": "betmgm",
+    "median": 800,
+    "book_prices": {
+      "betmgm": 900,
+      "caesars": 750,
+      "draftkings": 680,
+      "fanduel": 870,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": 900,
+    "mgm_ending": 0,
+    "methods": [
+      "FD Pattern",
+      "Match 00",
+      "MGM 00"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-09T17:25:23.657523+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "SAN FRANCISCO GIANTS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.4
+  },
+  {
+    "id": "2026-09-09_Ivan Herrera_watch_11",
+    "date": "2026-09-09",
+    "time": "10:25 AM",
+    "player": "Ivan Herrera",
+    "score": 11,
+    "edge": 5,
+    "best_price": 700,
+    "best_book": "caesars",
+    "median": 670,
+    "book_prices": {
+      "betmgm": 675,
+      "caesars": 700,
+      "draftkings": 670,
+      "fanduel": 630,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "mgm_locked": 675,
+    "mgm_ending": 75,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern",
+      "Books tight"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-09T17:25:23.658272+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "STLOUIS CARDINALS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.8
   }
 ]
