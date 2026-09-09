@@ -105140,5 +105140,117 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-09_Joshua Baez_shop_take_83",
+    "date": "2026-09-09",
+    "time": "08:07 AM",
+    "player": "Joshua Baez",
+    "score": 0,
+    "edge": 83,
+    "best_price": 582,
+    "best_book": "draftkings",
+    "median": 540,
+    "book_prices": {
+      "betmgm": 360,
+      "caesars": 525,
+      "draftkings": 582,
+      "fanduel": 540,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 82,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T15:07:31.295184+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Adael Amador_shop_lean_78",
+    "date": "2026-09-09",
+    "time": "08:07 AM",
+    "player": "Adael Amador",
+    "score": 0,
+    "edge": 78,
+    "best_price": 890,
+    "best_book": "draftkings",
+    "median": 850,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 850,
+      "draftkings": 890,
+      "fanduel": 870,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 90,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T15:07:31.296457+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Cody Bellinger_shop_lean_45",
+    "date": "2026-09-09",
+    "time": "08:07 AM",
+    "player": "Cody Bellinger",
+    "score": 0,
+    "edge": 45,
+    "best_price": 479,
+    "best_book": "draftkings",
+    "median": 450,
+    "book_prices": {
+      "betmgm": 360,
+      "caesars": 425,
+      "draftkings": 479,
+      "fanduel": 450,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+400s",
+    "ending": 79,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T15:07:31.328752+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Mickey Moniak_shop_lean_42",
+    "date": "2026-09-09",
+    "time": "08:07 AM",
+    "player": "Mickey Moniak",
+    "score": 0,
+    "edge": 42,
+    "best_price": 421,
+    "best_book": "draftkings",
+    "median": 390,
+    "book_prices": {
+      "betmgm": 310,
+      "caesars": 390,
+      "draftkings": 421,
+      "fanduel": 390,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 21,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T15:07:31.332045+00:00",
+    "price_source": "shop"
   }
 ]
