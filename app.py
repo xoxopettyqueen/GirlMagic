@@ -413,11 +413,14 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     except Exception:
         p_abs = 0
     flyer = JUNK_PRICE <= p_abs <= FLYER_MAX
-    if flyer or p_abs >= JUNK_PRICE:
+    if p_abs > FLYER_MAX:
         return False
     try:
         end = last_two(best_price)
-        if end is not None and end not in TAKE_HOT_ENDS:
+        if flyer:
+            if end is not None and end not in TAKE_HOT_ENDS | {0}:
+                return False
+        elif end is not None and end not in TAKE_HOT_ENDS:
             return False
     except Exception:
         pass
@@ -3489,8 +3492,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             and has_pri
             and core_count >= METHODS_MIN
             and p_abs
-            and p_abs < JUNK_PRICE
-            and last_two(best) in TAKE_HOT_ENDS
+            and p_abs <= FLYER_MAX
+            and last_two(best) in (TAKE_HOT_ENDS | ({0} if p_abs >= JUNK_PRICE else set()))
         ):
             is_bet = True
             score_override = True
