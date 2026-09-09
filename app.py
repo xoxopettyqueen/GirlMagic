@@ -972,8 +972,25 @@ def digits_playbook(hits_res, graded_res, live_res):
 
 
 def render_digits_tab(df):
-    st.markdown("### Digits")
-    st.caption("Looking for: which PRICE SHAPE cashes. Green pond = +400 to +600. Red pond = +1000 and the 2s. Not who to pick.")
+    st.markdown("""
+    <style>
+    .bf-hero{background:linear-gradient(135deg,#2e1065,#831843);border:1px solid #c084fc;border-radius:22px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(192,132,252,.25)}
+    .bf-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 6px;font-size:1.45rem}
+    .bf-hero p{color:#f5d0fe;margin:0;font-size:.88rem}
+    .bf-meter{height:10px;background:#1e1b4b;border-radius:999px;overflow:hidden;margin:8px 0}
+    .bf-meter span{display:block;height:100%;border-radius:999px}
+    .bf-heat{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin:8px 0 12px}
+    .bf-cell{text-align:center;border-radius:12px;padding:10px 4px;border:1px solid #3b0764;background:#16101f}
+    .bf-cell b{display:block;font-size:1.1rem;color:#fbcfe8}
+    .bf-cell:hover{box-shadow:0 0 12px #e879f9}
+    </style>
+    """, unsafe_allow_html=True)
+    st.markdown(
+        '<div class="bf-hero"><h3>Benford Energy Check 🔢✨</h3>'
+        "<p>Benford’s Law shows which numbers occur naturally — and which look forced.</p>"
+        '<p style="margin-top:6px;color:#f9a8d4">Benford spots fake odds faster than any algorithm.</p></div>',
+        unsafe_allow_html=True,
+    )
     if not HAS_BENFORD:
         st.warning("Need benford.py next to app.py.")
         return
@@ -1015,27 +1032,43 @@ def render_digits_tab(df):
     graded_res = analyze_benford(graded, "graded")
     hits_res = analyze_benford(hits, "hits")
     do, dont, notes = digits_playbook(hits_res, graded_res, live_res)
-    do_h = "".join(f"<li>{x}</li>" for x in do)
-    no_h = "".join(f"<li>{x}</li>" for x in dont)
-    note_h = "".join(f"<div class='card-meta'>{x}</div>" for x in notes)
+    score = float(live_res.get("benford_score") or 0)
+    hue = "#22c55e" if score >= 0.7 else ("#eab308" if score >= 0.45 else "#ef4444")
+    mood = "Clean energy" if score >= 0.7 else ("Mixed energy" if score >= 0.45 else "Forced energy")
     st.markdown(
-        '<div class="trends-today">'
-        '<div class="trends-today-title">What to do</div>'
-        '<div class="card-line"><b>Do</b></div>'
-        f'<ul style="margin:6px 0 10px 18px;color:#e9d5ff">{do_h}</ul>'
-        "<div class='card-line'><b>Do not</b></div>"
-        f'<ul style="margin:6px 0 10px 18px;color:#e9d5ff">{no_h}</ul>'
-        f'{note_h}'
-        '<div class="card-foot">This is a price-band call. Board still picks the name.</div>'
-        '</div>',
+        f'<div class="card"><b>Benford Score</b> · {score:.2f} / 1 · {mood}'
+        f'<div class="bf-meter"><span style="width:{int(score*100)}%;background:{hue}"></span></div>'
+        f'<div class="note">{live_res.get("n") or 0} live prices in the pile</div></div>',
         unsafe_allow_html=True,
     )
-    with st.expander("Show the charts", expanded=False):
-        _benford_card(live_res, "Today - every posted number")
+    do_h = "".join(f"<div>✅ {x}</div>" for x in do)
+    no_h = "".join(f"<div>🚫 {x}</div>" for x in dont)
+    st.markdown(
+        f'<div class="card"><b>Do</b><div class="note">{do_h}</div>'
+        f'<b>Do not</b><div class="note">{no_h}</div>'
+        f'<div class="card-foot">Board still picks the name. This page picks the pond.</div></div>',
+        unsafe_allow_html=True,
+    )
+    dist = {int(k): float(v) for k, v in (live_res.get("actual_distribution") or {}).items()}
+    cells = []
+    for d in range(1, 10):
+        p = dist.get(d, 0)
+        glow = min(1.0, p * 4)
+        cells.append(
+            f'<div class="bf-cell" title="Digit {d} · {_digit_lane(d)} · {p:.0%}">'
+            f'<b>{d}</b><span class="note">{p:.0%}</span></div>'
+        )
+    st.markdown('<div class="card"><b>Benford Heatmap</b><div class="bf-heat">' + "".join(cells) + "</div></div>", unsafe_allow_html=True)
+    st.markdown("#### Benford vs Board")
+    c1, c2 = st.columns(2)
+    with c1:
+        _benford_card(live_res, "Live board prices")
+    with c2:
+        _benford_card(hits_res, "History hits")
+    with st.expander("More piles", expanded=False):
         _benford_card(best_res, "Today - best number only")
         _benford_card(lock_res, "Lock - pregame book prices")
         _benford_card(graded_res, "History - graded bests")
-        _benford_card(hits_res, "History - only the hits")
         st.markdown("#### By book today")
         meter = benford_book_meter(df)
         if meter:
