@@ -91957,5 +91957,112 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.8
+  },
+  {
+    "id": "2026-09-08_Miguel Vargas_shop_take_105",
+    "date": "2026-09-08",
+    "time": "06:12 PM",
+    "player": "Miguel Vargas",
+    "score": 0,
+    "edge": 105,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 850,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 950,
+      "fanduel": 850,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T01:12:19.155036+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Colson Montgomery_shop_take_98",
+    "date": "2026-09-08",
+    "time": "06:12 PM",
+    "player": "Colson Montgomery",
+    "score": 0,
+    "edge": 98,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 537,
+    "book_prices": {
+      "caesars": 525,
+      "draftkings": 650,
+      "fanduel": 500,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T01:12:19.156104+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Mike Trout_shop_take_86",
+    "date": "2026-09-08",
+    "time": "06:12 PM",
+    "player": "Mike Trout",
+    "score": 0,
+    "edge": 86,
+    "best_price": 600,
+    "best_book": "hardrockbet",
+    "median": 552,
+    "book_prices": {
+      "draftkings": 552,
+      "fanduel": 420,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T01:12:19.156996+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Esmerlyn Valdez_shop_lean_40",
+    "date": "2026-09-08",
+    "time": "06:12 PM",
+    "player": "Esmerlyn Valdez",
+    "score": 0,
+    "edge": 40,
+    "best_price": 700,
+    "best_book": "fanduel",
+    "median": 675,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 650,
+      "fanduel": 700,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T01:12:19.167628+00:00",
+    "price_source": "shop"
   }
 ]
