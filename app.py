@@ -4588,21 +4588,65 @@ def main():
         <div class="petty-box"><div class="petty-num">{take_n + pass_n + watch_n + coverage_n}</div><div class="petty-label">ON SLATE</div></div>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+    div[data-testid="stRadio"] > div{gap:6px!important;flex-wrap:wrap}
+    div[data-testid="stRadio"] label{
+      background:#16101f;border:1px solid #2a2038;border-radius:999px;padding:4px 12px!important;
+      color:#e9d5ff!important;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;
+    }
+    div[data-testid="stRadio"] label:hover{
+      transform:translateY(-2px);
+      border-color:#e879f9;
+      box-shadow:0 0 14px rgba(232,121,249,.45);
+      background:linear-gradient(90deg,#4c1d95,#9d174d)!important;
+    }
+    div[data-testid="stRadio"] label:active{transform:translateY(1px) scale(.98)}
+    div[data-testid="stRadio"] label[data-checked="true"],
+    div[data-testid="stRadio"] [aria-checked="true"] + div,
+    div[data-testid="stRadio"] label:has(input:checked){
+      border-color:#f472b6!important;
+      box-shadow:0 0 16px rgba(244,114,182,.55);
+      animation:gmPulse 1.6s ease-in-out infinite;
+      background:linear-gradient(90deg,#7c3aed,#db2777)!important;
+      color:#fff!important;
+    }
+    @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
+    </style>
+    """, unsafe_allow_html=True)
     MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
+    NAV_LABELS = {
+        "Board": "Board 💋",
+        "Shop": "Shop 🛍️",
+        "Digits": "Benford Energy 🔢",
+        "Methods": "Pattern Lab 🧩",
+        "Lines": "Motion 💸",
+        "Grade": "Grade 🧾",
+        "Analytics": "Heat 🔥",
+        "Numerology": "Magic Math 🔮",
+        "Code": "How We Run It",
+        "DK": "DK 🎯", "MGM": "MGM 🎰", "FD": "FD 💙", "Exact": "Exact 🎯",
+        "Names": "Names 💅", "Signals": "Signals 📡",
+        "Moves": "Moves 💸", "Trends": "Trends 💅", "Late": "Ghosts 👻",
+        "Lock": "Lock 🔒", "Search": "Search",
+        "Lock Lab": "Lock Lab", "Tracker": "Tracker", "Results": "Results",
+        "Backtest": "Backtest",
+    }
     main = st.radio(
         "Section",
         MAIN_TABS,
         horizontal=True,
         label_visibility="collapsed",
         key="main_nav",
+        format_func=lambda x: NAV_LABELS.get(x, x),
     )
     sub = None
     if main == "Methods":
-        sub = st.radio("Methods", ["DK", "MGM", "FD", "Exact", "Names", "Signals"], horizontal=True, label_visibility="collapsed", key="sub_methods")
+        sub = st.radio("Methods", ["DK", "MGM", "FD", "Exact", "Names", "Signals"], horizontal=True, label_visibility="collapsed", key="sub_methods", format_func=lambda x: NAV_LABELS.get(x, x))
     elif main == "Lines":
-        sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines")
+        sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines", format_func=lambda x: NAV_LABELS.get(x, x))
     elif main == "Grade":
-        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade")
+        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade", format_func=lambda x: NAV_LABELS.get(x, x))
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         st.markdown(f"### {petty_label('Board')}")
