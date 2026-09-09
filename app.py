@@ -131,9 +131,47 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .trend-chip .chip-count{color:#f9a8d4;font-weight:900}
 /* keep game picker from eating the whole page */
 div[data-baseweb="select"]{max-width:100%}
-div[data-baseweb="select"] span{font-size:0.78rem!important}
+div[data-baseweb="select"] span{font-size:0.78rem!important;color:#fce7f3!important}
 .stMultiSelect{max-width:920px}
-.stMultiSelect [data-baseweb="tag"]{max-width:160px}
+.stMultiSelect [data-baseweb="tag"]{max-width:200px;background:linear-gradient(90deg,#db2777,#9333ea)!important;border:none!important;color:#fff!important}
+.stMultiSelect [data-baseweb="tag"] span{color:#fff!important}
+div[data-baseweb="select"]>div{
+  background:#1a0f28!important;
+  border:1px solid #a855f7!important;
+  border-radius:12px!important;
+  color:#fce7f3!important;
+  box-shadow:none!important;
+}
+div[data-baseweb="popover"] div[data-baseweb="menu"],
+ul[role="listbox"]{
+  background:#160a22!important;
+  border:1px solid #a855f7!important;
+  color:#fce7f3!important;
+}
+li[role="option"]{color:#fce7f3!important}
+.stSlider [data-testid="stTickBarMin"], .stSlider [data-testid="stTickBarMax"]{color:#c4b5d6!important}
+.stSlider [data-baseweb="slider"] div[role="slider"]{
+  background:#f472b6!important;border-color:#f9a8d4!important;
+}
+.stSlider [data-baseweb="slider"] div[data-testid="stThumbValue"]{color:#f9a8d4!important}
+.stSlider [data-baseweb="slider"]>div>div{background:#4c1d95!important}
+.stTextInput input, .stNumberInput input, textarea{
+  background:#1a0f28!important;
+  border:1px solid #7c3aed!important;
+  color:#fce7f3!important;
+  border-radius:12px!important;
+}
+.stTextInput label, .stSlider label, .stSelectbox label, .stMultiSelect label{
+  color:#f9a8d4!important;font-size:.78rem!important;font-weight:700!important;letter-spacing:.04em;
+}
+.filter-shell{
+  background:linear-gradient(155deg,#1a0f28,#251438);
+  border:1px solid #a855f7;
+  border-radius:16px;
+  padding:12px 14px 6px 14px;
+  margin:0 0 16px 0;
+}
+.filter-shell h4{color:#f9a8d4;margin:0 0 8px 0;font-size:.95rem}
 .games-hint{color:#e9d5ff;font-size:.8rem;margin:4px 0 8px}
 .shop-wrap{overflow-x:auto;margin:8px 0 16px}
 .shop-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:.78rem}
@@ -399,15 +437,18 @@ def long_price_block(best_price, methods=None, book_prices=None):
             return f"+{p} needs a priority tag"
     return None
 
+def nfl_price_ok(best_price):
+    """NFL Anytime TD: starters live +120-350, depth +400-700."""
+    try:
+        p = abs(int(best_price))
+    except Exception:
+        return False
+    return 110 <= p <= 799
+
 def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None):
-    """Elite TAKE only. +700–999 = LEAN. +1000+ = WATCH. Boosts cannot unlock this."""
+    """MLB: elite +400-699 + hot end + priority. NFL: 2 premium + priority-or-hot-end on TD prices."""
     ms = {normalize_method_name(m) for m in (methods or [])}
-    if not (ms & PRIORITY_METHODS):
-        return False
-    if price_bucket(best_price) not in TAKE_STRONG_BUCKETS:
-        return False
-    end = last_two(best_price)
-    if end is None or end not in TAKE_HOT_ENDS:
+    if core_count < METHODS_MIN:
         return False
     bk = normalize_book(best_book) if best_book else None
     if not bk and book_prices:
@@ -418,7 +459,20 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
                 best_dec, bk = dec, normalize_book(k)
     if bk and bk not in TAKE_STRONG_BOOKS:
         return False
-    if core_count < METHODS_MIN:
+    if active_sport() == "NFL":
+        if not nfl_price_ok(best_price):
+            return False
+        end = last_two(best_price)
+        hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
+        pri = bool(ms & PRIORITY_METHODS)
+        # NFL methods are thinner; allow TAKE if priority OR a hot ending with 2+ premium
+        return pri or (hot and core_count >= METHODS_MIN)
+    if not (ms & PRIORITY_METHODS):
+        return False
+    if price_bucket(best_price) not in TAKE_STRONG_BUCKETS:
+        return False
+    end = last_two(best_price)
+    if end is None or end not in TAKE_HOT_ENDS:
         return False
     return True
 
@@ -805,6 +859,7 @@ def render_shop_tab(df):
         <div class="petty-box"><div class="petty-num">{len(shop)}</div><div class="petty-label">PLAYERS</div></div>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown('<div class="filter-shell">', unsafe_allow_html=True)
     view = st.radio("Call", ["All", "TAKE + LEAN", "TAKE", "LEAN", "DON'T", "MARKET"], horizontal=True, key="shop_filter")
     c1, c2, c3, c4 = st.columns(4)
     book_opts = ["Any"] + [lab for _, lab in SHOP_BOOKS]
@@ -825,6 +880,7 @@ def render_shop_tab(df):
         buck_f = st.multiselect("Price bucket", buckets, key="shop_buckets")
     with c7:
         q = st.text_input("Player search", key="shop_q")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     shown = shop
     if view == "TAKE + LEAN":
@@ -2904,7 +2960,7 @@ def flatten_oddsapi(data):
                     continue
                 if price > MAX_HR_AMERICAN:
                     continue
-                if is_td and abs(int(price)) < 300:
+                if is_td and abs(int(price)) < 110:
                     continue
                 if is_blocked_player(player):
                     continue
@@ -3092,13 +3148,22 @@ def apply_team_picks(ev_board, watch_board, coverage_board):
     for x in leftovers:
         team = x.get("team") or ""
         game = _item_game(x)
-        if not team or not game:
+        if not game:
             continue
-        key = (game, team)
+        # Odds API NFL props have no team — fall back to 2 names per game
+        if not team:
+            game_count = sum(1 for k in used if k[0] == game)
+            if game_count >= 2:
+                continue
+            key = (game, x.get("player"))
+        else:
+            key = (game, team)
         if key in used or x.get("player") in seen:
             continue
         if (x.get("score") or 0) < TEAM_PICK_MIN_SCORE and not (x.get("methods") or []):
             continue
+        if not team:
+            team = "this game"
         x = dict(x)
         x["team_pick"] = True
         x["is_bet"] = False
@@ -4522,7 +4587,7 @@ def main():
             )
             if not item.get("num_tag"):
                 item["num_tag"] = numerology_board_tag(item.get("player"), item.get("best_price"))
-            if item.get("is_bet") and not elite_take_ok(item):
+            if active_sport() != "NFL" and item.get("is_bet") and not elite_take_ok(item):
                 item["is_bet"] = False
                 item["why"] = (item.get("why") or "") + " · LEAN — missing Authentic Benford or Num name+price"
             bf = item.get("benford") or {}
@@ -4532,7 +4597,7 @@ def main():
                 item["score"] = min(100, int(item.get("score") or 0) + 6)
             if num_strong:
                 item["score"] = min(100, int(item.get("score") or 0) + 6)
-            if item.get("is_bet") and not (authentic and num_strong):
+            if active_sport() != "NFL" and item.get("is_bet") and not (authentic and num_strong):
                 item["is_bet"] = False
                 item["accuracy_hold"] = True
     if ev_board or watch_board:
@@ -4666,6 +4731,7 @@ def main():
                         f'<div class="note">{item.get("num_tag") or ""}</div></div>',
                         unsafe_allow_html=True,
                     )
+        st.markdown('<div class="filter-shell">', unsafe_allow_html=True)
         st.markdown("#### Filter the board")
         cfa, cfb, cfc, cfd = st.columns(4)
         with cfa:
@@ -4682,6 +4748,7 @@ def main():
         with cfd:
             time_win = st.selectbox(sport_cfg()["when"], ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
         name_q = st.text_input("Find a name", "", key="board_name_main").strip().lower()
+        st.markdown("</div>", unsafe_allow_html=True)
 
         def _render_board_card(item, label, cls):
             tags = render_method_tags(item.get("methods") or [])
@@ -4725,7 +4792,7 @@ def main():
                 with pc[i % len(pc)]:
                     _render_board_card(item, "TAKE IT", "bet")
         else:
-            st.caption("Nobody cleared every accuracy gate today.")
+            st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
         passes = [e for e in ev_board if not e.get("is_bet")]
