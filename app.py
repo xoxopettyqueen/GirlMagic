@@ -2044,6 +2044,7 @@ def log_bet_this(ev_board, watch_board=None):
             "result": "PENDING", "source": source, "logged_at": now_utc_iso(),
             "price_source": "pregame_lock" if lock_books else "live_fetch",
             "sport": active_sport(),
+            "team": item.get("team") or "",
             "market": "anytime_td" if active_sport() == "NFL" else "batter_home_runs",
             "benford_tag": (item.get("benford") or {}).get("tag"),
             "benford_note": (item.get("benford") or {}).get("note"),
@@ -5343,10 +5344,48 @@ def main():
     if page == "Grade:Tracker":
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption(
-            "What has been hitting after we grade it. "
-            f"Buckets with n &lt; {TRACKER_MIN_N} are hidden. "
-            "Green border = beats overall TAKE IT %."
+            f"{sport_cfg()['label']} + all graded sports in one file. "
+            f"n &lt; {TRACKER_MIN_N} hidden unless it is a core family. "
+            "HOT = over 15%. Δ is vs TAKE IT baseline."
         )
+        today_rows = [r for r in load_results() if r.get("date") == today_az() and r.get("result") in ("HIT", "MISS")]
+        today_hits = [r for r in today_rows if r.get("result") == "HIT"]
+        if today_hits:
+            meth_c, book_c, end_c = Counter(), Counter(), Counter()
+            long_hits = []
+            overlap = 0
+            for r in today_hits:
+                ms = [normalize_method_name(m) for m in (r.get("methods") or []) if normalize_method_name(m) not in TRACKER_BLOCKLIST]
+                for m in ms:
+                    meth_c[m] += 1
+                if len(ms) >= 2:
+                    overlap += 1
+                book_c[book_label(r.get("best_book"))] += 1
+                end = r.get("ending")
+                if end is None and r.get("best_price") is not None:
+                    end = last_two(r["best_price"])
+                if end is not None:
+                    end_c[f"{int(end):02d}"] += 1
+                try:
+                    if abs(int(r.get("best_price"))) >= 700:
+                        long_hits.append(f"{r.get('player')} {format_odds(r.get('best_price'))}")
+                except Exception:
+                    pass
+            st.markdown("#### What stood out today")
+            bits = []
+            if meth_c:
+                bits.append("Methods on hits: " + ", ".join(f"{k} {n}" for k, n in meth_c.most_common(5)))
+            if book_c:
+                bits.append("Books: " + ", ".join(f"{k} {n}" for k, n in book_c.most_common(4)))
+            if end_c:
+                bits.append("Endings: " + ", ".join(f"{k} {n}" for k, n in end_c.most_common(5)))
+            bits.append(f"{overlap} hits wore 2+ tags")
+            if long_hits:
+                bits.append("Long prices that cashed: " + ", ".join(long_hits[:4]))
+            for line in bits:
+                st.markdown(f'<div class="info-box">{line}</div>', unsafe_allow_html=True)
+        else:
+            st.info("Grade a HIT today and this strip fills. Same Tracker for HR and TD.")
         baseline, baseline_n = take_it_baseline_rate(load_results())
         if baseline is not None:
             st.markdown(
@@ -5362,26 +5401,29 @@ def main():
 
         def chips_from_stats(stats, min_n=TRACKER_MIN_N, compare_baseline=False):
             out = []
+            base = baseline if baseline is not None else 11.0
             for name, s in sorted(
                 stats.items(),
                 key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"])),
             ):
                 t = s["hit"] + s["miss"]
-                if t < min_n:
+                always = str(name) in TRACKER_ALWAYS
+                if t < min_n and not always:
                     continue
                 pct = 100 * s["hit"] / t
-                beat = (
-                    compare_baseline
-                    and baseline is not None
-                    and pct > baseline + 0.5
-                )
-                cls = "rate-chip beat" if beat else "rate-chip"
-                beat_html = '<div class="rate-beat">▲ beats TAKE IT</div>' if beat else ""
+                delta = pct - base
+                hot = pct > 15
+                beat = compare_baseline and pct > base + 0.5
+                cls = "rate-chip beat" if beat or hot else "rate-chip"
+                sign = "+" if delta >= 0 else ""
+                badge = ' <span class="tag tag-strong">HOT</span>' if hot else ""
+                thin = " · thin n" if t < min_n else ""
+                beat_html = f'<div class="rate-beat">{sign}{delta:.0f} Δ vs {base:.0f}%</div>'
                 out.append(
                     f'<div class="{cls}">'
                     f'<div class="rate-pct">{pct:.0f}%</div>'
-                    f'<div class="rate-name">{name}</div>'
-                    f'<div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays</div>'
+                    f'<div class="rate-name">{name}{badge}</div>'
+                    f'<div class="rate-n">{s["hit"]} hit · {s["miss"]} miss · {t} plays{thin}</div>'
                     f"{beat_html}</div>"
                 )
             return out
