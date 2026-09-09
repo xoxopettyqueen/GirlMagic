@@ -2692,16 +2692,28 @@ def lines_dashboard_strip(results):
 
 
 def show_player_cards(typ, banner, explain, results):
-    st.markdown(f'<div class="queen-banner">{banner}</div>', unsafe_allow_html=True)
-    st.caption(explain)
+    st.markdown("""
+    <style>
+    .meth-hero{background:linear-gradient(135deg,#3b0764,#831843);border:1px solid #e879f9;border-radius:22px;padding:14px 16px;margin-bottom:10px;box-shadow:0 0 20px rgba(232,121,249,.22)}
+    .meth-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0 0 4px;font-size:1.28rem}
+    .meth-hero p{color:#f5d0fe;margin:0;font-size:.84rem}
+    .meth-card{transition:box-shadow .15s ease}
+    .meth-card:hover{box-shadow:0 0 16px rgba(244,114,182,.35)}
+    </style>
+    """, unsafe_allow_html=True)
+    st.markdown(f'<div class="meth-hero"><h3>{banner}</h3><p>{explain}</p></div>', unsafe_allow_html=True)
     items = aggregate_by_player([r for r in results if r["type"] == typ])
     if typ == "signal":
         items = sorted(items, key=lambda r: (-int(r.get("book_count") or 0), r.get("label") or ""))
-        st.caption("Sorted: most books first (3 -> 2). Order stays correct on mobile.")
+        st.caption("Sorted: most books first (3 → 2).")
+    st.markdown(
+        f'<div class="petty-row"><div class="petty-box"><div class="petty-num">{len(items)}</div>'
+        f'<div class="petty-label">ON THIS PATTERN</div></div></div>',
+        unsafe_allow_html=True,
+    )
     if not items:
-        st.info("None.")
+        st.info("Nobody wearing this tag yet.")
         return
-    # Row pairs (not one big 2-col) so mobile stacks 1->2->3->4 instead of all-left then all-right
     show_n = items[:40]
     for i in range(0, len(show_n), 2):
         cols = st.columns(2)
@@ -2712,9 +2724,14 @@ def show_player_cards(typ, banner, explain, results):
             with col:
                 tags = render_method_tags(r.get("methods", []))
                 price_line = _price_line_for_card(r.get("prices") or {})
-                price_html = f"<br><small>{price_line}</small>" if price_line else ""
+                price_html = f'<div class="note">{price_line}</div>' if price_line else ""
+                n_books = int(r.get("book_count") or 0)
+                meter = make_meter(min(5, max(1, n_books or 2)), "high" if n_books >= 3 else "mid")
                 st.markdown(
-                    f'<div class="card"><b>{r["label"]}</b><br>{r["reason"]}{price_html}<br>{tags}</div>',
+                    f'<div class="card meth-card" title="{explain}">'
+                    f'<div class="card-name">{r["label"]}</div>'
+                    f'<div class="note">{r["reason"]}</div>{price_html}{meter}'
+                    f'<div style="margin-top:6px">{tags}</div></div>',
                     unsafe_allow_html=True,
                 )
 
@@ -4835,22 +4852,21 @@ def main():
     if page == "Digits:":
         render_digits_tab(df)
     if page == "Methods:DK":
-        show_player_cards("dk", "🎯 DraftKings", "One card per player · DK 10 + FD-style", results)
+        show_player_cards("dk", "🎯 DK Rhythm Lab", "DK 10 and FD-style endings. One card per player. Hover a tag if you forget why it fired.", results)
     if page == "Methods:MGM":
-        show_player_cards("mgm", "🎰 BetMGM", "Pairs / groups of 3 · classic endings · Exact 2-3 · all on one card", results)
+        show_player_cards("mgm", "🎰 MGM Clique Check", "Didn’t leave the clique 💎 — pairs / trios / exact on the same team.", results)
     if page == "Methods:FD":
-        show_player_cards("fd", "💙 FanDuel", f">=+{FD_MIN} pattern or +600 · needs DK/MGM · one card per player", results)
+        show_player_cards("fd", "💙 FanDuel Rhythm Board", f"+{FD_MIN}+ pattern or +600 · only with DK/MGM backup.", results)
     if page == "Methods:Exact":
-        show_player_cards("match", "🤝 Exact (all books)", "Same price across books · one card per player", results)
+        show_player_cards("match", "🎯 Perfect Sync", "Same number across books. Perfect sync 🎯 — still not TAKE by itself.", results)
     if page == "Methods:Names":
-        st.markdown('<div class="queen-banner">💅 Name Magic</div>', unsafe_allow_html=True)
-        st.caption("Name echoes across different teams. Cute extra - not the green light by itself.")
-        show_player_cards("same_init", "💅 Same Initials", "Same first+last initial (e.g. MM) · different teams", results)
+        st.markdown('<div class="meth-hero"><h3>💅 Name Map</h3><p>Cute extra across different teams. Not the green light.</p></div>', unsafe_allow_html=True)
+        show_player_cards("same_init", "💅 Same Initials", "Same first+last initial · different teams", results)
         show_player_cards("cross", "🔄 Cross Initials", "One last initial = other first initial · different teams", results)
         show_player_cards("last", "👩‍👧 Same Last Name", "Exact last name · different teams", results)
         show_player_cards("first", "👯 Same First Name", "Exact first name · different teams", results)
     if page == "Methods:Signals":
-        show_player_cards("signal", "📈 Signals", "Multi-book method · one card per player", results)
+        show_player_cards("signal", "📡 Multi-Book Radar", "Same method lighting up on more than one book. Most books first.", results)
     if page == "Lines:Moves":
         st.markdown("""
         <style>
