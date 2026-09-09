@@ -438,12 +438,12 @@ def long_price_block(best_price, methods=None, book_prices=None):
     return None
 
 def nfl_price_ok(best_price):
-    """NFL Anytime TD: starters live +120-350, depth +400-700."""
+    """NFL Anytime TD: +115 and up. No 799 cap — long TDs have hit."""
     try:
         p = abs(int(best_price))
     except Exception:
         return False
-    return 110 <= p <= 799
+    return p >= 115
 
 def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None):
     """MLB: elite +400-699 + hot end + priority. NFL: 2 premium + priority-or-hot-end on TD prices."""
@@ -2960,7 +2960,7 @@ def flatten_oddsapi(data):
                     continue
                 if price > MAX_HR_AMERICAN:
                     continue
-                if is_td and abs(int(price)) < 110:
+                if is_td and abs(int(price)) < 115:
                     continue
                 if is_blocked_player(player):
                     continue
