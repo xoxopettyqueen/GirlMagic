@@ -198,7 +198,7 @@ RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
-PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars"}
+PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM"}
 VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet"}
 VALUE_BOOK_LABELS = {"DK", "FD", "HardRock"}
@@ -207,6 +207,9 @@ BOOK_ALIASES = {
     "williamhill_us": "caesars",
     "hardrockbet_oh": "hardrockbet",
     "hardrockbet_nj": "hardrockbet",
+    "fanatics": "fanatics",
+    "fanaticssportsbook": "fanatics",
+    "fanatics_sportsbook": "fanatics",
 }
 
 def normalize_book(key):
@@ -254,12 +257,14 @@ SCORE_TAKE_OVERRIDE = 85  # fat stack (Larnach 96) can green even on a dead 30 /
 # Tracker 9/05: only tags that beat 13% baseline unlock TAKE IT
 PRIORITY_METHODS = {
     "Match 25", "MGM 25",
+    "Match 75", "MGM 75",
     "DK 10",
     "FD 600",
     "FD+MGM classic",
     "MGM Exact",
+    "Books tight",
 }
-TAKE_HOT_ENDS = {10, 25, 75, 90}  # 21 / 17 / 14 / 14. 00=11 40=5 stay off TAKE.
+TAKE_HOT_ENDS = {10, 25, 75}  # Tracker 9/08: 25/75/10 cash. 00 volume trap. 90 off TAKE.
 # PREMIUM = counts as core (still need >=1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
@@ -408,9 +413,11 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     except Exception:
         p_abs = 0
     flyer = JUNK_PRICE <= p_abs <= FLYER_MAX
+    if flyer or p_abs >= JUNK_PRICE:
+        return False
     try:
         end = last_two(best_price)
-        if end is not None and end not in TAKE_HOT_ENDS and not flyer:
+        if end is not None and end not in TAKE_HOT_ENDS:
             return False
     except Exception:
         pass
@@ -1180,6 +1187,7 @@ def book_label(b):
     if "draftkings" in b or b == "dk": return "DK"
     if "fanduel" in b or b == "fd": return "FD"
     if "hardrock" in b: return "HardRock"
+    if "fanatic" in b: return "Fanatics"
     if "caesars" in b or "williamhill" in b: return "Caesars"
     if b in ("untagged", "unknown", "-", ""): return "Untagged"
     return b.title() if b else "Untagged"
@@ -3481,7 +3489,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             and has_pri
             and core_count >= METHODS_MIN
             and p_abs
-            and p_abs <= 999
+            and p_abs < JUNK_PRICE
+            and last_two(best) in TAKE_HOT_ENDS
         ):
             is_bet = True
             score_override = True
