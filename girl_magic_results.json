@@ -107842,5 +107842,80 @@
     "source": "shop_lean",
     "logged_at": "2026-09-09T16:14:07.182977+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Jonah Cox_watch_44",
+    "date": "2026-09-09",
+    "time": "10:05 AM",
+    "player": "Jonah Cox",
+    "score": 44,
+    "edge": 155,
+    "best_price": 980,
+    "best_book": "fanduel",
+    "median": 825.0,
+    "book_prices": {
+      "betmgm": 900,
+      "caesars": 750,
+      "draftkings": 710,
+      "fanduel": 980
+    },
+    "price_bucket": "+800-999",
+    "ending": 80,
+    "mgm_locked": 900,
+    "mgm_ending": 0,
+    "methods": [
+      "DK 10"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-09T17:05:41.785195+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "SAN FRANCISCO GIANTS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-09_Trevor Larnach_watch_44",
+    "date": "2026-09-09",
+    "time": "10:05 AM",
+    "player": "Trevor Larnach",
+    "score": 44,
+    "edge": 60,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 630,
+    "book_prices": {
+      "betmgm": 500,
+      "caesars": 625,
+      "draftkings": 690,
+      "fanduel": 630,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "mgm_locked": 500,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 00",
+      "FD Pattern",
+      "DK FD-style",
+      "Stayed in the group",
+      "Match 00"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-09T17:05:41.786398+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "MINNESOTA TWINS",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.6
   }
 ]
