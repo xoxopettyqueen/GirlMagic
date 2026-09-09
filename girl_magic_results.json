@@ -95717,5 +95717,192 @@
     "source": "shop_lean",
     "logged_at": "2026-09-09T02:37:13.088617+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Wyatt Langford_shop_take_127",
+    "date": "2026-09-08",
+    "time": "07:41 PM",
+    "player": "Wyatt Langford",
+    "score": 0,
+    "edge": 127,
+    "best_price": 750,
+    "best_book": "fanduel",
+    "median": 612,
+    "book_prices": {
+      "caesars": 575,
+      "draftkings": 550,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T02:41:25.726436+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Jackson Merrill_shop_lean_89",
+    "date": "2026-09-08",
+    "time": "07:41 PM",
+    "player": "Jackson Merrill",
+    "score": 0,
+    "edge": 89,
+    "best_price": 700,
+    "best_book": "fanduel",
+    "median": 637,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 500,
+      "fanduel": 700,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T02:41:25.727726+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Rafael Devers_shop_lean_66",
+    "date": "2026-09-08",
+    "time": "07:41 PM",
+    "player": "Rafael Devers",
+    "score": 0,
+    "edge": 66,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 800,
+      "fanduel": 650,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T02:41:25.729777+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Luis Campusano_shop_lean_51",
+    "date": "2026-09-08",
+    "time": "07:41 PM",
+    "player": "Luis Campusano",
+    "score": 0,
+    "edge": 51,
+    "best_price": 900,
+    "best_book": "fanduel",
+    "median": 850,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 800,
+      "fanduel": 900,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T02:41:25.731763+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Enrique Hern\u00e1ndez_shop_lean_47",
+    "date": "2026-09-08",
+    "time": "07:41 PM",
+    "player": "Enrique Hern\u00e1ndez",
+    "score": 0,
+    "edge": 47,
+    "best_price": 475,
+    "best_book": "hardrockbet",
+    "median": 427,
+    "book_prices": {
+      "caesars": 390,
+      "draftkings": 425,
+      "fanduel": 430,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T02:41:25.732539+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Teoscar Hern\u00e1ndez_shop_lean_41",
+    "date": "2026-09-08",
+    "time": "07:41 PM",
+    "player": "Teoscar Hern\u00e1ndez",
+    "score": 0,
+    "edge": 41,
+    "best_price": 350,
+    "best_book": "hardrockbet",
+    "median": 300,
+    "book_prices": {
+      "caesars": 290,
+      "draftkings": 300,
+      "fanduel": 300,
+      "hardrockbet": 350
+    },
+    "price_bucket": "under +400",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T02:41:25.733326+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Teoscar Hernandez_shop_lean_40",
+    "date": "2026-09-08",
+    "time": "07:41 PM",
+    "player": "Teoscar Hernandez",
+    "score": 0,
+    "edge": 40,
+    "best_price": 475,
+    "best_book": "hardrockbet",
+    "median": 437,
+    "book_prices": {
+      "caesars": 400,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T02:41:25.733720+00:00",
+    "price_source": "shop"
   }
 ]
