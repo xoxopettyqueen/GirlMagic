@@ -5818,6 +5818,18 @@ def main():
         )
 
     if page == "Numerology:":
+        st.markdown("""
+        <style>
+        .num-ritual{background:linear-gradient(135deg,#3b0764 0%,#831843 55%,#1e1b4b 100%);border:1px solid #f472b6;border-radius:22px;padding:18px 20px;margin-bottom:12px;box-shadow:0 0 28px rgba(236,72,153,.25)}
+        .num-ritual h3{font-family:'Playfair Display',serif;color:#fff;margin:0;font-size:1.55rem}
+        .num-ritual .big{font-family:'Playfair Display',serif;font-size:4rem;line-height:1;color:#fbcfe8;text-shadow:0 0 18px #ec4899}
+        .num-ritual p{color:#fce7f3;margin:6px 0 0;font-size:.9rem}
+        .num-quote{color:#f9a8d4;font-style:italic;font-size:.82rem;margin-top:8px}
+        .num-chip{display:inline-block;background:#2a1040;border:1px solid #e879f9;color:#fbcfe8;border-radius:999px;padding:3px 10px;margin:2px;font-size:.72rem;font-weight:700}
+        .num-chip:hover{box-shadow:0 0 12px #f472b6}
+        .num-hot{border-color:#fbbf24;color:#fde68a}
+        </style>
+        """, unsafe_allow_html=True)
         st.markdown('<div class="queen-banner">🔮 Numerology · odds first</div>', unsafe_allow_html=True)
         cfg = sport_cfg()
         try:
@@ -5833,13 +5845,13 @@ def main():
         day_key = _num_reduce(day_n, keep_master=False)
         sport_line = "Kickoff number" if active_sport() == "NFL" else "First-pitch number"
         st.markdown(
-            f'<div class="petty-row">'
-            f'<div class="petty-box"><div class="petty-num">{day_n}</div><div class="petty-label">{sport_line}</div></div>'
-            f'<div class="petty-box" style="flex:2;text-align:left">'
-            f'<div class="note">{formula} → {day_n} · {cfg["label"]}</div>'
-            f'<b>{_NUM_SOFT.get(day_key, "")}</b><br>'
-            f'<span class="note">A name only matters if the PRICE also talks — ending, DK 10, MGM 25/50/75, FD pattern, or exact match.</span>'
-            f'</div></div>',
+            f'<div class="num-ritual"><div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">'
+            f'<div class="big">{day_n}</div>'
+            f'<div><h3>{sport_line}</h3>'
+            f'<p>{formula} → <b>{day_n}</b> · {cfg["label"]}</p>'
+            f'<p><b>{_NUM_SOFT.get(day_key, "")}</b></p>'
+            f'<div class="num-quote">The number is the vibe. The price is the receipt. We don’t green a name just because the math is cute.</div>'
+            f'</div></div></div>',
             unsafe_allow_html=True,
         )
 
@@ -5914,6 +5926,28 @@ def main():
             f'</div>',
             unsafe_allow_html=True,
         )
+        st.markdown(
+            '<span class="num-chip num-hot">10 / 25 / 50 / 75 / 90</span>'
+            '<span class="num-chip">+400s +500s +600s</span>'
+            '<span class="num-chip">DK 10 · MGM 25/50 · FD 600</span>'
+            '<span class="num-chip">Benford boost</span>'
+            '<span class="num-chip">Name+price boost</span>',
+            unsafe_allow_html=True,
+        )
+        elite = [e for e in (ev_board or []) if e.get("is_bet")]
+        if elite:
+            st.markdown("#### Petty Picks 💋")
+            st.caption("Already cleared TAKE. Number is the bow, not the reason.")
+            pk = st.columns(min(3, len(elite[:3])))
+            for i, item in enumerate(elite[:6]):
+                with pk[i % len(pk)]:
+                    st.markdown(
+                        f'<div class="card bet"><div class="card-kicker">PETTY PICK</div>'
+                        f'<div class="card-name">{item["player"]}</div>'
+                        f'<div class="card-line"><b>{format_odds(item.get("best_price"))}</b> {book_label(item.get("best_book"))}</div>'
+                        f'<div class="note">{item.get("num_tag") or ""}</div></div>',
+                        unsafe_allow_html=True,
+                    )
 
         view = st.radio("Show", ["Name + price", "Has a hook", "Search all hooks"], horizontal=True, key="num_view")
         if view == "Name + price":
@@ -5922,15 +5956,16 @@ def main():
             show = hot + mid
         else:
             show = plays
-        show = sorted(show, key=lambda x: (-x["_score"], x["Player"]))[:40]
+        show = sorted(show, key=lambda x: (-x["_score"], x["Player"]))[:24]
         if not show:
-            st.info("Fetch the slate. This page only lists names whose PRICE or METHOD talks today.")
+            st.info("Fetch the slate. Cute math with no price is just a diary entry.")
         else:
             cols = st.columns(2)
-            for i, r in enumerate(show[:24]):
+            for i, r in enumerate(show):
                 tag_bits = [t.strip() for t in str(r.get("Tags") or "").split(",") if t.strip()][:4]
                 tags_html = "".join(f'<span class="tag tag-family">{t}</span>' for t in tag_bits)
                 vibe = "NAME + PRICE" if r["_score"] >= 3 else "HOOK"
+                meter = make_meter(min(5, max(1, r["_score"])), "high" if r["_score"] >= 3 else "mid")
                 with cols[i % 2]:
                     st.markdown(
                         f'<div class="card">'
@@ -5938,12 +5973,13 @@ def main():
                         f'<span class="score-pill">#{r["Name#"]}</span>'
                         f'<div class="card-name">{r["Player"]}</div>'
                         f'<div class="card-line"><b>{r["Price"]}</b> · ends {r["End"]} → #{r["End#"]}</div>'
+                        f'{meter}'
                         f'<div style="margin-top:6px">{tags_html}</div>'
                         f'<div class="card-foot">{r["Why"]}</div>'
                         f'</div>',
                         unsafe_allow_html=True,
                     )
-            st.caption(f"Name# = name letters · End# = last two of the price · today is {day_key} · not a TAKE IT rule")
+            st.caption("Name# = letters. End# = last two of the price. Today’s number is flavor. TAKE IT still lives on the Board.")
 
     if page == "Code:":
         st.markdown("""
