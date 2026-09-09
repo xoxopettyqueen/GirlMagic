@@ -5652,7 +5652,8 @@ def main():
         )
 
     if page == "Numerology:":
-        st.markdown('<div class="queen-banner">🔮 Numerology</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">🔮 Numerology · odds first</div>', unsafe_allow_html=True)
+        cfg = sport_cfg()
         try:
             default_d = datetime.strptime(today_az(), "%Y-%m-%d").date()
         except Exception:
@@ -5661,74 +5662,118 @@ def main():
         with cdate:
             pick = st.date_input("Date", value=default_d, key="num_date")
         with csearch:
-            q = st.text_input("Player search", placeholder="type a name", key="num_search")
+            q = st.text_input("Player", placeholder="search", key="num_search")
         day_n, _raw, formula = _num_date_number(pick)
         day_key = _num_reduce(day_n, keep_master=False)
+        sport_line = "Kickoff number" if active_sport() == "NFL" else "First-pitch number"
         st.markdown(
             f'<div class="petty-row">'
-            f'<div class="petty-box"><div class="petty-num">{day_n}</div><div class="petty-label">TODAY</div></div>'
-            f'<div class="petty-box" style="flex:2;text-align:left;padding:10px 14px">'
-            f'<div class="note">{formula} → {day_n}</div>'
-            f'<b>{_NUM_SOFT.get(day_key, "")}</b></div></div>',
+            f'<div class="petty-box"><div class="petty-num">{day_n}</div><div class="petty-label">{sport_line}</div></div>'
+            f'<div class="petty-box" style="flex:2;text-align:left">'
+            f'<div class="note">{formula} → {day_n} · {cfg["label"]}</div>'
+            f'<b>{_NUM_SOFT.get(day_key, "")}</b><br>'
+            f'<span class="note">A name only matters if the PRICE also talks — ending, DK 10, MGM 25/50/75, FD pattern, or exact match.</span>'
+            f'</div></div>',
             unsafe_allow_html=True,
         )
 
-        players = []
+        method_map = {}
+        for item in (ev_board or []) + (watch_board or []) + (coverage_board or []):
+            method_map[item.get("player")] = item.get("methods") or []
         odds_rows = st.session_state.get("odds") or []
         ndf = pd.DataFrame(odds_rows) if odds_rows else pd.DataFrame()
+
+        plays = []
         if not ndf.empty and "player" in ndf.columns:
             for p, g in ndf.groupby("player"):
                 nn = _num_name_number(p)
-                best = None
                 try:
                     best = int(g["price"].max())
                 except Exception:
-                    pass
-                players.append({"Player": p, "#": nn, "Vibe": _num_align(nn, day_n)[1], "Price": format_odds(best) if best is not None else "—"})
+                    best = None
+                end = last_two(best) if best is not None else None
+                end_n = _num_reduce(end, False) if end is not None else None
+                meths = method_map.get(p) or []
+                # infer method-ish from price if flags empty
+                hooks = list(meths)
+                if end == 10:
+                    hooks.append("ends 10")
+                if end in (0, 25, 50, 75):
+                    hooks.append(f"classic {end:02d}")
+                if end_n == day_key:
+                    hooks.append(f"ending → {day_key}")
+                if nn == day_key:
+                    hooks.append(f"name → {day_key}")
+                name_hit = nn == day_key
+                price_hit = end_n == day_key
+                method_hit = bool(meths)
+                # only keep if odds hook exists
+                if not (price_hit or method_hit or end in (0, 10, 25, 50, 75)):
+                    if not q.strip():
+                        continue
+                why = []
+                if name_hit and price_hit:
+                    why.append(f"Name #{nn} and price {format_odds(best)} both reduce to today's {day_key}")
+                elif name_hit and method_hit:
+                    why.append(f"Name #{nn} matches today · tags: {', '.join(meths[:3])}")
+                elif price_hit:
+                    why.append(f"Price {format_odds(best)} ends {end:02d} → {end_n} = today")
+                elif method_hit:
+                    why.append("Method tag only — number is extra, not the reason")
+                elif end in (0, 10, 25, 50, 75):
+                    why.append(f"Classic book ending {end:02d} on {format_odds(best)}")
+                else:
+                    why.append("Search only")
+                score = (3 if name_hit and price_hit else 0) + (2 if name_hit and method_hit else 0) + (2 if price_hit else 0) + (1 if method_hit else 0)
+                plays.append({
+                    "Player": p,
+                    "Price": format_odds(best) if best is not None else "—",
+                    "End": f"{end:02d}" if end is not None else "—",
+                    "Name#": nn,
+                    "End#": end_n,
+                    "Tags": ", ".join(list(dict.fromkeys(hooks))[:4]),
+                    "Why": why[0],
+                    "_score": score,
+                })
         if q.strip():
-            players = [p for p in players if q.lower() in p["Player"].lower()] or [{
-                "Player": clean_name(q), "#": _num_name_number(q),
-                "Vibe": _num_align(_num_name_number(q), day_n)[1], "Price": "—",
-            }]
+            plays = [r for r in plays if q.lower() in r["Player"].lower()]
 
-        end_map = Counter()
-        if not ndf.empty and "price" in ndf.columns:
-            for px in ndf["price"].dropna().tolist():
-                e = last_two(px)
-                red = _num_reduce(e, False) if e is not None else None
-                if red:
-                    end_map[red] += 1
-        teams = []
-        for e in st.session_state.get("events") or []:
-            for side in ("away_team", "home_team"):
-                if e.get(side):
-                    teams.append(e[side])
-        teams = sorted(set(teams))
+        hot = [r for r in plays if r["_score"] >= 3]
+        mid = [r for r in plays if r["_score"] == 2]
+        st.markdown(
+            f'<div class="petty-row">'
+            f'<div class="petty-box"><div class="petty-num">{len(hot)}</div><div class="petty-label">NAME + PRICE</div></div>'
+            f'<div class="petty-box"><div class="petty-num">{len(mid)}</div><div class="petty-label">ONE HOOK</div></div>'
+            f'<div class="petty-box"><div class="petty-num">{len(plays)}</div><div class="petty-label">ON THIS LIST</div></div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
 
-        n1, n2, n3, n4 = st.tabs(["Players", "Prices", "Teams", "1–9"])
-        with n1:
-            vibe_f = st.radio("Filter", ["Strong", "All"], horizontal=True, key="num_vibe", label_visibility="collapsed")
-            rows = players
-            if vibe_f == "Strong":
-                rows = [p for p in players if "Strong" in p["Vibe"]]
-            st.caption(f"{len(rows)} · day {day_key}")
-            if rows:
-                st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True, height=280)
-            else:
-                st.caption("Fetch the board, or no Strong names today.")
-        with n2:
-            pdf = pd.DataFrame([{"#": n, "Count": end_map.get(n, 0), "Vibe": _num_align(n, day_n)[1], "Means": _NUM_SOFT.get(n, "")} for n in range(1, 10)])
-            st.dataframe(pdf, use_container_width=True, hide_index=True, height=320)
-        with n3:
-            tdf = pd.DataFrame([{"Team": t, "#": _num_initials(t), "Vibe": _num_align(_num_initials(t), day_n)[1]} for t in teams])
-            if tdf.empty:
-                st.caption("Load games first.")
-            else:
-                st.dataframe(tdf, use_container_width=True, hide_index=True, height=280)
-        with n4:
+        view = st.radio("Show", ["Name + price", "Has a hook", "Search all hooks"], horizontal=True, key="num_view")
+        if view == "Name + price":
+            show = hot
+        elif view == "Has a hook":
+            show = hot + mid
+        else:
+            show = plays
+        show = sorted(show, key=lambda x: (-x["_score"], x["Player"]))[:40]
+        if not show:
+            st.info("Fetch the slate. This page only lists names whose PRICE or METHOD talks today.")
+        else:
             st.dataframe(
-                pd.DataFrame([{"#": n, "Means": _NUM_SOFT.get(n, "")} for n in range(1, 10)]),
+                pd.DataFrame([{k: r[k] for k in ("Player", "Price", "End", "Name#", "End#", "Tags", "Why")} for r in show]),
                 use_container_width=True, hide_index=True, height=320,
+            )
+
+        with st.expander("How to read this"):
+            st.markdown(
+                f"""
+- **Name#** = letters in the name (A=1 … I=9), reduced. Jr does not count.
+- **End#** = last two digits of the price, reduced. +450 → 4+5=9.
+- **Name + price** = both equal today's {day_key}. That's the only "strong" we care about.
+- Tags are the same Girl Magic methods as the Board (DK 10, MGM 25/50/75, FD pattern, exact).
+- Numerology does **not** change TAKE IT. It's a second pair of eyes on the same {cfg['label']} prices.
+                """
             )
 
     if page == "Code:":
