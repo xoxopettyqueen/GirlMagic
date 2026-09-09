@@ -163,16 +163,26 @@ SPORT_CFG = {
         "market": "batter_home_runs",
         "label": "0.5 HR Over",
         "hit": "HR",
+        "hits": "HRs",
         "sgo": True,
         "days": 1,
+        "when": "First pitch",
+        "lock_caption": "Today's homers matched to what we locked before first pitch.",
+        "lock_count": "MLB HR",
+        "shop_empty": "Fetch 0.5 HR first - Shop fills from the live slate.",
     },
     "NFL": {
         "key": "americanfootball_nfl",
         "market": "player_anytime_td",
         "label": "Anytime TD Yes / 0.5",
         "hit": "TD",
+        "hits": "TDs",
         "sgo": False,
         "days": 8,
+        "when": "Kickoff",
+        "lock_caption": "NFL Lock Lab uses TD prices we saved pre-kick. No MLB homers on this side.",
+        "lock_count": "NFL TD",
+        "shop_empty": "Fetch Anytime TD first - Shop fills from the NFL slate.",
     },
 }
 
@@ -766,7 +776,7 @@ def render_shop_tab(df):
     st.markdown("### Odds Shop")
     st.caption("Price vs fair. TAKE / LEAN log on their own (even if Board already has the name). Grade them under Grade → Shop.")
     if df is None or getattr(df, "empty", True):
-        st.info("Fetch 0.5 HR first - Shop fills from the live slate.")
+        st.info(sport_cfg()["shop_empty"])
         return
     shop = build_shop_board(df)
     book_meter = benford_book_meter(df)
@@ -2187,7 +2197,10 @@ def build_whats_going_today(rows):
     Not the same as MGM pair methods - those stay pair/trio-only on the Board.
     """
     today = today_az()
-    hr_names, _final, _msg = fetch_mlb_hr_hitters()
+    if active_sport() == "NFL":
+        hr_names, _final, _msg = [], False, "NFL mode · MLB homers off"
+    else:
+        hr_names, _final, _msg = fetch_mlb_hr_hitters()
 
     todays = [r for r in rows if r.get("date") == today]
     hits_logged = [r for r in todays if r.get("result") == "HIT"]
@@ -2330,11 +2343,20 @@ def render_whats_going_today():
             '</div>' % (" · ".join(bits))
         )
 
-    title = "What's Going Today"
-    sub = (
-        "%s HRs · %s on our list · best price among DK/FD/MGM/HardRock "
-        "(not MGM pair rules)"
-    ) % (mlb_hr, on_list)
+    cfg = sport_cfg()
+    title = "What's Going Today · %s" % active_sport()
+    if active_sport() == "NFL":
+        # Don't mix MLB box-score HRs into the NFL banner
+        mlb_hr = sum(1 for r in rows if r.get("date") == today_az() and r.get("result") == "HIT" and r.get("market") == "anytime_td")
+        sub = (
+            "%s %s graded HIT today · %s on our list · DK/FD/MGM/HardRock TD endings "
+            "(MLB homers hidden while NFL is on)"
+        ) % (mlb_hr, cfg["hits"], on_list)
+    else:
+        sub = (
+            "%s %s · %s on our list · best price among DK/FD/MGM/HardRock "
+            "(not MGM pair rules)"
+        ) % (mlb_hr, cfg["hits"], on_list)
     html = (
         '<div class="trends-today" style="padding:12px 14px">'
         '<div class="trends-today-header" style="margin-bottom:4px">'
@@ -4358,9 +4380,9 @@ def main():
         with cfb:
             min_score = st.slider("Min petty score", 0, 100, 0, 5, key="board_min_score_main")
         with cfc:
-            sort_by = st.selectbox("Sort games", ["First pitch", "Highest score", "Biggest edge"], key="board_sort_main")
+            sort_by = st.selectbox("Sort games", [sport_cfg()["when"], "Highest score", "Biggest edge"], key="board_sort_main")
         with cfd:
-            time_win = st.selectbox("First pitch", ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
+            time_win = st.selectbox(sport_cfg()["when"], ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
         name_q = st.text_input("Find a name", "", key="board_name_main").strip().lower()
 
         def _render_board_card(item, label, cls):
@@ -4835,11 +4857,19 @@ def main():
 
     if page == "Grade:Lock Lab":
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
-        st.caption("Today's homers matched to what we locked before first pitch.")
-        lab = build_lock_lab()
+        st.caption(sport_cfg()["lock_caption"])
+        if active_sport() == "NFL":
+            lab = {
+                "hr_count": 0, "matched": [], "unmatched": [],
+                "lock_n": len(st.session_state.get("pregame_lock") or {}),
+                "insights": ["NFL is on. Homer Lock Lab stays on the MLB side. Grade TDs under Results."],
+                "watch": [], "mlb_msg": "",
+            }
+        else:
+            lab = build_lock_lab()
         st.markdown(f"""
         <div class="petty-row">
-            <div class="petty-box"><div class="petty-num">{lab["hr_count"]}</div><div class="petty-label">MLB HR</div></div>
+            <div class="petty-box"><div class="petty-num">{lab["hr_count"]}</div><div class="petty-label">{sport_cfg()["lock_count"]}</div></div>
             <div class="petty-box"><div class="petty-num">{len(lab["matched"])}</div><div class="petty-label">In Lock</div></div>
             <div class="petty-box"><div class="petty-num">{len(lab["unmatched"])}</div><div class="petty-label">Not in Lock</div></div>
             <div class="petty-box"><div class="petty-num">{lab["lock_n"]}</div><div class="petty-label">Lock size</div></div>
@@ -5644,11 +5674,18 @@ def main():
             }]
 
         st.markdown("#### Players")
+        vibe_f = st.radio("Show", ["All", "Strong only"], horizontal=True, key="num_vibe")
         if not players:
             st.caption("Fetch the board first.")
         else:
+            ranked = sorted(players, key=lambda x: x["player"])
+            if vibe_f == "Strong only":
+                ranked = [p for p in ranked if _num_align(p["num"], day_n)[0] == "strong"]
+                st.caption(f"Day is {day_key} · names that also reduce to {day_key} · {len(ranked)} of {len(players)}")
+            else:
+                st.caption(f"{len(players)} names · Strong = name # matches day {day_key}")
             cols = st.columns(2)
-            for i, p in enumerate(sorted(players, key=lambda x: (0 if _num_align(x["num"], day_n)[0] == "strong" else 1, x["player"]))):
+            for i, p in enumerate(ranked[:40]):
                 chip = _num_align(p["num"], day_n)[1]
                 jer = p["jersey"] if p.get("jersey") is not None else "—"
                 with cols[i % 2]:
