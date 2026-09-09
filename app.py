@@ -5633,120 +5633,79 @@ def main():
             default_d = datetime.strptime(today_az(), "%Y-%m-%d").date()
         except Exception:
             default_d = datetime.now().date()
-        pick = st.date_input("Date", value=default_d, key="num_date")
-        q = st.text_input("Player", placeholder="Search", key="num_search")
+        cdate, csearch = st.columns([1, 2])
+        with cdate:
+            pick = st.date_input("Date", value=default_d, key="num_date")
+        with csearch:
+            q = st.text_input("Player search", placeholder="type a name", key="num_search")
         day_n, _raw, formula = _num_date_number(pick)
         day_key = _num_reduce(day_n, keep_master=False)
-        day_align = "💖 Strong" if day_key else "💜 Neutral"
         st.markdown(
-            f'<div class="card" style="text-align:center">'
-            f'<div style="font-family:Playfair Display,serif;font-size:3.4rem;font-weight:900;line-height:1">{day_n}</div>'
-            f'<div class="tag">{formula} → {day_n}</div> '
-            f'<span class="tag tag-family">{day_align}</span>'
-            f'<div class="note">{_NUM_SOFT.get(day_key, "")}</div></div>',
+            f'<div class="petty-row">'
+            f'<div class="petty-box"><div class="petty-num">{day_n}</div><div class="petty-label">TODAY</div></div>'
+            f'<div class="petty-box" style="flex:2;text-align:left;padding:10px 14px">'
+            f'<div class="note">{formula} → {day_n}</div>'
+            f'<b>{_NUM_SOFT.get(day_key, "")}</b></div></div>',
             unsafe_allow_html=True,
         )
 
-        # players from current board
         players = []
         odds_rows = st.session_state.get("odds") or []
         ndf = pd.DataFrame(odds_rows) if odds_rows else pd.DataFrame()
         if not ndf.empty and "player" in ndf.columns:
             for p, g in ndf.groupby("player"):
-                jersey = None
-                if "jersey" in g.columns:
-                    try:
-                        jersey = int(pd.to_numeric(g["jersey"], errors="coerce").dropna().iloc[0])
-                    except Exception:
-                        jersey = None
+                nn = _num_name_number(p)
                 best = None
                 try:
                     best = int(g["price"].max())
                 except Exception:
                     pass
-                nn = _num_name_number(p)
-                personal = _num_reduce(jersey) if jersey else nn
-                players.append({"player": p, "jersey": jersey, "num": personal, "name_n": nn, "best": best})
+                players.append({"Player": p, "#": nn, "Vibe": _num_align(nn, day_n)[1], "Price": format_odds(best) if best is not None else "—"})
         if q.strip():
-            players = [p for p in players if q.lower() in p["player"].lower()] or [{
-                "player": clean_name(q), "jersey": None, "num": _num_name_number(q),
-                "name_n": _num_name_number(q), "best": None,
+            players = [p for p in players if q.lower() in p["Player"].lower()] or [{
+                "Player": clean_name(q), "#": _num_name_number(q),
+                "Vibe": _num_align(_num_name_number(q), day_n)[1], "Price": "—",
             }]
 
-        st.markdown("#### Players")
-        vibe_f = st.radio("Show", ["All", "Strong only"], horizontal=True, key="num_vibe")
-        if not players:
-            st.caption("Fetch the board first.")
-        else:
-            ranked = sorted(players, key=lambda x: x["player"])
-            if vibe_f == "Strong only":
-                ranked = [p for p in ranked if _num_align(p["num"], day_n)[0] == "strong"]
-                st.caption(f"Day is {day_key} · names that also reduce to {day_key} · {len(ranked)} of {len(players)}")
-            else:
-                st.caption(f"{len(players)} names · Strong = name # matches day {day_key}")
-            cols = st.columns(2)
-            for i, p in enumerate(ranked[:40]):
-                chip = _num_align(p["num"], day_n)[1]
-                jer = p["jersey"] if p.get("jersey") is not None else "—"
-                with cols[i % 2]:
-                    st.markdown(
-                        f'<div class="card"><b>{p["player"]}</b> '
-                        f'<span class="score-pill">#{p["num"]}</span> '
-                        f'<span class="tag">{chip}</span><br>'
-                        f'<span class="note">jersey {jer} · name #{p["name_n"]}</span></div>',
-                        unsafe_allow_html=True,
-                    )
-
-        st.markdown("#### Prices")
-        if ndf.empty or "price" not in ndf.columns:
-            st.caption("No prices yet.")
-        else:
-            end_map = Counter()
+        end_map = Counter()
+        if not ndf.empty and "price" in ndf.columns:
             for px in ndf["price"].dropna().tolist():
                 e = last_two(px)
                 red = _num_reduce(e, False) if e is not None else None
                 if red:
                     end_map[red] += 1
-            pcols = st.columns(3)
-            for i, n in enumerate(range(1, 10)):
-                a, chip = _num_align(n, day_n)
-                with pcols[i % 3]:
-                    st.markdown(
-                        f'<div class="card"><b>{n}</b> <span class="tag">{chip}</span> · {end_map.get(n, 0)}×<br>'
-                        f'<span class="note">{_NUM_SOFT.get(n, "")}</span></div>',
-                        unsafe_allow_html=True,
-                    )
-            spark = pd.DataFrame({"n": list(range(1, 10)), "count": [end_map.get(n, 0) for n in range(1, 10)]})
-            if spark["count"].sum():
-                st.bar_chart(spark.set_index("n"))
-
-        st.markdown("#### Teams")
         teams = []
         for e in st.session_state.get("events") or []:
             for side in ("away_team", "home_team"):
-                name = e.get(side)
-                if name:
-                    teams.append(name)
+                if e.get(side):
+                    teams.append(e[side])
         teams = sorted(set(teams))
-        if not teams:
-            st.caption("Load games first.")
-        else:
-            tcols = st.columns(2)
-            for i, name in enumerate(teams):
-                nn = _num_initials(name)
-                chip = _num_align(nn, day_n)[1]
-                with tcols[i % 2]:
-                    st.markdown(
-                        f'<div class="card"><b>{name}</b> <span class="score-pill">#{nn}</span> '
-                        f'<span class="tag">{chip}</span></div>',
-                        unsafe_allow_html=True,
-                    )
 
-        st.markdown("#### Glossary")
-        gcols = st.columns(3)
-        for i, n in enumerate(range(1, 10)):
-            with gcols[i % 3]:
-                st.markdown(f'<div class="card"><b>{n}</b> · {_NUM_SOFT.get(n, "")}</div>', unsafe_allow_html=True)
+        n1, n2, n3, n4 = st.tabs(["Players", "Prices", "Teams", "1–9"])
+        with n1:
+            vibe_f = st.radio("Filter", ["Strong", "All"], horizontal=True, key="num_vibe", label_visibility="collapsed")
+            rows = players
+            if vibe_f == "Strong":
+                rows = [p for p in players if "Strong" in p["Vibe"]]
+            st.caption(f"{len(rows)} · day {day_key}")
+            if rows:
+                st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True, height=280)
+            else:
+                st.caption("Fetch the board, or no Strong names today.")
+        with n2:
+            pdf = pd.DataFrame([{"#": n, "Count": end_map.get(n, 0), "Vibe": _num_align(n, day_n)[1], "Means": _NUM_SOFT.get(n, "")} for n in range(1, 10)])
+            st.dataframe(pdf, use_container_width=True, hide_index=True, height=320)
+        with n3:
+            tdf = pd.DataFrame([{"Team": t, "#": _num_initials(t), "Vibe": _num_align(_num_initials(t), day_n)[1]} for t in teams])
+            if tdf.empty:
+                st.caption("Load games first.")
+            else:
+                st.dataframe(tdf, use_container_width=True, hide_index=True, height=280)
+        with n4:
+            st.dataframe(
+                pd.DataFrame([{"#": n, "Means": _NUM_SOFT.get(n, "")} for n in range(1, 10)]),
+                use_container_width=True, hide_index=True, height=320,
+            )
 
     if page == "Code:":
         st.markdown("""
