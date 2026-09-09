@@ -105254,38 +105254,171 @@
     "price_source": "shop"
   },
   {
-    "id": "2026-09-09_Jorge Mateo_watch_14",
+    "id": "2026-09-09_Alex Bregman_shop_take_185",
     "date": "2026-09-09",
     "time": "08:19 AM",
-    "player": "Jorge Mateo",
-    "score": 14,
-    "edge": 20,
+    "player": "Alex Bregman",
+    "score": 0,
+    "edge": 185,
+    "best_price": 750,
+    "best_book": "fanduel",
+    "median": 625,
+    "book_prices": {
+      "betmgm": 360,
+      "caesars": 625,
+      "draftkings": 700,
+      "fanduel": 750,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T15:19:55.695111+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Nolan Gorman_shop_take_88",
+    "date": "2026-09-09",
+    "time": "08:19 AM",
+    "player": "Nolan Gorman",
+    "score": 0,
+    "edge": 88,
+    "best_price": 620,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 475,
+      "caesars": 525,
+      "draftkings": 620,
+      "fanduel": 590,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+600s",
+    "ending": 20,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T15:19:55.708705+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Jackson Merrill_shop_take_86",
+    "date": "2026-09-09",
+    "time": "08:19 AM",
+    "player": "Jackson Merrill",
+    "score": 0,
+    "edge": 86,
+    "best_price": 660,
+    "best_book": "draftkings",
+    "median": 600,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 575,
+      "draftkings": 660,
+      "fanduel": 630,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 60,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T15:19:55.709888+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Daylen Lile_shop_lean_49",
+    "date": "2026-09-09",
+    "time": "08:19 AM",
+    "player": "Daylen Lile",
+    "score": 0,
+    "edge": 49,
+    "best_price": 650,
+    "best_book": "fanduel",
+    "median": 620,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 575,
+      "draftkings": 620,
+      "fanduel": 650,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T15:19:55.738229+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Bryan Reynolds_shop_lean_43",
+    "date": "2026-09-09",
+    "time": "08:19 AM",
+    "player": "Bryan Reynolds",
+    "score": 0,
+    "edge": 43,
+    "best_price": 550,
+    "best_book": "hardrockbet",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 550,
+      "caesars": 525,
+      "draftkings": 484,
+      "fanduel": 440,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T15:19:55.744883+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-09_Xander Bogaerts_shop_lean_43",
+    "date": "2026-09-09",
+    "time": "08:19 AM",
+    "player": "Xander Bogaerts",
+    "score": 0,
+    "edge": 43,
     "best_price": 920,
     "best_book": "draftkings",
-    "median": 900,
+    "median": 880,
     "book_prices": {
-      "betmgm": 900,
-      "caesars": 850,
+      "betmgm": 800,
+      "caesars": 950,
       "draftkings": 920,
-      "fanduel": 870,
-      "hardrockbet": 900
+      "fanduel": 880,
+      "hardrockbet": 850
     },
     "price_bucket": "+800-999",
     "ending": 20,
-    "mgm_locked": 900,
-    "mgm_ending": 0,
     "methods": [
-      "Books tight",
-      "FD Pattern",
-      "DK FD-style"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-09T15:19:53.320677+00:00",
-    "price_source": "pregame_lock",
-    "benford_tag": "Authentic",
-    "benford_note": "",
-    "benford_cluster": 0.6
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T15:19:55.746362+00:00",
+    "price_source": "shop"
   }
 ]
