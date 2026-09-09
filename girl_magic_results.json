@@ -88992,5 +88992,301 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-08_Konnor Griffin_shop_take_118",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Konnor Griffin",
+    "score": 0,
+    "edge": 118,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 900,
+    "book_prices": {
+      "caesars": 950,
+      "draftkings": 950,
+      "fanduel": 650,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T00:35:59.325831+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Tim Tawa_shop_take_105",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Tim Tawa",
+    "score": 0,
+    "edge": 105,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 637,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 750,
+      "fanduel": 650,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T00:35:59.326880+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Bobby Witt Jr._shop_lean_95",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Bobby Witt Jr.",
+    "score": 0,
+    "edge": 95,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 725,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 800,
+      "fanduel": 700,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.327771+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Spencer Horwitz_shop_take_91",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Spencer Horwitz",
+    "score": 0,
+    "edge": 91,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 750,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 750,
+      "fanduel": 750,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-09T00:35:59.328201+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Matt Olson_shop_lean_86",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Matt Olson",
+    "score": 0,
+    "edge": 86,
+    "best_price": 700,
+    "best_book": "fanduel",
+    "median": 612,
+    "book_prices": {
+      "caesars": 575,
+      "draftkings": 650,
+      "fanduel": 700,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.328596+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Andrew Benintendi_shop_lean_72",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Andrew Benintendi",
+    "score": 0,
+    "edge": 72,
+    "best_price": 700,
+    "best_book": "hardrockbet",
+    "median": 625,
+    "book_prices": {
+      "caesars": 575,
+      "draftkings": 650,
+      "fanduel": 600,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.330487+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Ozzie Albies_shop_lean_71",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Ozzie Albies",
+    "score": 0,
+    "edge": 71,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 825,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 850,
+      "fanduel": 800,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.331400+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Munetaka Murakami_shop_lean_53",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Munetaka Murakami",
+    "score": 0,
+    "edge": 53,
+    "best_price": 475,
+    "best_book": "draftkings",
+    "median": 410,
+    "book_prices": {
+      "caesars": 400,
+      "draftkings": 475,
+      "fanduel": 420,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.334713+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Rafael Flores Jr._shop_lean_47",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Rafael Flores Jr.",
+    "score": 0,
+    "edge": 47,
+    "best_price": 600,
+    "best_book": "fanduel",
+    "median": 562,
+    "book_prices": {
+      "caesars": 525,
+      "draftkings": 500,
+      "fanduel": 600,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.337132+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Ronald Acu\u00f1a Jr._shop_lean_45",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Ronald Acu\u00f1a Jr.",
+    "score": 0,
+    "edge": 45,
+    "best_price": 700,
+    "best_book": "draftkings",
+    "median": 650,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 700,
+      "fanduel": 650,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.337612+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Bryan Reynolds_shop_lean_43",
+    "date": "2026-09-08",
+    "time": "05:35 PM",
+    "player": "Bryan Reynolds",
+    "score": 0,
+    "edge": 43,
+    "best_price": 575,
+    "best_book": "hardrockbet",
+    "median": 525,
+    "book_prices": {
+      "caesars": 525,
+      "fanduel": 500,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+500s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:35:59.338099+00:00",
+    "price_source": "shop"
   }
 ]
