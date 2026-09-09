@@ -91548,5 +91548,114 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-08_Julius Chestnut_shop_lean_339",
+    "date": "2026-09-08",
+    "time": "05:51 PM",
+    "player": "Julius Chestnut",
+    "score": 0,
+    "edge": 339,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 600,
+    "book_prices": {
+      "caesars": 350,
+      "draftkings": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:51:47.034869+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Justice Hill_shop_lean_75",
+    "date": "2026-09-08",
+    "time": "05:51 PM",
+    "player": "Justice Hill",
+    "score": 0,
+    "edge": 75,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 340,
+      "caesars": 475,
+      "draftkings": 550,
+      "fanduel": 550,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:51:47.049090+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Devontez Walker_shop_lean_56",
+    "date": "2026-09-08",
+    "time": "05:51 PM",
+    "player": "Devontez Walker",
+    "score": 0,
+    "edge": 56,
+    "best_price": 900,
+    "best_book": "draftkings",
+    "median": 850,
+    "book_prices": {
+      "betmgm": 825,
+      "caesars": 800,
+      "draftkings": 900,
+      "fanduel": 850,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:51:47.059812+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-08_Kaytron Allen_shop_lean_44",
+    "date": "2026-09-08",
+    "time": "05:51 PM",
+    "player": "Kaytron Allen",
+    "score": 0,
+    "edge": 44,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 1000,
+      "caesars": 800,
+      "draftkings": 950,
+      "fanduel": 900,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-09T00:51:47.070343+00:00",
+    "price_source": "shop"
   }
 ]
