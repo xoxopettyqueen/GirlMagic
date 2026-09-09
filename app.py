@@ -173,7 +173,8 @@ li[role="option"]{color:#fce7f3!important}
 }
 .filter-shell h4{color:#f9a8d4;margin:0 0 8px 0;font-size:.95rem}
 .sport-row{margin:4px 0 10px 0}
-.sport-row .stCaption{color:#c4b5d6!important;padding-top:8px}
+div[data-testid="stSegmentedControl"] button{border-radius:999px!important}
+div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!important;opacity:1!important}
 .games-hint{color:#e9d5ff;font-size:.8rem;margin:4px 0 8px}
 .shop-wrap{overflow-x:auto;margin:8px 0 16px}
 .shop-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:.78rem}
@@ -4409,29 +4410,45 @@ def main():
     st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
     st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
     if "sport" not in st.session_state:
-        st.session_state["sport"] = "MLB"
-    st.markdown('<div class="sport-row">', unsafe_allow_html=True)
-    sc1, sc2, sc3 = st.columns([1.1, 1.1, 4])
-    with sc1:
-        if st.button("⚾ MLB · 0.5 HR", use_container_width=True,
-                     type="primary" if st.session_state.get("sport") == "MLB" else "secondary",
-                     key="sport_mlb_btn"):
-            st.session_state["sport"] = "MLB"
-            st.rerun()
-    with sc2:
-        if st.button("🏈 NFL · Anytime TD", use_container_width=True,
-                     type="primary" if st.session_state.get("sport") == "NFL" else "secondary",
-                     key="sport_nfl_btn"):
-            st.session_state["sport"] = "NFL"
-            st.rerun()
-    with sc3:
-        st.caption("Same Board / Shop / Grade. Switch sport, then Load Games + Fetch.")
-    st.markdown("</div>", unsafe_allow_html=True)
-    sport = st.session_state.get("sport") or "MLB"
+        qp = "MLB"
+        try:
+            qp = st.query_params.get("sport", "MLB")
+        except Exception:
+            qp = "MLB"
+        st.session_state["sport"] = qp if qp in SPORT_CFG else "MLB"
+    try:
+        sport_pick = st.segmented_control(
+            "Sport",
+            options=["MLB", "NFL"],
+            default=st.session_state.get("sport") or "MLB",
+            key="sport_pick",
+            help="MLB = 0.5 HR. NFL = Anytime TD. Stays on the sport you pick.",
+        )
+    except Exception:
+        sport_pick = st.radio(
+            "Sport",
+            ["MLB", "NFL"],
+            index=0 if st.session_state.get("sport") != "NFL" else 1,
+            horizontal=True,
+            key="sport_pick",
+            label_visibility="visible",
+        )
+    if sport_pick in SPORT_CFG and sport_pick != st.session_state.get("sport"):
+        st.session_state["sport"] = sport_pick
+        try:
+            st.query_params["sport"] = sport_pick
+        except Exception:
+            pass
+    sport = st.session_state.get("sport") if st.session_state.get("sport") in SPORT_CFG else "MLB"
+    try:
+        st.query_params["sport"] = sport
+    except Exception:
+        pass
     if st.session_state.get("_sport_seen") != sport:
         for k in ("selected_games", "last_selected", "events", "odds", "previous_odds", "found_books", "last_fetch_time", "auto_once", "new_fetch", "lineup_names"):
             st.session_state.pop(k, None)
         st.session_state["_sport_seen"] = sport
+        st.session_state["_autoload_events"] = True
     cfg = sport_cfg()
     st.markdown(
         f'<p class="tagline">Where odds intuition meets Petty precision. {cfg["label"]} only.</p>',
@@ -4471,7 +4488,7 @@ def main():
     with st.sidebar:
         st.markdown("**Slate**")
         st.caption(f"{ev_n} games · lock {lock_n} · {last_ft}")
-        if st.button("Load games", type="primary", use_container_width=True):
+        if st.button("Load games", type="primary", use_container_width=True) or st.session_state.pop("_autoload_events", False):
             raw = fetch_events_oddsapi(odds_key, sport_cfg()["key"])
             st.session_state["events"] = filter_events_today(raw)
             st.session_state["events_raw_count"] = len(raw or [])
@@ -4511,8 +4528,7 @@ def main():
             st.caption("NFL grades itself from finished games. No RotoWire. No MLB lineups.")
         events = st.session_state.get("events", [])
         if not events:
-            st.info("Click **Load Games** once.")
-            st.stop()
+            st.info(f"Click **Load games** for {active_sport()}. Then select games and Fetch.")
         def _game_label(e):
             away = e.get("away_team") or "?"
             home = e.get("home_team") or "?"
