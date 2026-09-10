@@ -308,8 +308,8 @@ PRIORITY_METHODS = {
     "Multi-book Shorten",
     "Books tight",
 }
-TAKE_HOT_ENDS = {10, 25, 75, 90}  # 50 dropped from hot ticket endings
-TAKE_STRONG_BUCKETS = {"+400s", "+500s"}  # +600s 14% — not auto-green
+TAKE_HOT_ENDS = {10, 25, 50, 75, 90}  # ticket ending (DK/FD/HR). MGM-50 *method* is still support-only
+TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}  # +600s need a real priority tag, not MGM juice
 TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "hardrockbet", "fanatics"}
 # PREMIUM = counts as core (still need >=1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
@@ -483,10 +483,17 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
         return pri or hot or sc >= SCORE_SOFT_TAKE
     if not pri and sc < SCORE_SOFT_TAKE:
         return False
-    if price_bucket(best_price) not in TAKE_STRONG_BUCKETS and sc < SCORE_TAKE_OVERRIDE:
+    bucket = price_bucket(best_price)
+    if bucket in ("+400s", "+500s"):
+        pass
+    elif bucket == "+600s":
+        # 14% lane — only if a real priority tag fired (not MGM-as-ticket)
+        if not pri:
+            return False
+    elif sc < SCORE_TAKE_OVERRIDE:
         return False
     if end is None or end not in TAKE_HOT_ENDS:
-        if sc >= SCORE_SOFT_TAKE:
+        if sc >= SCORE_SOFT_TAKE and pri:
             return True
         return False
     return True
@@ -809,15 +816,24 @@ def build_shop_board(df):
         if not prices:
             continue
         books = list(book_px.keys())
-        best, best_book = smart_best(prices, books) if len(prices) >= 2 else (prices[0], books[0])
+        best, best_book = smart_best(prices, books) if len(prices) >= 2 else pick_ticket(prices, books)
+        if best is None:
+            best, best_book = prices[0], books[0]
         try:
             med = int(statistics.median(prices)) if len(prices) >= 2 else int(best)
         except Exception:
             med = int(best) if best is not None else None
-        fair_nv, fair_p = no_vig_fair_american(prices)
+        ticket_px = [book_px[b] for b in book_px if _is_ticket_book(b)]
+        fair_src = ticket_px if len(ticket_px) >= 2 else prices
+        fair_nv, fair_p = no_vig_fair_american(fair_src)
         fair = fair_nv if fair_nv is not None else med
         action, why, cls = shop_price_action(best, fair, book_px)
         edge = (int(best) - int(fair)) if best is not None and fair is not None else 0
+        ku, klabel, kfull = kelly_units(fair_p, best)
+        if klabel == "SKIP" and action == "TAKE":
+            action, why, cls = "LEAN", why + " · Kelly skip (thin edge)", "shop-lean"
+        if klabel == "SKIP" and action == "LEAN" and edge < 40:
+            action, why, cls = "DON'T", why + " · Kelly skip", "shop-dont"
         rows.append({
             "player": player, "event": event or "", "books": book_px,
             "best": best, "best_book": best_book, "median": med, "fair": fair,
@@ -825,6 +841,7 @@ def build_shop_board(df):
             "cls": cls, "n_books": len(book_px),
             "ending": last_two(best) if best is not None else None,
             "bucket": price_bucket(best),
+            "kelly_u": ku, "kelly_label": klabel, "kelly_full": kfull,
         })
     rows.sort(key=lambda x: (-x.get("edge", 0), x.get("player") or ""))
     return rows
@@ -855,7 +872,7 @@ def ending_heat_from_results(rows, min_n=20):
 
 def render_shop_tab(df):
     st.markdown("### Odds Shop")
-    st.caption("Price vs fair. TAKE / LEAN log on their own (even if Board already has the name). Grade them under Grade → Shop.")
+    st.caption("Price vs fair on the ticket book. Quarter-Kelly sizes the unit. Grade Shop rows under Grade → Shop.")
     if df is None or getattr(df, "empty", True):
         st.info(sport_cfg()["shop_empty"])
         return
@@ -952,15 +969,20 @@ def render_shop_tab(df):
             + f"<td>{fair_s}</td>"
             f'<td class="shop-best">{format_odds(r["best"])} {book_label(r.get("best_book"))}</td>'
             f'<td>{int(r.get("edge") or 0):+d}</td>'
+            f'<td>{r.get("kelly_label") or "—"}</td>'
             f'<td class="{r["cls"]}">{r["action"]}</td></tr>'
         )
     st.markdown(
         '<div class="shop-wrap"><table class="shop-table"><thead><tr>'
-        "<th>Player</th>" + heads + "<th>Fair</th><th>Best</th><th>Gap</th><th>Call</th>"
+        "<th>Player</th>" + heads + "<th>Fair</th><th>Ticket</th><th>Gap</th><th>Kelly</th><th>Call</th>"
         "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>",
         unsafe_allow_html=True,
     )
-    st.caption("TAKE = worth the number vs the pack. LEAN = close. DON'T = you're buying a short or a flyer.")
+    st.caption(
+        "Ticket = DK / FD / HardRock / Fanatics — never MGM. "
+        "Kelly = quarter-Kelly in units (20u roll). SKIP = no bet. "
+        "TAKE / LEAN still need a real gap. This is size, not a second Board."
+    )
 
 # From Tracker: 4-6 cash, 1-2 die
 _DIGIT_GOOD = {4, 5, 6}
@@ -1482,6 +1504,34 @@ def simple_ev_lean(p_win, american):
     if not dec: return False, None
     ev = p_win * (dec - 1) - (1 - p_win)
     return ev > 0, ev
+
+def kelly_full(p_win, american):
+    """Full Kelly fraction of bankroll. Negative = no bet."""
+    dec = american_to_decimal(american)
+    if not dec or p_win is None or p_win <= 0 or p_win >= 1:
+        return 0.0
+    b = dec - 1.0
+    if b <= 0:
+        return 0.0
+    f = (b * p_win - (1.0 - p_win)) / b
+    return float(f)
+
+def kelly_units(p_win, american, fraction=0.25, bank_units=20.0):
+    """Quarter-Kelly in units. Skip if full Kelly <= 0 or quarter < 0.25u.
+    bank_units=20 means 1u is 5% of roll — no $100 language."""
+    full = kelly_full(p_win, american)
+    if full <= 0:
+        return 0.0, "SKIP", full
+    q = full * fraction
+    units = q * bank_units
+    if units < 0.25:
+        return 0.0, "SKIP", full
+    units = min(2.0, round(units * 2) / 2.0)
+    if units <= 0.5:
+        return 0.5, "0.5u", full
+    if units <= 1:
+        return 1.0, "1u", full
+    return units, f"{units:g}u", full
 
 def load_pregame():
     """Local first; if empty, pull GitHub so Cloud restarts keep lock."""
