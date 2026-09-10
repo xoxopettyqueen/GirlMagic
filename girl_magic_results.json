@@ -118663,5 +118663,61 @@
     "source": "shop_lean",
     "logged_at": "2026-09-10T18:22:55.829378+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Kenley Jansen_shop_take_83",
+    "date": "2026-09-10",
+    "time": "12:12 PM",
+    "player": "Kenley Jansen",
+    "score": 0,
+    "edge": 83,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "betmgm": 475,
+      "caesars": 750,
+      "draftkings": 750,
+      "fanduel": 750,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-10T19:12:06.454324+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Cal Raleigh_shop_lean_43",
+    "date": "2026-09-10",
+    "time": "12:12 PM",
+    "player": "Cal Raleigh",
+    "score": 0,
+    "edge": 43,
+    "best_price": 360,
+    "best_book": "betmgm",
+    "median": 305,
+    "book_prices": {
+      "betmgm": 360,
+      "caesars": 305,
+      "draftkings": 302,
+      "fanduel": 300,
+      "hardrockbet": 325
+    },
+    "price_bucket": "under +400",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-10T19:12:06.458103+00:00",
+    "price_source": "shop"
   }
 ]
