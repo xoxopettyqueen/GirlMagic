@@ -118559,5 +118559,86 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-10_Bryce Harper_shop_take_79",
+    "date": "2026-09-10",
+    "time": "11:22 AM",
+    "player": "Bryce Harper",
+    "score": 0,
+    "edge": 79,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 775,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 850,
+      "fanduel": 750,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-10T18:22:52.002925+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Kyle Schwarber_shop_take_59",
+    "date": "2026-09-10",
+    "time": "11:22 AM",
+    "player": "Kyle Schwarber",
+    "score": 0,
+    "edge": 59,
+    "best_price": 525,
+    "best_book": "hardrockbet",
+    "median": 477,
+    "book_prices": {
+      "caesars": 400,
+      "draftkings": 475,
+      "fanduel": 480,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-10T18:22:52.011724+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Yordan Alvarez_shop_lean_41",
+    "date": "2026-09-10",
+    "time": "11:22 AM",
+    "player": "Yordan Alvarez",
+    "score": 0,
+    "edge": 41,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 500,
+    "book_prices": {
+      "caesars": 500,
+      "draftkings": 550,
+      "fanduel": 490,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-10T18:22:52.019358+00:00",
+    "price_source": "shop"
   }
 ]
