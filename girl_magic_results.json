@@ -118163,5 +118163,78 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.8
+  },
+  {
+    "id": "2026-09-10_Dominic Canzone_watch_20",
+    "date": "2026-09-10",
+    "time": "11:03 AM",
+    "player": "Dominic Canzone",
+    "score": 20,
+    "edge": 47,
+    "best_price": 497,
+    "best_book": "draftkings",
+    "median": 450,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 425,
+      "draftkings": 497,
+      "fanduel": 450,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+400s",
+    "ending": 97,
+    "mgm_locked": 450,
+    "mgm_ending": 50,
+    "methods": [
+      "MGM Exact",
+      "Books tight"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-10T18:03:03.295288+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "SEATTLE MARINERS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-10_Kyle Schwarber_watch_21",
+    "date": "2026-09-10",
+    "time": "11:03 AM",
+    "player": "Kyle Schwarber",
+    "score": 21,
+    "edge": 22,
+    "best_price": 310,
+    "best_book": "draftkings",
+    "median": 287.5,
+    "book_prices": {
+      "caesars": 255,
+      "draftkings": 310,
+      "fanduel": 300,
+      "hardrockbet": 275
+    },
+    "price_bucket": "under +400",
+    "ending": 10,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK 10",
+      "Books tight"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-10T18:03:03.298364+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "PHILADELPHIA PHILLIES",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.5
   }
 ]
