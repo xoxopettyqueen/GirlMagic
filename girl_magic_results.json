@@ -123284,5 +123284,46 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-10_Jasson Dom\u00ednguez_take_it_89",
+    "date": "2026-09-10",
+    "time": "01:02 PM",
+    "player": "Jasson Dom\u00ednguez",
+    "score": 89,
+    "edge": 125,
+    "best_price": 550,
+    "best_book": "hardrockbet",
+    "median": 425,
+    "book_prices": {
+      "betmgm": 425,
+      "caesars": 425,
+      "draftkings": 446,
+      "fanduel": 420,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "mgm_locked": 425,
+    "mgm_ending": 25,
+    "methods": [
+      "FD Pattern",
+      "MGM Exact",
+      "FD+MGM classic",
+      "Multi-book method",
+      "MGM 25",
+      "Match 25"
+    ],
+    "core": 6,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-10T20:02:53.418229+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "NEW YORK YANKEES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.8
   }
 ]
