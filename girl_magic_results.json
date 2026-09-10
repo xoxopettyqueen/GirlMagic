@@ -118784,5 +118784,61 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-10_Ryan McMahon_shop_take_57",
+    "date": "2026-09-10",
+    "time": "12:22 PM",
+    "player": "Ryan McMahon",
+    "score": 0,
+    "edge": 57,
+    "best_price": 540,
+    "best_book": "fanduel",
+    "median": 500,
+    "book_prices": {
+      "betmgm": 425,
+      "caesars": 500,
+      "draftkings": 441,
+      "fanduel": 540,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 40,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-10T19:22:30.315336+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Jake Burger_shop_lean_42",
+    "date": "2026-09-10",
+    "time": "12:22 PM",
+    "player": "Jake Burger",
+    "score": 0,
+    "edge": 42,
+    "best_price": 463,
+    "best_book": "draftkings",
+    "median": 420,
+    "book_prices": {
+      "betmgm": 400,
+      "caesars": 425,
+      "draftkings": 463,
+      "fanduel": 420,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 63,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-10T19:22:30.318623+00:00",
+    "price_source": "shop"
   }
 ]
