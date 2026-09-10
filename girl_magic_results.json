@@ -118745,5 +118745,44 @@
     "source": "shop_lean",
     "logged_at": "2026-09-10T19:22:04.348209+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Cody Bellinger_watch_18",
+    "date": "2026-09-10",
+    "time": "12:22 PM",
+    "player": "Cody Bellinger",
+    "score": 18,
+    "edge": 26,
+    "best_price": 470,
+    "best_book": "fanduel",
+    "median": 444,
+    "book_prices": {
+      "betmgm": 400,
+      "caesars": 425,
+      "draftkings": 444,
+      "fanduel": 470,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+400s",
+    "ending": 70,
+    "mgm_locked": 400,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 00",
+      "Match 00",
+      "Stayed in the group",
+      "FD Pattern"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-10T19:22:23.766360+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "NEW YORK YANKEES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
   }
 ]
