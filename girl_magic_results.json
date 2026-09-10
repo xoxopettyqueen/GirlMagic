@@ -123286,12 +123286,12 @@
     "benford_cluster": 1.0
   },
   {
-    "id": "2026-09-10_Jasson Dom\u00ednguez_take_it_89",
+    "id": "2026-09-10_Jasson Dom\u00ednguez_shop_lean_83",
     "date": "2026-09-10",
     "time": "01:02 PM",
     "player": "Jasson Dom\u00ednguez",
-    "score": 89,
-    "edge": 125,
+    "score": 0,
+    "edge": 83,
     "best_price": 550,
     "best_book": "hardrockbet",
     "median": 425,
@@ -123304,26 +123304,69 @@
     },
     "price_bucket": "+500s",
     "ending": 50,
-    "mgm_locked": 425,
-    "mgm_ending": 25,
     "methods": [
-      "FD Pattern",
-      "MGM Exact",
-      "FD+MGM classic",
-      "Multi-book method",
-      "MGM 25",
-      "Match 25"
+      "Shop LEAN"
     ],
-    "core": 6,
+    "core": 0,
     "result": "PENDING",
-    "source": "take_it",
-    "logged_at": "2026-09-10T20:02:53.418229+00:00",
-    "price_source": "pregame_lock",
-    "sport": "MLB",
-    "team": "NEW YORK YANKEES",
-    "market": "batter_home_runs",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.8
+    "source": "shop_lean",
+    "logged_at": "2026-09-10T20:02:56.420896+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Tristan Peters_shop_lean_48",
+    "date": "2026-09-10",
+    "time": "01:02 PM",
+    "player": "Tristan Peters",
+    "score": 0,
+    "edge": 48,
+    "best_price": 820,
+    "best_book": "fanduel",
+    "median": 750,
+    "book_prices": {
+      "betmgm": 775,
+      "caesars": 750,
+      "draftkings": 750,
+      "fanduel": 820,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 20,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-10T20:02:56.423939+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-10_Cole Young_shop_lean_41",
+    "date": "2026-09-10",
+    "time": "01:02 PM",
+    "player": "Cole Young",
+    "score": 0,
+    "edge": 41,
+    "best_price": 800,
+    "best_book": "hardrockbet",
+    "median": 750,
+    "book_prices": {
+      "betmgm": 775,
+      "caesars": 750,
+      "draftkings": 730,
+      "fanduel": 750,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-10T20:02:56.425148+00:00",
+    "price_source": "shop"
   }
 ]
