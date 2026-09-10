@@ -241,8 +241,11 @@ HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics"}
-VALUE_BOOKS = {"draftkings", "fanduel", "betmgm", "fanatics"}
-VALUE_BOOK_LABELS = {"DK", "FD", "MGM", "Fanatics"}
+# Ticket = book we buy. MGM is signal-only (11% as ticket vs 13% baseline).
+TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics"}
+VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics"}
+VALUE_BOOK_LABELS = {"DK", "FD", "HardRock", "Fanatics"}
+SIGNAL_ONLY_BOOKS = {"betmgm"}
 # Odds API uses different keys for the same books - map only
 BOOK_ALIASES = {
     "williamhill_us": "caesars",
@@ -295,18 +298,19 @@ TEAM_PICK_MIN_SCORE = 30  # floor pick: 1 per team when nobody greened; not TAKE
 SCORE_TAKE_OVERRIDE = 85  # fat stack can green even on a dead 30 / long number ≤999
 SCORE_SOFT_TAKE = 70      # petty score hold: keep TAKE if 70+ even when Benford/Num miss
 
-# PRIORITY = must have >=1 to unlock TAKE IT (Tracker 9/03 volume)
-# Tracker 9/05: only tags that beat 13% baseline unlock TAKE IT
+# PRIORITY = must have >=1 to unlock TAKE IT
+# Tracker 9/10: MGM-as-ticket 11% (−1). MGM 50 book×ending 7% (−5). MGM 00 8%.
+# Keep MGM 25 / Exact / FD / DK as unlocks. 50s and 00s are tags only.
 PRIORITY_METHODS = {
-    "MGM 25", "MGM 50", "MGM Exact",
+    "MGM 25", "Match 25", "MGM Exact",
     "DK 10",
     "FD Pattern", "FD 600", "FD+MGM classic",
     "Multi-book Shorten",
     "Books tight",
 }
-TAKE_HOT_ENDS = {10, 25, 50, 75, 90}
-TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}
-TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics"}
+TAKE_HOT_ENDS = {10, 25, 75, 90}  # 50 dropped from hot ticket endings
+TAKE_STRONG_BUCKETS = {"+400s", "+500s"}  # +600s 14% — not auto-green
+TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "hardrockbet", "fanatics"}
 # PREMIUM = counts as core (still need >=1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
@@ -316,13 +320,13 @@ TAKE_IT_STRONG = {
     "FD+MGM classic",
     "MGM Exact",
     "Multi-book Shorten",
-    "Match 50", "MGM 50",
 }
 # SUPPORT = tagged / WATCH / Tracker only - never core, never unlocks alone
 SUPPORT_ONLY = {
     "Books tight", "Exact Match", "All books same",
     "DK FD-style", "Same on 3+ books",
     "Match 75", "MGM 75",
+    "Match 50", "MGM 50",
     "Match 00", "MGM 00",
     "Stayed in the group",
     "Last one left",
@@ -395,8 +399,6 @@ def strong_method_families(methods):
             continue
         if m in ("Match 25", "MGM 25"):
             families.add("mgm_25")  # 8/25: strongest ending signal
-        elif m in ("Match 50", "MGM 50"):
-            families.add("mgm_50")
         elif m == "MGM Exact":
             families.add("mgm_exact")
         elif m == "DK 10":
@@ -462,6 +464,9 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
             dec = american_to_decimal(px) or -1
             if dec > best_dec:
                 best_dec, bk = dec, normalize_book(k)
+    if bk and (bk in SIGNAL_ONLY_BOOKS or "betmgm" in str(bk)):
+        # MGM can sit on the card as a tag. It cannot be the ticket that greens TAKE IT.
+        return False
     if bk and bk not in TAKE_STRONG_BOOKS:
         return False
     try:
@@ -1362,26 +1367,47 @@ def today_mlb_date():
 def now_utc_iso():
     return datetime.now(timezone.utc).isoformat()
 
-def smart_best(prices, books):
-    """Longest price, preferring DK / FD / HardRock for where to bet.
-    Median/edge still use all books."""
+def _norm_bk(b):
+    k = str(b or "").lower()
+    try:
+        return normalize_book(k)
+    except Exception:
+        return k
+
+def _is_ticket_book(b):
+    k = _norm_bk(b)
+    return k in TICKET_BOOKS or "hardrock" in k
+
+def pick_ticket(prices, books):
+    """Book we actually buy. Never BetMGM — MGM is a grouping tell only."""
     if not prices:
         return None, None
     paired = list(zip(prices, books))
-    def _is_value(b):
-        k = str(b or "").lower()
-        try:
-            k = normalize_book(k)
-        except Exception:
-            pass
-        return k in VALUE_BOOKS or "hardrock" in k
-    value_paired = [(p, b) for p, b in paired if _is_value(b)]
-    pool = value_paired if value_paired else paired
-    pool = sorted(pool, key=lambda x: x[0], reverse=True)
-    best_p, best_b = pool[0]
-    if len(pool) >= 2 and best_p - pool[1][0] >= OUTLIER_GAP:
-        return pool[1][0], pool[1][1]
-    return best_p, best_b
+    tickets = [(p, _norm_bk(b)) for p, b in paired if _is_ticket_book(b)]
+    if tickets:
+        tickets.sort(key=lambda x: x[0], reverse=True)
+        best_p, best_b = tickets[0]
+        if len(tickets) >= 2 and best_p - tickets[1][0] >= OUTLIER_GAP:
+            return tickets[1][0], tickets[1][1]
+        return best_p, best_b
+    others = [(p, _norm_bk(b)) for p, b in paired if _norm_bk(b) not in SIGNAL_ONLY_BOOKS]
+    if others:
+        others.sort(key=lambda x: x[0], reverse=True)
+        return others[0]
+    return None, None
+
+def longest_any(prices, books):
+    if not prices:
+        return None, None
+    paired = sorted(zip(prices, [_norm_bk(b) for b in books]), key=lambda x: x[0], reverse=True)
+    return paired[0]
+
+def smart_best(prices, books):
+    """Ticket price (DK/FD/HardRock/Fanatics). Falls back only if no ticket book exists."""
+    t_p, t_b = pick_ticket(prices, books)
+    if t_p is not None:
+        return t_p, t_b
+    return longest_any(prices, books)
 
 def get_confidence(score, is_bet):
     if not is_bet: return "Skip", 1, "low"
@@ -3598,10 +3624,17 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
         if len(prices) < 1: continue
-        best, best_book = smart_best(prices, books) if len(prices) >= 2 else (prices[0], books[0])
+        signal_price, signal_book = longest_any(prices, books) if prices else (None, None)
+        if len(prices) >= 2:
+            best, best_book = smart_best(prices, books)
+        else:
+            best, best_book = pick_ticket(prices, books)
+            if best is None:
+                best, best_book = prices[0], _norm_bk(books[0])
         if best is None: continue
         try: med = statistics.median(prices) if len(prices) >= 2 else best
         except Exception: med = best
+        # Edge vs pack uses the TICKET number, not the juiced MGM longshot.
         edge = best - med if len(prices) >= 2 else 0
         meths = list({normalize_method_name(m) for m in methods_map.get(player, [])})
         core_count = count_core_methods(meths)
@@ -3621,6 +3654,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 pass
         row = {
             "player": player, "best_price": best, "best_book": best_book, "median": med,
+            "ticket_price": best, "ticket_book": best_book,
+            "signal_price": signal_price, "signal_book": signal_book,
             "book_prices": book_px,
             "edge": edge, "is_bet": False,
             "why": f"Score {score}/100 · {core_count} core · edge {int(edge)}",
@@ -4862,6 +4897,12 @@ def main():
             meta = " · ".join([x for x in (team, game) if x])
             pack = item.get("median")
             pack_s = f" · pack {format_odds(pack)}" if pack is not None else ""
+            sig_b = item.get("signal_book")
+            sig_p = item.get("signal_price")
+            sig_s = ""
+            if sig_b and _norm_bk(sig_b) in SIGNAL_ONLY_BOOKS and sig_p is not None:
+                if _norm_bk(item.get("best_book")) not in SIGNAL_ONLY_BOOKS:
+                    sig_s = f" · MGM signal {format_odds(sig_p)} (not the ticket)"
             show_label = petty_label(label) if label in PETTY_COPY or label in ("TAKE IT", "PASS", "WATCH", "Take it") else label
             st.markdown(
                 f'<div class="card {cls}">'
@@ -4870,7 +4911,7 @@ def main():
                 f'<div class="card-name">{item["player"]}</div>'
                 f'<div class="card-meta">{meta}</div>'
                 f'{meter}'
-                f'<div class="card-line"><b>Best {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}</div>'
+                f'<div class="card-line"><b>Ticket {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}{sig_s}</div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium</div>'
                 f'<div style="margin-top:6px">{fams}</div>'
                 f'<div style="margin-top:4px">{tags}</div>'
@@ -6515,8 +6556,9 @@ def main():
             )
         with st.expander("Books we actually use"):
             st.markdown(
-                "- Methods focus: DraftKings, FanDuel, BetMGM.\n"
-                "- Number we often buy: DK, FD, Hard Rock.\n"
+                "- Methods / tells: DraftKings, FanDuel, **BetMGM groups** (25 / Exact). MGM is not the ticket.\n"
+                "- Number we buy: DK, FD, Hard Rock, Fanatics.\n"
+                "- Tracker 9/10: MGM-as-best is 11% (−1 vs 13%). MGM 50 is 7% (−5). Those do not green TAKE IT.\n"
                 "- Compare lane: Caesars and Hard Rock vs the pack.\n"
                 "- Bet365 is wired. It shows when the feed actually sends it.\n"
                 "- Other books can sit on the card for compare. They do not unlock TAKE IT by themselves."
