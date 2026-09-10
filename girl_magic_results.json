@@ -123460,5 +123460,34 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-10_Jake Tonges_shop_lean_288",
+    "date": "2026-09-10",
+    "time": "01:21 PM",
+    "player": "Jake Tonges",
+    "score": 0,
+    "edge": 288,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 725,
+    "book_prices": {
+      "betmgm": 625,
+      "caesars": 700,
+      "draftkings": 800,
+      "fanatics": 225,
+      "fanduel": 750,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-10T20:21:30.939892+00:00",
+    "price_source": "shop"
   }
 ]
