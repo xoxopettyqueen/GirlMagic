@@ -129320,5 +129320,60 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-11_Rafael Flores Jr._shop_lean_87",
+    "date": "2026-09-11",
+    "time": "12:46 PM",
+    "player": "Rafael Flores Jr.",
+    "score": 0,
+    "edge": 87,
+    "best_price": 900,
+    "best_book": "fanduel",
+    "median": 775,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 750,
+      "fanduel": 900,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-11T19:46:26.859817+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-11_Kyle Stowers_shop_lean_47",
+    "date": "2026-09-11",
+    "time": "12:46 PM",
+    "player": "Kyle Stowers",
+    "score": 0,
+    "edge": 47,
+    "best_price": 850,
+    "best_book": "hardrockbet",
+    "median": 750,
+    "book_prices": {
+      "betmgm": 725,
+      "caesars": 750,
+      "draftkings": 840,
+      "fanduel": 730,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-11T19:46:26.869427+00:00",
+    "price_source": "shop"
   }
 ]
