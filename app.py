@@ -1045,6 +1045,52 @@ def build_shop_board(df):
     rows.sort(key=lambda x: (-x.get("edge", 0), x.get("player") or ""))
     return rows
 
+
+def shop_block_reasons(r):
+    """Read-only: why Shop did not print TAKE. Does not change action."""
+    blocked = []
+    best = r.get("best")
+    fair = r.get("fair")
+    books = r.get("books") or {}
+    gap = r.get("edge")
+    try:
+        bp = abs(int(best)) if best is not None else 0
+    except Exception:
+        bp = 0
+    try:
+        gap_i = int(gap) if gap is not None else None
+    except Exception:
+        gap_i = None
+    if best is None or fair is None:
+        blocked.append("no fair line (need 2+ prices)")
+    if gap_i is not None and gap_i < EDGE_MIN:
+        blocked.append(f"gap {gap_i:+d} < EDGE_MIN {EDGE_MIN}")
+    if bp >= JUNK_PRICE:
+        blocked.append(f"flyer/junk lane +{bp} ≥ {JUNK_PRICE}")
+    if bp >= LONG_PRICE:
+        end = last_two(bp)
+        real = {normalize_book(b) for b in books} & {"draftkings", "fanduel", "betmgm"}
+        if end in LONG_DEAD_ENDS:
+            blocked.append(f"dead ending {end:02d} on long price")
+        elif end not in LONG_OK_ENDS:
+            blocked.append(f"ending {end} not in long-ok {sorted(LONG_OK_ENDS)}")
+        if len(real) < 2:
+            blocked.append(f"long price needs 2 of DK/FD/MGM (has {sorted(real) or 'none'}) — Fanatics does not count here")
+    bk = normalize_book(r.get("best_book"))
+    if bk in SIGNAL_ONLY_BOOKS:
+        blocked.append("best book is MGM (signal only)")
+    ticket_n = sum(1 for b in books if _is_ticket_book(b))
+    if ticket_n < 2 and "fanatics" in {normalize_book(b) for b in books}:
+        blocked.append("Fanatics-only / thin ticket pack — fair collapses toward the one number")
+    if r.get("kelly_label") == "SKIP" and r.get("action") != "TAKE":
+        blocked.append("Kelly SKIP demoted TAKE→LEAN or LEAN→DON'T")
+    # Shop does not use these — note so the audit is honest
+    blocked.append("Shop ignores Benford / numerology / Board score / cluster / stale (those are Board-only)")
+    if not any(x.startswith("gap") or x.startswith("flyer") or x.startswith("dead") or x.startswith("ending") or x.startswith("long") or x.startswith("best") or x.startswith("Kelly") or x.startswith("no fair") or x.startswith("Fanatics") for x in blocked):
+        if r.get("action") != "TAKE":
+            blocked.insert(0, f"call is {r.get('action')} · {r.get('why')}")
+    return blocked
+
 def ending_heat_from_results(rows, min_n=20):
     stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     for r in rows or []:
@@ -1139,6 +1185,21 @@ def render_shop_tab(df):
         qq = q.strip().lower()
         shown = [r for r in shown if qq in (r.get("player") or "").lower() or qq in (r.get("event") or "").lower()]
     st.caption(f"Showing {len(shown)} of {len(shop)} players")
+    with st.expander("Shop debug — gap + what blocked TAKE (math not changed)", expanded=False):
+        take_n = sum(1 for r in shop if r.get("action") == "TAKE")
+        st.caption(
+            f"{take_n} TAKE of {len(shop)}. Gap = best ticket − no-vig fair of ticket books. "
+            f"TAKE needs gap ≥ {EDGE_MIN}. Kelly SKIP can demote a TAKE."
+        )
+        lines = []
+        for r in shop[:80]:
+            reasons = shop_block_reasons(r)
+            lines.append(
+                f"- **{r.get('player')}** · best {format_odds(r.get('best'))} {book_label(r.get('best_book'))} "
+                f"· fair {format_odds(r.get('fair'))} · gap **{int(r.get('edge') or 0):+d}** "
+                f"· call **{r.get('action')}** · {'; '.join(reasons[:6])}"
+            )
+        st.markdown("\n".join(lines) if lines else "_No shop rows._")
     heat = ending_heat_from_results(load_results(), min_n=20)
     if heat:
         st.markdown("#### Endings that have been hitting (graded best price)")
