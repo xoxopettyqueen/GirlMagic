@@ -98,10 +98,10 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .watch-card{background:#141018!important;border-color:#2a2038!important}
 .score-pill{display:inline-block;background:#ec4899;color:#fff;font-weight:800;font-size:.72rem;padding:3px 9px;border-radius:999px;float:right}
 .card-kicker{font-size:.62rem;letter-spacing:1.2px;text-transform:uppercase;color:#f9a8d4;font-weight:700;margin-bottom:4px}
-.card-name{font-size:1.05rem;font-weight:800;color:#fff;margin:0}
-.card-meta{font-size:.72rem;color:#9ca3af;margin:2px 0 6px}
-.card-line{font-size:.86rem;color:#e5e7eb;margin:1px 0}
-.card-foot{font-size:.68rem;color:#9ca3af;margin-top:8px}
+.card-name{font-size:1.22rem;font-weight:800;color:#fff;margin:0}
+.card-meta{font-size:.82rem;color:#d1d5db;margin:2px 0 6px}
+.card-line{font-size:.92rem;color:#e5e7eb;margin:1px 0}
+.card-foot{font-size:.78rem;color:#c4b5d6;margin-top:8px}
 .tag{display:inline-block;background:#1b1226;color:#e9d5ff;font-size:.62rem;font-weight:700;padding:3px 8px;border-radius:999px;margin:2px 3px 2px 0;border:1px solid #3b0764}
 .tag-dk{background:#064e3b;color:#6ee7b7;border-color:#34d399}
 .tag-mgm{background:#422006;color:#fcd34d;border-color:#f59e0b}
@@ -191,7 +191,7 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .shop-lean{color:#fbbf24;font-weight:800}
 .shop-mkt{color:#c4b5d6;font-weight:700}
 /* ── Website shell (display only) ── */
-.quote-bar{background:#1a1024;border:1px solid #db2777;border-radius:14px;padding:8px 14px;margin:0 0 10px;color:#fbcfe8;font-size:.82rem;letter-spacing:.2px}
+.quote-bar{background:#1a1024;border:1px solid #f9a8d4;border-radius:14px;padding:9px 16px;margin:0 0 10px;color:#fce7f3;font-size:.88rem;letter-spacing:.3px;box-shadow:0 0 16px rgba(244,114,182,.2)}
 .site-hero{
   background:linear-gradient(110deg,#2a1040 0%,#6d28d9 38%,#db2777 72%,#4c1d95 100%);
   background-size:180% 180%;
@@ -201,10 +201,10 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 }
 @keyframes heroShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .site-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
-.site-kicker{color:#f9a8d4;font-size:.68rem;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;margin:0 0 6px}
-.site-title{font-family:'Playfair Display',serif;font-size:2.25rem;line-height:1.05;color:#fff;margin:0 0 8px;text-shadow:0 6px 18px rgba(15,6,24,.45);animation:titleIn .6s ease-out}
-.site-sub{color:#fce7f3;font-size:.98rem;margin:0 0 8px;max-width:720px;line-height:1.55;animation:fadeUp .7s ease-out .12s both}
-.site-live{color:#f9a8d4;font-size:.78rem;margin:0 0 12px}
+.site-kicker{color:#fde68a;font-size:.72rem;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;margin:0 0 8px}
+.site-title{font-family:'Playfair Display',serif;font-size:2.55rem;line-height:1.02;color:#fff;margin:0 0 10px;text-shadow:0 0 22px rgba(244,114,182,.45),0 6px 18px rgba(15,6,24,.45);animation:titleIn .6s ease-out}
+.site-sub{color:#fce7f3;font-size:1.02rem;margin:0 0 8px;max-width:740px;line-height:1.6;animation:fadeUp .7s ease-out .12s both}
+.site-live{color:#f9a8d4;font-size:.82rem;margin:0 0 12px}
 @keyframes titleIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .site-chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -233,7 +233,7 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .price-big{font-size:1.22rem;font-weight:800;color:#6ee7b7}
 .price-book{font-size:.78rem;color:#e9d5ff}
 .method-group{margin-top:8px;padding-top:8px;border-top:1px solid #2a2038}
-.queen-line{color:#f9a8d4;font-style:italic;font-size:.78rem;margin-top:8px}
+.queen-line{color:#f9a8d4;font-style:italic;font-size:.86rem;margin-top:8px}
 .tag-group-lab{color:#c4b5d6;font-size:.58rem;letter-spacing:1.2px;text-transform:uppercase;margin:8px 0 3px}
 .motion-line{font-size:.72rem;font-weight:800;margin:6px 0;padding:4px 8px;border-radius:999px;display:inline-block;border:1px solid #64748b}
 .card-hot{box-shadow:0 0 22px rgba(244,114,182,.4);animation:heatPulse 2.4s ease-in-out infinite}
@@ -886,19 +886,19 @@ def site_hero_html(sport, slate_label, games_n, lock_n, fetch_time):
     live = fetch_time if fetch_time and fetch_time != "no fetch yet" else "no fetch yet"
     breathe = "odds breathing, not sleeping" if live != "no fetch yet" else "odds sleeping until you Fetch"
     return (
-        f'<div class="quote-bar">Quote of the day: {daily_quote()}</div>'
+        f'<div class="quote-bar">♛ {daily_quote()}</div>'
         '<div class="site-hero"><div class="site-hero-top"><div>'
-        '<p class="site-kicker">You’re entering Girl Magic Odds — pick your lane</p>'
+        '<p class="site-kicker">💅 👑 ✨</p>'
         '<div class="site-title">Girl Magic Odds</div>'
-        '<p class="site-sub">Where intuition meets petty precision.<br>'
-        'We only play 0.5 HR Over — because chaos pays better.<br>'
-        'Green names are gospel. Everything else? Homework.</p>'
-        f'<p class="site-live">Last fetch {live} — {breathe}.</p>'
+        '<p class="site-sub">💅 Where intuition meets petty precision.<br>'
+        '💣 We only play 0.5 HR Over — because chaos pays better.<br>'
+        '💚 Green names are gospel. Everything else? Homework.</p>'
+        f'<p class="site-live">⏱️ Last fetch {live} — {breathe}.</p>'
         '<div class="site-chips">'
-        f'<span class="site-chip sport">{sport}</span>'
-        f'<span class="site-chip">{slate_label}</span>'
-        f'<span class="site-chip">{games_n} games loaded</span>'
-        f'<span class="site-chip">Lock {lock_n}</span>'
+        f'<span class="site-chip sport">⚾ {sport}</span>'
+        f'<span class="site-chip">💣 {slate_label}</span>'
+        f'<span class="site-chip">📋 {games_n} games</span>'
+        f'<span class="site-chip">🔒 Lock {lock_n}</span>'
         '</div></div></div></div>'
     )
 
@@ -1756,19 +1756,22 @@ def attach_player_trends(item, pack):
     return item
 
 
-def trend_chip_html(item):
+def trend_chip_html(item, full=False):
     css = item.get("trend_motion_css") or "motion-stable"
     icon = item.get("trend_motion_icon") or "🧊"
-    return (
+    html = (
         f'<div class="trend-line">'
         f'<span class="trend-chip {css}">{icon} {item.get("trend_motion") or "Stable"}</span>'
         f'<div class="trend-mean">{item.get("trend_motion_meaning") or ""}</div>'
-        f'<span class="trend-meta">{item.get("trend_motion_detail") or ""}</span>'
-        f'<div class="trend-meta">Method · {item.get("trend_method")}</div>'
-        f'<div class="trend-meta">Ending · {item.get("trend_ending")} · Bucket · {item.get("trend_bucket")}</div>'
-        f'<div class="trend-meta">Team · {item.get("trend_team")} · Book · {item.get("trend_book")}</div>'
-        "</div>"
     )
+    if full:
+        html += (
+            f'<span class="trend-meta">{item.get("trend_motion_detail") or ""}</span>'
+            f'<div class="trend-meta">Method · {item.get("trend_method")}</div>'
+            f'<div class="trend-meta">Ending · {item.get("trend_ending")} · Bucket · {item.get("trend_bucket")}</div>'
+            f'<div class="trend-meta">Team · {item.get("trend_team")} · Book · {item.get("trend_book")}</div>'
+        )
+    return html + "</div>"
 
 
 def _motion_sparkline(player):
@@ -5886,11 +5889,9 @@ def main():
         st.session_state["_sport_seen"] = sport
         st.session_state["_autoload_events"] = True
     st.markdown(
-        '<div class="how-to site-guide"><b>How to use this site:</b> '
-        'Load games in the sidebar, then Fetch. '
-        'Board = who is cleared. Shop = which number to buy. '
-        'Grade after the games so tomorrow is smarter. '
-        'Pink words are personality. Green cards are the decision.</div>',
+        '<div class="how-to site-guide"><b>♛ How we roll:</b> '
+        'Load the slate. Fetch the vibe. Green names are the list. Shop picks the number. '
+        'Pink is personality. Grade after first pitch so tomorrow is louder.</div>',
         unsafe_allow_html=True,
     )
     if "onboard_step" not in st.session_state:
@@ -8153,7 +8154,7 @@ def main():
         site_section_close()
 
     st.markdown(
-        '<div class="footer">👑 Girl Magic · She Got Game · Boss Bitch · HBIC · Me & My Girls We Rolling<br>'
+        '<div class="footer">♛ Girl Magic Odds · She Got Game · Petty Queen · Me & My Girls We Rolling<br>'
         '<span style="font-size:.75rem;color:#c4b5d6">Board picks the name. Shop picks the number. Grade keeps us honest.</span></div>',
         unsafe_allow_html=True,
     )
