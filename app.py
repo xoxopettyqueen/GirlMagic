@@ -237,6 +237,11 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .tag-group-lab{color:#c4b5d6;font-size:.58rem;letter-spacing:1.2px;text-transform:uppercase;margin:8px 0 3px}
 .motion-line{font-size:.72rem;font-weight:800;margin:6px 0;padding:4px 8px;border-radius:999px;display:inline-block;border:1px solid #64748b}
 .card-hot{box-shadow:0 0 22px rgba(244,114,182,.4);animation:heatPulse 2.4s ease-in-out infinite}
+.kelly-line{display:inline-block;margin:6px 0;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:800}
+.kelly-strong{color:#bbf7d0;border:1px solid #34d399;box-shadow:0 0 10px rgba(52,211,153,.35)}
+.kelly-med{color:#fbcfe8;border:1px solid #f472b6;box-shadow:0 0 10px rgba(244,114,182,.35)}
+.kelly-light{color:#e9d5ff;border:1px solid #c084fc}
+.kelly-avoid{color:#fecaca;border:1px solid #fb7185}
 .shop-wrap{border:1px solid #2a2038;border-radius:16px;padding:8px;background:#0d0814}
 .shop-table th{padding:8px 8px}
 .shop-table td{padding:10px 8px}
@@ -979,6 +984,12 @@ def render_mini_glossary():
     st.markdown("0–100 vibe meter on the stack. Can hold a green at 70. Can’t invent one. If you know, you know.")
     st.markdown("**👑 Queen Commentary**")
     st.markdown("Personality layer. Same decision, louder words. It’s not math — it’s mood.")
+    st.markdown("**💸 KELLY — bankroll confidence**")
+    st.markdown(
+        "Kelly uses fair probability and book price to tell you how loud the value is. "
+        "Higher Kelly = stronger long-ball value. Lower Kelly = homework only. "
+        "Kelly does NOT pick the name — it picks the confidence."
+    )
     st.caption("Code tab has the long glossary. This is the language you need to roll.")
 
 
@@ -1237,6 +1248,32 @@ def ev_from_fair(best, fair):
     return ev, kelly
 
 
+def kelly_style(frac):
+    """Display-only tags. frac is full Kelly, not quarter-Kelly units."""
+    if frac is None:
+        return 0.0, "Avoid", "kelly-avoid"
+    try:
+        f = float(frac)
+    except Exception:
+        return 0.0, "Avoid", "kelly-avoid"
+    pct = max(0.0, min(100.0, f * 100.0))
+    if f > 0.10:
+        return pct, "Strong", "kelly-strong"
+    if f > 0.05:
+        return pct, "Medium", "kelly-med"
+    if f > 0.01:
+        return pct, "Light", "kelly-light"
+    return pct, "Avoid", "kelly-avoid"
+
+
+def kelly_bar_html(frac):
+    pct, tag, css = kelly_style(frac)
+    return (
+        f'<div class="kelly-line {css}" title="Kelly shows bankroll confidence. Higher Kelly = stronger long-ball value.">'
+        f'KELLY — {pct:.1f}% ({tag.lower()})</div>'
+    )
+
+
 def value_method_tags(ev, kelly):
     tags = []
     if ev is None:
@@ -1331,9 +1368,10 @@ def build_shop_board(df):
         action, why, cls = shop_price_action(best, fair, book_px, ev, kelly_f)
         edge = (int(best) - int(fair)) if best is not None and fair is not None else 0
         ku, klabel, kfull = kelly_units(fair_p, best)
+        kpct, ktag, kcss = kelly_style(kelly_f)
         vtags = value_method_tags(ev, kelly_f)
-        if klabel == "SKIP" and action == "TAKE" and (kelly_f is None or kelly_f <= 0):
-            action, why, cls = "LEAN", why + " · Kelly skip (thin edge)", "shop-lean"
+        if ktag == "Avoid" and action == "TAKE":
+            action, why, cls = "LEAN", why + " · Kelly avoid (thin value)", "shop-lean"
         rows.append({
             "player": player, "event": event or "", "books": book_px,
             "best": best, "best_book": best_book, "median": med, "fair": fair,
@@ -1344,7 +1382,8 @@ def build_shop_board(df):
             "cls": cls, "n_books": len(book_px),
             "ending": last_two(best) if best is not None else None,
             "bucket": price_bucket(best),
-            "kelly_u": ku, "kelly_label": klabel, "kelly_full": kfull,
+            "kelly_u": ku, "kelly_label": ktag, "kelly_full": kfull,
+            "kelly_pct": kpct, "kelly_css": kcss,
         })
     rows.sort(key=lambda x: (-x.get("edge", 0), x.get("player") or ""))
     return rows
@@ -1935,7 +1974,8 @@ def render_shop_tab(df):
     st.caption(
         "Odds Shop is where math meets petty precision. "
         "Read left to right: player → book → fair pack → ticket → gap → call. "
-        "Green means best ticket. Red means short vs fair. Everything else is homework."
+        "Green means best ticket. Red means short vs fair. "
+        "Kelly shows bankroll confidence. Everything else is homework."
     )
     if df is None or getattr(df, "empty", True):
         st.info(sport_cfg()["shop_empty"])
@@ -2080,7 +2120,7 @@ def render_shop_tab(df):
             f'<td>{int(r.get("trend_value_score") or 0)}</td>'
             f'<td>{r.get("trend_motion") or "—"}</td>'
             f'<td>{int(r.get("trend_score") or 0)}</td>'
-            f'<td>{r.get("kelly_label") or "—"}</td>'
+            f'<td class="{r.get("kelly_css") or ""}" title="Kelly shows how much of your bankroll this ticket deserves.">{(r.get("kelly_pct") or 0):.1f}% {r.get("kelly_label") or "—"}</td>'
             f'<td class="{r["cls"]}"><span class="shop-call">{call_txt}</span></td></tr>'
         )
     st.markdown(
@@ -2306,9 +2346,9 @@ def render_digits_tab(df):
             st.caption("Fetch first.")
     lookat_box(
         "△ The Triangle — how to actually use all this",
-        "The Board picks the name. The Book Piles pick the pond. Benford picks the energy. "
-        "All three agree → TAKE. Two agree → LEAN. One agrees → WATCH. None → DON’T. "
-        "When all three agree, run it.",
+        "The Board picks the name. The Book Piles pick the pond. Benford picks the energy. Kelly picks the value. "
+        "All four agree → TAKE. Three agree → LEAN. Two agree → WATCH. One or zero → DON’T. "
+        "When all four agree, run it.",
     )
 
 def get_odds_api_key():
@@ -6345,6 +6385,7 @@ def main():
                 f'<div class="price-row"><span class="price-big">{format_odds(item.get("best_price"))}</span>'
                 f'<span class="price-book">{book_label(item.get("best_book"))} ticket{pack_s}{sig_s}</span></div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium methods</div>'
+                f'{kelly_bar_html(item.get("kelly_frac"))}'
                 f'{meter}'
                 f'{trend_chip_html(item)}'
                 f'{board_gate_checklist(item)}'
