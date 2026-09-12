@@ -333,9 +333,9 @@ SPORT_CFG = {
         "sgo": False,
         "days": 8,
         "when": "Kickoff",
-        "lock_caption": "NFL Lock Lab uses TD prices we saved pre-kick. No MLB homers on this side.",
+        "lock_caption": "TDs matched to the number we locked before kick. Same List energy. Different scoreboard.",
         "lock_count": "NFL TD",
-        "shop_empty": "Fetch Anytime TD first - Shop fills from the NFL slate.",
+        "shop_empty": "Fetch Anytime TD — Shop fills when the slate breathes.",
     },
 }
 
@@ -887,17 +887,23 @@ def daily_quote():
 def site_hero_html(sport, slate_label, games_n, lock_n, fetch_time):
     live = fetch_time if fetch_time and fetch_time != "no fetch yet" else "no fetch yet"
     breathe = "odds breathing, not sleeping" if live != "no fetch yet" else "odds sleeping until you Fetch"
+    if sport == "NFL":
+        lane = "🏈 Anytime TD — chaos still pays better."
+        icon = "🏈"
+    else:
+        lane = "💣 We only play 0.5 HR Over — because chaos pays better."
+        icon = "⚾"
     return (
         f'<div class="quote-bar">♛ Quote of the day: {daily_quote()}</div>'
         '<div class="site-hero"><div class="site-hero-top"><div>'
         '<p class="site-kicker">💅 👑 ✨</p>'
         '<div class="site-title">Girl Magic Odds</div>'
-        '<p class="site-sub">💅 Where intuition meets petty precision.<br>'
-        '💣 We only play 0.5 HR Over — because chaos pays better.<br>'
+        f'<p class="site-sub">💅 Where intuition meets petty precision.<br>'
+        f'{lane}<br>'
         '💚 Green names are gospel. Everything else? Homework.</p>'
         f'<p class="site-live">⏱️ Last fetch {live} — {breathe}.</p>'
         '<div class="site-chips">'
-        f'<span class="site-chip sport">⚾ {sport}</span>'
+        f'<span class="site-chip sport">{icon} {sport}</span>'
         f'<span class="site-chip">💣 {slate_label}</span>'
         f'<span class="site-chip">📋 {games_n} games</span>'
         f'<span class="site-chip">🔒 Lock {lock_n}</span>'
@@ -5903,10 +5909,11 @@ def main():
             st.session_state.pop(k, None)
         st.session_state["_sport_seen"] = sport
         st.session_state["_autoload_events"] = True
+    after = "kickoff" if sport == "NFL" else "first pitch"
     st.markdown(
-        '<div class="how-to site-guide"><b>♛ How we roll:</b> '
-        'Load the slate. Fetch the vibe. Green names are the list. Shop picks the number. '
-        'Pink is personality. Grade after first pitch so tomorrow is louder.</div>',
+        f'<div class="how-to site-guide"><b>♛ How we roll:</b> '
+        f'Load the slate. Fetch the vibe. Green names are the list. Shop picks the number. '
+        f'Pink is personality. Grade after {after} so tomorrow is louder.</div>',
         unsafe_allow_html=True,
     )
     if "onboard_step" not in st.session_state:
@@ -6454,7 +6461,7 @@ def main():
                 with pc[i % len(pc)]:
                     _render_board_card(item, "TAKE IT", "bet", zone="picks")
         else:
-            st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
+            st.caption("Nobody made The List yet. Fetch the slate." if active_sport() != "NFL" else "NFL lane is open. Fetch Anytime TD and let the greens talk.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
         passes = [e for e in ev_board if not e.get("is_bet")]
@@ -8079,8 +8086,12 @@ def main():
         )
         st.markdown(
             '<div class="how-box">'
-            "We only play <b>0.5 HR Over</b> — one homer, one vibe. "
-            "Green names are gospel. Gray is homework. Eyes mean watch it, don’t force the ticket. "
+            + (
+                "We only play <b>Anytime TD</b> on this lane — one score, one vibe. "
+                if active_sport() == "NFL"
+                else "We only play <b>0.5 HR Over</b> — one homer, one vibe. "
+            )
+            + "Green names are gospel. Gray is homework. Eyes mean watch it, don’t force the ticket. "
             "Grade so tomorrow gets tighter — not so we guess tonight.</div>",
             unsafe_allow_html=True,
         )
