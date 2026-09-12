@@ -346,6 +346,32 @@ def active_sport():
 def sport_cfg():
     return SPORT_CFG[active_sport()]
 
+
+def row_sport(r):
+    """Infer MLB vs NFL on a results row (old logs may lack sport)."""
+    if not isinstance(r, dict):
+        return "MLB"
+    s = str(r.get("sport") or "").strip().upper()
+    if s in ("NFL", "MLB"):
+        return s
+    blob = " ".join(
+        str(r.get(k) or "") for k in ("market", "source", "methods")
+    ).lower()
+    if any(x in blob for x in ("anytime_td", "anytime td", "nfl", "touchdown")):
+        return "NFL"
+    if any(x in blob for x in ("batter_home_runs", "home_run", "homer", "mlb")):
+        return "MLB"
+    # Historic file is almost all MLB HRs
+    return "MLB"
+
+
+def results_for_sport(rows=None, sport=None):
+    """Tracker / rates for ONE sport only. Never mix HR with TD."""
+    if rows is None:
+        rows = load_results()
+    sport = (sport or active_sport()).upper()
+    return [r for r in (rows or []) if row_sport(r) == sport]
+
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
@@ -6180,7 +6206,9 @@ def main():
         log_bet_this(ev_board, watch_board)
     if not df.empty:
         log_shop_calls(df)
-    method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats, score_stats = build_tracker_stats(load_results())
+    method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats, score_stats = build_tracker_stats(
+        results_for_sport()
+    )
     for item in ev_board:
         p, n, mname = best_method_rate_for_player(item["methods"], method_stats)
         item["method_p"], item["method_n"], item["method_rate_name"] = p, n, mname
@@ -7135,12 +7163,18 @@ def main():
             "Hit rates after we grade. Small samples stay hidden. This is yesterday talking — not tonight’s Board.",
         )
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
+        sport_rows = results_for_sport()
+        n_sport = len([r for r in sport_rows if r.get("result") in ("HIT", "MISS")])
+        n_all = len([r for r in load_results() if r.get("result") in ("HIT", "MISS")])
+        other = "MLB" if active_sport() == "NFL" else "NFL"
+        n_other = max(0, n_all - n_sport)
         st.caption(
-            f"{sport_cfg()['label']} + all graded sports in one file. "
+            f"**{active_sport()} only** — {n_sport} graded {sport_cfg().get('hits', 'plays')}. "
+            f"{other} ({n_other} graded) is hidden while this sport is selected. "
             f"n &lt; {TRACKER_MIN_N} hidden unless it is a core family. "
-            "HOT = over 15%. Δ is vs TAKE IT baseline."
+            "HOT = over 15%. Δ is vs this sport’s TAKE IT baseline."
         )
-        today_rows = [r for r in load_results() if r.get("date") == today_az() and r.get("result") in ("HIT", "MISS")]
+        today_rows = [r for r in sport_rows if r.get("date") == today_az() and r.get("result") in ("HIT", "MISS")]
         today_hits = [r for r in today_rows if r.get("result") == "HIT"]
         if today_hits:
             meth_c, book_c, end_c = Counter(), Counter(), Counter()
@@ -7177,8 +7211,10 @@ def main():
             for line in bits:
                 st.markdown(f'<div class="info-box">{line}</div>', unsafe_allow_html=True)
         else:
-            st.info("Grade a HIT today and this strip fills. Same Tracker for HR and TD.")
-        baseline, baseline_n = take_it_baseline_rate(load_results())
+            st.info(
+                f"No {active_sport()} HITs today. Grade this sport only — MLB and NFL never share a Tracker."
+            )
+        baseline, baseline_n = take_it_baseline_rate(sport_rows)
         if baseline is not None:
             st.markdown(
                 f'<div class="info-box"><b>Baseline TAKE IT:</b> {baseline:.0f}% '
@@ -7219,6 +7255,8 @@ def main():
                     f"{beat_html}</div>"
                 )
             return out
+
+        method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats, score_stats = build_tracker_stats(sport_rows)
 
         st.markdown("#### By Petty Score lane")
         st.caption("Does a higher score actually hit more? Grade TAKE / PASS so these fill in.")
