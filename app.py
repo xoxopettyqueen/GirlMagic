@@ -6398,29 +6398,29 @@ def main():
                     queen = "Queen whispered: close, not cleared."
             glow = " card-hot" if int(item.get("score") or 0) >= 90 else ""
             st.markdown(
-                f'<div class="card site-card compact {cls}{glow}">'
+                f'<div class="card site-card {cls}{glow}">'
                 f'<div class="card-kicker">{decision_pill(show_label)} '
                 f'<span class="score-pill big">{petty_label("Score")} {item.get("score", 0)}</span></div>'
                 f'<div class="card-name">{item["player"]}</div>'
                 f'<div class="card-meta">{meta or "Slate player"}</div>'
+                f'<div class="why-call">{why_this_call(label, item)}</div>'
                 f'<div class="price-row"><span class="price-big">{format_odds(item.get("best_price"))}</span>'
-                f'<span class="price-book">{book_label(item.get("best_book"))}{pack_s}</span></div>'
-                f'<div class="card-line">{item.get("method_count", 0)} premium · edge {int(item.get("edge") or 0)}</div>'
+                f'<span class="price-book">{book_label(item.get("best_book"))} ticket{pack_s}{sig_s}</span></div>'
+                f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium methods</div>'
+                f'{kelly_bar_html(item.get("kelly_frac"))}'
+                f'{meter}'
+                f'{trend_chip_html(item)}'
+                f'{board_gate_checklist(item)}'
+                f'<div class="method-group"><div class="tag-group-lab">Personality</div>{fams}'
+                f'{grouped_tag_html(item.get("methods") or [])}</div>'
+                f'{notes}'
+                f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
                 f'{f"<div class=queen-line>{queen}</div>" if queen else ""}'
                 f'</div>',
                 unsafe_allow_html=True,
             )
             ck = f"{item.get('player')}_{label}_{str(item.get('event') or '')[:18]}"
-            with st.expander("Open card", expanded=False, key=f"ex_{ck}"):
-                st.markdown(why_this_call(label, item))
-                st.markdown(kelly_bar_html(item.get("kelly_frac")) + meter + trend_chip_html(item), unsafe_allow_html=True)
-                st.markdown(board_gate_checklist(item), unsafe_allow_html=True)
-                st.markdown(
-                    f'<div class="method-group"><div class="tag-group-lab">Personality</div>{fams}'
-                    f'{grouped_tag_html(item.get("methods") or [])}</div>{notes}'
-                    f'<div class="card-foot">{item.get("why", "")}{ev_s}{sig_s}</div>',
-                    unsafe_allow_html=True,
-                )
+            with st.expander("Explain this card", expanded=False, key=f"ex_{ck}"):
                 st.write(explain_card_text(item, label))
 
         elite = [e for e in ev_board if e.get("is_bet")]
