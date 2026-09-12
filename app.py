@@ -1840,15 +1840,30 @@ def render_trend_lab(ev_board, shop_rows):
         st.caption("Hot endings: " + ", ".join(f"{x['name']} {x['pct']:.0f}%" for x in hot_e))
 
     st.markdown("#### Live motion (last fetches)")
+    quick = st.toggle("Quick Read (headline + Queen only)", value=True, key="tl_quick")
     if not live:
         st.caption("Nothing matches those toggles. Fetch twice so snapshots exist.")
     else:
         for item in live[:30]:
+            motion = item.get("trend_motion") or "Stable"
+            meaning = item.get("trend_motion_meaning") or ""
+            if motion == "Heating up":
+                queen = "Queen whispered: this one’s heating, not cleared."
+            elif motion == "Cooling down":
+                queen = "Queen whispered: cooling. Don’t force the ticket."
+            elif motion == "Chaotic":
+                queen = "Queen whispered: chaos. Check the rogue ticket."
+            else:
+                queen = "Queen whispered: stable. Still homework unless the Board is green."
+            extra = "" if quick else f'{trend_chip_html(item)}{_motion_sparkline(item.get("player"))}'
             st.markdown(
                 f'<div class="card site-card {item.get("trend_motion_css") or ""}">'
                 f'<div class="card-name">{item.get("player")}</div>'
                 f'<div class="card-meta">{item.get("team") or ""} · {format_odds(item.get("best_price"))} {book_label(item.get("best_book"))}</div>'
-                f'{trend_chip_html(item)}{_motion_sparkline(item.get("player"))}</div>',
+                f'{motion_line_html(item)}'
+                f'<div class="trend-mean">{meaning}</div>'
+                f'{extra}'
+                f'<div class="queen-line">{queen}</div></div>',
                 unsafe_allow_html=True,
             )
 
@@ -1915,8 +1930,9 @@ def ending_heat_from_results(rows, min_n=20):
 def render_shop_tab(df):
     st.markdown("### Odds Shop")
     st.caption(
-        "Read left to right: player → each book → fair pack → ticket (highlighted) → gap → size → call. "
-        "Green number = best ticket. Red number = short vs fair. Grade Shop rows under Grade → Shop."
+        "Odds Shop is where math meets petty precision. "
+        "Read left to right: player → book → fair pack → ticket → gap → call. "
+        "Green means best ticket. Red means short vs fair. Everything else is homework."
     )
     if df is None or getattr(df, "empty", True):
         st.info(sport_cfg()["shop_empty"])
@@ -1940,26 +1956,36 @@ def render_shop_tab(df):
     </div>
     """, unsafe_allow_html=True)
     st.markdown('<div class="filter-shell">', unsafe_allow_html=True)
-    view = st.radio("Call", ["All", "TAKE + LEAN", "TAKE", "LEAN", "DON'T", "MARKET"], horizontal=True, key="shop_filter")
-    c1, c2, c3, c4 = st.columns(4)
+    st.caption("🎯 Call")
+    view = st.radio(
+        "Call",
+        ["All", "TAKE + LEAN", "TAKE", "LEAN", "DON'T", "MARKET"],
+        horizontal=True,
+        key="shop_filter",
+        help="TAKE — cleared play list. LEAN — math says maybe. DON’T — homework only. MARKET — neutral zone.",
+        label_visibility="collapsed",
+    )
+    st.caption("📚 Books")
+    c1, c2, c3 = st.columns(3)
     book_opts = ["Any"] + [lab for _, lab in SHOP_BOOKS]
     with c1:
-        book_f = st.selectbox("Best book", book_opts, key="shop_best_book")
+        book_f = st.selectbox("Best book", book_opts, key="shop_best_book", help="Ticket we would actually buy.")
     with c2:
-        has_f = st.selectbox("Has book", book_opts, key="shop_has_book")
+        has_f = st.selectbox("Has book", book_opts, key="shop_has_book", help="Must have this book posted.")
     ends = sorted({f"{int(r['ending']):02d}" for r in shop if r.get("ending") is not None})
     with c3:
-        end_f = st.multiselect("Best ends in", ends, key="shop_ends")
+        end_f = st.multiselect("Best ends in", ends, key="shop_ends", help="Last two of the ticket.")
+    st.caption("💸 Math")
+    c4, c5, c6 = st.columns(3)
     with c4:
-        min_gap = st.slider("Min gap vs fair", 0, 300, 0, 10, key="shop_min_gap")
-    c5, c6, c7 = st.columns(3)
+        min_gap = st.slider("Min gap vs fair", 0, 300, 0, 10, key="shop_min_gap", help="Best minus fair line.")
     with c5:
         min_books = st.selectbox("Min books posted", [1, 2, 3, 4, 5], index=0, key="shop_min_books")
     buckets = sorted({r.get("bucket") for r in shop if r.get("bucket")})
     with c6:
         buck_f = st.multiselect("Price bucket", buckets, key="shop_buckets")
-    with c7:
-        q = st.text_input("Player search", key="shop_q")
+    st.caption("🧍‍♀️ Player")
+    q = st.text_input("Find a name", key="shop_q")
     st.markdown("</div>", unsafe_allow_html=True)
 
     shown = shop
@@ -1984,7 +2010,7 @@ def render_shop_tab(df):
     if q.strip():
         qq = q.strip().lower()
         shown = [r for r in shown if qq in (r.get("player") or "").lower() or qq in (r.get("event") or "").lower()]
-    st.caption(f"Showing {len(shown)} of {len(shop)} players")
+    st.caption(f"Showing {len(shown)} of {len(shop)} players. If it disappeared, it wasn’t meant for you.")
     with st.expander("Long-ball math sample — fair / gap / EV / Kelly / call", expanded=False):
         take_n = sum(1 for r in shop if r.get("action") == "TAKE")
         lean_n = sum(1 for r in shop if r.get("action") == "LEAN")
@@ -6164,13 +6190,13 @@ def main():
             "Green = play it. Gray = close but not cleared. Eyes = keep on the list, don’t force it. "
             "The score ranks names. It does not change the math.",
         )
-        with st.expander("What am I looking at on the Board?", expanded=False):
+        with st.expander("💅 What am I looking at on the Board?", expanded=False):
             st.markdown(
-                "- **Green / TAKE** — cleared play list.\n"
-                "- **Gray / PASS** — methods fired, not enough to buy.\n"
-                "- **WATCH** — logged so we can grade later.\n"
-                "- **Ticket** — DK / FD / Hard Rock / Fanatics. MGM is a tell, not the buy.\n"
-                "- Hover a pink/green tag to see what it means."
+                "- 💚 **Green / TAKE / run it, baddie** — cleared the list. We play this.\n"
+                "- ⚪ **Gray / PASS** — methods fired. Not enough to buy. Homework.\n"
+                "- 👀 **WATCH** — logged for grading later. Don’t force the ticket.\n"
+                "- 🎟 **Ticket** — DK / FD / HardRock / Fanatics / Caesars. **MGM is a tell, not the buy.**\n"
+                "- 💅 Hover a pink or green tag if you need the language. Otherwise trust the math."
             )
         elite = [e for e in ev_board if e.get("is_bet")]
         if elite:
@@ -6524,15 +6550,17 @@ def main():
         site_section_open(
             "💸 PRICE",
             petty_label("Shop"),
-            "Shop does not pick the name. The Board already did that. "
-            "This table only says which book and number looks fairest to buy.",
+            "Odds Shop is where math meets petty precision. Board already picked the name.",
         )
-        with st.expander("How to read Shop", expanded=False):
+        with st.expander("💸 How to read Shop", expanded=False):
             st.markdown(
-                "- Green price = best ticket book.\n"
-                "- Red price = short vs the pack.\n"
-                "- **TAKE / LEAN / DON'T** are price calls, not Board greens.\n"
-                "- FN column is Fanatics when the Odds API actually sends it."
+                "- 💚 Green price — best ticket book.\n"
+                "- ❤️ Red price — short vs fair. Homework.\n"
+                "- **TAKE** — cleared play list (price call, not a Board green).\n"
+                "- **LEAN** — math says maybe.\n"
+                "- **DON’T** — homework only.\n"
+                "- **MARKET** — neutral zone.\n"
+                "- FN is Fanatics when the feed actually sends it."
             )
         render_shop_tab(df)
         site_section_close()
