@@ -143575,5 +143575,62 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.83
+  },
+  {
+    "id": "2026-09-12_Alika Williams_shop_lean_48",
+    "date": "2026-09-12",
+    "time": "11:56 AM",
+    "player": "Alika Williams",
+    "score": 0,
+    "edge": 48,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 900,
+      "caesars": 850,
+      "draftkings": 940,
+      "fanatics": 950,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-12T18:56:32.471244+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-12_Brice Turang_shop_lean_39",
+    "date": "2026-09-12",
+    "time": "11:56 AM",
+    "player": "Brice Turang",
+    "score": 0,
+    "edge": 39,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 560,
+    "book_prices": {
+      "betmgm": 500,
+      "caesars": 525,
+      "draftkings": 579,
+      "fanatics": 600,
+      "fanduel": 570,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-12T18:56:32.482266+00:00",
+    "price_source": "shop"
   }
 ]
