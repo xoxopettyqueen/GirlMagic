@@ -216,6 +216,9 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .site-section-kicker{color:#f9a8d4;font-size:.64rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:800;margin:0}
 .site-section-title{font-family:'Playfair Display',serif;color:#fff;font-size:1.45rem;margin:2px 0 4px}
 .site-section-help{color:#c4b5d6;font-size:.82rem;margin:0 0 8px;line-height:1.45}
+div[data-testid="stExpander"]{border:1px solid #a855f7;border-radius:16px;background:linear-gradient(90deg,rgba(219,39,119,.18),rgba(124,58,237,.18));margin-bottom:8px}
+div[data-testid="stExpander"] details{border:none}
+div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.68rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
 .pill-take{background:#14532d;color:#bbf7d0;border:1px solid #34d399}
 .pill-lean{background:#422006;color:#fde68a;border:1px solid #f59e0b}
@@ -2172,6 +2175,13 @@ def digits_playbook(hits_res, graded_res, live_res):
     return do, dont, notes
 
 
+def lookat_box(title, body):
+    st.markdown(
+        f'<div class="how-box"><b>{title}</b><div class="note" style="margin-top:6px">{body}</div></div>',
+        unsafe_allow_html=True,
+    )
+
+
 def render_digits_tab(df):
     st.markdown("""
     <style>
@@ -2191,6 +2201,11 @@ def render_digits_tab(df):
         "<p>Benford’s Law shows which numbers occur naturally — and which look forced.</p>"
         '<p style="margin-top:6px;color:#f9a8d4">Benford spots fake odds faster than any algorithm.</p></div>',
         unsafe_allow_html=True,
+    )
+    lookat_box(
+        "🔢 Benford — are the odds natural or forced?",
+        "Score closer to 1.0 = natural energy. Closer to 0.0 = forced numbers. "
+        "Use Benford to confirm the pond before you buy the ticket. Board still picks the name.",
     )
     if not HAS_BENFORD:
         st.warning("Need benford.py next to app.py.")
@@ -2260,13 +2275,23 @@ def render_digits_tab(df):
             f'<b>{d}</b><span class="note">{p:.0%}</span></div>'
         )
     st.markdown('<div class="card"><b>Benford Heatmap</b><div class="bf-heat">' + "".join(cells) + "</div></div>", unsafe_allow_html=True)
+    lookat_box(
+        "📚 Book Piles — which books are clean today?",
+        "Book Piles show which sportsbooks are giving clean, natural long-ball numbers today. "
+        "Look for green in +400–+600. Avoid red in +1000+.",
+    )
     st.markdown("#### Benford vs Board")
     c1, c2 = st.columns(2)
     with c1:
         _benford_card(live_res, "Live board prices")
     with c2:
         _benford_card(hits_res, "History hits")
-    with st.expander("More piles", expanded=False):
+    lookat_box(
+        "🧠 More Piles — is today normal or weird?",
+        "Today = live vibe. Lock = pregame truth. History = what actually hits. "
+        "If Today and History agree, the pond is clean. If Lock disagrees, the book tried to fake it.",
+    )
+    with st.expander("🧠 More piles — today vs lock vs history", expanded=False):
         _benford_card(best_res, "Today - best number only")
         _benford_card(lock_res, "Lock - pregame book prices")
         _benford_card(graded_res, "History - graded bests")
@@ -2279,6 +2304,12 @@ def render_digits_tab(df):
                     _benford_card(res, book_label(bk))
         else:
             st.caption("Fetch first.")
+    lookat_box(
+        "△ The Triangle — how to actually use all this",
+        "The Board picks the name. The Book Piles pick the pond. Benford picks the energy. "
+        "All three agree → TAKE. Two agree → LEAN. One agrees → WATCH. None → DON’T. "
+        "When all three agree, run it.",
+    )
 
 def get_odds_api_key():
     key = st.secrets.get("ODDS_API_KEY", "")
@@ -7401,6 +7432,10 @@ def main():
     if page == "Grade:Vibe":
         st.markdown("### Board vibe")
         st.caption("Are today's numbers all the same flavor, or mixed? Low score = copy-paste board. Not who goes yard.")
+        lookat_box(
+            "🔢 Benford on this page",
+            "Higher score = real energy. Lower score = forced numbers. Confirm the pond. The Board still clears the name.",
+        )
         if not HAS_BENFORD:
             st.warning("Upload benford.py next to app.py.")
         else:
