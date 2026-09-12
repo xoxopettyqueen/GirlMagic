@@ -293,17 +293,36 @@ BOOK_ALIASES = {
     "williamhill_us": "caesars",
     "hardrockbet_oh": "hardrockbet",
     "hardrockbet_nj": "hardrockbet",
+    "hardrockbet_az": "hardrockbet",
+    "hardrockbet_fl": "hardrockbet",
     "fanatics": "fanatics",
     "fanaticssportsbook": "fanatics",
     "fanatics_sportsbook": "fanatics",
+    "fanatics_az": "fanatics",
+    "fanatics_nj": "fanatics",
+    "fanatics_il": "fanatics",
+    "fanatics_pa": "fanatics",
+    "fanatics_mi": "fanatics",
+    "fanatics_oh": "fanatics",
+    "fanatics_ny": "fanatics",
 }
 
 def normalize_book(key):
     k = str(key or "").lower().strip()
-    if "bet365" in k:
+    if "bet365" in k or k in ("365", "b365"):
         return "bet365"
+    if "fanatic" in k:
+        return "fanatics"
+    if "hardrock" in k:
+        return "hardrockbet"
+    if "draftking" in k or k == "dk":
+        return "draftkings"
+    if "fanduel" in k or k == "fd":
+        return "fanduel"
+    if "betmgm" in k or k == "mgm":
+        return "betmgm"
     return BOOK_ALIASES.get(k, k)
-LATE_BOOKS = {"fanduel", "draftkings", "betmgm"}
+LATE_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics"}
 # ── Board gates (re-eval Tracker 2026-08-25) ─────────────────
 # Baseline TAKE IT ~11% (n=256). Promote 25s / Exact / multi-book / FD combos.
 # Demote 50s from priority (10% / 9% on TAKE). DK 10 = core only (6% on TAKE alone).
@@ -3115,10 +3134,26 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None):
     cfg = sport_cfg()
     sport_key = sport_key or cfg["key"]
     market = market or cfg["market"]
+    # Fanatics is region=us, key=fanatics (paid). Ask for it by name too.
+    # Alternate HR market is still filtered to Over 0.5 in flatten.
+    markets = market
+    if market == "batter_home_runs":
+        markets = "batter_home_runs,batter_home_runs_alternate"
+    books = ",".join([
+        "fanduel", "draftkings", "betmgm", "fanatics",
+        "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
+        "caesars", "williamhill_us",
+    ])
     try:
         r = requests.get(
             f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
-            params={"apiKey": api_key, "regions": REGIONS, "markets": market, "oddsFormat": "american"},
+            params={
+                "apiKey": api_key,
+                "regions": REGIONS,
+                "markets": markets,
+                "oddsFormat": "american",
+                "bookmakers": books,
+            },
             timeout=20,
         )
         return r.json() if r.status_code == 200 else None
@@ -3131,8 +3166,11 @@ def flatten_oddsapi(data):
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     for book in data.get("bookmakers", []):
         raw = (book.get("key") or "").lower()
-        found.add(raw)
-        bk = normalize_book(raw)
+        title = book.get("title") or ""
+        found.add(raw or title.lower())
+        bk = normalize_book(raw) if raw else ""
+        if bk not in PREFERRED:
+            bk = normalize_book(title)
         if bk not in PREFERRED: continue
         for market in book.get("markets", []):
             # accept standard + alternate HR markets; still force 0.5 only
