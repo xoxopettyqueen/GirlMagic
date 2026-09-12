@@ -263,6 +263,17 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .trend-line{margin-top:8px;padding-top:6px;border-top:1px dashed #3b2a4f}
 .trend-chip{display:inline-block;background:#3b0764;border:1px solid #e879f9;color:#fbcfe8;border-radius:999px;padding:2px 8px;font-size:.68rem;font-weight:800;margin-right:6px}
 .trend-meta{color:#c4b5d6;font-size:.68rem;margin-top:2px}
+.trend-mean{color:#fce7f3;font-size:.74rem;margin:4px 0 2px}
+.motion-heat{border-color:#34d399!important;box-shadow:0 0 14px rgba(52,211,153,.35);animation:heatPulse 1.8s ease-in-out infinite}
+.motion-cool{border-color:#fb7185!important;box-shadow:0 0 12px rgba(251,113,133,.28)}
+.motion-chaos{border-color:#c084fc!important;box-shadow:0 0 16px rgba(192,132,252,.4);animation:chaosPulse 1.1s ease-in-out infinite}
+.motion-stable{border-color:#64748b!important}
+@keyframes heatPulse{0%,100%{box-shadow:0 0 8px rgba(52,211,153,.25)}50%{box-shadow:0 0 18px rgba(52,211,153,.55)}}
+@keyframes chaosPulse{0%,100%{box-shadow:0 0 8px rgba(192,132,252,.25)}50%{box-shadow:0 0 20px rgba(244,114,182,.5)}}
+.pulse-bar{background:linear-gradient(90deg,#4c1d95,#831843);border:1px solid #f9a8d4;border-radius:16px;padding:12px 14px;margin:0 0 12px;color:#fce7f3;font-size:.88rem;line-height:1.45}
+.spark-wrap{margin-top:8px}
+.spark-row{margin:3px 0}
+.spark-lab{display:inline-block;width:64px;color:#c4b5d6;font-size:.62rem}
 .shop-wrap{margin-top:12px}
 @media (max-width: 700px){
   .site-title{font-size:1.55rem}
@@ -1310,11 +1321,15 @@ def player_motion(player, book_prices=None):
     if len(phist) < 2:
         return {
             "label": "Stable",
+            "icon": "🧊",
+            "css": "motion-stable",
+            "meaning": "Need another fetch to see motion.",
             "detail": "Need another fetch to see motion",
             "score": 40,
             "deltas": {},
             "cluster": None,
             "cluster_was": None,
+            "rogue": None,
         }
     def px_for(snap):
         out = {}
@@ -1350,15 +1365,20 @@ def player_motion(player, book_prices=None):
     if prev and len(prev) >= 2:
         cluster_was = max(prev.values()) - min(prev.values())
     if shorts >= 2 and longs == 0:
-        label, score = "Heating up", 78
+        label, score, icon, css = "Heating up", 78, "🔺", "motion-heat"
+        meaning = "Odds shortening across ticket books — books expect action."
     elif longs >= 2 and shorts == 0:
-        label, score = "Cooling down", 28
+        label, score, icon, css = "Cooling down", 28, "🔻", "motion-cool"
+        meaning = "Odds lengthening — pack is drifting. Value lane, or fade if it shot up."
     elif shorts and longs:
-        label, score = "Chaotic", 45
+        label, score, icon, css = "Chaotic", 45, "⚡", "motion-chaos"
+        meaning = "Books disagree. Volatility can be a window if one ticket stays long."
     elif deltas and all(abs(d) < 20 for d in deltas.values()):
-        label, score = "Stable", 50
+        label, score, icon, css = "Stable", 50, "🧊", "motion-stable"
+        meaning = "Barely moved since last fetch."
     else:
-        label, score = "Stable", 48
+        label, score, icon, css = "Stable", 48, "🧊", "motion-stable"
+        meaning = "Not enough book-to-book motion yet. Fetch again."
     bits = [f"{book_label(b)} {d:+d}" for b, d in deltas.items()]
     if cluster is not None and cluster_was is not None:
         if cluster < cluster_was - 15:
@@ -1371,8 +1391,15 @@ def player_motion(player, book_prices=None):
         if ranked and abs(ranked[0][1]) >= 80:
             rogue = ranked[0][0]
             bits.append(f"rogue {book_label(rogue)} {ranked[0][1]:+d}")
+    if cluster is not None and cluster_was is not None and cluster > cluster_was + 15:
+        meaning = "Cluster widening — a rogue number may be the value lane."
+    if rogue:
+        meaning = f"Rogue {book_label(rogue)} move. Check that ticket before you buy the pack."
     return {
         "label": label,
+        "icon": icon,
+        "css": css,
+        "meaning": meaning,
         "detail": " · ".join(bits) or "flat since last fetch",
         "score": score,
         "deltas": deltas,
@@ -1409,6 +1436,9 @@ def attach_player_trends(item, pack):
         if lab and lab != "—":
             meth_bits.append(f"{nm} {lab}")
     item["trend_motion"] = motion["label"]
+    item["trend_motion_icon"] = motion.get("icon") or "🧊"
+    item["trend_motion_css"] = motion.get("css") or "motion-stable"
+    item["trend_motion_meaning"] = motion.get("meaning") or ""
     item["trend_motion_detail"] = motion["detail"]
     item["trend_motion_score"] = motion["score"]
     item["trend_method"] = " · ".join(meth_bits[:2]) or "no graded method sample yet"
@@ -1429,9 +1459,12 @@ def attach_player_trends(item, pack):
 
 
 def trend_chip_html(item):
+    css = item.get("trend_motion_css") or "motion-stable"
+    icon = item.get("trend_motion_icon") or "🧊"
     return (
-        '<div class="trend-line">'
-        f'<span class="trend-chip">{item.get("trend_motion") or "Stable"}</span>'
+        f'<div class="trend-line">'
+        f'<span class="trend-chip {css}">{icon} {item.get("trend_motion") or "Stable"}</span>'
+        f'<div class="trend-mean">{item.get("trend_motion_meaning") or ""}</div>'
         f'<span class="trend-meta">{item.get("trend_motion_detail") or ""}</span>'
         f'<div class="trend-meta">Method · {item.get("trend_method")}</div>'
         f'<div class="trend-meta">Ending · {item.get("trend_ending")} · Bucket · {item.get("trend_bucket")}</div>'
@@ -1440,86 +1473,165 @@ def trend_chip_html(item):
     )
 
 
+def _motion_sparkline(player):
+    phist = st.session_state.get("price_history") or []
+    series = defaultdict(list)
+    for snap in phist:
+        by_bk = {}
+        for (p, b), v in (snap or {}).items():
+            if p != player:
+                continue
+            try:
+                by_bk[normalize_book(b)] = int(v)
+            except Exception:
+                pass
+        for bk in _TREND_TICKETS:
+            if bk in by_bk:
+                series[bk].append(by_bk[bk])
+    if not series:
+        return ""
+    all_px = [v for vs in series.values() for v in vs]
+    lo, hi = min(all_px), max(all_px)
+    span = max(1, hi - lo)
+    colors = {"draftkings": "#34d399", "fanduel": "#60a5fa", "hardrockbet": "#fbbf24", "fanatics": "#f472b6"}
+    rows = []
+    for bk, vs in series.items():
+        dots = []
+        for i, v in enumerate(vs):
+            h = 8 + int(22 * (v - lo) / span)
+            dots.append(
+                f'<span title="{book_label(bk)} {format_odds(v)}" '
+                f'style="display:inline-block;width:8px;height:{h}px;margin-right:2px;'
+                f'background:{colors.get(bk, "#c084fc")};border-radius:2px;vertical-align:bottom"></span>'
+            )
+        rows.append(f'<div class="spark-row"><span class="spark-lab">{book_label(bk)}</span>{"".join(dots)}</div>')
+    return '<div class="spark-wrap">' + "".join(rows) + "</div>"
+
+
 def render_trend_lab(ev_board, shop_rows):
     pack = build_trend_pack()
+    if "seen_trend_lab" not in st.session_state:
+        st.session_state["seen_trend_lab"] = False
+    if not st.session_state.get("seen_trend_lab"):
+        with st.expander("Welcome to the Trend Lab 💅", expanded=True):
+            st.markdown(
+                "This is where we track the motion **before first pitch**.\n\n"
+                "🔺 / 🔥 **Heating up** = books shortening.\n"
+                "🔻 / 🧊 **Cooling down** = books lengthening or a method losing steam.\n"
+                "⚡ **Chaotic** = books disagree.\n\n"
+                "These trends **do not change TAKE math** — they show what’s moving and where value might pop."
+            )
+            if st.button("Got it — show the lab", type="primary"):
+                st.session_state["seen_trend_lab"] = True
+                st.rerun()
+
+    hot_m = [r for r in pack.get("week_m") or [] if r["pct"] >= 18 and r["n"] >= 3][:4]
+    hot_e = [r for r in pack.get("week_e") or [] if r["pct"] >= 18 and r["n"] >= 3][:3]
+    hot_t = [r for r in pack.get("week_team") or [] if r["pct"] >= 20][:3]
+    rogue_live = [x for x in (ev_board or []) if x.get("trend_motion") == "Chaotic"]
+    pulse = (
+        "Long-ball lane is the story. "
+        + (("Methods cooking: " + ", ".join(x["name"] for x in hot_m) + ". ") if hot_m else "Grade hits so methods can cook. ")
+        + (("Teams: " + ", ".join(x["name"] for x in hot_t) + ". ") if hot_t else "")
+        + (("Chaotic tickets on the slate: " + str(len(rogue_live)) + ".") if rogue_live else "Fetch twice to see book motion.")
+    )
+    st.markdown(
+        f'<div class="pulse-bar">{pulse}</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown(
         '<div class="site-section"><div class="site-section-head">'
         '<p class="site-section-kicker">Trend Lab</p>'
-        '<div class="site-section-title">What is moving before first pitch</div>'
-        '<p class="site-section-help">Long-ball view. +500 and up is the lane we care about. '
-        "These chips do not change TAKE math — they tell you what has been cashing and what the books just did.</p></div>",
+        '<div class="site-section-title">What’s hitting right now 💣</div>'
+        '<p class="site-section-help">+500 and up is the lane. Green glow = heating. Red = cooling. Purple = chaos.</p></div>',
         unsafe_allow_html=True,
     )
-    c1, c2, c3, c4 = st.columns(4)
+
     heat = [x for x in (ev_board or []) if x.get("trend_motion") == "Heating up"]
     cool = [x for x in (ev_board or []) if x.get("trend_motion") == "Cooling down"]
     chaos = [x for x in (ev_board or []) if x.get("trend_motion") == "Chaotic"]
-    c1.metric("Heating up", len(heat))
-    c2.metric("Cooling down", len(cool))
-    c3.metric("Chaotic", len(chaos))
-    c4.metric("Graded this week", pack.get("week_n") or 0)
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("🔺 Heating", len(heat))
+    c2.metric("🔻 Cooling", len(cool))
+    c3.metric("⚡ Chaotic", len(chaos))
+    c4.metric("Week graded", pack.get("week_n") or 0)
 
-    def _chips(rows, empty):
-        if not rows:
-            st.caption(empty)
-            return
+    f1, f2, f3, f4 = st.columns(4)
+    only_heat = f1.checkbox("Only heating up", key="tl_heat")
+    only_chaos = f2.checkbox("Only chaotic", key="tl_chaos")
+    only_long = f3.checkbox("Only long-ball +500+", value=True, key="tl_long")
+    fav = f4.multiselect("Favorite books", ["DK", "FD", "Fanatics", "HardRock"], key="tl_books")
+    fav_keys = {"DK": "draftkings", "FD": "fanduel", "Fanatics": "fanatics", "HardRock": "hardrockbet"}
+
+    live = list(ev_board or [])
+    if only_heat:
+        live = [x for x in live if x.get("trend_motion") == "Heating up"]
+    if only_chaos:
+        live = [x for x in live if x.get("trend_motion") == "Chaotic"]
+    if only_long:
+        live = [x for x in live if abs(int(x.get("best_price") or 0)) >= 500]
+    if fav:
+        want = {fav_keys[x] for x in fav}
+        live = [x for x in live if normalize_book(x.get("best_book")) in want]
+    live = sorted(live, key=lambda x: -(x.get("trend_motion_score") or 0))
+
+    st.markdown("#### 🔥 Hot right now")
+    if hot_m:
+        for r in hot_m:
+            y = next((z for z in pack.get("yday_m") or [] if z["name"] == r["name"]), None)
+            arrow = "🔺" if y and r["pct"] > y["pct"] + 5 else ("🔻" if y and r["pct"] + 5 < y["pct"] else "⚡")
+            st.markdown(f"- {arrow} **{r['name']}** → {r['pct']:.0f}% this week (n={r['n']}) — still cooking")
+    else:
+        st.caption("Grade a few hits and this fills.")
+    if hot_e:
+        st.caption("Hot endings: " + ", ".join(f"{x['name']} {x['pct']:.0f}%" for x in hot_e))
+
+    st.markdown("#### Live motion (last fetches)")
+    if not live:
+        st.caption("Nothing matches those toggles. Fetch twice so snapshots exist.")
+    else:
+        for item in live[:30]:
+            st.markdown(
+                f'<div class="card site-card {item.get("trend_motion_css") or ""}">'
+                f'<div class="card-name">{item.get("player")}</div>'
+                f'<div class="card-meta">{item.get("team") or ""} · {format_odds(item.get("best_price"))} {book_label(item.get("best_book"))}</div>'
+                f'{trend_chip_html(item)}{_motion_sparkline(item.get("player"))}</div>',
+                unsafe_allow_html=True,
+            )
+
+    cold_m = [r for r in pack.get("week_m") or [] if r["pct"] <= 8 and r["n"] >= 4][:8]
+    st.markdown("#### 🧊 Cooling off")
+    if cold_m:
+        st.caption(" · ".join(f"{x['name']} {x['pct']:.0f}%" for x in cold_m))
+    else:
+        st.caption("No cold methods with a real sample yet.")
+
+    st.markdown("#### 💣 Long-ball lanes")
+    bkt = pack.get("week_bkt") or []
+    if not bkt:
+        st.caption("Grade +500s and up to fill buckets.")
+    else:
         html = "".join(
             f'<div class="rate-chip"><div class="rate-pct">{r["pct"]:.0f}%</div>'
             f'<div class="rate-name">{r["name"]}</div>'
             f'<div class="rate-n">{r.get("hit", 0)}H · n={r["n"]}</div></div>'
-            for r in rows[:12]
+            for r in bkt
         )
         st.markdown(html, unsafe_allow_html=True)
 
-    st.markdown("#### Odds motion on the live slate")
-    live = sorted(ev_board or [], key=lambda x: -(x.get("trend_motion_score") or 0))
-    if not live:
-        st.caption("Fetch the slate. Motion needs two snapshots.")
+    st.markdown("#### 📈 Book behavior")
+    books = pack.get("week_book") or []
+    if not books:
+        st.caption("Books fill from graded ticket book.")
     else:
-        for item in live[:24]:
-            if abs(int(item.get("best_price") or 0)) < 200:
-                continue
-            st.markdown(
-                f'<div class="card site-card">'
-                f'<div class="card-name">{item.get("player")}</div>'
-                f'<div class="card-meta">{item.get("team") or ""} · {format_odds(item.get("best_price"))} {book_label(item.get("best_book"))}</div>'
-                f'{trend_chip_html(item)}</div>',
-                unsafe_allow_html=True,
-            )
-
-    a, b = st.columns(2)
-    with a:
-        st.markdown("#### Methods today")
-        _chips(pack["today_m"], "Grade today’s hits first.")
-        st.markdown("#### Methods yesterday")
-        _chips(pack["yday_m"], "No graded slate yesterday.")
-    with b:
-        st.markdown("#### Methods this week")
-        _chips(pack["week_m"], "Need graded week sample.")
-        hot = [r for r in pack["week_m"] if r["pct"] >= 18 and r["n"] >= 4][:6]
-        cold = [r for r in pack["week_m"] if r["pct"] <= 8 and r["n"] >= 4][:6]
-        st.caption("Hot: " + ", ".join(x["name"] for x in hot) or "none yet")
-        st.caption("Cold: " + ", ".join(x["name"] for x in cold) or "none yet")
-
-    st.markdown("#### Endings")
-    e1, e2 = st.columns(2)
-    with e1:
-        st.caption("Today")
-        _chips(pack["today_e"], "No endings graded today.")
-    with e2:
-        st.caption("This week")
-        _chips(pack["week_e"], "No week endings yet.")
-
-    st.markdown("#### Price buckets this week (long-ball first)")
-    _chips(pack["week_bkt"], "Grade +500s and up to fill this.")
-
-    t1, t2 = st.columns(2)
-    with t1:
-        st.markdown("#### Team week")
-        _chips(pack["week_team"], "Teams fill after a few graded HRs.")
-    with t2:
-        st.markdown("#### Ticket book week")
-        _chips(pack["week_book"], "Books fill from graded best_book.")
+        html = "".join(
+            f'<div class="rate-chip"><div class="rate-pct">{r["pct"]:.0f}%</div>'
+            f'<div class="rate-name">{r["name"]}</div>'
+            f'<div class="rate-n">{r.get("hit", 0)}H · n={r["n"]}</div></div>'
+            for r in books
+        )
+        st.markdown(html, unsafe_allow_html=True)
+        st.caption("Rogue on the live slate = Chaotic cards above (one book jumped while others sat).")
     st.markdown("</div>", unsafe_allow_html=True)
 
 
