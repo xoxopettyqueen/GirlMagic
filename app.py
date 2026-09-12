@@ -258,6 +258,9 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .gate-yes{background:#052e16;color:#86efac;border:1px solid #166534}
 .gate-no{background:#1f0a12;color:#fda4af;border:1px solid #7f1d1d}
 .why-call{color:#e9d5ff;font-size:.74rem;margin:6px 0 2px;line-height:1.35}
+.board-wrap,.board-wrap *{list-style:none!important}
+.game-head{font-family:'Playfair Display',serif;color:#fce7f3;font-size:1.05rem;margin:14px 0 8px;font-weight:700}
+.shop-wrap{margin-top:12px}
 @media (max-width: 700px){
   .site-title{font-size:1.55rem}
   .card.site-card .card-name{font-size:1.05rem}
@@ -4866,10 +4869,10 @@ def main():
     )
     st.markdown(
         '<div class="how-to site-guide"><b>How to use this site:</b> '
-        '1) Load games in the sidebar → 2) Fetch odds → 3) Read <b>Board</b> for who is cleared → '
-        '4) Open <b>Shop</b> for which book and number to buy → '
-        '5) After games, <b>Grade</b> so tomorrow is smarter. '
-        'Pink words are personality. Green / gray cards are the decision.</div>',
+        'Load games in the sidebar, then Fetch. '
+        'Board = who is cleared. Shop = which number to buy. '
+        'Grade after the games so tomorrow is smarter. '
+        'Pink words are personality. Green cards are the decision.</div>',
         unsafe_allow_html=True,
     )
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
@@ -5330,7 +5333,7 @@ def main():
         if not takes and not passes and not watches and not coverage_only:
             st.info("Fetch while pregame - board fills when methods fire.")
         else:
-            st.markdown("#### Take it")
+            st.markdown('<div class="board-wrap"><h3 class="game-head">Cleared names</h3></div>', unsafe_allow_html=True)
             commence_by_event = {}
             slate_games = []
             chosen_labs = st.session_state.get("last_selected") or st.session_state.get("selected_games") or []
@@ -5432,7 +5435,10 @@ def main():
                 picks = sorted(picks, key=lambda x: -x.get("score", 0))
                 if not items and not picks and (name_q or min_score or time_win != "All times"):
                     continue
-                st.markdown(f"**{_fmt_game_header(game)}**")
+                st.markdown(
+                    f'<div class="board-wrap"><div class="game-head">{_fmt_game_header(game)}</div></div>',
+                    unsafe_allow_html=True,
+                )
                 if items or picks:
                     cols = st.columns(2)
                     idx = 0
@@ -5449,7 +5455,7 @@ def main():
 
             if passes and "PASS" in show_kinds:
                 shown_p = [x for x in passes if _keep_card(x)]
-                st.markdown("#### Pass")
+                st.markdown('<div class="board-wrap"><h3 class="game-head">Pass</h3></div>', unsafe_allow_html=True)
                 if not shown_p:
                     st.caption("No PASS names match the filters.")
                 else:
@@ -5459,7 +5465,7 @@ def main():
                             _render_board_card(item, "PASS", "skip")
 
             if "WATCH" in show_kinds:
-                st.markdown("#### Watch")
+                st.markdown('<div class="board-wrap"><h3 class="game-head">Watch</h3></div>', unsafe_allow_html=True)
                 shown_w = [x for x in watches if _keep_card(x)]
                 if not shown_w:
                     st.caption("No WATCH names match the filters.")
@@ -5469,7 +5475,7 @@ def main():
                         with cols[idx % 2]:
                             _render_board_card(item, "WATCH", "watch-card")
 
-            st.markdown("#### 👁️ COVERAGE · support tags only (not a bet)")
+            st.markdown('<div class="board-wrap"><h3 class="game-head">Coverage · support tags only</h3></div>', unsafe_allow_html=True)
             st.caption(
                 "75s · 00s · Stayed alone · Last one left · Exact / tight - "
                 "support tags only. Never upgrades to TAKE IT without priority + edge."
@@ -5481,6 +5487,21 @@ def main():
                 for idx, item in enumerate(coverage_only[:40]):
                     with cols[idx % 2]:
                         _render_board_card(item, "COVERAGE", "watch-card")
+            with st.expander("Board diagnostic (is_bet / score / methods) — math not changed", expanded=False):
+                lines = []
+                for item in (ev_board or [])[:80]:
+                    lines.append(
+                        f"- {item.get('player')} · is_bet={item.get('is_bet')} · "
+                        f"score={item.get('score')} · edge={item.get('edge')} · "
+                        f"best={format_odds(item.get('best_price'))} {book_label(item.get('best_book'))} · "
+                        f"methods={item.get('methods')}"
+                    )
+                st.markdown("\n".join(lines) if lines else "_No Board rows. Fetch first._")
+                st.caption(
+                    f"TAKE count={sum(1 for x in (ev_board or []) if x.get('is_bet'))} · "
+                    f"PASS={sum(1 for x in (ev_board or []) if not x.get('is_bet'))} · "
+                    f"WATCH pool={len(watch_board or [])}"
+                )
         site_section_close()
 
     if page == "Shop:":
