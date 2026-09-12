@@ -139210,5 +139210,46 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.83
+  },
+  {
+    "id": "2026-09-12_Michael Massey_watch_68",
+    "date": "2026-09-12",
+    "time": "11:05 AM",
+    "player": "Michael Massey",
+    "score": 68,
+    "edge": 175,
+    "best_price": 1050,
+    "best_book": "fanatics",
+    "median": 875.0,
+    "book_prices": {
+      "betmgm": 850,
+      "caesars": 750,
+      "draftkings": 1000,
+      "fanatics": 1050,
+      "fanduel": 800,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+1000+",
+    "ending": 50,
+    "mgm_locked": 850,
+    "mgm_ending": 50,
+    "methods": [
+      "Last one left",
+      "Match 50",
+      "Fanatics Rogue",
+      "Stayed in the group",
+      "MGM 50"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-12T18:05:28.380397+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "KANSAS CITY ROYALS",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.33
   }
 ]
