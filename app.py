@@ -827,6 +827,55 @@ def site_section_close():
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+QUEEN_PHRASES = {
+    "cleared the list": "Passed the Board gates. This is a green name — the short list we actually play.",
+    "run it, baddie": "Petty Mode words for TAKE IT. Same math. Same green card.",
+    "score hold": "Petty Score is 70+. It can keep a green when Benford/numerology miss. It cannot invent a green from nothing.",
+    "watch it, don’t force the ticket": "Not enough premium methods. Log it. Do not buy from this card.",
+    "close, not cleared": "Tags fired, but book / ending / score / edge did not all land. Homework, not a ticket.",
+    "Queen cleared it": "Same as cleared the list. Personality line, not a second scoring system.",
+}
+
+
+def render_card_guide():
+    st.markdown("### Before you roll, here’s how to read a Girl Magic card.")
+    st.markdown(
+        "- **Green** = cleared / strong signal (TAKE)\n"
+        "- **Pink** = Petty Score / personality\n"
+        "- **Purple** = Queen commentary\n"
+        "- **Red** = caution or override (DON’T / fade / failed gate)\n"
+        "- **Edge** = how far the ticket sits from the pack (confidence gap, not a vibe meter)\n"
+        "- **Methods** = how many systems agree"
+    )
+    st.caption("Once you know the colors, you know the vibe.")
+
+
+def render_queen_glossary():
+    st.markdown("**Queen phrase book**")
+    for phrase, meaning in QUEEN_PHRASES.items():
+        st.markdown(f"- **{phrase}** — {meaning}")
+
+
+def explain_card_text(item, label):
+    name = item.get("player") or "This player"
+    n = int(item.get("method_count") or 0)
+    price = format_odds(item.get("best_price"))
+    book = book_label(item.get("best_book"))
+    score = item.get("score", 0)
+    motion = item.get("trend_motion") or "Stable"
+    if label in ("TAKE IT", "Take it"):
+        vibe = "Queen cleared it."
+    elif label == "WATCH":
+        vibe = "Queen says watch it — do not force the ticket."
+    else:
+        vibe = "Queen says close, not cleared."
+    widen = "widening" if motion == "Cooling down" else ("shortening / heating up" if motion == "Heating up" else motion.lower())
+    return (
+        f"{name} shows {n} premium method(s). {book} is the ticket at {price}. "
+        f"Odds look {widen}. Petty Score {score}. {vibe}"
+    )
+
+
 def petty_family_for_method(method):
     m = normalize_method_name(method)
     for fam, members in PETTY_FAMILIES.items():
@@ -5261,6 +5310,25 @@ def main():
         'Pink words are personality. Green cards are the decision.</div>',
         unsafe_allow_html=True,
     )
+    if "seen_card_guide" not in st.session_state:
+        st.session_state["seen_card_guide"] = False
+    if not st.session_state.get("seen_card_guide"):
+        st.info("Welcome to Girl Magic Odds 💅 — start by reading the Card Guide so you know how to read the colors and tags.")
+    g1, g2 = st.columns([1, 1])
+    with g1:
+        if st.button("Card Guide", use_container_width=True):
+            st.session_state["show_card_guide"] = True
+    with g2:
+        if st.button("I know the vibe", use_container_width=True):
+            st.session_state["seen_card_guide"] = True
+            st.session_state["show_card_guide"] = False
+    if st.session_state.get("show_card_guide") or not st.session_state.get("seen_card_guide"):
+        with st.expander("Before you roll — how to read a Girl Magic card", expanded=not st.session_state.get("seen_card_guide")):
+            render_card_guide()
+            if st.button("Got it — hide this", type="primary"):
+                st.session_state["seen_card_guide"] = True
+                st.session_state["show_card_guide"] = False
+                st.rerun()
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
     if petty_on():
         st.markdown('<div class="petty-banner">💅 Petty Mode ON — words get louder. Math does not change.</div>', unsafe_allow_html=True)
@@ -5701,6 +5769,18 @@ def main():
                 f'</div>',
                 unsafe_allow_html=True,
             )
+            ck = f"{item.get('player')}_{label}_{str(item.get('event') or '')[:18]}"
+            with st.expander("Explain this card", expanded=False, key=f"ex_{ck}"):
+                st.write(explain_card_text(item, label))
+            if queen:
+                try:
+                    with st.popover("What Queen means"):
+                        render_queen_glossary()
+                        st.caption(queen)
+                except Exception:
+                    with st.expander("What Queen means", expanded=False):
+                        render_queen_glossary()
+                        st.caption(queen)
 
         elite = [e for e in ev_board if e.get("is_bet")]
         st.markdown("#### Petty Picks")
