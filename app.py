@@ -419,6 +419,7 @@ PRIORITY_METHODS = {
     "Books tight",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
     "FD 90",
+    "EV Premium", "Kelly Premium",
 }
 TAKE_HOT_ENDS = {10, 25, 50, 75, 90}  # ticket ending (DK/FD/HR). MGM-50 *method* is still support-only
 TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}  # +600s need a real priority tag, not MGM juice
@@ -445,6 +446,7 @@ TAKE_IT_STRONG = {
     "Multi-book Shorten",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
     "FD 90", "FD 50",
+    "EV Premium", "Kelly Premium",
 }
 # SUPPORT = tagged / WATCH / Tracker only - never core, never unlocks alone
 SUPPORT_ONLY = {
@@ -457,6 +459,8 @@ SUPPORT_ONLY = {
     "Last one left",
     "Fanatics Drift",
     "FD 40", "MGM 60", "MGM 10", "MGM 40",
+    "EV Support", "Kelly Support", "EV Caution", "Kelly Caution",
+    "Trend Heating", "Trend Cooling", "Trend Chaotic",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
 # Name magic can still use a slightly wider set
@@ -621,9 +625,14 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
         # 14% lane — only if a real priority tag fired (not MGM-as-ticket)
         if not pri:
             return False
-    elif 500 <= abs(int(best_price or 0)) <= 900 and (ms & BOOK_PERSONALITY) and hot and pri:
-        # long-ball personality lane: 70 holds instead of 85
-        if sc < SCORE_SOFT_TAKE:
+    elif 500 <= abs(int(best_price or 0)) <= 900 and hot and pri:
+        # long-ball lane: personality or EV/Kelly + score 70
+        value_ok = bool(ms & {"EV Premium", "Kelly Premium", "EV Support"})
+        pers_ok = bool(ms & BOOK_PERSONALITY)
+        if not (pers_ok or value_ok):
+            if sc < SCORE_TAKE_OVERRIDE:
+                return False
+        elif sc < SCORE_SOFT_TAKE:
             return False
     elif sc < SCORE_TAKE_OVERRIDE:
         return False
@@ -990,8 +999,16 @@ def petty_score(methods, edge, core_count, benford_flag=None):
     if {"Stayed in the group", "Last one left"} <= ms:
         extra += 6
     if ms & {"Caesars Classic", "HardRock Heater", "Fanatics Rogue", "FD 90"}:
+        extra += 8
+    if ms & {"EV Premium", "Kelly Premium"}:
         extra += 5
-    if ms & {"FD 40", "MGM 00"}:
+    if "Trend Heating" in ms:
+        extra += 5
+    if "Trend Chaotic" in ms:
+        extra += 3
+    if "Trend Cooling" in ms and not (ms & {"EV Premium", "Kelly Premium", "Caesars Classic"}):
+        extra -= 5
+    if ms & {"FD 40", "MGM 00", "EV Caution", "Kelly Caution"}:
         extra -= 5
     tag = ""
     if isinstance(benford_flag, dict):
@@ -1096,7 +1113,103 @@ def no_vig_fair_american(prices):
     avg = sum(imps) / len(imps)
     return implied_to_american(avg), avg
 
-def shop_price_action(best, fair, book_prices=None):
+FAIR_WEIGHTS = {
+    "caesars": 0.30,
+    "hardrockbet": 0.25,
+    "fanduel": 0.20,
+    "draftkings": 0.15,
+}
+FAIR_OTHER_WEIGHT = 0.10
+SHOP_GAP_TAKE_LONG = 35
+SHOP_GAP_LEAN_LONG = 25
+SHOP_GAP_DONT_LONG = -35
+SHOP_GAP_TAKE_MID = 50
+SHOP_GAP_LEAN_MID = 40
+
+
+def american_to_decimal_pos(px):
+    try:
+        p = int(px)
+    except Exception:
+        return None
+    if p > 0:
+        return 1.0 + p / 100.0
+    return 1.0 + 100.0 / abs(p)
+
+
+def compute_market_fair(book_px):
+    """Long-ball market fair: avg ticket books + cushion, or weighted if 3+ books."""
+    px = {}
+    for b, v in (book_px or {}).items():
+        try:
+            px[normalize_book(b)] = int(v)
+        except Exception:
+            pass
+    lane = [b for b in ("draftkings", "fanduel", "hardrockbet", "fanatics", "caesars") if b in px]
+    vals = [px[b] for b in lane] or list(px.values())
+    if not vals:
+        return None, None, "none"
+    fair_base = sum(vals) / len(vals)
+    fair_simple = int(round(fair_base + 15))
+    wsum = 0.0
+    wtot = 0.0
+    used_w = 0
+    leftover = [b for b in px if b not in FAIR_WEIGHTS]
+    for b, w in FAIR_WEIGHTS.items():
+        if b in px:
+            wsum += w * px[b]
+            wtot += w
+            used_w += 1
+    if leftover:
+        share = FAIR_OTHER_WEIGHT / len(leftover)
+        for b in leftover:
+            wsum += share * px[b]
+            wtot += share
+    if used_w >= 3 and wtot > 0:
+        fair = int(round(wsum / wtot + 10))
+        mode = "weighted"
+    else:
+        fair = fair_simple
+        mode = "avg+15"
+    dec = american_to_decimal_pos(fair)
+    p = (1.0 / dec) if dec else None
+    return fair, p, mode
+
+
+def ev_from_fair(best, fair):
+    dec_f = american_to_decimal_pos(fair)
+    dec_b = american_to_decimal_pos(best)
+    if not dec_f or not dec_b:
+        return None, None
+    p = 1.0 / dec_f
+    ev = p * (dec_b - 1.0) - (1.0 - p)
+    b = dec_b - 1.0
+    kelly = ((b * p) - (1.0 - p)) / b if b else None
+    return ev, kelly
+
+
+def value_method_tags(ev, kelly):
+    tags = []
+    if ev is None:
+        return tags
+    if ev > 0.05:
+        tags.append("EV Premium")
+    elif ev > 0:
+        tags.append("EV Support")
+    else:
+        tags.append("EV Caution")
+    if kelly is None:
+        return tags
+    if kelly > 0.05:
+        tags.append("Kelly Premium")
+    elif kelly > 0:
+        tags.append("Kelly Support")
+    else:
+        tags.append("Kelly Caution")
+    return tags
+
+
+def shop_price_action(best, fair, book_prices=None, ev=None, kelly=None):
     if best is None or fair is None:
         return "WATCH", "no fair", "shop-mkt"
     try:
@@ -1104,6 +1217,12 @@ def shop_price_action(best, fair, book_prices=None):
     except Exception:
         bp = 0
     gap = int(best) - int(fair)
+    long_ball = bp >= 500
+    take_g = SHOP_GAP_TAKE_LONG if long_ball else SHOP_GAP_TAKE_MID
+    lean_g = SHOP_GAP_LEAN_LONG if long_ball else SHOP_GAP_LEAN_MID
+    dont_g = SHOP_GAP_DONT_LONG if long_ball else -40
+    if ev is not None and kelly is not None and ev <= 0 and kelly <= 0:
+        return "DON'T", f"EV {ev:+.2f} · Kelly {kelly:+.2f} both dead", "shop-dont"
     if bp >= JUNK_PRICE:
         return "DON'T", f"+{bp} junk lane · fair {format_odds(fair)}", "shop-dont"
     if bp >= LONG_PRICE:
@@ -1111,14 +1230,14 @@ def shop_price_action(best, fair, book_prices=None):
         books = {normalize_book(b) for b in (book_prices or {})}
         real = books & {"draftkings", "fanduel", "betmgm"}
         if end in LONG_DEAD_ENDS or (end not in LONG_OK_ENDS) or len(real) < 2:
-            if gap >= 40:
+            if gap >= lean_g and ev and ev > 0:
                 return "LEAN", f"longshot lean {format_odds(best)} · fair {format_odds(fair)}", "shop-lean"
             return "DON'T", f"long + bad shape {format_odds(best)}", "shop-dont"
-    if gap >= EDGE_MIN:
+    if gap >= take_g:
         return "TAKE", f"take at {format_odds(best)} · fair {format_odds(fair)} · +{gap}", "shop-take"
-    if gap >= 40:
+    if gap >= lean_g:
         return "LEAN", f"lean {format_odds(best)} · fair {format_odds(fair)} · +{gap}", "shop-lean"
-    if gap <= -40:
+    if gap <= dont_g:
         return "DON'T", f"don't take {format_odds(best)} · fair {format_odds(fair)} · {gap}", "shop-dont"
     return "MARKET", f"market {format_odds(best)} · fair {format_odds(fair)} · {gap:+d}", "shop-mkt"
 
@@ -1156,21 +1275,23 @@ def build_shop_board(df):
             med = int(statistics.median(prices)) if len(prices) >= 2 else int(best)
         except Exception:
             med = int(best) if best is not None else None
-        ticket_px = [book_px[b] for b in book_px if _is_ticket_book(b)]
-        fair_src = ticket_px if len(ticket_px) >= 2 else prices
-        fair_nv, fair_p = no_vig_fair_american(fair_src)
-        fair = fair_nv if fair_nv is not None else med
-        action, why, cls = shop_price_action(best, fair, book_px)
+        fair, fair_p, fair_mode = compute_market_fair(book_px)
+        if fair is None:
+            fair, fair_p, fair_mode = med, american_implied(med), "median"
+        ev, kelly_f = ev_from_fair(best, fair)
+        action, why, cls = shop_price_action(best, fair, book_px, ev, kelly_f)
         edge = (int(best) - int(fair)) if best is not None and fair is not None else 0
         ku, klabel, kfull = kelly_units(fair_p, best)
-        if klabel == "SKIP" and action == "TAKE":
+        vtags = value_method_tags(ev, kelly_f)
+        if klabel == "SKIP" and action == "TAKE" and (kelly_f is None or kelly_f <= 0):
             action, why, cls = "LEAN", why + " · Kelly skip (thin edge)", "shop-lean"
-        if klabel == "SKIP" and action == "LEAN" and edge < 40:
-            action, why, cls = "DON'T", why + " · Kelly skip", "shop-dont"
         rows.append({
             "player": player, "event": event or "", "books": book_px,
             "best": best, "best_book": best_book, "median": med, "fair": fair,
-            "fair_prob": fair_p, "edge": edge, "action": action, "why": why,
+            "fair_mode": fair_mode,
+            "fair_prob": fair_p, "edge": edge, "ev": ev, "kelly_frac": kelly_f,
+            "value_tags": vtags,
+            "action": action, "why": why,
             "cls": cls, "n_books": len(book_px),
             "ending": last_two(best) if best is not None else None,
             "bucket": price_bucket(best),
@@ -1197,8 +1318,13 @@ def shop_block_reasons(r):
         gap_i = None
     if best is None or fair is None:
         blocked.append("no fair line (need 2+ prices)")
-    if gap_i is not None and gap_i < EDGE_MIN:
-        blocked.append(f"gap {gap_i:+d} < EDGE_MIN {EDGE_MIN}")
+    try:
+        bp_chk = abs(int(best)) if best is not None else 0
+    except Exception:
+        bp_chk = 0
+    need = SHOP_GAP_TAKE_LONG if bp_chk >= 500 else SHOP_GAP_TAKE_MID
+    if gap_i is not None and gap_i < need:
+        blocked.append(f"gap {gap_i:+d} < take gap {need}")
     if bp >= JUNK_PRICE:
         blocked.append(f"flyer/junk lane +{bp} ≥ {JUNK_PRICE}")
     if bp >= LONG_PRICE:
@@ -1509,6 +1635,19 @@ def attach_player_trends(item, pack):
     item["trend_motion_meaning"] = motion.get("meaning") or ""
     item["trend_motion_detail"] = motion["detail"]
     item["trend_motion_score"] = motion["score"]
+    tag = None
+    if motion["label"] == "Heating up":
+        tag = "Trend Heating"
+    elif motion["label"] == "Cooling down":
+        tag = "Trend Cooling"
+    elif motion["label"] == "Chaotic":
+        tag = "Trend Chaotic"
+    if tag:
+        item["trend_tag"] = tag
+        ms = item.get("methods") or []
+        if tag not in ms:
+            ms.append(tag)
+            item["methods"] = ms
     item["trend_method"] = " · ".join(meth_bits[:2]) or "no graded method sample yet"
     item["trend_ending"] = _lookup_trend(pack.get("week_e"), end_s)
     item["trend_bucket"] = _lookup_trend(pack.get("week_bkt"), bkt)
@@ -1800,19 +1939,27 @@ def render_shop_tab(df):
         qq = q.strip().lower()
         shown = [r for r in shown if qq in (r.get("player") or "").lower() or qq in (r.get("event") or "").lower()]
     st.caption(f"Showing {len(shown)} of {len(shop)} players")
-    with st.expander("Shop debug — gap + what blocked TAKE (math not changed)", expanded=False):
+    with st.expander("Long-ball math sample — fair / gap / EV / Kelly / call", expanded=False):
         take_n = sum(1 for r in shop if r.get("action") == "TAKE")
+        lean_n = sum(1 for r in shop if r.get("action") == "LEAN")
+        long_n = sum(1 for r in shop if abs(int(r.get("best") or 0)) >= 500)
         st.caption(
-            f"{take_n} TAKE of {len(shop)}. Gap = best ticket − no-vig fair of ticket books. "
-            f"TAKE needs gap ≥ {EDGE_MIN}. Kelly SKIP can demote a TAKE."
+            f"{take_n} TAKE · {lean_n} LEAN · {long_n} at +500+. "
+            "Fair = weighted books + cushion (or avg+15). Gap = best − fair. "
+            "Long-ball TAKE gap ≥ 35, LEAN ≥ 25."
         )
         lines = []
         for r in shop[:80]:
+            ev = r.get("ev")
+            kf = r.get("kelly_frac")
+            ev_s = f"{ev:+.3f}" if ev is not None else "—"
+            k_s = f"{kf:+.3f}" if kf is not None else "—"
+            tags = ", ".join(r.get("value_tags") or [])
             reasons = shop_block_reasons(r)
             lines.append(
                 f"- **{r.get('player')}** · best {format_odds(r.get('best'))} {book_label(r.get('best_book'))} "
-                f"· fair {format_odds(r.get('fair'))} · gap **{int(r.get('edge') or 0):+d}** "
-                f"· call **{r.get('action')}** · {'; '.join(reasons[:6])}"
+                f"· fair {format_odds(r.get('fair'))} ({r.get('fair_mode')}) · gap **{int(r.get('edge') or 0):+d}** "
+                f"· EV {ev_s} · Kelly {k_s} · {tags} · **{r.get('action')}** · {'; '.join(reasons[:4])}"
             )
         st.markdown("\n".join(lines) if lines else "_No shop rows._")
     heat = ending_heat_from_results(load_results(), min_n=20)
@@ -4665,12 +4812,25 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 book_px[normalize_book(bk)] = int(px)
             except Exception:
                 pass
+        fair, fair_p, fair_mode = compute_market_fair(book_px)
+        if fair is None:
+            fair, fair_p, fair_mode = med, american_implied(med), "median"
+        ev, kelly_f = ev_from_fair(best, fair)
+        for t in value_method_tags(ev, kelly_f):
+            if t not in display_meths:
+                display_meths.append(t)
+            if t not in meths:
+                meths.append(t)
+        gap = (int(best) - int(fair)) if best is not None and fair is not None else edge
+        core_count = count_core_methods(meths)
+        score = petty_score(display_meths, gap, core_count, None)
         row = {
             "player": player, "best_price": best, "best_book": best_book, "median": med,
             "ticket_price": best, "ticket_book": best_book,
             "signal_price": signal_price, "signal_book": signal_book,
             "book_prices": book_px,
-            "edge": edge, "is_bet": False,
+            "edge": gap, "fair": fair, "fair_mode": fair_mode,
+            "ev": ev, "kelly_frac": kelly_f, "is_bet": False,
             "why": f"Score {score}/100 · {core_count} core · edge {int(edge)}",
             "methods": display_meths, "score": score, "bars": bars, "level": level,
             "method_count": core_count, "team": team_map.get(player, ""),
