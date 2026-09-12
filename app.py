@@ -6123,23 +6123,65 @@ def main():
                         f'<div class="note">{item.get("num_tag") or ""}</div></div>',
                         unsafe_allow_html=True,
                     )
+        st.markdown("""
+        <style>
+        .filter-shell{background:#1a1024;border:1px solid #6b21a8;border-radius:16px;padding:10px 12px 6px;margin:8px 0 12px}
+        .filter-sentence{color:#fbcfe8;font-size:.88rem;margin:4px 0 8px}
+        .qf-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+        .qf-chip{border-radius:999px;padding:4px 10px;font-size:.72rem;font-weight:800;border:1px solid #a855f7;color:#fce7f3;background:#2a1040}
+        </style>
+        """, unsafe_allow_html=True)
         st.markdown('<div class="filter-shell">', unsafe_allow_html=True)
-        st.markdown("#### Filter the board")
+        st.markdown("#### What’s worth your time")
+        q1, q2, q3, q4, q5 = st.columns(5)
+        if q1.button("🔥 Hot today", use_container_width=True):
+            st.session_state["qf_hot"] = not st.session_state.get("qf_hot")
+        if q2.button("💸 Long-ball", use_container_width=True):
+            st.session_state["qf_long"] = not st.session_state.get("qf_long")
+        if q3.button("💅 Petty 85+", use_container_width=True):
+            st.session_state["qf_petty85"] = not st.session_state.get("qf_petty85")
+        if q4.button("🧊 Cooling", use_container_width=True):
+            st.session_state["qf_cool"] = not st.session_state.get("qf_cool")
+        if q5.button("⚡ Chaotic", use_container_width=True):
+            st.session_state["qf_chaos"] = not st.session_state.get("qf_chaos")
+        on = []
+        if st.session_state.get("qf_hot"): on.append("🔥")
+        if st.session_state.get("qf_long"): on.append("💸")
+        if st.session_state.get("qf_petty85"): on.append("💅85")
+        if st.session_state.get("qf_cool"): on.append("🧊")
+        if st.session_state.get("qf_chaos"): on.append("⚡")
+        st.caption("Quick filters on: " + (" · ".join(on) if on else "none"))
         cfa, cfb, cfc, cfd = st.columns(4)
         with cfa:
             show_kinds = st.multiselect(
-                "Show cards",
+                "What’s worth your time",
                 ["TAKE IT", "TEAM PICK", "PASS", "WATCH"],
                 default=["TAKE IT", "TEAM PICK"],
                 key="board_kinds_main",
+                help="TAKE IT — cleared play list. TEAM PICK — squad energy only.",
             )
         with cfb:
-            min_score = st.slider("Min petty score", 0, 100, 0, 5, key="board_min_score_main")
+            min_score = st.slider("Petty Score — how loud the vibe is", 0, 100, 0, 5, key="board_min_score_main")
         with cfc:
-            sort_by = st.selectbox("Sort games", [sport_cfg()["when"], "Highest score", "Biggest edge"], key="board_sort_main")
+            sort_by = st.selectbox("Sort the chaos 🎯", [sport_cfg()["when"], "Highest score", "Biggest edge"], key="board_sort_main")
         with cfd:
-            time_win = st.selectbox(sport_cfg()["when"], ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
+            time_win = st.selectbox("When the drama starts 🕐", ["All times", "Next 3 hours", "Later than 3 hours"], key="board_when_main")
         name_q = st.text_input("Find a name", "", key="board_name_main").strip().lower()
+        kinds_s = ", ".join(show_kinds) or "nothing"
+        st.markdown(
+            f'<div class="filter-sentence">Show me <b>{kinds_s}</b> with a Petty Score above <b>{min_score}</b>, sorted by <b>{sort_by}</b>.</div>',
+            unsafe_allow_html=True,
+        )
+        if st.button("Reset the vibe 💅"):
+            st.session_state["board_kinds_main"] = ["TAKE IT", "TEAM PICK"]
+            st.session_state["board_min_score_main"] = 0
+            st.session_state["board_sort_main"] = sport_cfg()["when"]
+            st.session_state["board_when_main"] = "All times"
+            st.session_state["board_name_main"] = ""
+            for k in ("qf_hot", "qf_long", "qf_petty85", "qf_cool", "qf_chaos"):
+                st.session_state[k] = False
+            st.rerun()
+        st.caption("If it disappeared, it wasn’t meant for you.")
         st.markdown("</div>", unsafe_allow_html=True)
 
         def _render_board_card(item, label, cls):
@@ -6308,6 +6350,16 @@ def main():
                 if (item.get("score") or 0) < min_score:
                     return False
                 if name_q and name_q not in (item.get("player") or "").lower():
+                    return False
+                if st.session_state.get("qf_hot") and (item.get("score") or 0) < 70:
+                    return False
+                if st.session_state.get("qf_long") and abs(int(item.get("best_price") or 0)) < 500:
+                    return False
+                if st.session_state.get("qf_petty85") and (item.get("score") or 0) < 85:
+                    return False
+                if st.session_state.get("qf_cool") and item.get("trend_motion") != "Cooling down":
+                    return False
+                if st.session_state.get("qf_chaos") and item.get("trend_motion") != "Chaotic":
                     return False
                 return True
 
