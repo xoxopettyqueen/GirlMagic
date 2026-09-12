@@ -4418,9 +4418,17 @@ def _num_reduce(n, keep_master=True):
 
 
 def _num_date_number(d):
+    """Returns (reduced 1-9, raw digit sum, formula string, optional master 11/22/33)."""
     raw = f"{d.year}{d.month:02d}{d.day:02d}"
     total = sum(int(ch) for ch in raw)
-    return _num_reduce(total, keep_master=True), total, " + ".join(list(raw)) + f" = {total}"
+    master = total if total in (11, 22, 33) else None
+    reduced = _num_reduce(total, keep_master=False)
+    bits = " + ".join(list(raw)) + f" = {total}"
+    if master:
+        bits += f" → master {master} → {reduced}"
+    elif total != reduced:
+        bits += f" → {reduced}"
+    return reduced, total, bits, master
 
 
 def _num_letter(ch):
@@ -6357,15 +6365,20 @@ def main():
             pick = st.date_input("Date", value=default_d, key="num_date")
         with csearch:
             q = st.text_input("Player", placeholder="search", key="num_search")
-        day_n, _raw, formula = _num_date_number(pick)
-        day_key = _num_reduce(day_n, keep_master=False)
+        day_n, raw_sum, formula, master = _num_date_number(pick)
+        day_key = day_n  # already 1-9
         sport_line = "Kickoff number" if active_sport() == "NFL" else "First-pitch number"
+        master_line = (
+            f'<p style="color:#fde68a;font-size:.78rem;margin:4px 0 0">Master {master} stays as a footnote only. We use <b>{day_key}</b>.</p>'
+            if master else ""
+        )
         st.markdown(
             f'<div class="num-ritual"><div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">'
-            f'<div class="big">{day_n}</div>'
+            f'<div class="big">{day_key}</div>'
             f'<div><h3>{sport_line}</h3>'
-            f'<p>{formula} → <b>{day_n}</b> · {cfg["label"]}</p>'
+            f'<p>{formula} · {cfg["label"]}</p>'
             f'<p><b>{_NUM_SOFT.get(day_key, "")}</b></p>'
+            f'{master_line}'
             f'<div class="num-quote">The number is the vibe. The price is the receipt. We don’t green a name just because the math is cute.</div>'
             f'</div></div></div>',
             unsafe_allow_html=True,
