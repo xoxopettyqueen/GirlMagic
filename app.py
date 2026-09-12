@@ -253,6 +253,17 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 }
 [data-testid="stSidebar"]{background:#0d0814}
 [data-testid="stSidebar"] .stMarkdown{color:#e9d5ff}
+.gate-row{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 4px}
+.gate{font-size:.62rem;border-radius:999px;padding:2px 7px;font-weight:700}
+.gate-yes{background:#052e16;color:#86efac;border:1px solid #166534}
+.gate-no{background:#1f0a12;color:#fda4af;border:1px solid #7f1d1d}
+.why-call{color:#e9d5ff;font-size:.74rem;margin:6px 0 2px;line-height:1.35}
+@media (max-width: 700px){
+  .site-title{font-size:1.55rem}
+  .card.site-card .card-name{font-size:1.05rem}
+  .price-big{font-size:1.05rem}
+  .site-section{padding:12px 10px 6px}
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -592,6 +603,51 @@ def elite_take_ok(item):
     if "name+price" not in tag:
         return False
     return True
+
+
+def board_gate_checklist(item):
+    """Display-only pass/fail of the live Board gates. Does not change is_bet."""
+    methods = item.get("methods") or []
+    core = int(item.get("method_count") or count_core_methods(methods))
+    bk = normalize_book(item.get("best_book"))
+    end = last_two(item.get("best_price"))
+    sc = int(item.get("score") or 0)
+    bucket = price_bucket(item.get("best_price"))
+    bf = item.get("benford") or {}
+    authentic = bf.get("tag") == "Authentic" or bf.get("aligned") is True
+    num_ok = "name+price" in str(item.get("num_tag") or "")
+    pri = has_priority_method(methods)
+    book_ok = bool(bk) and bk in TAKE_STRONG_BOOKS and bk not in SIGNAL_ONLY_BOOKS
+    hot = end in TAKE_HOT_ENDS
+    lane_ok = bucket in ("+400s", "+500s") or (bucket == "+600s" and pri) or sc >= SCORE_TAKE_OVERRIDE
+    rows = [
+        (core >= METHODS_MIN, f"2+ premium methods ({core})"),
+        (book_ok, f"Strong book ({book_label(bk) if bk else 'none'})"),
+        (hot, f"Hot ending ({end if end is not None else '—'})"),
+        (pri or sc >= SCORE_SOFT_TAKE, "Priority tag or score ≥ 70"),
+        (sc >= SCORE_SOFT_TAKE, f"Petty Score {sc}"),
+        (authentic, "Benford Authentic"),
+        (num_ok, "Numerology name+price"),
+        (lane_ok, f"Price lane {bucket}"),
+    ]
+    bits = []
+    for ok, label in rows:
+        mark = "✅" if ok else "❌"
+        cls = "gate-yes" if ok else "gate-no"
+        bits.append(f'<span class="gate {cls}">{mark} {label}</span>')
+    return '<div class="gate-row">' + "".join(bits) + "</div>"
+
+
+def why_this_call(label, item):
+    if label in ("TAKE IT", "Take it"):
+        return "Why TAKE: 2+ premium + allowed ticket book + hot ending / score hold. Green list."
+    if label == "LEAN" or "LEAN" in str(item.get("why") or ""):
+        return "Why LEAN: methods fired but score/edge/book did not clear the full TAKE gate."
+    if label == "WATCH":
+        return "Why WATCH: fewer than 2 premium methods. Log it. Do not buy from this card."
+    if label == "DON'T":
+        return "Why DON'T: Shop price is short vs fair or the number is in the junk lane."
+    return "Why PASS: enough tags to stay on the page, not enough to buy."
 
 def has_dk_or_mgm(meths):
     for m in meths:
@@ -5179,6 +5235,8 @@ def main():
                 f'<div class="price-row"><span class="price-big">{format_odds(item.get("best_price"))}</span>'
                 f'<span class="price-book">{book_label(item.get("best_book"))} ticket{pack_s}{sig_s}</span></div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium methods</div>'
+                f'<div class="why-call">{why_this_call(label, item)}</div>'
+                f'{board_gate_checklist(item)}'
                 f'<div class="method-group">{fams}<div style="margin-top:4px">{tags}</div></div>'
                 f'{notes}'
                 f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
