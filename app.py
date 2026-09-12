@@ -231,6 +231,9 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .price-book{font-size:.78rem;color:#e9d5ff}
 .method-group{margin-top:8px;padding-top:8px;border-top:1px solid #2a2038}
 .queen-line{color:#f9a8d4;font-style:italic;font-size:.78rem;margin-top:8px}
+.tag-group-lab{color:#c4b5d6;font-size:.58rem;letter-spacing:1.2px;text-transform:uppercase;margin:8px 0 3px}
+.motion-line{font-size:.72rem;font-weight:800;margin:6px 0;padding:4px 8px;border-radius:999px;display:inline-block;border:1px solid #64748b}
+.card-hot{box-shadow:0 0 22px rgba(244,114,182,.4);animation:heatPulse 2.4s ease-in-out infinite}
 .shop-wrap{border:1px solid #2a2038;border-radius:16px;padding:8px;background:#0d0814}
 .shop-table th{padding:8px 8px}
 .shop-table td{padding:10px 8px}
@@ -771,7 +774,8 @@ def render_method_tags(methods, limit=8):
     bits = []
     for m in seen[:limit]:
         tip = tips.get(m, m)
-        bits.append(f'<span class="tag {method_tag_class(m)}" title="{tip}">{m}</span>')
+        show = TAG_DISPLAY.get(m, m)
+        bits.append(f'<span class="tag {method_tag_class(m)}" title="{tip}">{show}</span>')
     return "".join(bits)
 
 def girl_magic_score(core_count, edge, methods):
@@ -905,13 +909,18 @@ def site_section_close():
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-QUEEN_PHRASES = {
-    "cleared the list": "Passed the Board gates. This is a green name — the short list we actually play.",
-    "run it, baddie": "Petty Mode words for TAKE IT. Same math. Same green card.",
-    "score hold": "Petty Score is 70+. It can keep a green when Benford/numerology miss. It cannot invent a green from nothing.",
-    "watch it, don’t force the ticket": "Not enough premium methods. Log it. Do not buy from this card.",
-    "close, not cleared": "Tags fired, but book / ending / score / edge did not all land. Homework, not a ticket.",
-    "Queen cleared it": "Same as cleared the list. Personality line, not a second scoring system.",
+QUEEN_PHRASES = [
+    ("💚", "cleared the list", "Passed the Board gates. Green name. Short list. We actually play this one."),
+    ("💅", "run it, baddie", "Petty Mode words for TAKE IT. Same math, same green card."),
+    ("💖", "score hold", "Petty Score 70+. Keeps a green when Benford or numerology miss. Never invents one."),
+    ("💜", "watch it, don’t force the ticket", "Not enough premium methods. Log it. Don’t buy from this card."),
+    ("⚪", "close, not cleared", "Tags fired, but book / ending / score / edge didn’t all land. Homework, not a ticket."),
+    ("👑", "Queen cleared it", "Same as cleared the list — personality line, not a second scoring system."),
+]
+TAG_DISPLAY = {
+    "Caesars Classic": "Caesars Stamp",
+    "MGM Exact": "MGM Signal",
+    "FD Pattern": "FD Rhythm",
 }
 
 
@@ -971,9 +980,10 @@ def render_mini_glossary():
 
 
 def render_queen_glossary():
-    st.markdown("**Queen phrase book**")
-    for phrase, meaning in QUEEN_PHRASES.items():
-        st.markdown(f"- **{phrase}** — {meaning}")
+    st.markdown("**Queen Phrase Book**")
+    st.caption("Shhh. This is how the Board talks when the math hits. Don’t quote it. Don’t explain it. Just know it.")
+    for icon, phrase, meaning in QUEEN_PHRASES:
+        st.markdown(f"{icon} **{phrase}**  \n{meaning}")
 
 
 def explain_card_text(item, label):
@@ -2516,6 +2526,32 @@ def make_meter(bars, level):
         filled = f"filled-{level}" if i < bars else ""
         html += f'<div class="meter-bar {filled}"></div>'
     return html + "</div>"
+
+
+def motion_line_html(item):
+    lab = item.get("trend_motion") or "Stable"
+    css = {"Heating up": "motion-heat", "Cooling down": "motion-cool", "Chaotic": "motion-chaos"}.get(lab, "motion-stable")
+    return f'<div class="motion-line {css}">Motion: {lab}</div>'
+
+
+def grouped_tag_html(methods):
+    core, pattern, personality, meta = [], [], [], []
+    for m in methods or []:
+        nm = normalize_method_name(m)
+        if nm in TAKE_IT_STRONG or nm in PRIORITY_METHODS or nm.startswith("EV") or nm.startswith("Kelly"):
+            core.append(nm)
+        elif nm in ("Classic Girl Magic", "Petty Pressure") or "Girl" in nm:
+            personality.append(nm)
+        elif nm in ("Benford Authentic",) or "Benford" in nm or "Numerology" in nm or "Trend" in nm:
+            meta.append(nm)
+        else:
+            pattern.append(nm)
+    blocks = []
+    for title, pile in (("Core", core), ("Patterns", pattern), ("Personality", personality), ("Meta", meta)):
+        if not pile:
+            continue
+        blocks.append(f'<div class="tag-group-lab">{title}</div>{render_method_tags(pile, 8)}')
+    return "".join(blocks) or render_method_tags(methods or [])
 
 def _strip_game_clock(s):
     """'Away @ Home · 10:36 AM' -> 'Away @ Home' so fetch filter doesn't drop games."""
@@ -6217,7 +6253,7 @@ def main():
                 tags += f'<span class="tag tag-family">{item["num_tag"]}</span>'
             fams = petty_family_chips(item.get("methods") or [])
             notes = "".join(f'<div class="petty-note">• {n}</div>' for n in petty_notes_for(item))
-            meter = make_meter(item.get("bars", 1), item.get("level", "low"))
+            meter = motion_line_html(item)
             ev_s = ""
             if item.get("ev_lean") is True:
                 ev_s = f" · +EV lean ({item.get('method_rate_name')})"
@@ -6236,25 +6272,27 @@ def main():
             queen = ""
             if petty_on():
                 if label in ("TAKE IT", "Take it"):
-                    queen = "Queen says: this one cleared the list."
+                    queen = "Queen whispered: this one’s green. Don’t argue."
                 elif label == "WATCH":
-                    queen = "Queen says: watch it, don’t force the ticket."
+                    queen = "Queen whispered: watch it. Don’t force the ticket."
                 elif label == "PASS":
-                    queen = "Queen says: close, not cleared."
+                    queen = "Queen whispered: close, not cleared."
+            glow = " card-hot" if int(item.get("score") or 0) >= 90 else ""
             st.markdown(
-                f'<div class="card site-card {cls}">'
+                f'<div class="card site-card {cls}{glow}">'
                 f'<div class="card-kicker">{decision_pill(show_label)} '
                 f'<span class="score-pill big">{petty_label("Score")} {item.get("score", 0)}</span></div>'
                 f'<div class="card-name">{item["player"]}</div>'
                 f'<div class="card-meta">{meta or "Slate player"}</div>'
-                f'{meter}'
+                f'<div class="why-call">{why_this_call(label, item)}</div>'
                 f'<div class="price-row"><span class="price-big">{format_odds(item.get("best_price"))}</span>'
                 f'<span class="price-book">{book_label(item.get("best_book"))} ticket{pack_s}{sig_s}</span></div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium methods</div>'
-                f'<div class="why-call">{why_this_call(label, item)}</div>'
+                f'{meter}'
                 f'{trend_chip_html(item)}'
                 f'{board_gate_checklist(item)}'
-                f'<div class="method-group">{fams}<div style="margin-top:4px">{tags}</div></div>'
+                f'<div class="method-group"><div class="tag-group-lab">Personality</div>{fams}'
+                f'{grouped_tag_html(item.get("methods") or [])}</div>'
                 f'{notes}'
                 f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
                 f'{f"<div class=queen-line>{queen}</div>" if queen else ""}'
