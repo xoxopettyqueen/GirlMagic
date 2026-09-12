@@ -888,49 +888,57 @@ QUEEN_PHRASES = {
 
 
 def render_card_guide():
-    st.markdown("### How to read a Girl Magic card — the color code")
+    st.markdown("### 🎨 How to Read a Girl Magic Card — the Color Code")
+    st.caption("You didn’t hear this from me. If you’ve read the Glossary, this is how those tags show up visually. Once you know the colors, you know the vibe.")
     st.markdown(
-        "- **Green** = cleared / strong signal\n"
-        "- **Pink** = Petty Score / personality\n"
-        "- **Purple** = Queen commentary\n"
-        "- **Red** = caution / override\n"
-        "- **Edge** = confidence gap from the pack\n"
-        "- **Methods** = how many systems agree"
+        "| Color | Meaning | Translation |\n"
+        "| --- | --- | --- |\n"
+        "| 💚 Green | Cleared / strong signal | Run it, baddie. |\n"
+        "| 💖 Pink | Petty Score / personality | The vibe is loud. |\n"
+        "| 💜 Purple | Queen commentary | Same decision, louder words. |\n"
+        "| ❤️ Red | Caution / override | Don’t force it. |\n"
+        "| ⚪ Edge | Confidence gap from the pack | How far the ticket sits. |\n"
+        "| 🔢 Methods | How many systems agree | The math behind the magic. |"
     )
-    st.caption("If you’ve read the Glossary, this is how those tags show up visually.")
+    st.caption("Keep this quiet. You’re not supposed to know how the colors talk.")
 
 
 def render_mini_glossary():
-    st.markdown("### Girl Magic Glossary")
-    st.markdown("**Tags**")
+    st.markdown("### 💅 Girl Magic Glossary")
+    st.markdown("**Shhh. This is the language.**")
+    st.caption("You weren’t supposed to see this, but since you’re here — learn it, use it, don’t talk too loud about it.")
+    st.markdown("Welcome to the language of the Board — the slang, the signals, the chaos, the math, and the petty. If you can speak this, you can roll with us.")
+    st.markdown("**🔖 Tags**")
     st.markdown(
-        "- **FD Pattern** — FanDuel ≥ +400 ending 10/20/30/60/70/90.\n"
-        "- **FD 90 / 50 / 40** — that exact FD ending.\n"
+        "- **FD Pattern** — FanDuel’s rhythm. +400 or higher ending 10/20/30/60/70/90.\n"
+        "- **FD 90 / 50 / 40** — those exact FD endings. Don’t ask why, just know they hit.\n"
         "- **MGM 25** — BetMGM same-team group ending 25.\n"
-        "- **MGM Exact** — same exact MGM price, same team.\n"
+        "- **MGM Exact** — same MGM price, same team.\n"
         "- **DK 10** — DraftKings ends in 10.\n"
-        "- **Multi-book Shorten** — price dropped on 2+ books.\n"
-        "- **Books tight** — ticket books within 50 points.\n"
-        "- **Caesars Classic / HardRock Heater / Fanatics Rogue** — that book is the long ticket on a hot ending."
+        "- **Multi-book Shorten** — price dropped on 2+ books. Somebody knows something.\n"
+        "- **Books Tight** — ticket books within 50 points. That’s pressure.\n"
+        "- **Caesars Classic / HardRock Heater / Fanatics Rogue** — the long ticket on a hot ending. If you see it, you didn’t hear it from me."
     )
-    st.markdown("**Methods (how hard a tag works)**")
+    st.markdown("**⚙️ Methods (how hard a tag works)**")
     st.markdown(
-        "- **Priority** — can unlock TAKE (you still need 2 premium).\n"
-        "- **Premium / core** — counts toward the 2-method floor.\n"
+        "- **Priority** — can unlock TAKE. You’ll need 2 premium.\n"
+        "- **Premium / Core** — counts toward the 2-method floor.\n"
         "- **Support** — shown and graded, never greens alone."
     )
-    st.markdown("**Endings**")
+    st.markdown("**🔢 Endings**")
     st.markdown(
         "- **25 / 50 / 75 / 90 / 10** — hot ticket endings we play.\n"
-        "- **00 / 30 / 40** — usually dead on long prices."
+        "- **00 / 30 / 40** — usually dead on long prices. Don’t waste your vibe."
     )
-    st.markdown("**Books**")
+    st.markdown("**📚 Books**")
     st.markdown(
         "- **DK / FD / HardRock / Fanatics / Caesars** — tickets we can buy.\n"
         "- **MGM** — signal and grouping tell. Not the ticket."
     )
-    st.markdown("**Petty Score** — 0–100 vibe meter on the stack. Can *hold* a green at 70. Cannot invent one.")
-    st.markdown("**Queen commentary** — personality layer. Same decision, louder words.")
+    st.markdown("**💖 Petty Score**")
+    st.markdown("0–100 vibe meter on the stack. Can hold a green at 70. Can’t invent one. If you know, you know.")
+    st.markdown("**👑 Queen Commentary**")
+    st.markdown("Personality layer. Same decision, louder words. It’s not math — it’s mood.")
     st.caption("Code tab has the long glossary. This is the language you need to roll.")
 
 
@@ -5709,7 +5717,7 @@ def main():
         st.session_state["onboard_step"] = "welcome"
     step = st.session_state.get("onboard_step") or "welcome"
     if step == "welcome":
-        st.info("Welcome to Girl Magic Odds 💅 — start with the Glossary so you know the language.")
+        st.info("Girl Magic Odds speaks its own language. Learn the code, then roll the slate.")
         st.caption("Before you roll, read the Glossary — it explains the tags, methods, and phrases you’ll see everywhere.")
         b1, b2 = st.columns(2)
         with b1:
@@ -5722,15 +5730,15 @@ def main():
                 st.session_state["seen_card_guide"] = True
                 st.rerun()
     elif step == "glossary":
-        with st.expander("Glossary — the language", expanded=True):
+        with st.expander("💅 Girl Magic Glossary", expanded=True):
             render_mini_glossary()
             if st.button("Next — color code", type="primary"):
                 st.session_state["onboard_step"] = "colors"
                 st.rerun()
     elif step == "colors":
-        with st.expander("How to read a Girl Magic card — the color code", expanded=True):
+        with st.expander("🎨 How to Read a Girl Magic Card — the Color Code", expanded=True):
             render_card_guide()
-            if st.button("Unlock the Board", type="primary"):
+            if st.button("Unlock the Board 💅", type="primary"):
                 st.session_state["onboard_step"] = "done"
                 st.session_state["seen_card_guide"] = True
                 st.rerun()
