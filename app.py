@@ -417,10 +417,23 @@ PRIORITY_METHODS = {
     "FD Pattern", "FD 600", "FD+MGM classic",
     "Multi-book Shorten",
     "Books tight",
+    "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
+    "FD 90",
 }
 TAKE_HOT_ENDS = {10, 25, 50, 75, 90}  # ticket ending (DK/FD/HR). MGM-50 *method* is still support-only
 TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}  # +600s need a real priority tag, not MGM juice
-TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "hardrockbet", "fanatics"}
+TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "hardrockbet", "fanatics", "caesars"}
+BOOK_PERSONALITY = {
+    "Fanatics Rogue", "Caesars Classic", "HardRock Heater",
+    "FD 90", "FD 40", "FD 50",
+    "MGM 60", "MGM 10", "MGM 40",
+}
+HOT_BOOK_ENDS = {
+    "caesars": {25, 75, 90},
+    "hardrockbet": {25, 75, 90},
+    "fanduel": {40, 50, 90},
+    "betmgm": {10, 40, 60},
+}
 # PREMIUM = counts as core (still need >=1 PRIORITY + edge for TAKE IT)
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
@@ -430,6 +443,8 @@ TAKE_IT_STRONG = {
     "FD+MGM classic",
     "MGM Exact",
     "Multi-book Shorten",
+    "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
+    "FD 90", "FD 50",
 }
 # SUPPORT = tagged / WATCH / Tracker only - never core, never unlocks alone
 SUPPORT_ONLY = {
@@ -440,6 +455,8 @@ SUPPORT_ONLY = {
     "Match 00", "MGM 00",
     "Stayed in the group",
     "Last one left",
+    "Fanatics Drift",
+    "FD 40", "MGM 60", "MGM 10", "MGM 40",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
 # Name magic can still use a slightly wider set
@@ -467,6 +484,8 @@ TRACKER_ALWAYS = {
     "FD Pattern", "FD 600", "Exact Match", "Match 00", "Match 25", "Match 50", "Match 75",
     "MGM 00", "MGM 25", "MGM 50", "MGM 75", "DK FD-style", "Multi-book Shorten",
     "All books same", "Books tight", "FD+MGM classic",
+    "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
+    "FD 90", "FD 50", "FD 40", "MGM 60", "MGM 10", "MGM 40",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
 MGM_ENDINGS = (0, 25, 50, 75)
@@ -519,6 +538,8 @@ def strong_method_families(methods):
             families.add("fd_mgm")
         elif m in ("Multi-book method", "Multi-book Shorten"):
             families.add("multi_book")
+        elif m in BOOK_PERSONALITY:
+            families.add("book_personality")
         else:
             families.add(m)
     return families
@@ -599,6 +620,10 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     elif bucket == "+600s":
         # 14% lane — only if a real priority tag fired (not MGM-as-ticket)
         if not pri:
+            return False
+    elif 500 <= abs(int(best_price or 0)) <= 900 and (ms & BOOK_PERSONALITY) and hot and pri:
+        # long-ball personality lane: 70 holds instead of 85
+        if sc < SCORE_SOFT_TAKE:
             return False
     elif sc < SCORE_TAKE_OVERRIDE:
         return False
@@ -720,6 +745,11 @@ def render_method_tags(methods, limit=8):
         "Multi-book Shorten": "Price shortened on 2+ books",
         "Books tight": "Focus books clustered within 50 pts",
         "Exact Match": "Same American price on 2+ books",
+        "Fanatics Rogue": "Fanatics longest by 40+ on a long-ball hot ending",
+        "Caesars Classic": "Caesars best ticket + ending 25/75/90",
+        "HardRock Heater": "HardRock best ticket + ending 25/75/90",
+        "FD 90": "FanDuel ending 90",
+        "Fanatics Drift": "Fanatics off the cluster — info only",
     }
     bits = []
     for m in seen[:limit]:
@@ -925,6 +955,10 @@ def petty_score(methods, edge, core_count, benford_flag=None):
         extra += 10
     if {"Stayed in the group", "Last one left"} <= ms:
         extra += 6
+    if ms & {"Caesars Classic", "HardRock Heater", "Fanatics Rogue", "FD 90"}:
+        extra += 5
+    if ms & {"FD 40", "MGM 00"}:
+        extra -= 5
     tag = ""
     if isinstance(benford_flag, dict):
         tag = str(benford_flag.get("tag") or "")
@@ -4453,6 +4487,61 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "reason": "FD Pattern/600 + MGM classic 25/50/75 (combo - tracking)",
                 "event": "", "methods": ["FD+MGM classic"],
             })
+    # Book personalities from Tracker week (display + TAKE helpers)
+    px_map = defaultdict(dict)
+    ev_map = {}
+    for _, r in df.iterrows():
+        try:
+            px_map[r["player"]][normalize_book(r.get("book"))] = int(r["price"])
+            ev_map[r["player"]] = r.get("event") or ""
+        except Exception:
+            pass
+    for player, books in px_map.items():
+        tickets = {b: p for b, p in books.items() if b in TICKET_BOOKS or b == "caesars"}
+        if not tickets:
+            continue
+        best_b = max(tickets, key=lambda b: tickets[b])
+        best_p = tickets[best_b]
+        pack = [p for b, p in tickets.items() if b != best_b]
+        pack_hi = max(pack) if pack else best_p
+        end = last_two(best_p)
+        ev0 = ev_map.get(player, "")
+
+        def _add(tag, reason, typ="book"):
+            if tag in methods_map[player]:
+                return
+            methods_map[player].append(tag)
+            results.append({"type": typ, "label": player, "reason": reason, "event": ev0, "methods": [tag]})
+
+        if best_b == "fanatics" and pack and best_p - pack_hi >= 40 and abs(best_p) >= 500:
+            if end in TAKE_HOT_ENDS or end in (10, 60):
+                _add("Fanatics Rogue", f"Fanatics longest by {best_p - pack_hi} at {format_odds(best_p)}")
+            else:
+                _add("Fanatics Drift", f"Fanatics off cluster by {best_p - pack_hi}")
+        elif best_b == "fanatics" and pack and pack_hi - best_p >= 40:
+            _add("Fanatics Drift", "Fanatics short vs ticket pack")
+        if best_b == "caesars" and end in HOT_BOOK_ENDS["caesars"] and abs(best_p) >= 500:
+            _add("Caesars Classic", f"Caesars {format_odds(best_p)} ends {end:02d}")
+        if best_b == "hardrockbet" and end in HOT_BOOK_ENDS["hardrockbet"] and abs(best_p) >= 500:
+            _add("HardRock Heater", f"HardRock {format_odds(best_p)} ends {end:02d}")
+        fd = books.get("fanduel")
+        if fd is not None:
+            fe = last_two(fd)
+            if fe == 90:
+                _add("FD 90", f"FD ends 90 at {format_odds(fd)}")
+            elif fe == 50:
+                _add("FD 50", f"FD ends 50 at {format_odds(fd)}")
+            elif fe == 40:
+                _add("FD 40", f"FD ends 40 at {format_odds(fd)}")
+        mgm = books.get("betmgm")
+        if mgm is not None:
+            me = last_two(mgm)
+            if me == 60:
+                _add("MGM 60", f"MGM ends 60 at {format_odds(mgm)}")
+            elif me == 10:
+                _add("MGM 10", f"MGM ends 10 at {format_odds(mgm)}")
+            elif me == 40:
+                _add("MGM 40", f"MGM ends 40 at {format_odds(mgm)}")
     signal_book_n = {}  # player -> # of method-books (DK/MGM/FD) for sorting Signals
     for player, ms in list(methods_map.items()):
         core = [m for m in set(ms) if is_core_method(m)]
