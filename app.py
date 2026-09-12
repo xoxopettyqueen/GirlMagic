@@ -190,6 +190,48 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .shop-dont{color:#fb7185;font-weight:800}
 .shop-lean{color:#fbbf24;font-weight:800}
 .shop-mkt{color:#c4b5d6;font-weight:700}
+/* ── Website shell (display only) ── */
+.site-hero{
+  background:linear-gradient(120deg,#2a1040 0%,#4c1d95 42%,#831843 100%);
+  border:1px solid #f472b6;border-radius:24px;padding:22px 24px 18px;
+  margin:4px 0 18px;box-shadow:0 18px 40px rgba(76,29,149,.28);
+}
+.site-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.site-kicker{color:#f9a8d4;font-size:.68rem;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;margin:0 0 6px}
+.site-title{font-family:'Playfair Display',serif;font-size:2.15rem;line-height:1.05;color:#fff;margin:0 0 6px}
+.site-sub{color:#fce7f3;font-size:.95rem;margin:0 0 12px;max-width:720px}
+.site-chips{display:flex;flex-wrap:wrap;gap:8px}
+.site-chip{background:rgba(11,6,18,.35);border:1px solid #e879f9;color:#fbcfe8;border-radius:999px;padding:5px 12px;font-size:.72rem;font-weight:700}
+.site-chip.sport{border-color:#34d399;color:#bbf7d0}
+.site-section{background:#120818;border:1px solid #2a2038;border-radius:22px;padding:16px 16px 8px;margin:0 0 18px}
+.site-section-head{margin:0 0 10px}
+.site-section-kicker{color:#f9a8d4;font-size:.64rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:800;margin:0}
+.site-section-title{font-family:'Playfair Display',serif;color:#fff;font-size:1.45rem;margin:2px 0 4px}
+.site-section-help{color:#c4b5d6;font-size:.82rem;margin:0 0 8px;line-height:1.45}
+.pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.68rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.pill-take{background:#14532d;color:#bbf7d0;border:1px solid #34d399}
+.pill-lean{background:#422006;color:#fde68a;border:1px solid #f59e0b}
+.pill-watch{background:#1e3a5f;color:#bfdbfe;border:1px solid #60a5fa}
+.pill-pass{background:#1f2937;color:#d1d5db;border:1px solid #4b5563}
+.pill-dont{background:#450a0a;color:#fecaca;border:1px solid #f87171}
+.score-pill.big{float:none;display:inline-block;margin:0 0 8px;font-size:.8rem;padding:4px 11px}
+.card.site-card{padding:16px 16px 14px;margin-bottom:12px}
+.card.site-card .card-name{font-size:1.18rem;letter-spacing:.2px}
+.card.site-card .card-meta{font-size:.78rem;color:#c4b5d6;margin-bottom:8px}
+.price-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:6px 0 4px}
+.price-big{font-size:1.22rem;font-weight:800;color:#6ee7b7}
+.price-book{font-size:.78rem;color:#e9d5ff}
+.method-group{margin-top:8px;padding-top:8px;border-top:1px solid #2a2038}
+.queen-line{color:#f9a8d4;font-style:italic;font-size:.78rem;margin-top:8px}
+.shop-wrap{border:1px solid #2a2038;border-radius:16px;padding:8px;background:#0d0814}
+.shop-table th{padding:8px 8px}
+.shop-table td{padding:10px 8px}
+.shop-table tr.row-take td{background:#0d1c18;border-color:#1d4a3a}
+.shop-table tr.row-lean td{background:#1a1408;border-color:#713f12}
+.shop-table tr.row-dont td{background:#1a0b12;border-color:#4a1020}
+.shop-table tr.row-mkt td{background:#16101f}
+.shop-call{display:inline-block;border-radius:999px;padding:3px 8px;font-size:.68rem;font-weight:800}
+.how-to.site-guide{border-radius:16px;margin-bottom:16px}
 </style>
 """, unsafe_allow_html=True)
 
@@ -622,6 +664,53 @@ def petty_label(key):
     return PETTY_COPY.get(key, key)
 
 
+def decision_pill(label):
+    raw = str(label or "")
+    key = raw.upper().replace("IT", "IT")
+    if raw in ("TAKE IT", "TAKE", "Take it") or "Run it" in raw:
+        cls = "pill-take"
+    elif raw in ("LEAN", "Cute but maybe"):
+        cls = "pill-lean"
+    elif raw in ("WATCH", "Keep an eye, queen"):
+        cls = "pill-watch"
+    elif raw in ("DON'T", "DON’T", "Girl no"):
+        cls = "pill-dont"
+    else:
+        cls = "pill-pass"
+    return f'<span class="pill {cls}">{raw}</span>'
+
+
+def site_hero_html(sport, slate_label, games_n, lock_n, fetch_time):
+    return (
+        '<div class="site-hero"><div class="site-hero-top"><div>'
+        '<p class="site-kicker">♛ She Got Game · Girl Magic</p>'
+        '<div class="site-title">Girl Magic Odds</div>'
+        f'<p class="site-sub">Where odds intuition meets Petty precision. '
+        f'Today we only look at <b>{slate_label}</b>. Green names are the list. Everything else is homework.</p>'
+        '<div class="site-chips">'
+        f'<span class="site-chip sport">{sport}</span>'
+        f'<span class="site-chip">{slate_label}</span>'
+        f'<span class="site-chip">{games_n} games loaded</span>'
+        f'<span class="site-chip">Lock {lock_n}</span>'
+        f'<span class="site-chip">Last fetch {fetch_time}</span>'
+        '</div></div></div></div>'
+    )
+
+
+def site_section_open(kicker, title, help_text):
+    st.markdown(
+        f'<div class="site-section"><div class="site-section-head">'
+        f'<p class="site-section-kicker">{kicker}</p>'
+        f'<div class="site-section-title">{title}</div>'
+        f'<p class="site-section-help">{help_text}</p></div>',
+        unsafe_allow_html=True,
+    )
+
+
+def site_section_close():
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
 def petty_family_for_method(method):
     m = normalize_method_name(method)
     for fam, members in PETTY_FAMILIES.items():
@@ -872,7 +961,10 @@ def ending_heat_from_results(rows, min_n=20):
 
 def render_shop_tab(df):
     st.markdown("### Odds Shop")
-    st.caption("Price vs fair on the ticket book. Quarter-Kelly sizes the unit. Grade Shop rows under Grade → Shop.")
+    st.caption(
+        "Read left to right: player → each book → fair pack → ticket (highlighted) → gap → size → call. "
+        "Green number = best ticket. Red number = short vs fair. Grade Shop rows under Grade → Shop."
+    )
     if df is None or getattr(df, "empty", True):
         st.info(sport_cfg()["shop_empty"])
         return
@@ -962,15 +1054,23 @@ def render_shop_tab(df):
                 cls = "shop-short"
             cells.append(f'<td class="{cls}">{format_odds(px)}</td>')
         fair_s = format_odds(r["fair"]) if r.get("fair") is not None else "-"
+        act = r.get("action") or "MARKET"
+        row_cls = {
+            "TAKE": "row-take",
+            "LEAN": "row-lean",
+            "DON'T": "row-dont",
+            "MARKET": "row-mkt",
+        }.get(act, "row-mkt")
+        call_txt = petty_label(act)
         body.append(
-            "<tr>"
+            f'<tr class="{row_cls}">'
             f'<td><div class="shop-name">{r["player"]}</div><div class="shop-game">{r.get("event") or ""}</div></td>'
             + "".join(cells)
             + f"<td>{fair_s}</td>"
             f'<td class="shop-best">{format_odds(r["best"])} {book_label(r.get("best_book"))}</td>'
             f'<td>{int(r.get("edge") or 0):+d}</td>'
             f'<td>{r.get("kelly_label") or "—"}</td>'
-            f'<td class="{r["cls"]}">{r["action"]}</td></tr>'
+            f'<td class="{r["cls"]}"><span class="shop-call">{call_txt}</span></td></tr>'
         )
     st.markdown(
         '<div class="shop-wrap"><table class="shop-table"><thead><tr>'
@@ -4526,7 +4626,6 @@ def main():
     else:
         refresh_count = 0
     st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
-    st.markdown("<h1>Girl Magic Odds</h1>", unsafe_allow_html=True)
     if "sport" not in st.session_state:
         qp = "MLB"
         try:
@@ -4568,8 +4667,19 @@ def main():
         st.session_state["_sport_seen"] = sport
         st.session_state["_autoload_events"] = True
     cfg = sport_cfg()
+    _games_n = len(st.session_state.get("events") or [])
+    _lock_n = len(st.session_state.get("pregame_lock") or {})
+    _fetch = st.session_state.get("last_fetch_time") or "no fetch yet"
     st.markdown(
-        f'<p class="tagline">Where odds intuition meets Petty precision. {cfg["label"]} only.</p>',
+        site_hero_html(sport, cfg["label"], _games_n, _lock_n, _fetch),
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<div class="how-to site-guide"><b>How to use this site:</b> '
+        '1) Load games in the sidebar → 2) Fetch odds → 3) Read <b>Board</b> for who is cleared → '
+        '4) Open <b>Shop</b> for which book and number to buy → '
+        '5) After games, <b>Grade</b> so tomorrow is smarter. '
+        'Pink words are personality. Green / gray cards are the decision.</div>',
         unsafe_allow_html=True,
     )
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
@@ -4905,8 +5015,12 @@ def main():
         sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade", format_func=lambda x: NAV_LABELS.get(x, x))
     page = f"{main}:{sub or ''}"
     if page == "Board:":
-        st.markdown(f"### {petty_label('Board')}")
-        st.caption("Green = play it. Gray = close but not cleared. Eyes = keep on the list, don't force it.")
+        site_section_open(
+            "01 · Who",
+            petty_label("Board"),
+            "Green = play it. Gray = close but not cleared. Eyes = keep on the list, don’t force it. "
+            "The score ranks names. It does not change the math.",
+        )
         elite = [e for e in ev_board if e.get("is_bet")]
         if elite:
             st.markdown("#### Petty Picks")
@@ -4962,19 +5076,28 @@ def main():
                 if _norm_bk(item.get("best_book")) not in SIGNAL_ONLY_BOOKS:
                     sig_s = f" · MGM signal {format_odds(sig_p)} (not the ticket)"
             show_label = petty_label(label) if label in PETTY_COPY or label in ("TAKE IT", "PASS", "WATCH", "Take it") else label
+            queen = ""
+            if petty_on():
+                if label in ("TAKE IT", "Take it"):
+                    queen = "Queen says: this one cleared the list."
+                elif label == "WATCH":
+                    queen = "Queen says: watch it, don’t force the ticket."
+                elif label == "PASS":
+                    queen = "Queen says: close, not cleared."
             st.markdown(
-                f'<div class="card {cls}">'
-                f'<div class="card-kicker">{show_label}</div>'
-                f'<span class="score-pill">{petty_label("Score")} {item.get("score", 0)}</span>'
+                f'<div class="card site-card {cls}">'
+                f'<div class="card-kicker">{decision_pill(show_label)} '
+                f'<span class="score-pill big">{petty_label("Score")} {item.get("score", 0)}</span></div>'
                 f'<div class="card-name">{item["player"]}</div>'
-                f'<div class="card-meta">{meta}</div>'
+                f'<div class="card-meta">{meta or "Slate player"}</div>'
                 f'{meter}'
-                f'<div class="card-line"><b>Ticket {format_odds(item.get("best_price"))}</b> on {book_label(item.get("best_book"))}{pack_s}{sig_s}</div>'
-                f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium</div>'
-                f'<div style="margin-top:6px">{fams}</div>'
-                f'<div style="margin-top:4px">{tags}</div>'
+                f'<div class="price-row"><span class="price-big">{format_odds(item.get("best_price"))}</span>'
+                f'<span class="price-book">{book_label(item.get("best_book"))} ticket{pack_s}{sig_s}</span></div>'
+                f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium methods</div>'
+                f'<div class="method-group">{fams}<div style="margin-top:4px">{tags}</div></div>'
                 f'{notes}'
                 f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
+                f'{f"<div class=queen-line>{queen}</div>" if queen else ""}'
                 f'</div>',
                 unsafe_allow_html=True,
             )
@@ -5154,9 +5277,17 @@ def main():
                 for idx, item in enumerate(coverage_only[:40]):
                     with cols[idx % 2]:
                         _render_board_card(item, "COVERAGE", "watch-card")
+        site_section_close()
 
     if page == "Shop:":
+        site_section_open(
+            "02 · Price",
+            petty_label("Shop"),
+            "Shop does not pick the name. The Board already did that. "
+            "This table only says which book and number looks fairest to buy.",
+        )
         render_shop_tab(df)
+        site_section_close()
     if page == "Digits:":
         render_digits_tab(df)
     if page == "Methods:DK":
@@ -5528,8 +5659,12 @@ def main():
                         st.caption(f"Showing first 150 of {len(rows)}")
 
     if page == "Grade:Lock Lab":
+        site_section_open(
+            "03 · Lock",
+            "Lock Lab",
+            sport_cfg()["lock_caption"] + " Open / Now / Close are the last pregame prices we saved before a book vanished.",
+        )
         st.markdown('<div class="queen-banner">🧠 Lock Lab · Who went & what Lock had</div>', unsafe_allow_html=True)
-        st.caption(sport_cfg()["lock_caption"])
         lab = build_lock_lab()
         st.markdown(f"""
         <div class="petty-row">
@@ -5596,8 +5731,14 @@ def main():
         if lab["unmatched"]:
             with st.expander(f"Not in Lock ({len(lab['unmatched'])})"):
                 st.write(", ".join(lab["unmatched"][:50]))
+        site_section_close()
 
     if page == "Grade:Tracker":
+        site_section_open(
+            "04 · Learn",
+            "Tracker",
+            "Hit rates after we grade. Small samples stay hidden. This is yesterday talking — not tonight’s Board.",
+        )
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.caption(
             f"{sport_cfg()['label']} + all graded sports in one file. "
@@ -5741,6 +5882,7 @@ def main():
             "".join(chips) if chips else "_(Fills as new logs store every book price)_",
             unsafe_allow_html=True,
         )
+        site_section_close()
     if page == "Grade:Results":
         st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
         if st.button("⚡ Run auto-grade now", type="primary"):
@@ -6511,6 +6653,11 @@ def main():
             st.caption("Name# = letters. End# = last two of the price. Today’s number is flavor. TAKE IT still lives on the Board.")
 
     if page == "Code:":
+        site_section_open(
+            "05 · Words",
+            "How We Run It",
+            "Plain-language map of the site. Recipes stay on the cards. This page is for anyone landing here cold.",
+        )
         st.markdown("""
         <style>
         .how-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px}
@@ -6650,9 +6797,11 @@ def main():
                 "- **Family chip** - vibe folder (Classic / Pressure / Drama / Cute).\n"
                 "- **Analytics** - what already went. Not who to fire next."
             )
+        site_section_close()
 
     st.markdown(
-        '<div class="footer">👑 Girl Magic · Boss Bitch · HBIC · Me & My Girls We Rolling</div>',
+        '<div class="footer">👑 Girl Magic · She Got Game · Boss Bitch · HBIC · Me & My Girls We Rolling<br>'
+        '<span style="font-size:.75rem;color:#c4b5d6">Board picks the name. Shop picks the number. Grade keeps us honest.</span></div>',
         unsafe_allow_html=True,
     )
 
