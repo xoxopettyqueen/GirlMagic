@@ -228,6 +228,7 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .score-pill.big{float:none;display:inline-block;margin:0 0 8px;font-size:.8rem;padding:4px 11px}
 .card.site-card{padding:16px 16px 14px;margin-bottom:12px}
 .card.site-card .card-name{font-size:1.18rem;letter-spacing:.2px}
+.card.site-card.compact{padding:10px 12px 8px;margin-bottom:8px}
 .card.site-card .card-meta{font-size:.78rem;color:#c4b5d6;margin-bottom:8px}
 .price-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:6px 0 4px}
 .price-big{font-size:1.22rem;font-weight:800;color:#6ee7b7}
@@ -886,7 +887,7 @@ def site_hero_html(sport, slate_label, games_n, lock_n, fetch_time):
     live = fetch_time if fetch_time and fetch_time != "no fetch yet" else "no fetch yet"
     breathe = "odds breathing, not sleeping" if live != "no fetch yet" else "odds sleeping until you Fetch"
     return (
-        f'<div class="quote-bar">♛ {daily_quote()}</div>'
+        f'<div class="quote-bar">♛ Quote of the day: {daily_quote()}</div>'
         '<div class="site-hero"><div class="site-hero-top"><div>'
         '<p class="site-kicker">💅 👑 ✨</p>'
         '<div class="site-title">Girl Magic Odds</div>'
@@ -6397,39 +6398,30 @@ def main():
                     queen = "Queen whispered: close, not cleared."
             glow = " card-hot" if int(item.get("score") or 0) >= 90 else ""
             st.markdown(
-                f'<div class="card site-card {cls}{glow}">'
+                f'<div class="card site-card compact {cls}{glow}">'
                 f'<div class="card-kicker">{decision_pill(show_label)} '
                 f'<span class="score-pill big">{petty_label("Score")} {item.get("score", 0)}</span></div>'
                 f'<div class="card-name">{item["player"]}</div>'
                 f'<div class="card-meta">{meta or "Slate player"}</div>'
-                f'<div class="why-call">{why_this_call(label, item)}</div>'
                 f'<div class="price-row"><span class="price-big">{format_odds(item.get("best_price"))}</span>'
-                f'<span class="price-book">{book_label(item.get("best_book"))} ticket{pack_s}{sig_s}</span></div>'
-                f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium methods</div>'
-                f'{kelly_bar_html(item.get("kelly_frac"))}'
-                f'{meter}'
-                f'{trend_chip_html(item)}'
-                f'{board_gate_checklist(item)}'
-                f'<div class="method-group"><div class="tag-group-lab">Personality</div>{fams}'
-                f'{grouped_tag_html(item.get("methods") or [])}</div>'
-                f'{notes}'
-                f'<div class="card-foot">{item.get("why", "")}{ev_s}</div>'
+                f'<span class="price-book">{book_label(item.get("best_book"))}{pack_s}</span></div>'
+                f'<div class="card-line">{item.get("method_count", 0)} premium · edge {int(item.get("edge") or 0)}</div>'
                 f'{f"<div class=queen-line>{queen}</div>" if queen else ""}'
                 f'</div>',
                 unsafe_allow_html=True,
             )
             ck = f"{item.get('player')}_{label}_{str(item.get('event') or '')[:18]}"
-            with st.expander("Explain this card", expanded=False, key=f"ex_{ck}"):
+            with st.expander("Open card", expanded=False, key=f"ex_{ck}"):
+                st.markdown(why_this_call(label, item))
+                st.markdown(kelly_bar_html(item.get("kelly_frac")) + meter + trend_chip_html(item), unsafe_allow_html=True)
+                st.markdown(board_gate_checklist(item), unsafe_allow_html=True)
+                st.markdown(
+                    f'<div class="method-group"><div class="tag-group-lab">Personality</div>{fams}'
+                    f'{grouped_tag_html(item.get("methods") or [])}</div>{notes}'
+                    f'<div class="card-foot">{item.get("why", "")}{ev_s}{sig_s}</div>',
+                    unsafe_allow_html=True,
+                )
                 st.write(explain_card_text(item, label))
-            if queen:
-                try:
-                    with st.popover("What Queen means"):
-                        render_queen_glossary()
-                        st.caption(queen)
-                except Exception:
-                    with st.expander("What Queen means", expanded=False):
-                        render_queen_glossary()
-                        st.caption(queen)
 
         elite = [e for e in ev_board if e.get("is_bet")]
         st.markdown("#### Petty Picks")
