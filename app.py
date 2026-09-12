@@ -191,18 +191,26 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .shop-lean{color:#fbbf24;font-weight:800}
 .shop-mkt{color:#c4b5d6;font-weight:700}
 /* ── Website shell (display only) ── */
+.quote-bar{background:#1a1024;border:1px solid #db2777;border-radius:14px;padding:8px 14px;margin:0 0 10px;color:#fbcfe8;font-size:.82rem;letter-spacing:.2px}
 .site-hero{
-  background:linear-gradient(120deg,#2a1040 0%,#4c1d95 42%,#831843 100%);
-  border:1px solid #f472b6;border-radius:24px;padding:22px 24px 18px;
-  margin:4px 0 18px;box-shadow:0 18px 40px rgba(76,29,149,.28);
+  background:linear-gradient(110deg,#2a1040 0%,#6d28d9 38%,#db2777 72%,#4c1d95 100%);
+  background-size:180% 180%;
+  animation:heroShimmer 14s ease-in-out infinite;
+  border:1px solid #f9a8d4;border-radius:28px;padding:26px 26px 20px;
+  margin:0 0 16px;box-shadow:0 20px 48px rgba(76,29,149,.38);
 }
+@keyframes heroShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .site-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .site-kicker{color:#f9a8d4;font-size:.68rem;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;margin:0 0 6px}
-.site-title{font-family:'Playfair Display',serif;font-size:2.15rem;line-height:1.05;color:#fff;margin:0 0 6px}
-.site-sub{color:#fce7f3;font-size:.95rem;margin:0 0 12px;max-width:720px}
+.site-title{font-family:'Playfair Display',serif;font-size:2.25rem;line-height:1.05;color:#fff;margin:0 0 8px;text-shadow:0 6px 18px rgba(15,6,24,.45);animation:titleIn .6s ease-out}
+.site-sub{color:#fce7f3;font-size:.98rem;margin:0 0 8px;max-width:720px;line-height:1.55;animation:fadeUp .7s ease-out .12s both}
+.site-live{color:#f9a8d4;font-size:.78rem;margin:0 0 12px}
+@keyframes titleIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .site-chips{display:flex;flex-wrap:wrap;gap:8px}
-.site-chip{background:rgba(11,6,18,.35);border:1px solid #e879f9;color:#fbcfe8;border-radius:999px;padding:5px 12px;font-size:.72rem;font-weight:700}
-.site-chip.sport{border-color:#34d399;color:#bbf7d0}
+.site-chip{background:rgba(11,6,18,.35);border:1px solid #e879f9;color:#fbcfe8;border-radius:999px;padding:5px 12px;font-size:.72rem;font-weight:700;transition:box-shadow .2s,border-color .2s}
+.site-chip:hover{border-color:#c084fc;box-shadow:0 0 12px rgba(192,132,252,.45)}
+.site-chip.sport{border-color:#f9a8d4;color:#fff;box-shadow:0 0 10px rgba(244,114,182,.35)}
 .site-section{background:#120818;border:1px solid #2a2038;border-radius:22px;padding:16px 16px 8px;margin:0 0 18px}
 .site-section-head{margin:0 0 10px}
 .site-section-kicker{color:#f9a8d4;font-size:.64rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:800;margin:0}
@@ -846,19 +854,39 @@ def decision_pill(label):
     return f'<span class="pill {cls}">{raw}</span>'
 
 
+HERO_QUOTES = [
+    "If the odds look ugly, they probably lying.",
+    "Don’t chase vibes — chase value.",
+    "Green names are gospel. Everything else is homework.",
+    "Chaos pays better than cute numbers.",
+]
+
+
+def daily_quote():
+    try:
+        i = datetime.strptime(today_az(), "%Y-%m-%d").timetuple().tm_yday
+    except Exception:
+        i = 0
+    return HERO_QUOTES[i % len(HERO_QUOTES)]
+
+
 def site_hero_html(sport, slate_label, games_n, lock_n, fetch_time):
+    live = fetch_time if fetch_time and fetch_time != "no fetch yet" else "no fetch yet"
+    breathe = "odds breathing, not sleeping" if live != "no fetch yet" else "odds sleeping until you Fetch"
     return (
+        f'<div class="quote-bar">Quote of the day: {daily_quote()}</div>'
         '<div class="site-hero"><div class="site-hero-top"><div>'
-        '<p class="site-kicker">♛ She Got Game · Girl Magic</p>'
+        '<p class="site-kicker">You’re entering Girl Magic Odds — pick your lane</p>'
         '<div class="site-title">Girl Magic Odds</div>'
-        f'<p class="site-sub">Where odds intuition meets Petty precision. '
-        f'Today we only look at <b>{slate_label}</b>. Green names are the list. Everything else is homework.</p>'
+        '<p class="site-sub">Where intuition meets petty precision.<br>'
+        'We only play 0.5 HR Over — because chaos pays better.<br>'
+        'Green names are gospel. Everything else? Homework.</p>'
+        f'<p class="site-live">Last fetch {live} — {breathe}.</p>'
         '<div class="site-chips">'
         f'<span class="site-chip sport">{sport}</span>'
         f'<span class="site-chip">{slate_label}</span>'
         f'<span class="site-chip">{games_n} games loaded</span>'
         f'<span class="site-chip">Lock {lock_n}</span>'
-        f'<span class="site-chip">Last fetch {fetch_time}</span>'
         '</div></div></div></div>'
     )
 
@@ -5656,7 +5684,6 @@ def main():
         refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     else:
         refresh_count = 0
-    st.markdown('<p class="kicker">♛ Boss · HBIC · We Rolling</p>', unsafe_allow_html=True)
     if "sport" not in st.session_state:
         qp = "MLB"
         try:
@@ -5664,22 +5691,30 @@ def main():
         except Exception:
             qp = "MLB"
         st.session_state["sport"] = qp if qp in SPORT_CFG else "MLB"
+    sport = st.session_state.get("sport") if st.session_state.get("sport") in SPORT_CFG else "MLB"
+    cfg = sport_cfg()
+    _games_n = len(st.session_state.get("events") or [])
+    _lock_n = len(st.session_state.get("pregame_lock") or {})
+    _fetch = st.session_state.get("last_fetch_time") or "no fetch yet"
+    st.markdown(
+        site_hero_html(sport, cfg["label"], _games_n, _lock_n, _fetch),
+        unsafe_allow_html=True,
+    )
     try:
         sport_pick = st.segmented_control(
-            "Sport",
+            "Pick your lane",
             options=["MLB", "NFL"],
-            default=st.session_state.get("sport") or "MLB",
+            default=sport,
             key="sport_pick",
-            help="MLB = 0.5 HR. NFL = Anytime TD. Stays on the sport you pick.",
+            help="MLB = 0.5 HR. NFL = Anytime TD.",
         )
     except Exception:
         sport_pick = st.radio(
-            "Sport",
+            "Pick your lane",
             ["MLB", "NFL"],
-            index=0 if st.session_state.get("sport") != "NFL" else 1,
+            index=0 if sport != "NFL" else 1,
             horizontal=True,
             key="sport_pick",
-            label_visibility="visible",
         )
     if sport_pick in SPORT_CFG and sport_pick != st.session_state.get("sport"):
         st.session_state["sport"] = sport_pick
@@ -5687,7 +5722,7 @@ def main():
             st.query_params["sport"] = sport_pick
         except Exception:
             pass
-    sport = st.session_state.get("sport") if st.session_state.get("sport") in SPORT_CFG else "MLB"
+        st.rerun()
     try:
         st.query_params["sport"] = sport
     except Exception:
@@ -5697,14 +5732,6 @@ def main():
             st.session_state.pop(k, None)
         st.session_state["_sport_seen"] = sport
         st.session_state["_autoload_events"] = True
-    cfg = sport_cfg()
-    _games_n = len(st.session_state.get("events") or [])
-    _lock_n = len(st.session_state.get("pregame_lock") or {})
-    _fetch = st.session_state.get("last_fetch_time") or "no fetch yet"
-    st.markdown(
-        site_hero_html(sport, cfg["label"], _games_n, _lock_n, _fetch),
-        unsafe_allow_html=True,
-    )
     st.markdown(
         '<div class="how-to site-guide"><b>How to use this site:</b> '
         'Load games in the sidebar, then Fetch. '
