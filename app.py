@@ -2015,21 +2015,21 @@ def render_shop_tab(df):
     c1, c2, c3 = st.columns(3)
     book_opts = ["Any"] + [lab for _, lab in SHOP_BOOKS]
     with c1:
-        book_f = st.selectbox("Best book", book_opts, key="shop_best_book", help="Ticket we would actually buy.")
+        book_f = st.selectbox("Book that’s behaving", book_opts, key="shop_best_book", help="Ticket we would actually buy.")
     with c2:
-        has_f = st.selectbox("Has book", book_opts, key="shop_has_book", help="Must have this book posted.")
+        has_f = st.selectbox("Book that’s posting", book_opts, key="shop_has_book", help="Must have this book posted.")
     ends = sorted({f"{int(r['ending']):02d}" for r in shop if r.get("ending") is not None})
     with c3:
-        end_f = st.multiselect("Best ends in", ends, key="shop_ends", help="Last two of the ticket.")
+        end_f = st.multiselect("Odds ending pattern", ends, key="shop_ends", help="Last two of the ticket.")
     st.caption("💸 Math")
     c4, c5, c6 = st.columns(3)
     with c4:
-        min_gap = st.slider("Min gap vs fair", 0, 300, 0, 10, key="shop_min_gap", help="Best minus fair line.")
+        min_gap = st.slider("Minimum space between fair and posted", 0, 300, 0, 10, key="shop_min_gap", help="Gap vs fair — how far the posted odds drift from the fair number. Bigger gap = better value.")
     with c5:
-        min_books = st.selectbox("Min books posted", [1, 2, 3, 4, 5], index=0, key="shop_min_books")
+        min_books = st.selectbox("Books showing odds", [1, 2, 3, 4, 5], index=0, key="shop_min_books")
     buckets = sorted({r.get("bucket") for r in shop if r.get("bucket")})
     with c6:
-        buck_f = st.multiselect("Price bucket", buckets, key="shop_buckets")
+        buck_f = st.multiselect("Odds range", buckets, key="shop_buckets")
     st.caption("🧍‍♀️ Player")
     q = st.text_input("Find a name", key="shop_q")
     st.markdown("</div>", unsafe_allow_html=True)
@@ -2057,14 +2057,14 @@ def render_shop_tab(df):
         qq = q.strip().lower()
         shown = [r for r in shown if qq in (r.get("player") or "").lower() or qq in (r.get("event") or "").lower()]
     st.caption(f"Showing {len(shown)} of {len(shop)} players. If it disappeared, it wasn’t meant for you.")
-    with st.expander("Long-ball math sample — fair / gap / EV / Kelly / call", expanded=False):
+    with st.expander("Long-Ball Math — How the Board Sees It", expanded=False):
         take_n = sum(1 for r in shop if r.get("action") == "TAKE")
         lean_n = sum(1 for r in shop if r.get("action") == "LEAN")
         long_n = sum(1 for r in shop if abs(int(r.get("best") or 0)) >= 500)
         st.caption(
             f"{take_n} TAKE · {lean_n} LEAN · {long_n} at +500+. "
-            "Fair = weighted books + cushion (or avg+15). Gap = best − fair. "
-            "Long-ball TAKE gap ≥ 35, LEAN ≥ 25."
+            "Fair = weighted book vs cushion. Gap = space between fair and posted. "
+            "EV = expected value. Kelly = bankroll confidence. Call = what the math says to do."
         )
         lines = []
         for r in shop[:80]:
@@ -2072,21 +2072,26 @@ def render_shop_tab(df):
             kf = r.get("kelly_frac")
             ev_s = f"{ev:+.3f}" if ev is not None else "—"
             k_s = f"{kf:+.3f}" if kf is not None else "—"
-            tags = ", ".join(r.get("value_tags") or [])
+            tags = ", ".join(r.get("value_tags") or []) or "—"
             reasons = shop_block_reasons(r)
+            act = r.get("action") or "MARKET"
+            icon = "💚" if act in ("TAKE", "LEAN") else ("🔴" if act == "DON'T" else "💜")
             lines.append(
-                f"- **{r.get('player')}** · best {format_odds(r.get('best'))} {book_label(r.get('best_book'))} "
-                f"· fair {format_odds(r.get('fair'))} ({r.get('fair_mode')}) · gap **{int(r.get('edge') or 0):+d}** "
-                f"· EV {ev_s} · Kelly {k_s} · {tags} · **{r.get('action')}** · {'; '.join(reasons[:4])}"
+                f"{icon} **{r.get('player')}** — {format_odds(r.get('best'))} {book_label(r.get('best_book'))}  \n"
+                f"Fair {format_odds(r.get('fair'))} | Gap {int(r.get('edge') or 0):+d} | EV {ev_s} | Kelly {k_s} ({r.get('kelly_label')})  \n"
+                f"{tags} → **{act}** · {'; '.join(reasons[:3])}"
             )
-        st.markdown("\n".join(lines) if lines else "_No shop rows._")
+        st.markdown("\n\n".join(lines) if lines else "_No shop rows._")
+        st.caption("Queen whispered: if it’s green and the Kelly’s loud, run it. If it’s red, it’s homework.")
     heat = ending_heat_from_results(load_results(), min_n=20)
     if heat:
-        st.markdown("#### Endings that have been hitting (graded best price)")
+        st.markdown("#### Endings that have been hitting")
+        st.caption("These are the odds endings that have been cashing most often. 💚 Hot 15%+ · 💜 Mid 10–14% · 🔴 Cold under 10%.")
         chips = []
         for h in heat[:12]:
+            tone = "hot" if h["pct"] >= 15 else ("mid" if h["pct"] >= 10 else "cold")
             chips.append(
-                f'<div class="rate-chip"><div class="rate-pct">{h["pct"]:.0f}%</div>'
+                f'<div class="rate-chip {tone}"><div class="rate-pct">{h["pct"]:.0f}%</div>'
                 f'<div class="rate-name">ends {h["ending"]}</div>'
                 f'<div class="rate-n">{h["hit"]}H · {h["miss"]}M · n={h["n"]}</div></div>'
             )
