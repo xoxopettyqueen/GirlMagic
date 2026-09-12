@@ -232,6 +232,27 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .shop-table tr.row-mkt td{background:#16101f}
 .shop-call{display:inline-block;border-radius:999px;padding:3px 8px;font-size:.68rem;font-weight:800}
 .how-to.site-guide{border-radius:16px;margin-bottom:16px}
+.card:hover,.card.site-card:hover{
+  border-color:#e879f9;transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(232,121,249,.22);
+  transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease;
+}
+.shop-table tr:hover td{filter:brightness(1.12)}
+.tag[title]{cursor:help}
+.petty-on .site-hero{box-shadow:0 0 36px rgba(244,114,182,.35)}
+.petty-banner{
+  background:linear-gradient(90deg,#831843,#6b21a8);
+  border:1px solid #f9a8d4;border-radius:999px;
+  padding:7px 14px;margin:0 0 12px;font-size:.78rem;color:#fce7f3;
+  display:inline-block;
+}
+.petty-off-banner{
+  background:#16101f;border:1px solid #4b5563;border-radius:999px;
+  padding:7px 14px;margin:0 0 12px;font-size:.78rem;color:#c4b5d6;
+  display:inline-block;
+}
+[data-testid="stSidebar"]{background:#0d0814}
+[data-testid="stSidebar"] .stMarkdown{color:#e9d5ff}
 </style>
 """, unsafe_allow_html=True)
 
@@ -617,7 +638,21 @@ def render_method_tags(methods, limit=8):
     for m in methods:
         nm = normalize_method_name(m)
         if nm not in seen: seen.append(nm)
-    return "".join(f'<span class="tag {method_tag_class(m)}">{m}</span>' for m in seen[:limit])
+    tips = {
+        "DK 10": "DraftKings price ends in 10",
+        "FD Pattern": "FanDuel ≥ +400 ending 10/20/30/60/70/90",
+        "FD 600": "FanDuel exact +600",
+        "MGM 25": "BetMGM same-team group ending 25",
+        "MGM Exact": "Same exact MGM price, same team",
+        "Multi-book Shorten": "Price shortened on 2+ books",
+        "Books tight": "Focus books clustered within 50 pts",
+        "Exact Match": "Same American price on 2+ books",
+    }
+    bits = []
+    for m in seen[:limit]:
+        tip = tips.get(m, m)
+        bits.append(f'<span class="tag {method_tag_class(m)}" title="{tip}">{m}</span>')
+    return "".join(bits)
 
 def girl_magic_score(core_count, edge, methods):
     method_pts = min(core_count, 5) * 10
@@ -4721,6 +4756,10 @@ def main():
         unsafe_allow_html=True,
     )
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
+    if petty_on():
+        st.markdown('<div class="petty-banner">💅 Petty Mode ON — words get louder. Math does not change.</div>', unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="petty-off-banner">Plain labels on. Same Board rules.</div>', unsafe_allow_html=True)
     st.markdown("""
     <style>
     .tag-family{background:#2a1040;color:#f9a8d4;border-color:#e879f9}
@@ -5059,6 +5098,14 @@ def main():
             "Green = play it. Gray = close but not cleared. Eyes = keep on the list, don’t force it. "
             "The score ranks names. It does not change the math.",
         )
+        with st.expander("What am I looking at on the Board?", expanded=False):
+            st.markdown(
+                "- **Green / TAKE** — cleared play list.\n"
+                "- **Gray / PASS** — methods fired, not enough to buy.\n"
+                "- **WATCH** — logged so we can grade later.\n"
+                "- **Ticket** — DK / FD / Hard Rock / Fanatics. MGM is a tell, not the buy.\n"
+                "- Hover a pink/green tag to see what it means."
+            )
         elite = [e for e in ev_board if e.get("is_bet")]
         if elite:
             st.markdown("#### Petty Picks")
@@ -5324,6 +5371,13 @@ def main():
             "Shop does not pick the name. The Board already did that. "
             "This table only says which book and number looks fairest to buy.",
         )
+        with st.expander("How to read Shop", expanded=False):
+            st.markdown(
+                "- Green price = best ticket book.\n"
+                "- Red price = short vs the pack.\n"
+                "- **TAKE / LEAN / DON'T** are price calls, not Board greens.\n"
+                "- FN column is Fanatics when the Odds API actually sends it."
+            )
         render_shop_tab(df)
         site_section_close()
     if page == "Digits:":
