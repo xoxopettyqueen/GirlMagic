@@ -26,6 +26,7 @@ except ImportError:
     def analyze_many(*a, **k):
         return {}
 import statistics
+import time
 from datetime import datetime, timezone, timedelta
 
 try:
@@ -2673,6 +2674,19 @@ def grouped_tag_html(methods):
             continue
         blocks.append(f'<div class="tag-group-lab">{title}</div>{render_method_tags(pile, 8)}')
     return "".join(blocks) or render_method_tags(methods or [])
+
+def event_has_started(commence_iso):
+    """True once first pitch / kick is at or past commence time (UTC)."""
+    if not commence_iso:
+        return False
+    try:
+        dt = datetime.fromisoformat(str(commence_iso).replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return datetime.now(timezone.utc) >= dt
+    except Exception:
+        return False
+
 
 def _strip_game_clock(s):
     """'Away @ Home · 10:36 AM' -> 'Away @ Home' so fetch filter doesn't drop games."""
@@ -5948,19 +5962,18 @@ def main():
     """, unsafe_allow_html=True)
     lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
     _ag = f"auto_grade_ran_{active_sport()}"
-    if not st.session_state.get(_ag):
+    last_ag = float(st.session_state.get(_ag) or 0)
+    pending_n = sum(1 for r in load_results() if r.get("result") == "PENDING")
+    due = last_ag == 0 or (time.time() - last_ag) > 600
+    if pending_n and due:
         try:
-            pending_n = sum(1 for r in load_results() if r.get("result") == "PENDING")
-            if pending_n:
-                with st.spinner(f"Auto-grading {pending_n} pending..."):
-                    h, m, s, msg = auto_grade_pending()
-                st.session_state[_ag] = True
-                if h or m:
-                    st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
-            else:
-                st.session_state[_ag] = True
+            with st.spinner(f"Auto-grading {pending_n} pending..."):
+                h, m, s, msg = auto_grade_pending()
+            st.session_state[_ag] = time.time()
+            if h or m:
+                st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
         except Exception:
-            st.session_state[_ag] = True
+            st.session_state[_ag] = time.time()
     render_whats_going_today()
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
@@ -6520,9 +6533,11 @@ def main():
                     return game_name
 
             def _in_time_win(game_name):
+                t = _resolve_commence(game_name)
+                if event_has_started(t):
+                    return False
                 if time_win == "All times":
                     return True
-                t = _resolve_commence(game_name)
                 if not t:
                     return True
                 try:
