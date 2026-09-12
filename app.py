@@ -804,8 +804,8 @@ PETTY_COPY = {
     "DON'T": "Girl no",
     "WATCH": "Keep an eye, queen",
     "PASS": "Not today, babe",
-    "Board": "The Petty Board",
-    "Shop": "Petty Price Lab",
+    "Board": "Who’s on the Board 💅",
+    "Shop": "Where the Money Talks 💸",
     "Score": "Petty Score",
     "Take it": "Run it, baddie",
 }
@@ -5928,7 +5928,7 @@ def main():
     page = f"{main}:{sub or ''}"
     if page == "Board:":
         site_section_open(
-            "01 · Who",
+            "👑 WHO",
             petty_label("Board"),
             "Green = play it. Gray = close but not cleared. Eyes = keep on the list, don’t force it. "
             "The score ranks names. It does not change the math.",
@@ -6237,7 +6237,7 @@ def main():
         render_trend_lab(ev_board, shop_rows)
     if page == "Shop:":
         site_section_open(
-            "02 · Price",
+            "💸 PRICE",
             petty_label("Shop"),
             "Shop does not pick the name. The Board already did that. "
             "This table only says which book and number looks fairest to buy.",
@@ -6623,7 +6623,7 @@ def main():
 
     if page == "Grade:Lock Lab":
         site_section_open(
-            "03 · Lock",
+            "🔒 LOCK",
             "Lock Lab",
             sport_cfg()["lock_caption"] + " Open / Now / Close are the last pregame prices we saved before a book vanished.",
         )
@@ -6698,7 +6698,7 @@ def main():
 
     if page == "Grade:Tracker":
         site_section_open(
-            "04 · Learn",
+            "📡 LEARN",
             "Tracker",
             "Hit rates after we grade. Small samples stay hidden. This is yesterday talking — not tonight’s Board.",
         )
@@ -7617,7 +7617,7 @@ def main():
 
     if page == "Code:":
         site_section_open(
-            "05 · Words",
+            "📖 WORDS",
             "How We Run It",
             "Plain-language map of the site. Recipes stay on the cards. This page is for anyone landing here cold.",
         )
