@@ -6422,7 +6422,18 @@ def main():
             ck = f"ex_{zone}_{cls}_{label}_{item.get('player')}_{str(item.get('event') or '')[:24]}"
             with st.expander("Explain this card", expanded=False, key=ck):
                 st.write(explain_card_text(item, label))
+            if queen:
+                try:
+                    with st.popover("👑 What Queen means", key=f"q_{ck}"):
+                        render_queen_glossary()
+                        st.caption(queen)
+                except TypeError:
+                    with st.expander("👑 What Queen means", expanded=False, key=f"q_{ck}"):
+                        render_queen_glossary()
+                        st.caption(queen)
 
+        with st.expander("👑 Queen Phrase Book", expanded=False):
+            render_queen_glossary()
         elite = [e for e in ev_board if e.get("is_bet")]
         with st.expander(f"💅 Petty Picks · {len(elite)}", expanded=True):
             if elite:
