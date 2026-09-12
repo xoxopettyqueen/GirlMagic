@@ -372,6 +372,57 @@ def results_for_sport(rows=None, sport=None):
     sport = (sport or active_sport()).upper()
     return [r for r in (rows or []) if row_sport(r) == sport]
 
+
+def lock_entry_sport(entry):
+    if not isinstance(entry, dict):
+        return "MLB"
+    s = str(entry.get("sport") or "").strip().upper()
+    if s in ("NFL", "MLB"):
+        return s
+    ev = str(entry.get("event") or "").lower()
+    nfl_bits = (
+        "nfl", "chiefs", "bills", "eagles", "cowboys", "49ers", "niners",
+        "ravens", "lions", "packers", "vikings", "bears", "jets", "giants",
+        "dolphins", "patriots", "steelers", "browns", "bengals", "titans",
+        "colts", "jaguars", "texans", "broncos", "raiders", "chargers",
+        "rams", "seahawks", "cardinals", "saints", "falcons", "panthers",
+        "buccaneers", "commanders", "washington",
+    )
+    # "Cardinals" exists in both — only count NFL if another NFL token or @ football style
+    if "nfl" in ev:
+        return "NFL"
+    hits = sum(1 for b in nfl_bits if b in ev)
+    if hits >= 1 and any(x in ev for x in ("chiefs", "bills", "eagles", "cowboys", "ravens", "lions", "packers")):
+        return "NFL"
+    if hits >= 2:
+        return "NFL"
+    return "MLB"
+
+
+def lock_for_sport(lock=None, sport=None):
+    lock = lock if lock is not None else (st.session_state.get("pregame_lock") or load_pregame() or {})
+    sport = (sport or active_sport()).upper()
+    out = {}
+    for player, entry in (lock or {}).items():
+        if not isinstance(entry, dict):
+            continue
+        if lock_entry_sport(entry) == sport:
+            out[player] = entry
+    return out
+
+
+def methods_min():
+    return 1 if active_sport() == "NFL" else METHODS_MIN
+
+
+def tracker_min_n():
+    return 8 if active_sport() == "NFL" else TRACKER_MIN_N
+
+
+def nfl_loose_mode():
+    """Week-one NFL: learn, don't copy MLB tightness."""
+    return active_sport() == "NFL"
+
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
@@ -637,7 +688,8 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     """MLB: elite +400-699 + hot end + priority. NFL: 2 premium + priority-or-hot-end on TD prices.
     Petty score ≥ 70 can also clear when edge is only EDGE_SOFT (still needs 2 premium + priority)."""
     ms = {normalize_method_name(m) for m in (methods or [])}
-    if core_count < METHODS_MIN:
+    need = methods_min()
+    if core_count < need:
         return False
     bk = normalize_book(best_book) if best_book else None
     if not bk and book_prices:
@@ -658,11 +710,11 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     pri = bool(ms & PRIORITY_METHODS)
     end = last_two(best_price)
     hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
-    if active_sport() == "NFL":
+    if nfl_loose_mode():
         if not nfl_price_ok(best_price):
             return False
-        # same idea as MLB: 2 premium + (priority OR hot ending OR fat petty score)
-        return pri or hot or sc >= SCORE_SOFT_TAKE
+        # Week 1: 1 premium is enough. Priority / hot end / score are bonuses, not walls.
+        return True
     if not pri and sc < SCORE_SOFT_TAKE:
         return False
     bucket = price_bucket(best_price)
@@ -719,7 +771,7 @@ def board_gate_checklist(item):
     hot = end in TAKE_HOT_ENDS
     lane_ok = bucket in ("+400s", "+500s") or (bucket == "+600s" and pri) or sc >= SCORE_TAKE_OVERRIDE
     rows = [
-        (core >= METHODS_MIN, f"2+ premium methods ({core})"),
+        (core >= methods_min(), f"{methods_min()}+ premium methods ({core})"),
         (book_ok, f"Strong book ({book_label(bk) if bk else 'none'})"),
         (hot, f"Hot ending ({end if end is not None else '—'})"),
         (pri or sc >= SCORE_SOFT_TAKE, "Priority tag or score ≥ 70"),
@@ -2120,7 +2172,7 @@ def render_shop_tab(df):
             )
         st.markdown("\n\n".join(lines) if lines else "_No shop rows._")
         st.caption("Queen whispered: if it’s green and the Kelly’s loud, run it. If it’s red, it’s homework.")
-    heat = ending_heat_from_results(load_results(), min_n=20)
+    heat = ending_heat_from_results(results_for_sport(), min_n=8 if nfl_loose_mode() else 20)
     if heat:
         st.markdown("#### Endings that have been hitting")
         st.caption("These are the odds endings that have been cashing most often. 💚 Hot 15%+ · 💜 Mid 10–14% · 🔴 Cold under 10%.")
@@ -2904,19 +2956,21 @@ def update_pregame_lock(df):
             ip = int(price)
         except Exception:
             continue
-        if ip > MAX_HR_AMERICAN:
+        if active_sport() == "MLB" and ip > MAX_HR_AMERICAN:
             continue
 
         if player not in lock or lock[player].get("date") != today:
             lock[player] = {
                 "date": today, "event": event, "books": {},
                 "locked_at": ts, "updated_at": ts,
+                "sport": active_sport(),
             }
         entry = lock[player]
         if event:
             entry["event"] = event
         entry["date"] = today
         entry["updated_at"] = ts
+        entry["sport"] = active_sport()
         entry.setdefault("books", {})
         seen_keys.add((player, book))
 
@@ -3476,7 +3530,7 @@ def log_bet_this(ev_board, watch_board=None):
         # don't double-log TAKE IT; don't log 2+ core as WATCH (those are PASS/TAKE)
         if item.get("is_bet"):
             continue
-        if (item.get("method_count") or 0) >= METHODS_MIN:
+        if (item.get("method_count") or 0) >= methods_min():
             continue
         append_row(item, "watch")
 
@@ -3853,7 +3907,7 @@ def build_whats_going_today(rows):
 
 
 def render_whats_going_today():
-    rows = load_results()
+    rows = results_for_sport()
     mlb_hr, n_graded, by_book, on_list, pair_list = build_whats_going_today(rows)
     if active_sport() == "NFL":
         pair_list = []
@@ -5095,8 +5149,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 )
                 cov["bars"], cov["level"] = 1, "low"
                 coverage_board.append(cov)
-        # PASS / TAKE IT pool: 2+ PREMIUM core (support tags do not count)
-        if core_count < METHODS_MIN:
+        # PASS / TAKE IT pool: MLB needs 2 premium. NFL week 1 needs 1.
+        if core_count < methods_min():
             continue
         is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px, best_book, score)
         has_pri = has_priority_method(display_meths)
@@ -5119,9 +5173,10 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 miss.append("pattern stack isn't complete")
             if edge < EDGE_MIN:
                 miss.append("price isn't long enough vs the pack")
-            lp = long_price_block(best, display_meths, book_px)
-            if lp:
-                miss.append("number is too long / thin for a green light")
+            if not nfl_loose_mode():
+                lp = long_price_block(best, display_meths, book_px)
+                if lp:
+                    miss.append("number is too long / thin for a green light")
             why = (
                 f"Score {score}/100 · PASS - "
                 + (" · ".join(miss) if miss else "filtered")
@@ -5168,7 +5223,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
     pool = [
         p for p, ms in methods_map.items()
-        if count_core_methods(ms) >= NAME_METHODS_MIN and _has_strong(ms)
+        if count_core_methods(ms) >= (2 if nfl_loose_mode() else NAME_METHODS_MIN) and _has_strong(ms)
     ]
     if lineup_names:
         if len(lineup_names) >= 40:
@@ -5573,7 +5628,7 @@ def build_lock_lab():
         )
     else:
         hr_names, _fin, mlb_msg = fetch_mlb_hr_hitters()
-    lock = st.session_state.get("pregame_lock") or load_pregame()
+    lock = lock_for_sport()
     matched, unmatched = [], []
     ending_counter, tag_counter, book_end_counter = Counter(), Counter(), Counter()
     book_appear = Counter()
@@ -5897,7 +5952,7 @@ def main():
     sport = st.session_state.get("sport") if st.session_state.get("sport") in SPORT_CFG else "MLB"
     cfg = sport_cfg()
     _games_n = len(st.session_state.get("events") or [])
-    _lock_n = len(st.session_state.get("pregame_lock") or {})
+    _lock_n = len(lock_for_sport())
     _fetch = st.session_state.get("last_fetch_time") or "no fetch yet"
     st.markdown(
         site_hero_html(sport, cfg["label"], _games_n, _lock_n, _fetch),
@@ -5993,10 +6048,10 @@ def main():
     .petty-note{color:#e9d5ff;font-size:.72rem;margin-top:3px}
     </style>
     """, unsafe_allow_html=True)
-    lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
+    lock_n = len(lock_for_sport())
     _ag = f"auto_grade_ran_{active_sport()}"
     last_ag = float(st.session_state.get(_ag) or 0)
-    pending_n = sum(1 for r in load_results() if r.get("result") == "PENDING")
+    pending_n = sum(1 for r in results_for_sport() if r.get("result") == "PENDING")
     due = last_ag == 0 or (time.time() - last_ag) > 600
     if pending_n and due:
         try:
@@ -6195,13 +6250,13 @@ def main():
             if num_strong:
                 item["score"] = min(100, int(item.get("score") or 0) + 6)
             sc = int(item.get("score") or 0)
-            # Same for MLB + NFL: Benford/Num boost the score, they do not kill a green.
-            # Score < 50 with no elite confirm gets leaned off. 70+ holds.
-            if item.get("is_bet") and not elite_take_ok(item) and sc < 50:
-                item["is_bet"] = False
-                item["why"] = (item.get("why") or "") + " · LEAN — score too thin without Benford/Num"
-            elif item.get("is_bet") and sc >= SCORE_SOFT_TAKE and not elite_take_ok(item):
-                item["why"] = (item.get("why") or "") + " · petty score hold"
+            # MLB: Benford/Num can lean off a thin green. NFL week 1: do not kill greens.
+            if not nfl_loose_mode():
+                if item.get("is_bet") and not elite_take_ok(item) and sc < 50:
+                    item["is_bet"] = False
+                    item["why"] = (item.get("why") or "") + " · LEAN — score too thin without Benford/Num"
+                elif item.get("is_bet") and sc >= SCORE_SOFT_TAKE and not elite_take_ok(item):
+                    item["why"] = (item.get("why") or "") + " · petty score hold"
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     if not df.empty:
@@ -6230,7 +6285,7 @@ def main():
     multi_names = {e["player"] for e in ev_board}
     watch_only = [
         w for w in watch_board
-        if w["player"] not in multi_names and (w.get("method_count") or 0) < METHODS_MIN
+        if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
     ]
     watch_n = len(watch_only)
     cov_names = multi_names | {w["player"] for w in watch_only}
@@ -6497,7 +6552,7 @@ def main():
         multi_names = {e["player"] for e in ev_board}  # anyone with 2+ core already classified
         watches = [
             w for w in watch_board
-            if w["player"] not in multi_names and (w.get("method_count") or 0) < METHODS_MIN
+            if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
         ]
         watches = sorted(watches, key=lambda x: (-x.get("method_count", 0), -x.get("score", 0)))
 
@@ -6862,9 +6917,9 @@ def main():
             "Open = first pull (never changes) · Now = latest pregame fetch · "
             "Close = frozen when the book drops off the feed (often at first pitch)."
         )
-        lock = st.session_state.get("pregame_lock") or load_pregame()
+        lock = lock_for_sport()
         if not lock:
-            st.info("Fetch pregame to build lock.")
+            st.info(f"No {active_sport()} lock yet. Fetch this sport pregame.")
         else:
             q = st.text_input("Filter", key="lock_q")
             show_moved = st.checkbox("Only show open -> now/close movers", value=False, key="lock_movers")
@@ -6923,9 +6978,9 @@ def main():
             f"Pregame Lock only · 0.5 HR Over · prices above +{MAX_HR_AMERICAN} are dropped as junk. "
             "Sort best-odds-first shows the longest numbers on top - not the most likely HRs."
         )
-        lock = st.session_state.get("pregame_lock") or load_pregame()
+        lock = lock_for_sport()
         if not lock:
-            st.info("Fetch pregame so Lock has prices, then search here.")
+            st.info(f"Fetch {active_sport()} pregame so Lock has prices, then search here.")
         else:
             BOOK_OPTS = [
                 ("All", None),
@@ -7171,7 +7226,7 @@ def main():
         st.caption(
             f"**{active_sport()} only** — {n_sport} graded {sport_cfg().get('hits', 'plays')}. "
             f"{other} ({n_other} graded) is hidden while this sport is selected. "
-            f"n &lt; {TRACKER_MIN_N} hidden unless it is a core family. "
+            f"n &lt; {tracker_min_n()} hidden unless it is a core family. "
             "HOT = over 15%. Δ is vs this sport’s TAKE IT baseline."
         )
         today_rows = [r for r in sport_rows if r.get("date") == today_az() and r.get("result") in ("HIT", "MISS")]
@@ -7227,7 +7282,9 @@ def main():
                 unsafe_allow_html=True,
             )
 
-        def chips_from_stats(stats, min_n=TRACKER_MIN_N, compare_baseline=False):
+        def chips_from_stats(stats, min_n=None, compare_baseline=False):
+            if min_n is None:
+                min_n = tracker_min_n()
             out = []
             base = baseline if baseline is not None else 11.0
             for name, s in sorted(
@@ -7323,7 +7380,7 @@ def main():
                 h, m, s, msg = auto_grade_pending()
             st.success(f"{h} HIT · {m} MISS · {s} open - {msg}")
             st.rerun()
-        rows = load_results()
+        rows = results_for_sport()
         n_all = len(rows)
         n_pending_all = sum(1 for r in rows if r.get("result") == "PENDING")
         n_today = sum(1 for r in rows if r.get("date") == today_az())
@@ -7331,7 +7388,7 @@ def main():
         gh_st = st.session_state.get("_results_gh_status", "unconfigured")
         gh_save = st.session_state.get("_results_gh_save", "-")
         lock_src = st.session_state.get("_pregame_source", "?")
-        lock_n = len(st.session_state.get("pregame_lock") or load_pregame())
+        lock_n = len(lock_for_sport())
         hist_src = st.session_state.get("_history_source", "?")
         hist_save = st.session_state.get("_history_gh_save", "-")
         secrets_ok = "yes" if _gh_configured() else "NO - add GITHUB_TOKEN + GITHUB_REPO"
@@ -7419,7 +7476,7 @@ def main():
     if page == "Grade:Backtest":
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
         st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
-        rows_bt = load_results()
+        rows_bt = results_for_sport()
         overall, daily, method_by_src, n_graded = build_backtest_stats(rows_bt, days=14)
 
         def fmt_rate(h, m, t, pct):
@@ -7491,7 +7548,7 @@ def main():
             "This is the price side only. Shop TAKE / LEAN log even if the same name is on The Board. "
             "Board Backtest stays methods-only."
         )
-        rows_sh = load_results()
+        rows_sh = results_for_sport()
         overall_s, daily_s, book_s, end_s, buck_s, n_shop = build_shop_grade_stats(rows_sh, days=14)
 
         def fmt_rate(h, m, t, pct):
@@ -7656,7 +7713,7 @@ def main():
             unsafe_allow_html=True,
         )
 
-        rows = load_results() or []
+        rows = results_for_sport() or []
         today = today_az()
         try:
             end = datetime.strptime(today, "%Y-%m-%d").date()
