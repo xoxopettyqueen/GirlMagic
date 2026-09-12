@@ -6456,7 +6456,11 @@ def main():
         if not takes and not passes and not watches and not coverage_only:
             st.info("Fetch while pregame - board fills when methods fire.")
         else:
-            st.markdown('<div class="board-wrap"><h3 class="game-head">Cleared names</h3></div>', unsafe_allow_html=True)
+            st.markdown(
+                '<div class="board-wrap"><h3 class="game-head">💚 The List</h3>'
+                '<p class="site-section-help">Gospel greens. If it ain’t here, it’s homework.</p></div>',
+                unsafe_allow_html=True,
+            )
             commence_by_event = {}
             slate_games = []
             chosen_labs = st.session_state.get("last_selected") or st.session_state.get("selected_games") or []
