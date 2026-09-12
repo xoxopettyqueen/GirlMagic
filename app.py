@@ -7904,11 +7904,11 @@ def main():
         site_section_open(
             "📖 WORDS",
             "How We Run It",
-            "Plain-language map of the site. Recipes stay on the cards. This page is for anyone landing here cold.",
+            "Same language as the Glossary. Manifesto, not a manual. Recipes stay on the cards.",
         )
         st.markdown("""
         <style>
-        .how-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px}
+        .how-hero{background:linear-gradient(110deg,#db2777,#7c3aed,#4c1d95);background-size:180% 180%;animation:heroShimmer 14s ease-in-out infinite;border-radius:22px;padding:18px 20px;margin-bottom:12px;border:1px solid #f9a8d4}
         .how-hero h3{font-family:'Playfair Display',serif;color:#fff;margin:0;font-size:1.4rem}
         .how-hero p{color:#fce7f3;margin:6px 0 0;font-size:.88rem}
         .how-tier{color:#f9a8d4;font-size:.72rem;letter-spacing:1.4px;text-transform:uppercase;font-weight:800;margin:16px 0 8px}
@@ -7928,123 +7928,104 @@ def main():
         except Exception:
             q_i = 0
         st.markdown(
-            '<div class="how-hero"><h3>Girl Magic - How We Run It</h3>'
+            '<div class="how-hero"><h3>Girl Magic — How We Run It</h3>'
             f'<p>Quote of the day: {quotes[q_i]}</p>'
-            "<p>Manual only. Tags live on the cards. Recipes stay off this page.</p></div>",
+            "<p>We don’t chase vibes. We chase value. The Board clears names. The Shop picks numbers. Everything else is homework.</p></div>",
             unsafe_allow_html=True,
         )
         st.markdown(
-            '<div class="how-box"><b>One-sentence version.</b> '
-            "We only play <b>0.5 HR Over</b> (one homer). "
-            "The Board says <b>who</b> is cleared. Shop says <b>which book and number</b> to buy. "
-            "Grade tells us if we were right so tomorrow gets tighter - not so we guess tonight.</div>",
+            '<div class="how-box">'
+            "We only play <b>0.5 HR Over</b> — one homer, one vibe. "
+            "Green names are gospel. Gray is homework. Eyes mean watch it, don’t force the ticket. "
+            "Grade so tomorrow gets tighter — not so we guess tonight.</div>",
             unsafe_allow_html=True,
         )
 
-        st.markdown('<div class="how-tier">Daily Flow</div>', unsafe_allow_html=True)
-        with st.expander("Morning run - load, pick, fetch", expanded=True):
+        st.markdown('<div class="how-tier">🌀 Daily Flow</div>', unsafe_allow_html=True)
+        with st.expander("💅 Morning run — load the slate, fetch the vibe, clear the list", expanded=True):
             st.markdown(
-                "1. Sidebar -> **Load games**\n"
-                "2. Pick today's cards. Don't leave every game selected if you only care about a few.\n"
-                "3. **Fetch** - this is the only moment new odds and lock snapshots save.\n"
-                "4. Leave **Grab lineups on fetch** on so bench / DNP names don't clog the Board.\n"
-                "5. Read green first. Gray and eyes are not a dare."
+                "1. Sidebar → **Load games**. Don’t overthink it. Get the slate up.\n"
+                "2. Pick today’s cards. Leave filler out. We don’t chase extras.\n"
+                "3. **Fetch.** Only moment new odds and Lock snapshots save.\n"
+                "4. Leave **Grab lineups on fetch** on so bench / DNP names don’t clog the Board.\n"
+                "5. Read **green** first. Gray and eyes are not a dare."
             )
-        with st.expander("The Board - green, gray, eyes"):
+        with st.expander("💅 The Board — green, gray, eyes"):
             st.markdown(
-                "- **TAKE IT** (Petty Mode: *Run it, baddie*) - cleared. Short list on purpose.\n"
-                "- **PASS** (*Not today, babe*) - something showed up, not enough to green-light.\n"
-                "- **WATCH** (*Keep an eye, queen*) - we log it so we can grade later. Not a play by itself.\n"
-                "- **COVERAGE** - on the slate, not in the three buckets above.\n\n"
-                "**Score** is a rank, not a green light. High score + gray card is still gray.\n\n"
-                "**Edge** = how far the best book sits from the pack. Big edge with no premium tags is still a pass.\n\n"
+                "- **Green / TAKE IT / run it, baddie** — cleared the list. We actually play this.\n"
+                "- **Gray / PASS** — tags fired. Score hold didn’t land. Homework, not a ticket.\n"
+                "- **Eyes / WATCH** — watch it, don’t force the ticket. Log it for grade.\n"
+                "- **Queen cleared it** — same as green. Personality line, not a second scoring system.\n\n"
+                "**Petty Score** ranks the stack. 70+ can **score hold** a green when Benford / numerology miss. It cannot invent a green.\n"
+                "**Edge** = gap from the pack. Big edge with no **Priority** + 2 **Premium** is still gray.\n"
                 "Petty Mode changes the words. It does not change the math."
             )
-        with st.expander("After the games - grade like grown women"):
+        with st.expander("💋 After the games — grade like grown women"):
             st.markdown(
-                "- **Results** - every logged TAKE IT / WATCH / Shop call goes PENDING -> HIT or MISS. Page through all of them. Undo exists.\n"
-                "- **Log a HR** - someone went who was not on the Board. Still log them so the banner and Analytics stay honest.\n"
-                "- **Auto-grade** reads box scores. Fix misses with Undo + HIT/MISS.\n"
-                "- Don't invent a new trick mid-slate. Tighten gates tomorrow."
+                "- **Results** — logged TAKE / WATCH / Shop go PENDING → HIT or MISS. Undo exists.\n"
+                "- **Log a HR** — someone went who wasn’t on the Board. Still log them.\n"
+                "- **Auto-grade** reads box scores. Fix misses.\n"
+                "- Don’t invent a new trick mid-slate. Tracker talks tomorrow."
             )
 
-        st.markdown('<div class="how-tier">System Logic</div>', unsafe_allow_html=True)
-        with st.expander("Tags and chips - colors, not recipes"):
+        st.markdown('<div class="how-tier">🧠 System Logic</div>', unsafe_allow_html=True)
+        with st.expander("Tags fire methods. Methods unlock TAKE. Priority tags clear greens."):
             st.markdown(
-                "- Color chips = which book family fired (DK green, MGM gold, FD blue, purple = match / group).\n"
+                "- **Priority** — can unlock TAKE. You still need 2 Premium.\n"
+                "- **Premium / Core** — counts toward the floor (DK 10, FD Rhythm, MGM 25, Multi-book Shorten, Caesars Stamp, HardRock Heater, Fanatics Rogue, EV Premium, Kelly Premium).\n"
+                "- **Support** — Books Tight, Exact Match, MGM 50/00, Fanatics Drift. Shown. Never greens alone.\n"
                 "- Family chips (Classic / Pressure / Drama / Cute) are vibe folders. Cute is never why you fire.\n"
-                "- Petty Notes under a card are reminders. Not extra math.\n"
-                "- Petty Alerts at the top mean look here first - not bet this automatically.\n"
-                "- Exact recipes stay on the cards and in the group. This page will not list them."
+                "- Exact recipes stay on the cards. This page is the map."
             )
-        with st.expander("Shop vs Board - two different jobs"):
+        with st.expander("Shop vs Board — two different jobs"):
             st.markdown(
-                "- **Board** = is this name cleared today?\n"
-                "- **Shop** = is this price the one we want, and on which book?\n"
-                "- Same player can be green on the Board and LEAN / DON'T in Shop.\n"
-                "- Shop TAKE / LEAN log as their own rows. Grade them under **Grade -> Shop**, not Board Backtest.\n"
-                "- Very long prices need extra tags. If Shop says DON'T, don't talk yourself into it."
+                "- **Board** = who cleared the list.\n"
+                "- **Shop** = which book and number to buy (fair line + gap + EV / Kelly).\n"
+                "- Long-ball Shop: TAKE gap ≥ 35, LEAN ≥ 25.\n"
+                "- Same name can be green on the Board and DON’T in Shop. Don’t mix the assignment.\n"
+                "- If Shop says DON’T, don’t talk yourself into it."
             )
-        with st.expander("The other rooms - Digits, Methods, Lines"):
+        with st.expander("The other rooms"):
             st.markdown(
-                "- **Digits / MGM / DK / FD / Exact** = pattern screens. One card per player. Same-team groups live on the MGM side.\n"
-                "- **Names** = initial / name links. Only counts when a book method also fired. Prefer different teams.\n"
-                "- **Signals** = books lining up or disagreeing. One card per player.\n"
-                "- **Moves** = price up (red) or down (green). We only care about 500+ names.\n"
-                "- **Trends** = FD vs MGM gaps and fades we already defined. Biggest gaps first.\n"
-                "- **Late / Lock** = who showed late, who dropped off the feed, last pregame number we saved.\n"
-                "- **Search** = find one name without scrolling the league."
+                "- **Digits / MGM / DK / FD** — pattern rooms. MGM groups same team only (25 / 50 / 75 / Exact).\n"
+                "- **Names** — only if a book method also fired. Prefer different teams.\n"
+                "- **Trend Lab** — Heating / Cooling / Chaotic. Does not change TAKE math.\n"
+                "- **Moves** — 500+ only.\n"
+                "- **Lock** — last pregame number before the book vanished."
             )
-        with st.expander("Lock - why names vanish after first pitch"):
+        with st.expander("Lock — names vanish after first pitch"):
             st.markdown(
-                "Some books pull the number once the game is live. That is why every Fetch writes **Lock**.\n\n"
-                "- **Open** = first time we saw them today. Does not change.\n"
-                "- **Now** = latest pregame pull.\n"
-                "- **Close** = last number before the book disappeared.\n\n"
-                "Fallen Off / Gone Missing use that snapshot so we can still grade. "
+                "Books pull numbers once it’s live. Fetch writes **Lock**.\n\n"
+                "- **Open** first look · **Now** latest pregame · **Close** last number before vanish.\n"
                 "First pitch hits, the chase ends."
             )
-        with st.expander("Tracker, Backtest, Analytics"):
+        with st.expander("Tracker, Backtest, Analytics — receipts only"):
             st.markdown(
-                "- **Tracker** - hit rate by tag / book / ending once the sample is real. Ignore tiny n.\n"
-                "- **Backtest** - Board TAKE IT % vs WATCH %. TAKE should beat WATCH.\n"
-                "- **Grade -> Shop** - did buying the fairer number actually hit more?\n"
-                "- **Analytics** - this week's HRs: endings, books, families, repeat names. Looking backward. Not tonight's Board.\n"
-                "- **What's Going Today** - graded HITs already in the books. Recap strip, not a second Board."
+                "- **Tracker** — hit rate by tag / book / ending. Ignore tiny n.\n"
+                "- **Backtest** — TAKE should beat WATCH.\n"
+                "- **Analytics / What’s Going Today** — what already went. Not tonight’s Board."
             )
         with st.expander("Books we actually use"):
             st.markdown(
-                "- Methods / tells: DraftKings, FanDuel, **BetMGM groups** (25 / Exact). MGM is not the ticket.\n"
-                "- Number we buy: DK, FD, Hard Rock, Fanatics.\n"
-                "- Tracker 9/10: MGM-as-best is 11% (−1 vs 13%). MGM 50 is 7% (−5). Those do not green TAKE IT.\n"
-                "- Compare lane: Caesars and Hard Rock vs the pack.\n"
-                "- Bet365 is wired. It shows when the feed actually sends it.\n"
-                "- Other books can sit on the card for compare. They do not unlock TAKE IT by themselves."
+                "- **Tickets:** DK, FD, HardRock, Fanatics, Caesars Stamp.\n"
+                "- **MGM Signal** — grouping tell. Not the ticket.\n"
+                "- Bet365 is wired when the feed sends it.\n"
+                "- Other books compare only. They do not unlock TAKE."
             )
 
-        st.markdown('<div class="how-tier">Culture and Rules</div>', unsafe_allow_html=True)
-        with st.expander("House rules so nobody gets cute"):
+        st.markdown('<div class="how-tier">💋 Culture + Rules</div>', unsafe_allow_html=True)
+        with st.expander("House rules — nobody gets cute"):
             st.markdown(
-                "- Only **0.5 HR Over**. No 2+ lines. No unders.\n"
-                "- Green is the play list. Everything else is homework.\n"
-                "- Two-plus premium tags still beat one cute name match.\n"
-                "- If lineups say they are not hitting, they should not be on the Board.\n"
-                "- Don't grade off vibes. HIT / MISS / Undo keep the Tracker clean.\n"
-                "- Secrets stay on the cards and in the chat. This page is the map, not the vault."
+                "- Only **0.5 HR Over**. No 2+ . No unders. Rarely under +200. Long-ball is +500+.\n"
+                "- Green is the list. Everything else is homework.\n"
+                "- Two Premium + one Priority still beats one cute name match.\n"
+                "- **Score hold** at 70. Queen commentary is mood, not math.\n"
+                "- Secrets stay on the cards. This page is the map, not the vault."
             )
-        with st.expander("Petty Glossary - words on the screens"):
-            st.markdown(
-                "- **TAKE IT / Run it, baddie** - cleared play.\n"
-                "- **PASS / Not today, babe** - fired something, not cleared.\n"
-                "- **WATCH / Keep an eye, queen** - logged for grade, not a ticket.\n"
-                "- **LEAN / Cute but maybe** - Shop thinks the price is close.\n"
-                "- **DON'T / Girl no** - Shop says skip the number.\n"
-                "- **Edge** - gap from the pack. Not a green light by itself.\n"
-                "- **Lock** - last pregame number we saved before the book vanished.\n"
-                "- **Pending** - logged, not graded yet.\n"
-                "- **Family chip** - vibe folder (Classic / Pressure / Drama / Cute).\n"
-                "- **Analytics** - what already went. Not who to fire next."
-            )
+        with st.expander("💅 Girl Magic Glossary — same language as the welcome flow"):
+            render_mini_glossary()
+        st.caption("Need the language? That’s the Glossary — it’s how the math talks.")
+        st.caption("Manual only. Tags live on the cards. Recipes stay off this page.")
         site_section_close()
 
     st.markdown(
