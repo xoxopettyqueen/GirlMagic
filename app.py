@@ -6366,7 +6366,7 @@ def main():
         st.caption("If it disappeared, it wasn’t meant for you.")
         st.markdown("</div>", unsafe_allow_html=True)
 
-        def _render_board_card(item, label, cls):
+        def _render_board_card(item, label, cls, zone="board"):
             tags = render_method_tags(item.get("methods") or [])
             if item.get("num_tag"):
                 tags += f'<span class="tag tag-family">{item["num_tag"]}</span>'
@@ -6419,8 +6419,8 @@ def main():
                 f'</div>',
                 unsafe_allow_html=True,
             )
-            ck = f"{item.get('player')}_{label}_{str(item.get('event') or '')[:18]}"
-            with st.expander("Explain this card", expanded=False, key=f"ex_{ck}"):
+            ck = f"ex_{zone}_{cls}_{label}_{item.get('player')}_{str(item.get('event') or '')[:24]}"
+            with st.expander("Explain this card", expanded=False, key=ck):
                 st.write(explain_card_text(item, label))
 
         elite = [e for e in ev_board if e.get("is_bet")]
@@ -6430,7 +6430,7 @@ def main():
             pc = st.columns(min(3, len(elite)))
             for i, item in enumerate(elite[:6]):
                 with pc[i % len(pc)]:
-                    _render_board_card(item, "TAKE IT", "bet")
+                    _render_board_card(item, "TAKE IT", "bet", zone="picks")
         else:
             st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
 
