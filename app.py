@@ -879,16 +879,50 @@ QUEEN_PHRASES = {
 
 
 def render_card_guide():
-    st.markdown("### Before you roll, here’s how to read a Girl Magic card.")
+    st.markdown("### How to read a Girl Magic card — the color code")
     st.markdown(
-        "- **Green** = cleared / strong signal (TAKE)\n"
+        "- **Green** = cleared / strong signal\n"
         "- **Pink** = Petty Score / personality\n"
         "- **Purple** = Queen commentary\n"
-        "- **Red** = caution or override (DON’T / fade / failed gate)\n"
-        "- **Edge** = how far the ticket sits from the pack (confidence gap, not a vibe meter)\n"
+        "- **Red** = caution / override\n"
+        "- **Edge** = confidence gap from the pack\n"
         "- **Methods** = how many systems agree"
     )
-    st.caption("Once you know the colors, you know the vibe.")
+    st.caption("If you’ve read the Glossary, this is how those tags show up visually.")
+
+
+def render_mini_glossary():
+    st.markdown("### Girl Magic Glossary")
+    st.markdown("**Tags**")
+    st.markdown(
+        "- **FD Pattern** — FanDuel ≥ +400 ending 10/20/30/60/70/90.\n"
+        "- **FD 90 / 50 / 40** — that exact FD ending.\n"
+        "- **MGM 25** — BetMGM same-team group ending 25.\n"
+        "- **MGM Exact** — same exact MGM price, same team.\n"
+        "- **DK 10** — DraftKings ends in 10.\n"
+        "- **Multi-book Shorten** — price dropped on 2+ books.\n"
+        "- **Books tight** — ticket books within 50 points.\n"
+        "- **Caesars Classic / HardRock Heater / Fanatics Rogue** — that book is the long ticket on a hot ending."
+    )
+    st.markdown("**Methods (how hard a tag works)**")
+    st.markdown(
+        "- **Priority** — can unlock TAKE (you still need 2 premium).\n"
+        "- **Premium / core** — counts toward the 2-method floor.\n"
+        "- **Support** — shown and graded, never greens alone."
+    )
+    st.markdown("**Endings**")
+    st.markdown(
+        "- **25 / 50 / 75 / 90 / 10** — hot ticket endings we play.\n"
+        "- **00 / 30 / 40** — usually dead on long prices."
+    )
+    st.markdown("**Books**")
+    st.markdown(
+        "- **DK / FD / HardRock / Fanatics / Caesars** — tickets we can buy.\n"
+        "- **MGM** — signal and grouping tell. Not the ticket."
+    )
+    st.markdown("**Petty Score** — 0–100 vibe meter on the stack. Can *hold* a green at 70. Cannot invent one.")
+    st.markdown("**Queen commentary** — personality layer. Same decision, louder words.")
+    st.caption("Code tab has the long glossary. This is the language you need to roll.")
 
 
 def render_queen_glossary():
@@ -5511,24 +5545,44 @@ def main():
         'Pink words are personality. Green cards are the decision.</div>',
         unsafe_allow_html=True,
     )
-    if "seen_card_guide" not in st.session_state:
-        st.session_state["seen_card_guide"] = False
-    if not st.session_state.get("seen_card_guide"):
-        st.info("Welcome to Girl Magic Odds 💅 — start by reading the Card Guide so you know how to read the colors and tags.")
-    g1, g2 = st.columns([1, 1])
-    with g1:
-        if st.button("Card Guide", use_container_width=True):
-            st.session_state["show_card_guide"] = True
-    with g2:
-        if st.button("I know the vibe", use_container_width=True):
-            st.session_state["seen_card_guide"] = True
-            st.session_state["show_card_guide"] = False
-    if st.session_state.get("show_card_guide") or not st.session_state.get("seen_card_guide"):
-        with st.expander("Before you roll — how to read a Girl Magic card", expanded=not st.session_state.get("seen_card_guide")):
-            render_card_guide()
-            if st.button("Got it — hide this", type="primary"):
+    if "onboard_step" not in st.session_state:
+        st.session_state["onboard_step"] = "welcome"
+    step = st.session_state.get("onboard_step") or "welcome"
+    if step == "welcome":
+        st.info("Welcome to Girl Magic Odds 💅 — start with the Glossary so you know the language.")
+        st.caption("Before you roll, read the Glossary — it explains the tags, methods, and phrases you’ll see everywhere.")
+        b1, b2 = st.columns(2)
+        with b1:
+            if st.button("💅 Glossary First", type="primary", use_container_width=True):
+                st.session_state["onboard_step"] = "glossary"
+                st.rerun()
+        with b2:
+            if st.button("🎲 I already know the vibe", use_container_width=True):
+                st.session_state["onboard_step"] = "done"
                 st.session_state["seen_card_guide"] = True
-                st.session_state["show_card_guide"] = False
+                st.rerun()
+    elif step == "glossary":
+        with st.expander("Glossary — the language", expanded=True):
+            render_mini_glossary()
+            if st.button("Next — color code", type="primary"):
+                st.session_state["onboard_step"] = "colors"
+                st.rerun()
+    elif step == "colors":
+        with st.expander("How to read a Girl Magic card — the color code", expanded=True):
+            render_card_guide()
+            if st.button("Unlock the Board", type="primary"):
+                st.session_state["onboard_step"] = "done"
+                st.session_state["seen_card_guide"] = True
+                st.rerun()
+    else:
+        r1, r2 = st.columns(2)
+        with r1:
+            if st.button("Glossary", use_container_width=True):
+                st.session_state["onboard_step"] = "glossary"
+                st.rerun()
+        with r2:
+            if st.button("Color code", use_container_width=True):
+                st.session_state["onboard_step"] = "colors"
                 st.rerun()
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
     if petty_on():
