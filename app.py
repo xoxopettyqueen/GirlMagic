@@ -984,11 +984,14 @@ def render_mini_glossary():
     st.markdown("0–100 vibe meter on the stack. Can hold a green at 70. Can’t invent one. If you know, you know.")
     st.markdown("**👑 Queen Commentary**")
     st.markdown("Personality layer. Same decision, louder words. It’s not math — it’s mood.")
-    st.markdown("**💸 KELLY — bankroll confidence**")
+    st.markdown("**💸 Kelly — bankroll confidence**")
     st.markdown(
-        "Kelly uses fair probability and book price to tell you how loud the value is. "
-        "Higher Kelly = stronger long-ball value. Lower Kelly = homework only. "
-        "Kelly does NOT pick the name — it picks the confidence."
+        "Kelly tells you how loud the value is. It mixes fair probability and book price to show how much of your bankroll a ticket deserves.\n"
+        "- 💚 10%+ = strong\n"
+        "- 💖 5–10% = medium\n"
+        "- 💜 1–5% = light\n"
+        "- 🔴 <1% = homework only\n\n"
+        "Kelly doesn’t pick the name — it picks the confidence."
     )
     st.caption("Code tab has the long glossary. This is the language you need to roll.")
 
@@ -2166,7 +2169,7 @@ def _benford_card(res, title):
     st.markdown(
         f'<div class="card">'
         f'<div class="card-name">{title}</div>'
-        f'<div class="card-meta">{n} numbers in this pile. Green = cash pond. Red = fade.</div>'
+        f'<div class="card-meta">{n} numbers in this pile. {POND_LEGEND}</div>'
         f'{_benford_bars(res)}'
         f'</div>',
         unsafe_allow_html=True,
@@ -2215,9 +2218,17 @@ def digits_playbook(hits_res, graded_res, live_res):
     return do, dont, notes
 
 
-def lookat_box(title, body):
+POND_LEGEND = "💚 Green = cash pond · 💜 Purple = mid pond · 🔴 Red = fade"
+
+
+def lookat_box(title, body, why="", queen=""):
+    extra = f'<div class="note" style="margin-top:4px"><b>Why it matters:</b> {why}</div>' if why else ""
+    q = f'<div class="queen-line">{queen}</div>' if queen else ""
     st.markdown(
-        f'<div class="how-box"><b>{title}</b><div class="note" style="margin-top:6px">{body}</div></div>',
+        f'<div class="how-box"><b>{title}</b>'
+        f'<div class="note" style="margin-top:6px">{body}</div>'
+        f'{extra}{q}'
+        f'<div class="note" style="margin-top:6px">{POND_LEGEND}</div></div>',
         unsafe_allow_html=True,
     )
 
@@ -2244,8 +2255,9 @@ def render_digits_tab(df):
     )
     lookat_box(
         "🔢 Benford — are the odds natural or forced?",
-        "Score closer to 1.0 = natural energy. Closer to 0.0 = forced numbers. "
-        "Use Benford to confirm the pond before you buy the ticket. Board still picks the name.",
+        "Benford spots fake odds faster than any algorithm. Score closer to 1.0 = natural. Closer to 0.0 = forced.",
+        why="This shows if the odds look real or forced. Green means natural energy — red means fake math.",
+        queen="Queen whispered: confirm the pond before you buy.",
     )
     if not HAS_BENFORD:
         st.warning("Need benford.py next to app.py.")
@@ -2294,7 +2306,8 @@ def render_digits_tab(df):
     st.markdown(
         f'<div class="card"><b>Benford Score</b> · {score:.2f} / 1 · {mood}'
         f'<div class="bf-meter"><span style="width:{int(score*100)}%;background:{hue}"></span></div>'
-        f'<div class="note">{live_res.get("n") or 0} live prices in the pile</div></div>',
+        f'<div class="note">{live_res.get("n") or 0} live prices in the pile · {POND_LEGEND}</div>'
+        f'<div class="queen-line">{"Queen whispered: fake math alert." if score < 0.45 else "Queen whispered: energy is clean enough to look."}</div></div>',
         unsafe_allow_html=True,
     )
     do_h = "".join(f"<div>✅ {x}</div>" for x in do)
@@ -2317,8 +2330,9 @@ def render_digits_tab(df):
     st.markdown('<div class="card"><b>Benford Heatmap</b><div class="bf-heat">' + "".join(cells) + "</div></div>", unsafe_allow_html=True)
     lookat_box(
         "📚 Book Piles — which books are clean today?",
-        "Book Piles show which sportsbooks are giving clean, natural long-ball numbers today. "
-        "Look for green in +400–+600. Avoid red in +1000+.",
+        "Book Piles show which books are clean today. Look for green in +400–+600.",
+        why="Green = playable long-ball pond. Red in +1000+ = bait.",
+        queen="Queen whispered: pick the clean book, then pick the name.",
     )
     st.markdown("#### Benford vs Board")
     c1, c2 = st.columns(2)
@@ -2328,8 +2342,9 @@ def render_digits_tab(df):
         _benford_card(hits_res, "History hits")
     lookat_box(
         "🧠 More Piles — is today normal or weird?",
-        "Today = live vibe. Lock = pregame truth. History = what actually hits. "
-        "If Today and History agree, the pond is clean. If Lock disagrees, the book tried to fake it.",
+        "More Piles tell you if today’s vibe is normal or weird. Today = live. Lock = pregame. History = what hits.",
+        why="If Today and History match, the pond’s clean. If Lock disagrees, the book’s faking.",
+        queen="Queen whispered: don’t fight history unless Lock is screaming.",
     )
     with st.expander("🧠 More piles — today vs lock vs history", expanded=False):
         _benford_card(best_res, "Today - best number only")
@@ -2346,9 +2361,9 @@ def render_digits_tab(df):
             st.caption("Fetch first.")
     lookat_box(
         "△ The Triangle — how to actually use all this",
-        "The Board picks the name. The Book Piles pick the pond. Benford picks the energy. Kelly picks the value. "
-        "All four agree → TAKE. Three agree → LEAN. Two agree → WATCH. One or zero → DON’T. "
-        "When all four agree, run it.",
+        "The Board picks the name. The Book Piles pick the pond. Benford picks the energy. Kelly picks the value.",
+        why="All four agree → TAKE. Three → LEAN. Two → WATCH. One or zero → DON’T.",
+        queen="Queen whispered: when Board, Pond, Energy, and Value agree — run it.",
     )
 
 def get_odds_api_key():
