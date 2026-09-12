@@ -144094,5 +144094,45 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.83
+  },
+  {
+    "id": "2026-09-12_Pete Alonso_watch_26",
+    "date": "2026-09-12",
+    "time": "12:25 PM",
+    "player": "Pete Alonso",
+    "score": 26,
+    "edge": 12,
+    "best_price": 410,
+    "best_book": "fanatics",
+    "median": 390,
+    "book_prices": {
+      "caesars": 370,
+      "draftkings": 390,
+      "fanatics": 410,
+      "fanduel": 390,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 10,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD 90",
+      "Books tight",
+      "EV Support",
+      "Kelly Support"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-12T19:25:41.811251+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "BALTIMORE ORIOLES",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.6
   }
 ]
