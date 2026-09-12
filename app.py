@@ -6337,10 +6337,10 @@ def main():
         with cfa:
             show_kinds = st.multiselect(
                 "What’s worth your time",
-                ["TAKE IT", "TEAM PICK", "PASS", "WATCH"],
-                default=["TAKE IT", "TEAM PICK"],
-                key="board_kinds_main",
-                help="TAKE IT — cleared play list. TEAM PICK — squad energy only.",
+                ["TAKE IT", "TEAM PICK", "PASS", "WATCH", "COVERAGE"],
+                default=["TAKE IT", "TEAM PICK", "PASS", "WATCH", "COVERAGE"],
+                key="board_kinds_all",
+                help="TAKE IT = cleared. PASS / WATCH / COVERAGE stay on the Board so we can grade them.",
             )
         with cfb:
             min_score = st.slider("Petty Score — how loud the vibe is", 0, 100, 0, 5, key="board_min_score_main")
@@ -6355,7 +6355,7 @@ def main():
             unsafe_allow_html=True,
         )
         if st.button("Reset the vibe 💅"):
-            st.session_state["board_kinds_main"] = ["TAKE IT", "TEAM PICK"]
+            st.session_state["board_kinds_all"] = ["TAKE IT", "TEAM PICK", "PASS", "WATCH", "COVERAGE"]
             st.session_state["board_min_score_main"] = 0
             st.session_state["board_sort_main"] = sport_cfg()["when"]
             st.session_state["board_when_main"] = "All times"
@@ -6424,15 +6424,15 @@ def main():
                 st.write(explain_card_text(item, label))
 
         elite = [e for e in ev_board if e.get("is_bet")]
-        st.markdown("#### Petty Picks")
-        if elite:
-            st.caption("Elite TAKE — ending + lane + method + book + Benford + name+price.")
-            pc = st.columns(min(3, len(elite)))
-            for i, item in enumerate(elite[:6]):
-                with pc[i % len(pc)]:
-                    _render_board_card(item, "TAKE IT", "bet", zone="picks")
-        else:
-            st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
+        with st.expander(f"💅 Petty Picks · {len(elite)}", expanded=True):
+            if elite:
+                st.caption("Elite TAKE — ending + lane + method + book + Benford + name+price.")
+                pc = st.columns(min(3, max(1, len(elite[:3]))))
+                for i, item in enumerate(elite[:6]):
+                    with pc[i % len(pc)]:
+                        _render_board_card(item, "TAKE IT", "bet", zone="picks")
+            else:
+                st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
         passes = [e for e in ev_board if not e.get("is_bet")]
@@ -6559,58 +6559,55 @@ def main():
                 picks = sorted(picks, key=lambda x: -x.get("score", 0))
                 if not items and not picks and (name_q or min_score or time_win != "All times"):
                     continue
-                st.markdown(
-                    f'<div class="board-wrap"><div class="game-head">{_fmt_game_header(game)}</div></div>',
-                    unsafe_allow_html=True,
-                )
-                if items or picks:
-                    cols = st.columns(2)
-                    idx = 0
-                    for item in items:
-                        with cols[idx % 2]:
-                            _render_board_card(item, "TAKE IT", "bet")
-                        idx += 1
-                    for item in picks:
-                        with cols[idx % 2]:
-                            _render_board_card(item, "TEAM PICK", "watch-card")
-                        idx += 1
-                else:
-                    st.caption("On the slate · no TAKE IT or team pick yet.")
+                n_show = len(items) + len(picks)
+                with st.expander(f"⚾ {_fmt_game_header(game)} · {n_show}", expanded=bool(items)):
+                    if items or picks:
+                        cols = st.columns(2)
+                        idx = 0
+                        for item in items:
+                            with cols[idx % 2]:
+                                _render_board_card(item, "TAKE IT", "bet")
+                            idx += 1
+                        for item in picks:
+                            with cols[idx % 2]:
+                                _render_board_card(item, "TEAM PICK", "watch-card")
+                            idx += 1
+                    else:
+                        st.caption("On the slate · no TAKE IT or team pick yet.")
 
             if passes and "PASS" in show_kinds:
                 shown_p = [x for x in passes if _keep_card(x)]
-                st.markdown('<div class="board-wrap"><h3 class="game-head">Pass</h3></div>', unsafe_allow_html=True)
-                if not shown_p:
-                    st.caption("No PASS names match the filters.")
-                else:
-                    cols = st.columns(2)
-                    for idx, item in enumerate(shown_p):
-                        with cols[idx % 2]:
-                            _render_board_card(item, "PASS", "skip")
+                with st.expander(f"⚪ Pass · {len(shown_p)}", expanded=False):
+                    if not shown_p:
+                        st.caption("No PASS names match the filters.")
+                    else:
+                        cols = st.columns(2)
+                        for idx, item in enumerate(shown_p):
+                            with cols[idx % 2]:
+                                _render_board_card(item, "PASS", "skip")
 
             if "WATCH" in show_kinds:
-                st.markdown('<div class="board-wrap"><h3 class="game-head">Watch</h3></div>', unsafe_allow_html=True)
                 shown_w = [x for x in watches if _keep_card(x)]
-                if not shown_w:
-                    st.caption("No WATCH names match the filters.")
-                else:
-                    cols = st.columns(2)
-                    for idx, item in enumerate(shown_w[:40]):
-                        with cols[idx % 2]:
-                            _render_board_card(item, "WATCH", "watch-card")
+                with st.expander(f"👀 Watch · {len(shown_w)}", expanded=False):
+                    if not shown_w:
+                        st.caption("No WATCH names match the filters.")
+                    else:
+                        cols = st.columns(2)
+                        for idx, item in enumerate(shown_w[:40]):
+                            with cols[idx % 2]:
+                                _render_board_card(item, "WATCH", "watch-card")
 
-            st.markdown('<div class="board-wrap"><h3 class="game-head">Coverage · support tags only</h3></div>', unsafe_allow_html=True)
-            st.caption(
-                "75s · 00s · Stayed alone · Last one left · Exact / tight - "
-                "support tags only. Never upgrades to TAKE IT without priority + edge."
-            )
-            if not coverage_only:
-                st.caption("No support-only names right now.")
-            else:
-                cols = st.columns(2)
-                for idx, item in enumerate(coverage_only[:40]):
-                    with cols[idx % 2]:
-                        _render_board_card(item, "COVERAGE", "watch-card")
+            if "COVERAGE" in show_kinds:
+                cov_n = len(coverage_only or [])
+                with st.expander(f"📋 Coverage · {cov_n}", expanded=False):
+                    st.caption("Support-only names. Still logged for grade. Never upgrades to TAKE IT alone.")
+                    if not coverage_only:
+                        st.caption("No support-only names right now.")
+                    else:
+                        cols = st.columns(2)
+                        for idx, item in enumerate(coverage_only[:40]):
+                            with cols[idx % 2]:
+                                _render_board_card(item, "COVERAGE", "watch-card")
             with st.expander("Board diagnostic (is_bet / score / methods) — math not changed", expanded=False):
                 lines = []
                 for item in (ev_board or [])[:80]:
