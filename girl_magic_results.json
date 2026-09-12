@@ -139253,46 +139253,145 @@
     "benford_cluster": 0.33
   },
   {
-    "id": "2026-09-12_Matthew Lugo_watch_65",
+    "id": "2026-09-12_Juan Soto_shop_lean_77",
     "date": "2026-09-12",
     "time": "11:06 AM",
-    "player": "Matthew Lugo",
-    "score": 65,
-    "edge": 190,
-    "best_price": 1300,
-    "best_book": "fanatics",
-    "median": 1110.0,
+    "player": "Juan Soto",
+    "score": 0,
+    "edge": 77,
+    "best_price": 475,
+    "best_book": "hardrockbet",
+    "median": 372,
     "book_prices": {
-      "betmgm": 675,
-      "caesars": 950,
-      "draftkings": 1120,
-      "fanatics": 1300,
-      "fanduel": 1100,
-      "hardrockbet": 1200
+      "caesars": 305,
+      "draftkings": 425,
+      "fanduel": 320,
+      "hardrockbet": 475
     },
-    "price_bucket": "+1000+",
-    "ending": 0,
-    "mgm_locked": 675,
-    "mgm_ending": 75,
+    "price_bucket": "+400s",
+    "ending": 75,
     "methods": [
-      "Last one left",
-      "MGM Exact",
-      "Match 75",
-      "Stayed in the group",
-      "MGM 75",
-      "DK FD-style",
-      "Fanatics Drift"
+      "Shop LEAN"
     ],
-    "core": 1,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-12T18:06:17.435619+00:00",
-    "price_source": "pregame_lock",
-    "sport": "MLB",
-    "team": "KANSAS CITY ROYALS",
-    "market": "batter_home_runs",
-    "benford_tag": "Authentic",
-    "benford_note": "",
-    "benford_cluster": 0.67
+    "source": "shop_lean",
+    "logged_at": "2026-09-12T18:06:20.213629+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-12_Christian Yelich_shop_lean_60",
+    "date": "2026-09-12",
+    "time": "11:06 AM",
+    "player": "Christian Yelich",
+    "score": 0,
+    "edge": 60,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "betmgm": 475,
+      "caesars": 575,
+      "draftkings": 552,
+      "fanatics": 650,
+      "fanduel": 590,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-12T18:06:20.293759+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-12_Tyler Stephenson_shop_lean_60",
+    "date": "2026-09-12",
+    "time": "11:06 AM",
+    "player": "Tyler Stephenson",
+    "score": 0,
+    "edge": 60,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 573,
+    "book_prices": {
+      "betmgm": 425,
+      "caesars": 575,
+      "draftkings": 572,
+      "fanatics": 650,
+      "fanduel": 570,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-12T18:06:20.296995+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-12_Spencer Jones_shop_lean_50",
+    "date": "2026-09-12",
+    "time": "11:06 AM",
+    "player": "Spencer Jones",
+    "score": 0,
+    "edge": 50,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 430,
+    "book_prices": {
+      "caesars": 400,
+      "draftkings": 425,
+      "fanatics": 500,
+      "fanduel": 430,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-12T18:06:20.388712+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-12_Miguel Vargas_shop_lean_49",
+    "date": "2026-09-12",
+    "time": "11:06 AM",
+    "player": "Miguel Vargas",
+    "score": 0,
+    "edge": 49,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 442,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 425,
+      "draftkings": 445,
+      "fanatics": 500,
+      "fanduel": 440,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-12T18:06:20.400040+00:00",
+    "price_source": "shop"
   }
 ]
