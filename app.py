@@ -6432,18 +6432,16 @@ def main():
                         render_queen_glossary()
                         st.caption(queen)
 
-        with st.expander("👑 Queen Phrase Book", expanded=False):
-            render_queen_glossary()
         elite = [e for e in ev_board if e.get("is_bet")]
-        with st.expander(f"💅 Petty Picks · {len(elite)}", expanded=True):
-            if elite:
-                st.caption("Elite TAKE — ending + lane + method + book + Benford + name+price.")
-                pc = st.columns(min(3, max(1, len(elite[:3]))))
-                for i, item in enumerate(elite[:6]):
-                    with pc[i % len(pc)]:
-                        _render_board_card(item, "TAKE IT", "bet", zone="picks")
-            else:
-                st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
+        st.markdown("#### Petty Picks")
+        if elite:
+            st.caption("Elite TAKE — ending + lane + method + book + Benford + name+price.")
+            pc = st.columns(min(3, max(1, len(elite[:3]))))
+            for i, item in enumerate(elite[:6]):
+                with pc[i % len(pc)]:
+                    _render_board_card(item, "TAKE IT", "bet", zone="picks")
+        else:
+            st.caption("Nobody cleared every accuracy gate today." if active_sport() != "NFL" else "NFL lane is open — if this is still empty, fetch Anytime TD again.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
         passes = [e for e in ev_board if not e.get("is_bet")]
@@ -6570,21 +6568,23 @@ def main():
                 picks = sorted(picks, key=lambda x: -x.get("score", 0))
                 if not items and not picks and (name_q or min_score or time_win != "All times"):
                     continue
-                n_show = len(items) + len(picks)
-                with st.expander(f"⚾ {_fmt_game_header(game)} · {n_show}", expanded=bool(items)):
-                    if items or picks:
-                        cols = st.columns(2)
-                        idx = 0
-                        for item in items:
-                            with cols[idx % 2]:
-                                _render_board_card(item, "TAKE IT", "bet")
-                            idx += 1
-                        for item in picks:
-                            with cols[idx % 2]:
-                                _render_board_card(item, "TEAM PICK", "watch-card")
-                            idx += 1
-                    else:
-                        st.caption("On the slate · no TAKE IT or team pick yet.")
+                st.markdown(
+                    f'<div class="board-wrap"><div class="game-head">{_fmt_game_header(game)}</div></div>',
+                    unsafe_allow_html=True,
+                )
+                if items or picks:
+                    cols = st.columns(2)
+                    idx = 0
+                    for item in items:
+                        with cols[idx % 2]:
+                            _render_board_card(item, "TAKE IT", "bet")
+                        idx += 1
+                    for item in picks:
+                        with cols[idx % 2]:
+                            _render_board_card(item, "TEAM PICK", "watch-card")
+                        idx += 1
+                else:
+                    st.caption("On the slate · no TAKE IT or team pick yet.")
 
             if passes and "PASS" in show_kinds:
                 shown_p = [x for x in passes if _keep_card(x)]
