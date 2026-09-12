@@ -260,6 +260,9 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .why-call{color:#e9d5ff;font-size:.74rem;margin:6px 0 2px;line-height:1.35}
 .board-wrap,.board-wrap *{list-style:none!important}
 .game-head{font-family:'Playfair Display',serif;color:#fce7f3;font-size:1.05rem;margin:14px 0 8px;font-weight:700}
+.trend-line{margin-top:8px;padding-top:6px;border-top:1px dashed #3b2a4f}
+.trend-chip{display:inline-block;background:#3b0764;border:1px solid #e879f9;color:#fbcfe8;border-radius:999px;padding:2px 8px;font-size:.68rem;font-weight:800;margin-right:6px}
+.trend-meta{color:#c4b5d6;font-size:.68rem;margin-top:2px}
 .shop-wrap{margin-top:12px}
 @media (max-width: 700px){
   .site-title{font-size:1.55rem}
@@ -1094,6 +1097,383 @@ def shop_block_reasons(r):
             blocked.insert(0, f"call is {r.get('action')} · {r.get('why')}")
     return blocked
 
+
+# ── Trend Lab (display + scores only — does not gate TAKE) ──
+_TREND_TICKETS = ("draftkings", "fanduel", "hardrockbet", "fanatics")
+
+
+def _trend_window_rows(rows, days):
+    today = today_az()
+    try:
+        cut = datetime.strptime(today, "%Y-%m-%d").date()
+    except Exception:
+        return []
+    out = []
+    for r in rows or []:
+        if r.get("result") not in ("HIT", "MISS"):
+            continue
+        try:
+            d = datetime.strptime(r.get("date") or "", "%Y-%m-%d").date()
+        except Exception:
+            continue
+        if (cut - d).days <= days:
+            out.append(r)
+    return out
+
+
+def _hit_rate(rows):
+    h = sum(1 for r in rows if r.get("result") == "HIT")
+    n = len(rows)
+    return (100.0 * h / n if n else None), h, n
+
+
+def _bucket_label_from_price(p):
+    try:
+        a = abs(int(p))
+    except Exception:
+        return None
+    if a >= 1000:
+        return "+1000+"
+    if a >= 700:
+        return "+700-900"
+    if a >= 600:
+        return "+600s"
+    if a >= 500:
+        return "+500s"
+    if a >= 400:
+        return "+400s"
+    return "under +400"
+
+
+def build_trend_pack():
+    rows = load_results()
+    today = today_az()
+    today_rows = [r for r in rows if r.get("date") == today and r.get("result") in ("HIT", "MISS")]
+    yday = None
+    try:
+        yday = (datetime.strptime(today, "%Y-%m-%d").date() - timedelta(days=1)).isoformat()
+    except Exception:
+        yday = ""
+    yday_rows = [r for r in rows if r.get("date") == yday and r.get("result") in ("HIT", "MISS")]
+    week = _trend_window_rows(rows, 7)
+
+    def method_table(pool):
+        bag = defaultdict(lambda: {"hit": 0, "miss": 0})
+        for r in pool:
+            for m in r.get("methods") or []:
+                nm = normalize_method_name(m)
+                if nm in NOISE_METHODS or nm in TRACKER_BLOCKLIST:
+                    continue
+                bag[nm]["hit" if r["result"] == "HIT" else "miss"] += 1
+        out = []
+        for name, stt in bag.items():
+            n = stt["hit"] + stt["miss"]
+            if not n:
+                continue
+            out.append({"name": name, "pct": 100.0 * stt["hit"] / n, "hit": stt["hit"], "miss": stt["miss"], "n": n})
+        out.sort(key=lambda x: (-x["pct"], -x["n"]))
+        return out
+
+    def ending_table(pool):
+        bag = defaultdict(lambda: {"hit": 0, "miss": 0})
+        for r in pool:
+            end = r.get("ending")
+            if end is None and r.get("best_price") is not None:
+                end = last_two(r.get("best_price"))
+            if end is None:
+                continue
+            key = f"{int(end):02d}"
+            bag[key]["hit" if r["result"] == "HIT" else "miss"] += 1
+        out = []
+        for name, stt in bag.items():
+            n = stt["hit"] + stt["miss"]
+            out.append({"name": name, "pct": 100.0 * stt["hit"] / n, "hit": stt["hit"], "n": n})
+        out.sort(key=lambda x: (-x["pct"], -x["n"]))
+        return out
+
+    def bucket_table(pool):
+        bag = defaultdict(lambda: {"hit": 0, "miss": 0})
+        for r in pool:
+            lab = _bucket_label_from_price(r.get("best_price"))
+            if not lab:
+                continue
+            bag[lab]["hit" if r["result"] == "HIT" else "miss"] += 1
+        order = ["+500s", "+600s", "+700-900", "+1000+", "+400s", "under +400"]
+        out = []
+        for lab in order:
+            stt = bag.get(lab)
+            if not stt:
+                continue
+            n = stt["hit"] + stt["miss"]
+            out.append({"name": lab, "pct": 100.0 * stt["hit"] / n, "hit": stt["hit"], "n": n})
+        return out
+
+    def team_table(pool):
+        bag = defaultdict(lambda: {"hit": 0, "miss": 0})
+        for r in pool:
+            team = (r.get("team") or "").strip()
+            if not team:
+                ev = r.get("event") or ""
+                team = ev.split("@")[-1].strip() if "@" in ev else ev
+            if not team:
+                continue
+            bag[team]["hit" if r["result"] == "HIT" else "miss"] += 1
+        out = []
+        for name, stt in bag.items():
+            n = stt["hit"] + stt["miss"]
+            if n < 2:
+                continue
+            out.append({"name": name, "pct": 100.0 * stt["hit"] / n, "hit": stt["hit"], "n": n})
+        out.sort(key=lambda x: (-x["pct"], -x["n"]))
+        return out
+
+    def book_table(pool):
+        bag = defaultdict(lambda: {"hit": 0, "miss": 0})
+        for r in pool:
+            bk = normalize_book(r.get("best_book") or r.get("book"))
+            if not bk:
+                continue
+            bag[bk]["hit" if r["result"] == "HIT" else "miss"] += 1
+        out = []
+        for name, stt in bag.items():
+            n = stt["hit"] + stt["miss"]
+            out.append({"name": book_label(name), "key": name, "pct": 100.0 * stt["hit"] / n, "hit": stt["hit"], "n": n})
+        out.sort(key=lambda x: (-x["pct"], -x["n"]))
+        return out
+
+    return {
+        "today_m": method_table(today_rows),
+        "yday_m": method_table(yday_rows),
+        "week_m": method_table(week),
+        "today_e": ending_table(today_rows),
+        "week_e": ending_table(week),
+        "week_bkt": bucket_table(week),
+        "week_team": team_table(week),
+        "week_book": book_table(week),
+        "today_n": len(today_rows),
+        "week_n": len(week),
+    }
+
+
+def player_motion(player, book_prices=None):
+    """Heating / Cooling / Chaotic / Stable from price snaps. Display only."""
+    phist = st.session_state.get("price_history") or []
+    if len(phist) < 2:
+        return {
+            "label": "Stable",
+            "detail": "Need another fetch to see motion",
+            "score": 40,
+            "deltas": {},
+            "cluster": None,
+            "cluster_was": None,
+        }
+    def px_for(snap):
+        out = {}
+        for (p, b), v in (snap or {}).items():
+            if p != player:
+                continue
+            bk = normalize_book(b)
+            try:
+                out[bk] = int(v)
+            except Exception:
+                pass
+        return out
+
+    now = px_for(phist[-1])
+    prev = px_for(phist[-2])
+    if book_prices:
+        for b, v in book_prices.items():
+            try:
+                now[normalize_book(b)] = int(v)
+            except Exception:
+                pass
+    deltas = {}
+    for bk in _TREND_TICKETS:
+        if bk in now and bk in prev:
+            deltas[bk] = int(now[bk]) - int(prev[bk])
+    shorts = sum(1 for d in deltas.values() if d <= -20)
+    longs = sum(1 for d in deltas.values() if d >= 20)
+    if now:
+        cluster = max(now.values()) - min(now.values()) if len(now) >= 2 else 0
+    else:
+        cluster = None
+    cluster_was = None
+    if prev and len(prev) >= 2:
+        cluster_was = max(prev.values()) - min(prev.values())
+    if shorts >= 2 and longs == 0:
+        label, score = "Heating up", 78
+    elif longs >= 2 and shorts == 0:
+        label, score = "Cooling down", 28
+    elif shorts and longs:
+        label, score = "Chaotic", 45
+    elif deltas and all(abs(d) < 20 for d in deltas.values()):
+        label, score = "Stable", 50
+    else:
+        label, score = "Stable", 48
+    bits = [f"{book_label(b)} {d:+d}" for b, d in deltas.items()]
+    if cluster is not None and cluster_was is not None:
+        if cluster < cluster_was - 15:
+            bits.append("cluster tightening")
+        elif cluster > cluster_was + 15:
+            bits.append("cluster widening")
+    rogue = None
+    if deltas:
+        ranked = sorted(deltas.items(), key=lambda kv: -abs(kv[1]))
+        if ranked and abs(ranked[0][1]) >= 80:
+            rogue = ranked[0][0]
+            bits.append(f"rogue {book_label(rogue)} {ranked[0][1]:+d}")
+    return {
+        "label": label,
+        "detail": " · ".join(bits) or "flat since last fetch",
+        "score": score,
+        "deltas": deltas,
+        "cluster": cluster,
+        "cluster_was": cluster_was,
+        "rogue": rogue,
+    }
+
+
+def _lookup_trend(table, name, default="—"):
+    for row in table or []:
+        if str(row.get("name")) == str(name) or str(row.get("key")) == str(name):
+            n = row.get("n") or 0
+            pct = row.get("pct")
+            if pct is None:
+                return default
+            heat = "hot" if pct >= 18 and n >= 4 else ("cold" if pct <= 8 and n >= 4 else "even")
+            return f"{pct:.0f}% ({row.get('hit', 0)}/{n}) {heat}"
+    return default
+
+
+def attach_player_trends(item, pack):
+    motion = player_motion(item.get("player"), item.get("book_prices") or item.get("books"))
+    end = last_two(item.get("best_price") if item.get("best_price") is not None else item.get("best"))
+    end_s = f"{int(end):02d}" if end is not None else None
+    bkt = _bucket_label_from_price(item.get("best_price") if item.get("best_price") is not None else item.get("best"))
+    team = item.get("team") or ""
+    book = normalize_book(item.get("best_book"))
+    methods = item.get("methods") or []
+    meth_bits = []
+    for m in methods[:4]:
+        nm = normalize_method_name(m)
+        lab = _lookup_trend(pack.get("week_m"), nm, "")
+        if lab and lab != "—":
+            meth_bits.append(f"{nm} {lab}")
+    item["trend_motion"] = motion["label"]
+    item["trend_motion_detail"] = motion["detail"]
+    item["trend_motion_score"] = motion["score"]
+    item["trend_method"] = " · ".join(meth_bits[:2]) or "no graded method sample yet"
+    item["trend_ending"] = _lookup_trend(pack.get("week_e"), end_s)
+    item["trend_bucket"] = _lookup_trend(pack.get("week_bkt"), bkt)
+    item["trend_team"] = _lookup_trend(pack.get("week_team"), team)
+    item["trend_book"] = _lookup_trend(pack.get("week_book"), book)
+    # display scores 0-100 — not used by qualifies_take_it
+    try:
+        edge = int(item.get("edge") or 0)
+    except Exception:
+        edge = 0
+    item["trend_value_score"] = max(0, min(100, int(50 + edge / 2)))
+    item["trend_score"] = max(0, min(100, int(
+        0.4 * motion["score"] + 0.3 * item["trend_value_score"] + 0.3 * min(100, int(item.get("score") or 0))
+    )))
+    return item
+
+
+def trend_chip_html(item):
+    return (
+        '<div class="trend-line">'
+        f'<span class="trend-chip">{item.get("trend_motion") or "Stable"}</span>'
+        f'<span class="trend-meta">{item.get("trend_motion_detail") or ""}</span>'
+        f'<div class="trend-meta">Method · {item.get("trend_method")}</div>'
+        f'<div class="trend-meta">Ending · {item.get("trend_ending")} · Bucket · {item.get("trend_bucket")}</div>'
+        f'<div class="trend-meta">Team · {item.get("trend_team")} · Book · {item.get("trend_book")}</div>'
+        "</div>"
+    )
+
+
+def render_trend_lab(ev_board, shop_rows):
+    pack = build_trend_pack()
+    st.markdown(
+        '<div class="site-section"><div class="site-section-head">'
+        '<p class="site-section-kicker">Trend Lab</p>'
+        '<div class="site-section-title">What is moving before first pitch</div>'
+        '<p class="site-section-help">Long-ball view. +500 and up is the lane we care about. '
+        "These chips do not change TAKE math — they tell you what has been cashing and what the books just did.</p></div>",
+        unsafe_allow_html=True,
+    )
+    c1, c2, c3, c4 = st.columns(4)
+    heat = [x for x in (ev_board or []) if x.get("trend_motion") == "Heating up"]
+    cool = [x for x in (ev_board or []) if x.get("trend_motion") == "Cooling down"]
+    chaos = [x for x in (ev_board or []) if x.get("trend_motion") == "Chaotic"]
+    c1.metric("Heating up", len(heat))
+    c2.metric("Cooling down", len(cool))
+    c3.metric("Chaotic", len(chaos))
+    c4.metric("Graded this week", pack.get("week_n") or 0)
+
+    def _chips(rows, empty):
+        if not rows:
+            st.caption(empty)
+            return
+        html = "".join(
+            f'<div class="rate-chip"><div class="rate-pct">{r["pct"]:.0f}%</div>'
+            f'<div class="rate-name">{r["name"]}</div>'
+            f'<div class="rate-n">{r.get("hit", 0)}H · n={r["n"]}</div></div>'
+            for r in rows[:12]
+        )
+        st.markdown(html, unsafe_allow_html=True)
+
+    st.markdown("#### Odds motion on the live slate")
+    live = sorted(ev_board or [], key=lambda x: -(x.get("trend_motion_score") or 0))
+    if not live:
+        st.caption("Fetch the slate. Motion needs two snapshots.")
+    else:
+        for item in live[:24]:
+            if abs(int(item.get("best_price") or 0)) < 200:
+                continue
+            st.markdown(
+                f'<div class="card site-card">'
+                f'<div class="card-name">{item.get("player")}</div>'
+                f'<div class="card-meta">{item.get("team") or ""} · {format_odds(item.get("best_price"))} {book_label(item.get("best_book"))}</div>'
+                f'{trend_chip_html(item)}</div>',
+                unsafe_allow_html=True,
+            )
+
+    a, b = st.columns(2)
+    with a:
+        st.markdown("#### Methods today")
+        _chips(pack["today_m"], "Grade today’s hits first.")
+        st.markdown("#### Methods yesterday")
+        _chips(pack["yday_m"], "No graded slate yesterday.")
+    with b:
+        st.markdown("#### Methods this week")
+        _chips(pack["week_m"], "Need graded week sample.")
+        hot = [r for r in pack["week_m"] if r["pct"] >= 18 and r["n"] >= 4][:6]
+        cold = [r for r in pack["week_m"] if r["pct"] <= 8 and r["n"] >= 4][:6]
+        st.caption("Hot: " + ", ".join(x["name"] for x in hot) or "none yet")
+        st.caption("Cold: " + ", ".join(x["name"] for x in cold) or "none yet")
+
+    st.markdown("#### Endings")
+    e1, e2 = st.columns(2)
+    with e1:
+        st.caption("Today")
+        _chips(pack["today_e"], "No endings graded today.")
+    with e2:
+        st.caption("This week")
+        _chips(pack["week_e"], "No week endings yet.")
+
+    st.markdown("#### Price buckets this week (long-ball first)")
+    _chips(pack["week_bkt"], "Grade +500s and up to fill this.")
+
+    t1, t2 = st.columns(2)
+    with t1:
+        st.markdown("#### Team week")
+        _chips(pack["week_team"], "Teams fill after a few graded HRs.")
+    with t2:
+        st.markdown("#### Ticket book week")
+        _chips(pack["week_book"], "Books fill from graded best_book.")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
 def ending_heat_from_results(rows, min_n=20):
     stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     for r in rows or []:
@@ -1129,8 +1509,11 @@ def render_shop_tab(df):
         return
     shop = build_shop_board(df)
     book_meter = benford_book_meter(df)
+    pack = st.session_state.get("_trend_pack") or build_trend_pack()
     for r in shop:
         r["benford"] = prop_benford_flag(r.get("books"), book_meter, None)
+        r["best_price"] = r.get("best")
+        attach_player_trends(r, pack)
     take_s = sum(1 for r in shop if r["action"] == "TAKE")
     lean_s = sum(1 for r in shop if r["action"] == "LEAN")
     dont_s = sum(1 for r in shop if r["action"] == "DON'T")
@@ -1243,12 +1626,15 @@ def render_shop_tab(df):
             + f"<td>{fair_s}</td>"
             f'<td class="shop-best">{format_odds(r["best"])} {book_label(r.get("best_book"))}</td>'
             f'<td>{int(r.get("edge") or 0):+d}</td>'
+            f'<td>{int(r.get("trend_value_score") or 0)}</td>'
+            f'<td>{r.get("trend_motion") or "—"}</td>'
+            f'<td>{int(r.get("trend_score") or 0)}</td>'
             f'<td>{r.get("kelly_label") or "—"}</td>'
             f'<td class="{r["cls"]}"><span class="shop-call">{call_txt}</span></td></tr>'
         )
     st.markdown(
         '<div class="shop-wrap"><table class="shop-table"><thead><tr>'
-        "<th>Player</th>" + heads + "<th>Fair</th><th>Ticket</th><th>Gap</th><th>Kelly</th><th>Call</th>"
+        "<th>Player</th>" + heads + "<th>Fair</th><th>Ticket</th><th>Gap</th><th>Value</th><th>Motion</th><th>Trend</th><th>Kelly</th><th>Call</th>"
         "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>",
         unsafe_allow_html=True,
     )
@@ -5111,6 +5497,11 @@ def main():
             item["ev_value"] = ev
         else:
             item["ev_lean"] = item["ev_value"] = None
+    _trend_pack = build_trend_pack()
+    for lst in (ev_board, watch_board, coverage_board):
+        for item in lst or []:
+            attach_player_trends(item, _trend_pack)
+    st.session_state["_trend_pack"] = _trend_pack
     takes_all = [e for e in ev_board if e.get("is_bet")]
     passes_all = [e for e in ev_board if not e.get("is_bet")]
     take_n = len(takes_all)  # already post tighten_board
@@ -5177,10 +5568,11 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Board", "Shop", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
+    MAIN_TABS = ["Board", "Shop", "Trend Lab", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
     NAV_LABELS = {
         "Board": "Board 💋",
         "Shop": "Shop 🛍️",
+        "Trend Lab": "Trend Lab 📈",
         "Digits": "Benford Energy 🔢",
         "Methods": "Pattern Lab 🧩",
         "Lines": "Motion 💸",
@@ -5300,6 +5692,7 @@ def main():
                 f'<span class="price-book">{book_label(item.get("best_book"))} ticket{pack_s}{sig_s}</span></div>'
                 f'<div class="card-line">Edge <b>{int(item.get("edge") or 0)}</b> · {item.get("method_count", 0)} premium methods</div>'
                 f'<div class="why-call">{why_this_call(label, item)}</div>'
+                f'{trend_chip_html(item)}'
                 f'{board_gate_checklist(item)}'
                 f'<div class="method-group">{fams}<div style="margin-top:4px">{tags}</div></div>'
                 f'{notes}'
@@ -5504,6 +5897,9 @@ def main():
                 )
         site_section_close()
 
+    if page == "Trend Lab:":
+        shop_rows = build_shop_board(df) if df is not None and not getattr(df, "empty", True) else []
+        render_trend_lab(ev_board, shop_rows)
     if page == "Shop:":
         site_section_open(
             "02 · Price",
