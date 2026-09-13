@@ -13471,7 +13471,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.175708+00:00",
     "price_source": "pregame_lock",
@@ -13480,7 +13480,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Dalton Kincaid_take_it_91",
@@ -13854,7 +13855,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.177343+00:00",
     "price_source": "pregame_lock",
@@ -13863,7 +13864,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Xavier Worthy_take_it_56",
@@ -13938,7 +13940,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.177646+00:00",
     "price_source": "pregame_lock",
@@ -13947,7 +13949,8 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Dallas Cowboys D/ST_take_it_61",
@@ -15364,7 +15367,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.183583+00:00",
     "price_source": "pregame_lock",
@@ -15373,7 +15376,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Rachaad White_take_it_43",
