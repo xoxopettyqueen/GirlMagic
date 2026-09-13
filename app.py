@@ -887,7 +887,7 @@ TAKE_LEDGER_FILE = "girl_magic_take_ledger.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics", "bet365"}
-CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics"}
+CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics", "bet365": "Bet365"}
 # Ticket = book we buy. MGM is signal-only (11% as ticket vs 13% baseline).
 TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "bet365"}
 VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "bet365"}
@@ -5362,7 +5362,7 @@ def _merge_oddsapi_events(a, b):
 
 
 def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_books=True):
-    """The Odds API primary feed. regions=us,uk so Bet365 (UK) merges with US books."""
+    """US books + UK Bet365. Pinning US keys on the UK call hides 365 — split them."""
     cfg = sport_cfg()
     sport_key = sport_key or cfg["key"]
     market = market or cfg["market"]
@@ -5374,48 +5374,48 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
             "player_anytime_td,"
             "player_rush_yds,player_reception_yds,player_receptions"
         )
-    books = ",".join([
+    url = f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds"
+    us_books = ",".join([
         "fanduel", "draftkings", "betmgm", "fanatics",
         "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
         "caesars", "williamhill_us",
-        "bet365",
     ])
-    url = f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds"
+    dbg = st.session_state.setdefault("oddsapi_region_debug", {})
 
-    def _one(region):
+    def _one(region, bookmakers=None):
         params = {
             "apiKey": api_key,
             "regions": region,
             "markets": markets,
             "oddsFormat": "american",
         }
-        if restrict_books:
-            params["bookmakers"] = books
+        if bookmakers:
+            params["bookmakers"] = bookmakers
         try:
             r = requests.get(url, params=params, timeout=20)
-            return r.json() if r.status_code == 200 else None
-        except Exception:
+            keys = []
+            body = None
+            if r.status_code == 200:
+                body = r.json()
+                keys = [(bk.get("key") or "") for bk in (body.get("bookmakers") or [])]
+            dbg[region] = {
+                "status": r.status_code,
+                "keys": keys,
+                "err": (r.text or "")[:180] if r.status_code != 200 else "",
+            }
+            return body
+        except Exception as e:
+            dbg[region] = {"status": "exc", "keys": [], "err": str(e)[:180]}
             return None
 
-    us = _one("us")
-    uk = _one("uk")
+    us = _one("us", us_books if restrict_books else None)
+    # UK: Bet365 only. Do not send FanDuel keys on this call.
+    uk = _one("uk", "bet365")
+    if not uk or not (uk.get("bookmakers") or []):
+        uk = _one("uk", None)  # open UK feed, then we filter
     merged = _merge_oddsapi_events(us, uk)
-    if merged:
-        return merged
-    # fallback single call both regions
-    params = {
-        "apiKey": api_key,
-        "regions": "us,uk",
-        "markets": markets,
-        "oddsFormat": "american",
-    }
-    if restrict_books:
-        params["bookmakers"] = books
-    try:
-        r = requests.get(url, params=params, timeout=20)
-        return r.json() if r.status_code == 200 else None
-    except Exception:
-        return None
+    return merged
+
 
 def flatten_oddsapi(data):
     if not data: return [], set()
@@ -5601,6 +5601,7 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         "http_fail": http_fail,
         "raw_books": sorted(all_found_raw),
         "kept_books": sorted(kept),
+        "regions": st.session_state.get("oddsapi_region_debug") or {},
         "row_count_pre_filter": len(all_rows),
         "sgo_rows": len(sgo_rows),
         "per_event": per_event,
@@ -7331,6 +7332,7 @@ def main():
                 st.markdown(
                     f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
                     + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
+                    + f"<br><b>US/UK split:</b> {dbg.get('regions') or {}}"
                     + "</div>",
                     unsafe_allow_html=True,
                 )
