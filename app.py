@@ -27,22 +27,8 @@ except ImportError:
         return {}
 
 # ── NFL math (inlined — one file for GitHub paste) ──────────
+# Do not leave a bare """ string here. Streamlit prints leftover strings as the page.
 HAS_NFL_MATH = True
-"""
-Girl Magic — NFL Math 🔮
-Anytime TD only. Drop next to app.py.
-
-What this file fixes (the thing that never shipped):
-- MLB "FD under MGM by 100" was firing on every NFL longshot. That's HR math.
-- Magic Math was using first-pitch / +400-699 HR lanes on TDs.
-- TAKE greens were either too tight (MLB copy) or too loose (week-1 1-premium).
-
-Import:
-    from nfl_math import (
-        nfl_price_ok, nfl_fd_under_mgm, nfl_magic_row,
-        nfl_take_ok, nfl_hot_end, NFL_HOT_ENDS, NFL_DEAD_ENDS,
-    )
-"""
 
 from collections import Counter
 
