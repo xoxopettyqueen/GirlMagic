@@ -1319,6 +1319,12 @@ def render_method_tags(methods, limit=8):
         if nm not in seen: seen.append(nm)
     tips = {
         "DK 10": "DraftKings price ends in 10",
+        "B365 850": "Bet365 price is 850 (or 8xx ending 50)",
+        "B365 25": "Bet365 same-team pair/trio ending 25",
+        "B365 50": "Bet365 same-team pair/trio ending 50",
+        "B365 75": "Bet365 same-team pair/trio ending 75",
+        "B365 Exact": "Same exact Bet365 price, same team",
+        "B365 over HardRock": "Bet365 number longer than Hard Rock",
         "FD Pattern": "FanDuel ≥ +400 ending 10/20/30/60/70/90",
         "FD 600": "FanDuel exact +600",
         "MGM 25": "BetMGM same-team group ending 25",
@@ -1910,6 +1916,7 @@ SHOP_BOOKS = [
     ("draftkings", "DK"),
     ("fanduel", "FD"),
     ("betmgm", "MGM"),
+    ("bet365", "365"),
     ("fanatics", "FN"),
     ("hardrockbet", "HR"),
     ("caesars", "CZ"),
@@ -6052,7 +6059,75 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 tnote = f" · {team}" if team else ""
                 results.append({"type": "mgm", "label": " + ".join(names), "reason": f"MGM Exact {format_odds(price)} ({len(names)}){tnote}", "event": event, "methods": ["MGM Exact"]})
                 for n in names: methods_map[n].append("MGM Exact")
-    FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet")
+
+    # Bet365 methods: 850, same-team 25/50/75 pairs, exact, higher than HardRock
+    b365 = df[df["book"].map(lambda x: normalize_book(x) == "bet365")].copy() if not df.empty else df
+    if b365 is not None and not b365.empty:
+        for _, row in b365.iterrows():
+            try:
+                px = int(row["price"])
+            except Exception:
+                continue
+            if px == 850 or last_two(px) == 50 and abs(px) >= 800 and abs(px) < 900:
+                results.append({
+                    "type": "b365", "label": row["player"],
+                    "reason": f"Bet365 850-style -> {format_odds(px)}",
+                    "event": row.get("event"), "methods": ["B365 850"],
+                })
+                methods_map[row["player"]].append("B365 850")
+        gk = ["event", "team"] if b365["team"].astype(str).str.len().gt(0).any() else ["event"]
+        for keys, g in b365.groupby(gk, dropna=False):
+            if not isinstance(keys, tuple):
+                keys = (keys,)
+            event, team = keys[0], (keys[1] if len(keys) > 1 else "")
+            ends = defaultdict(list)
+            for _, r in g.iterrows():
+                d = last_two(r["price"])
+                if d in (25, 50, 75):
+                    ends[d].append(r["player"])
+            for d, names in ends.items():
+                names = sorted(set(names))
+                if len(names) not in (2, 3):
+                    continue
+                kind = "pair" if len(names) == 2 else "group of 3"
+                tnote = f" · {team}" if team else " · same team"
+                meth = [f"B365 {d:02d}"]
+                results.append({
+                    "type": "b365", "label": " + ".join(names),
+                    "reason": f"Bet365 {kind} ends {d:02d}{tnote}",
+                    "event": event, "methods": meth,
+                })
+                for n in names:
+                    methods_map[n].extend(meth)
+            for price, pg in g.groupby("price"):
+                names = sorted(pg["player"].unique())
+                if len(names) not in (2, 3):
+                    continue
+                results.append({
+                    "type": "b365", "label": " + ".join(names),
+                    "reason": f"Bet365 Exact {format_odds(price)} ({len(names)})",
+                    "event": event, "methods": ["B365 Exact"],
+                })
+                for n in names:
+                    methods_map[n].append("B365 Exact")
+    for player, g in df.groupby("player"):
+        by_book = {normalize_book(r["book"]): r["price"] for _, r in g.iterrows()}
+        ok, gap = False, 0
+        try:
+            ok, gap = nfl_b365_over_hardrock(by_book)
+        except Exception:
+            b3, hr = by_book.get("bet365"), by_book.get("hardrockbet")
+            if b3 is not None and hr is not None and int(b3) > int(hr):
+                ok, gap = True, int(b3) - int(hr)
+        if ok:
+            results.append({
+                "type": "trend", "trend_kind": "good", "label": player,
+                "reason": f"💚 Bet365 over HardRock by {int(gap)}",
+                "methods": ["B365 over HardRock"], "gap": int(gap),
+            })
+            methods_map[player].append("B365 over HardRock")
+
+        FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365")
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
