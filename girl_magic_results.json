@@ -23590,7 +23590,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-13T17:41:39.219771+00:00",
     "price_source": "pregame_lock",
@@ -23599,7 +23599,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Marlin Klein_take_it_75",
@@ -34623,12 +34624,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-13T22:12:17.206348+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Dustin Harris_shop_lean_60",
