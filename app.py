@@ -1448,6 +1448,13 @@ def render_mini_glossary():
     st.markdown("0–100 vibe meter on the stack. Can hold a green at 70. Can’t invent one. If you know, you know.")
     st.markdown("**👑 Queen Commentary**")
     st.markdown("Personality layer. Same decision, louder words. It’s not math — it’s mood.")
+    st.markdown("**📈 I JUST NEED ONE — one-play prop scan**")
+    st.markdown(
+        "Finds rush, receiving, and reception lines sitting at **0.5** with money odds **+100 or higher**. "
+        "These are the one-play props — low volume, high vibe. "
+        "Only shows **RE-tagged** players (receiving / receptions market, or rushers who also have a receiving number posted). "
+        "Board clearance is manual — you decide. If it’s green, it’s gold. If it’s red, it’s homework."
+    )
     st.markdown("**💸 Kelly — bankroll confidence**")
     st.markdown(
         "Kelly tells you how loud the value is. It mixes fair probability and book price to show how much of your bankroll a ticket deserves.\n"
@@ -1864,6 +1871,150 @@ def build_shop_board(df):
         })
     rows.sort(key=lambda x: (-x.get("edge", 0), x.get("player") or ""))
     return rows
+
+
+NEED_ONE_MAJOR = {
+    "draftkings", "fanduel", "hardrockbet", "fanatics", "caesars", "betmgm",
+}
+NEED_ONE_LABELS = {
+    "Rush Yards": "0.5 Rush Yards",
+    "Receiving Yards": "0.5 Receiving Yards",
+    "Receptions": "0.5 Receptions",
+}
+
+
+def need_one_re_players(rows):
+    names = set()
+    for r in rows or []:
+        if r.get("prop_type") in ("Receiving Yards", "Receptions"):
+            names.add(clean_name(r.get("player") or ""))
+    return names
+
+
+def need_one_call(kelly_f):
+    try:
+        k = float(kelly_f or 0) * 100
+    except Exception:
+        k = 0
+    if k > 10:
+        return "TAKE", "💚", "bet"
+    if k >= 5:
+        return "LEAN", "💖", "watch-card"
+    if k >= 1:
+        return "WATCH", "💜", "watch-card"
+    return "DON'T", "🔴", "skip"
+
+
+def build_need_one_board(rows, want_types):
+    """0.5 rush / receiving / receptions. Plus money. RE tag. No Board gate."""
+    if not rows or not want_types:
+        return []
+    major = NEED_ONE_MAJOR
+    re_names = need_one_re_players(rows)
+    by = defaultdict(list)
+    for r in rows:
+        ptype = r.get("prop_type")
+        if ptype not in want_types:
+            continue
+        try:
+            price = int(r.get("price"))
+            pt = float(r.get("point") if r.get("point") is not None else 0.5)
+        except Exception:
+            continue
+        if abs(pt - 0.5) > 0.01:
+            continue
+        if price < 100:
+            continue
+        bk = normalize_book(r.get("book"))
+        if bk not in major:
+            continue
+        player = r.get("player") or ""
+        if ptype == "Rush Yards" and clean_name(player) not in re_names:
+            continue
+        if ptype in ("Receiving Yards", "Receptions"):
+            pass  # market itself is the RE tag
+        key = (player, r.get("event") or "", ptype)
+        by[key].append((bk, price))
+    out = []
+    for (player, event, ptype), pairs in by.items():
+        book_px = {}
+        for bk, price in pairs:
+            book_px[bk] = price
+        if not book_px:
+            continue
+        books = list(book_px.keys())
+        prices = list(book_px.values())
+        best, best_book = smart_best(prices, books) if len(prices) >= 2 else pick_ticket(prices, books)
+        if best is None:
+            best, best_book = prices[0], books[0]
+        try:
+            if int(best) < 100:
+                continue
+        except Exception:
+            continue
+        try:
+            med = int(statistics.median(prices)) if len(prices) >= 2 else int(best)
+        except Exception:
+            med = int(best)
+        fair, fair_p, fair_mode = compute_market_fair(book_px)
+        if fair is None:
+            fair, fair_p, fair_mode = med, american_implied(med), "median"
+        ev, kelly_f = ev_from_fair(best, fair)
+        action, emoji, cls = need_one_call(kelly_f)
+        gap = (int(best) - int(fair)) if best is not None and fair is not None else 0
+        out.append({
+            "player": player,
+            "event": event,
+            "prop_type": ptype,
+            "label": NEED_ONE_LABELS.get(ptype, ptype),
+            "books": book_px,
+            "best": best,
+            "best_book": best_book,
+            "fair": fair,
+            "edge": gap,
+            "ev": ev,
+            "kelly_frac": kelly_f,
+            "action": action,
+            "emoji": emoji,
+            "cls": cls,
+            "n_books": len(book_px),
+            "re_tag": True,
+        })
+    out.sort(key=lambda x: (-(x.get("kelly_frac") or 0), -(x.get("edge") or 0), x.get("player") or ""))
+    return out
+
+
+def render_need_one_cards(items):
+    st.markdown(
+        '<div class="info-box"><b>I JUST NEED ONE</b> finds the one-play props. '
+        "We only take them when the line is clean, the odds are money-only, and the RE tag is active. "
+        "Kelly shows the confidence. Benford shows the energy. "
+        "Board clearance is manual. If it’s green and loud — run it.</div>",
+        unsafe_allow_html=True,
+    )
+    if not items:
+        st.info("Nothing cleared I JUST NEED ONE. Fetch NFL, then tick a 0.5 box.")
+        return
+    cols = st.columns(2)
+    for i, r in enumerate(items):
+        evs = r.get("ev")
+        kf = r.get("kelly_frac") or 0
+        ev_s = f"{evs:+.2f}" if evs is not None else "—"
+        k_s = f"{kf:+.2f}" if kf is not None else "—"
+        gap = r.get("edge") or 0
+        html = (
+            f'<div class="card {r.get("cls") or ""}">'
+            f'<div class="card-kicker">I JUST NEED ONE · {r.get("action")}</div>'
+            f'<div class="card-name">{r.get("emoji")} {r.get("player")} — {r.get("label")} '
+            f'({format_odds(r.get("best"))})</div>'
+            f'<div class="card-line">Fair {format_odds(r.get("fair"))} | Gap {gap:+d} | EV {ev_s} | Kelly {k_s}</div>'
+            f'<div class="card-meta">{book_label(r.get("best_book"))} · {r.get("n_books")} books · {r.get("event") or ""}</div>'
+            f'<div class="card-foot">RE tag active | Money-only</div>'
+            f'<div class="queen-line">Queen says: “I just need one — run it if it’s green and loud.”</div>'
+            f'</div>'
+        )
+        with cols[i % 2]:
+            st.markdown(html, unsafe_allow_html=True)
 
 
 def shop_block_reasons(r):
@@ -3033,12 +3184,17 @@ def get_initials(name):
     first, last = parts[0], parts[-1]
     return first[0].upper(), last[0].upper(), first.lower(), last.lower()
 
+def _fold_name(s):
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(s or ""))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return s.replace(".", "").replace("  ", " ").strip().lower()
+
 def names_match(a, b):
-    a, b = clean_name(a).lower(), clean_name(b).lower()
-    if a == b:
-        return True
-    a2 = a.replace(".", "").replace("  ", " ").strip()
-    b2 = b.replace(".", "").replace("  ", " ").strip()
+    a, b = clean_name(a), clean_name(b)
+    a2, b2 = _fold_name(a), _fold_name(b)
+    if not a2 or not b2:
+        return False
     if a2 == b2:
         return True
     pa, pb = a2.split(), b2.split()
@@ -3047,6 +3203,11 @@ def names_match(a, b):
             return True
         if pa[-1] == pb[-1] and (pa[0].startswith(pb[0]) or pb[0].startswith(pa[0])):
             return True
+    # box score sometimes last name only
+    if len(pa) == 1 and len(pb) >= 2 and pa[0] == pb[-1]:
+        return True
+    if len(pb) == 1 and len(pa) >= 2 and pb[0] == pa[-1]:
+        return True
     return False
 
 def clean_team(tid):
@@ -4304,12 +4465,20 @@ def build_whats_going_today(rows):
     for bl in by_book:
         by_book[bl].sort(key=lambda x: (-x[1], x[0]))
     pair_list = sorted(pair_ending.items(), key=lambda x: (-x[1], x[0]))
-    return len(hr_names), len(graded), dict(by_book), on_our_list, pair_list
+    hr_status = []
+    for hr in sorted(hr_names):
+        tagged = "TAKE" if any(names_match(hr, r.get("player") or "") for r in our_list if r.get("source") in ("take_it", "shop_take")) else (
+            "SHOP LEAN" if any(names_match(hr, r.get("player") or "") for r in our_list if r.get("source") == "shop_lean") else (
+            "WATCH" if any(names_match(hr, r.get("player") or "") for r in our_list if r.get("source") == "watch") else (
+            "BOARD" if any(names_match(hr, n) for n in extra_names) else "NOT ON LIST"
+        )))
+        hr_status.append((hr, tagged))
+    return len(hr_names), len(graded), dict(by_book), on_our_list, pair_list, hr_status
 
 
 def render_whats_going_today():
     rows = results_for_sport()
-    mlb_hr, n_graded, by_book, on_list, pair_list = build_whats_going_today(rows)
+    mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
     if active_sport() == "NFL":
         pair_list = []
         mlb_hr = 0
@@ -4374,8 +4543,11 @@ def render_whats_going_today():
     if cols_html:
         body = '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">%s</div>' % ("".join(cols_html))
     else:
-        empty_msg = "No NFL TDs graded yet. Mark HIT on Results and this banner fills." if active_sport() == "NFL" else "No endings matched yet"
+        empty_msg = "No NFL TDs graded yet. Mark HIT on Results and this banner fills." if active_sport() == "NFL" else "No book chips yet — names below if someone already went."
         body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">%s</div>' % empty_msg
+    if hr_status:
+        who = " · ".join("%s (%s)" % (n, tag) for n, tag in hr_status[:8])
+        body += '<div style="font-size:0.78rem;color:#fbcfe8;margin-top:6px">Went today: %s</div>' % who
 
     pair_note = ""
     if pair_list:
@@ -4748,6 +4920,11 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
     markets = market
     if market == "batter_home_runs":
         markets = "batter_home_runs,batter_home_runs_alternate"
+    if market == "player_anytime_td":
+        markets = (
+            "player_anytime_td,"
+            "player_rush_yds,player_reception_yds,player_receptions"
+        )
     params = {
         "apiKey": api_key,
         "regions": REGIONS,
@@ -4787,7 +4964,19 @@ def flatten_oddsapi(data):
             mkey = (market.get("key") or "").lower()
             is_hr = ("home_run" in mkey) or ("homer" in mkey)
             is_td = ("anytime_td" in mkey) or ("touchdown" in mkey)
-            if mkey and not is_hr and not is_td:
+            need_map = {
+                "player_rush_yds": "Rush Yards",
+                "player_rush_yards": "Rush Yards",
+                "player_reception_yds": "Receiving Yards",
+                "player_receiving_yds": "Receiving Yards",
+                "player_receptions": "Receptions",
+            }
+            prop_type = None
+            for k, lab in need_map.items():
+                if k in mkey:
+                    prop_type = lab
+                    break
+            if mkey and not is_hr and not is_td and not prop_type:
                 continue
             for o in market.get("outcomes", []):
                 oname = str(o.get("name") or "").lower()
@@ -4810,13 +4999,21 @@ def flatten_oddsapi(data):
                     price = int(price)
                 except Exception:
                     continue
-                if price > MAX_HR_AMERICAN:
+                if prop_type:
+                    if int(price) < 100:
+                        continue
+                elif price > MAX_HR_AMERICAN:
                     continue
                 if is_td and abs(int(price)) < 115:
                     continue
                 if is_blocked_player(player):
                     continue
-                rows.append({"event": event, "book": bk, "player": player, "price": price, "point": 0.5, "team": "", "source": "oddsapi", "sport": "NFL" if is_td else "MLB"})
+                rows.append({
+                    "event": event, "book": bk, "player": player, "price": price,
+                    "point": 0.5, "team": "", "source": "oddsapi",
+                    "sport": "NFL" if (is_td or prop_type) else "MLB",
+                    "prop_type": prop_type,
+                })
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
@@ -4953,7 +5150,14 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         else:
             df = filtered
             st.session_state["fetch_debug"]["event_filter_wiped"] = 0
+    if df is not None and not df.empty and "prop_type" in df.columns:
+        need_df = df[df["prop_type"].notna() & (df["prop_type"] != "")].copy()
+        df = df[df["prop_type"].isna() | (df["prop_type"] == "")].copy()
+        st.session_state["need_one_odds"] = need_df.to_dict("records")
+    else:
+        st.session_state["need_one_odds"] = st.session_state.get("need_one_odds") or []
     st.session_state["fetch_debug"]["row_count_final"] = 0 if df is None or df.empty else len(df)
+    st.session_state["fetch_debug"]["need_one_rows"] = len(st.session_state.get("need_one_odds") or [])
     return df, kept
 
 def build_team_map(df):
@@ -6652,6 +6856,8 @@ def main():
     odds = st.session_state.get("odds", [])
     prev = st.session_state.get("previous_odds", [])
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
+    if not df.empty and "prop_type" in df.columns:
+        df = df[df["prop_type"].isna() | (df["prop_type"] == "")].copy()
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
@@ -6796,9 +7002,14 @@ def main():
     </style>
     """, unsafe_allow_html=True)
     MAIN_TABS = ["Board", "Shop", "Trend Lab", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
+    if active_sport() == "NFL":
+        MAIN_TABS = ["Board", "Shop", "Need One"] + MAIN_TABS[2:]
+    if active_sport() != "NFL" and st.session_state.get("main_nav") == "Need One":
+        st.session_state["main_nav"] = "Board"
     NAV_LABELS = {
         "Board": "Board 💋",
         "Shop": "Shop 🛍️",
+        "Need One": "I JUST NEED ONE 📈",
         "Trend Lab": "Trend Lab 📈",
         "Digits": "Benford Energy 🔢",
         "Methods": "Pattern Lab 🧩",
@@ -6843,6 +7054,7 @@ def main():
                 "- ⚪ **Gray / PASS** — methods fired. Not enough to buy. Homework.\n"
                 "- 👀 **WATCH** — logged for grading later. Don’t force the ticket.\n"
                 "- 🎟 **Ticket** — DK / FD / HardRock / Fanatics / Caesars. **MGM is a tell, not the buy.**\n"
+                "- 📈 **I JUST NEED ONE** — Shop only. 0.5 rush / receiving / receptions, plus money, RE tag. Not a Board green.\n"
                 "- 💅 Hover a pink or green tag if you need the language. Otherwise trust the math."
             )
         elite = [e for e in ev_board if elite_take_ok(e)]
@@ -7223,6 +7435,50 @@ def main():
                 "- FN is Fanatics when the feed actually sends it."
             )
         render_shop_tab(df)
+        site_section_close()
+    if page == "Need One:":
+        site_section_open(
+            "📈 ONE",
+            "I JUST NEED ONE",
+            "One-play props only. 0.5 rush / receiving / receptions. Money odds. RE tag. Board stays out of it.",
+        )
+        with st.expander("📈 What am I looking at?", expanded=True):
+            st.markdown(
+                "I JUST NEED ONE finds the one-play props.\n\n"
+                "We only take them when the line is clean, the odds are money-only, and the RE tag is active.\n"
+                "Kelly shows the confidence. Benford shows the energy.\n"
+                "Board clearance is manual.\n"
+                "If it’s green and loud — run it."
+            )
+        if active_sport() != "NFL":
+            st.info("Switch the lane to NFL, Fetch, then come back. This tab is Anytime-TD weekend work.")
+        else:
+            n1, n2, n3 = st.columns(3)
+            with n1:
+                t_rush = st.checkbox("0.5 Rush Yards", key="need_one_rush", value=True)
+            with n2:
+                t_recy = st.checkbox("0.5 Receiving Yards", key="need_one_recy", value=True)
+            with n3:
+                t_recs = st.checkbox("0.5 Receptions", key="need_one_recs", value=True)
+            want = []
+            if t_rush:
+                want.append("Rush Yards")
+            if t_recy:
+                want.append("Receiving Yards")
+            if t_recs:
+                want.append("Receptions")
+            need_rows = st.session_state.get("need_one_odds") or []
+            items = build_need_one_board(need_rows, want) if want else []
+            st.markdown(
+                f'<div class="petty-row">'
+                f'<div class="petty-box"><div class="petty-num">{sum(1 for x in items if x["action"]=="TAKE")}</div><div class="petty-label">💚 TAKE</div></div>'
+                f'<div class="petty-box"><div class="petty-num">{sum(1 for x in items if x["action"]=="LEAN")}</div><div class="petty-label">💖 LEAN</div></div>'
+                f'<div class="petty-box"><div class="petty-num">{sum(1 for x in items if x["action"]=="WATCH")}</div><div class="petty-label">💜 WATCH</div></div>'
+                f'<div class="petty-box"><div class="petty-num">{len(items)}</div><div class="petty-label">ON THIS SCAN</div></div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+            render_need_one_cards(items)
         site_section_close()
     if page == "Digits:":
         render_digits_tab(df)
