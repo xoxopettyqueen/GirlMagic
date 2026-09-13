@@ -1959,6 +1959,92 @@ def need_one_call(kelly_f):
     return "DON'T", "🔴", "skip"
 
 
+
+def log_need_one(items):
+    """Persist TAKE/LEAN one-play props so this tab can learn."""
+    rows = load_results()
+    today = today_az()
+    added = 0
+    for it in items or []:
+        if it.get("action") not in ("TAKE", "LEAN"):
+            continue
+        player = it.get("player") or ""
+        if not player:
+            continue
+        src = "need_one_take" if it["action"] == "TAKE" else "need_one_lean"
+        already = any(
+            r.get("date") == today
+            and r.get("source") == src
+            and names_match(r.get("player") or "", player)
+            and str(r.get("market") or "") == str(it.get("prop_type") or "need_one")
+            for r in rows
+        )
+        if already:
+            continue
+        rows.append({
+            "id": f"{today}_{player}_{src}_{it.get('prop_type')}_{int(it.get('best') or 0)}",
+            "date": today, "time": now_az(), "player": player,
+            "score": 0, "edge": int(it.get("edge") or 0),
+            "best_price": it.get("best"), "best_book": it.get("best_book"),
+            "book_prices": dict(it.get("books") or {}),
+            "ending": last_two(it.get("best")) if it.get("best") is not None else None,
+            "methods": [f"Need One {it.get('action')}", it.get("label") or it.get("prop_type")],
+            "core": 0,
+            "result": "PENDING", "source": src, "logged_at": now_utc_iso(),
+            "price_source": "need_one",
+            "sport": "NFL",
+            "market": it.get("prop_type") or "need_one",
+            "event": it.get("event") or "",
+        })
+        added += 1
+    if added:
+        save_results(rows)
+    return added
+
+
+def render_need_one_tracker():
+    """Bottom of I JUST NEED ONE — hit rates for this tab only."""
+    rows = [r for r in load_results() if str(r.get("source") or "").startswith("need_one")]
+    st.markdown("#### I JUST NEED ONE — tracking")
+    if not rows:
+        st.caption("No Need One rows logged yet. TAKE/LEAN on this scan get saved automatically.")
+        return
+    def _rate(src):
+        sub = [r for r in rows if r.get("source") == src and r.get("result") in ("HIT", "MISS")]
+        h = sum(1 for r in sub if r.get("result") == "HIT")
+        n = len(sub)
+        pct = f"{100*h/n:.0f}%" if n else "—"
+        return h, n, pct
+    th, tn, tp = _rate("need_one_take")
+    lh, ln, lp = _rate("need_one_lean")
+    pend = sum(1 for r in rows if r.get("result") == "PENDING" and r.get("date") == today_az())
+    st.markdown(
+        f'<div class="petty-row">'
+        f'<div class="petty-box"><div class="petty-num">{tp}</div><div class="petty-label">NEED ONE TAKE %</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{tn}</div><div class="petty-label">TAKE GRADED</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{lp}</div><div class="petty-label">NEED ONE LEAN %</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{ln}</div><div class="petty-label">LEAN GRADED</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{pend}</div><div class="petty-label">PENDING TODAY</div></div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+    by_m = {}
+    for r in rows:
+        if r.get("result") not in ("HIT", "MISS"):
+            continue
+        m = r.get("market") or "prop"
+        by_m.setdefault(m, {"hit": 0, "miss": 0})
+        by_m[m]["hit" if r["result"] == "HIT" else "miss"] += 1
+    if by_m:
+        bits = []
+        for m, s in sorted(by_m.items(), key=lambda x: -(x[1]["hit"]+x[1]["miss"])):
+            n = s["hit"] + s["miss"]
+            bits.append(f"{m}: {s['hit']}/{n}")
+        st.caption("By prop · " + " · ".join(bits))
+    else:
+        st.caption("Percents fill after Auto-grade or HIT/MISS on Results (Need One rows).")
+
+
 def build_need_one_board(rows, want_types):
     """0.5 rush / receiving / receptions. Plus money. RE tag. No Board gate."""
     if not rows or not want_types:
@@ -4465,14 +4551,39 @@ def fetch_nfl_td_scorers():
             if "extra point" in text or "two-point" in text:
                 continue
             athletes = list(play.get("athletesInvolved") or [])
-            # Prefer rush/rec/return scorer, not the passer, when we can tell
-            picked = []
-            if "pass" in text and athletes:
-                picked = athletes[1:] or athletes[:1]
+            itype_l = itype
+            is_pass = (
+                "passing touchdown" in itype_l
+                or "pass" in itype_l
+                or "pass" in text
+                or "interception return" in text
+                or "intercepted" in text
+            )
+            is_rush = (
+                "rushing touchdown" in itype_l
+                or "rush" in itype_l
+                or "run" in itype_l
+                or (("rush" in text or "runs" in text or "scrambles" in text) and "pass" not in text)
+            )
+            names = []
+            if is_pass and not is_rush:
+                # Throw = catcher only. QB passer does NOT get an anytime TD.
+                if len(athletes) >= 2:
+                    n = athletes[1].get("displayName") or athletes[1].get("fullName")
+                    if n:
+                        names.append(n)
+                else:
+                    import re as _re
+                    m = _re.search(r"\b(?:to|for)\s+([a-z\.\'\- ]+?)(?:\s+for\s+|\s+\d+|$)", text)
+                    if m:
+                        names.append(m.group(1).strip().title())
             else:
-                picked = athletes
-            for ath in picked:
-                n = ath.get("displayName") or ath.get("fullName")
+                # Rush / return / scramble TD — QB counts if HE is the rusher.
+                for ath in athletes[:1] or athletes:
+                    n = ath.get("displayName") or ath.get("fullName")
+                    if n:
+                        names.append(n)
+            for n in names:
                 if n:
                     scorers.add(clean_name(n))
         box = ((sm.get("boxscore") or {}).get("players") or [])
@@ -4485,6 +4596,8 @@ def fetch_nfl_td_scorers():
                     if k in ("td", "tds", "touchdowns"):
                         td_idx = i
                         break
+                if "pass" in name:
+                    continue  # passing TDs are the QB — not an anytime scorer
                 if td_idx is None and "rush" not in name and "receiv" not in name and "return" not in name:
                     continue
                 for ath in stat_group.get("athletes") or []:
@@ -7703,6 +7816,13 @@ def main():
                 unsafe_allow_html=True,
             )
             render_need_one_cards(items)
+            try:
+                logged = log_need_one(items)
+                if logged:
+                    st.caption(f"Logged {logged} I JUST NEED ONE TAKE/LEAN row(s) for tracking.")
+            except Exception:
+                pass
+            render_need_one_tracker()
         site_section_close()
     if page == "Digits:":
         render_digits_tab(df)
