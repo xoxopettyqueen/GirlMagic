@@ -917,7 +917,7 @@ BOOK_ALIASES = {
 
 def normalize_book(key):
     k = str(key or "").lower().strip()
-    if "bet365" in k or k in ("365", "b365"):
+    if "bet365" in k or k in ("365", "b365", "bet_365") or k.replace(" ", "") in ("bet365", "b365"):
         return "bet365"
     if "fanatic" in k:
         return "fanatics"
@@ -5490,10 +5490,10 @@ def flatten_oddsapi(data):
 def fetch_sgo_hr_props(sgo_key):
     """SGO is the Bet365 pipe. Odds API does not sell 365 NFL/MLB props."""
     rows, found = [], set()
+    raw_keys = set()
     if not sgo_key:
         return rows, found
     league = "NFL" if active_sport() == "NFL" else "MLB"
-    books_want = "bet365,draftkings,fanduel,betmgm,hardrockbet,fanatics,caesars,williamhill"
     try:
         cursor = None
         pages = 0
@@ -5504,7 +5504,6 @@ def fetch_sgo_hr_props(sgo_key):
                 "leagueID": league,
                 "oddsAvailable": "true",
                 "limit": 20,
-                "bookmakerID": books_want,
             }
             if cursor:
                 params["cursor"] = cursor
@@ -5560,6 +5559,7 @@ def fetch_sgo_hr_props(sgo_key):
                         continue
                     team = clean_team(pdata.get("teamID") or "")
                     for bk, bd in (odd_data.get("byBookmaker") or {}).items():
+                        raw_keys.add(str(bk).lower())
                         if not bd.get("available", True):
                             continue
                         b = normalize_book(bk)
@@ -5589,9 +5589,12 @@ def fetch_sgo_hr_props(sgo_key):
             cursor = payload.get("nextCursor") or payload.get("next_cursor")
             if not cursor:
                 break
-        st.session_state.setdefault("fetch_debug", {})["sgo_rows_built"] = len(rows)
-        st.session_state["fetch_debug"]["sgo_books"] = sorted(found)
-        st.session_state["fetch_debug"]["sgo_league"] = league
+        fd = st.session_state.setdefault("fetch_debug", {})
+        fd["sgo_rows_built"] = len(rows)
+        fd["sgo_books"] = sorted(found)
+        fd["sgo_raw"] = sorted(raw_keys)
+        fd["sgo_league"] = league
+        fd["sgo_http"] = fd.get("sgo_http") or 200
     except Exception as e:
         st.warning(f"SGO note: {e}")
     return rows, found
@@ -5649,6 +5652,7 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         all_rows.extend(sgo_rows)
         all_found_raw.update(sgo_found)
     kept = {normalize_book(b) for b in all_found_raw} & PREFERRED
+    prev = st.session_state.get("fetch_debug") or {}
     st.session_state["fetch_debug"] = {
         "http_ok": http_ok,
         "http_fail": http_fail,
@@ -5657,6 +5661,11 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         "regions": st.session_state.get("oddsapi_region_debug") or {},
         "row_count_pre_filter": len(all_rows),
         "sgo_rows": len(sgo_rows),
+        "sgo_league": prev.get("sgo_league"),
+        "sgo_http": prev.get("sgo_http"),
+        "sgo_books": prev.get("sgo_books"),
+        "sgo_raw": prev.get("sgo_raw"),
+        "sgo_err": prev.get("sgo_err"),
         "per_event": per_event,
     }
     if not all_rows:
@@ -7317,6 +7326,9 @@ def main():
             options[lab] = e["id"]
 
         default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
+        if not default_sel and options and not st.session_state.get("odds"):
+            default_sel = list(options.keys())
+            st.session_state["selected_games"] = default_sel
         raw_n = st.session_state.get("events_raw_count") or len(events)
         st.caption(f"Showing {len(events)} today · API listed {raw_n}")
         chosen = st.multiselect(
@@ -7386,7 +7398,7 @@ def main():
                     f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
                     + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
                     + f"<br><b>US/AU split:</b> {dbg.get('regions') or {}}"
-                    + f"<br><b>SGO:</b> league={dbg.get('sgo_league')} http={dbg.get('sgo_http')} rows={dbg.get('sgo_rows') or dbg.get('sgo_rows_built')} books={dbg.get('sgo_books')} err={dbg.get('sgo_err') or ''}"
+                    + f"<br><b>SGO:</b> league={dbg.get('sgo_league')} http={dbg.get('sgo_http')} rows={dbg.get('sgo_rows') or dbg.get('sgo_rows_built')} kept={dbg.get('sgo_books')} raw={dbg.get('sgo_raw')} err={dbg.get('sgo_err') or ''}"
                     + "</div>",
                     unsafe_allow_html=True,
                 )
