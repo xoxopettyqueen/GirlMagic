@@ -3596,6 +3596,52 @@ def _strip_game_clock(s):
     return s
 
 
+
+def live_event_labels():
+    """Event names that have already kicked off / first pitch."""
+    out = set()
+    now = datetime.now(timezone.utc)
+    for e in st.session_state.get("events") or []:
+        t = e.get("commence_time") or ""
+        if not t:
+            continue
+        try:
+            start = datetime.fromisoformat(str(t).replace("Z", "+00:00"))
+            if start.tzinfo is None:
+                start = start.replace(tzinfo=timezone.utc)
+            if now >= start:
+                away = e.get("away_team") or ""
+                home = e.get("home_team") or ""
+                out.add(f"{away} @ {home}".strip())
+        except Exception:
+            continue
+    return out
+
+
+def row_event_is_live(event, live_labels):
+    if not event or not live_labels:
+        return False
+    ev = _strip_game_clock(event)
+    ev_l = ev.lower()
+    for lab in live_labels:
+        if ev == lab or ev_l == lab.lower():
+            return True
+        parts = [p.strip() for p in lab.lower().split("@")]
+        if len(parts) == 2 and parts[0] and parts[1] and parts[0] in ev_l and parts[1] in ev_l:
+            return True
+    return False
+
+
+def drop_live_game_rows(df):
+    """Boards only. Results / lock / ledger keep the live names."""
+    if df is None or getattr(df, "empty", True) or "event" not in df.columns:
+        return df
+    live = live_event_labels()
+    if not live:
+        return df
+    mask = ~df["event"].map(lambda e: row_event_is_live(e, live))
+    return df[mask].copy()
+
 def event_matches_chosen(ev, chosen):
     if not chosen:
         return True
@@ -7525,6 +7571,11 @@ def main():
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     if not df.empty and "prop_type" in df.columns:
         df = df[df["prop_type"].isna() | (df["prop_type"] == "")].copy()
+    # Live games leave the boards. Results already logged stay put.
+    df = drop_live_game_rows(df)
+    if prev:
+        prev_df_tmp = pd.DataFrame(prev)
+        prev = drop_live_game_rows(prev_df_tmp).to_dict("records") if prev_df_tmp is not None and not prev_df_tmp.empty else prev
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
@@ -8157,8 +8208,12 @@ def main():
             if t_recs:
                 want.append("Receptions")
             need_rows = list(st.session_state.get("need_one_odds") or [])
+            live_labs = live_event_labels()
             if not show_live:
-                need_rows = [r for r in need_rows if not need_one_is_live(r)]
+                need_rows = [
+                    r for r in need_rows
+                    if not need_one_is_live(r) and not row_event_is_live(r.get("event") or "", live_labs)
+                ]
             items = build_need_one_board(need_rows, want) if want else []
             st.markdown(
                 f'<div class="petty-row">'
