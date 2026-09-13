@@ -768,13 +768,66 @@ def lock_entry_sport(entry):
 def lock_for_sport(lock=None, sport=None):
     lock = lock if lock is not None else (st.session_state.get("pregame_lock") or load_pregame() or {})
     sport = (sport or active_sport()).upper()
-    out = {}
+    today, et = today_az(), today_mlb_date()
+    try:
+        yest = (datetime.now(timezone(timedelta(hours=-7))) - timedelta(days=1)).strftime("%Y-%m-%d")
+    except Exception:
+        yest = today
+    fresh, stale = {}, {}
     for player, entry in (lock or {}).items():
         if not isinstance(entry, dict):
             continue
-        if lock_entry_sport(entry) == sport:
-            out[player] = entry
-    return out
+        if lock_entry_sport(entry) != sport:
+            continue
+        d = str(entry.get("date") or "")
+        if d in (today, et, yest) or not d:
+            fresh[player] = entry
+        else:
+            stale[player] = entry
+    # Never let August leftovers look like today's lock.
+    return fresh if fresh else stale
+
+
+def lock_entry_from_results(player):
+    """If Lock file missed them, rebuild a mini-lock from today's logged row."""
+    rows = results_for_sport()
+    dates = {today_az(), today_mlb_date()}
+    hit = None
+    for r in rows:
+        if r.get("date") not in dates:
+            continue
+        if not names_match(player, r.get("player") or ""):
+            continue
+        hit = r
+        if r.get("source") in ("take_it", "shop_take"):
+            break
+    if not hit:
+        return None, None
+    books = {}
+    for b, pr in (hit.get("book_prices") or {}).items():
+        try:
+            ip = int(pr)
+        except Exception:
+            continue
+        books[str(b).lower()] = {
+            "price": ip, "first_price": ip, "latest_price": ip,
+            "close_price": ip, "ending": last_two(ip),
+        }
+    if not books and hit.get("best_price") is not None:
+        b = str(hit.get("best_book") or "unknown").lower()
+        ip = int(hit.get("best_price"))
+        books[b] = {
+            "price": ip, "first_price": ip, "latest_price": ip,
+            "close_price": ip, "ending": last_two(ip),
+        }
+    entry = {
+        "date": hit.get("date"),
+        "event": hit.get("event") or "",
+        "books": books,
+        "sport": hit.get("sport") or active_sport(),
+        "from_results": True,
+    }
+    return hit.get("player"), entry
 
 
 def methods_min():
@@ -6422,6 +6475,10 @@ def build_lock_lab():
                 entry, lock_name = data, pname
                 break
         if not entry:
+            rn, rebuilt = lock_entry_from_results(hr)
+            if rebuilt:
+                entry, lock_name = rebuilt, rn
+        if not entry:
             unmatched.append(hr)
             continue
         tags, lines, ends_by_book, best_book, best_price, price_map, primary_end = lock_player_summary(
@@ -8095,6 +8152,8 @@ def main():
         sport_rows = results_for_sport()
         n_sport = len([r for r in sport_rows if r.get("result") in ("HIT", "MISS")])
         n_all = len([r for r in load_results() if r.get("result") in ("HIT", "MISS")])
+        n_pend = len([r for r in sport_rows if r.get("result") == "PENDING" and r.get("date") in (today_az(), today_mlb_date())])
+        n_take_pend = len([r for r in sport_rows if r.get("result") == "PENDING" and r.get("source") == "take_it" and r.get("date") in (today_az(), today_mlb_date())])
         other = "MLB" if active_sport() == "NFL" else "NFL"
         n_other = max(0, n_all - n_sport)
         st.caption(
@@ -8141,7 +8200,12 @@ def main():
                 st.markdown(f'<div class="info-box">{line}</div>', unsafe_allow_html=True)
         else:
             st.info(
-                f"No {active_sport()} HITs today. Grade this sport only — MLB and NFL never share a Tracker."
+                f"No {active_sport()} HITs graded yet. "
+                f"{n_pend} PENDING rows are already saved for today "
+                f"({n_take_pend} Run It / take_it). "
+                "Open Grade → Results and tap Auto-grade, or HIT/MISS. "
+                "Tracker stays empty until those flip off PENDING. "
+                "MLB and NFL never share a Tracker."
             )
         baseline, baseline_n = take_it_baseline_rate(sport_rows)
         if baseline is not None:
