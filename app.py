@@ -5398,21 +5398,21 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
             if r.status_code == 200:
                 body = r.json()
                 keys = [(bk.get("key") or "") for bk in (body.get("bookmakers") or [])]
-            dbg[region] = {
+            dbg[str(region)] = {
                 "status": r.status_code,
                 "keys": keys,
                 "err": (r.text or "")[:180] if r.status_code != 200 else "",
             }
             return body
         except Exception as e:
-            dbg[region] = {"status": "exc", "keys": [], "err": str(e)[:180]}
+            dbg[str(region)] = {"status": "exc", "keys": [], "err": str(e)[:180]}
             return None
 
     us = _one("us", us_books if restrict_books else None)
-    # UK: Bet365 only. Do not send FanDuel keys on this call.
-    uk = _one("uk", "bet365")
+    # AU: Bet365 AU only — The Odds API has no UK bet365 key. Do not send FanDuel keys on this call.
+    uk = _one("au", "bet365_au")
     if not uk or not (uk.get("bookmakers") or []):
-        uk = _one("uk", None)  # open UK feed, then we filter
+        uk = _one("au", None)  # open UK feed, then we filter
     merged = _merge_oddsapi_events(us, uk)
     return merged
 
@@ -5488,17 +5488,30 @@ def flatten_oddsapi(data):
     return rows, found
 
 def fetch_sgo_hr_props(sgo_key):
+    """SGO is the Bet365 pipe. Odds API does not sell 365 NFL/MLB props."""
     rows, found = [], set()
+    if not sgo_key:
+        return rows, found
+    league = "NFL" if active_sport() == "NFL" else "MLB"
+    books_want = "bet365,draftkings,fanduel,betmgm,hardrockbet,fanatics,caesars,williamhill"
     try:
         cursor = None
         pages = 0
-        while pages < 6:
+        while pages < 8:
             pages += 1
-            params = {"apiKey": sgo_key, "leagueID": "MLB", "oddsAvailable": "true", "limit": 50}
+            params = {
+                "apiKey": sgo_key,
+                "leagueID": league,
+                "oddsAvailable": "true",
+                "limit": 20,
+                "bookmakerID": books_want,
+            }
             if cursor:
                 params["cursor"] = cursor
-            r = requests.get(f"{SGO_BASE}/events", params=params, timeout=25)
+            r = requests.get(f"{SGO_BASE}/events", params=params, timeout=30)
             if r.status_code != 200:
+                st.session_state.setdefault("fetch_debug", {})["sgo_http"] = r.status_code
+                st.session_state["fetch_debug"]["sgo_err"] = (r.text or "")[:220]
                 break
             payload = r.json() if r.content else {}
             batch = payload.get("data") or []
@@ -5510,39 +5523,79 @@ def fetch_sgo_hr_props(sgo_key):
                 away = teams.get("away", {}).get("names", {}).get("long", "Away")
                 event_name = f"{away} @ {home}"
                 players_map = ev.get("players", {})
-                for odd_id, odd_data in ev.get("odds", {}).items():
-                    if "batting_homeRuns" not in odd_id: continue
-                    if "ou-over" not in odd_id and "-over" not in odd_id: continue
+                for odd_id, odd_data in (ev.get("odds") or {}).items():
+                    oid = str(odd_id).lower()
+                    if "ou-over" not in oid and "-over" not in oid and "yes" not in oid:
+                        continue
+                    prop_type = None
+                    is_hr = "batting_homeruns" in oid or "home_run" in oid
+                    is_td = "anytimetouchdown" in oid or "anytime_td" in oid or "anytime-touchdown" in oid
+                    if "rushing_yards" in oid:
+                        prop_type = "Rush Yards"
+                    elif "receiving_yards" in oid:
+                        prop_type = "Receiving Yards"
+                    elif "receptions" in oid and "receiving" not in oid:
+                        prop_type = "Receptions"
+                    if league == "MLB" and not is_hr:
+                        continue
+                    if league == "NFL" and not (is_td or prop_type):
+                        continue
                     ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
-                    if ou is None or abs(float(ou) - 0.5) > 0.01: continue
+                    if is_td:
+                        pass
+                    else:
+                        if ou is None:
+                            continue
+                        try:
+                            if abs(float(ou) - 0.5) > 0.01:
+                                continue
+                        except Exception:
+                            continue
                     pid = odd_data.get("playerID") or odd_data.get("statEntityID")
-                    if not pid or pid not in players_map: continue
+                    if not pid or pid not in players_map:
+                        continue
                     pdata = players_map[pid]
                     pname = pdata.get("name")
-                    if not pname: continue
+                    if not pname:
+                        continue
                     team = clean_team(pdata.get("teamID") or "")
-                    for bk, bd in odd_data.get("byBookmaker", {}).items():
-                        if not bd.get("available", True): continue
+                    for bk, bd in (odd_data.get("byBookmaker") or {}).items():
+                        if not bd.get("available", True):
+                            continue
                         b = normalize_book(bk)
-                        if b not in PREFERRED: continue
+                        if b not in PREFERRED:
+                            continue
                         price = bd.get("odds")
-                        if price is None: continue
+                        if price is None:
+                            continue
                         try:
                             price = int(str(price).replace("+", ""))
                         except Exception:
                             continue
-                        if price > MAX_HR_AMERICAN:
+                        if prop_type and price < 100:
+                            continue
+                        if (is_hr or is_td) and price > MAX_HR_AMERICAN:
                             continue
                         if is_blocked_player(pname):
                             continue
+                        found.add(bk)
                         found.add(b)
-                        rows.append({"event": event_name, "book": b, "player": pname, "price": price, "point": 0.5, "team": team, "source": "sgo"})
+                        rows.append({
+                            "event": event_name, "book": b, "player": pname, "price": price,
+                            "point": 0.5, "team": team, "source": "sgo",
+                            "sport": league,
+                            "prop_type": prop_type,
+                        })
             cursor = payload.get("nextCursor") or payload.get("next_cursor")
             if not cursor:
                 break
+        st.session_state.setdefault("fetch_debug", {})["sgo_rows_built"] = len(rows)
+        st.session_state["fetch_debug"]["sgo_books"] = sorted(found)
+        st.session_state["fetch_debug"]["sgo_league"] = league
     except Exception as e:
         st.warning(f"SGO note: {e}")
     return rows, found
+
 
 def merge_odds(a, b):
     combined = a + b
@@ -7332,7 +7385,7 @@ def main():
                 st.markdown(
                     f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
                     + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
-                    + f"<br><b>US/UK split:</b> {dbg.get('regions') or {}}"
+                    + f"<br><b>US/AU split:</b> {dbg.get('regions') or {}}"
                     + "</div>",
                     unsafe_allow_html=True,
                 )
