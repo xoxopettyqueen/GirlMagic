@@ -1698,7 +1698,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-13T16:51:22.679422+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -1706,7 +1706,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-13_Chase DeLauter_watch_23",
@@ -2958,7 +2959,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-13T16:51:22.682615+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -2966,7 +2967,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-13_Luis Arraez_watch_50",
@@ -3989,7 +3991,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-13T16:51:22.684626+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -3997,7 +3999,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-13_Vimael Machin_watch_55",
@@ -17739,7 +17742,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-13T17:27:12.438193+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -17747,7 +17750,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-13_Michael Harris II_watch_22",
@@ -22508,7 +22512,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-13T17:36:15.456554+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -22516,7 +22520,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-13_Denzer Guzman_shop_take_122",
@@ -24420,7 +24425,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-13T17:46:47.907116+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -24428,7 +24433,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-13_Matt Olson_watch_26",
@@ -29783,5 +29789,81 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-13_Danny Jansen_watch_53",
+    "date": "2026-09-13",
+    "time": "11:15 AM",
+    "player": "Danny Jansen",
+    "score": 53,
+    "edge": 171,
+    "best_price": 900,
+    "best_book": "fanduel",
+    "median": 700,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 576,
+      "fanatics": 800,
+      "fanduel": 900,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-13T18:15:53.231906+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.2
+  },
+  {
+    "id": "2026-09-13_Kyle Schwarber_watch_24",
+    "date": "2026-09-13",
+    "time": "11:15 AM",
+    "player": "Kyle Schwarber",
+    "score": 24,
+    "edge": 41,
+    "best_price": 320,
+    "best_book": "draftkings",
+    "median": 270,
+    "book_prices": {
+      "caesars": 245,
+      "draftkings": 320,
+      "fanatics": 250,
+      "fanduel": 270,
+      "hardrockbet": 275
+    },
+    "price_bucket": "under +400",
+    "ending": 20,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "Books tight",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-13T18:15:53.346496+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "PHILADELPHIA PHILLIES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.8
   }
 ]
