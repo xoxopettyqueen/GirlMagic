@@ -697,6 +697,16 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .wg-dont{color:#fda4af}
 .wg-queen{margin:4px 0 0;text-align:right;font-size:.72rem;font-style:italic;color:#f9a8d4;text-shadow:0 0 10px rgba(244,114,182,.55)}
 .recap-line{font-size:.82rem;margin:3px 0;color:#fce7f3}
+.recap-wrap{max-height:420px;overflow:auto;border:1px solid #3b0764;border-radius:14px;background:#100818;box-shadow:0 0 16px rgba(168,85,247,.18);margin:8px 0 12px}
+.recap-table{width:100%;border-collapse:separate;border-spacing:0;font-size:.78rem;color:#fce7f3}
+.recap-table th{position:sticky;top:0;z-index:2;background:#1a0f28;color:#f9a8d4;font-size:.62rem;letter-spacing:.8px;text-transform:uppercase;text-align:left;padding:8px 10px;border-bottom:1px solid #a855f7}
+.recap-table td{padding:7px 10px;border-bottom:1px solid #2a2038;vertical-align:middle}
+.recap-table tr.r-hit{background:linear-gradient(90deg,rgba(16,185,129,.12),transparent 55%)}
+.recap-table tr.r-miss{background:linear-gradient(90deg,rgba(248,113,113,.12),transparent 55%)}
+.recap-table tr.r-lean{background:linear-gradient(90deg,rgba(244,114,182,.12),transparent 55%)}
+.recap-table tr.r-watch{background:linear-gradient(90deg,rgba(192,132,252,.12),transparent 55%)}
+.recap-badge{display:inline-block;margin-left:6px;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-size:.58rem;font-weight:800;padding:2px 6px;border-radius:999px;box-shadow:0 0 8px rgba(244,114,182,.4)}
+
 
 .n1-pulse{animation:n1Shimmer 1.6s ease-out 1}
 @keyframes n1Shimmer{
@@ -5055,15 +5065,21 @@ def build_whats_going_today(rows):
     return len(hr_names), len(graded), dict(by_book), on_our_list, pair_list, hr_status
 
 
+
 def render_run_it_recap():
-    """Lock tab: every completed HIT/MISS plus LEAN/WATCH from today's ledger."""
+    """Lock tab table. Pulse banner is untouched."""
     rows = results_for_sport()
     today = today_az()
     sport = active_sport()
     prop = "TD prop" if sport == "NFL" else "HR prop"
+    extra_day = today
+    try:
+        extra_day = today_mlb_date()
+    except Exception:
+        pass
     keep = []
     for r in rows:
-        if r.get("date") not in (today, today_mlb_date() if "today_mlb_date" in globals() else today):
+        if r.get("date") not in (today, extra_day):
             continue
         res = str(r.get("result") or "").upper()
         src = str(r.get("source") or "")
@@ -5074,31 +5090,100 @@ def render_run_it_recap():
     if not keep:
         st.caption("No completed names yet. Grade Results, then come back.")
         return
-    fn_loud = any("Fanatics" in str(r.get("best_book") or "") or "fanatics" in str(r.get("best_book") or "").lower() for r in keep)
+    fn_loud = any(
+        "fanatics" in str(r.get("best_book") or "").lower()
+        or book_label(r.get("best_book") or "") == "Fanatics"
+        for r in keep
+    )
     queen = "Queen says: Run It names went." + (" Fanatics loud again." if fn_loud else "")
     st.markdown(f'<div class="wg-queen" style="text-align:left">{queen}</div>', unsafe_allow_html=True)
     hits = sum(1 for r in keep if str(r.get("result")).upper() == "HIT")
     misses = sum(1 for r in keep if str(r.get("result")).upper() == "MISS")
     st.caption(f"{hits} HIT · {misses} MISS · {len(keep)} on the recap")
-    for r in sorted(keep, key=lambda x: str(x.get("player") or "")):
+
+    lock = st.session_state.get("pregame_lock") or load_pregame()
+
+    def _lab(r):
         res = str(r.get("result") or "").upper()
         src = str(r.get("source") or "")
         if res == "HIT":
-            emo, lab, cls = "💚", "HIT", "wg-take"
-        elif res == "MISS":
-            emo, lab, cls = "🔴", "MISS", "wg-dont"
-        elif src == "shop_lean":
-            emo, lab, cls = "💖", "LEAN", "wg-lean"
-        elif src == "watch":
-            emo, lab, cls = "💜", "WATCH", "wg-watch"
-        else:
-            emo, lab, cls = "💜", res or "WATCH", "wg-watch"
-        book = book_label(r.get("best_book") or "") or "—"
+            return "HIT", "💚 HIT", "r-hit", 0
+        if res == "MISS":
+            return "MISS", "🔴 MISS", "r-miss", 1
+        if src == "shop_lean":
+            return "LEAN", "💖 LEAN", "r-lean", 2
+        return "WATCH", "💜 WATCH", "r-watch", 3
+
+    def _fn_best(player, book):
+        if book != "Fanatics":
+            return False
+        entry = None
+        for pname, data in (lock or {}).items():
+            if names_match(player, pname):
+                entry = data
+                break
+        if not entry:
+            return False
+        prices = {}
+        for b, info in (entry.get("books") or {}).items():
+            p = (info or {}).get("price")
+            if p is None:
+                continue
+            prices[book_label(b)] = int(p)
+        fn = prices.get("Fanatics")
+        if fn is None:
+            return False
+        if "MGM" in prices and fn > prices["MGM"]:
+            return True
+        if "DK" in prices and fn > prices["DK"]:
+            return True
+        return False
+
+    buckets = {}
+    for r in keep:
+        key_lab, show, cls, rank = _lab(r)
         name = r.get("player") or "?"
-        st.markdown(
-            f'<div class="recap-line {cls}">{emo} {lab} — {name} ({book}) · {prop}</div>',
-            unsafe_allow_html=True,
+        book = book_label(r.get("best_book") or "") or "—"
+        key = (rank, key_lab, name, book, prop)
+        if key not in buckets:
+            buckets[key] = {"show": show, "cls": cls, "name": name, "book": book, "prop": prop, "n": 0, "rank": rank}
+        buckets[key]["n"] += 1
+
+    ordered = sorted(buckets.values(), key=lambda x: (x["rank"], x["name"].lower(), x["book"]))
+    PAGE = 25
+    total = len(ordered)
+    pages = max(1, (total + PAGE - 1) // PAGE)
+    page = int(st.session_state.get("recap_page") or 0)
+    if page >= pages:
+        page = 0
+        st.session_state["recap_page"] = 0
+    slice_rows = ordered[page * PAGE: page * PAGE + PAGE]
+
+    body = []
+    for item in slice_rows:
+        badge = '<span class="recap-badge">🔥 Best Price</span>' if _fn_best(item["name"], item["book"]) else ""
+        cnt = ("×%s" % item["n"]) if item["n"] > 1 else "—"
+        body.append(
+            "<tr class='%s'><td>%s</td><td>%s</td><td>%s%s</td><td>%s</td><td>%s</td></tr>"
+            % (item["cls"], item["show"], item["name"], item["book"], badge, item["prop"], cnt)
         )
+    html = (
+        '<div class="recap-wrap"><table class="recap-table">'
+        "<thead><tr><th>Result</th><th>Player</th><th>Book</th><th>Prop</th><th>Count</th></tr></thead>"
+        "<tbody>%s</tbody></table></div>"
+    ) % "".join(body)
+    st.markdown(html, unsafe_allow_html=True)
+    nav1, nav2, nav3 = st.columns([1, 1, 4])
+    with nav1:
+        if st.button("← Prev", key="recap_prev", disabled=page <= 0):
+            st.session_state["recap_page"] = max(0, page - 1)
+            st.rerun()
+    with nav2:
+        if st.button("Next →", key="recap_next", disabled=page >= pages - 1):
+            st.session_state["recap_page"] = min(pages - 1, page + 1)
+            st.rerun()
+    with nav3:
+        st.caption("Rows %s–%s of %s unique" % (page * PAGE + 1, min((page + 1) * PAGE, total), total))
 
 
 def render_whats_going_today():
