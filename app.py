@@ -618,6 +618,28 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .method-group{margin-top:8px;padding-top:8px;border-top:1px solid #2a2038}
 .queen-line{color:#f9a8d4;font-style:italic;font-size:.86rem;margin-top:8px}
 
+.wg-wrap{background:linear-gradient(160deg,#160c22,#2a1040 55%,#1a0b20);border:1px solid #a855f7;border-radius:18px;padding:14px 16px;margin:0 0 14px;box-shadow:0 0 22px rgba(168,85,247,.18)}
+.wg-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-bottom:10px}
+.wg-title{font-size:1.05rem;font-weight:800;color:#fce7f3;letter-spacing:.2px}
+.wg-sub{font-size:.78rem;color:#e9d5ff;margin-top:3px}
+.wg-switch{display:flex;gap:6px;flex-wrap:wrap}
+.wg-pill{border-radius:999px;padding:4px 10px;font-size:.68rem;font-weight:800;border:1px solid #4c1d95;color:#c4b5d6}
+.wg-pill.on{border-color:#f9a8d4;color:#fce7f3;background:linear-gradient(90deg,#6d28d9,#db2777);box-shadow:0 0 10px rgba(244,114,182,.35)}
+.wg-counts{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px}
+.wg-count{background:#120a1c;border:1px solid #3b0764;border-radius:12px;padding:6px 10px;min-width:72px;text-align:center}
+.wg-count b{display:block;font-size:1rem;color:#f9a8d4}
+.wg-count span{font-size:.62rem;letter-spacing:.6px;text-transform:uppercase;color:#c4b5d6}
+.wg-books{display:flex;gap:10px;flex-wrap:wrap}
+.wg-book{flex:1;min-width:160px;background:#100818;border:1px solid #3b0764;border-radius:14px;padding:10px}
+.wg-book h4{margin:0 0 6px;color:#f9a8d4;font-size:.78rem;letter-spacing:.8px}
+.wg-ends{font-size:.72rem;color:#e9d5ff;margin-bottom:8px}
+.wg-player{font-size:.78rem;margin:4px 0;color:#fce7f3}
+.wg-take{color:#86efac}
+.wg-lean{color:#f9a8d4}
+.wg-watch{color:#d8b4fe}
+.wg-queen{margin-top:10px;font-size:.8rem;font-style:italic;color:#f9a8d4}
+
+
 .n1-pulse{animation:n1Shimmer 1.6s ease-out 1}
 @keyframes n1Shimmer{
   0%{box-shadow:0 0 0 rgba(244,114,182,0);filter:brightness(1.4)}
@@ -4957,8 +4979,9 @@ def build_whats_going_today(rows):
 def render_whats_going_today():
     rows = results_for_sport()
     mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
-    if active_sport() == "NFL":
-        pair_list = []
+    sport = active_sport()
+    cfg = sport_cfg()
+    if sport == "NFL":
         live_tds, _fin, _m = fetch_nfl_td_scorers()
         mlb_hr = len(live_tds or [])
         take_pool = list(st.session_state.get("last_take_names") or [])
@@ -4966,17 +4989,14 @@ def render_whats_going_today():
             take_pool += ledger_names_today()
         except Exception:
             pass
-        take_pool += [r.get("player") for r in rows if r.get("source") in ("take_it", "shop_take", "watch")]
-        on_list = 0
-        for nm in live_tds or []:
-            if any(names_match(nm, t) for t in take_pool if t):
-                on_list += 1
+        take_pool += [r.get("player") for r in rows if r.get("source") in ("take_it", "shop_take", "watch", "shop_lean")]
+        on_list = sum(1 for nm in (live_tds or []) if any(names_match(nm, t) for t in take_pool if t))
         hit_ends = Counter()
         for r in rows:
             blob = str(r.get("market") or r.get("sport") or "").lower()
             if r.get("date") not in (today_az(), today_mlb_date()):
                 continue
-            if "td" not in blob and "nfl" not in blob:
+            if "td" not in blob and "nfl" not in blob and str(r.get("sport") or "").upper() != "NFL":
                 continue
             if r.get("result") != "HIT":
                 continue
@@ -4992,75 +5012,114 @@ def render_whats_going_today():
         for bl in by_book:
             by_book[bl].sort(key=lambda x: (-x[1], x[0]))
         by_book = dict(by_book)
-    order = ["DK", "FD", "MGM", "HardRock", "Bet365"]
-    cols_html = []
+
+    listed = [(n, tag) for n, tag in (hr_status or []) if tag and tag != "NOT ON LIST"]
+    take_n = sum(1 for _n, t in listed if t == "TAKE")
+    lean_n = sum(1 for _n, t in listed if t in ("SHOP LEAN", "LEAN"))
+    watch_n = sum(1 for _n, t in listed if t in ("WATCH", "BOARD"))
+    prop_word = "TD prop" if sport == "NFL" else "HR prop"
+    hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "HRs")
+
+    def _norm_tag(tag):
+        if tag == "TAKE":
+            return "TAKE", "wg-take", "💚"
+        if tag in ("SHOP LEAN", "LEAN"):
+            return "LEAN", "wg-lean", "💖"
+        if tag in ("WATCH", "BOARD"):
+            return "WATCH", "wg-watch", "💜"
+        return tag, "", "✨"
+
+    lock = st.session_state.get("pregame_lock") or load_pregame()
+    by_names = defaultdict(list)
+    for n, tag in listed:
+        call, cls, emo = _norm_tag(tag)
+        bl = None
+        for r in rows:
+            if names_match(n, r.get("player") or ""):
+                bl = book_label(r.get("best_book") or "")
+                break
+        if not bl:
+            for pname, data in (lock or {}).items():
+                if names_match(n, pname):
+                    books = (data or {}).get("books") or {}
+                    best_bl, best_p = None, None
+                    for b, info in books.items():
+                        p = (info or {}).get("price")
+                        if p is None:
+                            continue
+                        if best_p is None or int(p) > int(best_p):
+                            best_p, best_bl = p, book_label(b)
+                    bl = best_bl
+                    break
+        by_names[bl or "Other"].append((n, call, cls, emo))
+
+    order = ["DK", "FD", "HardRock", "MGM", "Bet365", "Other"]
+    book_html = []
+    used_people = set()
     for bl in order:
         items = by_book.get(bl) or []
-        if not items:
+        if bl == "Other":
+            people = []
+            for k, v in by_names.items():
+                if k not in ("DK", "FD", "HardRock", "MGM", "Bet365"):
+                    people.extend(v)
+        else:
+            people = by_names.get(bl) or []
+        if not items and not people:
             continue
-        chips = []
-        for end, cnt in items[:5]:
-            hot_cls = "hot" if end in (0, 10, 25, 50, 75) else ""
-            chips.append(
-                '<span class="trend-chip %s" style="padding:3px 8px;font-size:0.72rem">'
-                '%02d: <span class="chip-count">%s</span></span>' % (hot_cls, end, cnt)
+        ends = " · ".join("%02d:%s" % (e, c) for e, c in (items[:4] if items else []))
+        plist = []
+        for n, call, cls, emo in people[:6]:
+            used_people.add(n)
+            plist.append(
+                '<div class="wg-player %s" title="Ending chips = how many list hits landed on that last-two.">%s %s (%s) · %s</div>'
+                % (cls, emo, n, call, prop_word)
             )
-        chips_joined = "".join(chips)
-        cols_html.append(
-            '<div style="flex:1;min-width:100px">'
-            '<div style="font-size:0.72rem;font-weight:800;color:#f9a8d4;margin-bottom:4px">%s</div>'
-            '<div style="display:flex;flex-wrap:wrap;gap:4px">%s</div>'
-            '</div>' % (bl, chips_joined)
-        )
-    extra = []
-    for bl, items in sorted(by_book.items()):
-        if bl in order:
-            continue
-        for end, cnt in items[:3]:
-            extra.append("%s %02d:%s" % (bl, end, cnt))
-    if extra:
-        cols_html.append(
-            '<div style="flex:1;min-width:90px">'
-            '<div style="font-size:0.72rem;font-weight:800;color:#e9d5ff;margin-bottom:4px">Other</div>'
-            '<div style="font-size:0.72rem;color:#fce7f3">%s</div>'
-            '</div>' % (" · ".join(extra[:6]))
-        )
-    if cols_html:
-        body = '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">%s</div>' % ("".join(cols_html))
-    else:
-        empty_msg = "No book chips yet — names below if someone already scored (live + final)." if active_sport() == "NFL" else "No book chips yet — names below if someone already went."
-        body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">%s</div>' % empty_msg
-    if hr_status:
-        listed = [(n, tag) for n, tag in hr_status if tag and tag != "NOT ON LIST"]
-        if listed:
-            who = " · ".join("%s (%s)" % (n, tag) for n, tag in listed[:12])
-            body += '<div style="font-size:0.78rem;color:#fbcfe8;margin-top:6px">Went today: %s</div>' % who
-
-    pair_note = ""
-    if pair_list:
-        bits = ["%02d:%s" % (e, c) for e, c in pair_list[:5]]
-        pair_note = (
-            '<div style="margin-top:8px;font-size:0.72rem;color:#fcd34d">'
-            'MGM pair/trio only (method): %s'
-            '</div>' % (" · ".join(bits))
+        if not plist:
+            plist.append('<div class="wg-player" style="opacity:.7">No list names on this book yet.</div>')
+        book_html.append(
+            '<div class="wg-book"><h4>%s</h4><div class="wg-ends">%s</div>%s</div>'
+            % (bl, ends or "—", "".join(plist))
         )
 
-    cfg = sport_cfg()
-    title = "What's Going Today · %s" % active_sport()
-    if active_sport() == "NFL":
-        sub = "%s %s scored (live+final) · %s were Run It / on list · chips = graded HIT prices" % (mlb_hr, cfg["hits"], on_list)
+    if sport == "NFL":
+        queen = "Queen says: DK's loud today — FD's sleeping — HardRock moving weird."
+        if take_n:
+            queen = "Queen says: the TDs on the list are the ones that matter. Leave the rest."
     else:
-        sub = (
-            "%s %s · %s were Run It / Shop TAKE · chips = who already went "
-            "(DK/FD/MGM/HardRock price, not MGM pair rules)"
-        ) % (mlb_hr, cfg["hits"], on_list)
+        queen = "Queen says: DK and HardRock are clean — Caesars faking math again."
+        if take_n:
+            queen = "Queen says: Run It names went. That's the board talking, not the box score tourists."
+
+    books_block = "".join(book_html) if book_html else '<div class="wg-book">Nobody on the list has gone yet.</div>'
+    mlb_on = "on" if sport == "MLB" else ""
+    nfl_on = "on" if sport == "NFL" else ""
     html = (
-        '<div class="trends-today" style="padding:12px 14px">'
-        '<div class="trends-today-header" style="margin-bottom:4px">'
-        '<div class="trends-today-title">%s</div>'
-        '<div class="trends-today-sub">%s</div>'
-        '</div>%s%s</div>'
-    ) % (title, sub, body, pair_note)
+        '<div class="wg-wrap">'
+        '<div class="wg-top"><div>'
+        '<div class="wg-title">What\'s Going Today · %s — %s %s · %s were Run It / Shop TAKE</div>'
+        '<div class="wg-sub">Same layout every sport. Live + final scorers. List names only.</div>'
+        '</div><div class="wg-switch">'
+        '<span class="wg-pill %s">MLB</span>'
+        '<span class="wg-pill %s">NFL</span>'
+        '<span class="wg-pill">NBA</span>'
+        '<span class="wg-pill">NHL</span>'
+        '</div></div>'
+        '<div class="wg-counts">'
+        '<div class="wg-count"><b>%s</b><span>TAKE</span></div>'
+        '<div class="wg-count"><b>%s</b><span>LEAN</span></div>'
+        '<div class="wg-count"><b>%s</b><span>WATCH</span></div>'
+        '<div class="wg-count"><b>%s</b><span>%s</span></div>'
+        '</div>'
+        '<div class="wg-books">%s</div>'
+        '<div class="wg-queen">%s</div>'
+        '</div>'
+    ) % (
+        sport, mlb_hr, hit_word, on_list,
+        mlb_on, nfl_on,
+        take_n, lean_n, watch_n, mlb_hr, hit_word,
+        books_block, queen,
+    )
     st.markdown(html, unsafe_allow_html=True)
 
 
