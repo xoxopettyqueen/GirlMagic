@@ -171398,5 +171398,89 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.33
+  },
+  {
+    "id": "2026-09-13_Ray Davis_shop_take_76",
+    "date": "2026-09-13",
+    "time": "09:25 AM",
+    "player": "Ray Davis",
+    "score": 0,
+    "edge": 76,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 500,
+      "draftkings": 500,
+      "fanatics": 600,
+      "fanduel": 550,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-13T16:25:15.471292+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Joshua Palmer_shop_lean_56",
+    "date": "2026-09-13",
+    "time": "09:25 AM",
+    "player": "Joshua Palmer",
+    "score": 0,
+    "edge": 56,
+    "best_price": 900,
+    "best_book": "draftkings",
+    "median": 825,
+    "book_prices": {
+      "betmgm": 675,
+      "caesars": 850,
+      "draftkings": 900,
+      "fanatics": 800,
+      "fanduel": 850,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T16:25:15.485249+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Denver Broncos D/ST_shop_lean_35",
+    "date": "2026-09-13",
+    "time": "09:25 AM",
+    "player": "Denver Broncos D/ST",
+    "score": 0,
+    "edge": 35,
+    "best_price": 600,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 525,
+      "draftkings": 600,
+      "fanatics": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T16:25:15.504921+00:00",
+    "price_source": "shop"
   }
 ]
