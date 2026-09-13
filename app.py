@@ -53,7 +53,7 @@ NFL_FD_MGM_MIN = 25      # ignore tiny gaps
 NFL_FD_MGM_MAX = 80      # 100+ on a +800 TD is noise, not a tell
 NFL_FD_MGM_LANE = (150, 550)  # only shout in this price band
 
-TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "caesars"}
+TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "caesars", "bet365"}
 SIGNAL_ONLY = {"betmgm"}
 
 
@@ -712,7 +712,7 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 MLB_STATS = "https://statsapi.mlb.com/api/v1"
-REGIONS = "us,us2"
+REGIONS = "us,uk"
 # Sport profiles — MLB math stays the same; NFL only swaps feed + labels
 SPORT_CFG = {
     "MLB": {
@@ -889,9 +889,9 @@ ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics", "bet365"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics"}
 # Ticket = book we buy. MGM is signal-only (11% as ticket vs 13% baseline).
-TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics"}
-VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics"}
-VALUE_BOOK_LABELS = {"DK", "FD", "HardRock", "Fanatics"}
+TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "bet365"}
+VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "bet365"}
+VALUE_BOOK_LABELS = {"DK", "FD", "HardRock", "Fanatics", "Bet365"}
 SIGNAL_ONLY_BOOKS = {"betmgm"}
 # Odds API uses different keys for the same books - map only
 BOOK_ALIASES = {
@@ -3389,6 +3389,7 @@ def book_label(b):
     if "hardrock" in b: return "HardRock"
     if "fanatic" in b: return "Fanatics"
     if "caesars" in b or "williamhill" in b: return "Caesars"
+    if "bet365" in b or b in ("365", "b365"): return "Bet365"
     if b in ("untagged", "unknown", "-", ""): return "Untagged"
     return b.title() if b else "Untagged"
 
@@ -4794,7 +4795,7 @@ def build_whats_going_today(rows):
             if len(g.get("players") or []) in (2, 3):
                 pair_players.update(g["players"])
 
-    FOCUS = {"DK", "FD", "MGM", "HardRock"}
+    FOCUS = {"DK", "FD", "MGM", "HardRock", "Bet365"}
     book_ending = Counter()
     pair_ending = Counter()  # MGM endings only when player was in a pair/trio
     on_our_list = 0
@@ -4923,7 +4924,7 @@ def render_whats_going_today():
         for bl in by_book:
             by_book[bl].sort(key=lambda x: (-x[1], x[0]))
         by_book = dict(by_book)
-    order = ["DK", "FD", "MGM", "HardRock"]
+    order = ["DK", "FD", "MGM", "HardRock", "Bet365"]
     cols_html = []
     for bl in order:
         items = by_book.get(bl) or []
@@ -5329,7 +5330,39 @@ def fetch_events_oddsapi(api_key, sport_key=None):
         st.error(f"Odds API events error: {e}")
         return []
 
+def _merge_oddsapi_events(a, b):
+    """Union bookmakers from US + UK payloads. Never drop either side."""
+    if not a and not b:
+        return None
+    if not a:
+        return b
+    if not b:
+        return a
+    out = dict(a)
+    books = list(a.get("bookmakers") or [])
+    seen = {(bk.get("key") or "").lower() for bk in books}
+    for bk in (b.get("bookmakers") or []):
+        k = (bk.get("key") or "").lower()
+        if k and k not in seen:
+            books.append(bk)
+            seen.add(k)
+            continue
+        # same book, merge extra markets
+        if k:
+            dest = next((x for x in books if (x.get("key") or "").lower() == k), None)
+            if dest is not None:
+                mk = list(dest.get("markets") or [])
+                have = {(m.get("key") or "") for m in mk}
+                for m in (bk.get("markets") or []):
+                    if (m.get("key") or "") not in have:
+                        mk.append(m)
+                dest["markets"] = mk
+    out["bookmakers"] = books
+    return out
+
+
 def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_books=True):
+    """The Odds API primary feed. regions=us,uk so Bet365 (UK) merges with US books."""
     cfg = sport_cfg()
     sport_key = sport_key or cfg["key"]
     market = market or cfg["market"]
@@ -5341,25 +5374,45 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
             "player_anytime_td,"
             "player_rush_yds,player_reception_yds,player_receptions"
         )
+    books = ",".join([
+        "fanduel", "draftkings", "betmgm", "fanatics",
+        "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
+        "caesars", "williamhill_us",
+        "bet365",
+    ])
+    url = f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds"
+
+    def _one(region):
+        params = {
+            "apiKey": api_key,
+            "regions": region,
+            "markets": markets,
+            "oddsFormat": "american",
+        }
+        if restrict_books:
+            params["bookmakers"] = books
+        try:
+            r = requests.get(url, params=params, timeout=20)
+            return r.json() if r.status_code == 200 else None
+        except Exception:
+            return None
+
+    us = _one("us")
+    uk = _one("uk")
+    merged = _merge_oddsapi_events(us, uk)
+    if merged:
+        return merged
+    # fallback single call both regions
     params = {
         "apiKey": api_key,
-        "regions": REGIONS,
+        "regions": "us,uk",
         "markets": markets,
         "oddsFormat": "american",
     }
     if restrict_books:
-        params["bookmakers"] = ",".join([
-            "fanduel", "draftkings", "betmgm", "fanatics",
-            "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
-            "caesars", "williamhill_us",
-            "bet365", "bet365_au",
-        ])
+        params["bookmakers"] = books
     try:
-        r = requests.get(
-            f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
-            params=params,
-            timeout=20,
-        )
+        r = requests.get(url, params=params, timeout=20)
         return r.json() if r.status_code == 200 else None
     except Exception:
         return None
