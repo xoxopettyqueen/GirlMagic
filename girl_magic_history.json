@@ -1,317 +1,6 @@
 {
-  "saved_at": "2026-09-13T22:21:44.822861+00:00",
+  "saved_at": "2026-09-13T22:22:44.273247+00:00",
   "price_history": [
-    {
-      "Adam Trautman||betmgm": 950,
-      "Adam Trautman||caesars": 750,
-      "Adam Trautman||draftkings": 750,
-      "Adam Trautman||fanatics": 900,
-      "Adam Trautman||fanduel": 750,
-      "Adam Trautman||hardrockbet": 700,
-      "Bo Nix||betmgm": 425,
-      "Bo Nix||caesars": 475,
-      "Bo Nix||draftkings": 500,
-      "Bo Nix||fanatics": 550,
-      "Bo Nix||fanduel": 550,
-      "Bo Nix||hardrockbet": 475,
-      "Brashard Smith||betmgm": 950,
-      "Brashard Smith||caesars": 750,
-      "Brashard Smith||draftkings": 1000,
-      "Brashard Smith||fanatics": 900,
-      "Brashard Smith||fanduel": 1000,
-      "Brashard Smith||hardrockbet": 900,
-      "Braxton Berrios||caesars": 1750,
-      "Braxton Berrios||draftkings": 2500,
-      "Braxton Berrios||fanatics": 2200,
-      "Braxton Berrios||fanduel": 1600,
-      "Braxton Berrios||hardrockbet": 2250,
-      "Brevyn Spann-Ford||caesars": 800,
-      "Brevyn Spann-Ford||draftkings": 1000,
-      "Brevyn Spann-Ford||fanatics": 1050,
-      "Brevyn Spann-Ford||fanduel": 850,
-      "Brevyn Spann-Ford||hardrockbet": 800,
-      "Cam Brown||caesars": 1300,
-      "Cam Brown||draftkings": 1700,
-      "Cam Brown||fanatics": 2200,
-      "Cam Brown||fanduel": 1700,
-      "Cam Brown||hardrockbet": 1750,
-      "Cam Skattebo||fanatics": 115,
-      "CeeDee Lamb||caesars": 129,
-      "CeeDee Lamb||draftkings": 140,
-      "CeeDee Lamb||fanatics": 145,
-      "CeeDee Lamb||fanduel": 135,
-      "CeeDee Lamb||hardrockbet": 130,
-      "Chris Manhertz||caesars": 2400,
-      "Chris Manhertz||fanduel": 2500,
-      "Courtland Sutton||betmgm": 240,
-      "Courtland Sutton||caesars": 215,
-      "Courtland Sutton||draftkings": 240,
-      "Courtland Sutton||fanatics": 250,
-      "Courtland Sutton||fanduel": 230,
-      "Courtland Sutton||hardrockbet": 230,
-      "Cyrus Allen||betmgm": 850,
-      "Cyrus Allen||caesars": 900,
-      "Cyrus Allen||draftkings": 1000,
-      "Cyrus Allen||fanatics": 800,
-      "Cyrus Allen||fanduel": 900,
-      "Cyrus Allen||hardrockbet": 800,
-      "Dak Prescott||caesars": 575,
-      "Dak Prescott||draftkings": 600,
-      "Dak Prescott||fanatics": 700,
-      "Dak Prescott||fanduel": 650,
-      "Dak Prescott||hardrockbet": 575,
-      "Dalen Cambre||caesars": 1750,
-      "Dalen Cambre||fanduel": 1600,
-      "Dalen Cambre||hardrockbet": 2250,
-      "Dallas Cowboys D/ST||draftkings": 550,
-      "Dallas Cowboys D/ST||fanatics": 475,
-      "Dallas Cowboys Defense||fanduel": 950,
-      "Dallen Bentley||caesars": 2000,
-      "Dallen Bentley||fanatics": 2500,
-      "Dallen Bentley||fanduel": 1700,
-      "Dallen Bentley||hardrockbet": 2250,
-      "Darnell Mooney||caesars": 500,
-      "Darnell Mooney||draftkings": 475,
-      "Darnell Mooney||fanatics": 500,
-      "Darnell Mooney||fanduel": 650,
-      "Darnell Mooney||hardrockbet": 525,
-      "Denver Broncos D/ST||betmgm": 525,
-      "Denver Broncos D/ST||draftkings": 600,
-      "Denver Broncos D/ST||fanatics": 525,
-      "Denver Broncos Defense||fanduel": 650,
-      "Devin Singletary||caesars": 650,
-      "Devin Singletary||draftkings": 1000,
-      "Devin Singletary||fanatics": 800,
-      "Devin Singletary||fanduel": 900,
-      "Devin Singletary||hardrockbet": 700,
-      "Emari Demercado||caesars": 500,
-      "Emari Demercado||draftkings": 475,
-      "Emari Demercado||fanatics": 525,
-      "Emari Demercado||fanduel": 500,
-      "Emari Demercado||hardrockbet": 450,
-      "Emmett Johnson||betmgm": 425,
-      "Emmett Johnson||caesars": 500,
-      "Emmett Johnson||draftkings": 550,
-      "Emmett Johnson||fanatics": 575,
-      "Emmett Johnson||fanduel": 600,
-      "Emmett Johnson||hardrockbet": 500,
-      "Evan Engram||betmgm": 425,
-      "Evan Engram||caesars": 425,
-      "Evan Engram||draftkings": 475,
-      "Evan Engram||fanatics": 500,
-      "Evan Engram||fanduel": 460,
-      "Evan Engram||hardrockbet": 450,
-      "George Pickens||caesars": 149,
-      "George Pickens||draftkings": 155,
-      "George Pickens||fanatics": 175,
-      "George Pickens||fanduel": 160,
-      "George Pickens||hardrockbet": 150,
-      "Hunter Luepke||caesars": 1000,
-      "Hunter Luepke||draftkings": 1000,
-      "Hunter Luepke||fanatics": 1200,
-      "Hunter Luepke||fanduel": 1000,
-      "Hunter Luepke||hardrockbet": 900,
-      "Isaiah Likely||caesars": 305,
-      "Isaiah Likely||draftkings": 350,
-      "Isaiah Likely||fanatics": 340,
-      "Isaiah Likely||fanduel": 340,
-      "Isaiah Likely||hardrockbet": 325,
-      "Israel Abanikanda||caesars": 1600,
-      "Israel Abanikanda||draftkings": 1700,
-      "Israel Abanikanda||fanduel": 1700,
-      "Israel Abanikanda||hardrockbet": 1750,
-      "J.K. Dobbins||betmgm": 140,
-      "J.K. Dobbins||caesars": 169,
-      "J.K. Dobbins||draftkings": 175,
-      "J.K. Dobbins||fanatics": 175,
-      "J.K. Dobbins||fanduel": 170,
-      "J.K. Dobbins||hardrockbet": 165,
-      "Jake Briningstool||betmgm": 2000,
-      "Jake Briningstool||caesars": 1750,
-      "Jake Briningstool||draftkings": 1800,
-      "Jake Briningstool||fanatics": 2200,
-      "Jake Briningstool||fanduel": 1700,
-      "Jake Briningstool||hardrockbet": 1750,
-      "Jake Ferguson||caesars": 245,
-      "Jake Ferguson||draftkings": 280,
-      "Jake Ferguson||fanatics": 310,
-      "Jake Ferguson||fanduel": 280,
-      "Jake Ferguson||hardrockbet": 275,
-      "Jalen Royals||caesars": 1000,
-      "Jalen Royals||draftkings": 1300,
-      "Jalen Royals||fanatics": 1000,
-      "Jalen Royals||fanduel": 900,
-      "Jalen Royals||hardrockbet": 900,
-      "Jared Wiley||caesars": 1600,
-      "Jared Wiley||draftkings": 1800,
-      "Jared Wiley||fanatics": 2200,
-      "Jared Wiley||fanduel": 1700,
-      "Jared Wiley||hardrockbet": 1750,
-      "Javonte Williams||caesars": -152,
-      "Javonte Williams||draftkings": -135,
-      "Javonte Williams||fanatics": -135,
-      "Javonte Williams||fanduel": -145,
-      "Javonte Williams||hardrockbet": -150,
-      "Jaxson Dart||caesars": 205,
-      "Jaxson Dart||draftkings": 215,
-      "Jaxson Dart||fanatics": 240,
-      "Jaxson Dart||fanduel": 220,
-      "Jaxson Dart||hardrockbet": 210,
-      "Jaylen Waddle||betmgm": 180,
-      "Jaylen Waddle||caesars": 199,
-      "Jaylen Waddle||draftkings": 210,
-      "Jaylen Waddle||fanatics": 225,
-      "Jaylen Waddle||fanduel": 195,
-      "Jaylen Waddle||hardrockbet": 200,
-      "Jonah Coleman||betmgm": 625,
-      "Jonah Coleman||caesars": 675,
-      "Jonah Coleman||draftkings": 800,
-      "Jonah Coleman||fanatics": 900,
-      "Jonah Coleman||fanduel": 700,
-      "Jonah Coleman||hardrockbet": 650,
-      "Jonathan Mingo||caesars": 1500,
-      "Jonathan Mingo||draftkings": 1700,
-      "Jonathan Mingo||fanatics": 2200,
-      "Jonathan Mingo||fanduel": 1700,
-      "Jonathan Mingo||hardrockbet": 1750,
-      "KaVontae Turpin||caesars": 700,
-      "KaVontae Turpin||draftkings": 700,
-      "KaVontae Turpin||fanatics": 700,
-      "KaVontae Turpin||fanduel": 750,
-      "KaVontae Turpin||hardrockbet": 650,
-      "Kansas City Chiefs D/ST||betmgm": 525,
-      "Kansas City Chiefs D/ST||draftkings": 475,
-      "Kansas City Chiefs D/ST||fanatics": 500,
-      "Kansas City Chiefs Defense||fanduel": 800,
-      "Kenneth Walker III||betmgm": -130,
-      "Kenneth Walker III||caesars": -125,
-      "Kenneth Walker III||draftkings": -125,
-      "Kenneth Walker III||fanduel": -115,
-      "Kenneth Walker III||hardrockbet": -125,
-      "Lil'Jordan Humphrey||caesars": 1100,
-      "Lil'Jordan Humphrey||draftkings": 1300,
-      "Lil'Jordan Humphrey||fanatics": 1500,
-      "Lil'Jordan Humphrey||fanduel": 1200,
-      "Lil'Jordan Humphrey||hardrockbet": 1100,
-      "Luke Schoonmaker||caesars": 950,
-      "Luke Schoonmaker||draftkings": 1100,
-      "Luke Schoonmaker||fanatics": 1500,
-      "Luke Schoonmaker||fanduel": 1100,
-      "Luke Schoonmaker||hardrockbet": 900,
-      "Malachi Fields||caesars": 380,
-      "Malachi Fields||draftkings": 380,
-      "Malachi Fields||fanatics": 370,
-      "Malachi Fields||fanduel": 410,
-      "Malachi Fields||hardrockbet": 375,
-      "Malik Nabers||caesars": 171,
-      "Malik Nabers||draftkings": 190,
-      "Malik Nabers||fanatics": 200,
-      "Malik Nabers||fanduel": 190,
-      "Malik Nabers||hardrockbet": 185,
-      "Marvin Mims Jr.||betmgm": 800,
-      "Marvin Mims Jr.||caesars": 700,
-      "Marvin Mims Jr.||draftkings": 700,
-      "Marvin Mims Jr.||fanatics": 800,
-      "Marvin Mims Jr.||fanduel": 700,
-      "Marvin Mims Jr.||hardrockbet": 600,
-      "Najee Harris||caesars": 320,
-      "Najee Harris||draftkings": 310,
-      "Najee Harris||fanatics": 400,
-      "Najee Harris||fanduel": 340,
-      "Najee Harris||hardrockbet": 325,
-      "Nate Adkins||betmgm": 2200,
-      "Nate Adkins||caesars": 1800,
-      "Nate Adkins||draftkings": 2000,
-      "Nate Adkins||fanatics": 2200,
-      "Nate Adkins||fanduel": 1700,
-      "Nate Adkins||hardrockbet": 1750,
-      "New York Giants D/ST||draftkings": 600,
-      "New York Giants D/ST||fanatics": 600,
-      "New York Giants Defense||fanduel": 800,
-      "Nikko Remigio||caesars": 2000,
-      "Nikko Remigio||draftkings": 2500,
-      "Nikko Remigio||fanduel": 2000,
-      "Nikko Remigio||hardrockbet": 2250,
-      "Noah Gray||betmgm": 675,
-      "Noah Gray||caesars": 900,
-      "Noah Gray||draftkings": 950,
-      "Noah Gray||fanatics": 900,
-      "Noah Gray||fanduel": 1000,
-      "Noah Gray||hardrockbet": 900,
-      "Odell Beckham Jr.||caesars": 625,
-      "Odell Beckham Jr.||draftkings": 750,
-      "Odell Beckham Jr.||fanatics": 900,
-      "Odell Beckham Jr.||fanduel": 850,
-      "Odell Beckham Jr.||hardrockbet": 700,
-      "Pat Bryant||betmgm": 400,
-      "Pat Bryant||caesars": 400,
-      "Pat Bryant||draftkings": 400,
-      "Pat Bryant||fanatics": 420,
-      "Pat Bryant||fanduel": 400,
-      "Pat Bryant||hardrockbet": 400,
-      "Patrick Mahomes||betmgm": 500,
-      "Patrick Mahomes||caesars": 600,
-      "Patrick Mahomes||draftkings": 600,
-      "Patrick Mahomes||fanatics": 650,
-      "Patrick Mahomes||fanduel": 650,
-      "Patrick Mahomes||hardrockbet": 575,
-      "Patrick Ricard||caesars": 2000,
-      "Patrick Ricard||draftkings": 2200,
-      "RJ Harvey||betmgm": 230,
-      "RJ Harvey||caesars": 240,
-      "RJ Harvey||draftkings": 300,
-      "RJ Harvey||fanatics": 310,
-      "RJ Harvey||fanduel": 270,
-      "RJ Harvey||hardrockbet": 275,
-      "Rashee Rice||betmgm": 175,
-      "Rashee Rice||caesars": 146,
-      "Rashee Rice||draftkings": 150,
-      "Rashee Rice||fanatics": 160,
-      "Rashee Rice||fanduel": 145,
-      "Rashee Rice||hardrockbet": 140,
-      "Ryan Flournoy||caesars": 360,
-      "Ryan Flournoy||draftkings": 380,
-      "Ryan Flournoy||fanatics": 420,
-      "Ryan Flournoy||fanduel": 380,
-      "Ryan Flournoy||hardrockbet": 350,
-      "Theo Johnson||caesars": 500,
-      "Theo Johnson||draftkings": 500,
-      "Theo Johnson||fanatics": 525,
-      "Theo Johnson||fanduel": 500,
-      "Theo Johnson||hardrockbet": 475,
-      "Thomas Fidone||caesars": 2300,
-      "Thomas Fidone||fanduel": 2500,
-      "Travis Kelce||betmgm": 220,
-      "Travis Kelce||caesars": 196,
-      "Travis Kelce||draftkings": 200,
-      "Travis Kelce||fanatics": 210,
-      "Travis Kelce||fanduel": 195,
-      "Travis Kelce||hardrockbet": 195,
-      "Troy Franklin||betmgm": 1350,
-      "Troy Franklin||caesars": 1000,
-      "Troy Franklin||draftkings": 1200,
-      "Troy Franklin||fanatics": 1400,
-      "Troy Franklin||fanduel": 1200,
-      "Troy Franklin||hardrockbet": 1100,
-      "Tyler Badie||fanduel": 700,
-      "Tyquan Thornton||betmgm": 400,
-      "Tyquan Thornton||caesars": 550,
-      "Tyquan Thornton||draftkings": 600,
-      "Tyquan Thornton||fanatics": 525,
-      "Tyquan Thornton||fanduel": 600,
-      "Tyquan Thornton||hardrockbet": 550,
-      "Tyrone Tracy Jr.||caesars": 330,
-      "Tyrone Tracy Jr.||draftkings": 370,
-      "Tyrone Tracy Jr.||fanatics": 380,
-      "Tyrone Tracy Jr.||fanduel": 340,
-      "Tyrone Tracy Jr.||hardrockbet": 325,
-      "Xavier Worthy||betmgm": 240,
-      "Xavier Worthy||caesars": 300,
-      "Xavier Worthy||draftkings": 320,
-      "Xavier Worthy||fanatics": 325,
-      "Xavier Worthy||fanduel": 310,
-      "Xavier Worthy||hardrockbet": 300
-    },
     {
       "Adam Trautman||betmgm": 950,
       "Adam Trautman||caesars": 750,
@@ -2280,678 +1969,151 @@
       "Xavier Worthy||fanatics": 325,
       "Xavier Worthy||fanduel": 310,
       "Xavier Worthy||hardrockbet": 300
+    },
+    {
+      "Braxton Berrios||caesars": 1750,
+      "Braxton Berrios||draftkings": 2500,
+      "Braxton Berrios||fanatics": 1900,
+      "Braxton Berrios||fanduel": 1700,
+      "Braxton Berrios||hardrockbet": 2250,
+      "Brevyn Spann-Ford||caesars": 800,
+      "Brevyn Spann-Ford||draftkings": 1000,
+      "Brevyn Spann-Ford||fanatics": 1050,
+      "Brevyn Spann-Ford||fanduel": 850,
+      "Brevyn Spann-Ford||hardrockbet": 800,
+      "Cam Brown||caesars": 1300,
+      "Cam Brown||draftkings": 1700,
+      "Cam Brown||fanatics": 2200,
+      "Cam Brown||fanduel": 1700,
+      "Cam Brown||hardrockbet": 1750,
+      "Cam Skattebo||fanatics": 115,
+      "CeeDee Lamb||caesars": 129,
+      "CeeDee Lamb||draftkings": 130,
+      "CeeDee Lamb||fanatics": 140,
+      "CeeDee Lamb||fanduel": 130,
+      "CeeDee Lamb||hardrockbet": 125,
+      "Chris Manhertz||caesars": 2400,
+      "Dak Prescott||caesars": 575,
+      "Dak Prescott||draftkings": 650,
+      "Dak Prescott||fanatics": 700,
+      "Dak Prescott||fanduel": 650,
+      "Dak Prescott||hardrockbet": 575,
+      "Dalen Cambre||caesars": 1750,
+      "Dalen Cambre||fanduel": 1700,
+      "Dalen Cambre||hardrockbet": 2250,
+      "Dallas Cowboys D/ST||draftkings": 550,
+      "Dallas Cowboys D/ST||fanatics": 525,
+      "Dallas Cowboys Defense||fanduel": 950,
+      "Darnell Mooney||caesars": 550,
+      "Darnell Mooney||draftkings": 550,
+      "Darnell Mooney||fanatics": 575,
+      "Darnell Mooney||fanduel": 650,
+      "Darnell Mooney||hardrockbet": 550,
+      "Devin Singletary||caesars": 650,
+      "Devin Singletary||draftkings": 1000,
+      "Devin Singletary||fanatics": 900,
+      "Devin Singletary||fanduel": 900,
+      "Devin Singletary||hardrockbet": 700,
+      "Emari Demercado||caesars": 500,
+      "Emari Demercado||draftkings": 500,
+      "Emari Demercado||fanatics": 550,
+      "Emari Demercado||fanduel": 500,
+      "Emari Demercado||hardrockbet": 450,
+      "George Pickens||caesars": 149,
+      "George Pickens||draftkings": 160,
+      "George Pickens||fanatics": 165,
+      "George Pickens||fanduel": 160,
+      "George Pickens||hardrockbet": 150,
+      "Hunter Luepke||caesars": 1000,
+      "Hunter Luepke||draftkings": 1000,
+      "Hunter Luepke||fanatics": 1200,
+      "Hunter Luepke||fanduel": 1000,
+      "Hunter Luepke||hardrockbet": 900,
+      "Isaiah Likely||caesars": 305,
+      "Isaiah Likely||draftkings": 340,
+      "Isaiah Likely||fanatics": 325,
+      "Isaiah Likely||fanduel": 340,
+      "Isaiah Likely||hardrockbet": 325,
+      "Israel Abanikanda||caesars": 1600,
+      "Israel Abanikanda||draftkings": 1700,
+      "Israel Abanikanda||fanduel": 1700,
+      "Israel Abanikanda||hardrockbet": 1750,
+      "Jake Ferguson||caesars": 245,
+      "Jake Ferguson||draftkings": 280,
+      "Jake Ferguson||fanatics": 300,
+      "Jake Ferguson||fanduel": 280,
+      "Jake Ferguson||hardrockbet": 275,
+      "Javonte Williams||caesars": -152,
+      "Javonte Williams||draftkings": -150,
+      "Javonte Williams||fanatics": -140,
+      "Javonte Williams||fanduel": -140,
+      "Javonte Williams||hardrockbet": -150,
+      "Jaxson Dart||caesars": 205,
+      "Jaxson Dart||draftkings": 215,
+      "Jaxson Dart||fanatics": 230,
+      "Jaxson Dart||fanduel": 220,
+      "Jaxson Dart||hardrockbet": 210,
+      "Jonathan Mingo||caesars": 1500,
+      "Jonathan Mingo||draftkings": 1700,
+      "Jonathan Mingo||fanatics": 2200,
+      "Jonathan Mingo||fanduel": 1700,
+      "Jonathan Mingo||hardrockbet": 1750,
+      "KaVontae Turpin||caesars": 700,
+      "KaVontae Turpin||draftkings": 800,
+      "KaVontae Turpin||fanatics": 750,
+      "KaVontae Turpin||fanduel": 750,
+      "KaVontae Turpin||hardrockbet": 650,
+      "Luke Schoonmaker||caesars": 900,
+      "Luke Schoonmaker||draftkings": 1100,
+      "Luke Schoonmaker||fanatics": 1500,
+      "Luke Schoonmaker||fanduel": 1000,
+      "Luke Schoonmaker||hardrockbet": 900,
+      "Malachi Fields||caesars": 380,
+      "Malachi Fields||draftkings": 380,
+      "Malachi Fields||fanatics": 400,
+      "Malachi Fields||fanduel": 410,
+      "Malachi Fields||hardrockbet": 375,
+      "Malik Nabers||caesars": 171,
+      "Malik Nabers||draftkings": 190,
+      "Malik Nabers||fanatics": 200,
+      "Malik Nabers||fanduel": 195,
+      "Malik Nabers||hardrockbet": 185,
+      "Najee Harris||caesars": 320,
+      "Najee Harris||draftkings": 310,
+      "Najee Harris||fanatics": 360,
+      "Najee Harris||fanduel": 350,
+      "Najee Harris||hardrockbet": 325,
+      "New York Giants D/ST||draftkings": 600,
+      "New York Giants D/ST||fanatics": 575,
+      "New York Giants Defense||fanduel": 800,
+      "Odell Beckham Jr.||caesars": 625,
+      "Odell Beckham Jr.||draftkings": 750,
+      "Odell Beckham Jr.||fanatics": 800,
+      "Odell Beckham Jr.||fanduel": 850,
+      "Odell Beckham Jr.||hardrockbet": 700,
+      "Patrick Ricard||caesars": 2000,
+      "Patrick Ricard||draftkings": 2500,
+      "Ryan Flournoy||caesars": 360,
+      "Ryan Flournoy||draftkings": 380,
+      "Ryan Flournoy||fanatics": 400,
+      "Ryan Flournoy||fanduel": 380,
+      "Ryan Flournoy||hardrockbet": 350,
+      "Theo Johnson||caesars": 500,
+      "Theo Johnson||draftkings": 500,
+      "Theo Johnson||fanatics": 500,
+      "Theo Johnson||fanduel": 550,
+      "Theo Johnson||hardrockbet": 500,
+      "Thomas Fidone||caesars": 2300,
+      "Tyrone Tracy Jr.||caesars": 330,
+      "Tyrone Tracy Jr.||draftkings": 380,
+      "Tyrone Tracy Jr.||fanatics": 380,
+      "Tyrone Tracy Jr.||fanduel": 350,
+      "Tyrone Tracy Jr.||hardrockbet": 325
     }
   ],
   "presence_history": [
     [
       [
-        "Luke Maile",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Fernando Tatis Jr.",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jac Caglianone",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Tyler Tolbert",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Nate Eaton",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Nick Sogard",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Matthew Lugo",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Nick Loftin",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jac Caglianone",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Willson Contreras",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Nate Eaton",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Nick Sogard",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jonah Cox",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Bryce Eldridge",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jake Cronenworth",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Bobby Witt Jr.",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Manny Machado",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Samad Taylor",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Isaac Collins",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Dustin Harris",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Michael Massey",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Fernando Tatis Jr.",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Nick Loftin",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jackson Merrill",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Caleb Durbin",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Nate Eaton",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Manny Machado",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Samad Taylor",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Shay Whitcomb",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Isaac Collins",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Tyler Tolbert",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Drew Cavanaugh",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Salvador Perez",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jahmai Jones",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Wilyer Abreu",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Luis Campusano",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Bobby Witt Jr.",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jung Hoo Lee",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Christian Koss",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jake Cronenworth",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Fernando Tatis Jr.",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Shay Whitcomb",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jahmai Jones",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Drew Cavanaugh",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Roman Anthony",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Xander Bogaerts",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Luis Campusano",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Salvador Perez",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Drew Gilbert",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Adley Rutschman",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Nick Sogard",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Manny Machado",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Andrew Knizner",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Caleb Durbin",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Fernando Tatis Jr.",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Tyler Tolbert",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Adley Rutschman",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Trevor Story",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Roman Anthony",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jake Cronenworth",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Ethan Salas",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jac Caglianone",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Bryce Eldridge",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Salvador Perez",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Trevor Story",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Willson Contreras",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Xander Bogaerts",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Dustin Harris",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jonah Cox",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jung Hoo Lee",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Ethan Salas",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Trevor Story",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Shay Whitcomb",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Dustin Harris",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jackson Merrill",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Nick Loftin",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Bobby Witt Jr.",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Christian Koss",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Adley Rutschman",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Tyler Tolbert",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jake Cronenworth",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Xander Bogaerts",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Wilyer Abreu",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Luis Campusano",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Luke Maile",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Trevor Story",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Bobby Witt Jr.",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Matthew Lugo",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jac Caglianone",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Roman Anthony",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jahmai Jones",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Turner Hill",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jackson Merrill",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Nick Loftin",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Matthew Lugo",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jonah Cox",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Caleb Durbin",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Luke Maile",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Drew Gilbert",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Adley Rutschman",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Caleb Durbin",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Bryce Eldridge",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Christian Koss",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Ethan Salas",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Luis Campusano",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Manny Machado",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Samad Taylor",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Isaac Collins",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Wilyer Abreu",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Michael Massey",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Willson Contreras",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jackson Merrill",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Wilyer Abreu",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jung Hoo Lee",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Bryce Eldridge",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Shay Whitcomb",
-        "betmgm",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Isaac Collins",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Salvador Perez",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Michael Massey",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Jahmai Jones",
-        "fanatics",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Matthew Lugo",
-        "draftkings",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Roman Anthony",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Andrew Knizner",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jonah Cox",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Jung Hoo Lee",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Christian Koss",
-        "fanatics",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Drew Gilbert",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Samad Taylor",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Dustin Harris",
-        "draftkings",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Drew Gilbert",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Nate Eaton",
-        "fanduel",
-        "Kansas City Royals @ Boston Red Sox"
-      ],
-      [
-        "Xander Bogaerts",
-        "fanduel",
-        "San Diego Padres @ San Francisco Giants"
-      ],
-      [
-        "Nick Sogard",
-        "betmgm",
-        "Kansas City Royals @ Boston Red Sox"
-      ]
-    ],
-    [
-      [
         "Jonah Coleman",
         "fanduel",
         "Denver Broncos @ Kansas City Chiefs"
@@ -12915,21 +12077,427 @@
         "Jake Briningstool",
         "fanatics",
         "Denver Broncos @ Kansas City Chiefs"
+      ]
+    ],
+    [
+      [
+        "Theo Johnson",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Isaiah Likely",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaxson Dart",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "New York Giants D/ST",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "CeeDee Lamb",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dak Prescott",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "George Pickens",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Malik Nabers",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Theo Johnson",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Isaiah Likely",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Israel Abanikanda",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jonathan Mingo",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Luke Schoonmaker",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Cam Brown",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Ferguson",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Darnell Mooney",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Najee Harris",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Hunter Luepke",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallas Cowboys D/ST",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jonathan Mingo",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "New York Giants Defense",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Devin Singletary",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Malachi Fields",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emari Demercado",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Cam Brown",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Israel Abanikanda",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dak Prescott",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Malik Nabers",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Braxton Berrios",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "KaVontae Turpin",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Ferguson",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Isaiah Likely",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Malachi Fields",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Cam Skattebo",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "CeeDee Lamb",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Darnell Mooney",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Theo Johnson",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Malik Nabers",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Braxton Berrios",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dalen Cambre",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Luke Schoonmaker",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Ryan Flournoy",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Devin Singletary",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Patrick Ricard",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaxson Dart",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Ferguson",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "New York Giants D/ST",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Najee Harris",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jonathan Mingo",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Darnell Mooney",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Ryan Flournoy",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Cam Brown",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Devin Singletary",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Najee Harris",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "George Pickens",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emari Demercado",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Braxton Berrios",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaxson Dart",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "KaVontae Turpin",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dak Prescott",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Hunter Luepke",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emari Demercado",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallas Cowboys D/ST",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Ryan Flournoy",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "George Pickens",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Malachi Fields",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "CeeDee Lamb",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallas Cowboys Defense",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Hunter Luepke",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "KaVontae Turpin",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Luke Schoonmaker",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
       ]
     ]
   ],
   "mgm_history": [
-    [
-      {
-        "event": "Denver Broncos @ Kansas City Chiefs",
-        "ending": 75,
-        "team": "",
-        "players": [
-          "Noah Gray",
-          "Rashee Rice"
-        ]
-      }
-    ],
     [
       {
         "event": "Denver Broncos @ Kansas City Chiefs",
@@ -13024,7 +12592,8 @@
           "Adam Trautman"
         ]
       }
-    ]
+    ],
+    []
   ],
   "prev_ev": {}
 }
