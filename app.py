@@ -734,7 +734,7 @@ SPORT_CFG = {
         "label": "Anytime TD Yes / 0.5",
         "hit": "TD",
         "hits": "TDs",
-        "sgo": False,
+        "sgo": True,
         "days": 8,
         "when": "Kickoff",
         "lock_caption": "TDs matched to the number we locked before kick. Same List energy. Different scoreboard.",
@@ -7386,6 +7386,7 @@ def main():
                     f'<div class="info-box"><b>Books kept:</b> {", ".join(found) or "none"}'
                     + (f"<br><b>API raw keys:</b> {', '.join(dbg.get('raw_books') or [])}" if dbg.get("raw_books") else "")
                     + f"<br><b>US/AU split:</b> {dbg.get('regions') or {}}"
+                    + f"<br><b>SGO:</b> league={dbg.get('sgo_league')} http={dbg.get('sgo_http')} rows={dbg.get('sgo_rows') or dbg.get('sgo_rows_built')} books={dbg.get('sgo_books')} err={dbg.get('sgo_err') or ''}"
                     + "</div>",
                     unsafe_allow_html=True,
                 )
