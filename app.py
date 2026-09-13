@@ -25,6 +25,370 @@ except ImportError:
         return {}
     def analyze_many(*a, **k):
         return {}
+
+# ── NFL math (inlined — one file for GitHub paste) ──────────
+HAS_NFL_MATH = True
+"""
+Girl Magic — NFL Math 🔮
+Anytime TD only. Drop next to app.py.
+
+What this file fixes (the thing that never shipped):
+- MLB "FD under MGM by 100" was firing on every NFL longshot. That's HR math.
+- Magic Math was using first-pitch / +400-699 HR lanes on TDs.
+- TAKE greens were either too tight (MLB copy) or too loose (week-1 1-premium).
+
+Import:
+    from nfl_math import (
+        nfl_price_ok, nfl_fd_under_mgm, nfl_magic_row,
+        nfl_take_ok, nfl_hot_end, NFL_HOT_ENDS, NFL_DEAD_ENDS,
+    )
+"""
+
+from collections import Counter
+
+# ── price lanes (Anytime TD Over Yes) ────────────────────────
+NFL_FLOOR = 115          # shorter than this is not a Girl Magic TD ticket
+NFL_SWEET_LO = 150
+NFL_SWEET_HI = 450       # the lane we actually hunt
+NFL_LONG_LO = 500
+NFL_LONG_HI = 1200       # long TDs hit. No 799 cap.
+NFL_FLYER = 1201         # flyer: needs extra proof
+
+# Endings that have actually shown up on TDs we like
+NFL_HOT_ENDS = {10, 20, 25, 50, 70, 75, 90, 0}
+NFL_DEAD_ENDS = {15, 35, 40, 45, 55, 65, 80, 85}  # fade-these on long prices
+NFL_MGM_CLASSIC = {0, 25, 50, 75}                 # MGM group/pair endings
+NFL_DK_10 = {10}
+NFL_FD_PATTERN = {10, 20, 30, 60, 70, 90}
+NFL_FD_EXACT = {600}                              # keep 600 as a specific FD tell
+
+# FD vs MGM — NFL version (NOT "by 100" on +900 flyers)
+NFL_FD_MGM_MIN = 25      # ignore tiny gaps
+NFL_FD_MGM_MAX = 80      # 100+ on a +800 TD is noise, not a tell
+NFL_FD_MGM_LANE = (150, 550)  # only shout in this price band
+
+TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "caesars"}
+SIGNAL_ONLY = {"betmgm"}
+
+
+def last_two(p):
+    try:
+        return abs(int(p)) % 100
+    except Exception:
+        return None
+
+
+def abs_price(p):
+    try:
+        return abs(int(p))
+    except Exception:
+        return None
+
+
+def nfl_price_ok(best_price):
+    """Anytime TD ticket floor. No upper cap."""
+    p = abs_price(best_price)
+    return p is not None and p >= NFL_FLOOR
+
+
+def nfl_hot_end(price):
+    end = last_two(price)
+    return end in NFL_HOT_ENDS if end is not None else False
+
+
+def nfl_dead_long(price):
+    p = abs_price(price)
+    end = last_two(price)
+    if p is None or end is None:
+        return False
+    return p >= NFL_LONG_LO and end in NFL_DEAD_ENDS
+
+
+def nfl_lane(price):
+    p = abs_price(price)
+    if p is None:
+        return "none"
+    if p < NFL_FLOOR:
+        return "too_short"
+    if NFL_SWEET_LO <= p <= NFL_SWEET_HI:
+        return "sweet"
+    if NFL_LONG_LO <= p <= NFL_LONG_HI:
+        return "long"
+    if p >= NFL_FLYER:
+        return "flyer"
+    return "mid"
+
+
+def _norm_book(b):
+    b = str(b or "").lower()
+    if "betmgm" in b or b == "mgm":
+        return "betmgm"
+    if "draftking" in b or b == "dk":
+        return "draftkings"
+    if "fanduel" in b or b == "fd":
+        return "fanduel"
+    if "hardrock" in b:
+        return "hardrockbet"
+    if "fanatic" in b:
+        return "fanatics"
+    if "caesar" in b or "williamhill" in b:
+        return "caesars"
+    if "bet365" in b or b == "365":
+        return "bet365"
+    return b
+
+
+def nfl_fd_under_mgm(book_prices):
+    """
+    NFL tell: FD is 25–80 pts SHORTER than MGM, and the ticket is in the sweet/mid lane.
+    MLB 'by 100' on +850 vs +950 is junk. Do not use that here.
+    Returns (ok, gap, fd, mgm) or (False, 0, None, None).
+    """
+    books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
+    fd = books.get("fanduel")
+    mgm = books.get("betmgm")
+    if fd is None or mgm is None:
+        return False, 0, fd, mgm
+    try:
+        fd_i, mgm_i = int(fd), int(mgm)
+    except Exception:
+        return False, 0, fd, mgm
+    # American plus prices: higher number = longer. FD under MGM = mgm - fd > 0
+    gap = mgm_i - fd_i
+    lane_p = min(abs(fd_i), abs(mgm_i))
+    lo, hi = NFL_FD_MGM_LANE
+    if not (lo <= lane_p <= hi):
+        return False, gap, fd_i, mgm_i
+    if NFL_FD_MGM_MIN <= gap <= NFL_FD_MGM_MAX:
+        return True, gap, fd_i, mgm_i
+    return False, gap, fd_i, mgm_i
+
+
+def nfl_b365_over_hardrock(book_prices):
+    books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
+    b365 = books.get("bet365")
+    hr = books.get("hardrockbet")
+    if b365 is None or hr is None:
+        return False, 0
+    try:
+        gap = int(b365) - int(hr)
+    except Exception:
+        return False, 0
+    return gap >= 25, gap
+
+
+def letter_value(ch):
+    if not ch or not ch.isalpha():
+        return 0
+    return (ord(ch.upper()) - 64)
+
+
+def name_number(player):
+    """Pythagorean name number 1–9, keep 11/22/33 as master footnotes."""
+    total = sum(letter_value(c) for c in str(player or ""))
+    raw = total
+    while total > 9 and total not in (11, 22, 33):
+        total = sum(int(d) for d in str(total))
+    reduced = total
+    while reduced > 9:
+        reduced = sum(int(d) for d in str(reduced))
+    return reduced, raw, total if total in (11, 22, 33) else None
+
+
+def end_number(price):
+    end = last_two(price)
+    if end is None:
+        return None, None
+    n = end
+    while n > 9:
+        n = sum(int(d) for d in str(n))
+    return end, n
+
+
+def nfl_magic_row(player, price, book_prices=None, methods=None):
+    """One Magic Math card for an NFL TD name. Does not green TAKE by itself."""
+    p = abs_price(price)
+    end, end_n = end_number(price)
+    name_n, raw, master = name_number(player)
+    lane = nfl_lane(price)
+    hot = nfl_hot_end(price)
+    dead = nfl_dead_long(price)
+    fd_ok, fd_gap, fd, mgm = nfl_fd_under_mgm(book_prices)
+    tags = []
+    if hot:
+        tags.append(f"Hot end {end:02d}" if end is not None else "Hot end")
+    if dead:
+        tags.append("Dead long ending")
+    if lane == "sweet":
+        tags.append("Sweet lane")
+    if lane == "long":
+        tags.append("Long TD")
+    if lane == "flyer":
+        tags.append("Flyer")
+    if fd_ok:
+        tags.append(f"FD under MGM {fd_gap}")
+    if name_n and end_n and name_n == end_n:
+        tags.append("name+price")
+    if master:
+        tags.append(f"Master {master}")
+    for m in methods or []:
+        ms = str(m)
+        if ms in ("DK 10", "FD Pattern", "FD 600", "MGM Exact") or ms.startswith("MGM") or ms.startswith("B365"):
+            tags.append(ms)
+    why_bits = [
+        f"lane {lane}",
+        f"Name# {name_n}",
+        f"End {end:02d} → #{end_n}" if end is not None else "no end",
+    ]
+    if fd_ok:
+        why_bits.append(f"FD {fd:+d} under MGM {mgm:+d} by {fd_gap}")
+    return {
+        "player": player,
+        "price": p,
+        "end": end,
+        "end_n": end_n,
+        "name_n": name_n,
+        "master": master,
+        "lane": lane,
+        "hot": hot,
+        "dead": dead,
+        "fd_under_mgm": fd_ok,
+        "fd_gap": fd_gap,
+        "tags": tags,
+        "why": " · ".join(why_bits),
+        "match_name_price": bool(name_n and end_n and name_n == end_n),
+    }
+
+
+def nfl_take_ok(
+    core_count,
+    methods=None,
+    best_price=None,
+    best_book=None,
+    book_prices=None,
+    score=0,
+    need_core=2,
+):
+    """
+    NFL TAKE gate. Not MLB.
+    - Ticket book only (never MGM as the buy)
+    - Price >= +115
+    - 2 premium methods (week-1 can pass need_core=1 from app)
+    - Hot ending OR priority tag OR score >= 70
+    - Dead long endings do not green
+    - Flyers need priority + 2 real books
+    """
+    p = abs_price(best_price)
+    if p is None or p < NFL_FLOOR:
+        return False
+    if nfl_dead_long(best_price):
+        return False
+    bk = _norm_book(best_book)
+    if not bk and book_prices:
+        # pick longest ticket book
+        best = None
+        for k, v in (book_prices or {}).items():
+            nb = _norm_book(k)
+            if nb in SIGNAL_ONLY:
+                continue
+            try:
+                iv = int(v)
+            except Exception:
+                continue
+            if best is None or iv > best[0]:
+                best = (iv, nb)
+        bk = best[1] if best else None
+    if not bk or bk in SIGNAL_ONLY or bk not in TICKET_BOOKS:
+        return False
+    if int(core_count or 0) < int(need_core or 2):
+        return False
+    ms = set(str(m) for m in (methods or []))
+    priority = bool(
+        ms
+        & {
+            "DK 10",
+            "FD Pattern",
+            "FD 600",
+            "MGM Exact",
+            "Exact Match",
+            "Last one left",
+            "Multi-book Shorten",
+            "B365 850",
+        }
+        or any(m.startswith("MGM ") or m.startswith("Match ") or m.startswith("B365") for m in ms)
+    )
+    hot = nfl_hot_end(best_price)
+    lane = nfl_lane(best_price)
+    try:
+        sc = int(score or 0)
+    except Exception:
+        sc = 0
+    if lane == "flyer":
+        books = {_norm_book(k) for k in (book_prices or {})}
+        real = books & {"draftkings", "fanduel", "betmgm"}
+        if not priority or len(real) < 2:
+            return False
+    if hot or priority or sc >= 70:
+        return True
+    return False
+
+
+def nfl_petty_alerts(ev_board, flag_rows=None, limit=8):
+    """Replace MLB FD-under-100 spam with NFL-lane alerts."""
+    alerts = []
+    for item in ev_board or []:
+        books = item.get("book_prices") or {}
+        ok, gap, fd, mgm = nfl_fd_under_mgm(books)
+        if ok:
+            alerts.append(f"FD under MGM by {gap} · {item.get('player')}")
+        ms = set(item.get("methods") or [])
+        if "MGM Exact" in ms:
+            alerts.append(f"MGM Exact · {item.get('player')}")
+        if "DK 10" in ms and ("FD Pattern" in ms or "FD 600" in ms):
+            alerts.append(f"DK 10 + FD · {item.get('player')}")
+    for r in flag_rows or []:
+        meths = r.get("methods") or []
+        if "MGM Exact" in meths:
+            alerts.append(f"MGM Exact · {r.get('label')}")
+    seen, out = set(), []
+    for a in alerts:
+        if a not in seen:
+            seen.add(a)
+            out.append(a)
+    return out[:limit]
+
+
+def nfl_ending_board(rows):
+    """What's Going Today helper — count TD endings from graded HITs."""
+    ends = Counter()
+    books = Counter()
+    for r in rows or []:
+        if str(r.get("result") or "").upper() != "HIT":
+            continue
+        end = r.get("ending")
+        if end is None:
+            end = last_two(r.get("best_price"))
+        if end is None:
+            continue
+        ends[int(end)] += 1
+        books[str(r.get("best_book") or "untagged")] += 1
+    return ends, books
+
+
+# ── copy for Magic Math tab (NFL) ────────────────────────────
+NFL_MATH_BLURB = """
+**NFL Magic Math is not MLB HR math.**
+
+- Ticket = Anytime TD Yes. Floor **+115**. No 799 cap.
+- Sweet lane **+150 to +450**. Long TDs **+500 to +1200** still count.
+- Hot endings: **00, 10, 20, 25, 50, 70, 75, 90**.
+- Dead long endings (fade on +500+): 15, 35, 40, 45, 55, 65, 80, 85.
+- **FD under MGM** only if the gap is **25–80 pts** and the price is in **+150 to +550**. A 100-pt gap on a +900 flyer is not a tell.
+- **MGM is signal only.** It can tag a card. It cannot be the book we buy.
+- Name# matching End# is flavor. It never greens TAKE by itself.
+"""
+
+nfl_math_fd_under_mgm = nfl_fd_under_mgm
 import statistics
 import time
 from datetime import datetime, timezone, timedelta
@@ -714,9 +1078,13 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     end = last_two(best_price)
     hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
     if nfl_loose_mode():
+        if HAS_NFL_MATH:
+            return nfl_take_ok(
+                core_count, methods, best_price, best_book, book_prices, score,
+                need_core=max(1, methods_min()),
+            )
         if not nfl_price_ok(best_price):
             return False
-        # Week 1: 1 premium is enough. Priority / hot end / score are bonuses, not walls.
         return True
     if not pri and sc < SCORE_SOFT_TAKE:
         return False
@@ -1199,6 +1567,10 @@ def petty_notes_for(item):
 
 
 def collect_petty_alerts(ev_board, results):
+    if HAS_NFL_MATH and active_sport() == "NFL":
+        extra = nfl_petty_alerts(ev_board, results, limit=8)
+        # still keep MGM Exact / shorten from flags
+        return extra
     alerts = []
     for r in results or []:
         meths = r.get("methods") or []
@@ -4832,9 +5204,14 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         mgm_price = next((v for k, v in by_book.items() if "betmgm" in k), None)
         others = [v for b, v in by_book.items() if b != "fanduel"]
         if fd is not None and mgm_price is not None:
-            gap = mgm_price - fd
-            if 10 <= gap <= 100:
-                results.append({"type": "trend", "trend_kind": "good", "label": player, "reason": f"💚 FD under MGM by {int(gap)} · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}", "methods": ["FD under MGM"], "gap": int(gap)})
+            if HAS_NFL_MATH and active_sport() == "NFL":
+                ok, gap, _fd, _mgm = nfl_math_fd_under_mgm({"fanduel": fd, "betmgm": mgm_price})
+                if ok:
+                    results.append({"type": "trend", "trend_kind": "good", "label": player, "reason": f"💚 FD under MGM by {int(gap)} · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}", "methods": ["FD under MGM"], "gap": int(gap)})
+            else:
+                gap = mgm_price - fd
+                if 10 <= gap <= 100:
+                    results.append({"type": "trend", "trend_kind": "good", "label": player, "reason": f"💚 FD under MGM by {int(gap)} · FD {format_odds(fd)} · MGM {format_odds(mgm_price)}", "methods": ["FD under MGM"], "gap": int(gap)})
         if fd is not None and others and fd > max(others):
             results.append({"type": "trend", "trend_kind": "fade", "label": player, "reason": f"🔴 FD highest · {format_odds(fd)}", "methods": ["FADE · FD highest"], "gap": 0})
     for _, row in df.iterrows():
@@ -8130,14 +8507,25 @@ def main():
             f'</div>',
             unsafe_allow_html=True,
         )
-        st.markdown(
-            '<span class="num-chip num-hot">10 / 25 / 50 / 75 / 90</span>'
-            '<span class="num-chip">+400s +500s +600s</span>'
-            '<span class="num-chip">DK 10 · MGM 25/50 · FD 600</span>'
-            '<span class="num-chip">Benford boost</span>'
-            '<span class="num-chip">Name+price boost</span>',
-            unsafe_allow_html=True,
-        )
+        if HAS_NFL_MATH and active_sport() == "NFL":
+            st.markdown(NFL_MATH_BLURB)
+            st.markdown(
+                '<span class="num-chip num-hot">00 / 10 / 20 / 25 / 50 / 70 / 75 / 90</span>'
+                '<span class="num-chip">TD +115+ · sweet +150-450</span>'
+                '<span class="num-chip">FD under MGM 25-80 only</span>'
+                '<span class="num-chip">MGM signal · never the ticket</span>'
+                '<span class="num-chip">Name+price is flavor</span>',
+                unsafe_allow_html=True,
+            )
+        else:
+            st.markdown(
+                '<span class="num-chip num-hot">10 / 25 / 50 / 75 / 90</span>'
+                '<span class="num-chip">+400s +500s +600s</span>'
+                '<span class="num-chip">DK 10 · MGM 25/50 · FD 600</span>'
+                '<span class="num-chip">Benford boost</span>'
+                '<span class="num-chip">Name+price boost</span>',
+                unsafe_allow_html=True,
+            )
         elite = [e for e in (ev_board or []) if e.get("is_bet")]
         if elite:
             st.markdown("#### Petty Picks 💋")
