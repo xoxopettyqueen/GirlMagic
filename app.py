@@ -154,6 +154,7 @@ def nfl_fd_under_mgm(book_prices):
 
 
 def nfl_b365_over_hardrock(book_prices):
+    """Bet365 plus-price longer than Hard Rock."""
     books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
     b365 = books.get("bet365")
     hr = books.get("hardrockbet")
@@ -163,7 +164,21 @@ def nfl_b365_over_hardrock(book_prices):
         gap = int(b365) - int(hr)
     except Exception:
         return False, 0
-    return gap >= 25, gap
+    return gap > 0, gap
+
+
+def b365_over_mgm(book_prices):
+    """Bet365 plus-price longer than BetMGM."""
+    books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
+    b365 = books.get("bet365")
+    mgm = books.get("betmgm")
+    if b365 is None or mgm is None:
+        return False, 0
+    try:
+        gap = int(b365) - int(mgm)
+    except Exception:
+        return False, 0
+    return gap > 0, gap
 
 
 def letter_value(ch):
@@ -1319,7 +1334,7 @@ def render_method_tags(methods, limit=8):
         if nm not in seen: seen.append(nm)
     tips = {
         "DK 10": "DraftKings price ends in 10",
-        "B365 850": "Bet365 price is 850 (or 8xx ending 50)",
+        "B365 850": "Bet365 is exactly +850",
         "B365 25": "Bet365 same-team pair/trio ending 25",
         "B365 50": "Bet365 same-team pair/trio ending 50",
         "B365 75": "Bet365 same-team pair/trio ending 75",
@@ -6068,10 +6083,10 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 px = int(row["price"])
             except Exception:
                 continue
-            if px == 850 or last_two(px) == 50 and abs(px) >= 800 and abs(px) < 900:
+            if int(px) == 850:
                 results.append({
                     "type": "b365", "label": row["player"],
-                    "reason": f"Bet365 850-style -> {format_odds(px)}",
+                    "reason": f"Bet365 +850 -> {format_odds(px)}",
                     "event": row.get("event"), "methods": ["B365 850"],
                 })
                 methods_map[row["player"]].append("B365 850")
@@ -6122,12 +6137,26 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if ok:
             results.append({
                 "type": "trend", "trend_kind": "good", "label": player,
-                "reason": f"💚 Bet365 over HardRock by {int(gap)}",
+                "reason": f"💚 Bet365 over HardRock by {int(gap)} · 365 {format_odds(by_book.get('bet365'))} · HR {format_odds(by_book.get('hardrockbet'))}",
                 "methods": ["B365 over HardRock"], "gap": int(gap),
             })
             methods_map[player].append("B365 over HardRock")
+        ok2, gap2 = False, 0
+        try:
+            ok2, gap2 = b365_over_mgm(by_book)
+        except Exception:
+            b3, mg = by_book.get("bet365"), by_book.get("betmgm")
+            if b3 is not None and mg is not None and int(b3) > int(mg):
+                ok2, gap2 = True, int(b3) - int(mg)
+        if ok2:
+            results.append({
+                "type": "trend", "trend_kind": "good", "label": player,
+                "reason": f"💚 Bet365 over MGM by {int(gap2)} · 365 {format_odds(by_book.get('bet365'))} · MGM {format_odds(by_book.get('betmgm'))}",
+                "methods": ["B365 over MGM"], "gap": int(gap2),
+            })
+            methods_map[player].append("B365 over MGM")
 
-        FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365")
+    FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365")
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if len(g) < 2:
             continue
