@@ -7351,10 +7351,17 @@ def main():
             st.session_state["last_refresh_count"] = refresh_count
         auto_fetch = HAS_AUTOREFRESH and refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
         first_load = bool(chosen) and not st.session_state.get("odds") and st.session_state.get("auto_once") is not False
+        try:
+            af = str(st.query_params.get("autofetch", "") or "").lower()
+        except Exception:
+            af = ""
+        ping_fetch = af in ("1", "true", "yes")
         if auto_fetch:
             st.session_state["last_refresh_count"] = refresh_count
         if first_load:
             st.session_state["auto_once"] = False
+            auto_fetch = True
+        if ping_fetch and chosen:
             auto_fetch = True
         if (manual_fetch or auto_fetch) and chosen:
             with st.spinner("Fetching..."):
