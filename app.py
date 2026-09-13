@@ -4347,29 +4347,52 @@ def fetch_mlb_hr_hitters(date_str=None):
 
 @st.cache_data(ttl=180, show_spinner=False)
 def fetch_nfl_td_scorers():
-    """Anytime TD scorers from ESPN public scoreboard + game summary. No extra paid API."""
+    """Anytime TD scorers from ESPN. LIVE games + finals. Miss pool = finals only."""
     scorers, finished = set(), set()
-    try:
-        day = datetime.strptime(today_az(), "%Y-%m-%d").strftime("%Y%m%d")
-    except Exception:
-        day = datetime.now().strftime("%Y%m%d")
-    try:
-        sb = requests.get(
-            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
-            params={"dates": day}, timeout=15,
-        ).json()
-    except Exception as e:
-        return set(), set(), f"ESPN scoreboard fail: {e}"
-    events = sb.get("events") or []
-    done_ids = []
+    days = []
+    for dfn in (today_az, today_mlb_date):
+        try:
+            days.append(datetime.strptime(dfn(), "%Y-%m-%d").strftime("%Y%m%d"))
+        except Exception:
+            pass
+    if not days:
+        days = [datetime.now().strftime("%Y%m%d")]
+    days = list(dict.fromkeys(days))
+    LIVE = {
+        "STATUS_IN_PROGRESS", "STATUS_HALFTIME", "STATUS_END_PERIOD",
+        "STATUS_END_QUARTER", "STATUS_FIRST_HALF", "STATUS_SECOND_HALF",
+        "STATUS_END_OF_PERIOD", "STATUS_TIMEOUT",
+    }
+    FINAL = {"STATUS_FINAL", "STATUS_FINAL_OVERTIME"}
+    events, seen_eid = [], set()
+    for day in days:
+        try:
+            sb = requests.get(
+                "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+                params={"dates": day}, timeout=15,
+            ).json()
+        except Exception:
+            continue
+        for ev in sb.get("events") or []:
+            eid = str(ev.get("id") or "")
+            if eid and eid not in seen_eid:
+                seen_eid.add(eid)
+                events.append(ev)
+    pull_ids = []
     for ev in events:
         comp = (ev.get("competitions") or [{}])[0]
         status = ((comp.get("status") or {}).get("type") or {})
         eid = ev.get("id")
-        if status.get("completed") or str(status.get("name") or "").upper() in ("STATUS_FINAL", "STATUS_FINAL_OVERTIME"):
-            if eid:
-                done_ids.append(str(eid))
-    for eid in done_ids[:20]:
+        if not eid:
+            continue
+        name = str(status.get("name") or "").upper()
+        completed = bool(status.get("completed")) or name in FINAL
+        live = name in LIVE or str(status.get("state") or "").lower() == "in"
+        if completed or live:
+            pull_ids.append((str(eid), completed))
+    done_ids = [eid for eid, fin in pull_ids if fin]
+    live_n = sum(1 for _e, fin in pull_ids if not fin)
+    for eid, is_final in pull_ids[:24]:
         try:
             sm = requests.get(
                 "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary",
@@ -4384,12 +4407,17 @@ def fetch_nfl_td_scorers():
                 continue
             if "extra point" in text or "two-point" in text:
                 continue
-            for ath in play.get("athletesInvolved") or []:
+            athletes = list(play.get("athletesInvolved") or [])
+            # Prefer rush/rec/return scorer, not the passer, when we can tell
+            picked = []
+            if "pass" in text and athletes:
+                picked = athletes[1:] or athletes[:1]
+            else:
+                picked = athletes
+            for ath in picked:
                 n = ath.get("displayName") or ath.get("fullName")
                 if n:
                     scorers.add(clean_name(n))
-            # passing TD: first athlete is often the passer — still an anytime scorer only if they crossed
-            # boxscore rushing/receiving TDs are cleaner
         box = ((sm.get("boxscore") or {}).get("players") or [])
         for team_block in box:
             for stat_group in team_block.get("statistics") or []:
@@ -4404,17 +4432,16 @@ def fetch_nfl_td_scorers():
                     continue
                 for ath in stat_group.get("athletes") or []:
                     n = (ath.get("athlete") or {}).get("displayName")
-                    if n:
+                    if n and is_final:
                         finished.add(clean_name(n))
                     stats = ath.get("stats") or []
                     if td_idx is not None and td_idx < len(stats):
                         try:
-                            if float(stats[td_idx]) >= 1:
-                                if n:
-                                    scorers.add(clean_name(n))
+                            if float(stats[td_idx]) >= 1 and n:
+                                scorers.add(clean_name(n))
                         except Exception:
                             pass
-    return scorers, finished, f"ESPN NFL {len(done_ids)} final · {len(scorers)} TD names"
+    return scorers, finished, f"ESPN NFL {len(done_ids)} final · {live_n} live · {len(scorers)} TD names"
 
 
 def auto_grade_pending():
@@ -4464,7 +4491,7 @@ def build_whats_going_today(rows):
     """
     today = today_az()
     if active_sport() == "NFL":
-        hr_names, _final, _msg = [], False, "NFL mode · MLB homers off"
+        hr_names, _final, _msg = fetch_nfl_td_scorers()
     else:
         hr_names, _final, _msg = fetch_mlb_hr_hitters()
 
@@ -4591,20 +4618,27 @@ def render_whats_going_today():
     mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
     if active_sport() == "NFL":
         pair_list = []
-        mlb_hr = 0
+        live_tds, _fin, _m = fetch_nfl_td_scorers()
+        mlb_hr = len(live_tds or [])
+        take_pool = list(st.session_state.get("last_take_names") or [])
+        try:
+            take_pool += ledger_names_today()
+        except Exception:
+            pass
+        take_pool += [r.get("player") for r in rows if r.get("source") in ("take_it", "shop_take", "watch")]
         on_list = 0
+        for nm in live_tds or []:
+            if any(names_match(nm, t) for t in take_pool if t):
+                on_list += 1
         hit_ends = Counter()
         for r in rows:
             blob = str(r.get("market") or r.get("sport") or "").lower()
-            if r.get("date") != today_az():
+            if r.get("date") not in (today_az(), today_mlb_date()):
                 continue
             if "td" not in blob and "nfl" not in blob:
                 continue
-            if r.get("source") in ("take_it", "watch"):
-                on_list += 1
             if r.get("result") != "HIT":
                 continue
-            mlb_hr += 1
             bl = book_label(r.get("best_book") or "")
             end = r.get("ending")
             if end is None:
@@ -4653,7 +4687,7 @@ def render_whats_going_today():
     if cols_html:
         body = '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">%s</div>' % ("".join(cols_html))
     else:
-        empty_msg = "No NFL TDs graded yet. Mark HIT on Results and this banner fills." if active_sport() == "NFL" else "No book chips yet — names below if someone already went."
+        empty_msg = "No book chips yet — names below if someone already scored (live + final)." if active_sport() == "NFL" else "No book chips yet — names below if someone already went."
         body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">%s</div>' % empty_msg
     if hr_status:
         who = " · ".join("%s (%s)" % (n, tag) for n, tag in hr_status[:8])
@@ -4671,7 +4705,7 @@ def render_whats_going_today():
     cfg = sport_cfg()
     title = "What's Going Today · %s" % active_sport()
     if active_sport() == "NFL":
-        sub = "%s %s scored today · %s were on our list · chips = graded TDs only" % (mlb_hr, cfg["hits"], on_list)
+        sub = "%s %s scored (live+final) · %s were Run It / on list · chips = graded HIT prices" % (mlb_hr, cfg["hits"], on_list)
     else:
         sub = (
             "%s %s · %s were Run It / Shop TAKE · chips = who already went "
