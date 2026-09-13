@@ -602,6 +602,44 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .price-book{font-size:.78rem;color:#e9d5ff}
 .method-group{margin-top:8px;padding-top:8px;border-top:1px solid #2a2038}
 .queen-line{color:#f9a8d4;font-style:italic;font-size:.86rem;margin-top:8px}
+
+.n1-pulse{animation:n1Shimmer 1.6s ease-out 1}
+@keyframes n1Shimmer{
+  0%{box-shadow:0 0 0 rgba(244,114,182,0);filter:brightness(1.4)}
+  40%{box-shadow:0 0 28px rgba(244,114,182,.55)}
+  100%{box-shadow:0 0 10px rgba(167,139,250,.2);filter:brightness(1)}
+}
+.n1-sum{
+  background:linear-gradient(110deg,#2a1040,#7c3aed 45%,#db2777);
+  border:1px solid #f9a8d4;border-radius:16px;padding:12px 16px;margin:0 0 12px;
+  color:#fce7f3;font-size:.88rem;line-height:1.45;
+}
+.n1-card{position:relative;overflow:hidden}
+.n1-card.take{border-color:#34d399;box-shadow:0 0 18px rgba(52,211,153,.28)}
+.n1-card.lean{border-color:#f472b6;box-shadow:0 0 18px rgba(244,114,182,.28)}
+.n1-card.watch{border-color:#c084fc;box-shadow:0 0 16px rgba(192,132,252,.25)}
+.n1-card.dont{border-color:#fb7185;box-shadow:0 0 14px rgba(251,113,133,.22)}
+.n1-hot{
+  position:absolute;top:10px;right:10px;
+  background:linear-gradient(90deg,#fb7185,#f472b6);
+  color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.6px;
+  padding:3px 8px;border-radius:999px;box-shadow:0 0 12px rgba(244,114,182,.6);
+}
+.n1-meter{height:7px;background:#1f1630;border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.n1-meter>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#fb7185,#c084fc,#34d399)}
+.n1-meter.hot>i{animation:n1Shimmer 1.8s ease-in-out infinite}
+.n1-meter-lab{font-size:.68rem;color:#e9d5ff;margin-bottom:6px}
+.queen-take{color:#86efac;text-shadow:0 0 10px rgba(52,211,153,.45)}
+.queen-lean{color:#f9a8d4;text-shadow:0 0 10px rgba(244,114,182,.45)}
+.queen-watch{color:#d8b4fe;text-shadow:0 0 10px rgba(192,132,252,.4)}
+.queen-dont{color:#fda4af;text-shadow:0 0 10px rgba(251,113,133,.4)}
+.n1-gloss{
+  display:grid;grid-template-columns:110px 1fr;gap:4px 10px;
+  font-size:.78rem;color:#e9d5ff;margin-top:8px;
+}
+.n1-gloss b{color:#f9a8d4}
+.petty-box.n1-live{animation:n1Shimmer 1.4s ease-out 1}
+
 .tag-group-lab{color:#c4b5d6;font-size:.58rem;letter-spacing:1.2px;text-transform:uppercase;margin:8px 0 3px}
 .motion-line{font-size:.72rem;font-weight:800;margin:6px 0;padding:4px 8px;border-radius:999px;display:inline-block;border:1px solid #64748b}
 .card-hot{box-shadow:0 0 22px rgba(244,114,182,.4);animation:heatPulse 2.4s ease-in-out infinite}
@@ -2124,33 +2162,79 @@ def build_need_one_board(rows, want_types):
     return out
 
 
+def _need_one_queen(action, hot=False):
+    lines = {
+        "TAKE": [
+            "Queen says: I just need one — run it if it’s green and loud.",
+            "Queen says: one play, one vibe, one bag.",
+        ],
+        "LEAN": [
+            "Queen says: math says maybe — keep her close.",
+            "Queen says: math says no, but the streets say maybe.",
+        ],
+        "WATCH": [
+            "Queen says: if it’s purple, it’s homework.",
+            "Queen says: eyes on it — not a bag yet.",
+        ],
+        "DON'T": [
+            "Queen says: I just need one — but this ain’t it.",
+            "Queen says: if it’s red, it’s homework.",
+        ],
+    }
+    pool = list(lines.get(action) or lines["DON'T"])
+    if hot:
+        pool.insert(0, "Queen says: hot zone — green and loud.")
+    # stable per action so the card doesn't flicker every rerun
+    idx = (hash(action) + (1 if hot else 0)) % len(pool)
+    return pool[idx]
+
+
 def render_need_one_cards(items):
-    st.markdown(
-        '<div class="info-box"><b>I JUST NEED ONE</b> finds the one-play props. '
-        "We only take them when the line is clean, the odds are money-only, and the RE tag is active. "
-        "Kelly shows the confidence. Benford shows the energy. "
-        "Board clearance is manual. If it’s green and loud — run it.</div>",
-        unsafe_allow_html=True,
-    )
     if not items:
         st.info("Nothing cleared I JUST NEED ONE. Fetch NFL, then tick a 0.5 box.")
         return
+    top = items[0]
+    kf0 = float(top.get("kelly_frac") or 0)
+    kpct0 = max(0, min(100, kf0 * 100))
+    ev0 = top.get("ev")
+    ev_s0 = f"{ev0:+.2f}" if ev0 is not None else "—"
+    vibe = "run it." if top.get("action") == "TAKE" else ("maybe." if top.get("action") == "LEAN" else "homework only.")
+    st.markdown(
+        f'<div class="n1-sum n1-pulse">'
+        f'<b>{len(items)} prop{"s" if len(items)!=1 else ""} found</b> — '
+        f'{top.get("label")} ({format_odds(top.get("best"))}). '
+        f'Kelly confidence: {kpct0:.0f}%. EV: {ev_s0}. '
+        f'Queen says: {vibe}'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
     cols = st.columns(2)
     for i, r in enumerate(items):
         evs = r.get("ev")
-        kf = r.get("kelly_frac") or 0
+        kf = float(r.get("kelly_frac") or 0)
+        kpct = max(0, min(100, kf * 100))
         ev_s = f"{evs:+.2f}" if evs is not None else "—"
-        k_s = f"{kf:+.2f}" if kf is not None else "—"
         gap = r.get("edge") or 0
+        act = r.get("action") or "DON'T"
+        hot = kpct > 10 and (evs or 0) > 0.05
+        qclass = {"TAKE": "queen-take", "LEAN": "queen-lean", "WATCH": "queen-watch"}.get(act, "queen-dont")
+        aclass = {"TAKE": "take", "LEAN": "lean", "WATCH": "watch"}.get(act, "dont")
+        queen = _need_one_queen(act, hot)
+        hot_tag = '<div class="n1-hot">🔥 HOT ZONE</div>' if hot else ""
         html = (
-            f'<div class="card {r.get("cls") or ""}">'
-            f'<div class="card-kicker">I JUST NEED ONE · {r.get("action")}</div>'
+            f'<div class="card n1-card {aclass} n1-pulse {r.get("cls") or ""}">'
+            f'{hot_tag}'
+            f'<div class="card-kicker">I JUST NEED ONE · {act}</div>'
             f'<div class="card-name">{r.get("emoji")} {r.get("player")} — {r.get("label")} '
             f'({format_odds(r.get("best"))})</div>'
-            f'<div class="card-line">Fair {format_odds(r.get("fair"))} | Gap {gap:+d} | EV {ev_s} | Kelly {k_s}</div>'
-            f'<div class="card-meta">{book_label(r.get("best_book"))} · {r.get("n_books")} books · {r.get("event") or ""}</div>'
+            f'<div class="card-line" title="Fair = weighted book average. Gap = posted minus fair. EV = expected value. Kelly = bankroll confidence.">'
+            f'Fair {format_odds(r.get("fair"))} | Gap {gap:+d} | EV {ev_s} | Kelly {kpct:.0f}%</div>'
+            f'<div class="card-meta">{book_label(r.get("best_book"))} · {r.get("n_books")} book'
+            f'{"s" if (r.get("n_books") or 0)!=1 else ""} · {r.get("event") or ""}</div>'
+            f'<div class="n1-meter-lab">Kelly confidence: {kpct:.0f}%</div>'
+            f'<div class="n1-meter {"hot" if kpct>10 else ""}"><i style="width:{kpct:.0f}%"></i></div>'
             f'<div class="card-foot">RE tag active | Money-only</div>'
-            f'<div class="queen-line">Queen says: “I just need one — run it if it’s green and loud.”</div>'
+            f'<div class="queen-line {qclass}">{queen}</div>'
             f'</div>'
         )
         with cols[i % 2]:
@@ -7781,11 +7865,22 @@ def main():
         )
         with st.expander("📈 What am I looking at?", expanded=True):
             st.markdown(
-                "I JUST NEED ONE finds the one-play props.\n\n"
+                "I JUST NEED ONE finds the one-play props — 0.5 rush, receiving, or receptions.\n\n"
                 "We only take them when the line is clean, the odds are money-only, and the RE tag is active.\n"
                 "Kelly shows the confidence. Benford shows the energy.\n"
                 "Board clearance is manual.\n"
                 "If it’s green and loud — run it."
+            )
+            st.markdown(
+                '<div class="n1-gloss">'
+                "<b>Fair</b><span>Weighted book average</span>"
+                "<b>Gap</b><span>Space between fair and posted</span>"
+                "<b>EV</b><span>Expected value of the number</span>"
+                "<b>Kelly</b><span>Bankroll confidence (0–100%)</span>"
+                "<b>RE tag</b><span>Receiving / receptions filter on rush</span>"
+                "<b>Money-only</b><span>+100 or higher odds</span>"
+                "</div>",
+                unsafe_allow_html=True,
             )
         if active_sport() != "NFL":
             st.info("Switch the lane to NFL, Fetch, then come back. This tab is Anytime-TD weekend work.")
@@ -7808,10 +7903,10 @@ def main():
             items = build_need_one_board(need_rows, want) if want else []
             st.markdown(
                 f'<div class="petty-row">'
-                f'<div class="petty-box"><div class="petty-num">{sum(1 for x in items if x["action"]=="TAKE")}</div><div class="petty-label">💚 TAKE</div></div>'
-                f'<div class="petty-box"><div class="petty-num">{sum(1 for x in items if x["action"]=="LEAN")}</div><div class="petty-label">💖 LEAN</div></div>'
-                f'<div class="petty-box"><div class="petty-num">{sum(1 for x in items if x["action"]=="WATCH")}</div><div class="petty-label">💜 WATCH</div></div>'
-                f'<div class="petty-box"><div class="petty-num">{len(items)}</div><div class="petty-label">ON THIS SCAN</div></div>'
+                f'<div class="petty-box n1-live"><div class="petty-num">{sum(1 for x in items if x["action"]=="TAKE")}</div><div class="petty-label">💚 Cleared plays</div></div>'
+                f'<div class="petty-box n1-live"><div class="petty-num">{sum(1 for x in items if x["action"]=="LEAN")}</div><div class="petty-label">💖 Math says maybe</div></div>'
+                f'<div class="petty-box n1-live"><div class="petty-num">{sum(1 for x in items if x["action"]=="WATCH")}</div><div class="petty-label">💜 Homework zone</div></div>'
+                f'<div class="petty-box n1-live"><div class="petty-num">{len(items)}</div><div class="petty-label">🔮 Live props found</div></div>'
                 f'</div>',
                 unsafe_allow_html=True,
             )
