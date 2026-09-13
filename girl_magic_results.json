@@ -22489,5 +22489,98 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.67
+  },
+  {
+    "id": "2026-09-13_Denzer Guzman_shop_take_122",
+    "date": "2026-09-13",
+    "time": "10:36 AM",
+    "player": "Denzer Guzman",
+    "score": 0,
+    "edge": 122,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 725,
+    "book_prices": {
+      "betmgm": 550,
+      "caesars": 700,
+      "draftkings": 850,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-13T17:36:42.318311+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-13_Jakob Marsee_shop_lean_60",
+    "date": "2026-09-13",
+    "time": "10:36 AM",
+    "player": "Jakob Marsee",
+    "score": 0,
+    "edge": 60,
+    "best_price": 960,
+    "best_book": "draftkings",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 800,
+      "caesars": 850,
+      "draftkings": 960,
+      "fanatics": 925,
+      "fanduel": 900,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T17:36:42.320502+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-13_Trea Turner_shop_take_36",
+    "date": "2026-09-13",
+    "time": "10:36 AM",
+    "player": "Trea Turner",
+    "score": 0,
+    "edge": 36,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 510,
+    "book_prices": {
+      "betmgm": 475,
+      "caesars": 500,
+      "draftkings": 450,
+      "fanatics": 550,
+      "fanduel": 520,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-13T17:36:42.323689+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
