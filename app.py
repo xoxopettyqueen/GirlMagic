@@ -4963,8 +4963,10 @@ def render_whats_going_today():
         empty_msg = "No book chips yet — names below if someone already scored (live + final)." if active_sport() == "NFL" else "No book chips yet — names below if someone already went."
         body = '<div style="font-size:0.78rem;opacity:0.85;margin-top:4px">%s</div>' % empty_msg
     if hr_status:
-        who = " · ".join("%s (%s)" % (n, tag) for n, tag in hr_status[:8])
-        body += '<div style="font-size:0.78rem;color:#fbcfe8;margin-top:6px">Went today: %s</div>' % who
+        listed = [(n, tag) for n, tag in hr_status if tag and tag != "NOT ON LIST"]
+        if listed:
+            who = " · ".join("%s (%s)" % (n, tag) for n, tag in listed[:12])
+            body += '<div style="font-size:0.78rem;color:#fbcfe8;margin-top:6px">Went today: %s</div>' % who
 
     pair_note = ""
     if pair_list:
