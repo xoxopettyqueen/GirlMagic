@@ -4943,6 +4943,33 @@ def auto_grade_pending():
     return hits, misses, skipped, f"{msg} · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
 
 
+
+def pulse_book_and_ending(player, best_book, best_price, ending, lock):
+    """Pills track BEST BOOK. Ending is that book's own last two digits."""
+    claimed_bl = book_label(best_book or "") if best_book else ""
+    own_end = None
+    if lock and player and claimed_bl:
+        for pname, data in (lock or {}).items():
+            if not names_match(player, pname):
+                continue
+            for b, info in ((data or {}).get("books") or {}).items():
+                if book_label(b) != claimed_bl:
+                    continue
+                px = (info or {}).get("price")
+                if px is None:
+                    continue
+                own_end = last_two(int(px))
+                break
+            break
+    if own_end is None:
+        own_end = last_two(best_price) if best_price is not None else ending
+    try:
+        own_end = int(own_end) if own_end is not None else None
+    except Exception:
+        own_end = None
+    return claimed_bl or None, own_end
+
+
 def build_whats_going_today(rows):
     """Today's MLB HRs + ending/book from grades or Lock (best among DK/FD/MGM/HardRock).
     Not the same as MGM pair methods - those stay pair/trio-only on the Board.
@@ -5013,11 +5040,12 @@ def build_whats_going_today(rows):
             ending = last_two(r["best_price"])
         if ending is None and r.get("mgm_ending") is not None:
             ending = r["mgm_ending"]
-        book = r.get("best_book") or ""
-        if ending is None:
+        bl, ending = pulse_book_and_ending(
+            r.get("player"), r.get("best_book"), r.get("best_price"), ending, lock
+        )
+        if ending is None or not bl:
             continue
         ending = int(ending)
-        bl = book_label(book)
         if bl not in FOCUS:
             # still show under Other via label as-is
             pass
@@ -5230,10 +5258,10 @@ def render_whats_going_today():
                 continue
             if r.get("result") != "HIT":
                 continue
-            bl = book_label(r.get("best_book") or "")
-            end = r.get("ending")
-            if end is None:
-                end = last_two(r.get("best_price"))
+            bl, end = pulse_book_and_ending(
+                r.get("player"), r.get("best_book"), r.get("best_price"), r.get("ending"),
+                st.session_state.get("pregame_lock") or load_pregame(),
+            )
             if bl and end is not None:
                 hit_ends[(bl, int(end))] += 1
         by_book = defaultdict(list)
@@ -5296,11 +5324,18 @@ def render_whats_going_today():
         if not items and not people:
             continue
         top = items[0] if items else None
-        label = f"{bl} · {top[0]:02d}:{top[1]}" if top else f"{bl} · —"
-        pop = []
+        # top = (ending, count) of live hits on that book
+        if top:
+            label = "%s · %s ended +x%02d" % (bl, top[1], top[0])
+        else:
+            label = "%s · —" % bl
+        pop = ['<div class="wg-player" style="opacity:.8">How to read: book · how many went · last two digits of the price.</div>']
+        if top:
+            extra = " · ".join("%s ended +x%02d" % (c, e) for e, c in items[:3])
+            pop.append('<div class="wg-player" style="opacity:.8">%s</div>' % extra)
         for n, call, cls, emo in people[:4]:
             pop.append('<div class="wg-player %s">%s %s — %s (%s)</div>' % (cls, emo, call, n, prop_word))
-        if not pop:
+        if len(people) == 0:
             pop.append('<div class="wg-player" style="opacity:.65">No list names yet.</div>')
         pills.append(
             '<details class="pulse-pill"><summary>%s</summary><div class="pulse-pop">%s</div></details>'
@@ -5319,7 +5354,7 @@ def render_whats_going_today():
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">Recap. Click a pill for names. Full list lives in Lock → Run It Recap.</div>'
+        '<div class="wg-sub">Pills = book · how many already went · last two digits (DK · 6 ended +x50). Click for names. Full list: Lock → Run It Recap.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
