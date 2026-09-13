@@ -3967,6 +3967,8 @@ def log_shop_calls(df):
             "core": 0,
             "result": "PENDING", "source": src, "logged_at": now_utc_iso(),
             "price_source": "shop",
+            "sport": active_sport(),
+            "market": "anytime_td" if active_sport() == "NFL" else "batter_home_runs",
         })
         added += 1
     if added:
@@ -4202,11 +4204,17 @@ def build_whats_going_today(rows):
             return "td" in m or "nfl" in m or m == "anytime_td"
         hits_logged = [r for r in todays if r.get("result") == "HIT" and _is_nfl_row(r)]
         graded = [r for r in todays if r.get("result") in ("HIT", "MISS") and _is_nfl_row(r)]
-        our_list = [r for r in todays if r.get("source") in ("take_it", "watch") and _is_nfl_row(r)]
+        our_list = [
+            r for r in todays
+            if r.get("source") in ("take_it", "watch", "shop_take", "shop_lean") and _is_nfl_row(r)
+        ]
     else:
         hits_logged = [r for r in todays if r.get("result") == "HIT"]
         graded = [r for r in todays if r.get("result") in ("HIT", "MISS")]
-        our_list = [r for r in todays if r.get("source") in ("take_it", "watch")]
+        our_list = [
+            r for r in todays
+            if r.get("source") in ("take_it", "watch", "shop_take", "shop_lean")
+        ]
     lock = st.session_state.get("pregame_lock") or load_pregame()
 
     # Players who appeared in an MGM pair/trio in history this session
@@ -4262,8 +4270,13 @@ def build_whats_going_today(rows):
         if bl == "MGM" and any(names_match(pname, p) for p in pair_players):
             pair_ending[ending] += 1
 
+    board_names = list(st.session_state.get("last_take_names") or [])
+    shop_names = list(st.session_state.get("last_shop_take_names") or [])
+    extra_names = board_names + shop_names
     for hr in hr_names:
-        if any(names_match(hr, r.get("player") or "") for r in our_list):
+        on_file = any(names_match(hr, r.get("player") or "") for r in our_list)
+        on_session = any(names_match(hr, n) for n in extra_names)
+        if on_file or on_session:
             on_our_list += 1
         already = any(names_match(hr, r.get("player") or "") for r in hits_logged)
         if already:
@@ -4379,8 +4392,8 @@ def render_whats_going_today():
         sub = "%s %s scored today · %s were on our list · chips = graded TDs only" % (mlb_hr, cfg["hits"], on_list)
     else:
         sub = (
-            "%s %s · %s on our list · best price among DK/FD/MGM/HardRock "
-            "(not MGM pair rules)"
+            "%s %s · %s were Run It / Shop TAKE · chips = who already went "
+            "(DK/FD/MGM/HardRock price, not MGM pair rules)"
         ) % (mlb_hr, cfg["hits"], on_list)
     html = (
         '<div class="trends-today" style="padding:12px 14px">'
@@ -6690,6 +6703,14 @@ def main():
         log_bet_this(ev_board, watch_board)
     if not df.empty:
         log_shop_calls(df)
+    st.session_state["last_take_names"] = [e.get("player") for e in ev_board if e.get("is_bet")]
+    try:
+        shop_now = build_shop_board(df) if not df.empty else []
+        st.session_state["last_shop_take_names"] = [
+            r.get("player") for r in shop_now if r.get("action") in ("TAKE", "LEAN")
+        ]
+    except Exception:
+        st.session_state["last_shop_take_names"] = st.session_state.get("last_shop_take_names") or []
     method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats, score_stats = build_tracker_stats(
         results_for_sport()
     )
@@ -7652,9 +7673,16 @@ def main():
         site_section_open(
             "📡 LEARN",
             "Tracker",
-            "Hit rates after we grade. Small samples stay hidden. This is yesterday talking — not tonight’s Board.",
+            "Hit rates after we grade. Board TAKE and Shop TAKE both count. Small n stays hidden.",
         )
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="info-box"><b>How to read this.</b> '
+            "Board green = Run it, baddie (source take_it). Shop TAKE/LEAN = the number we would buy. "
+            "Watch = eyes only. Grade HIT/MISS or the rates stay frozen. "
+            "Banner “on our list” = box-score names that were take_it, watch, shop_take, or shop_lean.</div>",
+            unsafe_allow_html=True,
+        )
         sport_rows = results_for_sport()
         n_sport = len([r for r in sport_rows if r.get("result") in ("HIT", "MISS")])
         n_all = len([r for r in load_results() if r.get("result") in ("HIT", "MISS")])
