@@ -6728,21 +6728,6 @@ def main():
                         for idx, item in enumerate(coverage_only[:40]):
                             with cols[idx % 2]:
                                 _render_board_card(item, "COVERAGE", "watch-card")
-            with st.expander("Board diagnostic (is_bet / score / methods) — math not changed", expanded=False):
-                lines = []
-                for item in (ev_board or [])[:80]:
-                    lines.append(
-                        f"- {item.get('player')} · is_bet={item.get('is_bet')} · "
-                        f"score={item.get('score')} · edge={item.get('edge')} · "
-                        f"best={format_odds(item.get('best_price'))} {book_label(item.get('best_book'))} · "
-                        f"methods={item.get('methods')}"
-                    )
-                st.markdown("\n".join(lines) if lines else "_No Board rows. Fetch first._")
-                st.caption(
-                    f"TAKE count={sum(1 for x in (ev_board or []) if x.get('is_bet'))} · "
-                    f"PASS={sum(1 for x in (ev_board or []) if not x.get('is_bet'))} · "
-                    f"WATCH pool={len(watch_board or [])}"
-                )
         site_section_close()
 
     if page == "Trend Lab:":
