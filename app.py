@@ -742,6 +742,16 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
   .card.site-card .card-name{font-size:1.05rem}
   .price-big{font-size:1.05rem}
   .site-section{padding:12px 10px 6px}
+  .shop-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -6px}
+  .shop-table{font-size:.68rem;min-width:720px}
+  .shop-table th,.shop-table td{padding:6px 5px}
+  .shop-table td:first-child,.shop-table th:first-child{
+    position:sticky;left:0;z-index:2;background:#120818;min-width:112px;box-shadow:4px 0 8px rgba(0,0,0,.35)
+  }
+  .shop-name{font-size:.78rem}
+  .shop-game{font-size:.58rem}
+  .wg-books{flex-direction:column}
+  .wg-book{min-width:0}
 }
 </style>
 """, unsafe_allow_html=True)
