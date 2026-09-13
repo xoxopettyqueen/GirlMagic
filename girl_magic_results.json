@@ -173823,5 +173823,60 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-13_Mike Gesicki_shop_lean_49",
+    "date": "2026-09-13",
+    "time": "09:34 AM",
+    "player": "Mike Gesicki",
+    "score": 0,
+    "edge": 49,
+    "best_price": 400,
+    "best_book": "fanatics",
+    "median": 340,
+    "book_prices": {
+      "betmgm": 340,
+      "caesars": 340,
+      "draftkings": 340,
+      "fanatics": 400,
+      "fanduel": 350,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+400s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T16:34:03.910074+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Baltimore Ravens D/ST_shop_lean_35",
+    "date": "2026-09-13",
+    "time": "09:34 AM",
+    "player": "Baltimore Ravens D/ST",
+    "score": 0,
+    "edge": 35,
+    "best_price": 600,
+    "best_book": "draftkings",
+    "median": 500,
+    "book_prices": {
+      "betmgm": 500,
+      "draftkings": 600,
+      "fanatics": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T16:34:03.921445+00:00",
+    "price_source": "shop"
   }
 ]
