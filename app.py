@@ -1579,17 +1579,14 @@ def collect_petty_alerts(ev_board, results):
         if "Multi-book Shorten" in meths:
             alerts.append(f"Multi-book Shorten · {r.get('label')}")
         reason = str(r.get("reason") or "")
-        if "FD under MGM" in meths and ("by 1" in reason or "100" in reason):
-            try:
-                # only shout 100+
-                if "by 1" in reason or "by 10" in reason or "by 11" in reason or "by 12" in reason:
-                    pass
-            except Exception:
-                pass
+        if "FD under MGM" in meths:
             import re as _re
             m = _re.search(r"by (\d+)", reason)
-            if m and int(m.group(1)) >= 100:
-                alerts.append(f"FD under MGM by {m.group(1)} · {r.get('label')}")
+            if m:
+                gap = int(m.group(1))
+                # We like FD 10-100 under MGM. Exact 100 on a pile of names is template, not a shout.
+                if 25 <= gap <= 90:
+                    alerts.append(f"FD under MGM by {gap} · {r.get('label')}")
     for item in ev_board or []:
         ms = set(item.get("methods") or [])
         if "DK 10" in ms and ("FD Pattern" in ms or "FD 600" in ms):
@@ -1599,8 +1596,17 @@ def collect_petty_alerts(ev_board, results):
             alerts.append(f"Benford Fake · {item.get('player')}")
         books = item.get("book_prices") or {}
         fd, mgm = books.get("fanduel"), books.get("betmgm")
-        if fd is not None and mgm is not None and int(mgm) - int(fd) >= 100:
-            alerts.append(f"FD under MGM by {int(mgm) - int(fd)} · {item.get('player')}")
+        if fd is not None and mgm is not None:
+            try:
+                gap = int(mgm) - int(fd)
+            except Exception:
+                gap = 0
+            # Banner the sweet gap only. 100-flat is how books copy each other.
+            extra = bool(ms & {"DK 10", "FD Pattern", "FD 600", "MGM Exact", "Exact Match"}) or any(
+                str(x).startswith("MGM ") or str(x).startswith("Match ") for x in ms
+            )
+            if 25 <= gap <= 90 or (10 <= gap <= 99 and extra):
+                alerts.append(f"FD under MGM by {gap} · {item.get('player')}")
     seen, out = set(), []
     for a in alerts:
         if a not in seen:
