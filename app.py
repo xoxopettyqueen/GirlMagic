@@ -706,6 +706,12 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .recap-table tr.r-lean{background:linear-gradient(90deg,rgba(244,114,182,.12),transparent 55%)}
 .recap-table tr.r-watch{background:linear-gradient(90deg,rgba(192,132,252,.12),transparent 55%)}
 .recap-badge{display:inline-block;margin-left:6px;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-size:.58rem;font-weight:800;padding:2px 6px;border-radius:999px;box-shadow:0 0 8px rgba(244,114,182,.4)}
+.recap-table th.sig{width:92px}
+.recap-table td.sig{width:92px;white-space:nowrap;font-weight:800}
+.recap-table tr.r-sig-take{box-shadow:inset 3px 0 0 #34d399}
+.recap-table tr.r-sig-lean{box-shadow:inset 3px 0 0 #f472b6}
+.recap-table tr.r-sig-watch{box-shadow:inset 3px 0 0 #c084fc}
+
 
 
 .n1-pulse{animation:n1Shimmer 1.6s ease-out 1}
@@ -5103,7 +5109,15 @@ def render_run_it_recap():
 
     lock = st.session_state.get("pregame_lock") or load_pregame()
 
-    def _lab(r):
+    def _signal(r):
+        src = str(r.get("source") or "")
+        if src in ("take_it", "shop_take"):
+            return "TAKE", "💚 TAKE", "r-sig-take", "Confirmed play — full send."
+        if src == "shop_lean":
+            return "LEAN", "💖 LEAN", "r-sig-lean", "Borderline value — monitor."
+        return "WATCH", "💜 WATCH", "r-sig-watch", "Potential — not confirmed."
+
+    def _result(r):
         res = str(r.get("result") or "").upper()
         src = str(r.get("source") or "")
         if res == "HIT":
@@ -5141,15 +5155,21 @@ def render_run_it_recap():
 
     buckets = {}
     for r in keep:
-        key_lab, show, cls, rank = _lab(r)
+        res_key, res_show, res_cls, rank = _result(r)
+        sig_key, sig_show, sig_cls, tip = _signal(r)
         name = r.get("player") or "?"
         book = book_label(r.get("best_book") or "") or "—"
-        key = (rank, key_lab, name, book, prop)
+        key = (rank, res_key, sig_key, name, book, prop)
         if key not in buckets:
-            buckets[key] = {"show": show, "cls": cls, "name": name, "book": book, "prop": prop, "n": 0, "rank": rank}
+            buckets[key] = {
+                "res_show": res_show, "res_cls": res_cls,
+                "sig_show": sig_show, "sig_cls": sig_cls, "tip": tip,
+                "name": name, "book": book, "prop": prop, "n": 0, "rank": rank,
+                "sig_ord": {"TAKE": 0, "LEAN": 1, "WATCH": 2}.get(sig_key, 9),
+            }
         buckets[key]["n"] += 1
 
-    ordered = sorted(buckets.values(), key=lambda x: (x["rank"], x["name"].lower(), x["book"]))
+    ordered = sorted(buckets.values(), key=lambda x: (x["rank"], x["sig_ord"], x["name"].lower(), x["book"]))
     PAGE = 25
     total = len(ordered)
     pages = max(1, (total + PAGE - 1) // PAGE)
@@ -5164,12 +5184,12 @@ def render_run_it_recap():
         badge = '<span class="recap-badge">🔥 Best Price</span>' if _fn_best(item["name"], item["book"]) else ""
         cnt = ("×%s" % item["n"]) if item["n"] > 1 else "—"
         body.append(
-            "<tr class='%s'><td>%s</td><td>%s</td><td>%s%s</td><td>%s</td><td>%s</td></tr>"
-            % (item["cls"], item["show"], item["name"], item["book"], badge, item["prop"], cnt)
+            "<tr class='%s %s' title='%s'><td class='sig'>%s</td><td>%s</td><td>%s</td><td>%s%s</td><td>%s</td><td>%s</td></tr>"
+            % (item["res_cls"], item["sig_cls"], item["tip"], item["sig_show"], item["res_show"], item["name"], item["book"], badge, item["prop"], cnt)
         )
     html = (
         '<div class="recap-wrap"><table class="recap-table">'
-        "<thead><tr><th>Result</th><th>Player</th><th>Book</th><th>Prop</th><th>Count</th></tr></thead>"
+        "<thead><tr><th class='sig'>Signal</th><th>Result</th><th>Player</th><th>Book</th><th>Prop</th><th>Count</th></tr></thead>"
         "<tbody>%s</tbody></table></div>"
     ) % "".join(body)
     st.markdown(html, unsafe_allow_html=True)
