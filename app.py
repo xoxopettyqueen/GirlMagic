@@ -4944,24 +4944,49 @@ def auto_grade_pending():
 
 
 
-def pulse_book_and_ending(player, best_book, best_price, ending, lock):
-    """Pills track BEST BOOK. Ending is that book's own last two digits."""
+def pulse_book_and_ending(player, best_book, best_price, ending, lock, book_prices=None):
+    """Pills = best book. Ending MUST come from that book's own number."""
     claimed_bl = book_label(best_book or "") if best_book else ""
-    own_end = None
-    if lock and player and claimed_bl:
+    own_px = None
+    if book_prices:
+        for b, v in (book_prices or {}).items():
+            if book_label(b) == claimed_bl:
+                try:
+                    own_px = int(v)
+                except Exception:
+                    own_px = None
+                if own_px is not None:
+                    break
+    if own_px is None and lock and player and claimed_bl:
         for pname, data in (lock or {}).items():
             if not names_match(player, pname):
                 continue
             for b, info in ((data or {}).get("books") or {}).items():
                 if book_label(b) != claimed_bl:
                     continue
-                px = (info or {}).get("price")
+                px = (info or {}).get("latest_price")
+                if px is None:
+                    px = (info or {}).get("price")
+                if px is None:
+                    px = (info or {}).get("close_price")
                 if px is None:
                     continue
-                own_end = last_two(int(px))
+                own_px = int(px)
                 break
             break
-    if own_end is None:
+    if own_px is not None:
+        own_end = last_two(own_px)
+    elif claimed_bl == "Fanatics":
+        # Do not inherit MGM 25/50/75 just because Fanatics was the buy.
+        own_end = None
+        try:
+            cand = last_two(best_price) if best_price is not None else ending
+            cand = int(cand) if cand is not None else None
+        except Exception:
+            cand = None
+        if cand is not None and cand not in (25, 50, 75):
+            own_end = cand
+    else:
         own_end = last_two(best_price) if best_price is not None else ending
     try:
         own_end = int(own_end) if own_end is not None else None
@@ -5041,7 +5066,8 @@ def build_whats_going_today(rows):
         if ending is None and r.get("mgm_ending") is not None:
             ending = r["mgm_ending"]
         bl, ending = pulse_book_and_ending(
-            r.get("player"), r.get("best_book"), r.get("best_price"), ending, lock
+            r.get("player"), r.get("best_book"), r.get("best_price"), ending, lock,
+            r.get("book_prices") or r.get("books"),
         )
         if ending is None or not bl:
             continue
@@ -5261,6 +5287,7 @@ def render_whats_going_today():
             bl, end = pulse_book_and_ending(
                 r.get("player"), r.get("best_book"), r.get("best_price"), r.get("ending"),
                 st.session_state.get("pregame_lock") or load_pregame(),
+                r.get("book_prices") or r.get("books"),
             )
             if bl and end is not None:
                 hit_ends[(bl, int(end))] += 1
