@@ -593,10 +593,13 @@ FD_ENDINGS = (10, 20, 30, 60, 70, 90)
 MGM_ENDINGS = (0, 25, 50, 75)
 
 def is_core_method(m):
-    """Premium only - support/noise do not inflate core_count."""
+    """Premium only - support/noise do not inflate core_count.
+    NFL week 1: support tags still count so the board can learn."""
     m = normalize_method_name(m)
-    if m in NOISE_METHODS or m in SUPPORT_ONLY:
+    if m in NOISE_METHODS:
         return False
+    if m in SUPPORT_ONLY:
+        return nfl_loose_mode()
     if m.startswith("FADE") or m.startswith("FD under"):
         return False
     if m.startswith("Outlier") or m.startswith("Stuck") or m.startswith("Same ending"):
@@ -605,7 +608,7 @@ def is_core_method(m):
         return False
     if m in TAKE_IT_STRONG:
         return True
-    return False
+    return nfl_loose_mode() and bool(m)
 
 def normalize_method_name(m):
     m = str(m)
@@ -4340,30 +4343,29 @@ def fetch_events_oddsapi(api_key, sport_key=None):
         st.error(f"Odds API events error: {e}")
         return []
 
-def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None):
+def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_books=True):
     cfg = sport_cfg()
     sport_key = sport_key or cfg["key"]
     market = market or cfg["market"]
-    # Fanatics is region=us, key=fanatics (paid). Ask for it by name too.
-    # Alternate HR market is still filtered to Over 0.5 in flatten.
     markets = market
     if market == "batter_home_runs":
         markets = "batter_home_runs,batter_home_runs_alternate"
-    books = ",".join([
-        "fanduel", "draftkings", "betmgm", "fanatics",
-        "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
-        "caesars", "williamhill_us",
-    ])
+    params = {
+        "apiKey": api_key,
+        "regions": REGIONS,
+        "markets": markets,
+        "oddsFormat": "american",
+    }
+    if restrict_books:
+        params["bookmakers"] = ",".join([
+            "fanduel", "draftkings", "betmgm", "fanatics",
+            "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
+            "caesars", "williamhill_us",
+        ])
     try:
         r = requests.get(
             f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
-            params={
-                "apiKey": api_key,
-                "regions": REGIONS,
-                "markets": markets,
-                "oddsFormat": "american",
-                "bookmakers": books,
-            },
+            params=params,
             timeout=20,
         )
         return r.json() if r.status_code == 200 else None
@@ -4493,17 +4495,35 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
     all_rows, all_found_raw = [], set()
     http_ok = 0
     http_fail = 0
+    per_event = {}
     for label in chosen_labels:
         eid = options.get(label)
         if not eid: continue
-        data = fetch_odds_oddsapi(odds_key, eid)
+        data = fetch_odds_oddsapi(odds_key, eid, restrict_books=True)
         if data is None:
             http_fail += 1
+            per_event[label] = {"rows": 0, "status": "http_fail"}
             continue
         http_ok += 1
         rows, found = flatten_oddsapi(data)
+        # Some early slates return empty when we pin bookmakers. Retry open US feed.
+        if not rows:
+            data2 = fetch_odds_oddsapi(odds_key, eid, restrict_books=False)
+            if data2:
+                rows2, found2 = flatten_oddsapi(data2)
+                if rows2:
+                    rows, found = rows2, found2
         all_rows.extend(rows)
         all_found_raw.update(found)
+        ev_name = ""
+        if data:
+            ev_name = f"{data.get('away_team')} @ {data.get('home_team')}"
+        per_event[label] = {
+            "rows": len(rows),
+            "status": "ok" if rows else "no_props",
+            "event": ev_name,
+            "books": len(found),
+        }
     sgo_rows, sgo_found = [], set()
     if sport_cfg().get("sgo"):
         sgo_rows, sgo_found = fetch_sgo_hr_props(sgo_key)
@@ -4517,6 +4537,7 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         "kept_books": sorted(kept),
         "row_count_pre_filter": len(all_rows),
         "sgo_rows": len(sgo_rows),
+        "per_event": per_event,
     }
     if not all_rows:
         return None, set()
@@ -4551,15 +4572,20 @@ def tighten_board(ev_board):
     passes = [x for x in ev_board if not x.get("is_bet")]
     ranked = sorted(takes, key=lambda x: (-x["method_count"], -x["score"], -x["edge"]))
     per_team, per_game, out_takes = defaultdict(int), defaultdict(int), []
+    # NFL props often have no team — don't dump every green into UNK and cap at 3.
+    max_team = 8 if nfl_loose_mode() else BOARD_MAX_PER_TEAM
+    max_game = 8 if nfl_loose_mode() else BOARD_MAX_PER_GAME
     for item in ranked:
-        team = item.get("team") or "UNK"
+        team = (item.get("team") or "").strip()
         game = item.get("event") or (item.get("events") or ["UNK"])[0]
-        if per_team[team] >= BOARD_MAX_PER_TEAM or per_game[game] >= BOARD_MAX_PER_GAME:
+        if team and per_team[team] >= max_team:
+            continue
+        if per_game[game] >= max_game:
             continue
         out_takes.append(item)
-        per_team[team] += 1
+        if team:
+            per_team[team] += 1
         per_game[game] += 1
-    # PASS: sort but do not hard-cap (show the real short-edge multi-method list)
     passes = sorted(passes, key=lambda x: (-x["method_count"], -x["score"], -x["edge"]))
     return out_takes + passes
 
@@ -6283,10 +6309,20 @@ def main():
     take_n = len(takes_all)  # already post tighten_board
     pass_n = len(passes_all)
     multi_names = {e["player"] for e in ev_board}
-    watch_only = [
-        w for w in watch_board
-        if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
-    ]
+    if nfl_loose_mode():
+        # Week 1: gray names with tags are WATCH, not a dead PASS pile.
+        watch_only = [e for e in ev_board if not e.get("is_bet")]
+        watch_only += [
+            w for w in watch_board
+            if w["player"] not in multi_names
+        ]
+        passes_all = []
+        pass_n = 0
+    else:
+        watch_only = [
+            w for w in watch_board
+            if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
+        ]
     watch_n = len(watch_only)
     cov_names = multi_names | {w["player"] for w in watch_only}
     coverage_only = [
@@ -6298,7 +6334,7 @@ def main():
         key=lambda x: (-len(x.get("methods") or []), -x.get("score", 0), x.get("player") or ""),
     )
     coverage_n = len(coverage_only)
-    team_picks = apply_team_picks(ev_board, watch_only, coverage_only)
+    team_picks = [] if nfl_loose_mode() else apply_team_picks(ev_board, watch_only, coverage_only)
     pick_n = len(team_picks)
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
@@ -6547,13 +6583,15 @@ def main():
             st.caption("Nobody made The List yet. Fetch the slate." if active_sport() != "NFL" else "NFL lane is open. Fetch Anytime TD and let the greens talk.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
-        passes = [e for e in ev_board if not e.get("is_bet")]
-        # WATCH = strictly under 2 core methods (never dump capped PASS into WATCH)
-        multi_names = {e["player"] for e in ev_board}  # anyone with 2+ core already classified
-        watches = [
-            w for w in watch_board
-            if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
-        ]
+        passes = [] if nfl_loose_mode() else [e for e in ev_board if not e.get("is_bet")]
+        multi_names = {e["player"] for e in ev_board}
+        if nfl_loose_mode():
+            watches = watch_only
+        else:
+            watches = [
+                w for w in watch_board
+                if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
+            ]
         watches = sorted(watches, key=lambda x: (-x.get("method_count", 0), -x.get("score", 0)))
 
         if not takes and not passes and not watches and not coverage_only:
@@ -6693,7 +6731,23 @@ def main():
                             _render_board_card(item, "TEAM PICK", "watch-card")
                         idx += 1
                 else:
-                    st.caption("On the slate · no TAKE IT or team pick yet.")
+                    wire_n = 0
+                    dbg = (st.session_state.get("fetch_debug") or {}).get("per_event") or {}
+                    for lab, info in dbg.items():
+                        if event_matches_chosen(game, [lab, info.get("event") or ""]):
+                            wire_n = max(wire_n, int(info.get("rows") or 0))
+                    if df is not None and not getattr(df, "empty", True) and "event" in df.columns:
+                        try:
+                            wire_n = max(
+                                wire_n,
+                                int(df["event"].apply(lambda e: event_matches_chosen(e, [game])).sum()),
+                            )
+                        except Exception:
+                            pass
+                    if wire_n:
+                        st.caption(f"On the wire · {wire_n} 0.5 HR lines · nobody cleared TAKE IT / team pick yet.")
+                    else:
+                        st.caption("Books have not posted 0.5 HR on this game yet. Fetch again closer to first pitch.")
 
             if passes and "PASS" in show_kinds:
                 shown_p = [x for x in passes if _keep_card(x)]
