@@ -6711,23 +6711,14 @@ def main():
     st.session_state["_trend_pack"] = _trend_pack
     takes_all = [e for e in ev_board if e.get("is_bet")]
     passes_all = [e for e in ev_board if not e.get("is_bet")]
-    take_n = len(takes_all)  # already post tighten_board
+    take_n = len(takes_all)
     pass_n = len(passes_all)
     multi_names = {e["player"] for e in ev_board}
-    if nfl_loose_mode():
-        # Week 1: gray names with tags are WATCH, not a dead PASS pile.
-        watch_only = [e for e in ev_board if not e.get("is_bet")]
-        watch_only += [
-            w for w in watch_board
-            if w["player"] not in multi_names
-        ]
-        passes_all = []
-        pass_n = 0
-    else:
-        watch_only = [
-            w for w in watch_board
-            if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
-        ]
+    # Same buckets as MLB. Week-1 "hide PASS" made 0 Not Today / 0 Watch look broken.
+    watch_only = [
+        w for w in watch_board
+        if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
+    ]
     watch_n = len(watch_only)
     cov_names = multi_names | {w["player"] for w in watch_only}
     coverage_only = [
@@ -6739,7 +6730,7 @@ def main():
         key=lambda x: (-len(x.get("methods") or []), -x.get("score", 0), x.get("player") or ""),
     )
     coverage_n = len(coverage_only)
-    team_picks = [] if nfl_loose_mode() else apply_team_picks(ev_board, watch_only, coverage_only)
+    team_picks = apply_team_picks(ev_board, watch_only, coverage_only)
     pick_n = len(team_picks)
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
@@ -6995,15 +6986,12 @@ def main():
             st.caption("Nobody made The List yet. Fetch the slate." if active_sport() != "NFL" else "NFL lane is open. Fetch Anytime TD and let the greens talk.")
 
         takes = [e for e in ev_board if e.get("is_bet")]
-        passes = [] if nfl_loose_mode() else [e for e in ev_board if not e.get("is_bet")]
+        passes = [e for e in ev_board if not e.get("is_bet")]
         multi_names = {e["player"] for e in ev_board}
-        if nfl_loose_mode():
-            watches = watch_only
-        else:
-            watches = [
-                w for w in watch_board
-                if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
-            ]
+        watches = [
+            w for w in watch_board
+            if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
+        ]
         watches = sorted(watches, key=lambda x: (-x.get("method_count", 0), -x.get("score", 0)))
 
         if not takes and not passes and not watches and not coverage_only:
