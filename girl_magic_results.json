@@ -171482,5 +171482,50 @@
     "source": "shop_lean",
     "logged_at": "2026-09-13T16:25:15.504921+00:00",
     "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Jahmyr Gibbs_take_it_97",
+    "date": "2026-09-13",
+    "time": "09:31 AM",
+    "player": "Jahmyr Gibbs",
+    "score": 97,
+    "edge": 20,
+    "best_price": -260,
+    "best_book": "fanatics",
+    "median": -292.5,
+    "book_prices": {
+      "betmgm": -300,
+      "caesars": -295,
+      "draftkings": -275,
+      "fanatics": -260,
+      "fanduel": -290,
+      "hardrockbet": -300
+    },
+    "price_bucket": "under +400",
+    "ending": 60,
+    "mgm_locked": -300,
+    "mgm_ending": 0,
+    "methods": [
+      "Stayed in the group",
+      "Multi-book method",
+      "Match 25",
+      "Last one left",
+      "DK FD-style",
+      "FD 90",
+      "MGM 25",
+      "EV Support",
+      "Kelly Premium"
+    ],
+    "core": 5,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-13T16:31:05.911599+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "",
+    "market": "anytime_td",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.67
   }
 ]
