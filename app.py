@@ -302,6 +302,10 @@ def nfl_take_ok(
         return False
     if int(core_count or 0) < int(need_core or 2):
         return False
+    books = {_norm_book(k) for k in (book_prices or {})}
+    if "draftkings" not in books and "fanduel" not in books:
+        # Fanatics/HardRock can be the shop number. They cannot green a name alone.
+        return False
     ms = set(str(m) for m in (methods or []))
     priority = bool(
         ms
@@ -315,7 +319,7 @@ def nfl_take_ok(
             "Multi-book Shorten",
             "B365 850",
         }
-        or any(m.startswith("MGM ") or m.startswith("Match ") or m.startswith("B365") for m in ms)
+        or any(str(m).startswith("MGM ") or str(m).startswith("Match ") or str(m).startswith("B365") for m in ms)
     )
     hot = nfl_hot_end(best_price)
     lane = nfl_lane(best_price)
@@ -324,11 +328,16 @@ def nfl_take_ok(
     except Exception:
         sc = 0
     if lane == "flyer":
-        books = {_norm_book(k) for k in (book_prices or {})}
         real = books & {"draftkings", "fanduel", "betmgm"}
         if not priority or len(real) < 2:
             return False
-    if hot or priority or sc >= 70:
+    if bk in ("fanatics", "hardrockbet") and not priority:
+        return False
+    if lane in ("long", "flyer") and not (hot and priority):
+        return False
+    if hot or priority:
+        return True
+    if sc >= 70 and priority:
         return True
     return False
 
@@ -6659,13 +6668,26 @@ def main():
             if num_strong:
                 item["score"] = min(100, int(item.get("score") or 0) + 6)
             sc = int(item.get("score") or 0)
-            # MLB: Benford/Num can lean off a thin green. NFL week 1: do not kill greens.
+            # MLB: Benford/Num can lean off a thin green.
             if not nfl_loose_mode():
                 if item.get("is_bet") and not elite_take_ok(item) and sc < 50:
                     item["is_bet"] = False
                     item["why"] = (item.get("why") or "") + " · LEAN — score too thin without Benford/Num"
                 elif item.get("is_bet") and sc >= SCORE_SOFT_TAKE and not elite_take_ok(item):
                     item["why"] = (item.get("why") or "") + " · petty score hold"
+            elif item.get("is_bet") and HAS_NFL_MATH:
+                # Num-only Fanatics longshots are not TAKE.
+                if not nfl_take_ok(
+                    item.get("method_count") or 0,
+                    item.get("methods") or [],
+                    item.get("best_price"),
+                    item.get("best_book"),
+                    item.get("book_prices") or {},
+                    sc,
+                    need_core=max(1, methods_min()),
+                ):
+                    item["is_bet"] = False
+                    item["why"] = (item.get("why") or "") + " · not a DK/FD ticket"
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     if not df.empty:
@@ -6813,10 +6835,17 @@ def main():
                 "- 🎟 **Ticket** — DK / FD / HardRock / Fanatics / Caesars. **MGM is a tell, not the buy.**\n"
                 "- 💅 Hover a pink or green tag if you need the language. Otherwise trust the math."
             )
-        elite = [e for e in ev_board if e.get("is_bet")]
+        elite = [e for e in ev_board if elite_take_ok(e)]
+        if not elite:
+            elite = [
+                e for e in ev_board
+                if e.get("is_bet")
+                and normalize_book(e.get("best_book")) in ("draftkings", "fanduel")
+                and "name+price" in str(e.get("num_tag") or "")
+            ]
         if elite:
             st.markdown("#### Petty Picks")
-            st.caption("Elite TAKE only — ending + bucket + method + book + Authentic + name+price.")
+            st.caption("Elite only. Fanatics longshot + “Num 5 price” is not a Petty Pick.")
             pc = st.columns(min(3, max(1, len(elite[:3]))))
             for i, item in enumerate(elite[:6]):
                 with pc[i % len(pc)]:
