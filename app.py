@@ -886,7 +886,7 @@ PREGAME_FILE = "girl_magic_pregame.json"
 TAKE_LEDGER_FILE = "girl_magic_take_ledger.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
-PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics"}
+PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics", "bet365"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics"}
 # Ticket = book we buy. MGM is signal-only (11% as ticket vs 13% baseline).
 TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics"}
@@ -895,6 +895,9 @@ VALUE_BOOK_LABELS = {"DK", "FD", "HardRock", "Fanatics"}
 SIGNAL_ONLY_BOOKS = {"betmgm"}
 # Odds API uses different keys for the same books - map only
 BOOK_ALIASES = {
+    "bet365_au": "bet365",
+    "bet365_uk": "bet365",
+    "bet365_us": "bet365",
     "williamhill_us": "caesars",
     "hardrockbet_oh": "hardrockbet",
     "hardrockbet_nj": "hardrockbet",
@@ -1966,7 +1969,7 @@ def build_shop_board(df):
 
 
 NEED_ONE_MAJOR = {
-    "draftkings", "fanduel", "hardrockbet", "fanatics", "caesars", "betmgm",
+    "draftkings", "fanduel", "hardrockbet", "fanatics", "caesars", "betmgm", "bet365",
 }
 NEED_ONE_LABELS = {
     "Rush Yards": "0.5 Rush Yards",
@@ -1975,7 +1978,22 @@ NEED_ONE_LABELS = {
 }
 
 
+def need_one_is_live(row):
+    raw = str(row.get("commence_time") or "")
+    if not raw:
+        return False
+    try:
+        ts = raw.replace("Z", "+00:00")
+        start = datetime.fromisoformat(ts)
+        if start.tzinfo is None:
+            start = start.replace(tzinfo=timezone.utc)
+        return datetime.now(timezone.utc) >= start
+    except Exception:
+        return False
+
+
 def need_one_re_players(rows):
+
     names = set()
     for r in rows or []:
         if r.get("prop_type") in ("Receiving Yards", "Receptions"):
@@ -5334,6 +5352,7 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
             "fanduel", "draftkings", "betmgm", "fanatics",
             "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
             "caesars", "williamhill_us",
+            "bet365", "bet365_au",
         ])
     try:
         r = requests.get(
@@ -5411,6 +5430,7 @@ def flatten_oddsapi(data):
                     "point": 0.5, "team": "", "source": "oddsapi",
                     "sport": "NFL" if (is_td or prop_type) else "MLB",
                     "prop_type": prop_type,
+                    "commence_time": data.get("commence_time") or "",
                 })
     return rows, found
 
@@ -7885,13 +7905,15 @@ def main():
         if active_sport() != "NFL":
             st.info("Switch the lane to NFL, Fetch, then come back. This tab is Anytime-TD weekend work.")
         else:
-            n1, n2, n3 = st.columns(3)
+            n1, n2, n3, n4 = st.columns(4)
             with n1:
                 t_rush = st.checkbox("0.5 Rush Yards", key="need_one_rush", value=True)
             with n2:
                 t_recy = st.checkbox("0.5 Receiving Yards", key="need_one_recy", value=True)
             with n3:
                 t_recs = st.checkbox("0.5 Receptions", key="need_one_recs", value=True)
+            with n4:
+                show_live = st.checkbox("Include live games", key="need_one_live", value=False)
             want = []
             if t_rush:
                 want.append("Rush Yards")
@@ -7899,7 +7921,9 @@ def main():
                 want.append("Receiving Yards")
             if t_recs:
                 want.append("Receptions")
-            need_rows = st.session_state.get("need_one_odds") or []
+            need_rows = list(st.session_state.get("need_one_odds") or [])
+            if not show_live:
+                need_rows = [r for r in need_rows if not need_one_is_live(r)]
             items = build_need_one_board(need_rows, want) if want else []
             st.markdown(
                 f'<div class="petty-row">'
