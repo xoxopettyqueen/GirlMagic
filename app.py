@@ -7568,6 +7568,7 @@ def main():
                 st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
         except Exception:
             st.session_state[_ag] = time.time()
+    render_whats_going_today()
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
     if not odds_key:
@@ -9945,7 +9946,6 @@ def main():
         st.caption("Manual only. Tags live on the cards. Recipes stay off this page.")
         site_section_close()
 
-    render_whats_going_today()
     st.markdown(
         '<div class="footer">♛ Girl Magic Odds · She Got Game · Petty Queen · Me & My Girls We Rolling<br>'
         '<span style="font-size:.75rem;color:#c4b5d6">Board picks the name. Shop picks the number. Grade keeps us honest.</span></div>',
