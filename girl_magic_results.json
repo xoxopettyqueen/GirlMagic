@@ -34448,5 +34448,32 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-13_Xavier Worthy_need_one_lean_Rush Yards_1050",
+    "date": "2026-09-13",
+    "time": "01:55 PM",
+    "player": "Xavier Worthy",
+    "score": 0,
+    "edge": 442,
+    "best_price": 1050,
+    "best_book": "bet365",
+    "book_prices": {
+      "bet365": 1050,
+      "betmgm": 135
+    },
+    "ending": 50,
+    "methods": [
+      "Need One LEAN",
+      "0.5 Rush Yards"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "need_one_lean",
+    "logged_at": "2026-09-13T20:55:03.104443+00:00",
+    "price_source": "need_one",
+    "sport": "NFL",
+    "market": "Rush Yards",
+    "event": "Denver Broncos @ Kansas City Chiefs"
   }
 ]
