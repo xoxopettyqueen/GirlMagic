@@ -171527,5 +171527,173 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.67
+  },
+  {
+    "id": "2026-09-13_Daniel Bellinger_shop_lean_89",
+    "date": "2026-09-13",
+    "time": "09:31 AM",
+    "player": "Daniel Bellinger",
+    "score": 0,
+    "edge": 89,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 850,
+    "book_prices": {
+      "betmgm": 775,
+      "caesars": 850,
+      "draftkings": 950,
+      "fanatics": 900,
+      "fanduel": 850,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T16:31:08.629743+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Isaiah Davis_shop_lean_75",
+    "date": "2026-09-13",
+    "time": "09:31 AM",
+    "player": "Isaiah Davis",
+    "score": 0,
+    "edge": 75,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 875,
+    "book_prices": {
+      "betmgm": 950,
+      "caesars": 850,
+      "draftkings": 850,
+      "fanatics": 900,
+      "fanduel": 950,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T16:31:08.636004+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Adonai Mitchell_shop_take_55",
+    "date": "2026-09-13",
+    "time": "09:31 AM",
+    "player": "Adonai Mitchell",
+    "score": 0,
+    "edge": 55,
+    "best_price": 475,
+    "best_book": "fanatics",
+    "median": 400,
+    "book_prices": {
+      "betmgm": 360,
+      "caesars": 400,
+      "draftkings": 400,
+      "fanatics": 475,
+      "fanduel": 440,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-13T16:31:08.650125+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Los Angeles Chargers D/ST_shop_take_50",
+    "date": "2026-09-13",
+    "time": "09:31 AM",
+    "player": "Los Angeles Chargers D/ST",
+    "score": 0,
+    "edge": 50,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 420,
+    "book_prices": {
+      "betmgm": 400,
+      "draftkings": 550,
+      "fanatics": 420
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-13T16:31:08.653702+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Xavier Legette_shop_take_46",
+    "date": "2026-09-13",
+    "time": "09:31 AM",
+    "player": "Xavier Legette",
+    "score": 0,
+    "edge": 46,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 462,
+    "book_prices": {
+      "betmgm": 425,
+      "caesars": 450,
+      "draftkings": 450,
+      "fanatics": 525,
+      "fanduel": 500,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-13T16:31:08.657452+00:00",
+    "price_source": "shop"
+  },
+  {
+    "id": "2026-09-13_Tennessee Titans D/ST_shop_take_35",
+    "date": "2026-09-13",
+    "time": "09:31 AM",
+    "player": "Tennessee Titans D/ST",
+    "score": 0,
+    "edge": 35,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 500,
+    "book_prices": {
+      "betmgm": 500,
+      "draftkings": 550,
+      "fanatics": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-13T16:31:08.666492+00:00",
+    "price_source": "shop"
   }
 ]
