@@ -5560,10 +5560,11 @@ def fetch_sgo_hr_props(sgo_key):
                     team = clean_team(pdata.get("teamID") or "")
                     for bk, bd in (odd_data.get("byBookmaker") or {}).items():
                         raw_keys.add(str(bk).lower())
-                        if not bd.get("available", True):
-                            continue
                         b = normalize_book(bk)
                         if b not in PREFERRED:
+                            continue
+                        # Bet365 is often flagged available=false on SGO but still has a price
+                        if not bd.get("available", True) and b != "bet365":
                             continue
                         price = bd.get("odds")
                         if price is None:
