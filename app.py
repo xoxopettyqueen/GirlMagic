@@ -86,9 +86,12 @@ def abs_price(p):
 
 
 def nfl_price_ok(best_price):
-    """Anytime TD ticket floor. No upper cap."""
-    p = abs_price(best_price)
-    return p is not None and p >= NFL_FLOOR
+    """Anytime TD ticket floor. PLUS money only. -260 is chalk, not a ticket."""
+    try:
+        p = int(best_price)
+    except Exception:
+        return False
+    return p >= NFL_FLOOR
 
 
 def nfl_hot_end(price):
@@ -278,9 +281,13 @@ def nfl_take_ok(
     - Dead long endings do not green
     - Flyers need priority + 2 real books
     """
-    p = abs_price(best_price)
-    if p is None or p < NFL_FLOOR:
+    try:
+        raw = int(best_price)
+    except Exception:
         return False
+    if raw < NFL_FLOOR:
+        return False
+    p = raw
     if nfl_dead_long(best_price):
         return False
     bk = _norm_book(best_book)
@@ -1053,9 +1060,9 @@ def long_price_block(best_price, methods=None, book_prices=None):
     return None
 
 def nfl_price_ok(best_price):
-    """NFL Anytime TD: +115 and up. No 799 cap — long TDs have hit."""
+    """NFL Anytime TD: +115 and up. Minus prices are chalk — never TAKE."""
     try:
-        p = abs(int(best_price))
+        p = int(best_price)
     except Exception:
         return False
     return p >= 115
@@ -1064,6 +1071,11 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     """MLB: elite +400-699 + hot end + priority. NFL: 2 premium + priority-or-hot-end on TD prices.
     Petty score ≥ 70 can also clear when edge is only EDGE_SOFT (still needs 2 premium + priority)."""
     ms = {normalize_method_name(m) for m in (methods or [])}
+    try:
+        if best_price is not None and int(best_price) < 115:
+            return False
+    except Exception:
+        return False
     need = methods_min()
     if core_count < need:
         return False
