@@ -4008,6 +4008,10 @@ def load_results():
 
 
 def save_results(rows):
+    # NEVER write today-only over the archive. Union with GitHub first.
+    gh = _load_results_github()
+    if isinstance(gh, list) and gh:
+        rows = _merge_results_lists(gh, rows)
     _save_local_json(RESULTS_FILE, rows)
     if _gh_configured():
         ok = _save_results_github(rows)
@@ -6449,12 +6453,22 @@ def _todays_nfl_td_names():
 def build_lock_lab():
     """Today's hits matched to pregame Lock for learning. MLB = HRs. NFL = graded TDs."""
     if active_sport() == "NFL":
-        hr_names = _todays_nfl_td_names()
+        live, _fin, espn_msg = fetch_nfl_td_scorers()
+        graded = _todays_nfl_td_names()
+        # Lock Lab needs WHO SCORED, not only who we already tapped HIT.
+        names, seen = [], set()
+        for n in list(live or []) + list(graded or []):
+            k = _fold_name(clean_name(n))
+            if not k or k in seen:
+                continue
+            seen.add(k)
+            names.append(clean_name(n))
+        hr_names = names
         mlb_msg = (
-            f"{len(hr_names)} graded NFL TD HIT(s) today. "
-            "Mark HIT on Results so Lock Lab can match pre-kick prices."
+            f"{espn_msg}. {len(hr_names)} TD names (live ESPN + graded HIT). "
+            "Lock match uses pre-kick prices when the name is in today's lock."
             if hr_names else
-            "No graded NFL TDs yet. Grade HIT on Results (or Log a TD) — Lock already has pre-kick prices."
+            f"{espn_msg}. No TD names yet — live games should appear as they score."
         )
     else:
         hr_names, _fin, mlb_msg = fetch_mlb_hr_hitters()
