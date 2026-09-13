@@ -5027,7 +5027,6 @@ def render_whats_going_today():
     take_n = sum(1 for _n, t in listed if t == "TAKE")
     lean_n = sum(1 for _n, t in listed if t in ("SHOP LEAN", "LEAN"))
     watch_n = sum(1 for _n, t in listed if t in ("WATCH", "BOARD"))
-    prop_word = "TD prop" if sport == "NFL" else "HR prop"
     hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "HRs")
 
     def _norm_tag(tag):
@@ -5039,8 +5038,10 @@ def render_whats_going_today():
             return "WATCH", "wg-watch", "💜"
         return tag, "", "✨"
 
+    FOCUS = ["DK", "FD", "MGM", "HardRock"]
     lock = st.session_state.get("pregame_lock") or load_pregame()
     by_names = defaultdict(list)
+    untagged = []
     for n, tag in listed:
         call, cls, emo = _norm_tag(tag)
         bl = None
@@ -5057,49 +5058,49 @@ def render_whats_going_today():
                         p = (info or {}).get("price")
                         if p is None:
                             continue
+                        lab = book_label(b)
+                        if lab not in FOCUS:
+                            continue
                         if best_p is None or int(p) > int(best_p):
-                            best_p, best_bl = p, book_label(b)
+                            best_p, best_bl = p, lab
                     bl = best_bl
                     break
-        by_names[bl or "Other"].append((n, call, cls, emo))
-
-    order = ["DK", "FD", "HardRock", "MGM", "Bet365", "Other"]
-    book_html = []
-    used_people = set()
-    for bl in order:
-        items = by_book.get(bl) or []
-        if bl == "Other":
-            people = []
-            for k, v in by_names.items():
-                if k not in ("DK", "FD", "HardRock", "MGM", "Bet365"):
-                    people.extend(v)
+        if bl in FOCUS:
+            by_names[bl].append((n, call, cls, emo))
         else:
-            people = by_names.get(bl) or []
+            untagged.append((n, call, cls, emo, bl or "—"))
+
+    book_html = []
+    for bl in FOCUS:
+        items = by_book.get(bl) or []
+        people = by_names.get(bl) or []
         if not items and not people:
             continue
         ends = " · ".join("%02d:%s" % (e, c) for e, c in (items[:4] if items else []))
-        plist = []
-        for n, call, cls, emo in people[:6]:
-            used_people.add(n)
-            plist.append(
-                '<div class="wg-player %s" title="Ending chips = how many list hits landed on that last-two.">%s %s (%s) · %s</div>'
-                % (cls, emo, n, call, prop_word)
-            )
+        plist = [
+            '<div class="wg-player %s">%s %s (%s)</div>' % (cls, emo, n, call)
+            for n, call, cls, emo in people[:8]
+        ]
         if not plist:
-            plist.append('<div class="wg-player" style="opacity:.7">No list names on this book yet.</div>')
+            plist.append('<div class="wg-player" style="opacity:.7">No list names here yet.</div>')
         book_html.append(
             '<div class="wg-book"><h4>%s</h4><div class="wg-ends">%s</div>%s</div>'
             % (bl, ends or "—", "".join(plist))
         )
+    if untagged:
+        plist = [
+            '<div class="wg-player %s">%s %s (%s) · %s</div>' % (cls, emo, n, call, lab)
+            for n, call, cls, emo, lab in untagged[:8]
+        ]
+        book_html.append(
+            '<div class="wg-book"><h4>No book tagged</h4><div class="wg-ends">Fanatics / Caesars / blank</div>%s</div>'
+            % "".join(plist)
+        )
 
     if sport == "NFL":
-        queen = "Queen says: DK's loud today — FD's sleeping — HardRock moving weird."
-        if take_n:
-            queen = "Queen says: the TDs on the list are the ones that matter. Leave the rest."
+        queen = "Queen says: the TDs on the list are the ones that matter." if take_n else "Queen says: NFL lane — ticket books only."
     else:
-        queen = "Queen says: DK and HardRock are clean — Caesars faking math again."
-        if take_n:
-            queen = "Queen says: Run It names went. That's the board talking, not the box score tourists."
+        queen = "Queen says: Run It names went." if take_n else "Queen says: waiting on first-pitch receipts."
 
     books_block = "".join(book_html) if book_html else '<div class="wg-book">Nobody on the list has gone yet.</div>'
     mlb_on = "on" if sport == "MLB" else ""
@@ -5108,12 +5109,10 @@ def render_whats_going_today():
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">What\'s Going Today · %s — %s %s · %s were Run It / Shop TAKE</div>'
-        '<div class="wg-sub">Same layout every sport. Live + final scorers. List names only.</div>'
+        '<div class="wg-sub">Live + finals. List names only. Switch sport in the sidebar.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
-        '<span class="wg-pill">NBA</span>'
-        '<span class="wg-pill">NHL</span>'
         '</div></div>'
         '<div class="wg-counts">'
         '<div class="wg-count"><b>%s</b><span>TAKE</span></div>'
@@ -5131,7 +5130,6 @@ def render_whats_going_today():
         books_block, queen,
     )
     st.markdown(html, unsafe_allow_html=True)
-
 
 
 def build_tracker_stats(rows):
