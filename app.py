@@ -167,6 +167,58 @@ def nfl_b365_over_hardrock(book_prices):
     return gap > 0, gap
 
 
+
+FANATICS_VS_MGM_GAP = 80  # Fanatics way higher than MGM = signal book
+
+
+def fanatics_price_logic(book_prices):
+    """
+    Fanatics rules:
+    - WAY HIGHER than MGM (80+) → Fanatics is the SIGNAL BOOK
+    - BEST and odds >= +500 → ALLOW TAKE even if DK/FD/MGM are mid
+    - ALONE (no DK/FD/MGM) → WATCH, not TAKE
+    - MATCHES DK/FD/MGM → treat normally
+    """
+    books = {}
+    for raw, v in (book_prices or {}).items():
+        try:
+            books[_norm_book(raw)] = int(v)
+        except Exception:
+            continue
+    fn = books.get("fanatics")
+    mgm = books.get("betmgm")
+    support = [b for b in ("draftkings", "fanduel", "betmgm") if b in books]
+    out = {
+        "price": fn,
+        "alone": False,
+        "best": False,
+        "way_over_mgm": False,
+        "matches": False,
+        "allow_take": False,
+        "watch_only": False,
+        "gap_mgm": 0,
+        "tag": None,
+    }
+    if fn is None:
+        return out
+    others = [p for b, p in books.items() if b != "fanatics"]
+    out["best"] = (not others) or fn >= max(others)
+    if mgm is not None:
+        out["gap_mgm"] = fn - mgm
+        out["way_over_mgm"] = (fn - mgm) >= FANATICS_VS_MGM_GAP
+    out["matches"] = any(abs(fn - books[b]) <= 25 for b in ("draftkings", "fanduel", "betmgm") if b in books)
+    out["alone"] = not support
+    out["watch_only"] = out["alone"]
+    out["allow_take"] = bool(out["best"] and abs(fn) >= 500 and not out["alone"])
+    if out["way_over_mgm"]:
+        out["tag"] = "Fanatics Loud"
+    elif out["allow_take"]:
+        out["tag"] = "Fanatics Best"
+    elif out["alone"] and abs(fn) >= 500:
+        out["tag"] = "Fanatics Alone"
+    return out
+
+
 def b365_over_mgm(book_prices):
     """Bet365 plus-price longer than BetMGM."""
     books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
@@ -311,9 +363,13 @@ def nfl_take_ok(
     if int(core_count or 0) < int(need_core or 2):
         return False
     books = {_norm_book(k) for k in (book_prices or {})}
-    if "draftkings" not in books and "fanduel" not in books:
-        # Fanatics/HardRock can be the shop number. They cannot green a name alone.
+    fn = fanatics_price_logic(book_prices)
+    if fn.get("watch_only"):
         return False
+    if "draftkings" not in books and "fanduel" not in books:
+        # Fanatics can green only if BEST +500 and MGM/DK/FD exists (even mid).
+        if not fn.get("allow_take"):
+            return False
     ms = set(str(m) for m in (methods or []))
     priority = bool(
         ms
@@ -618,27 +674,29 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .method-group{margin-top:8px;padding-top:8px;border-top:1px solid #2a2038}
 .queen-line{color:#f9a8d4;font-style:italic;font-size:.86rem;margin-top:8px}
 
-.wg-wrap{background:linear-gradient(160deg,#160c22,#2a1040 55%,#1a0b20);border:1px solid #a855f7;border-radius:18px;padding:14px 16px;margin:0 0 14px;box-shadow:0 0 22px rgba(168,85,247,.18)}
-.wg-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-bottom:10px}
-.wg-title{font-size:1.05rem;font-weight:800;color:#fce7f3;letter-spacing:.2px}
-.wg-sub{font-size:.78rem;color:#e9d5ff;margin-top:3px}
-.wg-switch{display:flex;gap:6px;flex-wrap:wrap}
-.wg-pill{border-radius:999px;padding:4px 10px;font-size:.68rem;font-weight:800;border:1px solid #4c1d95;color:#c4b5d6}
-.wg-pill.on{border-color:#f9a8d4;color:#fce7f3;background:linear-gradient(90deg,#6d28d9,#db2777);box-shadow:0 0 10px rgba(244,114,182,.35)}
-.wg-counts{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px}
-.wg-count{background:#120a1c;border:1px solid #3b0764;border-radius:12px;padding:6px 10px;min-width:72px;text-align:center}
-.wg-count b{display:block;font-size:1rem;color:#f9a8d4}
-.wg-count span{font-size:.62rem;letter-spacing:.6px;text-transform:uppercase;color:#c4b5d6}
-.wg-books{display:flex;gap:10px;flex-wrap:wrap}
-.wg-book{flex:1;min-width:160px;background:#100818;border:1px solid #3b0764;border-radius:14px;padding:10px}
-.wg-book h4{margin:0 0 6px;color:#f9a8d4;font-size:.78rem;letter-spacing:.8px}
-.wg-ends{font-size:.72rem;color:#e9d5ff;margin-bottom:8px}
-.wg-player{font-size:.78rem;margin:4px 0;color:#fce7f3}
+
+.wg-wrap{background:linear-gradient(110deg,#160c22,#2a1040 50%,#db2777 140%);border:1px solid #f9a8d4;border-radius:16px;padding:8px 12px 6px;margin:18px 0 8px;box-shadow:0 0 18px rgba(236,72,153,.22)}
+.wg-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline;margin:0 0 4px}
+.wg-title{font-size:.88rem;font-weight:800;color:#fce7f3;letter-spacing:.3px}
+.wg-sub{font-size:.68rem;color:#e9d5ff;margin:0}
+.wg-switch{display:flex;gap:4px}
+.wg-pill{border-radius:999px;padding:2px 8px;font-size:.62rem;font-weight:800;border:1px solid #4c1d95;color:#c4b5d6}
+.wg-pill.on{border-color:#f9a8d4;color:#fff;background:linear-gradient(90deg,#6d28d9,#db2777);box-shadow:0 0 8px rgba(244,114,182,.4)}
+.wg-counts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:2px 0 6px;font-size:.78rem;color:#e9d5ff}
+.wg-counts b{color:#f9a8d4}
+.wg-books{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start}
+.pulse-pill{display:inline-block;background:#120818;border:1px solid #a855f7;border-radius:999px;padding:3px 10px;font-size:.7rem;font-weight:700;color:#fce7f3;cursor:pointer;background-image:linear-gradient(#120818,#120818),linear-gradient(90deg,#f472b6,#a855f7);background-origin:border-box;box-shadow:0 0 8px rgba(168,85,247,.2)}
+.pulse-pill:hover,.pulse-pill[open]{box-shadow:0 0 14px rgba(244,114,182,.45);border-color:#f9a8d4}
+.pulse-pill summary{list-style:none;cursor:pointer}
+.pulse-pill summary::-webkit-details-marker{display:none}
+.pulse-pop{margin-top:6px;background:#100818;border:1px solid #3b0764;border-radius:12px;padding:6px 8px;min-width:160px}
+.wg-player{font-size:.72rem;margin:3px 0;color:#fce7f3}
 .wg-take{color:#86efac}
 .wg-lean{color:#f9a8d4}
 .wg-watch{color:#d8b4fe}
-.wg-queen{margin-top:10px;font-size:.8rem;font-style:italic;color:#f9a8d4}
-
+.wg-dont{color:#fda4af}
+.wg-queen{margin:4px 0 0;text-align:right;font-size:.72rem;font-style:italic;color:#f9a8d4;text-shadow:0 0 10px rgba(244,114,182,.55)}
+.recap-line{font-size:.82rem;margin:3px 0;color:#fce7f3}
 
 .n1-pulse{animation:n1Shimmer 1.6s ease-out 1}
 @keyframes n1Shimmer{
@@ -1217,8 +1275,15 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     if bk and (bk in SIGNAL_ONLY_BOOKS or "betmgm" in str(bk)):
         # MGM can sit on the card as a tag. It cannot be the ticket that greens TAKE IT.
         return False
+    fn = fanatics_price_logic(book_prices)
+    if fn.get("watch_only"):
+        return False
     if bk and bk not in TAKE_STRONG_BOOKS:
         return False
+    # Fanatics BEST +500 with DK/FD/MGM on the card (even mid) can still TAKE
+    if bk == "fanatics" and not fn.get("allow_take") and not fn.get("matches"):
+        if not (fn.get("way_over_mgm") and not fn.get("alone")):
+            return False
     try:
         sc = int(score or 0)
     except Exception:
@@ -1574,7 +1639,11 @@ def render_mini_glossary():
         "- **DK 10** — DraftKings ends in 10.\n"
         "- **Multi-book Shorten** — price dropped on 2+ books. Somebody knows something.\n"
         "- **Books Tight** — ticket books within 50 points. That’s pressure.\n"
-        "- **Caesars Classic / HardRock Heater / Fanatics Rogue** — the long ticket on a hot ending. If you see it, you didn’t hear it from me."
+        "- **Caesars Classic / HardRock Heater / Fanatics Rogue** — the long ticket on a hot ending. If you see it, you didn’t hear it from me.\n"
+        "- **Fanatics vs MGM** — if Fanatics is WAY HIGHER than MGM (80+), Fanatics is the SIGNAL BOOK.\n"
+        "- **Fanatics BEST +500** — ALLOW TAKE even if DK/FD/MGM are mid.\n"
+        "- **Fanatics ALONE** (no DK/FD/MGM) — WATCH, not TAKE.\n"
+        "- **Fanatics MATCHES DK/FD/MGM** — treat normally."
     )
     st.markdown("**⚙️ Methods (how hard a tag works)**")
     st.markdown(
@@ -4986,6 +5055,52 @@ def build_whats_going_today(rows):
     return len(hr_names), len(graded), dict(by_book), on_our_list, pair_list, hr_status
 
 
+def render_run_it_recap():
+    """Lock tab: every completed HIT/MISS plus LEAN/WATCH from today's ledger."""
+    rows = results_for_sport()
+    today = today_az()
+    sport = active_sport()
+    prop = "TD prop" if sport == "NFL" else "HR prop"
+    keep = []
+    for r in rows:
+        if r.get("date") not in (today, today_mlb_date() if "today_mlb_date" in globals() else today):
+            continue
+        res = str(r.get("result") or "").upper()
+        src = str(r.get("source") or "")
+        if res in ("HIT", "MISS"):
+            keep.append(r)
+        elif src in ("watch", "shop_lean") and res in ("PENDING", "HIT", "MISS", "LEAN", "WATCH", ""):
+            keep.append(r)
+    if not keep:
+        st.caption("No completed names yet. Grade Results, then come back.")
+        return
+    fn_loud = any("Fanatics" in str(r.get("best_book") or "") or "fanatics" in str(r.get("best_book") or "").lower() for r in keep)
+    queen = "Queen says: Run It names went." + (" Fanatics loud again." if fn_loud else "")
+    st.markdown(f'<div class="wg-queen" style="text-align:left">{queen}</div>', unsafe_allow_html=True)
+    hits = sum(1 for r in keep if str(r.get("result")).upper() == "HIT")
+    misses = sum(1 for r in keep if str(r.get("result")).upper() == "MISS")
+    st.caption(f"{hits} HIT · {misses} MISS · {len(keep)} on the recap")
+    for r in sorted(keep, key=lambda x: str(x.get("player") or "")):
+        res = str(r.get("result") or "").upper()
+        src = str(r.get("source") or "")
+        if res == "HIT":
+            emo, lab, cls = "💚", "HIT", "wg-take"
+        elif res == "MISS":
+            emo, lab, cls = "🔴", "MISS", "wg-dont"
+        elif src == "shop_lean":
+            emo, lab, cls = "💖", "LEAN", "wg-lean"
+        elif src == "watch":
+            emo, lab, cls = "💜", "WATCH", "wg-watch"
+        else:
+            emo, lab, cls = "💜", res or "WATCH", "wg-watch"
+        book = book_label(r.get("best_book") or "") or "—"
+        name = r.get("player") or "?"
+        st.markdown(
+            f'<div class="recap-line {cls}">{emo} {lab} — {name} ({book}) · {prop}</div>',
+            unsafe_allow_html=True,
+        )
+
+
 def render_whats_going_today():
     rows = results_for_sport()
     mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
@@ -5028,6 +5143,7 @@ def render_whats_going_today():
     lean_n = sum(1 for _n, t in listed if t in ("SHOP LEAN", "LEAN"))
     watch_n = sum(1 for _n, t in listed if t in ("WATCH", "BOARD"))
     hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "HRs")
+    prop_word = "TD prop" if sport == "NFL" else "HR prop"
 
     def _norm_tag(tag):
         if tag == "TAKE":
@@ -5036,12 +5152,13 @@ def render_whats_going_today():
             return "LEAN", "wg-lean", "💖"
         if tag in ("WATCH", "BOARD"):
             return "WATCH", "wg-watch", "💜"
+        if tag in ("DON'T", "DONT", "PASS"):
+            return "DON'T", "wg-dont", "🔴"
         return tag, "", "✨"
 
-    FOCUS = ["DK", "FD", "MGM", "HardRock"]
+    FOCUS = ["DK", "FD", "HardRock", "MGM", "Fanatics", "Caesars"]
     lock = st.session_state.get("pregame_lock") or load_pregame()
     by_names = defaultdict(list)
-    untagged = []
     for n, tag in listed:
         call, cls, emo = _norm_tag(tag)
         bl = None
@@ -5065,36 +5182,24 @@ def render_whats_going_today():
                             best_p, best_bl = p, lab
                     bl = best_bl
                     break
-        if bl in FOCUS:
-            by_names[bl].append((n, call, cls, emo))
-        else:
-            untagged.append((n, call, cls, emo, bl or "—"))
+        by_names[bl or "Fanatics"].append((n, call, cls, emo))
 
-    book_html = []
+    pills = []
     for bl in FOCUS:
         items = by_book.get(bl) or []
         people = by_names.get(bl) or []
         if not items and not people:
             continue
-        ends = " · ".join("%02d:%s" % (e, c) for e, c in (items[:4] if items else []))
-        plist = [
-            '<div class="wg-player %s">%s %s (%s)</div>' % (cls, emo, n, call)
-            for n, call, cls, emo in people[:8]
-        ]
-        if not plist:
-            plist.append('<div class="wg-player" style="opacity:.7">No list names here yet.</div>')
-        book_html.append(
-            '<div class="wg-book"><h4>%s</h4><div class="wg-ends">%s</div>%s</div>'
-            % (bl, ends or "—", "".join(plist))
-        )
-    if untagged:
-        plist = [
-            '<div class="wg-player %s">%s %s (%s) · %s</div>' % (cls, emo, n, call, lab)
-            for n, call, cls, emo, lab in untagged[:8]
-        ]
-        book_html.append(
-            '<div class="wg-book"><h4>No book tagged</h4><div class="wg-ends">Fanatics / Caesars / blank</div>%s</div>'
-            % "".join(plist)
+        top = items[0] if items else None
+        label = f"{bl} · {top[0]:02d}:{top[1]}" if top else f"{bl} · —"
+        pop = []
+        for n, call, cls, emo in people[:4]:
+            pop.append('<div class="wg-player %s">%s %s — %s (%s)</div>' % (cls, emo, call, n, prop_word))
+        if not pop:
+            pop.append('<div class="wg-player" style="opacity:.65">No list names yet.</div>')
+        pills.append(
+            '<details class="pulse-pill"><summary>%s</summary><div class="pulse-pop">%s</div></details>'
+            % (label, "".join(pop))
         )
 
     if sport == "NFL":
@@ -5102,31 +5207,26 @@ def render_whats_going_today():
     else:
         queen = "Queen says: Run It names went." if take_n else "Queen says: waiting on first-pitch receipts."
 
-    books_block = "".join(book_html) if book_html else '<div class="wg-book">Nobody on the list has gone yet.</div>'
+    books_block = "".join(pills) if pills else '<span class="pulse-pill">Nobody on the list has gone yet.</span>'
     mlb_on = "on" if sport == "MLB" else ""
     nfl_on = "on" if sport == "NFL" else ""
     html = (
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
-        '<div class="wg-title">What\'s Going Today · %s — %s %s · %s were Run It / Shop TAKE</div>'
-        '<div class="wg-sub">Live + finals. List names only. Switch sport in the sidebar.</div>'
+        '<div class="wg-title">Today’s Run It Pulse · %s</div>'
+        '<div class="wg-sub">Recap. Click a pill for names. Full list lives in Lock → Run It Recap.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
         '</div></div>'
-        '<div class="wg-counts">'
-        '<div class="wg-count"><b>%s</b><span>TAKE</span></div>'
-        '<div class="wg-count"><b>%s</b><span>LEAN</span></div>'
-        '<div class="wg-count"><b>%s</b><span>WATCH</span></div>'
-        '<div class="wg-count"><b>%s</b><span>%s</span></div>'
-        '</div>'
+        '<div class="wg-counts">💚 TAKE <b>%s</b> · 💖 LEAN <b>%s</b> · 💜 WATCH <b>%s</b> · %s <b>%s</b></div>'
         '<div class="wg-books">%s</div>'
         '<div class="wg-queen">%s</div>'
         '</div>'
     ) % (
-        sport, mlb_hr, hit_word, on_list,
+        sport,
         mlb_on, nfl_on,
-        take_n, lean_n, watch_n, mlb_hr, hit_word,
+        take_n, lean_n, watch_n, hit_word, mlb_hr,
         books_block, queen,
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -6374,6 +6474,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             methods_map[player].append(tag)
             results.append({"type": typ, "label": player, "reason": reason, "event": ev0, "methods": [tag]})
 
+        fn = fanatics_price_logic(books)
+        if fn.get("way_over_mgm"):
+            _add("Fanatics Loud", f"Fanatics {format_odds(fn['price'])} way over MGM by {fn['gap_mgm']}")
         if best_b == "fanatics" and pack and best_p - pack_hi >= 40 and abs(best_p) >= 500:
             if end in TAKE_HOT_ENDS or end in (10, 60):
                 _add("Fanatics Rogue", f"Fanatics longest by {best_p - pack_hi} at {format_odds(best_p)}")
@@ -6381,6 +6484,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 _add("Fanatics Drift", f"Fanatics off cluster by {best_p - pack_hi}")
         elif best_b == "fanatics" and pack and pack_hi - best_p >= 40:
             _add("Fanatics Drift", "Fanatics short vs ticket pack")
+        if fn.get("alone") and fn.get("price") and abs(fn["price"]) >= 500:
+            _add("Fanatics Alone", "Fanatics only — WATCH, not TAKE")
         if best_b == "caesars" and end in HOT_BOOK_ENDS["caesars"] and abs(best_p) >= 500:
             _add("Caesars Classic", f"Caesars {format_odds(best_p)} ends {end:02d}")
         if best_b == "hardrockbet" and end in HOT_BOOK_ENDS["hardrockbet"] and abs(best_p) >= 500:
@@ -7463,7 +7568,6 @@ def main():
                 st.caption(f"⚡ Auto-grade: {h} HIT · {m} MISS · {s} still open")
         except Exception:
             st.session_state[_ag] = time.time()
-    render_whats_going_today()
     odds_key = get_odds_api_key()
     sgo_key = get_sgo_key()
     if not odds_key:
@@ -8447,6 +8551,10 @@ def main():
                     )
     if page == "Lines:Lock":
         st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
+        st.markdown("#### Run It Recap")
+        st.caption("Completed props only. Pulse at the bottom stays tiny.")
+        render_run_it_recap()
+        st.markdown("#### Pregame prices")
         st.caption(
             "Open = first pull (never changes) · Now = latest pregame fetch · "
             "Close = frozen when the book drops off the feed (often at first pitch)."
@@ -9837,6 +9945,7 @@ def main():
         st.caption("Manual only. Tags live on the cards. Recipes stay off this page.")
         site_section_close()
 
+    render_whats_going_today()
     st.markdown(
         '<div class="footer">♛ Girl Magic Odds · She Got Game · Petty Queen · Me & My Girls We Rolling<br>'
         '<span style="font-size:.75rem;color:#c4b5d6">Board picks the name. Shop picks the number. Grade keeps us honest.</span></div>',
