@@ -2346,6 +2346,24 @@ def _need_one_queen(action, hot=False):
     return pool[idx]
 
 
+
+def _need_one_book_row(books):
+    if not books:
+        return "No book prices on this fetch."
+    order = ["draftkings", "fanduel", "betmgm", "fanatics", "hardrockbet", "caesars", "bet365"]
+    bits = []
+    seen = set()
+    for k in order:
+        if k in books:
+            bits.append("%s %s" % (book_label(k), format_odds(books[k])))
+            seen.add(k)
+    for k, v in books.items():
+        if k in seen:
+            continue
+        bits.append("%s %s" % (book_label(k), format_odds(v)))
+    return " · ".join(bits)
+
+
 def render_need_one_cards(items):
     if not items:
         st.info("Nothing cleared I JUST NEED ONE. Fetch NFL, then tick a 0.5 box.")
@@ -2386,8 +2404,9 @@ def render_need_one_cards(items):
             f'({format_odds(r.get("best"))})</div>'
             f'<div class="card-line" title="Fair = weighted book average. Gap = posted minus fair. EV = expected value. Kelly = bankroll confidence.">'
             f'Fair {format_odds(r.get("fair"))} | Gap {gap:+d} | EV {ev_s} | Kelly {kpct:.0f}%</div>'
-            f'<div class="card-meta">{book_label(r.get("best_book"))} · {r.get("n_books")} book'
+            f'<div class="card-meta">Best {book_label(r.get("best_book"))} {format_odds(r.get("best"))} · {r.get("n_books")} book'
             f'{"s" if (r.get("n_books") or 0)!=1 else ""} · {r.get("event") or ""}</div>'
+            f'<div class="card-line">{_need_one_book_row(r.get("books") or {})}</div>'
             f'<div class="n1-meter-lab">Kelly confidence: {kpct:.0f}%</div>'
             f'<div class="n1-meter {"hot" if kpct>10 else ""}"><i style="width:{kpct:.0f}%"></i></div>'
             f'<div class="card-foot">RE tag active | Money-only</div>'
@@ -5260,11 +5279,68 @@ def render_run_it_recap():
         st.caption("Rows %s–%s of %s unique" % (page * PAGE + 1, min((page + 1) * PAGE, total), total))
 
 
+
+def pulse_from_live_lock():
+    """One scorer, one pill. Best lock book + that book's last two. No Need One rows."""
+    sport = active_sport()
+    if sport == "NFL":
+        names, _fin, _m = fetch_nfl_td_scorers()
+    else:
+        names, _fin, _m = fetch_mlb_hr_hitters()
+    lock = st.session_state.get("pregame_lock") or load_pregame()
+    focus = ["DK", "FD", "HardRock", "MGM", "Fanatics", "Caesars", "Bet365"]
+    hit_ends = Counter()
+    used = 0
+    for nm in names or []:
+        entry = None
+        for pname, data in (lock or {}).items():
+            if names_match(nm, pname):
+                entry = data
+                break
+        if not entry:
+            continue
+        best_bl, best_px = None, None
+        for b, info in (entry.get("books") or {}).items():
+            slot = _book_slot_normalize(info) if "_book_slot_normalize" in globals() else (info or {})
+            px = slot.get("close_price")
+            if px is None:
+                px = slot.get("latest_price")
+            if px is None:
+                px = slot.get("price")
+            if px is None:
+                continue
+            bl = book_label(b)
+            if bl not in focus:
+                continue
+            try:
+                px = int(px)
+            except Exception:
+                continue
+            if best_px is None or px > best_px:
+                best_bl, best_px = bl, px
+        if best_bl is None:
+            continue
+        end = last_two(best_px)
+        if end is None:
+            continue
+        hit_ends[(best_bl, int(end))] += 1
+        used += 1
+    by_book = defaultdict(list)
+    for (bl, end), cnt in hit_ends.items():
+        by_book[bl].append((int(end), int(cnt)))
+    for bl in by_book:
+        by_book[bl].sort(key=lambda x: (-x[1], x[0]))
+    return dict(by_book), used, len(names or [])
+
+
 def render_whats_going_today():
     rows = results_for_sport()
     mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
     sport = active_sport()
     cfg = sport_cfg()
+    live_books, _used, live_n = pulse_from_live_lock()
+    if live_books:
+        by_book = live_books
     if sport == "NFL":
         live_tds, _fin, _m = fetch_nfl_td_scorers()
         mlb_hr = len(live_tds or [])
@@ -5275,28 +5351,6 @@ def render_whats_going_today():
             pass
         take_pool += [r.get("player") for r in rows if r.get("source") in ("take_it", "shop_take", "watch", "shop_lean")]
         on_list = sum(1 for nm in (live_tds or []) if any(names_match(nm, t) for t in take_pool if t))
-        hit_ends = Counter()
-        for r in rows:
-            blob = str(r.get("market") or r.get("sport") or "").lower()
-            if r.get("date") not in (today_az(), today_mlb_date()):
-                continue
-            if "td" not in blob and "nfl" not in blob and str(r.get("sport") or "").upper() != "NFL":
-                continue
-            if r.get("result") != "HIT":
-                continue
-            bl, end = pulse_book_and_ending(
-                r.get("player"), r.get("best_book"), r.get("best_price"), r.get("ending"),
-                st.session_state.get("pregame_lock") or load_pregame(),
-                r.get("book_prices") or r.get("books"),
-            )
-            if bl and end is not None:
-                hit_ends[(bl, int(end))] += 1
-        by_book = defaultdict(list)
-        for (bl, end), cnt in hit_ends.items():
-            by_book[bl].append((int(end), int(cnt)))
-        for bl in by_book:
-            by_book[bl].sort(key=lambda x: (-x[1], x[0]))
-        by_book = dict(by_book)
 
     listed = [(n, tag) for n, tag in (hr_status or []) if tag and tag != "NOT ON LIST"]
     take_n = sum(1 for _n, t in listed if t == "TAKE")
@@ -5381,7 +5435,7 @@ def render_whats_going_today():
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">Pills = book · how many already went · last two digits (DK · 6 ended +x50). Click for names. Full list: Lock → Run It Recap.</div>'
+        '<div class="wg-sub">Pills = live scorers only. Best Lock book + that book’s last two. Need One props are not in these pills.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
@@ -6009,13 +6063,17 @@ def merge_odds(a, b):
     combined = a + b
     if not combined: return pd.DataFrame()
     df = pd.DataFrame(combined)
+    if "prop_type" not in df.columns:
+        df["prop_type"] = ""
+    df["prop_type"] = df["prop_type"].fillna("")
     df["priority"] = df["source"].map({"oddsapi": 0, "sgo": 1})
-    df = df.sort_values(["player", "book", "priority"])
+    df = df.sort_values(["player", "book", "prop_type", "event", "priority"])
     team_map = {}
     for _, r in df.iterrows():
         if r.get("team"): team_map[r["player"]] = r["team"]
     df["team"] = df.apply(lambda r: r["team"] if r.get("team") else team_map.get(r["player"], ""), axis=1)
-    df = df.drop_duplicates(subset=["player", "book"], keep="first")
+    # Never collapse TD vs receiving vs rush onto one book price
+    df = df.drop_duplicates(subset=["player", "book", "prop_type", "event"], keep="first")
     return df.drop(columns=["priority", "source"], errors="ignore")
 
 def do_fetch(odds_key, sgo_key, chosen_labels, options):
@@ -8554,6 +8612,10 @@ def main():
                     if not need_one_is_live(r) and not row_event_is_live(r.get("event") or "", live_labs)
                 ]
             items = build_need_one_board(need_rows, want) if want else []
+            st.caption(
+                "These are 0.5 lines only (first yard / first catch) — not the 40.5 receiving line on the board. "
+                "Fair is math, not a book. Hit Fetch again if a number does not match the app."
+            )
             st.markdown(
                 f'<div class="petty-row">'
                 f'<div class="petty-box n1-live"><div class="petty-num">{sum(1 for x in items if x["action"]=="TAKE")}</div><div class="petty-label">💚 Cleared plays</div></div>'
