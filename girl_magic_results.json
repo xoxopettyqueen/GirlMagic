@@ -34479,5 +34479,35 @@
     "sport": "NFL",
     "market": "Rush Yards",
     "event": "Denver Broncos @ Kansas City Chiefs"
+  },
+  {
+    "id": "2026-09-13_Theo Johnson_shop_lean_25",
+    "date": "2026-09-13",
+    "time": "03:12 PM",
+    "player": "Theo Johnson",
+    "score": 0,
+    "edge": 25,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 500,
+    "book_prices": {
+      "caesars": 500,
+      "draftkings": 500,
+      "fanatics": 550,
+      "fanduel": 550,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-13T22:12:17.206348+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
