@@ -3656,6 +3656,39 @@ def fold_name(name):
     return " ".join(s.lower().split())
 
 
+def player_key(name):
+    """Same human, one key: Andrés Giménez == Andres Gimenez."""
+    return fold_name(clean_name(name))
+
+
+def pretty_player_name(names):
+    """Keep the accented spelling when two feeds disagree."""
+    opts = [str(n).strip() for n in names if n]
+    if not opts:
+        return ""
+    def _score(n):
+        return (sum(1 for c in n if ord(c) > 127), len(n))
+    return max(opts, key=_score)
+
+
+def unify_player_names(df):
+    """Collapse accent / punctuation splits onto one display name."""
+    if df is None or getattr(df, "empty", True) or "player" not in df.columns:
+        return df
+    df = df.copy()
+    df["player_key"] = df["player"].map(player_key)
+    canon = {}
+    for k, g in df.groupby("player_key"):
+        if not k:
+            continue
+        canon[k] = pretty_player_name(g["player"].tolist())
+    df["player"] = df.apply(
+        lambda r: canon.get(r.get("player_key"), r.get("player")),
+        axis=1,
+    )
+    return df
+
+
 def clean_name(name):
     name = str(name).strip()
     suffixes = {"jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"}
@@ -4138,7 +4171,18 @@ def update_pregame_lock(df):
 
 def get_locked(player):
     lock = st.session_state.get("pregame_lock") or load_pregame()
-    return lock.get(clean_name(player)) or lock.get(player) or {}
+    if not lock:
+        return {}
+    if player in lock:
+        return lock[player]
+    cn = clean_name(player)
+    if cn in lock:
+        return lock[cn]
+    want = player_key(player)
+    for k, v in lock.items():
+        if player_key(k) == want:
+            return v
+    return {}
 
 
 def locked_price_str(player):
@@ -6276,9 +6320,16 @@ def merge_odds(a, b):
     for _, r in df.iterrows():
         if r.get("team"): team_map[r["player"]] = r["team"]
     df["team"] = df.apply(lambda r: r["team"] if r.get("team") else team_map.get(r["player"], ""), axis=1)
+    # Andrés Giménez vs Andres Gimenez = one player before book dedupe
+    df = unify_player_names(df)
+    team_map2 = {}
+    for _, r in df.iterrows():
+        if r.get("team"):
+            team_map2[r["player"]] = r["team"]
+    df["team"] = df.apply(lambda r: r["team"] if r.get("team") else team_map2.get(r["player"], ""), axis=1)
     # Never collapse TD vs receiving vs rush onto one book price
     df = df.drop_duplicates(subset=["player", "book", "prop_type", "event"], keep="first")
-    return df.drop(columns=["priority", "source"], errors="ignore")
+    return df.drop(columns=["priority", "source", "player_key"], errors="ignore")
 
 def do_fetch(odds_key, sgo_key, chosen_labels, options):
     all_rows, all_found_raw = [], set()
@@ -6460,6 +6511,7 @@ def apply_team_picks(ev_board, watch_board, coverage_board):
 def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     if df.empty: return [], [], [], []
     if "team" not in df.columns: df["team"] = ""
+    df = unify_player_names(df)
     df = df.sort_values("point").groupby(["player", "book"], dropna=False).first().reset_index()
     results, methods_map = [], defaultdict(list)
     all_players_now = set(df["player"].unique())
