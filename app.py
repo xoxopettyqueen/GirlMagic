@@ -2107,6 +2107,34 @@ def build_shop_board(df):
     return rows
 
 
+NFL_QB_BLOCK = {
+    "baker mayfield", "bryce young", "caleb williams", "cooper rush",
+    "patrick mahomes", "jordan love", "dak prescott", "jalen hurts",
+    "lamar jackson", "joe burrow", "josh allen", "patrick mahomes",
+    "justin herbert", "geno smith", "kyler murray", "bo nix",
+    "cj stroud", "c.j. stroud", "trevor lawrence", "tua tagovailoa",
+    "matthew stafford", "jared goff", "sam darnold", "daniel jones",
+    "drake maye", "jayden daniels", "michael penix", "michael penix jr",
+    "aaron rodgers", "russell wilson", "kirk cousins", "justin fields",
+    "anthony richardson", "will levis", "aidan oconnell", "aidan o'connell",
+    "spencer rattler", "mac jones", "tyrod taylor", "marcus mariota",
+    "joe flacco", "aaron rodgers", "mason rudolph", "skylar thompson",
+    "kenny pickett", "desmond ridder", "sam howell", "drew lock",
+    "davis mills", "tommy devito", "mitchell trubisky", "jacoby brissett",
+    "jameis winston", "gardner minshew", "andy dalton", "nick mullens",
+    "brock purdy", "tua tagovailoa",
+}
+
+def is_nfl_qb(name):
+    n = clean_name(name).lower()
+    if n in NFL_QB_BLOCK:
+        return True
+    for q in NFL_QB_BLOCK:
+        if names_match(name, q) or names_match(n, q):
+            return True
+    return False
+
+
 NEED_ONE_MAJOR = {
     "draftkings", "fanduel", "hardrockbet", "fanatics", "caesars", "betmgm", "bet365",
 }
@@ -4800,7 +4828,7 @@ def fetch_mlb_hr_hitters(date_str=None):
 
 
 @st.cache_data(ttl=180, show_spinner=False)
-def fetch_nfl_td_scorers():
+def _fetch_nfl_td_scorers_cached():
     """Anytime TD scorers from ESPN. LIVE games + finals. Miss pool = finals only."""
     scorers, finished = set(), set()
     days = []
@@ -4846,6 +4874,7 @@ def fetch_nfl_td_scorers():
             pull_ids.append((str(eid), completed))
     done_ids = [eid for eid, fin in pull_ids if fin]
     live_n = sum(1 for _e, fin in pull_ids if not fin)
+    all_qb, all_rush = set(), set()
     for eid, is_final in pull_ids[:24]:
         try:
             sm = requests.get(
@@ -4946,15 +4975,39 @@ def fetch_nfl_td_scorers():
         drop_qb = {q for q in (qb_names | set()) if q not in rush_td}
         scorers |= legit
         scorers -= drop_qb
-        st.session_state.setdefault("nfl_qb_names", set()).update(qb_names)
-        st.session_state.setdefault("nfl_rush_td", set()).update(rush_td)
-    # final sweep in case plays credited a passer before boxscore
-    drop_qb = set()
-    for q in (st.session_state.get("nfl_qb_names") or []):
-        if q not in (st.session_state.get("nfl_rush_td") or []):
-            drop_qb.add(q)
+        all_qb |= qb_names
+        all_rush |= rush_td
+    drop_qb = {q for q in all_qb if q not in all_rush}
     scorers -= drop_qb
-    return scorers, finished, f"ESPN NFL {len(done_ids)} final · {live_n} live · {len(scorers)} anytime TD names"
+    return (
+        frozenset(scorers),
+        frozenset(finished),
+        f"ESPN NFL {len(done_ids)} final · {live_n} live · {len(scorers)} anytime TD names",
+        frozenset(all_rush),
+        frozenset(all_qb),
+    )
+
+
+def fetch_nfl_td_scorers():
+    packed = _fetch_nfl_td_scorers_cached()
+    if len(packed) == 5:
+        scorers, finished, msg, rush_td, qbs = packed
+    else:
+        scorers, finished, msg = packed[:3]
+        rush_td, qbs = set(), set()
+    scorers = set(scorers or [])
+    finished = set(finished or [])
+    rush_td = set(rush_td or [])
+    st.session_state["nfl_rush_td"] = rush_td
+    st.session_state["nfl_qb_names"] = set(qbs or [])
+    # QB counts only with a rushing TD.
+    kept = set()
+    for s in scorers:
+        if is_nfl_qb(s) and not any(names_match(s, r) for r in rush_td):
+            continue
+        kept.add(s)
+    return kept, finished, msg
+
 
 
 def auto_grade_pending():
@@ -4987,10 +5040,8 @@ def auto_grade_pending():
             skipped += 1
             continue
         player = row.get("player") or ""
-        qbs = st.session_state.get("nfl_qb_names") or set()
         rushed = st.session_state.get("nfl_rush_td") or set()
-        if active_sport() == "NFL" and any(names_match(player, q) for q in qbs) and not any(names_match(player, x) for x in rushed):
-            # Passer only. Do not grade HIT on throwing TDs.
+        if active_sport() == "NFL" and is_nfl_qb(player) and not any(names_match(player, x) for x in rushed):
             if miss_pool and any(names_match(player, f) for f in miss_pool):
                 row["result"] = "MISS"
                 row["graded_by"] = tag
@@ -5204,6 +5255,11 @@ def render_run_it_recap():
     rows = results_for_sport()
     today = today_az()
     sport = active_sport()
+    if sport == "NFL":
+        try:
+            fetch_nfl_td_scorers()
+        except Exception:
+            pass
     prop = "TD prop" if sport == "NFL" else "HR prop"
     extra_day = today
     try:
@@ -5220,11 +5276,10 @@ def render_run_it_recap():
             mkt = str(r.get("market") or "").lower()
             if src.startswith("need_one") or any(x in mkt for x in ("rush", "receiv", "reception", "yard")):
                 continue
-            qbs = st.session_state.get("nfl_qb_names") or set()
-            rushed = st.session_state.get("nfl_rush_td") or set()
-            pname = clean_name(r.get("player") or "")
-            if any(names_match(pname, q) for q in qbs) and not any(names_match(pname, x) for x in rushed):
-                continue
+            if is_nfl_qb(r.get("player") or ""):
+                rushed = st.session_state.get("nfl_rush_td") or set()
+                if not any(names_match(r.get("player") or "", x) for x in rushed):
+                    continue
         if res in ("HIT", "MISS"):
             keep.append(r)
         elif src in ("watch", "shop_lean") and res in ("PENDING", "HIT", "MISS", "LEAN", "WATCH", ""):
