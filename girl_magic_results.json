@@ -48673,5 +48673,97 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-14_Pavin Smith_shop_take_125",
+    "date": "2026-09-14",
+    "time": "02:36 PM",
+    "player": "Pavin Smith",
+    "score": 0,
+    "edge": 125,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 835,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 950,
+      "fanduel": 820
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-14T21:36:16.667798+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-14_Ryan Jeffers_shop_take_112",
+    "date": "2026-09-14",
+    "time": "02:36 PM",
+    "player": "Ryan Jeffers",
+    "score": 0,
+    "edge": 112,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 622,
+    "book_prices": {
+      "betmgm": 550,
+      "caesars": 625,
+      "draftkings": 620,
+      "fanatics": 750,
+      "fanduel": 600,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-14T21:36:16.668991+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-14_Max Muncy_shop_lean_41",
+    "date": "2026-09-14",
+    "time": "02:36 PM",
+    "player": "Max Muncy",
+    "score": 0,
+    "edge": 41,
+    "best_price": 461,
+    "best_book": "draftkings",
+    "median": 420,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 350,
+      "caesars": 390,
+      "draftkings": 461,
+      "fanatics": 420,
+      "fanduel": 390,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+400s",
+    "ending": 61,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-14T21:36:16.678280+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
