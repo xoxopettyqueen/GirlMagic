@@ -5394,17 +5394,28 @@ def render_run_it_recap():
         sig_key, sig_show, sig_cls, tip = _signal(r)
         name = r.get("player") or "?"
         book = book_label(r.get("best_book") or "") or "—"
-        key = (rank, res_key, sig_key, name, book, prop)
+        key = (clean_name(name).lower(), res_key)
         if key not in buckets:
             buckets[key] = {
                 "res_show": res_show, "res_cls": res_cls,
                 "sig_show": sig_show, "sig_cls": sig_cls, "tip": tip,
-                "name": name, "book": book, "prop": prop, "n": 0, "rank": rank,
+                "name": name, "books": [], "prop": prop, "n": 0, "rank": rank,
                 "sig_ord": {"TAKE": 0, "LEAN": 1, "WATCH": 2}.get(sig_key, 9),
             }
-        buckets[key]["n"] += 1
+        item = buckets[key]
+        item["n"] += 1
+        if book and book not in item["books"] and book != "—":
+            item["books"].append(book)
+        if {"TAKE": 0, "LEAN": 1, "WATCH": 2}.get(sig_key, 9) < item["sig_ord"]:
+            item["sig_show"], item["sig_cls"], item["tip"] = sig_show, sig_cls, tip
+            item["sig_ord"] = {"TAKE": 0, "LEAN": 1, "WATCH": 2}.get(sig_key, 9)
+        if rank < item["rank"]:
+            item["rank"], item["res_show"], item["res_cls"] = rank, res_show, res_cls
 
-    ordered = sorted(buckets.values(), key=lambda x: (x["rank"], x["sig_ord"], x["name"].lower(), x["book"]))
+    for item in buckets.values():
+        item["book"] = " · ".join(item["books"]) if item["books"] else "—"
+
+    ordered = sorted(buckets.values(), key=lambda x: (x["rank"], x["sig_ord"], x["name"].lower()))
     PAGE = 25
     total = len(ordered)
     pages = max(1, (total + PAGE - 1) // PAGE)
@@ -5416,7 +5427,7 @@ def render_run_it_recap():
 
     body = []
     for item in slice_rows:
-        badge = '<span class="recap-badge">🔥 Best Price</span>' if _fn_best(item["name"], item["book"]) else ""
+        badge = '<span class="recap-badge">🔥 Best Price</span>' if any(_fn_best(item["name"], b) for b in (item.get("books") or [item.get("book")])) else ""
         cnt = ("×%s" % item["n"]) if item["n"] > 1 else "—"
         body.append(
             "<tr class='%s %s' title='%s'><td class='sig'>%s</td><td>%s</td><td>%s</td><td>%s%s</td><td>%s</td><td>%s</td></tr>"
