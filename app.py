@@ -4901,6 +4901,10 @@ def fetch_nfl_td_scorers():
                 if n:
                     scorers.add(clean_name(n))
         box = ((sm.get("boxscore") or {}).get("players") or [])
+        qb_names = set()
+        rush_td = set()
+        rec_td = set()
+        ret_td = set()
         for team_block in box:
             for stat_group in team_block.get("statistics") or []:
                 name = str(stat_group.get("name") or stat_group.get("label") or "").lower()
@@ -4910,22 +4914,47 @@ def fetch_nfl_td_scorers():
                     if k in ("td", "tds", "touchdowns"):
                         td_idx = i
                         break
-                if "pass" in name or "qb" in name or "quarterback" in name:
-                    continue  # passing TDs are the QB — not an anytime scorer
-                if "rush" not in name and "receiv" not in name and "return" not in name:
-                    continue
                 for ath in stat_group.get("athletes") or []:
-                    n = (ath.get("athlete") or {}).get("displayName")
-                    if n and is_final:
+                    ad = ath.get("athlete") or {}
+                    n = ad.get("displayName")
+                    pos = str((ad.get("position") or {}).get("abbreviation") or ad.get("position") or "").upper()
+                    if pos == "QB" and n:
+                        qb_names.add(clean_name(n))
+                    if n and is_final and ("rush" in name or "receiv" in name or "return" in name):
                         finished.add(clean_name(n))
                     stats = ath.get("stats") or []
+                    scored = False
                     if td_idx is not None and td_idx < len(stats):
                         try:
-                            if float(stats[td_idx]) >= 1 and n:
-                                scorers.add(clean_name(n))
+                            scored = float(stats[td_idx]) >= 1
                         except Exception:
-                            pass
-    return scorers, finished, f"ESPN NFL {len(done_ids)} final · {live_n} live · {len(scorers)} TD names"
+                            scored = False
+                    if not scored or not n:
+                        continue
+                    cn = clean_name(n)
+                    if "pass" in name or "qb" in name:
+                        qb_names.add(cn)
+                        continue
+                    if "rush" in name:
+                        rush_td.add(cn)
+                    elif "receiv" in name:
+                        rec_td.add(cn)
+                    elif "return" in name:
+                        ret_td.add(cn)
+        # Anytime TD = rush / catch / return. Passing TDs never count.
+        legit = rush_td | rec_td | ret_td
+        drop_qb = {q for q in (qb_names | set()) if q not in rush_td}
+        scorers |= legit
+        scorers -= drop_qb
+        st.session_state.setdefault("nfl_qb_names", set()).update(qb_names)
+        st.session_state.setdefault("nfl_rush_td", set()).update(rush_td)
+    # final sweep in case plays credited a passer before boxscore
+    drop_qb = set()
+    for q in (st.session_state.get("nfl_qb_names") or []):
+        if q not in (st.session_state.get("nfl_rush_td") or []):
+            drop_qb.add(q)
+    scorers -= drop_qb
+    return scorers, finished, f"ESPN NFL {len(done_ids)} final · {live_n} live · {len(scorers)} anytime TD names"
 
 
 def auto_grade_pending():
@@ -4958,6 +4987,17 @@ def auto_grade_pending():
             skipped += 1
             continue
         player = row.get("player") or ""
+        qbs = st.session_state.get("nfl_qb_names") or set()
+        rushed = st.session_state.get("nfl_rush_td") or set()
+        if active_sport() == "NFL" and any(names_match(player, q) for q in qbs) and not any(names_match(player, x) for x in rushed):
+            # Passer only. Do not grade HIT on throwing TDs.
+            if miss_pool and any(names_match(player, f) for f in miss_pool):
+                row["result"] = "MISS"
+                row["graded_by"] = tag
+                misses += 1
+            else:
+                skipped += 1
+            continue
         if any(names_match(player, h) for h in hit_set):
             row["result"] = "HIT"
             row["graded_by"] = tag
@@ -5179,6 +5219,11 @@ def render_run_it_recap():
         if sport == "NFL":
             mkt = str(r.get("market") or "").lower()
             if src.startswith("need_one") or any(x in mkt for x in ("rush", "receiv", "reception", "yard")):
+                continue
+            qbs = st.session_state.get("nfl_qb_names") or set()
+            rushed = st.session_state.get("nfl_rush_td") or set()
+            pname = clean_name(r.get("player") or "")
+            if any(names_match(pname, q) for q in qbs) and not any(names_match(pname, x) for x in rushed):
                 continue
         if res in ("HIT", "MISS"):
             keep.append(r)
