@@ -1,317 +1,6 @@
 {
-  "saved_at": "2026-09-13T22:22:44.273247+00:00",
+  "saved_at": "2026-09-14T00:32:52.406342+00:00",
   "price_history": [
-    {
-      "Adam Trautman||betmgm": 950,
-      "Adam Trautman||caesars": 750,
-      "Adam Trautman||draftkings": 750,
-      "Adam Trautman||fanatics": 900,
-      "Adam Trautman||fanduel": 750,
-      "Adam Trautman||hardrockbet": 700,
-      "Bo Nix||betmgm": 425,
-      "Bo Nix||caesars": 475,
-      "Bo Nix||draftkings": 500,
-      "Bo Nix||fanatics": 550,
-      "Bo Nix||fanduel": 550,
-      "Bo Nix||hardrockbet": 475,
-      "Brashard Smith||betmgm": 950,
-      "Brashard Smith||caesars": 750,
-      "Brashard Smith||draftkings": 1000,
-      "Brashard Smith||fanatics": 900,
-      "Brashard Smith||fanduel": 1000,
-      "Brashard Smith||hardrockbet": 900,
-      "Braxton Berrios||caesars": 1750,
-      "Braxton Berrios||draftkings": 2500,
-      "Braxton Berrios||fanatics": 2200,
-      "Braxton Berrios||fanduel": 1600,
-      "Braxton Berrios||hardrockbet": 2250,
-      "Brevyn Spann-Ford||caesars": 800,
-      "Brevyn Spann-Ford||draftkings": 1000,
-      "Brevyn Spann-Ford||fanatics": 1050,
-      "Brevyn Spann-Ford||fanduel": 850,
-      "Brevyn Spann-Ford||hardrockbet": 800,
-      "Cam Brown||caesars": 1300,
-      "Cam Brown||draftkings": 1700,
-      "Cam Brown||fanatics": 2200,
-      "Cam Brown||fanduel": 1700,
-      "Cam Brown||hardrockbet": 1750,
-      "Cam Skattebo||fanatics": 115,
-      "CeeDee Lamb||caesars": 129,
-      "CeeDee Lamb||draftkings": 140,
-      "CeeDee Lamb||fanatics": 145,
-      "CeeDee Lamb||fanduel": 135,
-      "CeeDee Lamb||hardrockbet": 130,
-      "Chris Manhertz||caesars": 2400,
-      "Chris Manhertz||fanduel": 2500,
-      "Courtland Sutton||betmgm": 240,
-      "Courtland Sutton||caesars": 215,
-      "Courtland Sutton||draftkings": 240,
-      "Courtland Sutton||fanatics": 250,
-      "Courtland Sutton||fanduel": 230,
-      "Courtland Sutton||hardrockbet": 230,
-      "Cyrus Allen||betmgm": 850,
-      "Cyrus Allen||caesars": 900,
-      "Cyrus Allen||draftkings": 1000,
-      "Cyrus Allen||fanatics": 800,
-      "Cyrus Allen||fanduel": 900,
-      "Cyrus Allen||hardrockbet": 800,
-      "Dak Prescott||caesars": 575,
-      "Dak Prescott||draftkings": 600,
-      "Dak Prescott||fanatics": 700,
-      "Dak Prescott||fanduel": 650,
-      "Dak Prescott||hardrockbet": 575,
-      "Dalen Cambre||caesars": 1750,
-      "Dalen Cambre||fanduel": 1600,
-      "Dalen Cambre||hardrockbet": 2250,
-      "Dallas Cowboys D/ST||draftkings": 550,
-      "Dallas Cowboys D/ST||fanatics": 475,
-      "Dallas Cowboys Defense||fanduel": 950,
-      "Dallen Bentley||caesars": 2000,
-      "Dallen Bentley||fanatics": 2500,
-      "Dallen Bentley||fanduel": 1700,
-      "Dallen Bentley||hardrockbet": 2250,
-      "Darnell Mooney||caesars": 500,
-      "Darnell Mooney||draftkings": 475,
-      "Darnell Mooney||fanatics": 500,
-      "Darnell Mooney||fanduel": 650,
-      "Darnell Mooney||hardrockbet": 525,
-      "Denver Broncos D/ST||betmgm": 525,
-      "Denver Broncos D/ST||draftkings": 600,
-      "Denver Broncos D/ST||fanatics": 525,
-      "Denver Broncos Defense||fanduel": 650,
-      "Devin Singletary||caesars": 650,
-      "Devin Singletary||draftkings": 1000,
-      "Devin Singletary||fanatics": 800,
-      "Devin Singletary||fanduel": 900,
-      "Devin Singletary||hardrockbet": 700,
-      "Emari Demercado||caesars": 500,
-      "Emari Demercado||draftkings": 475,
-      "Emari Demercado||fanatics": 525,
-      "Emari Demercado||fanduel": 500,
-      "Emari Demercado||hardrockbet": 450,
-      "Emmett Johnson||betmgm": 425,
-      "Emmett Johnson||caesars": 500,
-      "Emmett Johnson||draftkings": 550,
-      "Emmett Johnson||fanatics": 575,
-      "Emmett Johnson||fanduel": 600,
-      "Emmett Johnson||hardrockbet": 500,
-      "Evan Engram||betmgm": 425,
-      "Evan Engram||caesars": 425,
-      "Evan Engram||draftkings": 475,
-      "Evan Engram||fanatics": 500,
-      "Evan Engram||fanduel": 460,
-      "Evan Engram||hardrockbet": 450,
-      "George Pickens||caesars": 149,
-      "George Pickens||draftkings": 155,
-      "George Pickens||fanatics": 175,
-      "George Pickens||fanduel": 160,
-      "George Pickens||hardrockbet": 150,
-      "Hunter Luepke||caesars": 1000,
-      "Hunter Luepke||draftkings": 1000,
-      "Hunter Luepke||fanatics": 1200,
-      "Hunter Luepke||fanduel": 1000,
-      "Hunter Luepke||hardrockbet": 900,
-      "Isaiah Likely||caesars": 305,
-      "Isaiah Likely||draftkings": 350,
-      "Isaiah Likely||fanatics": 340,
-      "Isaiah Likely||fanduel": 340,
-      "Isaiah Likely||hardrockbet": 325,
-      "Israel Abanikanda||caesars": 1600,
-      "Israel Abanikanda||draftkings": 1700,
-      "Israel Abanikanda||fanduel": 1700,
-      "Israel Abanikanda||hardrockbet": 1750,
-      "J.K. Dobbins||betmgm": 140,
-      "J.K. Dobbins||caesars": 169,
-      "J.K. Dobbins||draftkings": 175,
-      "J.K. Dobbins||fanatics": 175,
-      "J.K. Dobbins||fanduel": 170,
-      "J.K. Dobbins||hardrockbet": 165,
-      "Jake Briningstool||betmgm": 2000,
-      "Jake Briningstool||caesars": 1750,
-      "Jake Briningstool||draftkings": 1800,
-      "Jake Briningstool||fanatics": 2200,
-      "Jake Briningstool||fanduel": 1700,
-      "Jake Briningstool||hardrockbet": 1750,
-      "Jake Ferguson||caesars": 245,
-      "Jake Ferguson||draftkings": 280,
-      "Jake Ferguson||fanatics": 310,
-      "Jake Ferguson||fanduel": 280,
-      "Jake Ferguson||hardrockbet": 275,
-      "Jalen Royals||caesars": 1000,
-      "Jalen Royals||draftkings": 1300,
-      "Jalen Royals||fanatics": 1000,
-      "Jalen Royals||fanduel": 900,
-      "Jalen Royals||hardrockbet": 900,
-      "Jared Wiley||caesars": 1600,
-      "Jared Wiley||draftkings": 1800,
-      "Jared Wiley||fanatics": 2200,
-      "Jared Wiley||fanduel": 1700,
-      "Jared Wiley||hardrockbet": 1750,
-      "Javonte Williams||caesars": -152,
-      "Javonte Williams||draftkings": -135,
-      "Javonte Williams||fanatics": -135,
-      "Javonte Williams||fanduel": -145,
-      "Javonte Williams||hardrockbet": -150,
-      "Jaxson Dart||caesars": 205,
-      "Jaxson Dart||draftkings": 215,
-      "Jaxson Dart||fanatics": 240,
-      "Jaxson Dart||fanduel": 220,
-      "Jaxson Dart||hardrockbet": 210,
-      "Jaylen Waddle||betmgm": 180,
-      "Jaylen Waddle||caesars": 199,
-      "Jaylen Waddle||draftkings": 210,
-      "Jaylen Waddle||fanatics": 225,
-      "Jaylen Waddle||fanduel": 195,
-      "Jaylen Waddle||hardrockbet": 200,
-      "Jonah Coleman||betmgm": 625,
-      "Jonah Coleman||caesars": 675,
-      "Jonah Coleman||draftkings": 800,
-      "Jonah Coleman||fanatics": 900,
-      "Jonah Coleman||fanduel": 700,
-      "Jonah Coleman||hardrockbet": 650,
-      "Jonathan Mingo||caesars": 1500,
-      "Jonathan Mingo||draftkings": 1700,
-      "Jonathan Mingo||fanatics": 2200,
-      "Jonathan Mingo||fanduel": 1700,
-      "Jonathan Mingo||hardrockbet": 1750,
-      "KaVontae Turpin||caesars": 700,
-      "KaVontae Turpin||draftkings": 700,
-      "KaVontae Turpin||fanatics": 700,
-      "KaVontae Turpin||fanduel": 750,
-      "KaVontae Turpin||hardrockbet": 650,
-      "Kansas City Chiefs D/ST||betmgm": 525,
-      "Kansas City Chiefs D/ST||draftkings": 475,
-      "Kansas City Chiefs D/ST||fanatics": 500,
-      "Kansas City Chiefs Defense||fanduel": 800,
-      "Kenneth Walker III||betmgm": -130,
-      "Kenneth Walker III||caesars": -125,
-      "Kenneth Walker III||draftkings": -125,
-      "Kenneth Walker III||fanduel": -115,
-      "Kenneth Walker III||hardrockbet": -125,
-      "Lil'Jordan Humphrey||caesars": 1100,
-      "Lil'Jordan Humphrey||draftkings": 1300,
-      "Lil'Jordan Humphrey||fanatics": 1500,
-      "Lil'Jordan Humphrey||fanduel": 1200,
-      "Lil'Jordan Humphrey||hardrockbet": 1100,
-      "Luke Schoonmaker||caesars": 950,
-      "Luke Schoonmaker||draftkings": 1100,
-      "Luke Schoonmaker||fanatics": 1500,
-      "Luke Schoonmaker||fanduel": 1100,
-      "Luke Schoonmaker||hardrockbet": 900,
-      "Malachi Fields||caesars": 380,
-      "Malachi Fields||draftkings": 380,
-      "Malachi Fields||fanatics": 370,
-      "Malachi Fields||fanduel": 410,
-      "Malachi Fields||hardrockbet": 375,
-      "Malik Nabers||caesars": 171,
-      "Malik Nabers||draftkings": 190,
-      "Malik Nabers||fanatics": 200,
-      "Malik Nabers||fanduel": 190,
-      "Malik Nabers||hardrockbet": 185,
-      "Marvin Mims Jr.||betmgm": 800,
-      "Marvin Mims Jr.||caesars": 700,
-      "Marvin Mims Jr.||draftkings": 700,
-      "Marvin Mims Jr.||fanatics": 800,
-      "Marvin Mims Jr.||fanduel": 700,
-      "Marvin Mims Jr.||hardrockbet": 600,
-      "Najee Harris||caesars": 320,
-      "Najee Harris||draftkings": 310,
-      "Najee Harris||fanatics": 400,
-      "Najee Harris||fanduel": 340,
-      "Najee Harris||hardrockbet": 325,
-      "Nate Adkins||betmgm": 2200,
-      "Nate Adkins||caesars": 1800,
-      "Nate Adkins||draftkings": 2000,
-      "Nate Adkins||fanatics": 2200,
-      "Nate Adkins||fanduel": 1700,
-      "Nate Adkins||hardrockbet": 1750,
-      "New York Giants D/ST||draftkings": 600,
-      "New York Giants D/ST||fanatics": 600,
-      "New York Giants Defense||fanduel": 800,
-      "Nikko Remigio||caesars": 2000,
-      "Nikko Remigio||draftkings": 2500,
-      "Nikko Remigio||fanduel": 2000,
-      "Nikko Remigio||hardrockbet": 2250,
-      "Noah Gray||betmgm": 675,
-      "Noah Gray||caesars": 900,
-      "Noah Gray||draftkings": 950,
-      "Noah Gray||fanatics": 900,
-      "Noah Gray||fanduel": 1000,
-      "Noah Gray||hardrockbet": 900,
-      "Odell Beckham Jr.||caesars": 625,
-      "Odell Beckham Jr.||draftkings": 750,
-      "Odell Beckham Jr.||fanatics": 900,
-      "Odell Beckham Jr.||fanduel": 850,
-      "Odell Beckham Jr.||hardrockbet": 700,
-      "Pat Bryant||betmgm": 400,
-      "Pat Bryant||caesars": 400,
-      "Pat Bryant||draftkings": 400,
-      "Pat Bryant||fanatics": 420,
-      "Pat Bryant||fanduel": 400,
-      "Pat Bryant||hardrockbet": 400,
-      "Patrick Mahomes||betmgm": 500,
-      "Patrick Mahomes||caesars": 600,
-      "Patrick Mahomes||draftkings": 600,
-      "Patrick Mahomes||fanatics": 650,
-      "Patrick Mahomes||fanduel": 650,
-      "Patrick Mahomes||hardrockbet": 575,
-      "Patrick Ricard||caesars": 2000,
-      "Patrick Ricard||draftkings": 2200,
-      "RJ Harvey||betmgm": 230,
-      "RJ Harvey||caesars": 240,
-      "RJ Harvey||draftkings": 300,
-      "RJ Harvey||fanatics": 310,
-      "RJ Harvey||fanduel": 270,
-      "RJ Harvey||hardrockbet": 275,
-      "Rashee Rice||betmgm": 175,
-      "Rashee Rice||caesars": 146,
-      "Rashee Rice||draftkings": 150,
-      "Rashee Rice||fanatics": 160,
-      "Rashee Rice||fanduel": 145,
-      "Rashee Rice||hardrockbet": 140,
-      "Ryan Flournoy||caesars": 360,
-      "Ryan Flournoy||draftkings": 380,
-      "Ryan Flournoy||fanatics": 420,
-      "Ryan Flournoy||fanduel": 380,
-      "Ryan Flournoy||hardrockbet": 350,
-      "Theo Johnson||caesars": 500,
-      "Theo Johnson||draftkings": 500,
-      "Theo Johnson||fanatics": 525,
-      "Theo Johnson||fanduel": 500,
-      "Theo Johnson||hardrockbet": 475,
-      "Thomas Fidone||caesars": 2300,
-      "Thomas Fidone||fanduel": 2500,
-      "Travis Kelce||betmgm": 220,
-      "Travis Kelce||caesars": 196,
-      "Travis Kelce||draftkings": 200,
-      "Travis Kelce||fanatics": 210,
-      "Travis Kelce||fanduel": 195,
-      "Travis Kelce||hardrockbet": 195,
-      "Troy Franklin||betmgm": 1350,
-      "Troy Franklin||caesars": 1000,
-      "Troy Franklin||draftkings": 1200,
-      "Troy Franklin||fanatics": 1400,
-      "Troy Franklin||fanduel": 1200,
-      "Troy Franklin||hardrockbet": 1100,
-      "Tyler Badie||fanduel": 700,
-      "Tyquan Thornton||betmgm": 400,
-      "Tyquan Thornton||caesars": 550,
-      "Tyquan Thornton||draftkings": 600,
-      "Tyquan Thornton||fanatics": 525,
-      "Tyquan Thornton||fanduel": 600,
-      "Tyquan Thornton||hardrockbet": 550,
-      "Tyrone Tracy Jr.||caesars": 330,
-      "Tyrone Tracy Jr.||draftkings": 370,
-      "Tyrone Tracy Jr.||fanatics": 380,
-      "Tyrone Tracy Jr.||fanduel": 340,
-      "Tyrone Tracy Jr.||hardrockbet": 325,
-      "Xavier Worthy||betmgm": 240,
-      "Xavier Worthy||caesars": 300,
-      "Xavier Worthy||draftkings": 320,
-      "Xavier Worthy||fanatics": 325,
-      "Xavier Worthy||fanduel": 310,
-      "Xavier Worthy||hardrockbet": 300
-    },
     {
       "Adam Trautman||betmgm": 950,
       "Adam Trautman||caesars": 750,
@@ -2109,6 +1798,177 @@
       "Tyrone Tracy Jr.||fanatics": 380,
       "Tyrone Tracy Jr.||fanduel": 350,
       "Tyrone Tracy Jr.||hardrockbet": 325
+    },
+    {
+      "Adam Trautman||betmgm": 950,
+      "Adam Trautman||caesars": 750,
+      "Adam Trautman||draftkings": 750,
+      "Adam Trautman||fanatics": 900,
+      "Adam Trautman||fanduel": 750,
+      "Adam Trautman||hardrockbet": 700,
+      "Bo Nix||betmgm": 425,
+      "Bo Nix||caesars": 475,
+      "Bo Nix||draftkings": 500,
+      "Bo Nix||fanatics": 550,
+      "Bo Nix||fanduel": 550,
+      "Bo Nix||hardrockbet": 475,
+      "Brashard Smith||betmgm": 900,
+      "Brashard Smith||caesars": 750,
+      "Brashard Smith||draftkings": 1000,
+      "Brashard Smith||fanatics": 800,
+      "Brashard Smith||fanduel": 1000,
+      "Brashard Smith||hardrockbet": 900,
+      "Courtland Sutton||betmgm": 240,
+      "Courtland Sutton||caesars": 215,
+      "Courtland Sutton||draftkings": 240,
+      "Courtland Sutton||fanatics": 250,
+      "Courtland Sutton||fanduel": 230,
+      "Courtland Sutton||hardrockbet": 230,
+      "Cyrus Allen||betmgm": 850,
+      "Cyrus Allen||caesars": 900,
+      "Cyrus Allen||draftkings": 1000,
+      "Cyrus Allen||fanatics": 800,
+      "Cyrus Allen||fanduel": 900,
+      "Cyrus Allen||hardrockbet": 800,
+      "Dallen Bentley||caesars": 2000,
+      "Dallen Bentley||fanatics": 2200,
+      "Dallen Bentley||fanduel": 1700,
+      "Dallen Bentley||hardrockbet": 2250,
+      "Denver Broncos D/ST||betmgm": 575,
+      "Denver Broncos D/ST||draftkings": 600,
+      "Denver Broncos D/ST||fanatics": 525,
+      "Denver Broncos Defense||fanduel": 650,
+      "Emmett Johnson||betmgm": 425,
+      "Emmett Johnson||caesars": 500,
+      "Emmett Johnson||draftkings": 550,
+      "Emmett Johnson||fanatics": 650,
+      "Emmett Johnson||fanduel": 600,
+      "Emmett Johnson||hardrockbet": 500,
+      "Evan Engram||betmgm": 400,
+      "Evan Engram||caesars": 425,
+      "Evan Engram||draftkings": 475,
+      "Evan Engram||fanatics": 500,
+      "Evan Engram||fanduel": 460,
+      "Evan Engram||hardrockbet": 450,
+      "J.K. Dobbins||betmgm": 140,
+      "J.K. Dobbins||caesars": 158,
+      "J.K. Dobbins||draftkings": 175,
+      "J.K. Dobbins||fanatics": 180,
+      "J.K. Dobbins||fanduel": 170,
+      "J.K. Dobbins||hardrockbet": 165,
+      "Jake Briningstool||betmgm": 2000,
+      "Jake Briningstool||caesars": 1750,
+      "Jake Briningstool||draftkings": 1800,
+      "Jake Briningstool||fanatics": 1900,
+      "Jake Briningstool||fanduel": 1700,
+      "Jake Briningstool||hardrockbet": 1750,
+      "Jalen Royals||caesars": 1000,
+      "Jalen Royals||draftkings": 1300,
+      "Jalen Royals||fanatics": 1000,
+      "Jalen Royals||fanduel": 900,
+      "Jalen Royals||hardrockbet": 900,
+      "Jared Wiley||caesars": 1600,
+      "Jared Wiley||draftkings": 1800,
+      "Jared Wiley||fanatics": 2200,
+      "Jared Wiley||fanduel": 1700,
+      "Jared Wiley||hardrockbet": 1750,
+      "Jaylen Waddle||betmgm": 180,
+      "Jaylen Waddle||caesars": 199,
+      "Jaylen Waddle||draftkings": 210,
+      "Jaylen Waddle||fanatics": 230,
+      "Jaylen Waddle||fanduel": 195,
+      "Jaylen Waddle||hardrockbet": 200,
+      "Jonah Coleman||betmgm": 625,
+      "Jonah Coleman||caesars": 675,
+      "Jonah Coleman||draftkings": 800,
+      "Jonah Coleman||fanatics": 900,
+      "Jonah Coleman||fanduel": 700,
+      "Jonah Coleman||hardrockbet": 650,
+      "Kansas City Chiefs D/ST||betmgm": 500,
+      "Kansas City Chiefs D/ST||draftkings": 475,
+      "Kansas City Chiefs D/ST||fanatics": 500,
+      "Kansas City Chiefs Defense||fanduel": 800,
+      "Kenneth Walker III||betmgm": -130,
+      "Kenneth Walker III||caesars": -125,
+      "Kenneth Walker III||draftkings": -125,
+      "Kenneth Walker III||fanduel": -115,
+      "Kenneth Walker III||hardrockbet": -125,
+      "Lil'Jordan Humphrey||caesars": 1100,
+      "Lil'Jordan Humphrey||draftkings": 1300,
+      "Lil'Jordan Humphrey||fanatics": 1500,
+      "Lil'Jordan Humphrey||fanduel": 1200,
+      "Lil'Jordan Humphrey||hardrockbet": 1100,
+      "Marvin Mims Jr.||betmgm": 825,
+      "Marvin Mims Jr.||caesars": 700,
+      "Marvin Mims Jr.||draftkings": 700,
+      "Marvin Mims Jr.||fanatics": 800,
+      "Marvin Mims Jr.||fanduel": 700,
+      "Marvin Mims Jr.||hardrockbet": 600,
+      "Nate Adkins||betmgm": 2200,
+      "Nate Adkins||caesars": 1800,
+      "Nate Adkins||draftkings": 2000,
+      "Nate Adkins||fanatics": 2200,
+      "Nate Adkins||fanduel": 1700,
+      "Nate Adkins||hardrockbet": 1750,
+      "Nikko Remigio||caesars": 2000,
+      "Nikko Remigio||draftkings": 2500,
+      "Nikko Remigio||fanduel": 2000,
+      "Nikko Remigio||hardrockbet": 2250,
+      "Noah Gray||betmgm": 700,
+      "Noah Gray||caesars": 900,
+      "Noah Gray||draftkings": 950,
+      "Noah Gray||fanatics": 900,
+      "Noah Gray||fanduel": 1000,
+      "Noah Gray||hardrockbet": 900,
+      "Pat Bryant||betmgm": 400,
+      "Pat Bryant||caesars": 400,
+      "Pat Bryant||draftkings": 400,
+      "Pat Bryant||fanatics": 500,
+      "Pat Bryant||fanduel": 400,
+      "Pat Bryant||hardrockbet": 400,
+      "Patrick Mahomes||betmgm": 475,
+      "Patrick Mahomes||caesars": 600,
+      "Patrick Mahomes||draftkings": 600,
+      "Patrick Mahomes||fanatics": 575,
+      "Patrick Mahomes||fanduel": 650,
+      "Patrick Mahomes||hardrockbet": 575,
+      "RJ Harvey||betmgm": 230,
+      "RJ Harvey||caesars": 240,
+      "RJ Harvey||draftkings": 300,
+      "RJ Harvey||fanatics": 310,
+      "RJ Harvey||fanduel": 270,
+      "RJ Harvey||hardrockbet": 275,
+      "Rashee Rice||betmgm": 180,
+      "Rashee Rice||caesars": 146,
+      "Rashee Rice||draftkings": 150,
+      "Rashee Rice||fanatics": 150,
+      "Rashee Rice||fanduel": 145,
+      "Rashee Rice||hardrockbet": 140,
+      "Travis Kelce||betmgm": 210,
+      "Travis Kelce||caesars": 196,
+      "Travis Kelce||draftkings": 200,
+      "Travis Kelce||fanatics": 200,
+      "Travis Kelce||fanduel": 195,
+      "Travis Kelce||hardrockbet": 195,
+      "Troy Franklin||betmgm": 1350,
+      "Troy Franklin||caesars": 1000,
+      "Troy Franklin||draftkings": 1200,
+      "Troy Franklin||fanatics": 1300,
+      "Troy Franklin||fanduel": 1200,
+      "Troy Franklin||hardrockbet": 1100,
+      "Tyler Badie||fanduel": 700,
+      "Tyquan Thornton||betmgm": 400,
+      "Tyquan Thornton||caesars": 550,
+      "Tyquan Thornton||draftkings": 600,
+      "Tyquan Thornton||fanatics": 500,
+      "Tyquan Thornton||fanduel": 600,
+      "Tyquan Thornton||hardrockbet": 550,
+      "Xavier Worthy||betmgm": 240,
+      "Xavier Worthy||caesars": 300,
+      "Xavier Worthy||draftkings": 320,
+      "Xavier Worthy||fanatics": 325,
+      "Xavier Worthy||fanduel": 310,
+      "Xavier Worthy||hardrockbet": 300
     }
   ],
   "presence_history": [
@@ -2129,1108 +1989,6 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Tyrone Tracy Jr.",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Mahomes",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kenneth Walker III",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Javonte Williams",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Adam Trautman",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Darnell Mooney",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jared Wiley",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Isaiah Likely",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cyrus Allen",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaxson Dart",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants D/ST",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Travis Kelce",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "CeeDee Lamb",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jalen Royals",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dak Prescott",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Skattebo",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Noah Gray",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "George Pickens",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Malik Nabers",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Theo Johnson",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Isaiah Likely",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Israel Abanikanda",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jonathan Mingo",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Luke Schoonmaker",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Troy Franklin",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaxson Dart",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Brown",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos Defense",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dallen Bentley",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Ferguson",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Darnell Mooney",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Javonte Williams",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Najee Harris",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Bo Nix",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Ferguson",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Malachi Fields",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Rashee Rice",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Bo Nix",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Hunter Luepke",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallas Cowboys D/ST",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jonathan Mingo",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants Defense",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jonah Coleman",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Devin Singletary",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Briningstool",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emari Demercado",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Brown",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Rashee Rice",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Courtland Sutton",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Israel Abanikanda",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dak Prescott",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jalen Royals",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Javonte Williams",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Devin Singletary",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Adam Trautman",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Braxton Berrios",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "KaVontae Turpin",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Ferguson",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Isaiah Likely",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Bo Nix",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "CeeDee Lamb",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaylen Waddle",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jared Wiley",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Mahomes",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Darnell Mooney",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Troy Franklin",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Theo Johnson",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants D/ST",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Travis Kelce",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jalen Royals",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonah Coleman",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Braxton Berrios",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Evan Engram",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dalen Cambre",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Luke Schoonmaker",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Ryan Flournoy",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Courtland Sutton",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Briningstool",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Devin Singletary",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Najee Harris",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Adam Trautman",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jared Wiley",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Luke Schoonmaker",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Nate Adkins",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Thomas Fidone",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Noah Gray",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Ricard",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaxson Dart",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallen Bentley",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Ferguson",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants D/ST",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Travis Kelce",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Najee Harris",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "RJ Harvey",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonah Coleman",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonathan Mingo",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Darnell Mooney",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Ryan Flournoy",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emari Demercado",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Brown",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Rashee Rice",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Devin Singletary",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallas Cowboys D/ST",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Adam Trautman",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nikko Remigio",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Javonte Williams",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Najee Harris",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "George Pickens",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emari Demercado",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Braxton Berrios",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaxson Dart",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Isaiah Likely",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "KaVontae Turpin",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Kansas City Chiefs Defense",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "George Pickens",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dak Prescott",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyler Badie",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Chris Manhertz",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "KaVontae Turpin",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Patrick Mahomes",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Theo Johnson",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Rashee Rice",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "CeeDee Lamb",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Hunter Luepke",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaylen Waddle",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Mahomes",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kenneth Walker III",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Emari Demercado",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallas Cowboys D/ST",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Xavier Worthy",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brashard Smith",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Ryan Flournoy",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Courtland Sutton",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "George Pickens",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Bo Nix",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kenneth Walker III",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Noah Gray",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyquan Thornton",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Ryan Flournoy",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Malachi Fields",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Courtland Sutton",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nikko Remigio",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dak Prescott",
-        "betmgm",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "RJ Harvey",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dallas Cowboys Defense",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Hunter Luepke",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "CeeDee Lamb",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Travis Kelce",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "KaVontae Turpin",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Luke Schoonmaker",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ]
-    ],
-    [
-      [
-        "Jonah Coleman",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Noah Gray",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Theo Johnson",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
         "Brashard Smith",
         "draftkings",
         "Denver Broncos @ Kansas City Chiefs"
@@ -3441,23 +2199,23 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Darnell Mooney",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
         "Xavier Worthy",
         "betmgm",
         "Denver Broncos @ Kansas City Chiefs"
       ],
       [
-        "Javonte Williams",
-        "draftkings",
+        "Darnell Mooney",
+        "fanduel",
         "Dallas Cowboys @ New York Giants"
       ],
       [
         "Najee Harris",
         "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "draftkings",
         "Dallas Cowboys @ New York Giants"
       ],
       [
@@ -4213,13 +2971,13 @@
         "San Diego Padres @ San Francisco Giants"
       ],
       [
-        "Jac Caglianone",
-        "fanduel",
+        "Tyler Tolbert",
+        "betmgm",
         "Kansas City Royals @ Boston Red Sox"
       ],
       [
-        "Tyler Tolbert",
-        "betmgm",
+        "Jac Caglianone",
+        "fanduel",
         "Kansas City Royals @ Boston Red Sox"
       ],
       [
@@ -5090,23 +3848,23 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Darnell Mooney",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
         "Xavier Worthy",
         "betmgm",
         "Denver Broncos @ Kansas City Chiefs"
       ],
       [
-        "Javonte Williams",
-        "draftkings",
+        "Darnell Mooney",
+        "fanduel",
         "Dallas Cowboys @ New York Giants"
       ],
       [
         "Najee Harris",
         "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "draftkings",
         "Dallas Cowboys @ New York Giants"
       ],
       [
@@ -6082,19 +4840,14 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Xavier Worthy",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
         "Darnell Mooney",
         "fanduel",
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Najee Harris",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
+        "Xavier Worthy",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
       ],
       [
         "Javonte Williams",
@@ -6102,995 +4855,8 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Bo Nix",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Xavier Worthy",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Rashee Rice",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Bo Nix",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Hunter Luepke",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallas Cowboys D/ST",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jonathan Mingo",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jonah Coleman",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "New York Giants Defense",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Devin Singletary",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Briningstool",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emari Demercado",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Brown",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Pat Bryant",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Courtland Sutton",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Israel Abanikanda",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dak Prescott",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Rashee Rice",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jalen Royals",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Javonte Williams",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Adam Trautman",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Braxton Berrios",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "KaVontae Turpin",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Ferguson",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Isaiah Likely",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Bo Nix",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Skattebo",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "CeeDee Lamb",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaylen Waddle",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jared Wiley",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Darnell Mooney",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Patrick Mahomes",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Theo Johnson",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Travis Kelce",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jalen Royals",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonah Coleman",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Braxton Berrios",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Evan Engram",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dalen Cambre",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Luke Schoonmaker",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Ryan Flournoy",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Courtland Sutton",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Devin Singletary",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Adam Trautman",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jared Wiley",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Thomas Fidone",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Noah Gray",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Ricard",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaxson Dart",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallen Bentley",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Ferguson",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants D/ST",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Travis Kelce",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Najee Harris",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "RJ Harvey",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonah Coleman",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonathan Mingo",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Darnell Mooney",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Ryan Flournoy",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Brown",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Rashee Rice",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Devin Singletary",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Najee Harris",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Adam Trautman",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nikko Remigio",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Javonte Williams",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "George Pickens",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emari Demercado",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Braxton Berrios",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaxson Dart",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "KaVontae Turpin",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Kansas City Chiefs Defense",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dak Prescott",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyler Badie",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Chris Manhertz",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Patrick Mahomes",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Emmett Johnson",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Rashee Rice",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Hunter Luepke",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaylen Waddle",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Mahomes",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Emari Demercado",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Kenneth Walker III",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dallas Cowboys D/ST",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brashard Smith",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Courtland Sutton",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Ryan Flournoy",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Bo Nix",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "George Pickens",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Kenneth Walker III",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Noah Gray",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyquan Thornton",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Courtland Sutton",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Nikko Remigio",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Pat Bryant",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "CeeDee Lamb",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallas Cowboys Defense",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Hunter Luepke",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Travis Kelce",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "KaVontae Turpin",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Luke Schoonmaker",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ]
-    ],
-    [
-      [
-        "Jonah Coleman",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Noah Gray",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Theo Johnson",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Mahomes",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kenneth Walker III",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Adam Trautman",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Isaiah Likely",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jared Wiley",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaxson Dart",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants D/ST",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Travis Kelce",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "CeeDee Lamb",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jalen Royals",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dak Prescott",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "George Pickens",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Noah Gray",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Theo Johnson",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Isaiah Likely",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Israel Abanikanda",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonathan Mingo",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Luke Schoonmaker",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Troy Franklin",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos Defense",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cam Brown",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dallen Bentley",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Ferguson",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Darnell Mooney",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
         "Najee Harris",
         "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Javonte Williams",
-        "draftkings",
         "Dallas Cowboys @ New York Giants"
       ],
       [
@@ -8306,6 +6072,1980 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
+        "Cam Skattebo",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "CeeDee Lamb",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaylen Waddle",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Darnell Mooney",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Theo Johnson",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Travis Kelce",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malik Nabers",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jalen Royals",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonah Coleman",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Braxton Berrios",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Evan Engram",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dalen Cambre",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Luke Schoonmaker",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Ryan Flournoy",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Courtland Sutton",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Devin Singletary",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Briningstool",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Thomas Fidone",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Noah Gray",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Ricard",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaxson Dart",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallen Bentley",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Ferguson",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "New York Giants D/ST",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brashard Smith",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Najee Harris",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "RJ Harvey",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonah Coleman",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonathan Mingo",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Darnell Mooney",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Ryan Flournoy",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Cam Brown",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Rashee Rice",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Devin Singletary",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Najee Harris",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Adam Trautman",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nikko Remigio",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Javonte Williams",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "George Pickens",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emari Demercado",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Braxton Berrios",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaxson Dart",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "KaVontae Turpin",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Kansas City Chiefs Defense",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dak Prescott",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brashard Smith",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyler Badie",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Chris Manhertz",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emmett Johnson",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Hunter Luepke",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaylen Waddle",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emari Demercado",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Kenneth Walker III",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dallas Cowboys D/ST",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brashard Smith",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Ryan Flournoy",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Xavier Worthy",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "George Pickens",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Kenneth Walker III",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malachi Fields",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Nikko Remigio",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Pat Bryant",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "CeeDee Lamb",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallas Cowboys Defense",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Hunter Luepke",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "KaVontae Turpin",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Luke Schoonmaker",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Briningstool",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ]
+    ],
+    [
+      [
+        "Jonah Coleman",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Theo Johnson",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brashard Smith",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kenneth Walker III",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Isaiah Likely",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jared Wiley",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaxson Dart",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "New York Giants D/ST",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Travis Kelce",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "CeeDee Lamb",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "J.K. Dobbins",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jalen Royals",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dak Prescott",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "George Pickens",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Noah Gray",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malik Nabers",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Theo Johnson",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Isaiah Likely",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emmett Johnson",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Israel Abanikanda",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonathan Mingo",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Luke Schoonmaker",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Troy Franklin",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos Defense",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cam Brown",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emmett Johnson",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dallen Bentley",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Ferguson",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Xavier Worthy",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Darnell Mooney",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Najee Harris",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Bo Nix",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Worthy",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Bo Nix",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Hunter Luepke",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallas Cowboys D/ST",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jonathan Mingo",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jonah Coleman",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "New York Giants Defense",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Devin Singletary",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emmett Johnson",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Briningstool",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malachi Fields",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emari Demercado",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Cam Brown",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Pat Bryant",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Israel Abanikanda",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dak Prescott",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Rashee Rice",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jalen Royals",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malik Nabers",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Briningstool",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Braxton Berrios",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "KaVontae Turpin",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Ferguson",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Isaiah Likely",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyquan Thornton",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malachi Fields",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Xavier Worthy",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "CeeDee Lamb",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaylen Waddle",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Darnell Mooney",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Theo Johnson",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Travis Kelce",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malik Nabers",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jalen Royals",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonah Coleman",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Braxton Berrios",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Evan Engram",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dalen Cambre",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Luke Schoonmaker",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Ryan Flournoy",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Courtland Sutton",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Devin Singletary",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Briningstool",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Thomas Fidone",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Noah Gray",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Ricard",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaxson Dart",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallen Bentley",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Ferguson",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "New York Giants D/ST",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brashard Smith",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Najee Harris",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "RJ Harvey",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonah Coleman",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonathan Mingo",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Darnell Mooney",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Ryan Flournoy",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Cam Brown",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Rashee Rice",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Devin Singletary",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Najee Harris",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Adam Trautman",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nikko Remigio",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Javonte Williams",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "George Pickens",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emari Demercado",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Braxton Berrios",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaxson Dart",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "KaVontae Turpin",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Kansas City Chiefs Defense",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dak Prescott",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brashard Smith",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyler Badie",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Chris Manhertz",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emmett Johnson",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Hunter Luepke",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jaylen Waddle",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emari Demercado",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Kenneth Walker III",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dallas Cowboys D/ST",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brashard Smith",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Ryan Flournoy",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Xavier Worthy",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "George Pickens",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Kenneth Walker III",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malachi Fields",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Nikko Remigio",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Pat Bryant",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "CeeDee Lamb",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallas Cowboys Defense",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Hunter Luepke",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "KaVontae Turpin",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Luke Schoonmaker",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Briningstool",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ]
+    ],
+    [
+      [
+        "Jonah Coleman",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Theo Johnson",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Brashard Smith",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kenneth Walker III",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Isaiah Likely",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jared Wiley",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaxson Dart",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "New York Giants D/ST",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Travis Kelce",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "CeeDee Lamb",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "J.K. Dobbins",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jalen Royals",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dak Prescott",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "George Pickens",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Noah Gray",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malik Nabers",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Theo Johnson",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Isaiah Likely",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emmett Johnson",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Israel Abanikanda",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonathan Mingo",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Luke Schoonmaker",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Troy Franklin",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos Defense",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cam Brown",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emmett Johnson",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dallen Bentley",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Ferguson",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Xavier Worthy",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Darnell Mooney",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Najee Harris",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Bo Nix",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Worthy",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Bo Nix",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Hunter Luepke",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dallas Cowboys D/ST",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jonathan Mingo",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jonah Coleman",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "New York Giants Defense",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Devin Singletary",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emmett Johnson",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Briningstool",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malachi Fields",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Emari Demercado",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Pat Bryant",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Israel Abanikanda",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Dak Prescott",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Rashee Rice",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jalen Royals",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malik Nabers",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Briningstool",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Braxton Berrios",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "KaVontae Turpin",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Jake Ferguson",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Isaiah Likely",
+        "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Tyquan Thornton",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Malachi Fields",
+        "draftkings",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Xavier Worthy",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brevyn Spann-Ford",
+        "fanatics",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
         "CeeDee Lamb",
         "fanduel",
         "Dallas Cowboys @ New York Giants"
@@ -9184,988 +8924,6 @@
       ],
       [
         "Dak Prescott",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Rashee Rice",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Javonte Williams",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Adam Trautman",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Braxton Berrios",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "KaVontae Turpin",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Ferguson",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Isaiah Likely",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Bo Nix",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "CeeDee Lamb",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaylen Waddle",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jared Wiley",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Darnell Mooney",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Patrick Mahomes",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Theo Johnson",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Travis Kelce",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jalen Royals",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonah Coleman",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Braxton Berrios",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Evan Engram",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dalen Cambre",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Luke Schoonmaker",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Ryan Flournoy",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Courtland Sutton",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Devin Singletary",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Adam Trautman",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jared Wiley",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Thomas Fidone",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Noah Gray",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Ricard",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaxson Dart",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallen Bentley",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Ferguson",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants D/ST",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Travis Kelce",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Najee Harris",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "RJ Harvey",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonah Coleman",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonathan Mingo",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Darnell Mooney",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Ryan Flournoy",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Cam Brown",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Rashee Rice",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Devin Singletary",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Najee Harris",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Adam Trautman",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nikko Remigio",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Javonte Williams",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "George Pickens",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emari Demercado",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Braxton Berrios",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaxson Dart",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "KaVontae Turpin",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Kansas City Chiefs Defense",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dak Prescott",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyler Badie",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Chris Manhertz",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Patrick Mahomes",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Emmett Johnson",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Rashee Rice",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Hunter Luepke",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jaylen Waddle",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Mahomes",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Emari Demercado",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Kenneth Walker III",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dallas Cowboys D/ST",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyquan Thornton",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brashard Smith",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Courtland Sutton",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Ryan Flournoy",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Bo Nix",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "George Pickens",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Kenneth Walker III",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Noah Gray",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Tyquan Thornton",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Courtland Sutton",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Nikko Remigio",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Odell Beckham Jr.",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Pat Bryant",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "CeeDee Lamb",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallas Cowboys Defense",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Hunter Luepke",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Travis Kelce",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "KaVontae Turpin",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Luke Schoonmaker",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jake Briningstool",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ]
-    ],
-    [
-      [
-        "Jonah Coleman",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Noah Gray",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Theo Johnson",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Brashard Smith",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Patrick Mahomes",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kenneth Walker III",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Adam Trautman",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cyrus Allen",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Isaiah Likely",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jared Wiley",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Troy Franklin",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Pat Bryant",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jaxson Dart",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "New York Giants D/ST",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Travis Kelce",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "CeeDee Lamb",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jalen Royals",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dak Prescott",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "George Pickens",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Noah Gray",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malik Nabers",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Theo Johnson",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Isaiah Likely",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Israel Abanikanda",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Tyrone Tracy Jr.",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Denver Broncos D/ST",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "J.K. Dobbins",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jonathan Mingo",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Luke Schoonmaker",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Troy Franklin",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Evan Engram",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Denver Broncos Defense",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Cam Brown",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dallen Bentley",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Ferguson",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Xavier Worthy",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Darnell Mooney",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Najee Harris",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Javonte Williams",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Bo Nix",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Kansas City Chiefs D/ST",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Nate Adkins",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Xavier Worthy",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Rashee Rice",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "RJ Harvey",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Brevyn Spann-Ford",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Bo Nix",
-        "fanatics",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Hunter Luepke",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Dallas Cowboys D/ST",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jonathan Mingo",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Jonah Coleman",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "New York Giants Defense",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Devin Singletary",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emmett Johnson",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jake Briningstool",
-        "fanduel",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Malachi Fields",
-        "fanatics",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Emari Demercado",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Pat Bryant",
-        "betmgm",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Courtland Sutton",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Jalen Royals",
-        "draftkings",
-        "Denver Broncos @ Kansas City Chiefs"
-      ],
-      [
-        "Dak Prescott",
-        "draftkings",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
-        "Israel Abanikanda",
         "draftkings",
         "Dallas Cowboys @ New York Giants"
       ],
@@ -10857,12 +9615,12 @@
         "San Diego Padres @ San Francisco Giants"
       ],
       [
-        "Shay Whitcomb",
+        "Christian Koss",
         "draftkings",
         "San Diego Padres @ San Francisco Giants"
       ],
       [
-        "Christian Koss",
+        "Shay Whitcomb",
         "draftkings",
         "San Diego Padres @ San Francisco Giants"
       ],
@@ -11324,23 +10082,23 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Darnell Mooney",
-        "fanduel",
-        "Dallas Cowboys @ New York Giants"
-      ],
-      [
         "Xavier Worthy",
         "betmgm",
         "Denver Broncos @ Kansas City Chiefs"
       ],
       [
-        "Javonte Williams",
-        "draftkings",
+        "Darnell Mooney",
+        "fanduel",
         "Dallas Cowboys @ New York Giants"
       ],
       [
         "Najee Harris",
         "fanduel",
+        "Dallas Cowboys @ New York Giants"
+      ],
+      [
+        "Javonte Williams",
+        "draftkings",
         "Dallas Cowboys @ New York Giants"
       ],
       [
@@ -11439,12 +10197,12 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Courtland Sutton",
-        "draftkings",
+        "Pat Bryant",
+        "betmgm",
         "Denver Broncos @ Kansas City Chiefs"
       ],
       [
-        "Jalen Royals",
+        "Courtland Sutton",
         "draftkings",
         "Denver Broncos @ Kansas City Chiefs"
       ],
@@ -11459,8 +10217,8 @@
         "Dallas Cowboys @ New York Giants"
       ],
       [
-        "Pat Bryant",
-        "betmgm",
+        "Jalen Royals",
+        "draftkings",
         "Denver Broncos @ Kansas City Chiefs"
       ],
       [
@@ -12494,21 +11252,577 @@
         "Luke Schoonmaker",
         "draftkings",
         "Dallas Cowboys @ New York Giants"
+      ]
+    ],
+    [
+      [
+        "Jonah Coleman",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brashard Smith",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kenneth Walker III",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jalen Royals",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emmett Johnson",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos Defense",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emmett Johnson",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dallen Bentley",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Worthy",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Worthy",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonah Coleman",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Briningstool",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emmett Johnson",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jalen Royals",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Briningstool",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs D/ST",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Worthy",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Troy Franklin",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Denver Broncos D/ST",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jalen Royals",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonah Coleman",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Briningstool",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Dallen Bentley",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brashard Smith",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jonah Coleman",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Adam Trautman",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nikko Remigio",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kansas City Chiefs Defense",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brashard Smith",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "J.K. Dobbins",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyler Badie",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Emmett Johnson",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jaylen Waddle",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Marvin Mims Jr.",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Cyrus Allen",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Evan Engram",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kenneth Walker III",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Brashard Smith",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Worthy",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Bo Nix",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Kenneth Walker III",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nate Adkins",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Courtland Sutton",
+        "betmgm",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Nikko Remigio",
+        "draftkings",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Pat Bryant",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "RJ Harvey",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Lil'Jordan Humphrey",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "fanduel",
+        "Denver Broncos @ Kansas City Chiefs"
+      ],
+      [
+        "Jake Briningstool",
+        "fanatics",
+        "Denver Broncos @ Kansas City Chiefs"
       ]
     ]
   ],
   "mgm_history": [
-    [
-      {
-        "event": "Denver Broncos @ Kansas City Chiefs",
-        "ending": 75,
-        "team": "",
-        "players": [
-          "Noah Gray",
-          "Rashee Rice"
-        ]
-      }
-    ],
     [
       {
         "event": "Denver Broncos @ Kansas City Chiefs",
@@ -12593,7 +11907,29 @@
         ]
       }
     ],
-    []
+    [],
+    [
+      {
+        "event": "Denver Broncos @ Kansas City Chiefs",
+        "ending": 50,
+        "team": "",
+        "players": [
+          "Cyrus Allen",
+          "Adam Trautman",
+          "Troy Franklin"
+        ]
+      },
+      {
+        "event": "Denver Broncos @ Kansas City Chiefs",
+        "ending": 25,
+        "team": "",
+        "players": [
+          "Marvin Mims Jr.",
+          "Jonah Coleman",
+          "Emmett Johnson"
+        ]
+      }
+    ]
   ],
   "prev_ev": {}
 }
