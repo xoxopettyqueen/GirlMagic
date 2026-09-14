@@ -34881,5 +34881,98 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-13_Adam Trautman_shop_lean_128",
+    "date": "2026-09-13",
+    "time": "08:02 PM",
+    "player": "Adam Trautman",
+    "score": 0,
+    "edge": 128,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 775,
+    "book_prices": {
+      "betmgm": 950,
+      "caesars": 750,
+      "draftkings": 800,
+      "fanatics": 900,
+      "fanduel": 750,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-14T03:02:02.100754+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-13_Tyquan Thornton_shop_take_70",
+    "date": "2026-09-13",
+    "time": "08:02 PM",
+    "player": "Tyquan Thornton",
+    "score": 0,
+    "edge": 70,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 562,
+    "book_prices": {
+      "betmgm": 425,
+      "caesars": 550,
+      "draftkings": 650,
+      "fanatics": 575,
+      "fanduel": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-14T03:02:02.101387+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-13_RJ Harvey_shop_lean_48",
+    "date": "2026-09-13",
+    "time": "08:02 PM",
+    "player": "RJ Harvey",
+    "score": 0,
+    "edge": 48,
+    "best_price": 325,
+    "best_book": "fanatics",
+    "median": 272,
+    "book_prices": {
+      "betmgm": 230,
+      "caesars": 240,
+      "draftkings": 295,
+      "fanatics": 325,
+      "fanduel": 270,
+      "hardrockbet": 275
+    },
+    "price_bucket": "under +400",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-14T03:02:02.101745+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
