@@ -37122,7 +37122,7 @@
     ],
     "core": 2,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-14T14:39:49.600340+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -37130,7 +37130,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-14_Denzer Guzman_watch_59",
@@ -37701,7 +37702,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-14T14:39:49.722504+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -37709,7 +37710,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.71
+    "benford_cluster": 0.71,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-14_Pete Alonso_watch_10",
@@ -46312,5 +46314,52 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.71
+  },
+  {
+    "id": "2026-09-14_Ha-Seong Kim_take_it_100",
+    "date": "2026-09-14",
+    "time": "11:12 AM",
+    "player": "Ha-Seong Kim",
+    "score": 100,
+    "edge": 168,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 760,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 725,
+      "caesars": 750,
+      "draftkings": 740,
+      "fanatics": 950,
+      "fanduel": 760,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "mgm_locked": 725,
+    "mgm_ending": 25,
+    "methods": [
+      "Last one left",
+      "Match 25",
+      "Stayed in the group",
+      "FD Pattern",
+      "FD+MGM classic",
+      "Fanatics Rogue",
+      "Multi-book method",
+      "MGM 25",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 7,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-14T18:12:18.032922+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "ATLANTA BRAVES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.57
   }
 ]
