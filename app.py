@@ -1091,6 +1091,17 @@ SCORE_SOFT_TAKE = 70      # petty score hold: keep TAKE if 70+ even when Benford
 # PRIORITY = must have >=1 to unlock TAKE IT
 # Tracker 9/10: MGM-as-ticket 11% (−1). MGM 50 book×ending 7% (−5). MGM 00 8%.
 # Keep MGM 25 / Exact / FD / DK as unlocks. 50s and 00s are tags only.
+# 9/13 eval: TAKE needs 2+ of these. One tag = WATCH. HardRock/Caesars endings are noise.
+TAKE_STAMP_METHODS = {
+    "DK 10",
+    "MGM 25", "MGM 50", "MGM 75",
+    "Match 25", "Match 50", "Match 75",
+    "MGM Exact", "Exact Match",
+    "Last one left", "Stayed in the group",
+    "FD Pattern", "FD 600", "FD+MGM classic",
+    "Fanatics Rogue",
+}
+
 PRIORITY_METHODS = {
     "MGM 25", "Match 25", "MGM Exact",
     "DK 10",
@@ -1269,17 +1280,23 @@ def nfl_price_ok(best_price):
         return False
     return p >= 115
 
-def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None, score=0):
-    """MLB: elite +400-699 + hot end + priority. NFL: 2 premium + priority-or-hot-end on TD prices.
-    Petty score ≥ 70 can also clear when edge is only EDGE_SOFT (still needs 2 premium + priority)."""
+def stamp_count(methods):
     ms = {normalize_method_name(m) for m in (methods or [])}
+    return len(ms & TAKE_STAMP_METHODS), ms
+
+
+def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None, score=0):
+    """9/13: 2+ stamp methods. Ticket = DK / HardRock / Fanatics-Rogue. FD longest = fade the buy."""
+    stamps, ms = stamp_count(methods)
     try:
         if best_price is not None and int(best_price) < 115:
             return False
     except Exception:
         return False
     need = methods_min()
-    if core_count < need:
+    if stamps < 2:
+        return False
+    if core_count < need and stamps < 2:
         return False
     bk = normalize_book(best_book) if best_book else None
     if not bk and book_prices:
@@ -1294,7 +1311,11 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     fn = fanatics_price_logic(book_prices)
     if fn.get("watch_only"):
         return False
-    if bk and bk not in TAKE_STRONG_BOOKS:
+    if bk == "fanduel":
+        return False
+    if bk == "caesars":
+        return False
+    if bk and bk not in {"draftkings", "hardrockbet", "fanatics"}:
         return False
     # Fanatics BEST +500 with DK/FD/MGM on the card (even mid) can still TAKE
     if bk == "fanatics" and not fn.get("allow_take") and not fn.get("matches"):
@@ -1318,6 +1339,13 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
         return True
     if not pri and sc < SCORE_SOFT_TAKE:
         return False
+    try:
+        px = abs(int(best_price or 0))
+    except Exception:
+        px = 0
+    if px and (px < 400 or px > 850):
+        if stamps < 3:
+            return False
     bucket = price_bucket(best_price)
     if bucket in ("+400s", "+500s"):
         pass
@@ -4676,16 +4704,18 @@ def log_bet_this(ev_board, watch_board=None):
         added += 1
 
     for item in ev_board:
-        if item.get("is_bet"):
+        if item.get("is_bet") and stamp_count(item.get("methods") or [])[0] >= 2:
             upgrade_watch_to_take(item.get("player") or "")
             if not already(item.get("player") or "", "take_it"):
                 append_row(item, "take_it")
             freeze_take_to_ledger(item, "take_it")
-    for item in watch_board:
-        # don't double-log TAKE IT; don't log 2+ core as WATCH (those are PASS/TAKE)
+    for item in list(watch_board or []) + [x for x in ev_board if not x.get("is_bet")]:
         if item.get("is_bet"):
             continue
-        if (item.get("method_count") or 0) >= methods_min():
+        stamps, _ms = stamp_count(item.get("methods") or [])
+        if stamps < 1:
+            continue
+        if stamps >= 2:
             continue
         append_row(item, "watch")
 
