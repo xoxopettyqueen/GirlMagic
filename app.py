@@ -3243,7 +3243,13 @@ def render_shop_tab(df):
             "DON'T": "row-dont",
             "MARKET": "row-mkt",
         }.get(act, "row-mkt")
-        call_txt = petty_label(act)
+        # Shop CALL is a PRICE call, not a Board green.
+        call_txt = {
+            "TAKE": "TAKE PRICE",
+            "LEAN": "LEAN PRICE",
+            "DON'T": "DON'T",
+            "MARKET": "MARKET",
+        }.get(act, act)
         body.append(
             f'<tr class="{row_cls}">'
             f'<td><div class="shop-name">{r["player"]}</div><div class="shop-game">{r.get("event") or ""}</div></td>'
@@ -6111,7 +6117,11 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
     # AU: Bet365 AU only — The Odds API has no UK bet365 key. Do not send FanDuel keys on this call.
     uk = _one("au", "bet365_au")
     if not uk or not (uk.get("bookmakers") or []):
-        uk = _one("au", None)  # open UK feed, then we filter
+        uk = _one("uk", "bet365")
+    if not uk or not (uk.get("bookmakers") or []):
+        uk = _one("uk", None)
+    if not uk or not (uk.get("bookmakers") or []):
+        uk = _one("au", None)  # open AU feed, then we filter
     merged = _merge_oddsapi_events(us, uk)
     return merged
 
@@ -6230,9 +6240,17 @@ def fetch_sgo_hr_props(sgo_key):
                         continue
                     prop_type = None
                     is_hr = "batting_homeruns" in oid or "home_run" in oid
-                    is_td = "anytimetouchdown" in oid or "anytime_td" in oid or "anytime-touchdown" in oid
-                    if "touchdown" in oid or "anytime" in oid:
-                        prop_type = None
+                    is_td = any(x in oid for x in (
+                        "anytimetouchdown", "anytime_td", "anytime-touchdown",
+                        "anytime_touchdown", "player_anytime_td", "atd",
+                        "firsttouchdown", "lasttouchdown",
+                    ))
+                    # SGO often uses "touchdowns" / "scoringTouchdown" without "anytime"
+                    if not is_td and "touchdown" in oid and "yard" not in oid and "pass" not in oid:
+                        is_td = "rush" not in oid or "rushingtouchdown" in oid or "receivingtouchdown" in oid
+                    if is_td or "touchdown" in oid or ("anytime" in oid and "yard" not in oid):
+                        if is_td:
+                            prop_type = None
                     elif "rushing_yards" in oid and "touchdown" not in oid:
                         prop_type = "Rush Yards"
                     elif "receiving_yards" in oid and "touchdown" not in oid:
@@ -7046,7 +7064,10 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     coverage_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if is_blocked_player(player): continue
-        if lineup_names and len(lineup_names) >= 40 and name_in_lineup(player, lineup_names) is False: continue
+        # MLB lineups only. Cached RotoWire HR names must never wipe the NFL Board.
+        if active_sport() != "NFL" and lineup_names and len(lineup_names) >= 40 and name_in_lineup(player, lineup_names) is False: continue
+        if active_sport() == "NFL" and is_nfl_qb(player):
+            continue
         prices = g["price"].dropna().tolist()
         books = g["book"].tolist()
         if len(prices) < 1: continue
@@ -8345,6 +8366,40 @@ def main():
     )
     coverage_n = len(coverage_only)
     team_picks = apply_team_picks(ev_board, watch_only, coverage_only)
+    # NFL: Shop can be full while Board is empty if methods didn't stamp.
+    # Mirror Shop TAKE/LEAN onto WATCH so the five boxes aren't lying.
+    if active_sport() == "NFL":
+        try:
+            shop_sync = build_shop_board(df) if df is not None and not getattr(df, "empty", True) else []
+        except Exception:
+            shop_sync = []
+        have = {e.get("player") for e in ev_board} | {w.get("player") for w in watch_only} | {c.get("player") for c in coverage_only}
+        for r in shop_sync:
+            if r.get("action") not in ("TAKE", "LEAN"):
+                continue
+            name = r.get("player")
+            if not name or name in have or is_nfl_qb(name):
+                continue
+            row = {
+                "player": name,
+                "best_price": r.get("best"),
+                "best_book": r.get("best_book"),
+                "book_prices": r.get("books") or {},
+                "edge": r.get("edge") or 0,
+                "is_bet": False,
+                "methods": ["Shop " + r.get("action")],
+                "method_count": 0,
+                "score": 40 if r.get("action") == "TAKE" else 30,
+                "why": f"Shop {r.get('action')} · ticket {format_odds(r.get('best'))} {book_label(r.get('best_book'))} · not a Board green",
+                "event": r.get("event") or "",
+                "events": [r.get("event") or ""],
+                "team": "",
+                "bars": 2,
+                "level": "medium",
+            }
+            watch_only.append(row)
+            have.add(name)
+        watch_n = len(watch_only)
     pick_n = len(team_picks)
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
