@@ -46195,45 +46195,34 @@
     "market": "batter_home_runs"
   },
   {
-    "id": "2026-09-14_Andrew Benintendi_watch_34",
+    "id": "2026-09-14_Kyren Paris_shop_take_105",
     "date": "2026-09-14",
-    "time": "10:31 AM",
-    "player": "Andrew Benintendi",
-    "score": 34,
-    "edge": 28,
-    "best_price": 800,
-    "best_book": "bet365",
-    "median": 760,
+    "time": "10:32 AM",
+    "player": "Kyren Paris",
+    "score": 0,
+    "edge": 105,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 880,
     "book_prices": {
-      "bet365": 800,
-      "betmgm": 725,
+      "betmgm": 600,
       "caesars": 750,
-      "draftkings": 760,
-      "fanatics": 800,
-      "fanduel": 790,
-      "hardrockbet": 750
+      "draftkings": 890,
+      "fanatics": 950,
+      "fanduel": 870,
+      "hardrockbet": 900
     },
     "price_bucket": "+800-999",
-    "ending": 0,
-    "mgm_locked": 725,
-    "mgm_ending": 25,
+    "ending": 50,
     "methods": [
-      "DK FD-style",
-      "FD 90",
-      "FD Pattern",
-      "EV Support",
-      "Kelly Support"
+      "Shop TAKE"
     ],
-    "core": 2,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-14T17:31:59.475667+00:00",
-    "price_source": "pregame_lock",
+    "source": "shop_take",
+    "logged_at": "2026-09-14T17:32:02.235958+00:00",
+    "price_source": "shop",
     "sport": "MLB",
-    "team": "CHICAGO WHITE SOX",
-    "market": "batter_home_runs",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.71
+    "market": "batter_home_runs"
   }
 ]
