@@ -450,15 +450,14 @@ def nfl_ending_board(rows):
 
 # ── copy for Magic Math tab (NFL) ────────────────────────────
 NFL_MATH_BLURB = """
-**NFL Magic Math is not MLB HR math.**
+**NFL is not baseball.** Different sport, different stamps.
 
-- Ticket = Anytime TD Yes. Floor **+115**. No 799 cap.
-- Sweet lane **+150 to +450**. Long TDs **+500 to +1200** still count.
-- Hot endings: **00, 10, 20, 25, 50, 70, 75, 90**.
-- Dead long endings (fade on +500+): 15, 35, 40, 45, 55, 65, 80, 85.
-- **FD under MGM** only if the gap is **25–80 pts** and the price is in **+150 to +550**. A 100-pt gap on a +900 flyer is not a tell.
-- **MGM is signal only.** It can tag a card. It cannot be the book we buy.
-- Name# matching End# is flavor. It never greens TAKE by itself.
+- We buy Anytime TD. We do not buy the passer.
+- Green still means two of *our* tags — the Board already knows which.
+- MGM talks. It does not get the ticket.
+- Long junk still junk. If it’s purple, it’s homework.
+
+The exact lanes live in the code, not on this page.
 """
 
 nfl_math_fd_under_mgm = nfl_fd_under_mgm
