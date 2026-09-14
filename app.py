@@ -2135,6 +2135,18 @@ def is_nfl_qb(name):
     return False
 
 
+NEED_ONE_PERIOD_BITS = (
+    "1st", "2nd", "3rd", "4th", "first_half", "second_half", "firsthalf", "secondhalf",
+    "_1h", "_2h", "_1q", "_2q", "_3q", "_4q", "q1", "q2", "q3", "q4",
+    "quarter", "period", "1q-", "2q-", "3q-", "4q-", "-1h", "-2h",
+    "halftime", "1sthalf", "2ndhalf",
+)
+
+def is_full_game_prop(blob):
+    s = str(blob or "").lower().replace(" ", "")
+    return not any(b.replace("_", "") in s or b in str(blob or "").lower() for b in NEED_ONE_PERIOD_BITS)
+
+
 NEED_ONE_MAJOR = {
     "draftkings", "fanduel", "hardrockbet", "fanatics", "caesars", "betmgm", "bet365",
 }
@@ -2308,6 +2320,8 @@ def build_need_one_board(rows, want_types):
         # 0.5 yard/catch lines live around +100 to +300. +1000 is a different market leaking in.
         book_px = {b: p for b, p in book_px.items() if 100 <= int(p) <= 400}
         if not book_px:
+            continue
+        if len(book_px) < 2:
             continue
         books = list(book_px.keys())
         prices = list(book_px.values())
@@ -6019,9 +6033,12 @@ def flatten_oddsapi(data):
             }
             prop_type = None
             for k, lab in need_map.items():
-                if k in mkey:
+                if mkey == k or mkey == k + "_alternate":
                     prop_type = lab
                     break
+            if prop_type and not is_full_game_prop(mkey):
+                prop_type = None
+                continue
             if mkey and not is_hr and not is_td and not prop_type:
                 continue
             for o in market.get("outcomes", []):
@@ -6113,6 +6130,8 @@ def fetch_sgo_hr_props(sgo_key):
                         prop_type = "Receiving Yards"
                     elif "receptions" in oid and "receiving" not in oid and "touchdown" not in oid:
                         prop_type = "Receptions"
+                    if prop_type and not is_full_game_prop(oid):
+                        prop_type = None
                     if league == "MLB" and not is_hr:
                         continue
                     if league == "NFL" and not (is_td or prop_type):
@@ -8733,8 +8752,8 @@ def main():
                 ]
             items = build_need_one_board(need_rows, want) if want else []
             st.caption(
-                "These are 0.5 lines only (first yard / first catch) — not the 40.5 receiving line on the board. "
-                "Fair is math, not a book. Hit Fetch again if a number does not match the app."
+                "Full game 0.5 only — no 1st quarter / 1st half. Not the 40.5 yard line. "
+                "Needs 2+ books. Fair is math. Fetch again to refresh."
             )
             st.markdown(
                 f'<div class="petty-row">'
