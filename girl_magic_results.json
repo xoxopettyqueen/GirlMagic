@@ -13416,7 +13416,7 @@
       "Kelly Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.175097+00:00",
     "price_source": "pregame_lock",
@@ -13425,7 +13425,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.83
+    "benford_cluster": 0.83,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Malachi Fields_take_it_57",
