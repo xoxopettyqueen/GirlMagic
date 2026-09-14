@@ -48946,5 +48946,67 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-14_Cyrus Allen_shop_lean_70",
+    "date": "2026-09-14",
+    "time": "03:12 PM",
+    "player": "Cyrus Allen",
+    "score": 0,
+    "edge": 70,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 775,
+    "book_prices": {
+      "betmgm": 390,
+      "caesars": 800,
+      "draftkings": 850,
+      "fanatics": 750,
+      "fanduel": 850,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-14T22:12:05.461602+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-14_Tyquan Thornton_shop_lean_44",
+    "date": "2026-09-14",
+    "time": "03:12 PM",
+    "player": "Tyquan Thornton",
+    "score": 0,
+    "edge": 44,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 587,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 575,
+      "draftkings": 650,
+      "fanatics": 600,
+      "fanduel": 650,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-14T22:12:05.462980+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
