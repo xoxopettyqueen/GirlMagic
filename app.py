@@ -2277,6 +2277,10 @@ def build_need_one_board(rows, want_types):
             book_px[bk] = price
         if not book_px:
             continue
+        # 0.5 yard/catch lines live around +100 to +300. +1000 is a different market leaking in.
+        book_px = {b: p for b, p in book_px.items() if 100 <= int(p) <= 400}
+        if not book_px:
+            continue
         books = list(book_px.keys())
         prices = list(book_px.values())
         best, best_book = smart_best(prices, books) if len(prices) >= 2 else pick_ticket(prices, books)
@@ -4861,35 +4865,38 @@ def fetch_nfl_td_scorers():
             itype_l = itype
             is_pass = (
                 "passing touchdown" in itype_l
-                or "pass" in itype_l
-                or "pass" in text
-                or "interception return" in text
-                or "intercepted" in text
+                or "pass touchdown" in itype_l
+                or ("pass" in itype_l and "rush" not in itype_l)
+                or "pass to" in text
+                or "pass intended" in text
             )
+            is_int = "interception return" in text or "intercepted" in text
             is_rush = (
                 "rushing touchdown" in itype_l
                 or "rush" in itype_l
-                or "run" in itype_l
-                or (("rush" in text or "runs" in text or "scrambles" in text) and "pass" not in text)
+                or (("runs" in text or "rushed" in text or "scrambles" in text) and "pass" not in text)
             )
+            is_return = "return" in itype_l or "punt return" in text or "kick return" in text or "kickoff return" in text
             names = []
             if is_pass and not is_rush:
-                # Throw = catcher only. QB passer does NOT get an anytime TD.
+                # Catcher only. Never the QB.
                 if len(athletes) >= 2:
                     n = athletes[1].get("displayName") or athletes[1].get("fullName")
                     if n:
                         names.append(n)
                 else:
                     import re as _re
-                    m = _re.search(r"\b(?:to|for)\s+([a-z\.\'\- ]+?)(?:\s+for\s+|\s+\d+|$)", text)
+                    m = _re.search(r"\b(?:to|for)\s+([A-Z][a-zA-Z\.\'\-]+(?:\s+[A-Z][a-zA-Z\.\'\-]+){0,3})", play.get("text") or "")
+                    if not m:
+                        m = _re.search(r"\b(?:to|for)\s+([a-z\.\'\- ]+?)(?:\s+for\s+|\s+\d+|$)", text)
                     if m:
                         names.append(m.group(1).strip().title())
-            else:
-                # Rush / return / scramble TD — QB counts if HE is the rusher.
-                for ath in athletes[:1] or athletes:
+            elif is_rush or is_return or is_int:
+                for ath in athletes[:1]:
                     n = ath.get("displayName") or ath.get("fullName")
                     if n:
                         names.append(n)
+            # else: ignore field goals / mystery scoring
             for n in names:
                 if n:
                     scorers.add(clean_name(n))
@@ -4903,9 +4910,9 @@ def fetch_nfl_td_scorers():
                     if k in ("td", "tds", "touchdowns"):
                         td_idx = i
                         break
-                if "pass" in name:
+                if "pass" in name or "qb" in name or "quarterback" in name:
                     continue  # passing TDs are the QB — not an anytime scorer
-                if td_idx is None and "rush" not in name and "receiv" not in name and "return" not in name:
+                if "rush" not in name and "receiv" not in name and "return" not in name:
                     continue
                 for ath in stat_group.get("athletes") or []:
                     n = (ath.get("athlete") or {}).get("displayName")
@@ -4936,8 +4943,15 @@ def auto_grade_pending():
         if row.get("result") != "PENDING":
             continue
         if active_sport() == "NFL":
-            blob = str(row.get("market") or row.get("sport") or "").lower()
-            if blob and "td" not in blob and "nfl" not in blob:
+            src = str(row.get("source") or "")
+            mkt = str(row.get("market") or "").lower()
+            if src.startswith("need_one"):
+                skipped += 1
+                continue
+            if any(x in mkt for x in ("rush", "receiv", "reception", "yard")):
+                skipped += 1
+                continue
+            if mkt and "td" not in mkt and "touchdown" not in mkt and src not in ("take_it", "watch", "shop_take", "shop_lean"):
                 skipped += 1
                 continue
         elif str(row.get("market") or "") == "anytime_td":
@@ -5162,6 +5176,10 @@ def render_run_it_recap():
             continue
         res = str(r.get("result") or "").upper()
         src = str(r.get("source") or "")
+        if sport == "NFL":
+            mkt = str(r.get("market") or "").lower()
+            if src.startswith("need_one") or any(x in mkt for x in ("rush", "receiv", "reception", "yard")):
+                continue
         if res in ("HIT", "MISS"):
             keep.append(r)
         elif src in ("watch", "shop_lean") and res in ("PENDING", "HIT", "MISS", "LEAN", "WATCH", ""):
@@ -5987,11 +6005,13 @@ def fetch_sgo_hr_props(sgo_key):
                     prop_type = None
                     is_hr = "batting_homeruns" in oid or "home_run" in oid
                     is_td = "anytimetouchdown" in oid or "anytime_td" in oid or "anytime-touchdown" in oid
-                    if "rushing_yards" in oid:
+                    if "touchdown" in oid or "anytime" in oid:
+                        prop_type = None
+                    elif "rushing_yards" in oid and "touchdown" not in oid:
                         prop_type = "Rush Yards"
-                    elif "receiving_yards" in oid:
+                    elif "receiving_yards" in oid and "touchdown" not in oid:
                         prop_type = "Receiving Yards"
-                    elif "receptions" in oid and "receiving" not in oid:
+                    elif "receptions" in oid and "receiving" not in oid and "touchdown" not in oid:
                         prop_type = "Receptions"
                     if league == "MLB" and not is_hr:
                         continue
