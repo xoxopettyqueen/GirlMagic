@@ -46772,5 +46772,36 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-14_Max Muncy_shop_take_52",
+    "date": "2026-09-14",
+    "time": "11:31 AM",
+    "player": "Max Muncy",
+    "score": 0,
+    "edge": 52,
+    "best_price": 450,
+    "best_book": "fanatics",
+    "median": 395,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 350,
+      "caesars": 370,
+      "fanatics": 450,
+      "fanduel": 390,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-14T18:31:23.313027+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
