@@ -7207,8 +7207,17 @@ def build_backtest_stats(rows, days=14):
     ]
 
     def rate(subset):
-        h = sum(1 for r in subset if r["result"] == "HIT")
-        m = sum(1 for r in subset if r["result"] == "MISS")
+        # One player, one vote. Dupes from extra fetches were inflating TAKE n.
+        by_p = {}
+        for r in subset:
+            key = clean_name(r.get("player") or "").lower()
+            if not key:
+                continue
+            prev = by_p.get(key)
+            if prev is None or (prev.get("result") != "HIT" and r.get("result") == "HIT"):
+                by_p[key] = r
+        h = sum(1 for r in by_p.values() if r["result"] == "HIT")
+        m = sum(1 for r in by_p.values() if r["result"] == "MISS")
         t = h + m
         pct = (100.0 * h / t) if t else None
         return h, m, t, pct
@@ -9500,7 +9509,7 @@ def main():
                 st.rerun()
     if page == "Grade:Backtest":
         st.markdown('<div class="queen-banner">🧪 Backtest · TAKE IT vs WATCH</div>', unsafe_allow_html=True)
-        st.caption("How our picks have been grading. Needs a few days of HIT/MISS before the % means much.")
+        st.caption("Unique names only — not every duplicate row from Fetch. Needs a few days of HIT/MISS before the % means much.")
         rows_bt = results_for_sport()
         overall, daily, method_by_src, n_graded = build_backtest_stats(rows_bt, days=14)
 
