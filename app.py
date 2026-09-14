@@ -1101,6 +1101,16 @@ TAKE_STAMP_METHODS = {
     "FD Pattern", "FD 600", "FD+MGM classic",
     "Fanatics Rogue",
 }
+# Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
+NFL_STAMP_METHODS = {
+    "DK FD-style",
+    "Books tight", "Multi-book method", "Multi-book Shorten",
+    "MGM 25", "Match 25", "MGM 75", "Match 75",
+    "MGM Exact",
+    "DK 10",
+    "Fanatics Rogue",
+    "Stayed in the group",
+}
 
 PRIORITY_METHODS = {
     "MGM 25", "Match 25", "MGM Exact",
@@ -1280,9 +1290,12 @@ def nfl_price_ok(best_price):
         return False
     return p >= 115
 
+def stamp_set():
+    return NFL_STAMP_METHODS if active_sport() == "NFL" else TAKE_STAMP_METHODS
+
 def stamp_count(methods):
     ms = {normalize_method_name(m) for m in (methods or [])}
-    return len(ms & TAKE_STAMP_METHODS), ms
+    return len(ms & stamp_set()), ms
 
 
 def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None, score=0):
@@ -1311,12 +1324,16 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     fn = fanatics_price_logic(book_prices)
     if fn.get("watch_only"):
         return False
-    if bk == "fanduel":
-        return False
     if bk == "caesars":
         return False
-    if bk and bk not in {"draftkings", "hardrockbet", "fanatics"}:
-        return False
+    if active_sport() == "NFL":
+        if bk and bk not in {"draftkings", "fanduel", "hardrockbet", "fanatics"}:
+            return False
+    else:
+        if bk == "fanduel":
+            return False
+        if bk and bk not in {"draftkings", "hardrockbet", "fanatics"}:
+            return False
     # Fanatics BEST +500 with DK/FD/MGM on the card (even mid) can still TAKE
     if bk == "fanatics" and not fn.get("allow_take") and not fn.get("matches"):
         if not (fn.get("way_over_mgm") and not fn.get("alone")):
@@ -1328,14 +1345,22 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     pri = bool(ms & PRIORITY_METHODS)
     end = last_two(best_price)
     hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
-    if nfl_loose_mode():
-        if HAS_NFL_MATH:
-            return nfl_take_ok(
-                core_count, methods, best_price, best_book, book_prices, score,
-                need_core=max(1, methods_min()),
-            )
+    if active_sport() == "NFL":
         if not nfl_price_ok(best_price):
             return False
+        try:
+            px = abs(int(best_price or 0))
+        except Exception:
+            px = 0
+        if px >= 1000:
+            return False
+        if end in (75,) and stamps < 3:
+            return False
+        if bk == "fanatics":
+            if end == 0:
+                return False
+            if not fn.get("allow_take") and not fn.get("way_over_mgm"):
+                return False
         return True
     if not pri and sc < SCORE_SOFT_TAKE:
         return False
