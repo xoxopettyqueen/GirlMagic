@@ -67581,5 +67581,94 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.67
+  },
+  {
+    "id": "2026-09-15_Mickey Gasper_shop_take_99",
+    "date": "2026-09-15",
+    "time": "11:01 AM",
+    "player": "Mickey Gasper",
+    "score": 0,
+    "edge": 99,
+    "best_price": 620,
+    "best_book": "draftkings",
+    "median": 495,
+    "book_prices": {
+      "betmgm": 500,
+      "caesars": 475,
+      "draftkings": 620,
+      "fanduel": 490
+    },
+    "price_bucket": "+600s",
+    "ending": 20,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T18:01:03.320993+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Ezequiel Duran_shop_take_94",
+    "date": "2026-09-15",
+    "time": "11:01 AM",
+    "player": "Ezequiel Duran",
+    "score": 0,
+    "edge": 94,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 835,
+    "book_prices": {
+      "betmgm": 775,
+      "caesars": 850,
+      "draftkings": 770,
+      "fanatics": 950,
+      "fanduel": 820,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T18:01:03.321279+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Jarren Duran_shop_lean_29",
+    "date": "2026-09-15",
+    "time": "11:01 AM",
+    "player": "Jarren Duran",
+    "score": 0,
+    "edge": 29,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 512,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 500,
+      "draftkings": 550,
+      "fanduel": 490
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T18:01:03.339109+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
