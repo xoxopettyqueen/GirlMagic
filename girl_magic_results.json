@@ -4337,12 +4337,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-13T16:51:28.132366+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Roman Wilson_shop_lean_189",
@@ -4811,12 +4812,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-13T16:51:28.132942+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Daniel Bellinger_shop_lean_89",
@@ -5605,12 +5607,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-13T16:51:28.133943+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Samaje Perine_shop_take_61",
@@ -6355,12 +6358,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-13T16:51:28.135274+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Jonnu Smith_shop_lean_45",
@@ -6915,12 +6919,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-13T16:51:28.136461+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Mo Alie-Cox_shop_lean_28",
@@ -14022,7 +14027,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.177498+00:00",
     "price_source": "pregame_lock",
@@ -14031,7 +14036,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.83
+    "benford_cluster": 0.83,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Malik Willis_take_it_62",
@@ -14732,7 +14738,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.180246+00:00",
     "price_source": "pregame_lock",
@@ -14741,7 +14747,8 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Brenton Strange_take_it_74",
@@ -14939,7 +14946,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-13T17:17:15.181110+00:00",
     "price_source": "pregame_lock",
@@ -14948,7 +14955,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Garrett Wilson_take_it_63",
@@ -20320,7 +20328,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-13T17:28:00.147855+00:00",
     "price_source": "pregame_lock",
@@ -20329,7 +20337,8 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Jahan Dotson_take_it_75",
@@ -20403,7 +20412,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-13T17:28:00.205520+00:00",
     "price_source": "pregame_lock",
@@ -20412,7 +20421,8 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Kalif Raymond_take_it_74",
@@ -20527,7 +20537,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-13T17:28:00.395497+00:00",
     "price_source": "pregame_lock",
@@ -20536,7 +20546,8 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Mo Alie-Cox_take_it_66",
@@ -34900,12 +34911,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T00:32:53.903458+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Adam Trautman_shop_lean_128",
@@ -34931,12 +34943,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T03:02:02.100754+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Tyquan Thornton_shop_take_70",
@@ -34962,12 +34975,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T03:02:02.101387+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_RJ Harvey_shop_lean_48",
@@ -34993,12 +35007,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T03:02:02.101745+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-13_Brett Harris_watch_60",
@@ -48495,12 +48510,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T21:20:01.269427+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Cyrus Allen_shop_take_133",
@@ -48526,12 +48542,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T21:20:01.269895+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Emmett Johnson_shop_take_105",
@@ -48557,12 +48574,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T21:20:01.270204+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Justin Fields_shop_lean_60",
@@ -48647,12 +48665,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T21:20:01.270865+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Adam Trautman_shop_lean_48",
@@ -48678,12 +48697,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T21:20:01.271059+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Pat Bryant_shop_take_40",
@@ -48709,12 +48729,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T21:20:01.271245+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Patrick Mahomes_shop_lean_30",
@@ -48772,12 +48793,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T21:30:05.596224+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Dane Myers_take_it_88",
@@ -49246,12 +49268,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T22:12:05.461602+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Tyquan Thornton_shop_lean_44",
@@ -49277,12 +49300,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T22:12:05.462980+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Emmett Johnson_take_it_83",
@@ -49315,7 +49339,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T22:25:35.414143+00:00",
     "price_source": "pregame_lock",
@@ -49324,7 +49348,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.33
+    "benford_cluster": 0.33,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Tyquan Thornton_take_it_68",
@@ -49357,7 +49382,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T22:25:35.455679+00:00",
     "price_source": "pregame_lock",
@@ -49366,7 +49391,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Marvin Mims Jr._take_it_49",
@@ -49399,7 +49425,7 @@
       "Kelly Caution"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T22:25:35.524975+00:00",
     "price_source": "pregame_lock",
@@ -49408,7 +49434,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Evan Engram_take_it_78",
@@ -49482,7 +49509,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T22:25:35.625554+00:00",
     "price_source": "pregame_lock",
@@ -49491,7 +49518,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.83
+    "benford_cluster": 0.83,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Rashee Rice_take_it_35",
@@ -49601,7 +49629,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T22:25:35.687328+00:00",
     "price_source": "pregame_lock",
@@ -49611,7 +49639,8 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0,
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Denver Broncos D/ST_watch_25",
@@ -49678,7 +49707,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-14T22:25:35.714551+00:00",
     "price_source": "pregame_lock",
@@ -49687,7 +49716,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Jaylen Waddle_watch_30",
@@ -49717,7 +49747,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-14T22:25:35.730057+00:00",
     "price_source": "pregame_lock",
@@ -49726,7 +49756,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.83
+    "benford_cluster": 0.83,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Travis Kelce_watch_35",
@@ -49757,7 +49788,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T22:25:35.743934+00:00",
     "price_source": "pregame_lock",
@@ -49767,7 +49798,8 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0,
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Xavier Worthy_watch_44",
@@ -49798,7 +49830,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-14T22:25:35.755645+00:00",
     "price_source": "pregame_lock",
@@ -49807,7 +49839,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.83
+    "benford_cluster": 0.83,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Julio Rodr\u00edguez_take_it_55",
@@ -50223,7 +50256,7 @@
       "Kelly Support"
     ],
     "core": 11,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T22:31:40.755843+00:00",
     "price_source": "pregame_lock",
@@ -50232,7 +50265,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Adam Trautman_watch_100",
@@ -50266,7 +50300,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-14T22:31:40.901041+00:00",
     "price_source": "pregame_lock",
@@ -50275,7 +50309,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.71
+    "benford_cluster": 0.71,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Jonah Coleman_watch_57",
@@ -50308,7 +50343,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-14T22:31:40.923047+00:00",
     "price_source": "pregame_lock",
@@ -50317,7 +50352,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Kansas City Chiefs D/ST_watch_51",
@@ -50428,12 +50464,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T22:31:49.964648+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Marvin Mims Jr._shop_take_101",
@@ -50460,12 +50497,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T22:31:49.965520+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Kyle Stowers_take_it_66",
@@ -51374,7 +51412,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-15T00:04:25.287416+00:00",
     "price_source": "pregame_lock",
@@ -51383,7 +51421,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_James Cook_watch_35",
@@ -51527,7 +51566,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-15T00:04:25.402567+00:00",
     "price_source": "pregame_lock",
@@ -51536,7 +51575,8 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Omarion Hampton_watch_25",
@@ -51915,7 +51955,7 @@
       "Kelly Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-15T00:04:41.828161+00:00",
     "price_source": "pregame_lock",
@@ -51924,7 +51964,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Emmett Johnson_shop_lean_74",
@@ -51950,12 +51991,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T00:04:44.193400+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_RJ Harvey_shop_take_50",
@@ -51982,12 +52024,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-15T00:04:44.194133+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto"
   },
   {
     "id": "2026-09-14_Connor Norby_shop_lean_25",
