@@ -72039,5 +72039,557 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-15_Zac Veen_shop_take_147",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Zac Veen",
+    "score": 0,
+    "edge": 147,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 790,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 820,
+      "fanatics": 950,
+      "fanduel": 760
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.184280+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Lawrence Butler_shop_take_114",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Lawrence Butler",
+    "score": 0,
+    "edge": 114,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 622,
+    "book_prices": {
+      "betmgm": 500,
+      "caesars": 625,
+      "draftkings": 620,
+      "fanatics": 750,
+      "fanduel": 600,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.188252+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Trevor Story_shop_lean_113",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Trevor Story",
+    "score": 0,
+    "edge": 113,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "betmgm": 575,
+      "caesars": 575,
+      "draftkings": 553,
+      "fanatics": 700,
+      "fanduel": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T22:04:15.189391+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Marcus Semien_shop_take_110",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Marcus Semien",
+    "score": 0,
+    "edge": 110,
+    "best_price": 870,
+    "best_book": "fanduel",
+    "median": 725,
+    "book_prices": {
+      "betmgm": 625,
+      "caesars": 750,
+      "draftkings": 700,
+      "fanatics": 800,
+      "fanduel": 870,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.190417+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Bryan De La Cruz_shop_take_109",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Bryan De La Cruz",
+    "score": 0,
+    "edge": 109,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 870,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 750,
+      "draftkings": 890,
+      "fanatics": 950,
+      "fanduel": 900,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.190877+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Austin Hays_shop_lean_96",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Austin Hays",
+    "score": 0,
+    "edge": 96,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 599,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 575,
+      "draftkings": 599,
+      "fanatics": 700,
+      "fanduel": 610
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T22:04:15.192385+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Michael Massey_shop_take_93",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Michael Massey",
+    "score": 0,
+    "edge": 93,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 850,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 650,
+      "caesars": 850,
+      "draftkings": 890,
+      "fanatics": 950,
+      "fanduel": 830,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.193312+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Troy Johnston_shop_lean_82",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Troy Johnston",
+    "score": 0,
+    "edge": 82,
+    "best_price": 980,
+    "best_book": "fanduel",
+    "median": 900,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 800,
+      "fanatics": 950,
+      "fanduel": 980
+    },
+    "price_bucket": "+800-999",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T22:04:15.195955+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Kazuma Okamoto_shop_take_80",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Kazuma Okamoto",
+    "score": 0,
+    "edge": 80,
+    "best_price": 450,
+    "best_book": "bet365",
+    "median": 367,
+    "book_prices": {
+      "bet365": 450,
+      "betmgm": 325,
+      "caesars": 350,
+      "draftkings": 367,
+      "fanatics": 370,
+      "fanduel": 370,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.196682+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Carson Benge_shop_take_78",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Carson Benge",
+    "score": 0,
+    "edge": 78,
+    "best_price": 870,
+    "best_book": "fanduel",
+    "median": 775,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 750,
+      "draftkings": 750,
+      "fanatics": 800,
+      "fanduel": 870,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.197468+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Brett Sullivan_shop_lean_70",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Brett Sullivan",
+    "score": 0,
+    "edge": 70,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 715,
+    "book_prices": {
+      "caesars": 700,
+      "draftkings": 720,
+      "fanatics": 800,
+      "fanduel": 710
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T22:04:15.201280+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_John Rave_shop_lean_65",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "John Rave",
+    "score": 0,
+    "edge": 65,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 887,
+    "book_prices": {
+      "betmgm": 875,
+      "caesars": 850,
+      "draftkings": 920,
+      "fanatics": 950,
+      "fanduel": 830,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T22:04:15.204791+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Ketel Marte_shop_take_61",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Ketel Marte",
+    "score": 0,
+    "edge": 61,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 475,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 475,
+      "draftkings": 490,
+      "fanatics": 550,
+      "fanduel": 470,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.206472+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Luis Garcia Jr._shop_take_55",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Luis Garcia Jr.",
+    "score": 0,
+    "edge": 55,
+    "best_price": 475,
+    "best_book": "fanatics",
+    "median": 407,
+    "book_prices": {
+      "betmgm": 390,
+      "caesars": 400,
+      "draftkings": 415,
+      "fanatics": 475,
+      "fanduel": 420,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.211077+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Jos\u00e9 Caballero_shop_lean_53",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Jos\u00e9 Caballero",
+    "score": 0,
+    "edge": 53,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 880,
+      "fanatics": 950,
+      "fanduel": 900,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T22:04:15.212726+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Heriberto Hern\u00e1ndez_shop_take_42",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Heriberto Hern\u00e1ndez",
+    "score": 0,
+    "edge": 42,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 472,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 475,
+      "draftkings": 502,
+      "fanatics": 525,
+      "fanduel": 470,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.218102+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Spencer Torkelson_shop_take_42",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Spencer Torkelson",
+    "score": 0,
+    "edge": 42,
+    "best_price": 550,
+    "best_book": "bet365",
+    "median": 500,
+    "book_prices": {
+      "bet365": 550,
+      "caesars": 500,
+      "draftkings": 497,
+      "fanatics": 500,
+      "fanduel": 480,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T22:04:15.218542+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Jonathan Aranda_shop_lean_33",
+    "date": "2026-09-15",
+    "time": "03:04 PM",
+    "player": "Jonathan Aranda",
+    "score": 0,
+    "edge": 33,
+    "best_price": 560,
+    "best_book": "fanduel",
+    "median": 516,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 500,
+      "draftkings": 533,
+      "fanatics": 550,
+      "fanduel": 560,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T22:04:15.223449+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
