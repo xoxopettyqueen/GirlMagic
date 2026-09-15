@@ -70247,5 +70247,127 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-15_Hunter Feduccia_shop_take_75",
+    "date": "2026-09-15",
+    "time": "01:14 PM",
+    "player": "Hunter Feduccia",
+    "score": 0,
+    "edge": 75,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 775,
+    "book_prices": {
+      "betmgm": 725,
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 800,
+      "fanduel": 680,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-15T20:14:05.892342+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Griffin Conine_shop_lean_30",
+    "date": "2026-09-15",
+    "time": "01:14 PM",
+    "player": "Griffin Conine",
+    "score": 0,
+    "edge": 30,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 494,
+    "book_prices": {
+      "betmgm": 500,
+      "caesars": 475,
+      "draftkings": 499,
+      "fanatics": 525,
+      "fanduel": 490,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T20:14:05.902914+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Colton Cowser_shop_lean_29",
+    "date": "2026-09-15",
+    "time": "01:14 PM",
+    "player": "Colton Cowser",
+    "score": 0,
+    "edge": 29,
+    "best_price": 830,
+    "best_book": "draftkings",
+    "median": 810,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 830,
+      "fanatics": 800,
+      "fanduel": 820
+    },
+    "price_bucket": "+800-999",
+    "ending": 30,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T20:14:05.903391+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-15_Jonah Heim_shop_lean_28",
+    "date": "2026-09-15",
+    "time": "01:14 PM",
+    "player": "Jonah Heim",
+    "score": 0,
+    "edge": 28,
+    "best_price": 880,
+    "best_book": "draftkings",
+    "median": 840,
+    "book_prices": {
+      "betmgm": 725,
+      "caesars": 850,
+      "draftkings": 880,
+      "fanatics": 800,
+      "fanduel": 830,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-15T20:14:05.904041+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
