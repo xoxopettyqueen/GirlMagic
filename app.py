@@ -10788,7 +10788,8 @@ def main():
         )
         site_section_close()
     if page == "Grade:Results":
-        st.markdown('<div class="queen-banner">📊 Results</div>', unsafe_allow_html=True)
+        st.markdown('<div class="queen-banner">📊 Results — two books</div>', unsafe_allow_html=True)
+        st.caption("Tickets = names we told people to play. Research = methods / watches we grade so the tricks can move.")
         if st.button("⚡ Run auto-grade now", type="primary"):
             with st.spinner("MLB..."):
                 h, m, s, msg = auto_grade_pending()
@@ -10823,16 +10824,18 @@ def main():
             )
         today_only = st.checkbox("Today only", value=False)
         src_f = st.radio(
-            "Log type",
-            ["All", "Board (TAKE IT / WATCH)", "Shop (TAKE / LEAN)"],
+            "Book",
+            ["🎟️ Tickets", "🔬 Research", "All"],
             horizontal=True,
             key="results_src_filter",
         )
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
-        if src_f.startswith("Board"):
-            rows_view = [r for r in rows_view if r.get("source") in ("take_it", "watch")]
-        elif src_f.startswith("Shop"):
-            rows_view = [r for r in rows_view if r.get("source") in ("shop_take", "shop_lean")]
+        ticket_src = ("take_it", "shop_take", "manual_hr")
+        research_src = ("watch", "shop_lean")
+        if src_f.startswith("🎟️"):
+            rows_view = [r for r in rows_view if r.get("source") in ticket_src]
+        elif src_f.startswith("🔬"):
+            rows_view = [r for r in rows_view if r.get("source") in research_src]
         pending = sorted([r for r in rows_view if r.get("result") == "PENDING"], key=pending_sort_key)
         done = [r for r in rows_view if r.get("result") in ("HIT", "MISS")]
         hits = sum(1 for r in done if r["result"] == "HIT")
