@@ -8293,6 +8293,106 @@ def fetch_open_meteo(lat, lon):
         return {}
 
 
+_PARK_HR = {
+    "coors field": 128, "great american": 118, "yankee stadium": 116,
+    "citizens bank": 114, "globe life": 112, "camden yards": 110,
+    "fenway": 108, "guaranteed rate": 108, "minute maid": 107,
+    "dodger stadium": 106, "american family": 105, "truist": 104,
+    "loandepot": 103, "chase field": 102, "wrigley": 101,
+    "busch stadium": 100, "citi field": 99, "target field": 98,
+    "angel stadium": 97, "progressive": 97, "t-mobile": 96,
+    "comerica": 95, "kauffman": 94, "pnc": 93, "oracle": 92,
+    "tropicana": 91, "petco": 90, "nationals park": 102,
+}
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_mlb_player_id(name):
+    q = str(name or "").strip()
+    if not q:
+        return None
+    try:
+        r = requests.get(
+            "https://statsapi.mlb.com/api/v1/people/search",
+            params={"names": q},
+            timeout=12,
+        )
+        r.raise_for_status()
+        people = (r.json() or {}).get("people") or []
+    except Exception:
+        return None
+    want = _fold_player(q)
+    for p in people:
+        if _fold_player(p.get("fullName")) == want:
+            return p.get("id")
+    return people[0].get("id") if people else None
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_vs_pitcher(batter_id, pitcher_id):
+    if not batter_id or not pitcher_id:
+        return {}
+    try:
+        r = requests.get(
+            f"https://statsapi.mlb.com/api/v1/people/{batter_id}/stats",
+            params={"stats": "vsPlayer", "opposingPlayerId": pitcher_id, "group": "hitting"},
+            timeout=12,
+        )
+        r.raise_for_status()
+        splits = (((r.json() or {}).get("stats") or [{}])[0].get("splits") or [])
+        stt = (splits[0].get("stat") if splits else {}) or {}
+    except Exception:
+        return {}
+    def ni(*ks):
+        for k in ks:
+            if stt.get(k) not in (None, ""):
+                try:
+                    return float(str(stt.get(k)).replace("%", ""))
+                except Exception:
+                    continue
+        return None
+    return {"pa": ni("plateAppearances"), "hr": ni("homeRuns"), "avg": ni("avg"), "slg": ni("slg")}
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_team_hr9():
+    year = datetime.now().year
+    try:
+        r = requests.get(
+            "https://statsapi.mlb.com/api/v1/stats",
+            params={"stats": "season", "group": "pitching", "sportId": 1, "season": year, "limit": 40},
+            timeout=15,
+        )
+        r.raise_for_status()
+        splits = (((r.json() or {}).get("stats") or [{}])[0].get("splits") or [])
+    except Exception:
+        return {}
+    out = {}
+    for s in splits:
+        team = ((s.get("team") or {}).get("name") or "")
+        stt = s.get("stat") or {}
+        key = _team_key(team)
+        if not key:
+            continue
+        try:
+            hr = float(stt.get("homeRuns") or 0)
+            ip = float(stt.get("inningsPitched") or 0)
+            era = float(stt.get("era") or 0)
+            hr9 = (hr / ip * 9.0) if ip else None
+        except Exception:
+            hr9, era = None, None
+        out[key] = {"hr9": hr9, "era": era}
+    return out
+
+
+def _park_hr_factor(venue):
+    v = str(venue or "").lower()
+    for k, val in _PARK_HR.items():
+        if k in v:
+            return val
+    return 100
+
+
 def load_live_mlb_data():
     slate = fetch_mlb_slate_context()
     weather = {}
@@ -8307,6 +8407,7 @@ def load_live_mlb_data():
         "rookies": fetch_mlb_rookies(),
         "slate": slate,
         "weather": weather,
+        "hr9": fetch_team_hr9(),
     }
 
 
@@ -8543,6 +8644,57 @@ def render_alignment_tab(ev_board, watch_board=None):
         if not keep:
             hidden += 1
             continue
+        # Matchup layer — only for names that already cleared the bar.
+        park_f = _park_hr_factor(data.get("matchup") or "")
+        if not park_f or park_f == 100:
+            park_f = _park_hr_factor((data.get("summary") or ""))
+        opp = ""
+        if "vs " in (data.get("matchup") or ""):
+            opp = (data.get("matchup") or "").split("vs ", 1)[-1].split("(")[0].strip()
+        vs = {}
+        if opp:
+            bid = fetch_mlb_player_id(item.get("player"))
+            pid = fetch_mlb_player_id(opp)
+            vs = fetch_vs_pitcher(bid, pid) or {}
+        tk = _team_key(item.get("team") or "")
+        # opposing team pitching: use event home/away
+        evn = " ".join(item.get("events") or [item.get("event") or ""])
+        opp_team = ""
+        for k in _MLB_PARK_LL:
+            if k in evn.lower() and k != tk:
+                opp_team = k
+                break
+        bp = ((live.get("hr9") or {}).get(opp_team) or {})
+        match_boost = 0
+        if park_f >= 105:
+            match_boost += 5
+        elif park_f <= 95:
+            match_boost -= 3
+        slg = vs.get("slg")
+        vhr = vs.get("hr")
+        vpa = vs.get("pa")
+        if slg is not None and slg >= 0.500 and (vpa or 0) >= 8:
+            match_boost += 8
+        elif slg is not None and slg < 0.250 and (vpa or 0) >= 10:
+            match_boost -= 5
+        if vhr and vhr >= 1:
+            match_boost += 5
+        if bp.get("hr9") and bp["hr9"] >= 1.3:
+            match_boost += 5
+        if bp.get("era") and bp["era"] < 3.5:
+            match_boost -= 3
+        align = int(align) + int(match_boost)
+        vs_line = "no sample vs this SP"
+        if vpa:
+            vs_line = f"vs {opp} · {int(vhr or 0)} HR in {int(vpa)} PA · SLG {slg or 0:.3f}"
+        park_line = f"HR factor {park_f}"
+        pen_line = "bullpen sample thin"
+        if bp.get("hr9") is not None:
+            pen_line = f"opp staff HR/9 {bp['hr9']:.2f} · ERA {bp.get('era') or '—'}"
+        data["park_line"] = park_line
+        data["vs_line"] = vs_line
+        data["pen_line"] = pen_line
+        data["match_boost"] = match_boost
         odds_hit = bool(methods) or books_n >= 2
         notes = []
         ms = [str(m) for m in methods]
@@ -8658,7 +8810,9 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="card-line"><b>Data</b> — {data["summary"]}</div>'
                 f'<div class="card-line"><b>Odds</b> — {price} {book_label(item.get("best_book"))} · {tags}</div>'
                 f'<div class="card-line"><b>Matchup</b> — {data.get("matchup") or "—"}</div>'
-                f'<div class="card-line"><b>Weather</b> — {data.get("weather") or "—"}</div>'
+                f'<div class="card-line">🏟️ {data.get("park_line") or "—"} · {data.get("weather") or ""}</div>'
+                f'<div class="card-line">⚔️ {data.get("vs_line") or "—"}</div>'
+                f'<div class="card-line">🧩 {data.get("pen_line") or "—"}</div>'
                 f'<div class="note">{note_html}</div>'
                 f'<div class="card-foot">{flags} · Board score {item.get("score") or "—"} · Petty {"Upside" if sport=="MLB" else "Edge"} {data["score"]}</div>'
                 f"</div>",
