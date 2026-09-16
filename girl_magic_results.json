@@ -79254,7 +79254,7 @@
     "core": 7,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-16T16:00:09.122912+00:00",
+    "logged_at": "2026-09-16T16:00:06.884570+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN FRANCISCO GIANTS",
@@ -79264,56 +79264,11 @@
     "benford_cluster": 0.5
   },
   {
-    "id": "2026-09-16_Andrew Knizner_take_it_86",
-    "date": "2026-09-16",
-    "time": "09:00 AM",
-    "player": "Andrew Knizner",
-    "score": 86,
-    "edge": 108,
-    "best_price": 950,
-    "best_book": "fanatics",
-    "median": 840.0,
-    "book_prices": {
-      "betmgm": 675,
-      "caesars": 850,
-      "draftkings": 780,
-      "fanatics": 950,
-      "fanduel": 830,
-      "hardrockbet": 850
-    },
-    "price_bucket": "+800-999",
-    "ending": 50,
-    "mgm_locked": 675,
-    "mgm_ending": 75,
-    "methods": [
-      "Match 75",
-      "MGM 75",
-      "Last one left",
-      "Stayed in the group",
-      "FD Pattern",
-      "Fanatics Rogue",
-      "FD+MGM classic",
-      "EV Premium",
-      "Kelly Support"
-    ],
-    "core": 4,
-    "result": "PENDING",
-    "source": "take_it",
-    "logged_at": "2026-09-16T16:00:09.335276+00:00",
-    "price_source": "pregame_lock",
-    "sport": "MLB",
-    "team": "SAN FRANCISCO GIANTS",
-    "market": "batter_home_runs",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.5
-  },
-  {
-    "id": "2026-09-16_George Lombard Jr._watch_47",
+    "id": "2026-09-16_George Lombard Jr._watch_61",
     "date": "2026-09-16",
     "time": "09:00 AM",
     "player": "George Lombard Jr.",
-    "score": 47,
+    "score": 61,
     "edge": 66,
     "best_price": 950,
     "best_book": "fanatics",
@@ -79331,15 +79286,16 @@
     "mgm_locked": 900,
     "mgm_ending": 0,
     "methods": [
+      "Multi-book Shorten",
       "Fanatics Rogue",
       "Books tight",
       "EV Premium",
       "Kelly Support"
     ],
-    "core": 2,
+    "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-16T16:00:09.353755+00:00",
+    "logged_at": "2026-09-16T16:00:07.055734+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "",
@@ -79381,7 +79337,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-16T16:00:09.366503+00:00",
+    "logged_at": "2026-09-16T16:00:07.079160+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "TORONTO BLUE JAYS",
@@ -79422,7 +79378,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-16T16:00:09.392730+00:00",
+    "logged_at": "2026-09-16T16:00:07.118543+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "NEW YORK YANKEES",
@@ -79432,11 +79388,11 @@
     "benford_cluster": 1.0
   },
   {
-    "id": "2026-09-16_Luke Keaschall_watch_52",
+    "id": "2026-09-16_Luke Keaschall_watch_66",
     "date": "2026-09-16",
     "time": "09:00 AM",
     "player": "Luke Keaschall",
-    "score": 52,
+    "score": 66,
     "edge": 60,
     "best_price": 1050,
     "best_book": "fanatics",
@@ -79455,14 +79411,15 @@
     "mgm_locked": 875,
     "mgm_ending": 75,
     "methods": [
+      "Multi-book Shorten",
       "Fanatics Rogue",
       "EV Premium",
       "Kelly Support"
     ],
-    "core": 2,
+    "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-16T16:00:09.407178+00:00",
+    "logged_at": "2026-09-16T16:00:07.140266+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MINNESOTA TWINS",
@@ -79504,7 +79461,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-16T16:00:09.455378+00:00",
+    "logged_at": "2026-09-16T16:00:07.210302+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "NEW YORK YANKEES",
@@ -79545,7 +79502,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-16T16:00:09.480010+00:00",
+    "logged_at": "2026-09-16T16:00:07.246618+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CLEVELAND GUARDIANS",
@@ -79581,7 +79538,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.413333+00:00",
+    "logged_at": "2026-09-16T16:00:12.327420+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79613,7 +79570,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.414185+00:00",
+    "logged_at": "2026-09-16T16:00:12.328508+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79645,7 +79602,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.414911+00:00",
+    "logged_at": "2026-09-16T16:00:12.329202+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79677,7 +79634,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.415324+00:00",
+    "logged_at": "2026-09-16T16:00:12.329582+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79708,7 +79665,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.416064+00:00",
+    "logged_at": "2026-09-16T16:00:12.330210+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79740,7 +79697,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.417083+00:00",
+    "logged_at": "2026-09-16T16:00:12.331142+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79772,7 +79729,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.417792+00:00",
+    "logged_at": "2026-09-16T16:00:12.331863+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79804,7 +79761,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.418493+00:00",
+    "logged_at": "2026-09-16T16:00:12.332523+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79836,7 +79793,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.419216+00:00",
+    "logged_at": "2026-09-16T16:00:12.333205+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79867,7 +79824,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.419980+00:00",
+    "logged_at": "2026-09-16T16:00:12.333733+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79898,7 +79855,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.421032+00:00",
+    "logged_at": "2026-09-16T16:00:12.334571+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79928,7 +79885,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.423325+00:00",
+    "logged_at": "2026-09-16T16:00:12.337070+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79959,7 +79916,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.429007+00:00",
+    "logged_at": "2026-09-16T16:00:12.341691+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -79989,7 +79946,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.429723+00:00",
+    "logged_at": "2026-09-16T16:00:12.342467+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80020,7 +79977,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.430472+00:00",
+    "logged_at": "2026-09-16T16:00:12.343230+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80052,7 +80009,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.430898+00:00",
+    "logged_at": "2026-09-16T16:00:12.343645+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80084,7 +80041,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.431933+00:00",
+    "logged_at": "2026-09-16T16:00:12.344681+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80116,7 +80073,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.433666+00:00",
+    "logged_at": "2026-09-16T16:00:12.346443+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80148,7 +80105,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.434117+00:00",
+    "logged_at": "2026-09-16T16:00:12.346710+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80179,7 +80136,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.434531+00:00",
+    "logged_at": "2026-09-16T16:00:12.347033+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80211,7 +80168,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.434956+00:00",
+    "logged_at": "2026-09-16T16:00:12.347348+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80238,7 +80195,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.435394+00:00",
+    "logged_at": "2026-09-16T16:00:12.347659+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80269,7 +80226,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.436196+00:00",
+    "logged_at": "2026-09-16T16:00:12.348146+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80301,7 +80258,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.437581+00:00",
+    "logged_at": "2026-09-16T16:00:12.349141+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80332,7 +80289,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.440286+00:00",
+    "logged_at": "2026-09-16T16:00:12.350897+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80363,7 +80320,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.441058+00:00",
+    "logged_at": "2026-09-16T16:00:12.351516+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80394,7 +80351,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.443813+00:00",
+    "logged_at": "2026-09-16T16:00:12.353405+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80426,7 +80383,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.444225+00:00",
+    "logged_at": "2026-09-16T16:00:12.353658+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80457,7 +80414,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.444619+00:00",
+    "logged_at": "2026-09-16T16:00:12.353962+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80489,7 +80446,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.446002+00:00",
+    "logged_at": "2026-09-16T16:00:12.354900+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80520,7 +80477,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.448409+00:00",
+    "logged_at": "2026-09-16T16:00:12.356528+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80552,7 +80509,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.449203+00:00",
+    "logged_at": "2026-09-16T16:00:12.357093+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80583,7 +80540,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.449608+00:00",
+    "logged_at": "2026-09-16T16:00:12.357349+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80615,7 +80572,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-16T16:00:10.450372+00:00",
+    "logged_at": "2026-09-16T16:00:12.357857+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80647,7 +80604,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.451445+00:00",
+    "logged_at": "2026-09-16T16:00:12.358497+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80678,7 +80635,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.453494+00:00",
+    "logged_at": "2026-09-16T16:00:12.359867+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80709,7 +80666,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.453972+00:00",
+    "logged_at": "2026-09-16T16:00:12.360114+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80736,7 +80693,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.454697+00:00",
+    "logged_at": "2026-09-16T16:00:12.360718+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80767,7 +80724,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.456149+00:00",
+    "logged_at": "2026-09-16T16:00:12.361668+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80799,7 +80756,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.456900+00:00",
+    "logged_at": "2026-09-16T16:00:12.362146+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -80831,7 +80788,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-16T16:00:10.457947+00:00",
+    "logged_at": "2026-09-16T16:00:12.362884+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
