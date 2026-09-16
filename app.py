@@ -8013,6 +8013,495 @@ def _num_hits_window(rows, start_date, end_date):
     return ends, names
 
 
+# ── ADDITIVE: data + alignment layer. Does not change TAKE / lock / digits. ──
+def _align_book_prices(item):
+    raw = item.get("book_prices") or item.get("books") or {}
+    out = {}
+    for k, v in raw.items():
+        try:
+            out[str(k)] = int(v)
+        except Exception:
+            continue
+    return out
+
+
+def _align_agree_band(prices):
+    if len(prices) < 2:
+        return 40
+    vals = list(prices.values())
+    spr = max(vals) - min(vals)
+    if spr <= 15:
+        return 100
+    if spr <= 35:
+        return 82
+    if spr <= 60:
+        return 68
+    if spr <= 100:
+        return 48
+    return 22
+
+
+_ALIGN_DIGIT = {
+    "DK 10", "FD Pattern", "FD 600", "MGM 25", "MGM 50", "MGM 75", "MGM 00",
+    "MGM Exact", "Match 25", "Match 50", "Match 75", "Exact Match", "B365 850",
+}
+_ALIGN_AGREE = {"Exact Match", "Books tight", "All books same", "Same on 3+ books", "Multi-book method"}
+_ALIGN_MOVE = {"Multi-book Shorten", "FD under MGM", "B365 over HardRock"}
+_ALIGN_MIS = {"Underpriced", "Overpriced", "Out-of-place"}
+
+
+def odds_alignment_score(item, data_boost=0):
+    methods = set(str(m) for m in (item.get("methods") or []))
+    prices = _align_book_prices(item)
+    score = _align_agree_band(prices)
+    if methods & _ALIGN_DIGIT:
+        score += 18
+    if methods & _ALIGN_AGREE:
+        score += 14
+    if methods & _ALIGN_MOVE:
+        score += 10
+    if methods & _ALIGN_MIS:
+        score += 12
+    if "MGM Exact" in methods or "Exact Match" in methods:
+        score += 8
+    try:
+        score += min(16, int(item.get("edge") or 0) // 12)
+    except Exception:
+        pass
+    return int(score) + int(data_boost or 0)
+
+
+def _fold_player(name):
+    n = str(name or "").replace(",", " ")
+    try:
+        n = clean_name(n)
+    except Exception:
+        n = " ".join(n.split())
+    return n.lower().strip()
+
+
+def _savant_name_fold(raw):
+    raw = str(raw or "").strip().strip('"')
+    if "," in raw:
+        last, first = raw.split(",", 1)
+        return _fold_player(f"{first.strip()} {last.strip()}")
+    return _fold_player(raw)
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def fetch_savant_exit_velo(year=None):
+    """Live Statcast EV / HH% / Barrel for every batter with 1+ BBE (longshots stay)."""
+    year = year or datetime.now().year
+    url = (
+        "https://baseballsavant.mlb.com/leaderboard/statcast"
+        f"?type=batter&year={year}&position=&team=&min=1&csv=true"
+    )
+    try:
+        r = requests.get(url, timeout=25, headers={"User-Agent": "GirlMagic/1.0"})
+        r.raise_for_status()
+        from io import StringIO
+        df = pd.read_csv(StringIO(r.text))
+    except Exception:
+        return {}
+    out = {}
+    name_col = df.columns[0]
+    for _, row in df.iterrows():
+        key = _savant_name_fold(row.get(name_col))
+        if not key:
+            continue
+        def num(*names):
+            for n in names:
+                if n in row and pd.notna(row[n]):
+                    try:
+                        return float(row[n])
+                    except Exception:
+                        continue
+            return None
+        out[key] = {
+            "ev": num("avg_hit_speed"),
+            "max_ev": num("max_hit_speed"),
+            "hh": num("ev95percent"),
+            "barrel": num("brl_percent"),
+            "brl_pa": num("brl_pa"),
+            "la": num("avg_hit_angle"),
+            "sweet": num("anglesweetspotpercent"),
+            "attempts": num("attempts"),
+        }
+    return out
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def fetch_mlb_hot_window(days=14):
+    """Last N days HR / SLG via MLB Stats API. Low PA included."""
+    end = datetime.now(timezone(timedelta(hours=-7))).date()
+    start = end - timedelta(days=days)
+    params = {
+        "stats": "byDateRange",
+        "group": "hitting",
+        "sportId": 1,
+        "season": end.year,
+        "startDate": start.isoformat(),
+        "endDate": end.isoformat(),
+        "playerPool": "all",
+        "limit": 2000,
+    }
+    try:
+        r = requests.get("https://statsapi.mlb.com/api/v1/stats", params=params, timeout=25)
+        r.raise_for_status()
+        splits = (((r.json() or {}).get("stats") or [{}])[0].get("splits") or [])
+    except Exception:
+        return {}
+    out = {}
+    for s in splits:
+        person = s.get("player") or {}
+        name = person.get("fullName") or ""
+        stt = s.get("stat") or {}
+        key = _fold_player(name)
+        if not key:
+            continue
+        def ni(*ks):
+            for k in ks:
+                if stt.get(k) not in (None, ""):
+                    try:
+                        return float(str(stt.get(k)).replace("%", ""))
+                    except Exception:
+                        continue
+            return None
+        out[key] = {
+            "name": name,
+            "pa": ni("plateAppearances"),
+            "hr": ni("homeRuns"),
+            "avg": ni("avg"),
+            "slg": ni("slg"),
+            "ops": ni("ops"),
+        }
+    return out
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_mlb_rookies(year=None):
+    year = year or datetime.now().year
+    try:
+        r = requests.get(
+            f"https://statsapi.mlb.com/api/v1/sports/1/players?season={year}",
+            timeout=25,
+        )
+        r.raise_for_status()
+        people = (r.json() or {}).get("people") or []
+    except Exception:
+        return set()
+    out = set()
+    for p in people:
+        debut = str(p.get("mlbDebutDate") or "")
+        if debut.startswith(str(year)):
+            out.add(_fold_player(p.get("fullName")))
+    return out
+
+
+# Park lat/lon for Open-Meteo. Enough to tag wind/temp, not a physics model.
+_MLB_PARK_LL = {
+    "yankees": (40.8296, -73.9262), "red sox": (42.3467, -71.0972),
+    "blue jays": (43.6414, -79.3894), "orioles": (39.2839, -76.6217),
+    "rays": (27.7683, -82.6534), "white sox": (41.8300, -87.6338),
+    "guardians": (41.4962, -81.6852), "tigers": (42.3390, -83.0485),
+    "royals": (39.0517, -94.4803), "twins": (44.9817, -93.2776),
+    "astros": (29.7573, -95.3555), "athletics": (37.7516, -122.2005),
+    "angels": (33.8003, -117.8827), "mariners": (47.5914, -122.3325),
+    "rangers": (32.7473, -97.0812), "braves": (33.8908, -84.4677),
+    "marlins": (25.7781, -80.2197), "mets": (40.7571, -73.8458),
+    "phillies": (39.9061, -75.1665), "nationals": (38.8730, -77.0074),
+    "cubs": (41.9484, -87.6553), "reds": (39.0979, -84.5082),
+    "brewers": (43.0280, -87.9712), "pirates": (40.4469, -80.0057),
+    "cardinals": (38.6226, -90.1928), "diamondbacks": (33.4453, -112.0667),
+    "rockies": (39.7559, -104.9942), "dodgers": (34.0739, -118.2400),
+    "padres": (32.7076, -117.1570), "giants": (37.7786, -122.3893),
+}
+
+
+def _team_key(name):
+    n = str(name or "").lower()
+    for k in _MLB_PARK_LL:
+        if k in n:
+            return k
+    return ""
+
+
+@st.cache_data(ttl=900, show_spinner=False)
+def fetch_mlb_slate_context(day=None):
+    """Today's games: park, probable SP + hand. Free Stats API."""
+    day = day or datetime.now(timezone(timedelta(hours=-7))).strftime("%Y-%m-%d")
+    url = "https://statsapi.mlb.com/api/v1/schedule"
+    params = {
+        "sportId": 1,
+        "date": day,
+        "hydrate": "probablePitcher,venue,weather,team",
+    }
+    try:
+        r = requests.get(url, params=params, timeout=20)
+        r.raise_for_status()
+        dates = (r.json() or {}).get("dates") or []
+    except Exception:
+        return {"games": [], "by_team": {}}
+    games, by_team = [], {}
+    for d in dates:
+        for g in d.get("games") or []:
+            home = ((g.get("teams") or {}).get("home") or {}).get("team") or {}
+            away = ((g.get("teams") or {}).get("away") or {}).get("team") or {}
+            venue = (g.get("venue") or {}).get("name") or ""
+            wx = g.get("weather") or {}
+            hp = ((g.get("teams") or {}).get("home") or {}).get("probablePitcher") or {}
+            ap = ((g.get("teams") or {}).get("away") or {}).get("probablePitcher") or {}
+            rec = {
+                "home": home.get("name") or "",
+                "away": away.get("name") or "",
+                "venue": venue,
+                "weather": " ".join(
+                    str(wx.get(k) or "") for k in ("temp", "condition", "wind") if wx.get(k)
+                ).strip(),
+                "home_sp": hp.get("fullName") or "",
+                "away_sp": ap.get("fullName") or "",
+            }
+            games.append(rec)
+            by_team[_team_key(home.get("name"))] = {**rec, "ha": "home", "opp_sp": rec["away_sp"]}
+            by_team[_team_key(away.get("name"))] = {**rec, "ha": "away", "opp_sp": rec["home_sp"]}
+    return {"games": games, "by_team": by_team}
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def fetch_open_meteo(lat, lon):
+    try:
+        r = requests.get(
+            "https://api.open-meteo.com/v1/forecast",
+            params={
+                "latitude": lat,
+                "longitude": lon,
+                "current": "temperature_2m,wind_speed_10m,wind_direction_10m",
+                "temperature_unit": "fahrenheit",
+                "wind_speed_unit": "mph",
+            },
+            timeout=12,
+        )
+        r.raise_for_status()
+        cur = (r.json() or {}).get("current") or {}
+        return {
+            "temp": cur.get("temperature_2m"),
+            "wind": cur.get("wind_speed_10m"),
+            "wdir": cur.get("wind_direction_10m"),
+        }
+    except Exception:
+        return {}
+
+
+def load_live_mlb_data():
+    slate = fetch_mlb_slate_context()
+    weather = {}
+    for team, rec in (slate.get("by_team") or {}).items():
+        ll = _MLB_PARK_LL.get(team)
+        if ll:
+            weather[team] = fetch_open_meteo(*ll)
+    return {
+        "ev": fetch_savant_exit_velo(),
+        "hot14": fetch_mlb_hot_window(14),
+        "hot7": fetch_mlb_hot_window(7),
+        "rookies": fetch_mlb_rookies(),
+        "slate": slate,
+        "weather": weather,
+    }
+
+
+def _petty_upside_from_item(item, sport="MLB", live=None):
+    """Petty Upside from LIVE Savant + Stats API. Longshots never dropped."""
+    try:
+        p = abs(int(item.get("best_price") or 0))
+    except Exception:
+        p = 0
+    name = str(item.get("player") or "")
+    key = _fold_player(name)
+    stars = ("judge", "ohtani", "soto", "trout", "harper", "betts", "acuna")
+    is_star = any(s in name.lower() for s in stars)
+    longshot = (p >= 550 and not is_star) or p >= 750
+    live = live or {}
+    sav = (live.get("ev") or {}).get(key) or {}
+    h7 = (live.get("hot7") or {}).get(key) or {}
+    h14 = (live.get("hot14") or {}).get(key) or {}
+    rookie = key in (live.get("rookies") or set())
+    score = 20
+    bits = []
+    ev = sav.get("ev")
+    hh = sav.get("hh")
+    brl = sav.get("barrel")
+    if ev:
+        bits.append(f"EV {ev:.1f}")
+        if ev >= 91:
+            score += 14
+        elif ev >= 88:
+            score += 8
+    if hh is not None:
+        bits.append(f"HH {hh:.0f}%")
+        if hh >= 45:
+            score += 12
+        elif hh >= 38:
+            score += 6
+    if brl is not None:
+        bits.append(f"Barrel {brl:.1f}%")
+        if brl >= 10:
+            score += 14
+        elif brl >= 6:
+            score += 7
+    hr7 = h7.get("hr")
+    hr14 = h14.get("hr")
+    slg7 = h7.get("slg")
+    if hr7 is not None:
+        bits.append(f"HR L7 {int(hr7)}")
+        score += min(12, int(hr7) * 4)
+    if hr14 is not None and hr7 is not None and hr7 > (hr14 - hr7):
+        bits.append("heating L7")
+        score += 8
+    if slg7 and slg7 >= 0.500:
+        bits.append(f"SLG7 {slg7:.3f}")
+        score += 6
+    if longshot:
+        bits.append("longshot")
+        score += 10
+    if rookie:
+        bits.append("rookie")
+        score += 8
+    if not sav and not h14:
+        bits.append("live feed miss — name still listed")
+    team_raw = item.get("team") or ""
+    evname = " ".join(item.get("events") or [item.get("event") or ""])
+    tk = _team_key(team_raw) or next((k for k in _MLB_PARK_LL if k in evname.lower()), "")
+    ctx = ((live.get("slate") or {}).get("by_team") or {}).get(tk) or {}
+    wx = (live.get("weather") or {}).get(tk) or {}
+    matchup = ""
+    if ctx.get("opp_sp"):
+        matchup = f"vs {ctx['opp_sp']} ({ctx.get('ha') or ''}) @ {ctx.get('venue') or ''}".strip()
+        bits.append(matchup)
+    weather_line = ctx.get("weather") or ""
+    if wx.get("temp") is not None:
+        weather_line = f"{wx.get('temp')}°F wind {wx.get('wind')} mph"
+        bits.append(weather_line)
+        try:
+            if float(wx.get("wind") or 0) >= 12:
+                score += 4
+        except Exception:
+            pass
+    boost = 3
+    if ev and ev >= 91:
+        boost += 6
+    if brl and brl >= 8:
+        boost += 5
+    if longshot:
+        boost += 4
+    return {
+        "score": min(130, score),
+        "longshot": longshot,
+        "rookie": rookie,
+        "summary": " · ".join(bits) if bits else "No row yet — still on the list",
+        "boost": boost,
+        "sport": sport,
+        "ev": ev,
+        "hh": hh,
+        "barrel": brl,
+        "matchup": matchup,
+        "weather": weather_line,
+    }
+
+
+def render_alignment_tab(ev_board, watch_board=None):
+    """New Align tab. Odds engine untouched. Longshots stay on the list."""
+    rows = list(ev_board or []) + list(watch_board or [])
+    st.markdown(
+        '<div class="queen-banner">✨ Align · when the data speaks and the odds agree, that’s Girl Magic</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<div class="how-to">'
+        "<b>How to read this (plain English):</b><br>"
+        "• The <b>Board</b> is still who we bet. This page is the why.<br>"
+        "• Pink number = do the <b>books</b> and the <b>bat</b> agree? "
+        "Under 30 = fighting. 30–70 = shrug. 70–100 = yes. 100+ = loud.<br>"
+        "• <b>EV</b> = how hard the ball comes off the bat. "
+        "<b>HH%</b> = how often it’s smoked. <b>Barrel</b> = the HR-looking contact.<br>"
+        "• <b>LONGSHOT</b> is a longer price we still want on the list — not a skip tag.<br>"
+        "• <b>LOCKED IN / SPEAKING</b> = look first. <b>WHISPER / NOT YET</b> = homework, not a ticket."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    if not rows:
+        st.info("Hit Fetch on the Board first. Align only reads names already on today’s slate.")
+        return
+    sport = active_sport()
+    live = {}
+    if sport != "NFL":
+        with st.spinner("Pulling Savant EV / HH / Barrel + last 7–14 day HRs…"):
+            live = load_live_mlb_data()
+        st.caption(
+            f"Live pull: {len(live.get('ev') or {})} Savant bats · "
+            f"{len(live.get('hot14') or {})} last-14 hitting lines · "
+            f"{len(live.get('rookies') or {})} debut-this-year names"
+        )
+    cards = []
+    for item in rows:
+        data = _petty_upside_from_item(item, sport, live)
+        align = odds_alignment_score(item, data.get("boost"))
+        notes = []
+        ms = [str(m) for m in (item.get("methods") or [])]
+        if data["longshot"] and align >= 70:
+            notes.append("Books lining up on a longshot")
+        if set(ms) & _ALIGN_DIGIT:
+            notes.append("Digit / book-stamp method fired")
+        if set(ms) & _ALIGN_AGREE:
+            notes.append("Books clustered")
+        if set(ms) & _ALIGN_MIS:
+            notes.append("Pack vs one book looks off")
+        if item.get("num_tag"):
+            notes.append("Numerology tag present")
+        if not notes:
+            notes.append("Odds attached. Data CSV not loaded yet — longshots still listed.")
+        if align >= 100:
+            vibe = "LOCKED IN ✨"
+        elif align >= 85:
+            vibe = "SPEAKING"
+        elif align >= 60:
+            vibe = "WHISPER"
+        else:
+            vibe = "NOT YET"
+        cards.append((align, item, data, notes, vibe))
+    cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
+    c1, c2, c3 = st.columns(3)
+    c1.metric("On this list", len(cards))
+    c2.metric("Align 70+", sum(1 for a, *_ in cards if a >= 70))
+    c3.metric("Longshots", sum(1 for _, _, d, *_ in cards if d["longshot"]))
+    view = st.radio("Show", ["All", "Aligned 70+", "Longshots"], horizontal=True, key="align_view")
+    if view == "Aligned 70+":
+        cards = [c for c in cards if c[0] >= 70]
+    elif view == "Longshots":
+        cards = [c for c in cards if c[2]["longshot"]]
+    cols = st.columns(2)
+    for i, (align, item, data, notes, vibe) in enumerate(cards[:80]):
+        flags = "LONGSHOT" if data["longshot"] else ""
+        price = format_odds(item.get("best_price"))
+        tags = ", ".join(str(m) for m in (item.get("methods") or [])[:4]) or "no stamp yet"
+        note_html = "<br>".join(f"• {n}" for n in notes[:5])
+        with cols[i % 2]:
+            st.markdown(
+                f'<div class="card">'
+                f'<div class="card-kicker">{vibe} · {align}</div>'
+                f'<span class="score-pill">{align}</span>'
+                f'<div class="card-name">{item.get("player")}</div>'
+                f'<div class="card-line"><b>Data</b> — {data["summary"]}</div>'
+                f'<div class="card-line"><b>Odds</b> — {price} {book_label(item.get("best_book"))} · {tags}</div>'
+                f'<div class="card-line"><b>Matchup</b> — {data.get("matchup") or "—"}</div>'
+                f'<div class="card-line"><b>Weather</b> — {data.get("weather") or "—"}</div>'
+                f'<div class="note">{note_html}</div>'
+                f'<div class="card-foot">{flags} · Petty {"Upside" if sport=="MLB" else "Edge"} {data["score"]}</div>'
+                f"</div>",
+                unsafe_allow_html=True,
+            )
+    st.caption("We pull the hitting numbers for you. You do not upload a spreadsheet. Board still makes the bet call.")
+
+
 def main():
     if "history_loaded" not in st.session_state:
         load_history()
@@ -8522,13 +9011,14 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Board", "Shop", "Trend Lab", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
+    MAIN_TABS = ["Board", "Align", "Shop", "Trend Lab", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
     if active_sport() == "NFL":
         MAIN_TABS = ["Board", "Shop", "Need One"] + MAIN_TABS[2:]
     if active_sport() != "NFL" and st.session_state.get("main_nav") == "Need One":
         st.session_state["main_nav"] = "Board"
     NAV_LABELS = {
         "Board": "Board 💋",
+        "Align": "Align ✨",
         "Shop": "Shop 🛍️",
         "Need One": "I JUST NEED ONE 📈",
         "Trend Lab": "Trend Lab 📈",
@@ -8562,6 +9052,8 @@ def main():
     elif main == "Grade":
         sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade", format_func=lambda x: NAV_LABELS.get(x, x))
     page = f"{main}:{sub or ''}"
+    if page == "Align:":
+        render_alignment_tab(ev_board, watch_board)
     if page == "Board:":
         site_section_open(
             "👑 WHO",
