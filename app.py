@@ -8747,7 +8747,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         park_line = f"HR factor {park_f}"
         pen_line = "bullpen sample thin"
         if bp.get("hr9") is not None:
-            pen_line = f"opp staff HR/9 {bp['hr9']:.2f} · ERA {bp.get('era') or '—'}"
+            pen_line = f"vs opp staff (bullpen proxy) HR/9 {bp['hr9']:.2f} · ERA {bp.get('era') or '—'}"
         data["park_line"] = park_line
         data["vs_line"] = vs_line
         data["pen_line"] = pen_line
@@ -9405,20 +9405,22 @@ def main():
     if st.session_state.get("main_nav") not in MAIN_TABS:
         st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
-        "Board": "Board 💋",
-        "Align": "✨ Align",
-        "Shop": "Shop 🛍️",
+        "Board": "💚 Run It, Baddie",
+        "Align": "✨ Girl Magic Alignment",
+        "Shop": "💸 Where The Money Talks",
         "Need One": "I JUST NEED ONE 📈",
-        "Labs": "Labs Hub 🧪",
-        "Vault": "Vault 🧾",
-        "Admin": "Vault 🧾",
+        "Labs": "🧪 Petty Science Lab",
+        "Vault": "💎 What Spoke / Receipts",
+        "Admin": "💎 What Spoke / Receipts",
         "Trend": "Trend", "Pattern": "Pattern", "Benford": "Benford", "Motion": "Motion", "Magic": "Magic Math",
         "DK": "DK 🎯", "MGM": "MGM 🎰", "FD": "FD 💙", "Exact": "Exact 🎯",
         "Names": "Names 💅", "Signals": "Signals 📡",
         "Moves": "Moves 💸", "Trends": "Trends 💅", "Late": "Ghosts 👻",
         "Lock": "Lock 🔒", "Search": "Search",
-        "Lock Lab": "Lock Lab", "Tracker": "Tracker", "Results": "Results",
-        "Backtest": "Backtest", "Heat": "Heat", "How": "How We Run It 📖",
+        "Lock Lab": "🔒 Locked & Loaded", "Tracker": "📈 Petty Receipts",
+        "Results": "💎 What Spoke Today",
+        "Backtest": "🧠 Petty Time Machine", "Heat": "Heat",
+        "How": "How We Run It 📖", "GradeShop": "Shop card",
         "GradeShop": "Shop card",
     }
     main = st.radio(
