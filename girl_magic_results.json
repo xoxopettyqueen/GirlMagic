@@ -88983,5 +88983,37 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.71
+  },
+  {
+    "id": "2026-09-16_Drake Baldwin_shop_take_110",
+    "date": "2026-09-16",
+    "time": "03:22 PM",
+    "player": "Drake Baldwin",
+    "score": 0,
+    "edge": 110,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 625,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 500,
+      "caesars": 625,
+      "draftkings": 660,
+      "fanatics": 750,
+      "fanduel": 600,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-16T22:22:35.247364+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
