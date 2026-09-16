@@ -8385,6 +8385,42 @@ def fetch_team_hr9():
     return out
 
 
+_PARK_CF = {
+    "coors field": 0, "yankee stadium": 75, "fenway": 45,
+    "wrigley": 30, "dodger stadium": 20, "oracle": 95,
+    "petco": 0, "chase field": 0, "minute maid": 350,
+    "citizens bank": 10, "citi field": 15, "busch stadium": 50,
+    "great american": 15, "truist": 10, "american family": 0,
+    "globe life": 30, "t-mobile": 45, "camden yards": 90,
+    "guaranteed rate": 130, "comerica": 150, "kauffman": 30,
+    "target field": 5, "progressive": 0, "pnc": 45,
+    "tropicana": 45, "angel stadium": 45, "nationals park": 30,
+}
+
+
+def _wind_vs_park(venue, wind_mph, wind_from_deg):
+    try:
+        spd = float(wind_mph)
+        deg = float(wind_from_deg)
+    except Exception:
+        if wind_mph not in (None, ""):
+            return f"wind {wind_mph} mph", "cross"
+        return "wind —", "cross"
+    face = 0
+    v = str(venue or "").lower()
+    for k, h in _PARK_CF.items():
+        if k in v:
+            face = h
+            break
+    to_cf = abs(((deg - ((face + 180) % 360) + 180) % 360) - 180)
+    from_cf = abs(((deg - face + 180) % 360) - 180)
+    if to_cf <= 40:
+        return f"wind {spd:.0f} mph → out to CF", "out"
+    if from_cf <= 40:
+        return f"wind {spd:.0f} mph ← in from CF", "in"
+    return f"wind {spd:.0f} mph ↔ crosswind", "cross"
+
+
 def _park_hr_factor(venue):
     v = str(venue or "").lower()
     for k, val in _PARK_HR.items():
@@ -8480,9 +8516,15 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         matchup = f"vs {ctx['opp_sp']} ({ctx.get('ha') or ''}) @ {ctx.get('venue') or ''}".strip()
         bits.append(matchup)
     weather_line = ctx.get("weather") or ""
+    wind_lane = "cross"
     if wx.get("temp") is not None:
-        weather_line = f"{wx.get('temp')}°F wind {wx.get('wind')} mph"
+        wtxt, wind_lane = _wind_vs_park(ctx.get("venue") or "", wx.get("wind"), wx.get("wdir"))
+        weather_line = f"{wx.get('temp')}°F · {wtxt}"
         bits.append(weather_line)
+        if wind_lane == "out":
+            score += 3
+        elif wind_lane == "in":
+            score -= 2
         try:
             if float(wx.get("wind") or 0) >= 12:
                 score += 4
@@ -8507,6 +8549,7 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         "barrel": brl,
         "matchup": matchup,
         "weather": weather_line,
+        "wind_lane": wind_lane,
     }
 
 
@@ -8561,6 +8604,20 @@ def render_alignment_tab(ev_board, watch_board=None):
     rows = list(seen_p.values())
     st.markdown(
         '<div class="queen-banner">✨ Align · when the data speaks and the odds agree, that’s Girl Magic</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        """
+        <style>
+        .al-lock{border-color:#f472b6!important;box-shadow:0 0 14px rgba(244,114,182,.35);background:linear-gradient(165deg,#2a1020,#16101f)!important}
+        .al-speak{border-color:#a855f7!important;box-shadow:0 0 12px rgba(168,85,247,.3)}
+        .al-shot{border-color:#2dd4bf!important;box-shadow:0 0 12px rgba(45,212,191,.28)}
+        .al-home{opacity:.88;border-color:#3f3a48!important}
+        .wind-out{color:#34d399;font-weight:700}
+        .wind-in{color:#f87171;font-weight:700}
+        .wind-cross{color:#fbbf24}
+        </style>
+        """,
         unsafe_allow_html=True,
     )
     st.markdown(
@@ -8772,7 +8829,7 @@ def render_alignment_tab(ev_board, watch_board=None):
     elif view == "Perfect 85+":
         cards = [c for c in cards if c[0] >= 85]
     # Homework = full curated list already built (not the raw slate)
-    cols = st.columns(2)
+    cols = st.columns(3)
     already = set()
     if view == "Aligned 70+":
         for align, item, *_ in perfect[:6]:
@@ -8800,9 +8857,17 @@ def render_alignment_tab(ev_board, watch_board=None):
         price = format_odds(item.get("best_price"))
         tags = ", ".join(str(m) for m in (item.get("methods") or [])[:4]) or "no stamp yet"
         note_html = "<br>".join(f"• {n}" for n in notes[:5])
-        with cols[i % 2]:
+        klass = "card al-home"
+        if data.get("longshot") and align >= 70:
+            klass = "card al-shot"
+        if align >= 85:
+            klass = "card al-speak"
+        if align >= 100 or item.get("is_bet"):
+            klass = "card al-lock"
+        wlane = data.get("wind_lane") or "cross"
+        with cols[i % 3]:
             st.markdown(
-                f'<div class="card">'
+                f'<div class="{klass}">'
                 f'<div class="card-kicker">{vibe} · {align}</div>'
                 f'<span class="score-pill">{align}</span>'
                 f'<div class="card-name">{item.get("player")}</div>'
@@ -8810,7 +8875,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="card-line"><b>Data</b> — {data["summary"]}</div>'
                 f'<div class="card-line"><b>Odds</b> — {price} {book_label(item.get("best_book"))} · {tags}</div>'
                 f'<div class="card-line"><b>Matchup</b> — {data.get("matchup") or "—"}</div>'
-                f'<div class="card-line">🏟️ {data.get("park_line") or "—"} · {data.get("weather") or ""}</div>'
+                f'<div class="card-line">🏟️ {data.get("park_line") or "—"} · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
                 f'<div class="card-line">⚔️ {data.get("vs_line") or "—"}</div>'
                 f'<div class="card-line">🧩 {data.get("pen_line") or "—"}</div>'
                 f'<div class="note">{note_html}</div>'
