@@ -6020,17 +6020,42 @@ def fetch_all_lineups():
         return set(), " · ".join(bits) or "No lineups yet"
     return names, f"{len(names)} used · " + " · ".join(bits) + " · " + note
 
-@st.cache_data(ttl=180, show_spinner=False)
-def _fetch_events_oddsapi_cached(api_key, sport_key="baseball_mlb"):
-    r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
+def _slate_commence_window():
+    """Full same-day card in AZ: early first pitch through late West extras."""
+    az = timezone(timedelta(hours=-7))
+    now_az = datetime.now(az)
+    start = now_az.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(hours=8)
+    days = int(sport_cfg().get("days") or 1)
+    end = now_az.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=max(1, days), hours=8)
+    return (
+        start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        end.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    )
+
+
+@st.cache_data(ttl=90, show_spinner=False)
+def _fetch_events_oddsapi_cached(api_key, sport_key, t_from, t_to):
+    params = {
+        "apiKey": api_key,
+        "commenceTimeFrom": t_from,
+        "commenceTimeTo": t_to,
+    }
+    r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params=params, timeout=15)
     r.raise_for_status()
-    return r.json()
+    data = r.json() or []
+    # if the windowed call is empty, fall back so we never show zero on a live day
+    if not data:
+        r2 = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
+        r2.raise_for_status()
+        data = r2.json() or []
+    return data
 
 
 def fetch_events_oddsapi(api_key, sport_key=None):
     sport_key = sport_key or sport_cfg()["key"]
+    t_from, t_to = _slate_commence_window()
     try:
-        return _fetch_events_oddsapi_cached(api_key, sport_key)
+        return _fetch_events_oddsapi_cached(api_key, sport_key, t_from, t_to)
     except Exception as e:
         st.error(f"Odds API events error: {e}")
         return []
@@ -6349,14 +6374,63 @@ def merge_odds(a, b):
     df = df.drop_duplicates(subset=["player", "book", "prop_type", "event"], keep="first")
     return df.drop(columns=["priority", "source", "player_key"], errors="ignore")
 
+def resolve_event_id(label, options):
+    """Match Away @ Home even when the clock on the multiselect label changed."""
+    if not options:
+        return None
+    if label in options:
+        return options[label]
+    base = _strip_game_clock(label)
+    for k, vid in options.items():
+        if k == label or _strip_game_clock(k) == base:
+            return vid
+        if event_matches_chosen(k, [label]) or event_matches_chosen(label, [k]):
+            return vid
+    return None
+
+
+def remap_selected_labels(old_sel, options):
+    """Keep early + late picks after Load games rewrites ' · 7:10 PM'."""
+    keys = list(options.keys())
+    if not old_sel:
+        return keys
+    out = []
+    seen = set()
+    for s in old_sel:
+        hit = None
+        if s in options:
+            hit = s
+        else:
+            base = _strip_game_clock(s)
+            for k in keys:
+                if _strip_game_clock(k) == base or event_matches_chosen(k, [s]):
+                    hit = k
+                    break
+        if hit and hit not in seen:
+            seen.add(hit)
+            out.append(hit)
+    # new late games that weren't in the old list — add them on a split slate
+    for k in keys:
+        if k not in seen:
+            out.append(k)
+    return out
+
+
 def do_fetch(odds_key, sgo_key, chosen_labels, options):
     all_rows, all_found_raw = [], set()
     http_ok = 0
     http_fail = 0
     per_event = {}
-    for label in chosen_labels:
-        eid = options.get(label)
-        if not eid: continue
+    fetch_labels = list(chosen_labels or [])
+    # if the box is empty or clocks desynced, pull the whole loaded slate
+    if not fetch_labels:
+        fetch_labels = list(options.keys())
+    else:
+        fetch_labels = remap_selected_labels(fetch_labels, options)
+    for label in fetch_labels:
+        eid = resolve_event_id(label, options)
+        if not eid:
+            continue
         data = fetch_odds_oddsapi(odds_key, eid, restrict_books=True)
         if data is None:
             http_fail += 1
@@ -7468,7 +7542,7 @@ def build_shop_grade_stats(rows, days=14):
 
 
 def event_is_today(e):
-    """Keep today's slate in AZ/ET, plus already-started cards still on the feed."""
+    """Keep the FULL same-day slate: early cards already live + late first pitch still hours out."""
     t = e.get("commence_time") or ""
     if not t:
         return True
@@ -7479,8 +7553,8 @@ def event_is_today(e):
     az = today_az()
     et = today_mlb_date()
     now = datetime.now(timezone.utc)
-    # already underway / just finished still counts as today's card
-    if dt <= now + timedelta(hours=6) and dt >= now - timedelta(hours=8):
+    # split slates: morning already underway through late West / extra innings
+    if now - timedelta(hours=14) <= dt <= now + timedelta(hours=20):
         return True
     for hours, day in [(-7, az), (-4, et)]:
         local = dt.astimezone(timezone(timedelta(hours=hours))).strftime("%Y-%m-%d")
@@ -8161,12 +8235,16 @@ def main():
                 lab = f"{lab} · {str(e.get('id', ''))[:6]}"
             options[lab] = e["id"]
 
-        default_sel = [x for x in st.session_state.get("selected_games", []) if x in options]
-        if not default_sel and options and not st.session_state.get("odds"):
-            default_sel = list(options.keys())
-            st.session_state["selected_games"] = default_sel
+        prev_sel = st.session_state.get("selected_games") or []
+        default_sel = remap_selected_labels(prev_sel, options) if options else []
+        if options and (not default_sel or len(default_sel) < len(options)):
+            # split slate: keep every same-day card unless they hit Clear
+            if not st.session_state.get("slate_cleared"):
+                default_sel = list(options.keys())
+        st.session_state["selected_games"] = default_sel
         raw_n = st.session_state.get("events_raw_count") or len(events)
-        st.caption(f"Showing {len(events)} today · API listed {raw_n}")
+        live_n = len(live_event_labels())
+        st.caption(f"Showing {len(events)} today · API listed {raw_n} · {live_n} already live")
         chosen = st.multiselect(
             "Games",
             list(options.keys()),
@@ -8175,10 +8253,12 @@ def main():
         s1, s2 = st.columns(2)
         with s1:
             if st.button("Select all", use_container_width=True):
+                st.session_state["slate_cleared"] = False
                 st.session_state["selected_games"] = list(options.keys())
                 st.rerun()
         with s2:
             if st.button("Clear", use_container_width=True):
+                st.session_state["slate_cleared"] = True
                 st.session_state["selected_games"] = []
                 st.rerun()
         st.session_state["selected_games"] = chosen
@@ -8254,11 +8334,8 @@ def main():
     df = pd.DataFrame(odds) if odds else pd.DataFrame()
     if not df.empty and "prop_type" in df.columns:
         df = df[df["prop_type"].isna() | (df["prop_type"] == "")].copy()
-    # Live games leave the boards. Results already logged stay put.
-    df = drop_live_game_rows(df)
-    if prev:
-        prev_df_tmp = pd.DataFrame(prev)
-        prev = drop_live_game_rows(prev_df_tmp).to_dict("records") if prev_df_tmp is not None and not prev_df_tmp.empty else prev
+    # Keep live + late on the same slate. TAKE still ignores first-pitch
+    # games inside run_flags; lock / Results / Fetch keep every card.
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
