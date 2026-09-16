@@ -8488,13 +8488,34 @@ def render_alignment_tab(ev_board, watch_board=None):
             or hot
         )
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
-        odds_hit = bool(methods) or align >= 70
-        keep = False
-        if data.get("longshot") and (data_hit or odds_hit):
+        books_n = 0
+        try:
+            books_n = len(_align_book_prices(item))
+        except Exception:
+            books_n = len(item.get("book_prices") or item.get("books") or {})
+        try:
+            px = abs(int(item.get("best_price") or 0))
+        except Exception:
+            px = 0
+        rhythm = bool(set(str(m) for m in methods) & _ALIGN_DIGIT) or any(
+            str(m).startswith("MGM") or str(m).startswith("DK") or str(m).startswith("FD") or "Exact" in str(m)
+            for m in methods
+        )
+        long_lane = 500 <= px <= 999 or (px >= 500 and data.get("longshot"))
+        board_take = bool(item.get("is_bet"))
+        board_score = int(item.get("score") or 0)
+        # HARD GATE: data + clustered books + a stamp + 70+ align.
+        # Longshot is a tag, not a free pass.
+        keep = (
+            data_hit
+            and books_n >= 2
+            and rhythm
+            and long_lane
+            and align >= 70
+        )
+        if rookie_spike and books_n >= 2 and align >= 70 and rhythm:
             keep = True
-        elif data_hit and odds_hit:
-            keep = True
-        elif rookie_spike and (odds_hit or align >= 55):
+        if board_take and data_hit and align >= 70:
             keep = True
         if not keep:
             hidden += 1
@@ -8571,8 +8592,17 @@ def render_alignment_tab(ev_board, watch_board=None):
         cards = [c for c in cards if c[0] >= 85]
     # Homework = full curated list already built (not the raw slate)
     cols = st.columns(2)
-    for i, (align, item, data, notes, vibe) in enumerate(cards[:80]):
-        flags = "LONGSHOT" if data["longshot"] else ""
+    for i, (align, item, data, notes, vibe) in enumerate(cards[:40]):
+        flags = []
+        if data.get("longshot"):
+            flags.append("LONGSHOT")
+        if item.get("is_bet"):
+            flags.append("BOARD TAKE")
+        if "heating" in (data.get("summary") or ""):
+            flags.append("HEATING")
+        if set(str(m) for m in (item.get("methods") or [])) & _ALIGN_DIGIT:
+            flags.append("RHYTHM")
+        flags = " · ".join(flags)
         price = format_odds(item.get("best_price"))
         tags = ", ".join(str(m) for m in (item.get("methods") or [])[:4]) or "no stamp yet"
         note_html = "<br>".join(f"• {n}" for n in notes[:5])
@@ -8588,7 +8618,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="card-line"><b>Matchup</b> — {data.get("matchup") or "—"}</div>'
                 f'<div class="card-line"><b>Weather</b> — {data.get("weather") or "—"}</div>'
                 f'<div class="note">{note_html}</div>'
-                f'<div class="card-foot">{flags} · Petty {"Upside" if sport=="MLB" else "Edge"} {data["score"]}</div>'
+                f'<div class="card-foot">{flags} · Board score {item.get("score") or "—"} · Petty {"Upside" if sport=="MLB" else "Edge"} {data["score"]}</div>'
                 f"</div>",
                 unsafe_allow_html=True,
             )
