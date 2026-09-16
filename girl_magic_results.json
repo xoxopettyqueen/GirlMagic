@@ -90644,5 +90644,130 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Ian Happ_shop_take_102",
+    "date": "2026-09-16",
+    "time": "04:53 PM",
+    "player": "Ian Happ",
+    "score": 0,
+    "edge": 102,
+    "best_price": 650,
+    "best_book": "bet365",
+    "median": 550,
+    "book_prices": {
+      "bet365": 650,
+      "betmgm": 600,
+      "caesars": 525,
+      "draftkings": 550,
+      "fanatics": 650,
+      "fanduel": 550,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-16T23:53:49.240140+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Connor Norby_shop_take_71",
+    "date": "2026-09-16",
+    "time": "04:53 PM",
+    "player": "Connor Norby",
+    "score": 0,
+    "edge": 71,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 519,
+    "book_prices": {
+      "bet365": 525,
+      "betmgm": 475,
+      "caesars": 500,
+      "draftkings": 519,
+      "fanatics": 600,
+      "fanduel": 500,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-16T23:53:49.244583+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Rece Hinds_shop_lean_33",
+    "date": "2026-09-16",
+    "time": "04:53 PM",
+    "player": "Rece Hinds",
+    "score": 0,
+    "edge": 33,
+    "best_price": 600,
+    "best_book": "fanduel",
+    "median": 562,
+    "book_prices": {
+      "caesars": 525,
+      "draftkings": 550,
+      "fanatics": 575,
+      "fanduel": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T23:53:49.259515+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Matt Olson_shop_lean_32",
+    "date": "2026-09-16",
+    "time": "04:53 PM",
+    "player": "Matt Olson",
+    "score": 0,
+    "edge": 32,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 450,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 350,
+      "caesars": 500,
+      "draftkings": 450,
+      "fanatics": 500,
+      "fanduel": 490,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T23:53:49.260874+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
