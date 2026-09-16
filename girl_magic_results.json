@@ -83966,5 +83966,53 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.43
+  },
+  {
+    "id": "2026-09-16_J.P. Crawford_take_it_100",
+    "date": "2026-09-16",
+    "time": "12:38 PM",
+    "player": "J.P. Crawford",
+    "score": 100,
+    "edge": 128,
+    "best_price": 1050,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "bet365": 900,
+      "betmgm": 575,
+      "caesars": 950,
+      "draftkings": 890,
+      "fanatics": 1050,
+      "fanduel": 920,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+1000+",
+    "ending": 50,
+    "mgm_locked": 575,
+    "mgm_ending": 75,
+    "methods": [
+      "DK FD-style",
+      "Match 75",
+      "MGM 75",
+      "MGM Exact",
+      "Stayed in the group",
+      "FD Pattern",
+      "FD+MGM classic",
+      "Fanatics Rogue",
+      "Multi-book method",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 6,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-16T19:38:56.626685+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "SEATTLE MARINERS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.57
   }
 ]
