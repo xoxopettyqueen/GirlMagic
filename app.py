@@ -9334,9 +9334,9 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Align", "Board", "Shop", "Labs", "Vault"]
+    MAIN_TABS = ["Align", "Board", "Shop", "Labs", "Vault", "How"]
     if active_sport() == "NFL":
-        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs", "Vault"]
+        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs", "Vault", "How"]
     if st.session_state.get("main_nav") not in MAIN_TABS:
         st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
@@ -9353,7 +9353,7 @@ def main():
         "Moves": "Moves 💸", "Trends": "Trends 💅", "Late": "Ghosts 👻",
         "Lock": "Lock 🔒", "Search": "Search",
         "Lock Lab": "Lock Lab", "Tracker": "Tracker", "Results": "Results",
-        "Backtest": "Backtest", "Heat": "Heat", "How": "How We Run It",
+        "Backtest": "Backtest", "Heat": "Heat", "How": "How We Run It 📖",
         "GradeShop": "Shop card",
     }
     main = st.radio(
@@ -9389,7 +9389,7 @@ def main():
     elif main in ("Admin", "Vault"):
         sub = st.radio(
             "Admin",
-            ["Results", "Lock Lab", "Tracker", "Backtest", "GradeShop", "Heat", "Lock", "Search", "How"],
+            ["Results", "Lock Lab", "Tracker", "Backtest", "GradeShop", "Heat", "Lock", "Search"],
             horizontal=True,
             label_visibility="collapsed",
             key="sub_admin",
@@ -9404,9 +9404,10 @@ def main():
             "Heat": "Analytics:",
             "Lock": "Lines:Lock",
             "Search": "Lines:Search",
-            "How": "Code:",
         }
         page = admin_map.get(sub, "Grade:Results")
+    elif main == "How":
+        page = "Code:"
     else:
         page = f"{main}:{sub or ''}"
     if page == "Align:":
