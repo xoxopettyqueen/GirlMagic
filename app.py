@@ -8441,7 +8441,23 @@ def _petty_meter(align):
 
 def render_alignment_tab(ev_board, watch_board=None):
     """New Align tab. Odds engine untouched. Longshots stay on the list."""
-    rows = list(ev_board or []) + list(watch_board or [])
+    raw_rows = list(ev_board or []) + list(watch_board or [])
+    seen_p = {}
+    for it in raw_rows:
+        k = _fold_player(it.get("player"))
+        if not k:
+            continue
+        prev = seen_p.get(k)
+        if prev is None:
+            seen_p[k] = it
+            continue
+        try:
+            better = int(it.get("score") or 0) > int(prev.get("score") or 0)
+        except Exception:
+            better = False
+        if better or (it.get("is_bet") and not prev.get("is_bet")):
+            seen_p[k] = it
+    rows = list(seen_p.values())
     st.markdown(
         '<div class="queen-banner">✨ Align · when the data speaks and the odds agree, that’s Girl Magic</div>',
         unsafe_allow_html=True,
@@ -8480,13 +8496,20 @@ def render_alignment_tab(ev_board, watch_board=None):
         ev, hh, brl = data.get("ev"), data.get("hh"), data.get("barrel")
         methods = item.get("methods") or []
         summ = data.get("summary") or ""
-        hot = "heating L7" in summ or "HR L7" in summ
-        data_hit = bool(
-            (ev and ev >= 88)
-            or (hh is not None and hh >= 40)
-            or (brl is not None and brl >= 7)
-            or hot
-        )
+        hot = "heating L7" in summ
+        try:
+            hr7 = 0
+            if "HR L7" in summ:
+                bit = summ.split("HR L7")[1].strip().split()[0]
+                hr7 = int(float(bit))
+        except Exception:
+            hr7 = 0
+        contact = sum([
+            1 if ev and ev >= 89 else 0,
+            1 if hh is not None and hh >= 42 else 0,
+            1 if brl is not None and brl >= 8 else 0,
+        ])
+        data_hit = bool(contact >= 2 and (hot or hr7 >= 1))
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -8557,7 +8580,12 @@ def render_alignment_tab(ev_board, watch_board=None):
         st.markdown("#### ✨ Petty’s Perfect Alignment Picks")
         st.caption("Data spoke. Odds agreed. Board still decides if we ticket it.")
         top = st.columns(min(3, len(perfect[:3])))
+        shown_perfect = set()
         for i, (align, item, data, notes, vibe) in enumerate(perfect[:6]):
+            pk = _fold_player(item.get("player"))
+            if pk in shown_perfect:
+                continue
+            shown_perfect.add(pk)
             with top[i % len(top)]:
                 st.markdown(
                     f'<div class="card bet"><div class="card-kicker">{vibe}</div>'
@@ -8593,7 +8621,20 @@ def render_alignment_tab(ev_board, watch_board=None):
         cards = [c for c in cards if c[0] >= 85]
     # Homework = full curated list already built (not the raw slate)
     cols = st.columns(2)
-    for i, (align, item, data, notes, vibe) in enumerate(cards[:40]):
+    already = set()
+    if view == "Aligned 70+":
+        for align, item, *_ in perfect[:6]:
+            already.add(_fold_player(item.get("player")))
+    shown_i = 0
+    for align, item, data, notes, vibe in cards[:40]:
+        pk = _fold_player(item.get("player"))
+        if pk in already:
+            continue
+        already.add(pk)
+        i = shown_i
+        shown_i += 1
+        if shown_i > 24:
+            break
         flags = []
         if data.get("longshot"):
             flags.append("LONGSHOT")
