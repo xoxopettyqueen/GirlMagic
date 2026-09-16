@@ -84243,5 +84243,67 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Riley Greene_shop_take_78",
+    "date": "2026-09-16",
+    "time": "01:06 PM",
+    "player": "Riley Greene",
+    "score": 0,
+    "edge": 78,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 675,
+    "book_prices": {
+      "bet365": 290,
+      "caesars": 750,
+      "draftkings": 700,
+      "fanatics": 750,
+      "fanduel": 650,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-16T20:06:05.870203+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Spencer Torkelson_shop_take_52",
+    "date": "2026-09-16",
+    "time": "01:06 PM",
+    "player": "Spencer Torkelson",
+    "score": 0,
+    "edge": 52,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 450,
+      "caesars": 575,
+      "draftkings": 600,
+      "fanatics": 650,
+      "fanduel": 600,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-16T20:06:05.878072+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
