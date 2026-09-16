@@ -8924,6 +8924,10 @@ def main():
         run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
         if not df.empty else ([], [], [], [], [])
     )
+    st.session_state["ev_board"] = ev_board
+    st.session_state["watch_board"] = watch_board
+    st.session_state["coverage_board"] = coverage_board
+    st.session_state["flag_results"] = results
     book_meter = benford_book_meter(df) if not df.empty else {}
     lock_all = st.session_state.get("pregame_lock") or {}
     for lst in (ev_board, watch_board, coverage_board):
