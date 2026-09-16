@@ -90368,5 +90368,157 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Colton Cowser_shop_lean_148",
+    "date": "2026-09-16",
+    "time": "04:40 PM",
+    "player": "Colton Cowser",
+    "score": 0,
+    "edge": 148,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "bet365": 575,
+      "caesars": 400,
+      "draftkings": 550,
+      "fanatics": 700,
+      "fanduel": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T23:40:56.340858+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_James Wood_shop_lean_132",
+    "date": "2026-09-16",
+    "time": "04:40 PM",
+    "player": "James Wood",
+    "score": 0,
+    "edge": 132,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 525,
+    "book_prices": {
+      "bet365": 425,
+      "caesars": 525,
+      "draftkings": 500,
+      "fanatics": 700,
+      "fanduel": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T23:40:56.343605+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Mookie Betts_shop_lean_120",
+    "date": "2026-09-16",
+    "time": "04:40 PM",
+    "player": "Mookie Betts",
+    "score": 0,
+    "edge": 120,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 650,
+    "book_prices": {
+      "bet365": 450,
+      "caesars": 625,
+      "draftkings": 650,
+      "fanatics": 800,
+      "fanduel": 800,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T23:40:56.351174+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Sal Stewart_shop_lean_110",
+    "date": "2026-09-16",
+    "time": "04:40 PM",
+    "player": "Sal Stewart",
+    "score": 0,
+    "edge": 110,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 750,
+    "book_prices": {
+      "bet365": 600,
+      "caesars": 750,
+      "draftkings": 750,
+      "fanatics": 900,
+      "fanduel": 900,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T23:40:56.353873+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Shea Langeliers_shop_lean_77",
+    "date": "2026-09-16",
+    "time": "04:40 PM",
+    "player": "Shea Langeliers",
+    "score": 0,
+    "edge": 77,
+    "best_price": 700,
+    "best_book": "draftkings",
+    "median": 625,
+    "book_prices": {
+      "bet365": 300,
+      "caesars": 625,
+      "draftkings": 700,
+      "fanatics": 650,
+      "fanduel": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T23:40:56.360485+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
