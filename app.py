@@ -1003,6 +1003,7 @@ def nfl_loose_mode():
 HISTORY_FILE = "girl_magic_history.json"
 RESULTS_FILE = "girl_magic_results.json"
 PREGAME_FILE = "girl_magic_pregame.json"
+ALIGN_EVENTS_FILE = "girl_magic_align_events.json"  # NEW. Never writes odds history.
 TAKE_LEDGER_FILE = "girl_magic_take_ledger.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
@@ -8408,6 +8409,36 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
     }
 
 
+def load_align_events():
+    try:
+        if os.path.exists(ALIGN_EVENTS_FILE):
+            with open(ALIGN_EVENTS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f) or []
+    except Exception:
+        pass
+    return []
+
+
+def save_align_events(rows):
+    """Append-only alignment log. Never touches odds history / results / lock."""
+    try:
+        with open(ALIGN_EVENTS_FILE, "w", encoding="utf-8") as f:
+            json.dump(rows[-500:], f)
+    except Exception:
+        pass
+
+
+def _petty_meter(align):
+    a = max(0, min(120, int(align or 0)))
+    w = int(a / 120 * 100)
+    return (
+        f'<div style="background:#2a2038;border-radius:999px;height:8px;margin:6px 0 8px">'
+        f'<div style="width:{w}%;height:8px;border-radius:999px;'
+        f'background:linear-gradient(90deg,#a855f7,#ec4899)"></div></div>'
+        f'<div style="font-size:.68rem;color:#c4b5d6">DATA 🔮 &nbsp; ODDS 🎰 &nbsp; ALIGN 💫 &nbsp; {a}</div>'
+    )
+
+
 def render_alignment_tab(ev_board, watch_board=None):
     """New Align tab. Odds engine untouched. Longshots stay on the list."""
     rows = list(ev_board or []) + list(watch_board or [])
@@ -8473,11 +8504,45 @@ def render_alignment_tab(ev_board, watch_board=None):
     c1.metric("On this list", len(cards))
     c2.metric("Align 70+", sum(1 for a, *_ in cards if a >= 70))
     c3.metric("Longshots", sum(1 for _, _, d, *_ in cards if d["longshot"]))
-    view = st.radio("Show", ["All", "Aligned 70+", "Longshots"], horizontal=True, key="align_view")
+    perfect = [c for c in cards if c[0] >= 85]
+    if perfect:
+        st.markdown("#### ✨ Petty’s Perfect Alignment Picks")
+        st.caption("Data spoke. Odds agreed. Board still decides if we ticket it.")
+        top = st.columns(min(3, len(perfect[:3])))
+        for i, (align, item, data, notes, vibe) in enumerate(perfect[:6]):
+            with top[i % len(top)]:
+                st.markdown(
+                    f'<div class="card bet"><div class="card-kicker">{vibe}</div>'
+                    f'<div class="card-name">{item.get("player")}</div>'
+                    f'{_petty_meter(align)}'
+                    f'<div class="card-line">{data.get("summary")}</div></div>',
+                    unsafe_allow_html=True,
+                )
+    ev_log = load_align_events()
+    for align, item, data, notes, vibe in cards:
+        if align < 70:
+            continue
+        ev_log.append({
+            "date": today_az(),
+            "sport": sport,
+            "player": item.get("player"),
+            "align": align,
+            "vibe": vibe,
+            "longshot": data.get("longshot"),
+            "rookie": data.get("rookie"),
+            "price": item.get("best_price"),
+            "book": item.get("best_book"),
+            "methods": list(item.get("methods") or [])[:6],
+            "summary": data.get("summary"),
+        })
+    save_align_events(ev_log)
+    view = st.radio("Show", ["All", "Aligned 70+", "Longshots", "Perfect 85+"], horizontal=True, key="align_view")
     if view == "Aligned 70+":
         cards = [c for c in cards if c[0] >= 70]
     elif view == "Longshots":
         cards = [c for c in cards if c[2]["longshot"]]
+    elif view == "Perfect 85+":
+        cards = [c for c in cards if c[0] >= 85]
     cols = st.columns(2)
     for i, (align, item, data, notes, vibe) in enumerate(cards[:80]):
         flags = "LONGSHOT" if data["longshot"] else ""
@@ -8490,6 +8555,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="card-kicker">{vibe} · {align}</div>'
                 f'<span class="score-pill">{align}</span>'
                 f'<div class="card-name">{item.get("player")}</div>'
+                f'{_petty_meter(align)}'
                 f'<div class="card-line"><b>Data</b> — {data["summary"]}</div>'
                 f'<div class="card-line"><b>Odds</b> — {price} {book_label(item.get("best_book"))} · {tags}</div>'
                 f'<div class="card-line"><b>Matchup</b> — {data.get("matchup") or "—"}</div>'
@@ -9011,14 +9077,14 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Board", "Align", "Shop", "Trend Lab", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
+    MAIN_TABS = ["Align", "Board", "Shop", "Trend Lab", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
     if active_sport() == "NFL":
-        MAIN_TABS = ["Board", "Shop", "Need One"] + MAIN_TABS[2:]
+        MAIN_TABS = ["Align", "Board", "Shop", "Need One"] + [t for t in MAIN_TABS if t not in ("Align", "Board", "Shop")]
     if active_sport() != "NFL" and st.session_state.get("main_nav") == "Need One":
         st.session_state["main_nav"] = "Board"
     NAV_LABELS = {
         "Board": "Board 💋",
-        "Align": "Align ✨",
+        "Align": "✨ Align",
         "Shop": "Shop 🛍️",
         "Need One": "I JUST NEED ONE 📈",
         "Trend Lab": "Trend Lab 📈",
