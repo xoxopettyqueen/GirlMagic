@@ -8484,6 +8484,103 @@ def load_live_mlb_data():
     }
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_nflverse_week_stats(year=None):
+    year = year or datetime.now().year
+    urls = [
+        f"https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_{year}.csv",
+        f"https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_{year-1}.csv",
+    ]
+    chunks = []
+    for url in urls:
+        try:
+            part = pd.read_csv(url)
+            if part is not None and not part.empty:
+                chunks.append(part)
+        except Exception:
+            pass
+    df = pd.concat(chunks, ignore_index=True) if chunks else None
+    if df is None or df.empty or "player_display_name" not in df.columns:
+        return {}
+    # Keep this season + last season (no 5-week cut).
+    try:
+        gdf = pd.read_csv(
+            "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+            usecols=lambda c: c in ("game_id", "weekday", "gametime", "home_team", "away_team"),
+        )
+        if "game_id" in df.columns and not gdf.empty:
+            df = df.merge(gdf, on="game_id", how="left")
+    except Exception:
+        gdf = pd.DataFrame()
+    if "team" in df.columns and "home_team" in df.columns:
+        df["is_home"] = df["team"].astype(str) == df["home_team"].astype(str)
+    if "weekday" in df.columns:
+        wd = df["weekday"].astype(str).str.lower()
+        df["primetime"] = wd.isin(("thursday", "monday"))
+    draft = {}
+    try:
+        pdf = pd.read_csv(
+            "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+            usecols=lambda c: c in ("display_name", "draft_round", "draft_pick", "draft_year", "rookie_season"),
+        )
+        for _, r in pdf.iterrows():
+            draft[_fold_player(r.get("display_name"))] = dict(r)
+    except Exception:
+        pdf = pd.DataFrame()
+    out = {}
+    for name, g in df.groupby("player_display_name"):
+        key = _fold_player(name)
+        def sm(*cols):
+            for c in cols:
+                if c in g.columns:
+                    return float(pd.to_numeric(g[c], errors="coerce").fillna(0).sum())
+            return 0.0
+        def av(*cols):
+            for c in cols:
+                if c in g.columns:
+                    s = pd.to_numeric(g[c], errors="coerce").dropna()
+                    if len(s):
+                        return float(s.mean())
+            return None
+        home_m = g["is_home"] if "is_home" in g.columns else None
+        pt_m = g["primetime"] if "primetime" in g.columns else None
+        vs = {}
+        if "opponent_team" in g.columns:
+            for opp, og in g.groupby("opponent_team"):
+                vs[str(opp)] = {
+                    "yds": float(pd.to_numeric(og.get("receiving_yards"), errors="coerce").fillna(0).sum()),
+                    "td": float(pd.to_numeric(og.get("receiving_tds"), errors="coerce").fillna(0).sum()),
+                    "g": int(len(og)),
+                }
+        dr = draft.get(key) or {}
+        out[key] = {
+            "weeks": int(g["week"].nunique()) if "week" in g.columns else len(g),
+            "targets": sm("targets"),
+            "tgt_share": av("target_share"),
+            "rec": sm("receptions"),
+            "rec_yds": sm("receiving_yards"),
+            "rec_td": sm("receiving_tds"),
+            "carries": sm("carries"),
+            "rush_yds": sm("rushing_yards"),
+            "rush_td": sm("rushing_tds"),
+            "home_yds": float(pd.to_numeric(g.loc[home_m, "receiving_yards"], errors="coerce").fillna(0).sum()) if home_m is not None else 0,
+            "away_yds": float(pd.to_numeric(g.loc[~home_m, "receiving_yards"], errors="coerce").fillna(0).sum()) if home_m is not None else 0,
+            "pt_yds": float(pd.to_numeric(g.loc[pt_m, "receiving_yards"], errors="coerce").fillna(0).sum()) if pt_m is not None else 0,
+            "pt_td": float(pd.to_numeric(g.loc[pt_m, "receiving_tds"], errors="coerce").fillna(0).sum()) if pt_m is not None else 0,
+            "vs": vs,
+            "pos": str(g["position"].iloc[0]) if "position" in g.columns else "",
+            "draft_round": dr.get("draft_round"),
+            "draft_pick": dr.get("draft_pick"),
+            "draft_year": dr.get("draft_year"),
+            "rookie_season": dr.get("rookie_season"),
+        }
+    return out
+
+
+def load_live_nfl_data():
+    return {"form": fetch_nflverse_week_stats()}
+
+
 def _petty_upside_from_item(item, sport="MLB", live=None):
     """Petty Upside from LIVE Savant + Stats API. Longshots never dropped."""
     try:
@@ -8496,6 +8593,50 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
     is_star = any(s in name.lower() for s in stars)
     longshot = (p >= 550 and not is_star) or p >= 750
     live = live or {}
+    if sport == "NFL":
+        form = (live.get("form") or {}).get(key) or {}
+        bits = []
+        score = 22
+        if form.get("tgt_share") is not None:
+            bits.append(f"tgt {form['tgt_share']*100:.0f}%")
+            if form["tgt_share"] >= 0.18:
+                score += 14
+        if form.get("targets"):
+            bits.append(f"{int(form['targets'])} tgt (2 szn)")
+        if form.get("rec_yds"):
+            bits.append(f"{int(form['rec_yds'])} rec yds")
+        if form.get("away_yds") or form.get("home_yds"):
+            bits.append(f"home {int(form.get('home_yds') or 0)} / road {int(form.get('away_yds') or 0)} yds")
+        if form.get("pt_yds"):
+            bits.append(f"primetime {int(form['pt_yds'])} yds / {int(form.get('pt_td') or 0)} TD")
+        if form.get("draft_round"):
+            bits.append(f"draft R{int(form['draft_round'])} P{int(form.get('draft_pick') or 0)} '{str(form.get('draft_year') or '')[-2:]}")
+        if form.get("carries"):
+            bits.append(f"{int(form['carries'])} car")
+        tds = (form.get("rec_td") or 0) + (form.get("rush_td") or 0)
+        if tds:
+            bits.append(f"{int(tds)} TD")
+            score += min(12, int(tds) * 3)
+        if p >= 500:
+            longshot = True
+            bits.append("longshot")
+            score += 8
+        if not form:
+            bits.append("nflverse miss — still listed")
+        return {
+            "score": min(120, score),
+            "longshot": longshot,
+            "rookie": False,
+            "summary": " · ".join(bits) if bits else "odds only",
+            "boost": 6 if form else 2,
+            "sport": "NFL",
+            "ev": None,
+            "hh": None,
+            "barrel": None,
+            "matchup": "",
+            "weather": "",
+            "wind_lane": "cross",
+        }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
     h14 = (live.get("hot14") or {}).get(key) or {}
@@ -8682,6 +8823,10 @@ def render_alignment_tab(ev_board, watch_board=None):
     if sport != "NFL":
         with st.spinner("Pulling Savant EV / HH / Barrel + last 7–14 day HRs…"):
             live = load_live_mlb_data()
+    else:
+        with st.spinner("Pulling nflverse last-5-week usage…"):
+            live = load_live_nfl_data()
+        st.caption(f"nflverse names loaded: {len(live.get('form') or {})}")
         st.caption(
             f"Live pull: {len(live.get('ev') or {})} Savant bats · "
             f"{len(live.get('hot14') or {})} last-14 hitting lines · "
@@ -8709,6 +8854,10 @@ def render_alignment_tab(ev_board, watch_board=None):
             1 if brl is not None and brl >= 8 else 0,
         ])
         data_hit = bool(contact >= 2 and (hot or hr7 >= 1))
+        if sport == "NFL":
+            data_hit = "nflverse miss" not in (summ or "") and bool(summ)
+            long_lane = px >= 115
+            rhythm = rhythm or bool(methods)
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -8853,11 +9002,19 @@ def render_alignment_tab(ev_board, watch_board=None):
                 continue
             shown_perfect.add(pk)
             with top[i % len(top)]:
+                evs = data.get("ev")
+                hhs = data.get("hh")
+                brs = data.get("barrel")
+                evs = f"{evs:.0f}" if isinstance(evs, (int, float)) else "—"
+                hhs = f"{hhs:.0f}%" if isinstance(hhs, (int, float)) else "—"
+                brs = f"{brs:.1f}%" if isinstance(brs, (int, float)) else "—"
                 st.markdown(
                     f'<div class="card bet"><div class="card-kicker">{vibe}</div>'
                     f'<div class="card-name">{item.get("player")}</div>'
                     f'{_petty_meter(align)}'
-                    f'<div class="card-line">{data.get("summary")}</div></div>',
+                    f'<div class="card-line">DATA {evs} EV · {hhs} HH · {brs} Bbl</div>'
+                    f'<div class="card-line">VS {data.get("matchup") or "—"}</div>'
+                    f'<div class="card-line">{data.get("weather") or ""}</div></div>',
                     unsafe_allow_html=True,
                 )
     ev_log = load_align_events()
@@ -9463,9 +9620,9 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Align", "Board", "Shop", "Labs", "Vault", "How"]
+    MAIN_TABS = ["Align", "Board", "Shop", "Labs", "Narratives", "Vault", "How"]
     if active_sport() == "NFL":
-        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs", "Vault", "How"]
+        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs", "Narratives", "Vault", "How"]
     if st.session_state.get("main_nav") not in MAIN_TABS:
         st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
@@ -9485,6 +9642,7 @@ def main():
         "Results": "💎 What Spoke Today",
         "Backtest": "🧠 Petty Time Machine", "Heat": "Heat",
         "How": "How We Run It 📖", "GradeShop": "Shop card",
+        "Narratives": "Narratives 📰",
         "GradeShop": "Shop card",
     }
     main = st.radio(
@@ -9539,8 +9697,23 @@ def main():
         page = admin_map.get(sub, "Grade:Results")
     elif main == "How":
         page = "Code:"
+    elif main == "Narratives":
+        page = "Narratives:"
     else:
         page = f"{main}:{sub or ''}"
+    if page == "Narratives:":
+        st.markdown("#### 📰 Narratives")
+        st.caption("One-liners from the same Fetch. Not a new odds engine.")
+        bag = list(ev_board or [])[:25]
+        if not bag:
+            st.info("Fetch first.")
+        for item in bag:
+            tags = ", ".join(str(m) for m in (item.get("methods") or [])[:3]) or "no stamp"
+            why = item.get("why") or item.get("num_tag") or ""
+            st.markdown(
+                f"**{item.get('player')}** — {format_odds(item.get('best_price'))} "
+                f"{book_label(item.get('best_book'))}. {tags}. {why}"
+            )
     if page == "Align:":
         render_alignment_tab(ev_board, watch_board)
     if page == "Board:":
