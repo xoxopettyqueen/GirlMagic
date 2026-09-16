@@ -8646,13 +8646,17 @@ def render_alignment_tab(ev_board, watch_board=None):
     st.markdown(
         """
         <style>
-        .al-lock{border-color:#f472b6!important;box-shadow:0 0 14px rgba(244,114,182,.35);background:linear-gradient(165deg,#2a1020,#16101f)!important}
+        .al-lock{border-color:#f472b6!important;box-shadow:0 0 14px rgba(244,114,182,.35);background:linear-gradient(165deg,#2a1020,#16101f)!important;position:relative;overflow:hidden}
+        .al-lock::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:6px;background:linear-gradient(90deg,transparent,#f9a8d4,transparent);animation:alShimmer 2.4s linear infinite}
         .al-speak{border-color:#a855f7!important;box-shadow:0 0 12px rgba(168,85,247,.3)}
         .al-shot{border-color:#2dd4bf!important;box-shadow:0 0 12px rgba(45,212,191,.28)}
         .al-home{opacity:.88;border-color:#3f3a48!important}
+        .card.al-lock:hover,.card.al-speak:hover,.card.al-shot:hover{transform:translateY(-3px);transition:transform .15s ease}
         .wind-out{color:#34d399;font-weight:700}
         .wind-in{color:#f87171;font-weight:700}
         .wind-cross{color:#fbbf24}
+        .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
+        @keyframes alShimmer{0%{left:-40%}100%{left:120%}}
         </style>
         """,
         unsafe_allow_html=True,
@@ -8832,12 +8836,12 @@ def render_alignment_tab(ev_board, watch_board=None):
             vibe = "NOT YET"
         cards.append((align, item, data, notes, vibe))
     cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("On this list", len(cards))
-    c2.metric("Align 70+", sum(1 for a, *_ in cards if a >= 70))
-    c3.metric("Longshots", sum(1 for _, _, d, *_ in cards if d["longshot"]))
-    c4.metric("Filtered out", hidden)
-    perfect = [c for c in cards if c[0] >= 85]
+    st.caption(
+        f"{sum(1 for a, *_ in cards if a >= 85)} locked/speaking · "
+        f"{sum(1 for _, _, d, *_ in cards if d.get('longshot'))} longshots · "
+        f"{hidden} filtered"
+    )
+    perfect = [c for c in cards if c[0] >= 85][:10]
     if perfect:
         st.markdown("#### ✨ Petty’s Perfect Alignment Picks")
         st.caption("Data spoke. Odds agreed. Board still decides if we ticket it.")
@@ -8874,19 +8878,23 @@ def render_alignment_tab(ev_board, watch_board=None):
             "summary": data.get("summary"),
         })
     save_align_events(ev_log)
-    view = st.radio("Show", ["Aligned 70+", "Perfect 85+", "Longshots", "Homework"], horizontal=True, key="align_view")
-    if view == "Aligned 70+":
-        cards = [c for c in cards if c[0] >= 70]
+    view = st.radio(
+        "Show",
+        ["Locked + Speaking", "Whispers", "Longshots", "Homework"],
+        horizontal=True,
+        key="align_view",
+    )
+    if view == "Locked + Speaking":
+        cards = [c for c in cards if c[0] >= 85][:10]
+    elif view == "Whispers":
+        cards = [c for c in cards if 70 <= c[0] < 85]
     elif view == "Longshots":
         cards = [c for c in cards if c[2]["longshot"]]
-    elif view == "Perfect 85+":
-        cards = [c for c in cards if c[0] >= 85]
-    # Homework = full curated list already built (not the raw slate)
+    # Homework = curated list already built
+    if view == "Locked + Speaking":
+        cards = []  # top strip already showed them
     cols = st.columns(3)
     already = set()
-    if view == "Aligned 70+":
-        for align, item, *_ in perfect[:6]:
-            already.add(_fold_player(item.get("player")))
     shown_i = 0
     for align, item, data, notes, vibe in cards[:40]:
         pk = _fold_player(item.get("player"))
@@ -8931,8 +8939,9 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="card-line">🏟️ {data.get("park_line") or "—"} · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
                 f'<div class="card-line">⚔️ {data.get("vs_line") or "—"}</div>'
                 f'<div class="card-line">🧩 {data.get("pen_line") or "—"}</div>'
-                f'<div class="card-line">🏠 {data.get("split_ha") or "—"}</div>'
-                f'<div class="card-line">🌙 {data.get("split_dn") or "—"}</div>'
+                f'<div class="card-line"><span class="al-chip">🏠 {data.get("split_ha") or "—"}</span> '
+                f'<span class="al-chip">🌙 {data.get("split_dn") or "—"}</span></div>'
+                f'<div class="card-foot">Board still decides if we ticket it.</div>'
                 f'<div class="note">{note_html}</div>'
                 f'<div class="card-foot">{flags} · Board score {item.get("score") or "—"} · Petty {"Upside" if sport=="MLB" else "Edge"} {data["score"]}</div>'
                 f"</div>",
