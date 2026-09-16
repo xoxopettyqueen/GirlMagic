@@ -90072,5 +90072,48 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Vaughn Grissom_take_it_100",
+    "date": "2026-09-16",
+    "time": "04:29 PM",
+    "player": "Vaughn Grissom",
+    "score": 100,
+    "edge": 170,
+    "best_price": 1050,
+    "best_book": "fanatics",
+    "median": 870,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 600,
+      "caesars": 850,
+      "draftkings": 910,
+      "fanatics": 1050,
+      "fanduel": 870,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+1000+",
+    "ending": 50,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "Fanatics Rogue",
+      "DK 10",
+      "Multi-book method",
+      "FD Pattern",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 5,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-16T23:29:31.625689+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "LOS ANGELES ANGELS",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.29
   }
 ]
