@@ -8483,18 +8483,18 @@ def render_alignment_tab(ev_board, watch_board=None):
         hot = "heating L7" in summ or "HR L7" in summ
         data_hit = bool(
             (ev and ev >= 88)
-            or (hh is not None and hh >= 38)
-            or (brl is not None and brl >= 6)
-            or data.get("rookie")
+            or (hh is not None and hh >= 40)
+            or (brl is not None and brl >= 7)
             or hot
         )
+        rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         odds_hit = bool(methods) or align >= 70
         keep = False
         if data.get("longshot") and (data_hit or odds_hit):
             keep = True
         elif data_hit and odds_hit:
             keep = True
-        elif data.get("rookie") and align >= 55:
+        elif rookie_spike and (odds_hit or align >= 55):
             keep = True
         if not keep:
             hidden += 1
@@ -8562,13 +8562,14 @@ def render_alignment_tab(ev_board, watch_board=None):
             "summary": data.get("summary"),
         })
     save_align_events(ev_log)
-    view = st.radio("Show", ["All", "Aligned 70+", "Longshots", "Perfect 85+"], horizontal=True, key="align_view")
+    view = st.radio("Show", ["Aligned 70+", "Perfect 85+", "Longshots", "Homework"], horizontal=True, key="align_view")
     if view == "Aligned 70+":
         cards = [c for c in cards if c[0] >= 70]
     elif view == "Longshots":
         cards = [c for c in cards if c[2]["longshot"]]
     elif view == "Perfect 85+":
         cards = [c for c in cards if c[0] >= 85]
+    # Homework = full curated list already built (not the raw slate)
     cols = st.columns(2)
     for i, (align, item, data, notes, vibe) in enumerate(cards[:80]):
         flags = "LONGSHOT" if data["longshot"] else ""
@@ -9107,30 +9108,40 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Align", "Board", "Shop", "Trend Lab", "Digits", "Methods", "Lines", "Grade", "Analytics", "Numerology", "Code"]
+    try:
+        door = str(st.query_params.get("door") or st.query_params.get("admin") or "").lower()
+    except Exception:
+        door = ""
+    if door in ("petty", "admin", "1", "true"):
+        st.session_state["want_admin"] = True
+    if st.session_state.get("want_admin") and not st.session_state.get("petty_admin"):
+        pin = st.text_input("Petty door", type="password", key="admin_pin")
+        if pin and pin.strip().lower() in ("petty", "girlmagic", "hbic"):
+            st.session_state["petty_admin"] = True
+        elif pin:
+            st.caption("Nope.")
+    MAIN_TABS = ["Align", "Board", "Shop", "Labs"]
     if active_sport() == "NFL":
-        MAIN_TABS = ["Align", "Board", "Shop", "Need One"] + [t for t in MAIN_TABS if t not in ("Align", "Board", "Shop")]
-    if active_sport() != "NFL" and st.session_state.get("main_nav") == "Need One":
-        st.session_state["main_nav"] = "Board"
+        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs"]
+    if st.session_state.get("petty_admin"):
+        MAIN_TABS = MAIN_TABS + ["Admin"]
+    if st.session_state.get("main_nav") not in MAIN_TABS:
+        st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
         "Board": "Board 💋",
         "Align": "✨ Align",
         "Shop": "Shop 🛍️",
         "Need One": "I JUST NEED ONE 📈",
-        "Trend Lab": "Trend Lab 📈",
-        "Digits": "Benford Energy 🔢",
-        "Methods": "Pattern Lab 🧩",
-        "Lines": "Motion 💸",
-        "Grade": "Grade 🧾",
-        "Analytics": "Heat 🔥",
-        "Numerology": "Magic Math 🔮",
-        "Code": "How We Run It",
+        "Labs": "Labs Hub 🧪",
+        "Admin": "Petty Door 🔒",
+        "Trend": "Trend", "Pattern": "Pattern", "Benford": "Benford", "Motion": "Motion", "Magic": "Magic Math",
         "DK": "DK 🎯", "MGM": "MGM 🎰", "FD": "FD 💙", "Exact": "Exact 🎯",
         "Names": "Names 💅", "Signals": "Signals 📡",
         "Moves": "Moves 💸", "Trends": "Trends 💅", "Late": "Ghosts 👻",
         "Lock": "Lock 🔒", "Search": "Search",
         "Lock Lab": "Lock Lab", "Tracker": "Tracker", "Results": "Results",
-        "Backtest": "Backtest",
+        "Backtest": "Backtest", "Heat": "Heat", "How": "How We Run It",
+        "GradeShop": "Shop card",
     }
     main = st.radio(
         "Section",
@@ -9141,13 +9152,50 @@ def main():
         format_func=lambda x: NAV_LABELS.get(x, x),
     )
     sub = None
-    if main == "Methods":
-        sub = st.radio("Methods", ["DK", "MGM", "FD", "Exact", "Names", "Signals"], horizontal=True, label_visibility="collapsed", key="sub_methods", format_func=lambda x: NAV_LABELS.get(x, x))
-    elif main == "Lines":
-        sub = st.radio("Lines", ["Moves", "Trends", "Late", "Lock", "Search"], horizontal=True, label_visibility="collapsed", key="sub_lines", format_func=lambda x: NAV_LABELS.get(x, x))
-    elif main == "Grade":
-        sub = st.radio("Grade", ["Lock Lab", "Tracker", "Results", "Backtest", "Shop"], horizontal=True, label_visibility="collapsed", key="sub_grade", format_func=lambda x: NAV_LABELS.get(x, x))
-    page = f"{main}:{sub or ''}"
+    if main == "Labs":
+        sub = st.radio(
+            "Labs",
+            ["Trend", "Pattern", "Benford", "Motion", "Magic"],
+            horizontal=True,
+            label_visibility="collapsed",
+            key="sub_labs",
+            format_func=lambda x: NAV_LABELS.get(x, x),
+        )
+        if sub == "Pattern":
+            sub2 = st.radio("Pattern", ["DK", "MGM", "FD", "Exact", "Names", "Signals"], horizontal=True, label_visibility="collapsed", key="sub_methods", format_func=lambda x: NAV_LABELS.get(x, x))
+            page = f"Methods:{sub2}"
+        elif sub == "Trend":
+            page = "Trend Lab:"
+        elif sub == "Benford":
+            page = "Digits:"
+        elif sub == "Motion":
+            m2 = st.radio("Motion", ["Moves", "Trends", "Late"], horizontal=True, label_visibility="collapsed", key="sub_lines", format_func=lambda x: NAV_LABELS.get(x, x))
+            page = f"Lines:{m2}"
+        else:
+            page = "Numerology:"
+    elif main == "Admin":
+        sub = st.radio(
+            "Admin",
+            ["Results", "Lock Lab", "Tracker", "Backtest", "GradeShop", "Heat", "Lock", "Search", "How"],
+            horizontal=True,
+            label_visibility="collapsed",
+            key="sub_admin",
+            format_func=lambda x: NAV_LABELS.get(x, x),
+        )
+        admin_map = {
+            "Results": "Grade:Results",
+            "Lock Lab": "Grade:Lock Lab",
+            "Tracker": "Grade:Tracker",
+            "Backtest": "Grade:Backtest",
+            "GradeShop": "Grade:Shop",
+            "Heat": "Analytics:",
+            "Lock": "Lines:Lock",
+            "Search": "Lines:Search",
+            "How": "Code:",
+        }
+        page = admin_map.get(sub, "Grade:Results")
+    else:
+        page = f"{main}:{sub or ''}"
     if page == "Align:":
         render_alignment_tab(ev_board, watch_board)
     if page == "Board:":
