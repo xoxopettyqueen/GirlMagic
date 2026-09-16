@@ -8355,6 +8355,43 @@ def fetch_vs_pitcher(batter_id, pitcher_id):
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
+def fetch_hitter_splits(batter_id, year=None):
+    """Home/away + day/night. Pitch-type ISO is not on this free endpoint."""
+    if not batter_id:
+        return {}
+    year = year or datetime.now().year
+    try:
+        r = requests.get(
+            f"https://statsapi.mlb.com/api/v1/people/{batter_id}/stats",
+            params={"stats": "statSplits", "group": "hitting", "sitCodes": "h,a,d,n", "season": year},
+            timeout=12,
+        )
+        r.raise_for_status()
+        splits = (((r.json() or {}).get("stats") or [{}])[0].get("splits") or [])
+    except Exception:
+        return {}
+    out = {}
+    for s in splits:
+        code = str((s.get("split") or {}).get("code") or (s.get("split") or {}).get("description") or "").lower()
+        stt = s.get("stat") or {}
+        def ni(k):
+            try:
+                return float(stt.get(k))
+            except Exception:
+                return None
+        row = {"hr": ni("homeRuns"), "slg": ni("slg"), "avg": ni("avg")}
+        if "home" in code or code == "h":
+            out["home"] = row
+        elif "away" in code or code == "a":
+            out["away"] = row
+        elif code in ("d", "day") or "day" in code and "night" not in code:
+            out["day"] = row
+        elif "night" in code or code == "n":
+            out["night"] = row
+    return out
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
 def fetch_team_hr9():
     year = datetime.now().year
     try:
@@ -8709,10 +8746,11 @@ def render_alignment_tab(ev_board, watch_board=None):
         if "vs " in (data.get("matchup") or ""):
             opp = (data.get("matchup") or "").split("vs ", 1)[-1].split("(")[0].strip()
         vs = {}
+        bid = fetch_mlb_player_id(item.get("player"))
         if opp:
-            bid = fetch_mlb_player_id(item.get("player"))
             pid = fetch_mlb_player_id(opp)
             vs = fetch_vs_pitcher(bid, pid) or {}
+        splits = fetch_hitter_splits(bid) or {}
         tk = _team_key(item.get("team") or "")
         # opposing team pitching: use event home/away
         evn = " ".join(item.get("events") or [item.get("event") or ""])
@@ -8751,6 +8789,21 @@ def render_alignment_tab(ev_board, watch_board=None):
         data["park_line"] = park_line
         data["vs_line"] = vs_line
         data["pen_line"] = pen_line
+        data["match_boost"] = match_boost
+        hm, aw = splits.get("home") or {}, splits.get("away") or {}
+        dy, nt = splits.get("day") or {}, splits.get("night") or {}
+        def _sl(row):
+            if not row or row.get("slg") is None:
+                return "—"
+            return f"SLG {row['slg']:.3f} / {int(row.get('hr') or 0)} HR"
+        data["split_ha"] = f"home {_sl(hm)} · away {_sl(aw)}"
+        data["split_dn"] = f"day {_sl(dy)} · night {_sl(nt)}"
+        if aw.get("slg") and hm.get("slg") and aw["slg"] >= hm["slg"] + 0.040 and data.get("matchup") and "(away)" in data.get("matchup"):
+            match_boost += 3
+            align = int(align) + 3
+        if nt.get("slg") and dy.get("slg") and nt["slg"] >= dy["slg"] + 0.040:
+            match_boost += 2
+            align = int(align) + 2
         data["match_boost"] = match_boost
         odds_hit = bool(methods) or books_n >= 2
         notes = []
@@ -8878,6 +8931,8 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="card-line">🏟️ {data.get("park_line") or "—"} · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
                 f'<div class="card-line">⚔️ {data.get("vs_line") or "—"}</div>'
                 f'<div class="card-line">🧩 {data.get("pen_line") or "—"}</div>'
+                f'<div class="card-line">🏠 {data.get("split_ha") or "—"}</div>'
+                f'<div class="card-line">🌙 {data.get("split_dn") or "—"}</div>'
                 f'<div class="note">{note_html}</div>'
                 f'<div class="card-foot">{flags} · Board score {item.get("score") or "—"} · Petty {"Upside" if sport=="MLB" else "Edge"} {data["score"]}</div>'
                 f"</div>",
