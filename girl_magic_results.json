@@ -86152,5 +86152,66 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-16_Eugenio Su\u00e1rez_shop_lean_29",
+    "date": "2026-09-16",
+    "time": "01:47 PM",
+    "player": "Eugenio Su\u00e1rez",
+    "score": 0,
+    "edge": 29,
+    "best_price": 610,
+    "best_book": "draftkings",
+    "median": 575,
+    "book_prices": {
+      "betmgm": 375,
+      "caesars": 575,
+      "draftkings": 610,
+      "fanatics": 600,
+      "fanduel": 600,
+      "hardrockbet": 550,
+      "bet365": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 10,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T20:47:51.027003+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Taylor Ward_shop_lean_26",
+    "date": "2026-09-16",
+    "time": "01:47 PM",
+    "player": "Taylor Ward",
+    "score": 0,
+    "edge": 26,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 562,
+    "book_prices": {
+      "caesars": 575,
+      "draftkings": 542,
+      "fanatics": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T20:47:51.028256+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
