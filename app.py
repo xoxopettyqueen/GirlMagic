@@ -8473,11 +8473,34 @@ def render_alignment_tab(ev_board, watch_board=None):
             f"{len(live.get('rookies') or {})} debut-this-year names"
         )
     cards = []
+    hidden = 0
     for item in rows:
         data = _petty_upside_from_item(item, sport, live)
         align = odds_alignment_score(item, data.get("boost"))
+        ev, hh, brl = data.get("ev"), data.get("hh"), data.get("barrel")
+        methods = item.get("methods") or []
+        summ = data.get("summary") or ""
+        hot = "heating L7" in summ or "HR L7" in summ
+        data_hit = bool(
+            (ev and ev >= 88)
+            or (hh is not None and hh >= 38)
+            or (brl is not None and brl >= 6)
+            or data.get("rookie")
+            or hot
+        )
+        odds_hit = bool(methods) or align >= 70
+        keep = False
+        if data.get("longshot") and (data_hit or odds_hit):
+            keep = True
+        elif data_hit and odds_hit:
+            keep = True
+        elif data.get("rookie") and align >= 55:
+            keep = True
+        if not keep:
+            hidden += 1
+            continue
         notes = []
-        ms = [str(m) for m in (item.get("methods") or [])]
+        ms = [str(m) for m in methods]
         if data["longshot"] and align >= 70:
             notes.append("Books lining up on a longshot")
         if set(ms) & _ALIGN_DIGIT:
@@ -8488,8 +8511,10 @@ def render_alignment_tab(ev_board, watch_board=None):
             notes.append("Pack vs one book looks off")
         if item.get("num_tag"):
             notes.append("Numerology tag present")
+        if data_hit and odds_hit:
+            notes.append("Data + odds both fired")
         if not notes:
-            notes.append("Odds attached. Data CSV not loaded yet — longshots still listed.")
+            notes.append("Cleared the data bar. Still check the Board before you ticket.")
         if align >= 100:
             vibe = "LOCKED IN ✨"
         elif align >= 85:
@@ -8500,10 +8525,11 @@ def render_alignment_tab(ev_board, watch_board=None):
             vibe = "NOT YET"
         cards.append((align, item, data, notes, vibe))
     cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
-    c1, c2, c3 = st.columns(3)
+    c1, c2, c3, c4 = st.columns(4)
     c1.metric("On this list", len(cards))
     c2.metric("Align 70+", sum(1 for a, *_ in cards if a >= 70))
     c3.metric("Longshots", sum(1 for _, _, d, *_ in cards if d["longshot"]))
+    c4.metric("Filtered out", hidden)
     perfect = [c for c in cards if c[0] >= 85]
     if perfect:
         st.markdown("#### ✨ Petty’s Perfect Alignment Picks")
