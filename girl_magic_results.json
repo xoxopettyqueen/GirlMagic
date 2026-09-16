@@ -87941,5 +87941,126 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.57
+  },
+  {
+    "id": "2026-09-16_Denzer Guzman_shop_lean_87",
+    "date": "2026-09-16",
+    "time": "02:36 PM",
+    "player": "Denzer Guzman",
+    "score": 0,
+    "edge": 87,
+    "best_price": 950,
+    "best_book": "bet365",
+    "median": 880,
+    "book_prices": {
+      "bet365": 950,
+      "betmgm": 550,
+      "caesars": 850,
+      "draftkings": 890,
+      "fanduel": 880
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T21:36:11.818068+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Michael Arroyo_shop_lean_62",
+    "date": "2026-09-16",
+    "time": "02:36 PM",
+    "player": "Michael Arroyo",
+    "score": 0,
+    "edge": 62,
+    "best_price": 730,
+    "best_book": "fanduel",
+    "median": 575,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 575,
+      "fanduel": 730
+    },
+    "price_bucket": "+700s",
+    "ending": 30,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T21:36:11.827015+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Julio Rodr\u00edguez_shop_take_60",
+    "date": "2026-09-16",
+    "time": "02:36 PM",
+    "player": "Julio Rodr\u00edguez",
+    "score": 0,
+    "edge": 60,
+    "best_price": 475,
+    "best_book": "bet365",
+    "median": 400,
+    "book_prices": {
+      "betmgm": 350,
+      "caesars": 400,
+      "draftkings": 407,
+      "fanatics": 370,
+      "fanduel": 390,
+      "hardrockbet": 425,
+      "bet365": 475
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-16T21:36:11.828555+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Lars Nootbaar_shop_lean_29",
+    "date": "2026-09-16",
+    "time": "02:36 PM",
+    "player": "Lars Nootbaar",
+    "score": 0,
+    "edge": 29,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 513,
+    "book_prices": {
+      "betmgm": 575,
+      "caesars": 500,
+      "draftkings": 502,
+      "fanatics": 550,
+      "fanduel": 490,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T21:36:11.838058+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
