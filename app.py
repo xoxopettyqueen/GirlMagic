@@ -8826,12 +8826,7 @@ def render_alignment_tab(ev_board, watch_board=None):
     else:
         with st.spinner("Pulling nflverse last-5-week usage…"):
             live = load_live_nfl_data()
-        st.caption(f"nflverse names loaded: {len(live.get('form') or {})}")
-        st.caption(
-            f"Live pull: {len(live.get('ev') or {})} Savant bats · "
-            f"{len(live.get('hot14') or {})} last-14 hitting lines · "
-            f"{len(live.get('rookies') or {})} debut-this-year names"
-        )
+        pass
     cards = []
     hidden = 0
     for item in rows:
@@ -8976,20 +8971,15 @@ def render_alignment_tab(ev_board, watch_board=None):
         if not notes:
             notes.append("Cleared the data bar. Still check the Board before you ticket.")
         if align >= 100:
-            vibe = "LOCKED IN ✨"
+            vibe = "🔒 Locked"
         elif align >= 85:
-            vibe = "SPEAKING"
+            vibe = "💬 Spoke"
         elif align >= 60:
-            vibe = "WHISPER"
+            vibe = "🫧 Whisper"
         else:
-            vibe = "NOT YET"
+            vibe = "📚 Homework"
         cards.append((align, item, data, notes, vibe))
     cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
-    st.caption(
-        f"{sum(1 for a, *_ in cards if a >= 85)} locked/speaking · "
-        f"{sum(1 for _, _, d, *_ in cards if d.get('longshot'))} longshots · "
-        f"{hidden} filtered"
-    )
     perfect = [c for c in cards if c[0] >= 85][:10]
     if perfect:
         st.markdown("#### ✨ Petty’s Perfect Alignment Picks")
@@ -9037,19 +9027,16 @@ def render_alignment_tab(ev_board, watch_board=None):
     save_align_events(ev_log)
     view = st.radio(
         "Show",
-        ["Locked + Speaking", "Whispers", "Longshots", "Homework"],
+        ["🎯 Active", "🫧 Whispers", "📚 Homework"],
         horizontal=True,
         key="align_view",
     )
-    if view == "Locked + Speaking":
-        cards = [c for c in cards if c[0] >= 85][:10]
-    elif view == "Whispers":
+    if view == "🎯 Active":
+        cards = []
+    elif view.startswith("🫧"):
         cards = [c for c in cards if 70 <= c[0] < 85]
-    elif view == "Longshots":
-        cards = [c for c in cards if c[2]["longshot"]]
-    # Homework = curated list already built
-    if view == "Locked + Speaking":
-        cards = []  # top strip already showed them
+    elif view.startswith("📚"):
+        cards = [c for c in cards if c[0] < 70]
     cols = st.columns(3)
     already = set()
     shown_i = 0
@@ -9626,13 +9613,13 @@ def main():
     if st.session_state.get("main_nav") not in MAIN_TABS:
         st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
-        "Board": "💚 Run It, Baddie",
-        "Align": "✨ Girl Magic Alignment",
-        "Shop": "💸 Where The Money Talks",
-        "Need One": "I JUST NEED ONE 📈",
-        "Labs": "🧪 Petty Science Lab",
-        "Vault": "💎 What Spoke / Receipts",
-        "Admin": "💎 What Spoke / Receipts",
+        "Board": "💚 Run It",
+        "Align": "✨ Alignment",
+        "Shop": "💸 Money Talks",
+        "Need One": "I JUST NEED ONE",
+        "Labs": "🧪 Petty Lab",
+        "Vault": "📈 Receipts",
+        "Admin": "📈 Receipts",
         "Trend": "Trend", "Pattern": "Pattern", "Benford": "Benford", "Motion": "Motion", "Magic": "Magic Math",
         "DK": "DK 🎯", "MGM": "MGM 🎰", "FD": "FD 💙", "Exact": "Exact 🎯",
         "Names": "Names 💅", "Signals": "Signals 📡",
@@ -9641,8 +9628,8 @@ def main():
         "Lock Lab": "🔒 Locked & Loaded", "Tracker": "📈 Petty Receipts",
         "Results": "💎 What Spoke Today",
         "Backtest": "🧠 Petty Time Machine", "Heat": "Heat",
-        "How": "How We Run It 📖", "GradeShop": "Shop card",
-        "Narratives": "Narratives 📰",
+        "How": "⚙️ How We Roll", "GradeShop": "Shop card",
+        "Narratives": "📰 Narratives",
         "GradeShop": "Shop card",
     }
     main = st.radio(
