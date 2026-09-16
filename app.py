@@ -8832,12 +8832,12 @@ def render_alignment_tab(ev_board, watch_board=None):
             vibe = "NOT YET"
         cards.append((align, item, data, notes, vibe))
     cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
-    st.caption(
-        f"{sum(1 for a, *_ in cards if a >= 85)} locked/speaking · "
-        f"{sum(1 for _, _, d, *_ in cards if d.get('longshot'))} longshots · "
-        f"{hidden} filtered"
-    )
-    perfect = [c for c in cards if c[0] >= 85][:10]
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("On this list", len(cards))
+    c2.metric("Align 70+", sum(1 for a, *_ in cards if a >= 70))
+    c3.metric("Longshots", sum(1 for _, _, d, *_ in cards if d["longshot"]))
+    c4.metric("Filtered out", hidden)
+    perfect = [c for c in cards if c[0] >= 85]
     if perfect:
         st.markdown("#### ✨ Petty’s Perfect Alignment Picks")
         st.caption("Data spoke. Odds agreed. Board still decides if we ticket it.")
@@ -8874,23 +8874,19 @@ def render_alignment_tab(ev_board, watch_board=None):
             "summary": data.get("summary"),
         })
     save_align_events(ev_log)
-    view = st.radio(
-        "Show",
-        ["Locked + Speaking", "Whispers", "Longshots", "Homework"],
-        horizontal=True,
-        key="align_view",
-    )
-    if view == "Locked + Speaking":
-        cards = [c for c in cards if c[0] >= 85][:10]
-    elif view == "Whispers":
-        cards = [c for c in cards if 70 <= c[0] < 85]
+    view = st.radio("Show", ["Aligned 70+", "Perfect 85+", "Longshots", "Homework"], horizontal=True, key="align_view")
+    if view == "Aligned 70+":
+        cards = [c for c in cards if c[0] >= 70]
     elif view == "Longshots":
         cards = [c for c in cards if c[2]["longshot"]]
-    # Homework = curated list already built
-    if view == "Locked + Speaking":
-        cards = []  # top strip already showed them
+    elif view == "Perfect 85+":
+        cards = [c for c in cards if c[0] >= 85]
+    # Homework = full curated list already built (not the raw slate)
     cols = st.columns(3)
     already = set()
+    if view == "Aligned 70+":
+        for align, item, *_ in perfect[:6]:
+            already.add(_fold_player(item.get("player")))
     shown_i = 0
     for align, item, data, notes, vibe in cards[:40]:
         pk = _fold_player(item.get("player"))
