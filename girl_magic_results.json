@@ -84859,5 +84859,130 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.43
+  },
+  {
+    "id": "2026-09-16_Spencer Torkelson_shop_lean_91",
+    "date": "2026-09-16",
+    "time": "01:10 PM",
+    "player": "Spencer Torkelson",
+    "score": 0,
+    "edge": 91,
+    "best_price": 900,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "bet365": 450,
+      "caesars": 1100,
+      "draftkings": 900,
+      "fanatics": 1200,
+      "fanduel": 600,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T20:10:33.079949+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Kevin McGonigle_shop_lean_88",
+    "date": "2026-09-16",
+    "time": "01:10 PM",
+    "player": "Kevin McGonigle",
+    "score": 0,
+    "edge": 88,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 875,
+    "book_prices": {
+      "bet365": 550,
+      "caesars": 850,
+      "draftkings": 900,
+      "fanatics": 900,
+      "fanduel": 950,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T20:10:33.082178+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Brandon Nimmo_shop_lean_60",
+    "date": "2026-09-16",
+    "time": "01:10 PM",
+    "player": "Brandon Nimmo",
+    "score": 0,
+    "edge": 60,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 730,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 775,
+      "caesars": 750,
+      "draftkings": 720,
+      "fanatics": 800,
+      "fanduel": 730,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-16T20:10:33.091550+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Kazuma Okamoto_shop_take_35",
+    "date": "2026-09-16",
+    "time": "01:10 PM",
+    "player": "Kazuma Okamoto",
+    "score": 0,
+    "edge": 35,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 450,
+    "book_prices": {
+      "bet365": 350,
+      "caesars": 475,
+      "draftkings": 450,
+      "fanatics": 500,
+      "fanduel": 450,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-16T20:10:33.103669+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
