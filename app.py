@@ -9334,23 +9334,9 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    try:
-        door = str(st.query_params.get("door") or st.query_params.get("admin") or "").lower()
-    except Exception:
-        door = ""
-    if door in ("petty", "admin", "1", "true"):
-        st.session_state["want_admin"] = True
-    if st.session_state.get("want_admin") and not st.session_state.get("petty_admin"):
-        pin = st.text_input("Petty door", type="password", key="admin_pin")
-        if pin and pin.strip().lower() in ("petty", "girlmagic", "hbic"):
-            st.session_state["petty_admin"] = True
-        elif pin:
-            st.caption("Nope.")
-    MAIN_TABS = ["Align", "Board", "Shop", "Labs"]
+    MAIN_TABS = ["Align", "Board", "Shop", "Labs", "Vault"]
     if active_sport() == "NFL":
-        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs"]
-    if st.session_state.get("petty_admin"):
-        MAIN_TABS = MAIN_TABS + ["Admin"]
+        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs", "Vault"]
     if st.session_state.get("main_nav") not in MAIN_TABS:
         st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
@@ -9359,7 +9345,8 @@ def main():
         "Shop": "Shop 🛍️",
         "Need One": "I JUST NEED ONE 📈",
         "Labs": "Labs Hub 🧪",
-        "Admin": "Petty Door 🔒",
+        "Vault": "Vault 🧾",
+        "Admin": "Vault 🧾",
         "Trend": "Trend", "Pattern": "Pattern", "Benford": "Benford", "Motion": "Motion", "Magic": "Magic Math",
         "DK": "DK 🎯", "MGM": "MGM 🎰", "FD": "FD 💙", "Exact": "Exact 🎯",
         "Names": "Names 💅", "Signals": "Signals 📡",
@@ -9399,7 +9386,7 @@ def main():
             page = f"Lines:{m2}"
         else:
             page = "Numerology:"
-    elif main == "Admin":
+    elif main in ("Admin", "Vault"):
         sub = st.radio(
             "Admin",
             ["Results", "Lock Lab", "Tracker", "Backtest", "GradeShop", "Heat", "Lock", "Search", "How"],
