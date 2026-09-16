@@ -8520,6 +8520,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         if not keep:
             hidden += 1
             continue
+        odds_hit = bool(methods) or books_n >= 2
         notes = []
         ms = [str(m) for m in methods]
         if data["longshot"] and align >= 70:
