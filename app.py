@@ -633,15 +633,16 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
   background:linear-gradient(110deg,#2a1040 0%,#6d28d9 38%,#db2777 72%,#4c1d95 100%);
   background-size:180% 180%;
   animation:heroShimmer 14s ease-in-out infinite;
-  border:1px solid #f9a8d4;border-radius:28px;padding:26px 26px 20px;
-  margin:0 0 16px;box-shadow:0 20px 48px rgba(76,29,149,.38);
+  border:1px solid #f9a8d4;border-radius:22px;padding:16px 20px 14px;
+  margin:0 0 10px;box-shadow:0 16px 36px rgba(76,29,149,.38);
 }
 @keyframes heroShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .site-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .site-kicker{color:#fde68a;font-size:.72rem;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;margin:0 0 8px}
-.site-title{font-family:'Playfair Display',serif;font-size:2.55rem;line-height:1.02;color:#fff;margin:0 0 10px;text-shadow:0 0 22px rgba(244,114,182,.45),0 6px 18px rgba(15,6,24,.45);animation:titleIn .6s ease-out}
-.site-sub{color:#fce7f3;font-size:1.02rem;margin:0 0 8px;max-width:740px;line-height:1.6;animation:fadeUp .7s ease-out .12s both}
-.site-live{color:#f9a8d4;font-size:.82rem;margin:0 0 12px}
+.site-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.05;color:#fff;margin:0 0 6px;text-shadow:0 0 22px rgba(244,114,182,.45),0 6px 18px rgba(15,6,24,.45);animation:titleIn .6s ease-out}
+.site-sub{color:#fce7f3;font-size:.92rem;margin:0 0 4px;max-width:740px;line-height:1.45;animation:fadeUp .7s ease-out .12s both}
+.site-quote{color:#fde68a;font-size:.88rem;font-style:italic;margin:0 0 8px}
+.site-live{color:#f9a8d4;font-size:.78rem;margin:0 0 8px}
 @keyframes titleIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .site-chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -1632,14 +1633,11 @@ def site_hero_html(sport, slate_label, games_n, lock_n, fetch_time):
         lane = "💣 We only play 0.5 HR Over — because chaos pays better."
         icon = "⚾"
     return (
-        f'<div class="quote-bar">♛ Quote of the day: {daily_quote()}</div>'
         '<div class="site-hero"><div class="site-hero-top"><div>'
-        '<p class="site-kicker">💅 👑 ✨</p>'
         '<div class="site-title">Girl Magic Odds</div>'
-        f'<p class="site-sub">💅 Where intuition meets petty precision.<br>'
-        f'{lane}<br>'
-        '💚 Green names are gospel. Everything else? Homework.</p>'
-        f'<p class="site-live">⏱️ Last fetch {live} — {breathe}.</p>'
+        f'<p class="site-quote">{daily_quote()}</p>'
+        f'<p class="site-sub">Where intuition meets petty precision. {lane} Green names are gospel.</p>'
+        f'<p class="site-live">Last fetch {live} — {breathe}</p>'
         '<div class="site-chips">'
         f'<span class="site-chip sport">{icon} {sport}</span>'
         f'<span class="site-chip">💣 {slate_label}</span>'
@@ -9162,26 +9160,18 @@ def main():
             st.session_state.pop(k, None)
         st.session_state["_sport_seen"] = sport
         st.session_state["_autoload_events"] = True
-    after = "kickoff" if sport == "NFL" else "first pitch"
-    st.markdown(
-        f'<div class="how-to site-guide"><b>♛ How we roll:</b> '
-        f'Load the slate. Fetch the vibe. Green names are the list. Shop picks the number. '
-        f'Pink is personality. Grade after {after} so tomorrow is louder.</div>',
-        unsafe_allow_html=True,
-    )
     if "onboard_step" not in st.session_state:
         st.session_state["onboard_step"] = "welcome"
     step = st.session_state.get("onboard_step") or "welcome"
     if step == "welcome":
-        st.info("Girl Magic Odds speaks its own language. Learn the code, then roll the slate.")
-        st.caption("Before you roll, read the Glossary — it explains the tags, methods, and phrases you’ll see everywhere.")
+        st.caption("💫 Girl Magic Odds has its own language — learn the vibe, then roll the slate.")
         b1, b2 = st.columns(2)
         with b1:
-            if st.button("💅 Glossary First", type="primary", use_container_width=True):
+            if st.button("💅 Glossary", type="primary", use_container_width=True):
                 st.session_state["onboard_step"] = "glossary"
                 st.rerun()
         with b2:
-            if st.button("🎲 I already know the vibe", use_container_width=True):
+            if st.button("🔮 I Know the Vibe", use_container_width=True):
                 st.session_state["onboard_step"] = "done"
                 st.session_state["seen_card_guide"] = True
                 st.rerun()
