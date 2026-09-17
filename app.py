@@ -1845,8 +1845,7 @@ GLOSSARY_V2 = {
 
 
 def render_mini_glossary():
-    st.markdown("### ✨ Girl Magic Glossary 2.0")
-    st.caption("Learn the vibe, then roll the slate. On Align, hover a word — the same definitions live on the card.")
+    st.caption("Search a word. Same definitions hover on Confidence cards.")
     q = st.text_input("Search the vibe…", key="gloss_q")
     cats = list(GLOSSARY_V2.keys())
     cat = st.radio("Category", cats, horizontal=True, key="gloss_cat")
@@ -12495,18 +12494,20 @@ def main():
         except Exception:
             q_i = 0
         st.markdown(
-            '<div class="how-hero"><h3>Girl Magic — How We Run It</h3>'
+            '<div class="how-hero"><h3>✨ Girl Magic Glossary 2.0</h3>'
             f'<p>Quote of the day: {quotes[q_i]}</p>'
-            "<p>New here? Read the walkthrough under this box. Then open Glossary 2.0. You do not need our slang to use the math.</p></div>",
+            "<p>This is the language. Search it. Walkthrough is under the cards if you are new.</p></div>",
             unsafe_allow_html=True,
         )
+        render_mini_glossary()
+        st.markdown('<div class="how-tier">Daily flow</div>', unsafe_allow_html=True)
         with st.expander("👋 How to use this site if you don’t know us", expanded=True):
             st.markdown(
                 "1. **Fetch** the slate. Nothing moves until that happens.\n"
-                "2. **Alignment** = data + odds in one card. Hover a word if you don’t know it. "
+                "2. **Confidence** = data + odds in one card, 0–100. Hover a word if you don’t know it. "
                 "This is the scouting report. It is **not** the bet slip.\n"
                 "3. **Run It** = the Board. Green names are the ticket list. Gray is homework. "
-                "The number next to the name is the **Board score**, not Align.\n"
+                "The number next to the name is the **Board score**, not Confidence.\n"
                 "4. **Money Talks** = Shop. Which book to buy and whether the number is **mispriced** "
                 "(too long vs the pack = value, too short = tax).\n"
                 "5. **Need One** = 0.5 rush / catch / reception props. Separate from homers and TDs.\n"
@@ -12614,9 +12615,6 @@ def main():
                 "- **Score hold** at 85. Queen commentary is mood, not math.\n"
                 "- Secrets stay on the cards. This page is the map, not the vault."
             )
-        st.markdown("#### Glossary 2.0")
-        st.caption("This is the only glossary. Search it. Hover Align cards for the same words.")
-        render_mini_glossary()
         site_section_close()
 
     st.markdown(
