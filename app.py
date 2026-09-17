@@ -9459,20 +9459,27 @@ def render_alignment_tab(ev_board, watch_board=None):
                         draft_bit = "draft " + sm.split("draft", 1)[1].split("·")[0].strip()
                     except Exception:
                         draft_bit = ""
-                rook = "🐣 Rookie" if data.get("rookie") else "—"
+                rook = "🐣 Rookie" if data.get("rookie") else ""
+                heat_txt = "trending up — more looks." if "Heating" in str(data.get("trend")) else "volume is quieter."
+                pulse_html = (
+                    f'<details class="al-fold" open><summary>🧠 Player Pulse</summary>'
+                    f'<div class="al-pack">{data.get("trend") or "😐"} — {heat_txt}<br>'
+                    f'<span title="WR1 = team top pass catcher">Role {data.get("role") or "—"}</span> {rook}<br>'
+                    f'🎯 Attack: {data.get("attack")} — that is the lane.<br>'
+                    f'<span title="Targets = how often the QB looks his way">{sm}</span></div></details>'
+                    f'<details class="al-fold" open><summary>⚔️ Matchup Vibe</summary>'
+                    f'<div class="al-pack"><span title="Last 10 games, per game, vs this position">{data.get("dvp_line") or "DVP not tagged"}</span><br>'
+                    f'<span title="His yards home vs road">{data.get("nfl_ha") or "—"}</span><br>'
+                    f'<span title="Night / national TV">{data.get("nfl_pt") or "—"}</span></div></details>'
+                    f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
+                )
                 st.markdown(
                     f'<div class="{klass}">'
                     f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 {vibe} · TD · {align}</span></div>'
                     f'{_petty_meter(align)}'
-                    f'<details class="al-fold" open><summary>📊 Player Pulse</summary>'
-                    f'<div class="al-pack">{data.get("trend") or "😐"} · Role {data.get("role") or "—"} · {rook}<br>'
-                    f'🎯 Attack: {data.get("attack")}<br>📈 {sm}</div></details>'
-                    f'<details class="al-fold" open><summary>🧠 Matchup</summary>'
-                    f'<div class="al-pack">🛡️ {data.get("dvp_line") or "DVP not tagged"}<br>'
-                    f'🏠 {data.get("nfl_ha") or "—"} · 🌙 {data.get("nfl_pt") or "—"}<br>'
-                    f'💸 {price} {book_label(item.get("best_book"))} · {stamps}</div></details>'
+                    f'{pulse_html}'
                     f'<div class="al-tags">{"".join(pills)}</div>'
-                    f'<div class="card-foot">Board {item.get("score") or "—"} · Edge {data.get("score")} · Attack {data.get("attack")} · 🏈 TD board</div>'
+                    f'<div class="card-foot" title="Board = ticket stack. Edge = Align upside.">Board {item.get("score") or "—"} · Edge {data.get("score")} · Attack {data.get("attack")} · 🏈 TD board</div>'
                     f"</div>",
                     unsafe_allow_html=True,
                 )
