@@ -8420,6 +8420,74 @@ def fetch_team_hr9():
     return out
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_team_id_map():
+    try:
+        r = requests.get("https://statsapi.mlb.com/api/v1/teams", params={"sportId": 1}, timeout=12)
+        r.raise_for_status()
+        return {_team_key(t.get("name")): t.get("id") for t in (r.json() or {}).get("teams") or []}
+    except Exception:
+        return {}
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_reliever_ids(team_key):
+    """Pitchers on that club with almost no starts = bullpen."""
+    tid = (fetch_team_id_map() or {}).get(team_key)
+    if not tid:
+        return []
+    year = datetime.now().year
+    try:
+        r = requests.get(
+            f"https://statsapi.mlb.com/api/v1/teams/{tid}/stats",
+            params={"stats": "season", "group": "pitching", "season": year},
+            timeout=12,
+        )
+        r.raise_for_status()
+        splits = (((r.json() or {}).get("stats") or [{}])[0].get("splits") or [])
+    except Exception:
+        return []
+    rps = []
+    for s in splits:
+        stt = s.get("stat") or {}
+        try:
+            gs = int(float(stt.get("gamesStarted") or 0))
+            g = int(float(stt.get("gamesPlayed") or stt.get("games") or 0))
+        except Exception:
+            gs, g = 0, 0
+        if gs > 2 or g < 5:
+            continue
+        pid = ((s.get("player") or {}).get("id"))
+        name = ((s.get("player") or {}).get("fullName"))
+        if pid:
+            rps.append({"id": int(pid), "name": name, "g": g, "gs": gs})
+    rps.sort(key=lambda x: -x["g"])
+    return rps[:6]
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_batter_vs_relievers(batter_id, rp_ids):
+    """This hitter vs that team's current relievers, summed."""
+    if not batter_id or not rp_ids:
+        return {}
+    pa = hr = h = ab = 0
+    names = []
+    for pid in rp_ids[:5]:
+        vs = fetch_vs_pitcher(batter_id, pid) or {}
+        if not vs.get("pa"):
+            continue
+        pa += int(vs.get("pa") or 0)
+        hr += int(vs.get("hr") or 0)
+        h += int(vs.get("h") or 0)
+        ab += int(vs.get("ab") or vs.get("pa") or 0)
+        names.append(str(pid))
+    if not pa:
+        return {}
+    slg = None
+    # vs endpoint may only give slg per pair; skip fake slg if we only have HR/PA
+    return {"pa": pa, "hr": hr, "arms": len(names)}
+
+
 _PARK_CF = {
     "coors field": 0, "yankee stadium": 75, "fenway": 45,
     "wrigley": 30, "dodger stadium": 20, "oracle": 95,
@@ -8919,6 +8987,10 @@ def render_alignment_tab(ev_board, watch_board=None):
                 opp_team = k
                 break
         bp = ((live.get("hr9") or {}).get(opp_team) or {})
+        vs_pen = {}
+        if bid and opp_team:
+            rps = fetch_reliever_ids(opp_team)
+            vs_pen = fetch_batter_vs_relievers(bid, [x["id"] for x in rps]) or {}
         match_boost = 0
         if park_f >= 105:
             match_boost += 5
@@ -8942,12 +9014,13 @@ def render_alignment_tab(ev_board, watch_board=None):
         if vpa:
             vs_line = f"vs {opp} · {int(vhr or 0)} HR in {int(vpa)} PA · SLG {slg or 0:.3f}"
         park_line = f"HR factor {park_f}"
-        pen_line = "no last-30 team pitching yet"
-        if bp.get("hr9") is not None:
+        if vs_pen.get("pa"):
             pen_line = (
-                f"opp pitchers last 30 days (starters + relievers mixed) "
-                f"HR/9 {bp['hr9']:.2f} · ERA {bp.get('era') or '—'}"
+                f"this hitter vs that bullpen · {int(vs_pen.get('hr') or 0)} HR "
+                f"in {int(vs_pen['pa'])} PA vs {vs_pen.get('arms')} relievers"
             )
+        else:
+            pen_line = ""
         data["park_line"] = park_line
         data["vs_line"] = vs_line
         data["pen_line"] = pen_line
@@ -9082,6 +9155,9 @@ def render_alignment_tab(ev_board, watch_board=None):
             vs_bit = vs_l
         else:
             vs_bit = data.get("matchup") or vs_l or "—"
+        pen_html = ""
+        if data.get("pen_line"):
+            pen_html = f'<div class="card-line"><b>VS BULLPEN</b> {data.get("pen_line")}</div>'
         with cols[i % 3]:
             st.markdown(
                 f'<div class="{klass}">'
@@ -9093,7 +9169,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="card-line"><b>ODDS</b> {price} {book_label(item.get("best_book"))} · {stamps}</div>'
                 f'<div class="card-line"><b>PARK</b> {porch} ({pf}) · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
                 f'<div class="card-line"><b>VS SP</b> {vs_bit}</div>'
-                f'<div class="card-line"><b>OPP PITCHING</b> {data.get("pen_line") or "—"}</div>'
+                f'{pen_html}'
                 f'<div class="card-line">{"".join(pills)}</div>'
                 f'<div class="card-line"><span class="al-chip">{data.get("split_ha") or ""}</span> '
                 f'<span class="al-chip">{data.get("split_dn") or ""}</span></div>'
@@ -9103,7 +9179,7 @@ def render_alignment_tab(ev_board, watch_board=None):
             )
     st.caption(
         "Board still decides if we ticket it. "
-        "OPP PITCHING is the other team’s whole staff last 30 days — not late-inning relievers only. We don’t have a free RP-only feed yet."
+        "VS BULLPEN only shows when this hitter has plate appearances against that team’s current relievers. No sample = no line."
     )
 
 
