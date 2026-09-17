@@ -90822,5 +90822,128 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.86
+  },
+  {
+    "id": "2026-09-16_Kyle Schwarber_shop_lean_179",
+    "date": "2026-09-16",
+    "time": "05:04 PM",
+    "player": "Kyle Schwarber",
+    "score": 0,
+    "edge": 179,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 310,
+      "caesars": 575,
+      "draftkings": 600,
+      "fanatics": 800,
+      "fanduel": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T00:04:45.234457+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Dylan Beavers_shop_lean_165",
+    "date": "2026-09-16",
+    "time": "05:04 PM",
+    "player": "Dylan Beavers",
+    "score": 0,
+    "edge": 165,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 700,
+    "book_prices": {
+      "bet365": 475,
+      "caesars": 700,
+      "draftkings": 700,
+      "fanatics": 900,
+      "fanduel": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T00:04:45.236004+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Will Smith_shop_lean_85",
+    "date": "2026-09-16",
+    "time": "05:04 PM",
+    "player": "Will Smith",
+    "score": 0,
+    "edge": 85,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 587,
+    "book_prices": {
+      "bet365": 400,
+      "caesars": 575,
+      "draftkings": 550,
+      "fanatics": 700,
+      "fanduel": 600,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T00:04:45.240908+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Willson Contreras_shop_take_54",
+    "date": "2026-09-16",
+    "time": "05:04 PM",
+    "player": "Willson Contreras",
+    "score": 0,
+    "edge": 54,
+    "best_price": 450,
+    "best_book": "fanatics",
+    "median": 390,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 350,
+      "caesars": 390,
+      "draftkings": 381,
+      "fanatics": 450,
+      "fanduel": 390,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:04:45.245613+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
