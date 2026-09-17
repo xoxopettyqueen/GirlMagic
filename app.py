@@ -1002,7 +1002,7 @@ def lock_entry_from_results(player):
 
 
 def methods_min():
-    return 1 if active_sport() == "NFL" else METHODS_MIN
+    return METHODS_MIN
 
 
 def tracker_min_n():
@@ -1099,7 +1099,7 @@ BOARD_MAX_PER_TEAM = 3
 BOARD_MAX_PER_GAME = 4
 TEAM_PICK_MIN_SCORE = 30  # floor pick: 1 per team when nobody greened; not TAKE IT
 SCORE_TAKE_OVERRIDE = 85  # fat stack can green even on a dead 30 / long number ≤999
-SCORE_SOFT_TAKE = 70      # petty score hold: keep TAKE if 70+ even when Benford/Num miss
+SCORE_SOFT_TAKE = 85      # was 70 — that made TAKE ≈ WATCH. 85+ only.
 
 # PRIORITY = must have >=1 to unlock TAKE IT
 # Tracker 9/10: MGM-as-ticket 11% (−1). MGM 50 book×ending 7% (−5). MGM 00 8%.
@@ -1176,6 +1176,7 @@ SUPPORT_ONLY = {
     "EV Support", "Kelly Support", "EV Caution", "Kelly Caution",
     "Trend Heating", "Trend Cooling", "Trend Chaotic",
     "B365 over HardRock", "B365 over MGM", "Fanatics over pack", "HardRock over pack",
+    "Caesars 90", "HardRock 50", "HardRock 00",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
 # Name magic can still use a slightly wider set
@@ -1206,7 +1207,7 @@ TRACKER_ALWAYS = {
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
     "FD 90", "FD 50", "FD 40", "MGM 60", "MGM 10", "MGM 40",
     "B365 over HardRock", "B365 over MGM", "Fanatics over pack", "HardRock over pack",
-    "Mispriced line",
+    "Mispriced line", "Caesars 90", "HardRock 50", "HardRock 00",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
 MGM_ENDINGS = (0, 25, 50, 75)
@@ -1715,6 +1716,8 @@ GLOSSARY_V2 = {
         ("Petty Upside / Edge", "How loud the data side is. Footer line on Align cards."),
         ("Active / Whispers / Homework", "MLB: Align 85+ / 70–84 / under 70. NFL: plus-money under +500 / +500+ longshots / rookies and thin volume."),
         ("Weekly adjust", "Receipts + Tracker by tag. Cold stamps get demoted. Hot support can get watched harder. Never blindly keep a dead tell."),
+        ("Tickets vs Research", "Recap pills: Tickets = TAKE / Shop TAKE. Research = WATCH / LEAN. Grade both. TAKE must beat Research or the floor goes up."),
+        ("Caesars 90 / HardRock 50 / 00", "Other-book endings we now stamp and track. Support until n ≥ 25 and they beat baseline."),
     ],
     "📊 Data": [
         ("⚡ Exit Velocity (EV)", "How hard the ball leaves the bat. 95+ mph = bomb potential."),
@@ -5546,6 +5549,17 @@ def render_run_it_recap():
     )
     queen = "Queen says: Run It names went." + (" Fanatics loud again." if fn_loud else "")
     st.markdown(f'<div class="wg-queen" style="text-align:left">{queen}</div>', unsafe_allow_html=True)
+    slice_r = st.radio(
+        "recap_slice",
+        ["All graded", "Tickets only", "Research only"],
+        horizontal=True,
+        key="recap_slice",
+        label_visibility="collapsed",
+    )
+    if slice_r.startswith("Tickets"):
+        keep = [r for r in keep if str(r.get("source") or "") in ("take_it", "shop_take", "bet_this", "take")]
+    elif slice_r.startswith("Research"):
+        keep = [r for r in keep if str(r.get("source") or "") in ("watch", "shop_lean", "lean", "research")]
     hits = sum(1 for r in keep if str(r.get("result")).upper() == "HIT")
     misses = sum(1 for r in keep if str(r.get("result")).upper() == "MISS")
     st.caption(f"{hits} HIT · {misses} MISS · {len(keep)} on the recap")
@@ -7236,6 +7250,16 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 _add("FD 50", f"FD ends 50 at {format_odds(fd)}")
             elif fe == 40:
                 _add("FD 40", f"FD ends 40 at {format_odds(fd)}")
+        cz = books.get("caesars")
+        if cz is not None and last_two(cz) == 90 and abs(int(cz)) >= 400:
+            _add("Caesars 90", f"Caesars ends 90 at {format_odds(cz)}")
+        hrp = books.get("hardrockbet")
+        if hrp is not None:
+            he = last_two(hrp)
+            if he == 50 and abs(int(hrp)) >= 400:
+                _add("HardRock 50", f"HardRock ends 50 at {format_odds(hrp)}")
+            elif he == 0 and abs(int(hrp)) >= 400:
+                _add("HardRock 00", f"HardRock ends 00 at {format_odds(hrp)}")
         mgm = books.get("betmgm")
         if mgm is not None:
             me = last_two(mgm)
@@ -10198,10 +10222,11 @@ def main():
         "Names": "Names 💅", "Signals": "Signals 📡",
         "Moves": "Moves 💸", "Trends": "Trends 💅", "Late": "Ghosts 👻",
         "Lock": "Lock 🔒", "Search": "Search",
-        "Lock Lab": "🔒 Locked & Loaded", "Tracker": "📈 Petty Receipts",
-        "Results": "💎 What Spoke Today",
-        "Backtest": "🧠 Petty Time Machine", "Heat": "Heat",
-        "How": "⚙️ How We Roll", "GradeShop": "Shop card",
+        "Lock Lab": "🔒 Locks", "Tracker": "📈 Tracker",
+        "Results": "💎 Spoke",
+        "Backtest": "🧠 Time Machine", "Heat": "🔥 Heat",
+        "How": "⚙️ How We Roll", "GradeShop": "💸 Shop Card",
+        "Lock": "🔐 Pregame", "Search": "🔎 Search",
         "Narratives": "📰 Narratives",
         "GradeShop": "Shop card",
     }
