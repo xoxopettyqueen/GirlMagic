@@ -120166,5 +120166,44 @@
     "benford_note": "",
     "benford_cluster": 0.57,
     "graded_by": "one_per_day"
+  },
+  {
+    "id": "2026-09-17_Junior Caminero_watch_33",
+    "date": "2026-09-17",
+    "time": "10:33 AM",
+    "player": "Junior Caminero",
+    "score": 33,
+    "edge": 37,
+    "best_price": 440,
+    "best_book": "fanatics",
+    "median": 392.5,
+    "book_prices": {
+      "draftkings": 370,
+      "fanatics": 440,
+      "fanduel": 410,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 40,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD Pattern",
+      "Books tight",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-17T17:33:22.129854+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "TAMPA BAY RAYS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.5
   }
 ]
