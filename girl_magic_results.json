@@ -10742,13 +10742,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-13T16:51:39.102429+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-13_Heriberto Hernandez_shop_lean_27",
@@ -17752,7 +17752,7 @@
       "Kelly Support"
     ],
     "core": 1,
-    "result": "HIT",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-13T17:27:12.300884+00:00",
     "price_source": "pregame_lock",
@@ -17762,7 +17762,7 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.6,
-    "graded_by": "nfl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-13_Anthony Volpe_watch_20",
@@ -35696,13 +35696,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T04:32:13.867391+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-13_Ke'Bryan Hayes_shop_lean_35",
@@ -39518,13 +39518,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T14:39:53.497582+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Heston Kjerstad_shop_lean_64",
@@ -41147,13 +41147,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T14:39:53.509275+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Tommy Edman_shop_lean_26",
@@ -41473,7 +41473,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "HIT",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T14:45:26.527822+00:00",
     "price_source": "pregame_lock",
@@ -41484,7 +41484,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "upgraded_from": "watch",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Josue De Paula_watch_68",
@@ -41860,13 +41860,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T14:45:30.467352+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Ronald Acu\u00f1a Jr._shop_take_50",
@@ -42547,7 +42547,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "HIT",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-14T15:08:00.055898+00:00",
     "price_source": "pregame_lock",
@@ -42557,7 +42557,7 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5,
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Jared Young_watch_11",
@@ -43707,7 +43707,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "HIT",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-09-14T15:11:43.163325+00:00",
     "price_source": "pregame_lock",
@@ -43717,7 +43717,7 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.33,
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Corbin Carroll_watch_39",
@@ -49059,7 +49059,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "HIT",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-14T21:36:14.019666+00:00",
     "price_source": "pregame_lock",
@@ -49069,7 +49069,7 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5,
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Pavin Smith_shop_take_125",
@@ -49093,13 +49093,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-14T21:36:16.667798+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Ryan Jeffers_shop_take_112",
@@ -50809,12 +50809,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T00:04:06.390477+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-14_Mickey Moniak_shop_take_53",
@@ -50872,13 +50873,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T00:04:06.393015+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Hunter Goodman_shop_take_50",
@@ -53058,13 +53059,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T04:11:09.102006+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Hector Rodriguez_shop_lean_118",
@@ -53272,13 +53273,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T04:11:09.104717+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_William Contreras_shop_lean_58",
@@ -53636,13 +53637,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T04:11:09.110046+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-14_Brice Turang_shop_lean_31",
@@ -55743,7 +55744,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "HIT",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-15T12:26:10.760674+00:00",
     "price_source": "pregame_lock",
@@ -55753,7 +55754,7 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.67,
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-15_Jo Adell_watch_6",
@@ -56325,7 +56326,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "HIT",
+    "result": "MISS",
     "source": "watch",
     "logged_at": "2026-09-15T12:26:10.897692+00:00",
     "price_source": "pregame_lock",
@@ -56335,7 +56336,7 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.67,
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-15_Osleivis Basabe_watch_42",
@@ -58266,13 +58267,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T12:26:14.143872+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-15_Cam Smith_shop_lean_73",
@@ -59218,13 +59219,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T12:26:14.149844+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-15_Rece Hinds_shop_take_50",
@@ -73203,13 +73204,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-15T22:19:43.748662+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-15_Troy Johnston_shop_take_104",
@@ -74222,13 +74223,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-16T04:24:50.607334+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-15_John Peck_shop_lean_34",
@@ -77843,13 +77844,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-16T15:40:09.189329+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-16_Elias D\u00edaz_shop_lean_49",
@@ -80884,13 +80885,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-16T16:00:12.358497+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
-    "graded_by": "mlb_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-16_Christian Moore_shop_lean_31",
