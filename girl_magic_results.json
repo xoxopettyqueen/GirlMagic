@@ -106871,5 +106871,67 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Heriberto Hern\u00e1ndez_shop_lean_58",
+    "date": "2026-09-16",
+    "time": "07:23 PM",
+    "player": "Heriberto Hern\u00e1ndez",
+    "score": 0,
+    "edge": 58,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 662,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 500,
+      "fanatics": 700,
+      "fanduel": 700,
+      "hardrockbet": 700,
+      "bet365": 400
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T02:23:15.261877+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Mike Trout_shop_lean_25",
+    "date": "2026-09-16",
+    "time": "07:23 PM",
+    "player": "Mike Trout",
+    "score": 0,
+    "edge": 25,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 490,
+    "book_prices": {
+      "bet365": 425,
+      "caesars": 500,
+      "draftkings": 475,
+      "fanatics": 525,
+      "fanduel": 480,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T02:23:15.265429+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
