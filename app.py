@@ -1681,7 +1681,7 @@ def site_section_close():
 QUEEN_PHRASES = [
     ("💚", "cleared the list", "Passed the Board gates. Green name. Short list. We actually play this one."),
     ("💅", "run it, baddie", "Petty Mode words for TAKE IT. Same math, same green card."),
-    ("💖", "score hold", "Petty Score 70+. Keeps a green when Benford or numerology miss. Never invents one."),
+    ("💖", "score hold", "Petty Score 85+. Keeps a green when Benford or numerology miss. Never invents one."),
     ("💜", "watch it, don’t force the ticket", "Not enough premium methods. Log it. Don’t buy from this card."),
     ("⚪", "close, not cleared", "Tags fired, but book / ending / score / edge didn’t all land. Homework, not a ticket."),
     ("👑", "Queen cleared it", "Same as cleared the list — personality line, not a second scoring system."),
@@ -1710,6 +1710,21 @@ def render_card_guide():
 
 
 GLOSSARY_V2 = {
+    "🧭 How": [
+        ("Fetch", "The only moment new odds and Lock snapshots save. Nothing else on the site is live until you Fetch."),
+        ("Green / TAKE", "Cleared the list. Two premium stamps. Score hold is 85 now, not 70. This is the ticket."),
+        ("Gray / PASS", "Tags fired. Floor missed. Homework, not a dare."),
+        ("Eyes / WATCH", "Log it for grade. Do not force the ticket."),
+        ("Run It", "The Board. Who cleared. Number next to the name = Board score."),
+        ("Money Talks", "Shop. Which book and whether the number is mispriced. Board can be green and Shop can still say DON'T."),
+        ("Alignment", "Scouting card. Data + odds + park. Not the bet slip."),
+        ("Need One", "0.5 rush / catch / reception, plus money. Separate from HR and Anytime TD."),
+        ("Receipts", "Spoke / Locks / Tracker / Time Machine. Grade HIT or MISS. Undo exists."),
+        ("Tickets vs Research", "Tickets = TAKE + Shop TAKE. Research = WATCH + LEAN. TAKE must beat Research or we raise the floor."),
+        ("Lock Open / Now / Close", "First look / latest pregame / last number before the book vanished at first pitch."),
+        ("Ghosts / Late / Fallen", "Showed up late or disappeared vs the last snapshot. Not automatic Takes."),
+        ("Petty Mode", "Louder words. Same math."),
+    ],
     "💫 Scores": [
         ("Board score", "The ticket stack on Run It. This is the number next to names on the Board. Align does not use this next to the name."),
         ("Align score", "Data + odds + context on the Align tab. Labeled “align score.” Not the Board score."),
@@ -1768,6 +1783,10 @@ GLOSSARY_V2 = {
         ("Mispriced line", "The number is off the pack. Longer than the other books = extra juice / value. Shorter = you’re paying a tax. Shop is where we judge that. Support stamps flag it. They do not Take by themselves."),
         ("Out of place / outlier", "One book is far from the cluster. Look. Don’t auto-buy."),
         ("Fair / pack", "Where the ticket books sit together. Shop compares your number to that pack."),
+        ("Fair line", "Shop’s blended number after the cushion. Not a sportsbook’s posted price."),
+        ("Gap", "Posted price minus fair. Fat gap on a long number can still be a flyer, not a Take."),
+        ("Kelly", "How loud the bankroll math is. Light / Avoid is not a Board green."),
+        ("DON'T / flyer lane", "Shop says do not buy. +1000 and dead 00 on a moon price stay DON'T even if EV looks cute."),
     ],
     "💎 Tags": [
         ("🔥 Heating", "EV + HH trending up."),
@@ -1776,6 +1795,17 @@ GLOSSARY_V2 = {
         ("💅 Petty Upside", "High-risk high-style lane."),
         ("💎 Longshot", "+500 or longer."),
         ("Priority / Premium / Support", "Priority can unlock TAKE with 2 premium. Support never greens alone."),
+        ("Last one left", "MGM group shrank and this name stayed. Sticky tell."),
+        ("Stayed in the group", "Still paired or tripled on MGM all day."),
+        ("DK FD-style", "DraftKings priced like a FanDuel pattern ending."),
+        ("FD+MGM classic", "FanDuel pattern and an MGM classic ending on the same name."),
+        ("Multi-book method", "Same stamp across more than one book."),
+        ("FD 90 / 50 / 40", "Exact FanDuel endings we track. 90 has been the loud one."),
+        ("Benford", "Whether the leading digits look natural or forced. Support, not a Take."),
+        ("Same initials / Cross / Same name", "Name tricks. Only count if a book method also fired. Prefer different teams."),
+        ("Score hold", "Petty Score 85+. Can keep a green when Benford/name miss. Cannot invent a green."),
+        ("HOT tile", "Tracker. Hit rate 15%+ vs this sport’s TAKE baseline. Thin n stays unlabeled."),
+        ("Baseline", "TAKE hit rate for this sport. Signals above it get the green border."),
     ],
     "🏟️ Park Vibes": [
         ("💥 Hot Porch", "HR factor 130+. Bombs fly."),
@@ -1803,6 +1833,9 @@ GLOSSARY_V2 = {
         ("Tickets vs Research", "Receipts. What we told people to bet vs what we were only studying."),
         ("Savant / Statcast", "Live EV, hard-hit, barrel. Pulled for you. No CSV."),
         ("Wind vs CF", "Out to center helps. Into center fades. Crosswind is yellow."),
+        ("Shop long-ball", "Shop TAKE wants gap ≥ 35. LEAN ≥ 25. +1000 is flyer/DON'T."),
+        ("Dead 00 on a moon", "Ending 00 on +1000+ is junk. Shop fades it."),
+        ("under +400", "Hits more often because it’s short. Not our chaos lane. Do not promote it."),
     ],
 }
 
@@ -1944,7 +1977,7 @@ def petty_family_chips(method_list):
 
 
 def petty_score(methods, edge, core_count, benford_flag=None):
-    """0-100 stack score. Feeds TAKE IT (70+ can hold a green)."""
+    """0-100 stack score. Feeds TAKE IT (85+ can hold a green)."""
     base = girl_magic_score(core_count, edge, methods or [])
     ms = {normalize_method_name(m) for m in (methods or [])}
     extra = 0
@@ -12284,7 +12317,7 @@ def main():
                 "- **Gray / PASS** — tags fired. Score hold didn’t land. Homework, not a ticket.\n"
                 "- **Eyes / WATCH** — watch it, don’t force the ticket. Log it for grade.\n"
                 "- **Queen cleared it** — same as green. Personality line, not a second scoring system.\n\n"
-                "**Petty Score** ranks the stack. 70+ can **score hold** a green when Benford / numerology miss. It cannot invent a green.\n"
+                "**Petty Score** ranks the stack. 85+ can **score hold** a green when Benford / numerology miss. It cannot invent a green.\n"
                 "**Edge** = gap from the pack. Big edge with no **Priority** + 2 **Premium** is still gray.\n"
                 "Petty Mode changes the words. It does not change the math."
             )
@@ -12347,13 +12380,12 @@ def main():
                 "- Only **0.5 HR Over**. No 2+ . No unders. Rarely under +200. Long-ball is +500+.\n"
                 "- Green is the list. Everything else is homework.\n"
                 "- Two Premium + one Priority still beats one cute name match.\n"
-                "- **Score hold** at 70. Queen commentary is mood, not math.\n"
+                "- **Score hold** at 85. Queen commentary is mood, not math.\n"
                 "- Secrets stay on the cards. This page is the map, not the vault."
             )
-        with st.expander("💅 Girl Magic Glossary — same language as the welcome flow"):
-            render_mini_glossary()
-        st.caption("Need the language? That’s the Glossary — it’s how the math talks.")
-        st.caption("Manual only. Tags live on the cards. Recipes stay off this page.")
+        st.markdown("#### Glossary 2.0")
+        st.caption("This is the only glossary. Search it. Hover Align cards for the same words.")
+        render_mini_glossary()
         site_section_close()
 
     st.markdown(
