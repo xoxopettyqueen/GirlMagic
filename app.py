@@ -9353,11 +9353,11 @@ def render_alignment_tab(ev_board, watch_board=None):
                     except Exception:
                         draft_bit = ""
                 use_rows = (
-                    _align_kv("Usage", sm, "Targets, yards, TDs from nflverse this season + last")
-                    + _align_kv("Odds", f"{price} {book_label(item.get('best_book'))} · {stamps}")
-                    + _align_kv("DVP Matchup", data.get("dvp_line") or "defense not tagged yet", "What that D has given this position")
-                    + _align_kv("Home / Road", data.get("nfl_ha") or "—")
-                    + _align_kv("Primetime", data.get("nfl_pt") or "—")
+                    _align_kv("🏈 Usage", sm, "Targets, yards, TDs from nflverse this season + last")
+                    + _align_kv("💸 Odds", f"{price} {book_label(item.get('best_book'))} · {stamps}")
+                    + _align_kv("🛡️ DVP", data.get("dvp_line") or "defense not tagged yet", "What that D has given this position")
+                    + _align_kv("🏠 Home / Road", data.get("nfl_ha") or "—")
+                    + _align_kv("🌙 Primetime", data.get("nfl_pt") or "—")
                 )
                 why_rows = (
                     (_align_kv("Draft Profile", draft_bit) if draft_bit else "")
@@ -9399,7 +9399,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 else (data.get("summary") or "—")
             )
             if ev is not None and hh is not None and brl is not None:
-                data_line += f' · HR L7 {hr7 or "—"} · SLG L7 {slg7 or "—"} · Heating {heat} · Longshot {"Yes" if data.get("longshot") else "No"}'
+                data_line += f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             st.markdown(
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">{vibe} · {align}</span></div>'
@@ -9407,11 +9407,11 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<details class="al-fold" open><summary>📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
                 f'<details class="al-fold" open><summary>🧠 Context</summary>'
-                f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · {data.get("weather") or ""}'
+                f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · 🌡️ {data.get("weather") or ""}'
                 + (f"<br>🧩 {data.get('pen_line')}" if data.get("pen_line") else "")
                 + f"<br>💸 {price} {book_label(item.get('best_book'))} · {stamps}</div></details>"
                 f'<details class="al-fold" open><summary>⚙️ Splits</summary>'
-                f'<div class="al-pack">{data.get("split_ha") or "—"}<br>{data.get("split_dn") or "—"}<br>{data.get("split_lr") or "—"}</div></details>'
+                f'<div class="al-pack">🏠 {data.get("split_ha") or "—"}<br>🌙 {data.get("split_dn") or "—"}<br>🆚 {data.get("split_lr") or "—"}</div></details>'
                 f'<div class="al-tags">{"".join(pills)}</div>'
                 f'<div class="card-foot">Board Score {item.get("score") or "—"} · Upside {data.get("score")} · Board still decides if we ticket it.</div>'
                 f"</div>",
