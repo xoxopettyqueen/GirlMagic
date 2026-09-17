@@ -8992,10 +8992,12 @@ def render_alignment_tab(ev_board, watch_board=None):
         .wind-cross{color:#fbbf24}
         .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
         .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:560px;margin:0 auto 18px;padding:22px}
-        .al-kv{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #2a2038;padding:4px 0;font-size:.78rem}
-        .al-kv span:first-child{color:#c4b5d6;letter-spacing:.04em;text-transform:uppercase;font-size:.64rem}
-        .al-sec{font-size:.62rem;letter-spacing:1.4px;text-transform:uppercase;color:#f9a8d4;margin:10px 0 4px;font-weight:800}
-        .al-tags{text-align:center;margin-top:8px}
+        .al-kv{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #24182f;padding:2px 0;font-size:.74rem}
+        .al-sec{font-size:.62rem;letter-spacing:1.4px;text-transform:uppercase;color:#00e6c3;margin:6px 0 3px;font-weight:800}
+        .al-tags{text-align:center;margin-top:6px}
+        .al-pack{font-size:.78rem;line-height:1.35;color:#fce7f3;margin:0 0 6px}
+        details.al-fold{margin:4px 0}
+        details.al-fold>summary{cursor:pointer;color:#00e6c3;font-size:.62rem;letter-spacing:1.3px;text-transform:uppercase;font-weight:800}
         @keyframes alShimmer{0%{left:-40%}100%{left:120%}}
         </style>
         """,
@@ -9352,32 +9354,28 @@ def render_alignment_tab(ev_board, watch_board=None):
             except Exception:
                 pass
             heat = "Yes" if "heating" in summ else "No"
-            rows = (
-                _align_kv("Exit Velocity (Avg)", f"{ev:.1f} mph" if ev else "—", "How hard the ball leaves the bat")
-                + _align_kv("Hard-Hit Rate", f"{hh:.0f}%" if hh is not None else "—", "% of balls 95 mph+")
-                + _align_kv("Barrel Rate", f"{brl:.1f}%" if brl is not None else "—", "Ideal HR-contact rate")
-                + _align_kv("HR Last 7 Games", hr7 or "—", "Recent power")
-                + _align_kv("SLG Last 7 Games", slg7 or "—", "Recent total bases")
-                + _align_kv("Heating Trend", heat)
-                + _align_kv("Longshot", "Yes" if data.get("longshot") else "No")
+            data_line = (
+                f'<span title="How hard the ball leaves">EV {ev:.1f} mph</span> · '
+                f'<span title="% of balls 95mph+">HH {hh:.0f}%</span> · '
+                f'<span title="HR-quality contact">Barrel {brl:.1f}%</span>'
+                if ev is not None and hh is not None and brl is not None
+                else (data.get("summary") or "—")
             )
-            ctx = (
-                _align_kv("Pitcher", vs_bit)
-                + _align_kv("Park Vibe", f"{porch} ({pf}) · {data.get('weather') or ''}", "100 = league average HR park")
-                + (_align_kv("Bullpen", data.get("pen_line")) if data.get("pen_line") else "")
-                + _align_kv("Odds", f"{price} {book_label(item.get('best_book'))} · {stamps}")
-            )
+            if ev is not None and hh is not None and brl is not None:
+                data_line += f' · HR L7 {hr7 or "—"} · SLG L7 {slg7 or "—"} · Heating {heat} · Longshot {"Yes" if data.get("longshot") else "No"}'
             st.markdown(
                 f'<div class="{klass}">'
                 f'<div class="card-kicker">{vibe} · Alignment {align}</div>'
                 f'<div class="card-name">{item.get("player")}</div>'
                 f'{_petty_meter(align)}'
-                f'<div class="al-sec">Data</div>{rows}'
-                f'<div class="al-sec">Context</div>{ctx}'
-                f'<div class="al-sec">Splits</div>'
-                f'<div class="al-kv"><span>Home / Away</span><span>{data.get("split_ha") or "—"}</span></div>'
-                f'<div class="al-kv"><span>Day / Night</span><span>{data.get("split_dn") or "—"}</span></div>'
-                f'<div class="al-kv"><span>vs LHP / RHP</span><span>{data.get("split_lr") or "—"}</span></div>'
+                f'<details class="al-fold" open><summary>📊 Data</summary>'
+                f'<div class="al-pack">{data_line}</div></details>'
+                f'<details class="al-fold" open><summary>🧠 Context</summary>'
+                f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · {data.get("weather") or ""}'
+                + (f"<br>🧩 {data.get('pen_line')}" if data.get("pen_line") else "")
+                + f"<br>💸 {price} {book_label(item.get('best_book'))} · {stamps}</div></details>"
+                f'<details class="al-fold" open><summary>⚙️ Splits</summary>'
+                f'<div class="al-pack">{data.get("split_ha") or "—"}<br>{data.get("split_dn") or "—"}<br>{data.get("split_lr") or "—"}</div></details>'
                 f'<div class="al-tags">{"".join(pills)}</div>'
                 f'<div class="card-foot">Board Score {item.get("score") or "—"} · Upside {data.get("score")} · Board still decides if we ticket it.</div>'
                 f"</div>",
