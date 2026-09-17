@@ -1205,6 +1205,8 @@ TRACKER_ALWAYS = {
     "All books same", "Books tight", "FD+MGM classic",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
     "FD 90", "FD 50", "FD 40", "MGM 60", "MGM 10", "MGM 40",
+    "B365 over HardRock", "B365 over MGM", "Fanatics over pack", "HardRock over pack",
+    "Mispriced line",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
 MGM_ENDINGS = (0, 25, 50, 75)
@@ -1712,6 +1714,7 @@ GLOSSARY_V2 = {
         ("Align score", "Data + odds + context on the Align tab. Labeled “align score.” Not the Board score."),
         ("Petty Upside / Edge", "How loud the data side is. Footer line on Align cards."),
         ("Active / Whispers / Homework", "MLB: Align 85+ / 70–84 / under 70. NFL: plus-money under +500 / +500+ longshots / rookies and thin volume."),
+        ("Weekly adjust", "Receipts + Tracker by tag. Cold stamps get demoted. Hot support can get watched harder. Never blindly keep a dead tell."),
     ],
     "📊 Data": [
         ("⚡ Exit Velocity (EV)", "How hard the ball leaves the bat. 95+ mph = bomb potential."),
@@ -12198,7 +12201,10 @@ def main():
                 "(too long vs the pack = value, too short = tax).\n"
                 "5. **Need One** = 0.5 rush / catch / reception props. Separate from homers and TDs.\n"
                 "6. **Receipts** = did yesterday’s greens actually go. This is how we adjust.\n"
-                "7. **How We Roll** = this page. Glossary at the bottom. Search any word on a card.\n\n"
+                "7. **How We Roll** = this page. Glossary at the bottom. Search any word on a card.\n"
+                "8. **Weekly loop** — Receipts grades every logged Take and Watch. Tracker splits hit rate by tag "
+                "(DK 10, MGM groups, B365 over HardRock, Fanatics over pack, HardRock over pack). "
+                "If a stamp is cold for a week, it stays support or we fade it. Nothing is set-and-forget.\n\n"
                 "**Mispriced line:** the number is off the pack. Longer than the other books = they may be "
                 "giving extra juice. Shorter than the pack = you’re paying a tax. We stamp those. "
                 "Support stamps (B365 over HardRock / MGM, Fanatics or HardRock over the pack) are "
