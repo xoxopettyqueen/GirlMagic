@@ -9898,6 +9898,16 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .today-bubble.today-trap{border-color:#fbbf24;box-shadow:0 0 16px rgba(251,191,36,.3)}
         .today-bubble.today-soft{border-color:#67e8f9;box-shadow:0 0 14px rgba(103,232,249,.22)}
         .today-bubble.today-ok{border-color:#f9a8d4}
+        .tier-row{display:flex;gap:10px;flex-wrap:wrap;max-width:980px;margin:2px auto 14px}
+        .tier-card{flex:1;min-width:220px;border-radius:16px;padding:12px 14px;background:linear-gradient(165deg,#2a1020,#16101f);border:1px solid #2a2038}
+        .tier-card b{display:block;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 6px}
+        .tier-card p{margin:0;font-size:.8rem;line-height:1.4;color:#fce7f3}
+        .tier-hot{border-color:#fb7185;box-shadow:0 0 16px rgba(251,113,133,.28)}
+        .tier-hot b{color:#fb7185}
+        .tier-mid{border-color:#c4b5fd;box-shadow:0 0 14px rgba(196,181,253,.22)}
+        .tier-mid b{color:#c4b5fd}
+        .tier-cold{border-color:#67e8f9;box-shadow:0 0 12px rgba(103,232,249,.18)}
+        .tier-cold b{color:#67e8f9}
         .card.al-quiet:hover{transform:none}
         .card.al-lock:hover,.card.al-speak:hover,.card.al-shot:hover{transform:translateY(-3px);transition:transform .15s ease}
         .wind-out{color:#34d399;font-weight:700}
@@ -10264,10 +10274,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         f'<div class="petty-box"><div class="petty-num">{n_cold}</div><div class="petty-label">DATA COLD</div></div>'
         f'<div class="petty-box"><div class="petty-num">{len(cards)}</div><div class="petty-label">SLATE +400</div></div>'
         f'</div>'
-        f'<div class="al-pack" style="max-width:980px;margin:4px auto 10px;color:#b7a8c9;font-size:.78rem;line-height:1.45">'
-        f'<b style="color:#f9a8d4">HOT</b> — 3+ homer flags (EV 89.5+, HH 42%+, barrel 8%+, xSLG .420+, launch 18–35°, heat/HR L7). Barrel 11%+ and EV 90 is enough by itself. NFL: 3 of target share / heating / TDs / DVP paying TDs / used WR2-TE2-RB2.<br>'
-        f'<b style="color:#c4b5fd">MID</b> — exactly 2 flags. Fine profile, not the pile.<br>'
-        f'<b style="color:#9ca3af">COLD</b> — 0 or 1 flag. Still on the +400 slate.'
+        f'<div class="tier-row">'
+        f'<div class="tier-card tier-hot"><b>🔥 HOT · the pile</b><p>3+ flags. MLB: EV 89.5+ · HH 42%+ · barrel 8%+ · xSLG .420+ · launch 18–35° · heat / HR L7. Barrel 11%+ and EV 90 is enough by itself. NFL: 3 of target share / heating / TDs / DVP paying TDs / used WR2-TE2-RB2.</p></div>'
+        f'<div class="tier-card tier-mid"><b>💅 MID · fine profile</b><p>Exactly 2 flags. Cute contact or usage. Not the pile. Stamps can still make her loud.</p></div>'
+        f'<div class="tier-card tier-cold"><b>🧊 COLD · still on the slate</b><p>0 or 1 flag. +400 names we keep honest. Homework unless a stamp slaps.</p></div>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -10282,8 +10292,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
         st.caption(
-            "HOT = two loud contact flags + heat/HR/xSLG (NFL: real target share or heating). "
-            "MID = one flag. COLD = noise. Career-best split + cold week = trap, score drops. Worse split today always drops."
+            "🔥 Hot = 3+ flags. 💅 Mid = 2. 🧊 Cold = 0–1. "
+            "Career-best split + cold week = 🪤 trap. Worse split today always drops."
         )
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
