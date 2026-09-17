@@ -8856,6 +8856,13 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "nfl_ha": f"home {int(form.get('home_yds') or 0)} yds · road {int(form.get('away_yds') or 0)} yds",
             "nfl_pt": f"primetime {int(form.get('pt_yds') or 0)} yds / {int(form.get('pt_td') or 0)} TD",
             "nfl_pos": pos,
+            "trend": "🔥 Heating" if (form.get("tgt_share") or 0) >= 0.18 or (form.get("rec_td") or 0) >= 6 else ("🧊 Cooling" if (form.get("tgt_share") or 0) and float(form.get("tgt_share") or 0) < 0.08 else "😐 Neutral"),
+            "role": (
+                f"{pos}1" if pos and (form.get("tgt_share") or 0) >= 0.20
+                else (f"{pos}2" if pos and (form.get("tgt_share") or 0) >= 0.12 else (pos or "skill"))
+            ),
+            "attack": "💎 Longshot TD" if p >= 500 else ("🎯 Receptions + yards" if (form.get("tgt_share") or 0) >= 0.18 else "💣 Anytime TD"),
+            "rookie": bool(str(form.get("draft_year") or "")[-4:] == str(datetime.now().year) or str(form.get("rookie_season") or "")[-4:] == str(datetime.now().year)),
         }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
@@ -9257,7 +9264,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         ["🎯 Active", "🫧 Whispers", "📚 Homework"],
         horizontal=True,
         key="align_view",
-        help="Active = Locked + Spoke. Whispers = not a ticket yet. Homework = still cooking.",
+        help="NFL: Active = TD under +500. Whispers = longshot. Homework = rookies / low volume. MLB: Locked+Spoke / mid / leftover.",
     )
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
@@ -9281,7 +9288,19 @@ def render_alignment_tab(ev_board, watch_board=None):
             "summary": data.get("summary"),
         })
     save_align_events(ev_log)
-    if view.startswith("🎯"):
+    if sport == "NFL":
+        def _px(it):
+            try:
+                return abs(int(it.get("best_price") or 0))
+            except Exception:
+                return 0
+        if view.startswith("🎯"):
+            cards = [c for c in cards if _px(c[1]) < 500][:24]
+        elif view.startswith("🫧"):
+            cards = [c for c in cards if c[2].get("longshot") or _px(c[1]) >= 500]
+        elif view.startswith("📚"):
+            cards = [c for c in cards if c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
+    elif view.startswith("🎯"):
         cards = [c for c in cards if c[0] >= 85][:24]
     elif view.startswith("🫧"):
         cards = [c for c in cards if 70 <= c[0] < 85]
@@ -9352,27 +9371,20 @@ def render_alignment_tab(ev_board, watch_board=None):
                         draft_bit = "draft " + sm.split("draft", 1)[1].split("·")[0].strip()
                     except Exception:
                         draft_bit = ""
-                use_rows = (
-                    _align_kv("🏈 Usage", sm, "Targets, yards, TDs from nflverse this season + last")
-                    + _align_kv("💸 Odds", f"{price} {book_label(item.get('best_book'))} · {stamps}")
-                    + _align_kv("🛡️ DVP", data.get("dvp_line") or "defense not tagged yet", "What that D has given this position")
-                    + _align_kv("🏠 Home / Road", data.get("nfl_ha") or "—")
-                    + _align_kv("🌙 Primetime", data.get("nfl_pt") or "—")
-                )
-                why_rows = (
-                    (_align_kv("Draft Profile", draft_bit) if draft_bit else "")
-                    + _align_kv("Book Cluster", stamps)
-                    + _align_kv("Board Note", "Anytime TD board — not a homer card")
-                )
+                rook = "🐣 Rookie" if data.get("rookie") else "—"
                 st.markdown(
                     f'<div class="{klass}">'
-                    f'<div class="card-kicker">{vibe} · 🏈 Anytime TD · {align}</div>'
-                    f'<div class="card-name">{item.get("player")}</div>'
+                    f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 {vibe} · TD · {align}</span></div>'
                     f'{_petty_meter(align)}'
-                    f'<div class="al-sec">Usage + Odds</div>{use_rows}'
-                    f'<div class="al-sec">Context</div>{why_rows}'
+                    f'<details class="al-fold" open><summary>📊 Player Pulse</summary>'
+                    f'<div class="al-pack">{data.get("trend") or "😐"} · Role {data.get("role") or "—"} · {rook}<br>'
+                    f'🎯 Attack: {data.get("attack")}<br>📈 {sm}</div></details>'
+                    f'<details class="al-fold" open><summary>🧠 Matchup</summary>'
+                    f'<div class="al-pack">🛡️ {data.get("dvp_line") or "DVP not tagged"}<br>'
+                    f'🏠 {data.get("nfl_ha") or "—"} · 🌙 {data.get("nfl_pt") or "—"}<br>'
+                    f'💸 {price} {book_label(item.get("best_book"))} · {stamps}</div></details>'
                     f'<div class="al-tags">{"".join(pills)}</div>'
-                    f'<div class="card-foot">Board Score {item.get("score") or "—"} · Edge {data.get("score")} · TD Board not HR Board</div>'
+                    f'<div class="card-foot">Board {item.get("score") or "—"} · Edge {data.get("score")} · Attack {data.get("attack")} · 🏈 TD board</div>'
                     f"</div>",
                     unsafe_allow_html=True,
                 )
