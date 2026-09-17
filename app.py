@@ -1729,7 +1729,7 @@ GLOSSARY_V2 = {
         ("Board score", "The ticket stack on Run It. This is the number next to names on the Board. Align does not use this next to the name."),
         ("Confidence vs Board", "Confidence is the 0–100 on this tab. Board score is the ticket stack on Run It."),
         ("Petty Upside / Edge", "How loud the data side is. Footer line on Align cards."),
-        ("Active / Whispers / Homework", "MLB: Confidence 85+ / 70–84 / under 70. NFL: plus-money under +500 / +500+ longshots / rookies and thin volume."),
+        ("Active / Whispers / Homework", "MLB: Active = 70+ (85+ still Locked/Spoke on the card). Whispers = 60–69. Homework = under 60. NFL: Active = +100 to +499. Whispers = +500+. Homework = rookies / thin volume. Missing Savant or nflverse does not hide a Board/stamped name."),
         ("Weekly adjust", "Receipts + Tracker by tag. Cold stamps get demoted. Hot support can get watched harder. Never blindly keep a dead tell."),
         ("Tickets vs Research", "Recap pills: Tickets = TAKE / Shop TAKE. Research = WATCH / LEAN. Grade both. TAKE must beat Research or the floor goes up."),
         ("Caesars 90 / HardRock 50 / 00", "Other-book endings we now stamp and track. Support until n ≥ 25 and they beat baseline."),
@@ -9497,26 +9497,28 @@ def render_alignment_tab(ev_board, watch_board=None):
         )
         long_lane = 500 <= px <= 999 or (px >= 500 and data.get("longshot"))
         if sport == "NFL":
+            # Usage is a boost, not a veto. nflverse miss still lists if Board/stamps fired.
             data_hit = bool(summ) and "nflverse miss" not in summ
-            # Plus-money TD only. Favorites (-175) do not belong on this board.
             long_lane = signed_px >= 100
             rhythm = rhythm or bool(methods)
         board_take = bool(item.get("is_bet"))
+        board_watch = bool(item.get("is_watch") or item.get("watch"))
         board_score = int(item.get("score") or 0)
-        # HARD GATE: data + clustered books + a stamp + 70+ align.
-        # Longshot is a tag, not a free pass.
-        keep = (
-            data_hit
-            and books_n >= 2
-            and rhythm
-            and long_lane
-            and align >= 70
-        )
+        # Board/stamps can keep a name even if Savant/nflverse missed.
+        keep = False
+        if align >= 70 and books_n >= 2 and rhythm:
+            keep = True
+        if board_take and align >= 65:
+            keep = True
+        if board_watch and align >= 70 and (rhythm or books_n >= 2):
+            keep = True
+        if data_hit and books_n >= 2 and align >= 70:
+            keep = True
         if rookie_spike and books_n >= 2 and align >= 70 and rhythm:
             keep = True
-        if board_take and data_hit and align >= 70:
-            keep = True
         if sport == "NFL" and signed_px < 100:
+            keep = False
+        if sport != "NFL" and px and px < 200:
             keep = False
         if not keep:
             hidden += 1
@@ -9675,7 +9677,7 @@ def render_alignment_tab(ev_board, watch_board=None):
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
-        st.caption("Data spoke. Odds agreed. Board’s got the final say.")
+        st.caption("70+ lands here. 85+ still reads Locked/Spoke on the card. Board still tickets.")
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -9701,17 +9703,19 @@ def render_alignment_tab(ev_board, watch_board=None):
             except Exception:
                 return 0
         if view.startswith("🎯"):
-            cards = [c for c in cards if 100 <= _px(c[1]) < 500][:24]
+            # Sweet + mid plus-money. Long flyers live on Whispers.
+            cards = [c for c in cards if 100 <= _px(c[1]) < 500][:40]
         elif view.startswith("🫧"):
             cards = [c for c in cards if c[2].get("longshot") or _px(c[1]) >= 500]
         elif view.startswith("📚"):
             cards = [c for c in cards if c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
     elif view.startswith("🎯"):
-        cards = [c for c in cards if c[0] >= 85][:24]
+        # Active = cleared 70+. 85+ still gets the Locked/Spoke card vibe.
+        cards = [c for c in cards if c[0] >= 70][:40]
     elif view.startswith("🫧"):
-        cards = [c for c in cards if 70 <= c[0] < 85]
+        cards = [c for c in cards if 60 <= c[0] < 70]
     elif view.startswith("📚"):
-        cards = [c for c in cards if c[0] < 70]
+        cards = [c for c in cards if c[0] < 60]
     cols = st.columns(2)
     already = set()
     shown_i = 0
