@@ -108226,5 +108226,118 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.43
+  },
+  {
+    "id": "2026-09-16_Tampa Bay Buccaneers D/ST_shop_lean_45",
+    "date": "2026-09-16",
+    "time": "09:38 PM",
+    "player": "Tampa Bay Buccaneers D/ST",
+    "score": 0,
+    "edge": 45,
+    "best_price": 500,
+    "best_book": "draftkings",
+    "median": 425,
+    "book_prices": {
+      "betmgm": 425,
+      "draftkings": 500,
+      "fanatics": 380
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T04:38:25.332804+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Jalen Nailor_shop_lean_35",
+    "date": "2026-09-16",
+    "time": "09:38 PM",
+    "player": "Jalen Nailor",
+    "score": 0,
+    "edge": 35,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 400,
+    "book_prices": {
+      "bet365": 400,
+      "betmgm": 375,
+      "caesars": 400,
+      "fanatics": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T04:38:25.359899+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Los Angeles Rams D/ST_shop_lean_35",
+    "date": "2026-09-16",
+    "time": "09:38 PM",
+    "player": "Los Angeles Rams D/ST",
+    "score": 0,
+    "edge": 35,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 475,
+    "book_prices": {
+      "betmgm": 475,
+      "draftkings": 550,
+      "fanatics": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T04:38:25.361808+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_San Francisco 49ers D/ST_shop_lean_35",
+    "date": "2026-09-16",
+    "time": "09:38 PM",
+    "player": "San Francisco 49ers D/ST",
+    "score": 0,
+    "edge": 35,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 450,
+    "book_prices": {
+      "betmgm": 400,
+      "draftkings": 550,
+      "fanatics": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T04:38:25.365892+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
