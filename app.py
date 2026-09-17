@@ -1721,12 +1721,19 @@ GLOSSARY_V2 = {
         ("📈 SLG L7", "Slugging last 7 games. Total-base heat."),
         ("🔥 Heating", "Recent uptick in EV + HH. Trend is cooking."),
         ("💎 Longshot", "Price +500 or longer. Chaos lane."),
+        ("Savant pull", "Live Baseball Savant leaderboard. EV, hard-hit, barrel. No CSV drop."),
+        ("Contact gate", "Align only keeps hitters who clear EV / HH / barrel plus recent heat. Not the whole slate."),
+        ("SP HR/9", "How many homers that starter allows per nine. Higher = friendlier to bats."),
+        ("ERA next to SP", "Starter ERA. Context only. Not a ticket by itself."),
     ],
     "🧠 Context": [
         ("⚾ Pitcher Matchup", "Who’s on the mound and whether they feed bombs or kill them. SP HR/9 lives here."),
         ("🏟️ Park Vibe", "Stadium power rating. Hot Porch 💥 bombs fly. Cold Porch 🧊 pitcher’s park."),
         ("💸 Odds Cluster", "Multiple books on the same stamp = market confidence."),
         ("🧠 Board Note", "Board still decides if we ticket it. Align is the whisper, Board is the ticket."),
+        ("Wind out / in", "Green arrow = blowing out to CF. Red = blowing in. Yellow = crosswind."),
+        ("Temperature", "Open-Meteo at the park. Heat helps the ball carry a little. Not a method."),
+        ("Books clustered", "Two or more books on the player. Thin one-book prices get faded."),
     ],
     "⚙️ Splits": [
         ("🏠 Home / Away", "Some bats only cook at home. Some only on the road."),
@@ -1785,13 +1792,15 @@ GLOSSARY_V2 = {
         ("Park Vibe", "Hot Porch / Live Air / Neutral / Cold Porch from HR factor."),
         ("Align vs Board", "Align whispers. Board tickets. Footer shows both numbers labeled."),
         ("Tickets vs Research", "Receipts. What we told people to bet vs what we were only studying."),
+        ("Savant / Statcast", "Live EV, hard-hit, barrel. Pulled for you. No CSV."),
+        ("Wind vs CF", "Out to center helps. Into center fades. Crosswind is yellow."),
     ],
 }
 
 
 def render_mini_glossary():
     st.markdown("### ✨ Girl Magic Glossary 2.0")
-    st.caption("Learn the vibe, then roll the slate.")
+    st.caption("Learn the vibe, then roll the slate. On Align, hover a word — the same definitions live on the card.")
     q = st.text_input("Search the vibe…", key="gloss_q")
     cats = list(GLOSSARY_V2.keys())
     cat = st.radio("Category", cats, horizontal=True, key="gloss_cat")
@@ -9596,12 +9605,12 @@ def render_alignment_tab(ev_board, watch_board=None):
                     atk_txt = "Attack — anytime touchdown."
                 dvp = (data.get("dvp_line") or "No DVP tag yet.").replace(" · ", "<br>")
                 pulse_html = (
-                    f'<details class="al-fold" open><summary>🧠 Player Pulse</summary>'
+                    f'<details class="al-fold" open><summary title="How they are being used right now">🧠 Player Pulse</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
                     f'👑 <span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
                     f'🎯 {atk_txt}<br>'
                     f'📈 <span title="Targets = throws his way">{vol}</span></div></details>'
-                    f'<details class="al-fold" open><summary>⚔️ Matchup Vibe</summary>'
+                    f'<details class="al-fold" open><summary title="DVP last 10 games per game + his home/road/primetime totals">⚔️ Matchup Vibe</summary>'
                     f'<div class="al-pack">🛡️ <span title="Last 10 games, per game">{dvp}</span><br>'
                     f'🏠 {data.get("nfl_ha") or ""}<br>🌙 {data.get("nfl_pt") or ""}</div></details>'
                     f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
@@ -9644,13 +9653,13 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
                 f'{_petty_meter(align)}'
-                f'<details class="al-fold" open><summary>📊 Data</summary>'
+                f'<details class="al-fold" open><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
-                f'<details class="al-fold" open><summary>🧠 Context</summary>'
+                f'<details class="al-fold" open><summary title="Pitcher, park vibe, weather, odds stamps">🧠 Context</summary>'
                 f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · 🌡️ {data.get("weather") or ""}'
                 + (f"<br>🧩 {data.get('pen_line')}" if data.get("pen_line") else "")
                 + f"<br>💸 {price} {book_label(item.get('best_book'))} · {stamps}</div></details>"
-                f'<details class="al-fold" open><summary>⚙️ Splits</summary>'
+                f'<details class="al-fold" open><summary title="Home/away, day/night, vs left and right">⚙️ Splits</summary>'
                 f'<div class="al-pack">🏠 {data.get("split_ha") or "—"}<br>🌙 {data.get("split_dn") or "—"}<br>🆚 {data.get("split_lr") or "—"}</div></details>'
                 f'<div class="al-tags">{"".join(pills)}</div>'
                 f'<div class="card-foot">Board score {item.get("score") or "—"} · Align {align} · Board still decides if we ticket it.</div>'
