@@ -1706,6 +1706,12 @@ def render_card_guide():
 
 
 GLOSSARY_V2 = {
+    "💫 Scores": [
+        ("Board score", "The ticket stack on Run It. This is the number next to names on the Board. Align does not use this next to the name."),
+        ("Align score", "Data + odds + context on the Align tab. Labeled “align score.” Not the Board score."),
+        ("Petty Upside / Edge", "How loud the data side is. Footer line on Align cards."),
+        ("Active / Whispers / Homework", "MLB: Align 85+ / 70–84 / under 70. NFL: plus-money under +500 / +500+ longshots / rookies and thin volume."),
+    ],
     "📊 Data": [
         ("⚡ Exit Velocity (EV)", "How hard the ball leaves the bat. 95+ mph = bomb potential."),
         ("💥 Hard-Hit Rate (HH%)", "Share of balls hit 95+ mph. Higher = consistent power."),
@@ -1738,6 +1744,9 @@ GLOSSARY_V2 = {
         ("EV Support", "Expected value backing the pick."),
         ("Fanatics vs MGM", "Fanatics 80+ longer than MGM = signal book."),
         ("MGM", "Signal and grouping. Not the ticket we buy."),
+        ("Caesars / HardRock / Fanatics", "Ticket books we can buy. Fanatics alone without DK/FD/MGM = Watch, not Take."),
+        ("Kelly", "Bankroll confidence. Does not pick the name. 10%+ loud, under 1% homework."),
+        ("I Just Need One", "0.5 rush / rec / reception lines at +100 or higher. Board clearance is still manual."),
     ],
     "💎 Tags": [
         ("🔥 Heating", "EV + HH trending up."),
@@ -1754,18 +1763,23 @@ GLOSSARY_V2 = {
         ("🧊 Cold Porch", "Under 90. Pitcher’s park."),
     ],
     "🏈 NFL": [
-        ("📊 Player Pulse", "Usage + momentum. Heating / cooling / role."),
-        ("🎯 Attack Angle", "How we hunt them: TD, yards, receptions, or longshot."),
-        ("🐣 Rookie", "This-year draftee. Pop risk."),
-        ("🛡️ DVP", "Last 10 games, per game, what that D gave this position. Home / road / primetime of the defense."),
-        ("🏈 Anytime TD", "The only NFL ticket on this board."),
-        ("Show Active / Whispers / Homework", "NFL: under +500 / longshot / rookies-low volume."),
+        ("🏈 Anytime TD", "The only NFL ticket on Align. Plus money only. Favorites like -175 are off this tab."),
+        ("Plus money", "Price +100 or longer. Negative juice does not belong on Align."),
+        ("📊 Player Pulse", "Heating / cooling / role / attack in sentences. How they use him right now."),
+        ("🎯 Attack Angle", "Anytime TD, receptions + yards, or longshot TD. That’s the lane."),
+        ("WR1 / RB1", "Top usage at that position. WR2 / RB2 = second look."),
+        ("Targets", "How many times the QB throws his way."),
+        ("🐣 Rookie", "Drafted this year. Pop risk, not a free lock."),
+        ("🛡️ DVP", "Last 10 games, PER GAME, what that defense gave this position. Also split when that D is home, on the road, and in primetime."),
+        ("His last two seasons", "That player’s home / road / primetime totals. Not per game. Different from DVP."),
+        ("NFL Show filters", "Active = +100 to +499. Whispers = +500+. Homework = rookies / missing usage."),
     ],
     "⚾ MLB": [
-        ("0.5 HR Over", "The only baseball ticket. One homer."),
-        ("VS BULLPEN", "Only prints when this hitter has PA vs that team’s current relievers."),
-        ("Alignment Score", "Data + odds + context. 85+ can show on Active."),
-        ("Tickets vs Research", "Receipts ledger. What we told people to bet vs what we were studying."),
+        ("0.5 HR Over", "The only baseball ticket. One homer. Not 2+."),
+        ("VS BULLPEN", "Only prints when this hitter has PA vs that team’s current relievers. No fake staff ERA."),
+        ("Park Vibe", "Hot Porch / Live Air / Neutral / Cold Porch from HR factor."),
+        ("Align vs Board", "Align whispers. Board tickets. Footer shows both numbers labeled."),
+        ("Tickets vs Research", "Receipts. What we told people to bet vs what we were only studying."),
     ],
 }
 
@@ -9085,7 +9099,7 @@ def _petty_meter(align):
         f'<div style="background:#2a2038;border-radius:999px;height:8px;margin:6px 0 8px;overflow:hidden">'
         f'<div class="al-fill" style="width:{w}%;height:8px;border-radius:999px;'
         f'background:linear-gradient(90deg,#9b5fff,#ff3ebf,#00e6c3);animation:alFill .7s ease-out"></div></div>'
-        f'<div style="font-size:.68rem;color:#c4b5d6">DATA 🔮 &nbsp; ODDS 🎰 &nbsp; ALIGN 💫 &nbsp; <span class="gm-num">{a}</span></div>'
+        f'<div style="font-size:.68rem;color:#c4b5d6">data 🔮 · odds 🎰 · <span class="gm-num">align score {a}</span></div>'
     )
 
 
@@ -9503,11 +9517,11 @@ def render_alignment_tab(ev_board, watch_board=None):
                 )
                 st.markdown(
                     f'<div class="{klass}">'
-                    f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 TD · {align}</span></div>'
+                    f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 Anytime TD</span></div>'
                     f'{_petty_meter(align)}'
                     f'{pulse_html}'
                     f'<div class="al-tags">{"".join(pills)}</div>'
-                    f'<div class="card-foot" title="Board = ticket stack. Edge = Align upside.">Board {item.get("score") or "—"} · Edge {data.get("score")} · Attack {data.get("attack")} · 🏈 TD board</div>'
+                    f'<div class="card-foot" title="Board score is the ticket stack. Align score is data + odds + context.">Board score {item.get("score") or "—"} · Align {align} · Attack {data.get("attack")}</div>'
                     f"</div>",
                     unsafe_allow_html=True,
                 )
@@ -9537,7 +9551,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 data_line += f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             st.markdown(
                 f'<div class="{klass}">'
-                f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ HR · {align}</span></div>'
+                f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
                 f'{_petty_meter(align)}'
                 f'<details class="al-fold" open><summary>📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
@@ -9548,7 +9562,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<details class="al-fold" open><summary>⚙️ Splits</summary>'
                 f'<div class="al-pack">🏠 {data.get("split_ha") or "—"}<br>🌙 {data.get("split_dn") or "—"}<br>🆚 {data.get("split_lr") or "—"}</div></details>'
                 f'<div class="al-tags">{"".join(pills)}</div>'
-                f'<div class="card-foot">Board Score {item.get("score") or "—"} · Upside {data.get("score")} · Board still decides if we ticket it.</div>'
+                f'<div class="card-foot">Board score {item.get("score") or "—"} · Align {align} · Board still decides if we ticket it.</div>'
                 f"</div>",
                 unsafe_allow_html=True,
             )
