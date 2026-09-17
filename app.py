@@ -8942,9 +8942,12 @@ def render_alignment_tab(ev_board, watch_board=None):
         if vpa:
             vs_line = f"vs {opp} · {int(vhr or 0)} HR in {int(vpa)} PA · SLG {slg or 0:.3f}"
         park_line = f"HR factor {park_f}"
-        pen_line = "bullpen sample thin"
+        pen_line = "no last-30 team pitching yet"
         if bp.get("hr9") is not None:
-            pen_line = f"vs opp staff (bullpen proxy) HR/9 {bp['hr9']:.2f} · ERA {bp.get('era') or '—'}"
+            pen_line = (
+                f"opp pitchers last 30 days (starters + relievers mixed) "
+                f"HR/9 {bp['hr9']:.2f} · ERA {bp.get('era') or '—'}"
+            )
         data["park_line"] = park_line
         data["vs_line"] = vs_line
         data["pen_line"] = pen_line
@@ -9038,19 +9041,34 @@ def render_alignment_tab(ev_board, watch_board=None):
         shown_i += 1
         if shown_i > 24:
             break
-        flags = []
+        pills = []
         if data.get("longshot"):
-            flags.append("LONGSHOT")
-        if item.get("is_bet"):
-            flags.append("BOARD TAKE")
+            pills.append('<span class="al-chip">💎 Longshot</span>')
         if "heating" in (data.get("summary") or ""):
-            flags.append("HEATING")
+            pills.append('<span class="al-chip">🔥 Heating</span>')
         if set(str(m) for m in (item.get("methods") or [])) & _ALIGN_DIGIT:
-            flags.append("RHYTHM")
-        flags = " · ".join(flags)
+            pills.append('<span class="al-chip">💜 Rhythm</span>')
+        if item.get("is_bet"):
+            pills.append('<span class="al-chip">💚 Board take</span>')
+        if align >= 85:
+            pills.append('<span class="al-chip">✨ Petty Upside</span>')
+        pf = 100
+        try:
+            pl = str(data.get("park_line") or "")
+            if "factor" in pl.lower():
+                pf = int("".join(ch for ch in pl.split("factor")[-1] if ch.isdigit()) or "100")
+        except Exception:
+            pf = 100
+        if pf >= 130:
+            porch = "💥 Hot Porch"
+        elif pf >= 110:
+            porch = "🔥 Live Air"
+        elif pf >= 90:
+            porch = "🌬️ Neutral"
+        else:
+            porch = "🧊 Cold Porch"
         price = format_odds(item.get("best_price"))
-        tags = ", ".join(str(m) for m in (item.get("methods") or [])[:4]) or "no stamp yet"
-        note_html = "<br>".join(f"• {n}" for n in notes[:5])
+        stamps = " · ".join(str(m) for m in (item.get("methods") or [])[:4]) or "no stamp"
         klass = "card al-home"
         if data.get("longshot") and align >= 70:
             klass = "card al-shot"
@@ -9059,6 +9077,11 @@ def render_alignment_tab(ev_board, watch_board=None):
         if align >= 100 or item.get("is_bet"):
             klass = "card al-lock"
         wlane = data.get("wind_lane") or "cross"
+        vs_l = data.get("vs_line") or ""
+        if vs_l.lower().startswith("vs ") and (data.get("matchup") or "").split("(")[0].strip().lower() in vs_l.lower():
+            vs_bit = vs_l
+        else:
+            vs_bit = data.get("matchup") or vs_l or "—"
         with cols[i % 3]:
             st.markdown(
                 f'<div class="{klass}">'
@@ -9066,21 +9089,22 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<span class="score-pill">{align}</span>'
                 f'<div class="card-name">{item.get("player")}</div>'
                 f'{_petty_meter(align)}'
-                f'<div class="card-line"><b>Exit velo / hard-hit / barrel</b> — {data["summary"]}</div>'
-                f'<div class="card-line"><b>Odds</b> — {price} {book_label(item.get("best_book"))} · {tags}</div>'
-                f'<div class="card-line"><b>Matchup</b> — {data.get("matchup") or "—"}</div>'
-                f'<div class="card-line">🏟️ {data.get("park_line") or "—"} · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
-                f'<div class="card-line">⚔️ {data.get("vs_line") or "—"}</div>'
-                f'<div class="card-line">🧩 {data.get("pen_line") or "—"}</div>'
-                f'<div class="card-line"><span class="al-chip">🏠 {data.get("split_ha") or "—"}</span> '
-                f'<span class="al-chip">🌙 {data.get("split_dn") or "—"}</span></div>'
-                f'<div class="card-foot">Board still decides if we ticket it.</div>'
-                f'<div class="note">{note_html}</div>'
-                f'<div class="card-foot">{flags} · Board score {item.get("score") or "—"} · Petty {"Upside" if sport=="MLB" else "Edge"} {data["score"]}</div>'
+                f'<div class="card-line"><b>DATA</b> {data.get("summary")}</div>'
+                f'<div class="card-line"><b>ODDS</b> {price} {book_label(item.get("best_book"))} · {stamps}</div>'
+                f'<div class="card-line"><b>PARK</b> {porch} ({pf}) · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
+                f'<div class="card-line"><b>VS SP</b> {vs_bit}</div>'
+                f'<div class="card-line"><b>OPP PITCHING</b> {data.get("pen_line") or "—"}</div>'
+                f'<div class="card-line">{"".join(pills)}</div>'
+                f'<div class="card-line"><span class="al-chip">{data.get("split_ha") or ""}</span> '
+                f'<span class="al-chip">{data.get("split_dn") or ""}</span></div>'
+                f'<div class="card-foot">Board {item.get("score") or "—"} · Upside {data.get("score")}</div>'
                 f"</div>",
                 unsafe_allow_html=True,
             )
-    pass
+    st.caption(
+        "Board still decides if we ticket it. "
+        "OPP PITCHING is the other team’s whole staff last 30 days — not late-inning relievers only. We don’t have a free RP-only feed yet."
+    )
 
 
 def main():
