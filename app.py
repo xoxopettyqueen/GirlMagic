@@ -12020,15 +12020,25 @@ def main():
         .pa-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(236,72,153,.25)}
         .pa-hero h3{font-family:'Playfair Display',serif;margin:0;color:#fff;font-size:1.55rem}
         .pa-quote{color:#fce7f3;font-style:italic;margin:6px 0 0;font-size:.92rem}
-        .pa-card{background:#16101f;border:1px solid #2a2038;border-radius:18px;padding:16px 16px 12px;margin-bottom:14px}
-        .pa-h{font-size:1.02rem;letter-spacing:0;text-transform:none;color:#fce7f3;font-weight:800;margin:0 0 4px;font-family:'Space Grotesk',sans-serif}
-        .pa-sub{font-size:.78rem;color:#c4b5d6;margin:0 0 12px;line-height:1.4}
-        .pa-row{display:grid;grid-template-columns:minmax(120px,1.3fr) 1fr minmax(108px,auto);align-items:center;gap:10px;margin:8px 0;font-size:.86rem}
-        .pa-name{color:#fce7f3;font-weight:650;line-height:1.25}
-        .pa-bar{height:10px;border-radius:99px;background:#2a2038;overflow:hidden}
-        .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#a855f7)}
+        .pa-card{background:#120c1c;border:1px solid #2e2440;border-radius:22px;padding:18px 18px 14px;margin-bottom:16px}
+        .pa-h{font-size:1.12rem;letter-spacing:0;text-transform:none;color:#fff;font-weight:800;margin:0 0 4px;font-family:'Playfair Display',serif}
+        .pa-sub{font-size:.8rem;color:#b7a8c9;margin:0 0 14px;line-height:1.45}
+        .pa-item{padding:10px 0;border-bottom:1px solid #24182f}
+        .pa-item:last-child{border-bottom:none;padding-bottom:2px}
+        .pa-item.top{background:linear-gradient(90deg,rgba(219,39,119,.16),transparent);margin:0 -10px;padding:10px;border-radius:12px;border-bottom:none}
+        .pa-toprow{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+        .pa-name{color:#fce7f3;font-weight:700;font-size:.95rem;line-height:1.3}
+        .pa-count{color:#fff;font-weight:800;font-size:1.05rem;white-space:nowrap}
+        .pa-bar{height:7px;border-radius:99px;background:#2a2038;overflow:hidden;margin:7px 0 6px}
+        .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#c084fc)}
+        .pa-item.top .pa-fill{background:linear-gradient(90deg,#fb7185,#f0abfc)}
+        .pa-meta{display:flex;flex-wrap:wrap;gap:6px}
+        .pa-pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:.68rem;font-weight:700;border:1px solid #3b2a4f;color:#e9d5ff;background:#1a1224}
+        .pa-pill.rate{border-color:#7c3aed;color:#f5d0fe}
+        .pa-pill.hot{border-color:#34d399;color:#bbf7d0}
+        .pa-pill.cold{border-color:#f87171;color:#fecaca}
         .pa-stat{color:#f9a8d4;font-size:.78rem;font-weight:700;text-align:right;white-space:nowrap}
-        .pa-n{font-weight:800;color:#f9a8d4;min-width:28px;text-align:right}
+        .pa-n{font-weight:800;color:#f9a8d4}
         .pa-pct{color:#c4b5d6;font-size:.72rem}
         .pa-trend{font-size:.68rem;color:#86efac;font-weight:700}
         .pa-foot{text-align:center;color:#f9a8d4;font-size:.78rem;margin:18px 0 8px;opacity:.9}
@@ -12233,33 +12243,38 @@ def main():
                 return s.replace("under", "shorter than")
             return s
 
-        def bar_row(label, n, mx, extra="", crown=False, unit="hits"):
+        def bar_row(label, n, mx, pills=None, crown=False, unit="hits"):
             w = 0 if mx <= 0 else int(100 * n / mx)
-            cr = "Leading · " if crown else ""
+            top = " top" if crown else ""
+            pills_h = "".join(pills or [])
             return (
-                f'<div class="pa-row"><span class="pa-name">{cr}{label}</span>'
+                f'<div class="pa-item{top}"><div class="pa-toprow">'
+                f'<span class="pa-name">{label}</span>'
+                f'<span class="pa-count">{n} {unit}</span></div>'
                 f'<div class="pa-bar"><div class="pa-fill" style="width:{w}%"></div></div>'
-                f'<span class="pa-stat">{n} {unit}{extra}</span></div>'
+                f'<div class="pa-meta">{pills_h}</div></div>'
             )
 
         def section_html(title, subtitle, items, mx, rate_map=None, prev_map=None, unit="hits"):
             rows_h = []
             for i, (k, n) in enumerate(items):
-                bits = []
+                pills = []
                 if rate_map is not None:
-                    pct = rate(n, rate_map.get(k, 0))
+                    n_all = rate_map.get(k, 0)
+                    pct = rate(n, n_all)
                     if pct is None:
-                        bits.append(" · no rate yet")
+                        pills.append('<span class="pa-pill">no rate yet</span>')
+                    elif n_all and n_all < 8:
+                        pills.append(f'<span class="pa-pill">small sample · {n_all} graded</span>')
                     else:
-                        bits.append(f" · {pct}% cashed")
+                        pills.append(f'<span class="pa-pill rate">{pct}% cashed</span>')
                 if prev_map is not None:
                     tr = arrow(n, prev_map.get(k, 0))
-                    if tr == "up":
-                        bits.append(" · hotter")
+                    if tr == "up" and i == 0:
+                        pills.append('<span class="pa-pill hot">hotter than last week</span>')
                     elif tr == "down":
-                        bits.append(" · colder")
-                extra = "".join(bits)
-                rows_h.append(bar_row(plain_label(k), n, mx, extra, crown=(i == 0), unit=unit))
+                        pills.append('<span class="pa-pill cold">colder than last week</span>')
+                rows_h.append(bar_row(plain_label(k), n, mx, pills, crown=(i == 0), unit=unit))
             body = "".join(rows_h) if rows_h else '<div class="pa-sub">Nothing graded in this box yet.</div>'
             return f'<div class="pa-card"><div class="pa-h">{title}</div><div class="pa-sub">{subtitle}</div>{body}</div>'
 
@@ -12361,11 +12376,11 @@ def main():
                 if not wd_hits[d] and not wd_grad[d] and active_sport() != "MLB":
                     continue
                 if not wd_hits[d]:
-                    label = f"{d} — no hits"
+                    label = f"{d}"
                 else:
-                    top_b = ", ".join(b for b, _n in books_d[:2]) or "no book"
-                    top_e = ", ".join(f"ends {str(e).zfill(2)}" for e, _n in ends_d[:2]) or "no ending"
-                    label = f"{d} — paid on {top_b} · {top_e}"
+                    top_b = books_d[0][0] if books_d else "—"
+                    top_e = str(ends_d[0][0]).zfill(2) if ends_d else "—"
+                    label = f"{d} · {top_b} · ends {top_e}"
                 wd_label_rows.append((label, wd_hits[d]))
                 wd_label_g[label] = wd_grad[d]
             if wd_label_rows:
@@ -12382,7 +12397,7 @@ def main():
             pick_rows = []
             mx_p = max((x[1] for x in picks), default=1)
             for i, (pl, n) in enumerate(picks[:12]):
-                pick_rows.append(bar_row(pl, n, mx_p, "", crown=(i == 0), unit=bombs))
+                pick_rows.append(bar_row(pl, n, mx_p, None, crown=(i == 0), unit=bombs))
             picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-sub">Nobody hit on two different days in this window.</div>'
             st.markdown(
                 '<div class="pa-card"><div class="pa-h">Same player, more than one day</div>'
