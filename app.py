@@ -12379,9 +12379,10 @@ def main():
             "DK 10": "DraftKings ended in 10",
             "FD 600": "FanDuel +600",
             "Exact Match": "same number on 2+ books",
-            "Petty Pressure": "pressure stamps",
-            "Classic Girl Magic": "classic stamps",
-            "Cute But Not Serious": "cute name stuff — not why we fire",
+            "Petty Pressure": "books lining up (tight / same number / shorten)",
+            "Classic Girl Magic": "our book tricks (DK 10, MGM, FanDuel)",
+            "Cute But Not Serious": "name games — flavor, not the ticket",
+            "Drama Queens": "late / missing / fade flags",
         }
 
         def plain_label(k):
@@ -12570,8 +12571,8 @@ def main():
                 unsafe_allow_html=True,
             )
             st.markdown(section_html(
-                "Stamp families that hit",
-                "Buckets we group stamps into. Cute is flavor. Pressure / classic is the real pile.",
+                "What kind of trick hit",
+                "Same hits, grouped. Book tricks vs books agreeing vs name games. Name games are notes, not why we fire.",
                 families.most_common(6), mx_f, None, p_fam,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
