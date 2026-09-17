@@ -8185,6 +8185,36 @@ def odds_alignment_score(item, data_boost=0):
     return int(score) + int(data_boost or 0)
 
 
+_NFL_TEAMS = {
+    "ARI": ["arizona", "cardinals"], "ATL": ["atlanta", "falcons"],
+    "BAL": ["baltimore", "ravens"], "BUF": ["buffalo", "bills"],
+    "CAR": ["carolina", "panthers"], "CHI": ["chicago", "bears"],
+    "CIN": ["cincinnati", "bengals"], "CLE": ["cleveland", "browns"],
+    "DAL": ["dallas", "cowboys"], "DEN": ["denver", "broncos"],
+    "DET": ["detroit", "lions"], "GB": ["green bay", "packers"],
+    "HOU": ["houston", "texans"], "IND": ["indianapolis", "colts"],
+    "JAX": ["jacksonville", "jaguars"], "KC": ["kansas city", "chiefs"],
+    "LA": ["la rams", "rams"], "LAC": ["chargers", "los angeles chargers"],
+    "LAR": ["rams", "los angeles rams"], "LV": ["las vegas", "raiders"],
+    "MIA": ["miami", "dolphins"], "MIN": ["minnesota", "vikings"],
+    "NE": ["new england", "patriots"], "NO": ["new orleans", "saints"],
+    "NYG": ["giants", "new york giants"], "NYJ": ["jets", "new york jets"],
+    "PHI": ["philadelphia", "eagles"], "PIT": ["pittsburgh", "steelers"],
+    "SEA": ["seattle", "seahawks"], "SF": ["san francisco", "49ers"],
+    "TB": ["tampa", "buccaneers"], "TEN": ["tennessee", "titans"],
+    "WAS": ["washington", "commanders"],
+}
+
+
+def _nfl_codes_in_text(text):
+    t = str(text or "").lower()
+    hits = []
+    for code, aliases in _NFL_TEAMS.items():
+        if code.lower() in t.split() or any(a in t for a in aliases):
+            hits.append(code)
+    return hits
+
+
 def _fold_player(name):
     n = str(name or "").replace(",", " ")
     try:
@@ -8774,12 +8804,22 @@ def fetch_nflverse_week_stats(year=None):
             "carries": sm("carries"),
             "rush_yds": sm("rushing_yards"),
             "rush_td": sm("rushing_tds"),
-            "home_yds": float(pd.to_numeric(g.loc[home_m, "receiving_yards"], errors="coerce").fillna(0).sum()) if home_m is not None else 0,
-            "away_yds": float(pd.to_numeric(g.loc[~home_m, "receiving_yards"], errors="coerce").fillna(0).sum()) if home_m is not None else 0,
-            "pt_yds": float(pd.to_numeric(g.loc[pt_m, "receiving_yards"], errors="coerce").fillna(0).sum()) if pt_m is not None else 0,
+            "home_yds": (
+                float(pd.to_numeric(g.loc[home_m, "receiving_yards"], errors="coerce").fillna(0).sum())
+                + float(pd.to_numeric(g.loc[home_m, "rushing_yards"], errors="coerce").fillna(0).sum())
+            ) if home_m is not None else 0,
+            "away_yds": (
+                float(pd.to_numeric(g.loc[~home_m, "receiving_yards"], errors="coerce").fillna(0).sum())
+                + float(pd.to_numeric(g.loc[~home_m, "rushing_yards"], errors="coerce").fillna(0).sum())
+            ) if home_m is not None else 0,
+            "pt_yds": (
+                float(pd.to_numeric(g.loc[pt_m, "receiving_yards"], errors="coerce").fillna(0).sum())
+                + float(pd.to_numeric(g.loc[pt_m, "rushing_yards"], errors="coerce").fillna(0).sum())
+            ) if pt_m is not None else 0,
             "pt_td": float(pd.to_numeric(g.loc[pt_m, "receiving_tds"], errors="coerce").fillna(0).sum()) if pt_m is not None else 0,
             "vs": vs,
             "pos": str(g["position"].iloc[0]) if "position" in g.columns else "",
+            "team": str(g["recent_team"].iloc[-1]) if "recent_team" in g.columns else (str(g["team"].iloc[-1]) if "team" in g.columns else ""),
             "draft_round": dr.get("draft_round"),
             "draft_pick": dr.get("draft_pick"),
             "draft_year": dr.get("draft_year"),
@@ -8845,10 +8885,14 @@ def fetch_nfl_dvp():
         hg = max(1, int(home[["season", "week"]].drop_duplicates().shape[0])) if len(home) else 0
         rg = max(1, int(road[["season", "week"]].drop_duplicates().shape[0])) if len(road) else 0
         pg = max(1, int(pt[["season", "week"]].drop_duplicates().shape[0])) if len(pt) else 0
+        rush = float(pd.to_numeric(g.get("rushing_yards"), errors="coerce").fillna(0).sum())
+        rusht = float(pd.to_numeric(g.get("rushing_tds"), errors="coerce").fillna(0).sum())
         out[f"{defn}|{pos}"] = {
             "g": games,
             "rec_yds_g": rec / games,
             "rec_td_g": rtd / games,
+            "rush_yds_g": rush / games,
+            "rush_td_g": rusht / games,
             "home_yds_g": float(pd.to_numeric(home.get("receiving_yards"), errors="coerce").fillna(0).sum()) / hg if hg else 0,
             "road_yds_g": float(pd.to_numeric(road.get("receiving_yards"), errors="coerce").fillna(0).sum()) / rg if rg else 0,
             "home_td_g": float(pd.to_numeric(home.get("receiving_tds"), errors="coerce").fillna(0).sum()) / hg if hg else 0,
@@ -8924,17 +8968,29 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         dvp_line = ""
         dvp = live.get("dvp") or {}
         best = None
+        own = str(form.get("team") or "")
+        codes = _nfl_codes_in_text(evn)
+        opp_codes = [c for c in codes if c != own] or codes
         for k, rec in dvp.items():
             defn, pcode = (k.split("|", 1) + [""])[:2]
             if pos and pcode.upper() != pos.upper():
                 continue
-            if defn and defn.lower() in evn.lower():
+            hit = defn in opp_codes or (defn and defn.lower() in evn.lower())
+            if hit:
                 best = rec
+                if str(pos).upper() == "RB":
+                    ypg = (rec.get("rush_yds_g") or 0) + (rec.get("rec_yds_g") or 0)
+                    tpg = (rec.get("rush_td_g") or 0) + (rec.get("rec_td_g") or 0)
+                    kind = "rush+rec"
+                else:
+                    ypg = rec.get("rec_yds_g") or 0
+                    tpg = rec.get("rec_td_g") or 0
+                    kind = "rec"
                 dvp_line = (
-                    f"last {int(rec.get('g') or 0)} games vs {pos or 'skill'} {defn} — PER GAME: "
-                    f"{rec.get('rec_yds_g') or 0:.0f} yds · {rec.get('rec_td_g') or 0:.2f} TD · "
-                    f"when that D is home {rec.get('home_yds_g') or 0:.0f} yds / {rec.get('home_td_g') or 0:.2f} TD · "
-                    f"when that D is on the road {rec.get('road_yds_g') or 0:.0f} yds / {rec.get('road_td_g') or 0:.2f} TD"
+                    f"last {int(rec.get('g') or 0)} games vs {pos or 'skill'} {defn} — PER GAME {kind}: "
+                    f"{ypg:.0f} yds · {tpg:.2f} TD · "
+                    f"when that D is home {rec.get('home_yds_g') or 0:.0f} rec yds / {rec.get('home_td_g') or 0:.2f} rec TD · "
+                    f"when that D is on the road {rec.get('road_yds_g') or 0:.0f} rec yds / {rec.get('road_td_g') or 0:.2f} rec TD"
                 )
                 if rec.get("pt_g"):
                     dvp_line += (
