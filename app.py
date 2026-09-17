@@ -3901,6 +3901,23 @@ def _fold_name(s):
     s = "".join(c for c in s if not unicodedata.combining(c))
     return s.replace(".", "").replace("  ", " ").strip().lower()
 
+def names_match_grade(a, b):
+    """Grading only. Full name or first+last. Never last-name-only (Smith ≠ Pavin Smith)."""
+    a, b = clean_name(a), clean_name(b)
+    a2, b2 = _fold_name(a), _fold_name(b)
+    if not a2 or not b2:
+        return False
+    if a2 == b2:
+        return True
+    pa, pb = a2.split(), b2.split()
+    if len(pa) >= 2 and len(pb) >= 2:
+        if pa[0] == pb[0] and pa[-1] == pb[-1]:
+            return True
+        if pa[-1] == pb[-1] and (pa[0].startswith(pb[0]) or pb[0].startswith(pa[0])) and min(len(pa[0]), len(pb[0])) >= 3:
+            return True
+    return False
+
+
 def names_match(a, b):
     a, b = clean_name(a), clean_name(b)
     a2, b2 = _fold_name(a), _fold_name(b)
@@ -5303,6 +5320,11 @@ def fetch_nfl_td_scorers():
 
 
 
+def _official_hr_for_date(date_str):
+    hr_names, final_players, msg = fetch_mlb_hr_hitters(date_str)
+    return set(hr_names or []), set(final_players or []), msg
+
+
 def auto_grade_pending():
     rows = load_results()
     hits = misses = skipped = 0
@@ -5310,14 +5332,9 @@ def auto_grade_pending():
     if active_sport() == "NFL":
         td_names, done_players, msg = fetch_nfl_td_scorers()
         hit_set, miss_pool, tag = td_names, done_players, "nfl_auto"
-    else:
-        hr_names, final_players, msg = fetch_mlb_hr_hitters()
-        hit_set, miss_pool, tag = hr_names, final_players, "mlb_auto"
-
-    for row in rows:
-        if row.get("result") != "PENDING":
-            continue
-        if active_sport() == "NFL":
+        for row in rows:
+            if row.get("result") != "PENDING":
+                continue
             src = str(row.get("source") or "")
             mkt = str(row.get("market") or "").lower()
             if src.startswith("need_one"):
@@ -5329,32 +5346,104 @@ def auto_grade_pending():
             if mkt and "td" not in mkt and "touchdown" not in mkt and src not in ("take_it", "watch", "shop_take", "shop_lean"):
                 skipped += 1
                 continue
-        elif str(row.get("market") or "") == "anytime_td":
-            skipped += 1
-            continue
-        player = row.get("player") or ""
-        rushed = st.session_state.get("nfl_rush_td") or set()
-        if active_sport() == "NFL" and is_nfl_qb(player) and not any(names_match(player, x) for x in rushed):
-            row["result"] = "MISS"
-            row["graded_by"] = tag + "_qb_not_rush"
-            misses += 1
-            continue
-        if any(names_match(player, h) for h in hit_set):
-            row["result"] = "HIT"
-            row["graded_by"] = tag
-            if row.get("ending") is None and row.get("best_price") is not None:
-                row["ending"] = last_two(row["best_price"])
-            hits += 1
-            continue
-        if miss_pool and any(names_match(player, f) for f in miss_pool):
-            row["result"] = "MISS"
-            row["graded_by"] = tag
-            misses += 1
-        else:
-            skipped += 1
+            player = row.get("player") or ""
+            rushed = st.session_state.get("nfl_rush_td") or set()
+            if is_nfl_qb(player) and not any(names_match_grade(player, x) for x in rushed):
+                row["result"] = "MISS"
+                row["graded_by"] = tag + "_qb_not_rush"
+                misses += 1
+                continue
+            if any(names_match_grade(player, h) for h in hit_set):
+                row["result"] = "HIT"
+                row["graded_by"] = tag
+                if row.get("ending") is None and row.get("best_price") is not None:
+                    row["ending"] = last_two(row["best_price"])
+                hits += 1
+                continue
+            if miss_pool and any(names_match_grade(player, f) for f in miss_pool):
+                row["result"] = "MISS"
+                row["graded_by"] = tag
+                misses += 1
+            else:
+                skipped += 1
+        save_results(rows)
+        return hits, misses, skipped, f"{msg} · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
 
+    # MLB: grade against THAT row's game date, not today's whole homer list.
+    by_date = defaultdict(list)
+    for i, row in enumerate(rows):
+        if row.get("result") != "PENDING":
+            continue
+        if str(row.get("market") or "") == "anytime_td":
+            skipped += 1
+            continue
+        d = str(row.get("date") or "")[:10]
+        if not d:
+            skipped += 1
+            continue
+        by_date[d].append(row)
+    msgs = []
+    for d, batch in by_date.items():
+        hit_set, miss_pool, msg = _official_hr_for_date(d)
+        msgs.append(f"{d} {msg}")
+        tag = "mlb_auto"
+        for row in batch:
+            player = row.get("player") or ""
+            if any(names_match_grade(player, h) for h in hit_set):
+                row["result"] = "HIT"
+                row["graded_by"] = tag
+                row["graded_date"] = d
+                if row.get("ending") is None and row.get("best_price") is not None:
+                    row["ending"] = last_two(row["best_price"])
+                hits += 1
+            elif miss_pool and any(names_match_grade(player, f) for f in miss_pool):
+                row["result"] = "MISS"
+                row["graded_by"] = tag
+                misses += 1
+            else:
+                skipped += 1
+    flipped = repair_mlb_hits(rows)
     save_results(rows)
-    return hits, misses, skipped, f"{msg} · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
+    extra = f" · repaired {flipped} false HIT" if flipped else ""
+    return hits, misses, skipped, " · ".join(msgs[:3]) + f" · PENDING {pending_n} · matched {hits} HIT / {misses} MISS{extra}"
+
+
+def repair_mlb_hits(rows=None):
+    """Un-HIT rows that did not actually go yard on their logged date."""
+    if active_sport() == "NFL":
+        return 0
+    own = rows is None
+    rows = rows if rows is not None else load_results()
+    flipped = 0
+    by_date = defaultdict(list)
+    for row in rows:
+        if str(row.get("result") or "").upper() != "HIT":
+            continue
+        if str(row.get("market") or "") == "anytime_td":
+            continue
+        d = str(row.get("date") or "")[:10]
+        if d:
+            by_date[d].append(row)
+    for d, batch in by_date.items():
+        hit_set, miss_pool, _msg = _official_hr_for_date(d)
+        if not hit_set and not miss_pool:
+            continue
+        for row in batch:
+            player = row.get("player") or ""
+            really = any(names_match_grade(player, h) for h in hit_set)
+            if really:
+                continue
+            if miss_pool and any(names_match_grade(player, f) for f in miss_pool):
+                row["result"] = "MISS"
+                row["graded_by"] = "mlb_repair"
+                flipped += 1
+            elif hit_set:
+                row["result"] = "MISS"
+                row["graded_by"] = "mlb_repair"
+                flipped += 1
+    if own:
+        save_results(rows)
+    return flipped
 
 
 
@@ -12054,6 +12143,10 @@ def main():
             unsafe_allow_html=True,
         )
 
+        try:
+            repair_mlb_hits()
+        except Exception:
+            pass
         rows = results_for_sport() or []
         today = today_az()
         try:
