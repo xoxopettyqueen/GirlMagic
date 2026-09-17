@@ -10183,7 +10183,7 @@ def main():
         "Board": "💚 Run It",
         "Align": "✨ Alignment",
         "Shop": "💸 Money Talks",
-        "Need One": "I JUST NEED ONE",
+        "Need One": "🎯 Need One",
         "Labs": "🧪 Petty Lab",
         "Vault": "📈 Receipts",
         "Admin": "📈 Receipts",
