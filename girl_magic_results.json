@@ -103861,5 +103861,126 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Bobby Witt Jr._shop_take_142",
+    "date": "2026-09-16",
+    "time": "05:55 PM",
+    "player": "Bobby Witt Jr.",
+    "score": 0,
+    "edge": 142,
+    "best_price": 650,
+    "best_book": "hardrockbet",
+    "median": 492,
+    "book_prices": {
+      "bet365": 350,
+      "caesars": 390,
+      "draftkings": 600,
+      "fanatics": 575,
+      "fanduel": 410,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:55:01.067754+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Ethan Salas_shop_take_60",
+    "date": "2026-09-16",
+    "time": "05:55 PM",
+    "player": "Ethan Salas",
+    "score": 0,
+    "edge": 60,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "draftkings": 475,
+      "fanatics": 650,
+      "fanduel": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:55:01.098643+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Jackson Merrill_shop_take_59",
+    "date": "2026-09-16",
+    "time": "05:55 PM",
+    "player": "Jackson Merrill",
+    "score": 0,
+    "edge": 59,
+    "best_price": 425,
+    "best_book": "draftkings",
+    "median": 337,
+    "book_prices": {
+      "bet365": 325,
+      "betmgm": 325,
+      "draftkings": 425,
+      "fanatics": 375,
+      "fanduel": 350,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+400s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:55:01.115950+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Fernando Tatis Jr._shop_lean_45",
+    "date": "2026-09-16",
+    "time": "05:55 PM",
+    "player": "Fernando Tatis Jr.",
+    "score": 0,
+    "edge": 45,
+    "best_price": 440,
+    "best_book": "fanatics",
+    "median": 387,
+    "book_prices": {
+      "bet365": 320,
+      "betmgm": 310,
+      "draftkings": 400,
+      "fanatics": 440,
+      "fanduel": 400,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 40,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T00:55:01.125454+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
