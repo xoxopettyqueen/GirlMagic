@@ -8974,32 +8974,9 @@ def render_alignment_tab(ev_board, watch_board=None):
         help="Active = Locked + Spoke. Whispers = not a ticket yet. Homework = still cooking.",
     )
     perfect = [c for c in cards if c[0] >= 85][:10]
-    if view.startswith("🎯") and perfect:
+    if view.startswith("🎯"):
         st.markdown("#### ✨ Alignment Picks")
         st.caption("Data spoke. Odds agreed. Board’s got the final say.")
-        top = st.columns(min(3, len(perfect[:3])))
-        shown_perfect = set()
-        for i, (align, item, data, notes, vibe) in enumerate(perfect[:6]):
-            pk = _fold_player(item.get("player"))
-            if pk in shown_perfect:
-                continue
-            shown_perfect.add(pk)
-            with top[i % len(top)]:
-                evs = data.get("ev")
-                hhs = data.get("hh")
-                brs = data.get("barrel")
-                evs = f"{evs:.0f}" if isinstance(evs, (int, float)) else "—"
-                hhs = f"{hhs:.0f}%" if isinstance(hhs, (int, float)) else "—"
-                brs = f"{brs:.1f}%" if isinstance(brs, (int, float)) else "—"
-                st.markdown(
-                    f'<div class="card bet"><div class="card-kicker">{vibe}</div>'
-                    f'<div class="card-name">{item.get("player")}</div>'
-                    f'{_petty_meter(align)}'
-                    f'<div class="card-line">DATA {evs} EV · {hhs} HH · Barrel {brs}</div>'
-                    f'<div class="card-line">VS {data.get("matchup") or "—"}</div>'
-                    f'<div class="card-line">{data.get("weather") or ""}</div></div>',
-                    unsafe_allow_html=True,
-                )
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -9019,7 +8996,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         })
     save_align_events(ev_log)
     if view.startswith("🎯"):
-        cards = []
+        cards = [c for c in cards if c[0] >= 85][:10]
     elif view.startswith("🫧"):
         cards = [c for c in cards if 70 <= c[0] < 85]
     elif view.startswith("📚"):
@@ -9064,7 +9041,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<span class="score-pill">{align}</span>'
                 f'<div class="card-name">{item.get("player")}</div>'
                 f'{_petty_meter(align)}'
-                f'<div class="card-line"><b>Data</b> — {data["summary"]}</div>'
+                f'<div class="card-line"><b>Exit velo / hard-hit / barrel</b> — {data["summary"]}</div>'
                 f'<div class="card-line"><b>Odds</b> — {price} {book_label(item.get("best_book"))} · {tags}</div>'
                 f'<div class="card-line"><b>Matchup</b> — {data.get("matchup") or "—"}</div>'
                 f'<div class="card-line">🏟️ {data.get("park_line") or "—"} · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
