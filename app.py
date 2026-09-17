@@ -1724,12 +1724,14 @@ GLOSSARY_V2 = {
         ("Lock Open / Now / Close", "First look / latest pregame / last number before the book vanished at first pitch."),
         ("Ghosts / Late / Fallen", "Showed up late or disappeared vs the last snapshot. Not automatic Takes."),
         ("Petty Mode", "Louder words. Same math."),
+        ("TODAY bubble", "The pink/teal sticker on the card. Where they play today, local kick, and whether this split is louder, quieter, or a trap."),
     ],
     "💫 Scores": [
         ("Board score", "The ticket stack on Run It. This is the number next to names on the Board. Align does not use this next to the name."),
         ("Confidence vs Board", "Confidence is the 0–100 on this tab. Board score is the ticket stack on Run It."),
         ("Petty Upside / Edge", "How loud the data side is. Footer line on Align cards."),
         ("Active / Whispers / Homework", "MLB: Active = 70+ (85+ still Locked/Spoke on the card). Whispers = 60–69. Homework = under 60. NFL: Active = +100 to +499. Whispers = +500+. Homework = rookies / thin volume. Missing Savant or nflverse does not hide a Board/stamped name."),
+        ("Hot / Mid / Cold data", "Hot = 3+ data flags (barrel / EV / HH / xSLG / L7 heat / DVP). Mid = exactly 2. Cold = 0–1. Stamps do not invent Hot."),
         ("Weekly adjust", "Receipts + Tracker by tag. Cold stamps get demoted. Hot support can get watched harder. Never blindly keep a dead tell."),
         ("Tickets vs Research", "Recap pills: Tickets = TAKE / Shop TAKE. Research = WATCH / LEAN. Grade both. TAKE must beat Research or the floor goes up."),
         ("Caesars 90 / HardRock 50 / 00", "Other-book endings we now stamp and track. Support until n ≥ 25 and they beat baseline."),
@@ -1764,6 +1766,10 @@ GLOSSARY_V2 = {
         ("🏠 Home / Away", "Some bats only cook at home. Some only on the road."),
         ("🌙 Day / Night", "Sun vs lights. Production changes."),
         ("🆚 vs LHP / RHP", "Handedness split. Lefties vs righties."),
+        ("📍 TODAY", "Home or road, day/night or primetime, local first pitch / kick. Own bubble on the card."),
+        ("Good spot", "Today’s split is his louder one AND he is not cold this week. Tiny score bump."),
+        ("Bad spot", "Today is his quieter split. Score gets cut."),
+        ("Trap split", "Career-best home/road/day/night… but a cold week. Best split + dead L7 is a trap, not a lock."),
     ],
     "💸 Odds": [
         ("FD Pattern", "FanDuel +400+ ending 10/20/30/60/70/90."),
@@ -1828,6 +1834,8 @@ GLOSSARY_V2 = {
         ("🛡️ DVP", "Last 10 games, PER GAME, what that defense gave this position. Also split when that D is home, on the road, and in primetime."),
         ("His last two seasons", "That player’s home / road / primetime totals. Not per game. Different from DVP."),
         ("NFL Show filters", "Active = +100 to +499. Whispers = +500+. Homework = rookies / missing usage."),
+        ("📍 TODAY (NFL)", "Home or road, primetime or not, local kick. Plus home/road yards if we have them."),
+        ("Trap split (NFL)", "Home guy or road guy on paper, but usage is cold. Don’t trust the career split alone."),
     ],
     "⚾ MLB": [
         ("0.5 HR Over", "The only baseball ticket. One homer. Not 2+."),
@@ -1840,6 +1848,8 @@ GLOSSARY_V2 = {
         ("Shop long-ball", "Shop TAKE wants gap ≥ 35. LEAN ≥ 25. +1000 is flyer/DON'T."),
         ("Dead 00 on a moon", "Ending 00 on +1000+ is junk. Shop fades it."),
         ("under +400", "Hits more often because it’s short. Not our chaos lane. Do not promote it."),
+        ("📍 TODAY (MLB)", "Home/road + day/night + local first pitch. SLG of that split sits in the same bubble."),
+        ("Trap split (MLB)", "His best home/day split with HR L7 0. Looks cute, gets faded."),
     ],
 }
 
@@ -9804,10 +9814,44 @@ def _today_html(data):
     if not spot:
         return ""
     dead = ("0 / 0" in split) or split.startswith("home 0") or "0 yds / 0 TD" in split
-    if dead or split in ("usage sample thin",):
+    if dead or split in ("usage sample thin", "split sample thin"):
         split = ""
-    extra = f" · {split}" if split else ""
-    return f'<div class="al-pack">📍 {spot}{extra}</div>'
+    low = (spot + " " + split).lower()
+    fit = str(data.get("split_fit") or "")
+    if "home" in low and "road" not in low.split("·")[0]:
+        where = "🏠"
+    elif "road" in low or "away" in low:
+        where = "✈️"
+    else:
+        where = "📍"
+    if "primetime" in low and "not primetime" not in low:
+        when = "🌟"
+    elif "night" in low:
+        when = "🌙"
+    elif "day" in low:
+        when = "☀️"
+    else:
+        when = "🕒"
+    if fit == "trap split":
+        vibe_e, vibe_cls, vibe_tag = "🪤", "today-trap", "TRAP SPLIT"
+    elif fit == "bad spot":
+        vibe_e, vibe_cls, vibe_tag = "🧊", "today-soft", "QUIET SPLIT"
+    elif fit == "good spot":
+        vibe_e, vibe_cls, vibe_tag = "🔥", "today-hot", "LOUD SPLIT"
+    elif "louder" in low or "when he slugs" in low or "home guy" in low or "road guy" in low:
+        vibe_e, vibe_cls, vibe_tag = "✨", "today-hot", "LOUDER HERE"
+    elif "quieter" in low or "softer" in low:
+        vibe_e, vibe_cls, vibe_tag = "💤", "today-soft", "SOFTER HERE"
+    else:
+        vibe_e, vibe_cls, vibe_tag = "💅", "today-ok", "TODAY"
+    extra = f'<div class="today-split">{vibe_e} {split}</div>' if split else ""
+    return (
+        f'<div class="today-bubble {vibe_cls}">'
+        f'<div class="today-kicker">{vibe_e} {vibe_tag}</div>'
+        f'<div class="today-line">{where} {spot} {when}</div>'
+        f'{extra}'
+        f'</div>'
+    )
 
 
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
@@ -9846,6 +9890,14 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .al-quiet .card-name{color:#c4b5d6!important}
         .today-spot{margin:4px 0 6px;padding:0;background:transparent;border:none;color:#fce7f3;font-size:.95rem;line-height:1.4}
         .today-spot b{display:block;font-size:.62rem;letter-spacing:1.3px;text-transform:uppercase;color:#00e6c3;font-weight:800;margin:0 0 2px}
+        .today-bubble{margin:8px 0 10px;padding:10px 12px;border-radius:16px;border:1px solid #f9a8d4;background:linear-gradient(165deg,#3b1630,#221428);box-shadow:0 0 16px rgba(249,168,212,.28);color:#fce7f3}
+        .today-bubble .today-kicker{font-size:.62rem;letter-spacing:1.6px;text-transform:uppercase;font-weight:800;color:#f9a8d4;margin:0 0 4px}
+        .today-bubble .today-line{font-size:.95rem;font-weight:700;line-height:1.35}
+        .today-bubble .today-split{font-size:.82rem;color:#e9d5ff;margin-top:4px}
+        .today-bubble.today-hot{border-color:#fb7185;box-shadow:0 0 18px rgba(251,113,133,.38)}
+        .today-bubble.today-trap{border-color:#fbbf24;box-shadow:0 0 16px rgba(251,191,36,.3)}
+        .today-bubble.today-soft{border-color:#67e8f9;box-shadow:0 0 14px rgba(103,232,249,.22)}
+        .today-bubble.today-ok{border-color:#f9a8d4}
         .card.al-quiet:hover{transform:none}
         .card.al-lock:hover,.card.al-speak:hover,.card.al-shot:hover{transform:translateY(-3px);transition:transform .15s ease}
         .wind-out{color:#34d399;font-weight:700}
