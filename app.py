@@ -9476,6 +9476,9 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .al-speak{border-color:#a855f7!important;box-shadow:0 0 12px rgba(168,85,247,.3)}
         .al-shot{border-color:#2dd4bf!important;box-shadow:0 0 12px rgba(45,212,191,.28)}
         .al-home{opacity:.88;border-color:#3f3a48!important}
+        .al-quiet{opacity:.62;border-color:#2a2038!important;box-shadow:none!important;filter:saturate(.55) brightness(.82)}
+        .al-quiet .card-name{color:#c4b5d6!important}
+        .card.al-quiet:hover{transform:none}
         .card.al-lock:hover,.card.al-speak:hover,.card.al-shot:hover{transform:translateY(-3px);transition:transform .15s ease}
         .wind-out{color:#34d399;font-weight:700}
         .wind-in{color:#f87171;font-weight:700}
@@ -9569,23 +9572,23 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             or juice
             or rookie_spike
         )
-        # Confidence = looks good in the data AND has a real ticket price.
-        keep = False
+        # Data-first. Odds stay on the card. A stamp is a bonus, not a ticket in.
         if sport == "NFL":
-            if signed_px >= 100 and (soft_data or data_hit or rhythm or board_take or bool(summ)):
-                keep = True
-            if signed_px < 100:
-                keep = False
+            keep = signed_px >= 100
         else:
-            if px >= 400 and (soft_data or data_hit or rhythm or board_take or board_watch):
-                keep = True
-            if px >= 400 and books_n >= 1 and align >= 55:
-                keep = True
-            if px and px < 400:
-                keep = False
+            keep = px >= 400
         if not keep:
             hidden += 1
             continue
+        if data_hit or (soft_data and (hot or hr7 >= 1 or juice or contact >= 2)):
+            data["data_tier"] = "hot"
+        elif soft_data or contact >= 1 or hr7 >= 1:
+            data["data_tier"] = "mid"
+        else:
+            data["data_tier"] = "cold"
+        data["soft_data"] = soft_data
+        data["data_hit"] = data_hit
+        data["has_odds_magic"] = bool(rhythm or board_take)
         # Matchup layer — MLB only. NFL uses nflverse form already on the card.
         if sport == "NFL":
             data["park_line"] = ""
@@ -9602,6 +9605,14 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 notes.append("Digit / book-stamp method fired")
             if not notes:
                 notes.append("Usage + odds. Board still tickets.")
+            if not data.get("has_odds_magic"):
+                align = max(1, int(align * 0.72) - 8)
+                notes.append("Data only — no odds stamp, score took a hit")
+                if data.get("data_tier") == "hot":
+                    data["data_tier"] = "mid"
+                elif data.get("data_tier") == "mid":
+                    data["data_tier"] = "cold"
+                data["quiet"] = True
             if align >= 100:
                 vibe = "🔒 Locked"
             elif align >= 85:
@@ -9720,6 +9731,14 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             notes.append("Data + odds both fired")
         if not notes:
             notes.append("Cleared the data bar. Still check the Board before you ticket.")
+        if not data.get("has_odds_magic"):
+            align = max(1, int(align * 0.72) - 8)
+            notes.append("Data only — no odds stamp, score took a hit")
+            if data.get("data_tier") == "hot":
+                data["data_tier"] = "mid"
+            elif data.get("data_tier") == "mid":
+                data["data_tier"] = "cold"
+            data["quiet"] = True
         if align >= 100:
             vibe = "🔒 Locked"
         elif align >= 85:
@@ -9729,7 +9748,23 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         else:
             vibe = "📚 Homework"
         cards.append((align, item, data, notes, vibe))
-    cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
+    cards.sort(key=lambda x: (
+        0 if x[2].get("data_tier") == "hot" else 1 if x[2].get("data_tier") == "mid" else 2,
+        -x[0],
+        x[1].get("player") or "",
+    ))
+    n_hot = sum(1 for c in cards if c[2].get("data_tier") == "hot")
+    n_mid = sum(1 for c in cards if c[2].get("data_tier") == "mid")
+    n_cold = sum(1 for c in cards if c[2].get("data_tier") == "cold")
+    st.markdown(
+        f'<div class="petty-row">'
+        f'<div class="petty-box"><div class="petty-num">{n_hot}</div><div class="petty-label">DATA HOT</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{n_mid}</div><div class="petty-label">DATA MID</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{n_cold}</div><div class="petty-label">DATA COLD</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{len(cards)}</div><div class="petty-label">SLATE +400</div></div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
     view = st.radio(
         "align_view_pills",
         ["🎯 Active", "🫧 Whispers", "📚 Homework"],
@@ -9740,7 +9775,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
-        st.caption("+400 or longer. Data + books on one card. Board still decides the ticket.")
+        st.caption("Whole slate, data-first. +400+. A stamp is a bonus. Board still tickets.")
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -9766,19 +9801,17 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             except Exception:
                 return 0
         if view.startswith("🎯"):
-            # Sweet + mid plus-money. Long flyers live on Whispers.
-            cards = [c for c in cards if 100 <= _px(c[1]) < 500][:40]
+            cards = [c for c in cards if 100 <= _px(c[1]) < 500 and c[2].get("data_tier") in ("hot", "mid")][:40]
         elif view.startswith("🫧"):
             cards = [c for c in cards if c[2].get("longshot") or _px(c[1]) >= 500]
         elif view.startswith("📚"):
-            cards = [c for c in cards if c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
+            cards = [c for c in cards if c[2].get("data_tier") == "cold" or c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
     elif view.startswith("🎯"):
-        # Active = every kept name at +400+. This tab is the scouting list.
-        cards = list(cards)[:40]
+        cards = [c for c in cards if c[2].get("data_tier") == "hot"][:40]
     elif view.startswith("🫧"):
-        cards = [c for c in cards if (c[1].get("best_price") or 0) >= 750 or c[2].get("longshot")]
+        cards = [c for c in cards if c[2].get("data_tier") == "mid"][:40]
     elif view.startswith("📚"):
-        cards = [c for c in cards if c[0] < 55]
+        cards = [c for c in cards if c[2].get("data_tier") == "cold"][:40]
     cols = st.columns(2)
     already = set()
     shown_i = 0
@@ -9792,6 +9825,15 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if shown_i > 24:
             break
         pills = []
+        tier = data.get("data_tier")
+        if tier == "hot":
+            pills.append('<span class="al-chip">🔥 Data hot</span>')
+        elif tier == "mid":
+            pills.append('<span class="al-chip">🫧 Data mid</span>')
+        else:
+            pills.append('<span class="al-chip">📚 Data cold</span>')
+        if data.get("quiet") or not data.get("has_odds_magic"):
+            pills.append('<span class="al-chip">📚 No odds stamp</span>')
         if data.get("longshot"):
             pills.append('<span class="al-chip">💎 Longshot</span>')
         if "heating" in (data.get("summary") or ""):
@@ -9830,6 +9872,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             klass = "card al-speak"
         if align >= 100 or item.get("is_bet"):
             klass = "card al-lock"
+        if data.get("quiet") or not data.get("has_odds_magic"):
+            klass = "card al-quiet"
         wlane = data.get("wind_lane") or "cross"
         vs_l = data.get("vs_line") or ""
         if vs_l.lower().startswith("vs ") and (data.get("matchup") or "").split("(")[0].strip().lower() in vs_l.lower():
