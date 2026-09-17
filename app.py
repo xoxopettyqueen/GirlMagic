@@ -9546,11 +9546,11 @@ def render_alignment_tab(ev_board, watch_board=None):
                 rook = " Rookie year." if data.get("rookie") else ""
                 tr = str(data.get("trend") or "")
                 if "Heating" in tr:
-                    heat_txt = "Heating — more targets right now."
+                    heat_txt = "🔥 Heating — more targets right now."
                 elif "Cooling" in tr:
-                    heat_txt = "Cooling — volume is down."
+                    heat_txt = "🧊 Cooling — volume is down."
                 else:
-                    heat_txt = "Steady — no spike, no fade."
+                    heat_txt = "😐 Steady — no spike, no fade."
                 role = data.get("role") or "skill"
                 atk = str(data.get("attack") or "Anytime TD")
                 if "Reception" in atk:
@@ -9563,12 +9563,12 @@ def render_alignment_tab(ev_board, watch_board=None):
                 pulse_html = (
                     f'<details class="al-fold" open><summary>🧠 Player Pulse</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
-                    f'<span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
-                    f'{atk_txt}<br>'
-                    f'<span title="Targets = throws his way">{vol}</span></div></details>'
+                    f'👑 <span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
+                    f'🎯 {atk_txt}<br>'
+                    f'📈 <span title="Targets = throws his way">{vol}</span></div></details>'
                     f'<details class="al-fold" open><summary>⚔️ Matchup Vibe</summary>'
-                    f'<div class="al-pack"><span title="Last 10 games, per game">{dvp}</span><br>'
-                    f'{data.get("nfl_ha") or ""}<br>{data.get("nfl_pt") or ""}</div></details>'
+                    f'<div class="al-pack">🛡️ <span title="Last 10 games, per game">{dvp}</span><br>'
+                    f'🏠 {data.get("nfl_ha") or ""}<br>🌙 {data.get("nfl_pt") or ""}</div></details>'
                     f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
                 )
                 st.markdown(
