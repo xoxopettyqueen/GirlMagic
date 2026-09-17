@@ -9771,6 +9771,18 @@ def _today_spot_nfl(item, data, form=None):
     return " · ".join(bits), (" · ".join(vibe) if vibe else "")
 
 
+def _today_html(data):
+    spot = str(data.get("today_spot") or "").strip()
+    split = str(data.get("today_split") or "").strip()
+    if not spot:
+        return ""
+    dead = ("0 / 0" in split) or split.startswith("home 0") or "0 yds / 0 TD" in split
+    if dead or split in ("usage sample thin",):
+        split = ""
+    extra = f"<br>{split}" if split else ""
+    return f'<div class="today-spot"><b>Today</b>{spot}{extra}</div>'
+
+
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     """Data + odds overlay. Reads Board/Watch AND the raw +400 slate."""
     raw_rows = list(ev_board or []) + list(watch_board or []) + list(coverage_board or [])
@@ -9805,8 +9817,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .al-home{opacity:.88;border-color:#3f3a48!important}
         .al-quiet{opacity:.62;border-color:#2a2038!important;box-shadow:none!important;filter:saturate(.55) brightness(.82)}
         .al-quiet .card-name{color:#c4b5d6!important}
-        .today-spot{margin:6px 0 8px;padding:8px 10px;border-radius:12px;background:linear-gradient(90deg,#3b0764,#831843);border:1px solid #f472b6;color:#fce7f3;font-size:.8rem;line-height:1.35}
-        .today-spot b{color:#fff}
+        .today-spot{margin:4px 0 6px;padding:0;background:transparent;border:none;color:#fce7f3;font-size:.95rem;line-height:1.4}
+        .today-spot b{display:block;font-size:.62rem;letter-spacing:1.3px;text-transform:uppercase;color:#00e6c3;font-weight:800;margin:0 0 2px}
         .card.al-quiet:hover{transform:none}
         .card.al-lock:hover,.card.al-speak:hover,.card.al-shot:hover{transform:translateY(-3px);transition:transform .15s ease}
         .wind-out{color:#34d399;font-weight:700}
@@ -10351,7 +10363,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     f'<div class="{klass}">'
                     f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 Anytime TD</span></div>'
                     f'{_petty_meter(align)}'
-                    + (f'<div class="today-spot"><b>TODAY</b> {data.get("today_spot")}<br>{data.get("today_split")}</div>' if data.get("today_spot") else "")
+                    + _today_html(data)
                     + f'{pulse_html}'
                     f'<div class="al-tags">{"".join(pills)}</div>'
                     f'<div class="card-foot" title="Board score is the ticket stack. Align score is data + odds + context.">Board score {item.get("score") or "—"} · Confidence {align} · Attack {data.get("attack")}</div>'
@@ -10396,7 +10408,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
                 f'{_petty_meter(align)}'
-                + (f'<div class="today-spot"><b>TODAY</b> {data.get("today_spot")}<br>{data.get("today_split")}</div>' if data.get("today_spot") else "")
+                + _today_html(data)
                 + f'{peek}'
                 f'<details class="al-fold"{opened}><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
