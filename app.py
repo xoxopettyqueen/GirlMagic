@@ -9585,6 +9585,121 @@ def _confidence_rows_from_odds(min_price=400):
     return out
 
 
+def _az_dt(iso):
+    if not iso:
+        return None
+    try:
+        return datetime.fromisoformat(str(iso).replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
+    except Exception:
+        return None
+
+
+def _event_commence(item):
+    evs = st.session_state.get("events") or []
+    blob = " ".join(str(x) for x in (item.get("events") or [item.get("event") or ""]))
+    for e in evs:
+        lab = f"{e.get('away_team') or ''} {e.get('home_team') or ''}"
+        if lab.strip() and any(t and t in blob for t in (e.get("away_team"), e.get("home_team")) if t):
+            if (e.get("away_team") or "") in blob and (e.get("home_team") or "") in blob:
+                return e.get("commence_time"), e
+    for e in evs:
+        if (e.get("id") and e.get("id") == item.get("event_id")):
+            return e.get("commence_time"), e
+    return None, None
+
+
+def _today_spot_mlb(item, data, splits):
+    ha = "home"
+    mu = str(data.get("matchup") or "")
+    if "(away)" in mu or mu.lower().startswith("vs ") and "away" in mu.lower():
+        ha = "away"
+    if "away" in mu.lower():
+        ha = "away"
+    elif "home" in mu.lower():
+        ha = "home"
+    iso, ev = _event_commence(item)
+    dt = _az_dt(iso)
+    night = True
+    if dt:
+        night = dt.hour >= 16
+    side = splits.get(ha) or {}
+    other = splits.get("home" if ha == "away" else "away") or {}
+    when = splits.get("night" if night else "day") or {}
+    when_o = splits.get("day" if night else "night") or {}
+    def slg(row):
+        try:
+            return float(row.get("slg"))
+        except Exception:
+            return None
+    bits = [
+        f"{'Road' if ha=='away' else 'Home'}",
+        f"{'Night' if night else 'Day'} game",
+    ]
+    if dt:
+        bits.append(dt.strftime("%-I:%M %p AZ"))
+    vibe = []
+    s1, s2 = slg(side), slg(other)
+    if s1 is not None and s2 is not None:
+        if s1 >= (s2 or 0) + 0.030:
+            vibe.append(f"this is his louder {ha} split (SLG {s1:.3f} vs {s2:.3f})")
+        elif s1 + 0.030 <= (s2 or 0):
+            vibe.append(f"{ha} is his quieter split (SLG {s1:.3f} vs {s2:.3f})")
+        else:
+            vibe.append(f"{ha} SLG {s1:.3f}")
+    elif s1 is not None:
+        vibe.append(f"{ha} SLG {s1:.3f} / {int(side.get('hr') or 0)} HR")
+    w1, w2 = slg(when), slg(when_o)
+    label = "night" if night else "day"
+    if w1 is not None and w2 is not None:
+        if w1 >= (w2 or 0) + 0.030:
+            vibe.append(f"{label} is when he slugs (SLG {w1:.3f})")
+        elif w1 + 0.030 <= (w2 or 0):
+            vibe.append(f"{label} is the softer split (SLG {w1:.3f})")
+    return " · ".join(bits), (" · ".join(vibe) if vibe else "split sample thin")
+
+
+def _today_spot_nfl(item, data, form=None):
+    iso, ev = _event_commence(item)
+    dt = _az_dt(iso)
+    ha = "road"
+    blob = " ".join(str(x) for x in (item.get("events") or [item.get("event") or ""]))
+    team = str(item.get("team") or data.get("nfl_team") or "")
+    if ev:
+        if team and str(ev.get("home_team") or "") and team.lower() in str(ev.get("home_team") or "").lower():
+            ha = "home"
+        elif ev.get("home_team") and ev.get("home_team") in blob and team and team.lower() in str(ev.get("home_team") or "").lower():
+            ha = "home"
+        elif ev.get("away_team") and team.lower() in str(ev.get("away_team") or "").lower():
+            ha = "road"
+    pt = False
+    if dt:
+        wd = dt.strftime("%A")
+        pt = wd in ("Thursday", "Monday") or (wd == "Sunday" and dt.hour >= 18)
+    bits = [ha.title(), "Primetime" if pt else "Not primetime"]
+    if dt:
+        bits.append(dt.strftime("%a %-I:%M %p AZ"))
+    form = form or {}
+    hy, ay = int(form.get("home_yds") or 0), int(form.get("away_yds") or 0)
+    vibe = []
+    if ha == "home" and hy or ay:
+        if hy >= ay + 40:
+            vibe.append(f"home guy ({hy} yds home / {ay} road)")
+        elif ay >= hy + 40:
+            vibe.append(f"home today but he's been louder on the road ({ay} vs {hy})")
+        else:
+            vibe.append(f"home {hy} / road {ay} yds")
+    if ha == "road":
+        if ay >= hy + 40:
+            vibe.append(f"road guy ({ay} yds road / {hy} home)")
+        elif hy >= ay + 40:
+            vibe.append(f"road today but he's been louder at home ({hy} vs {ay})")
+        else:
+            vibe.append(f"home {hy} / road {ay} yds")
+    if pt:
+        vibe.append(f"primetime history {int(form.get('pt_yds') or 0)} yds / {int(form.get('pt_td') or 0)} TD")
+    return " · ".join(bits), (" · ".join(vibe) if vibe else "usage sample thin")
+
+
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     """Data + odds overlay. Reads Board/Watch AND the raw +400 slate."""
     raw_rows = list(ev_board or []) + list(watch_board or []) + list(coverage_board or [])
@@ -9619,6 +9734,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .al-home{opacity:.88;border-color:#3f3a48!important}
         .al-quiet{opacity:.62;border-color:#2a2038!important;box-shadow:none!important;filter:saturate(.55) brightness(.82)}
         .al-quiet .card-name{color:#c4b5d6!important}
+        .today-spot{margin:6px 0 8px;padding:8px 10px;border-radius:12px;background:linear-gradient(90deg,#3b0764,#831843);border:1px solid #f472b6;color:#fce7f3;font-size:.8rem;line-height:1.35}
+        .today-spot b{color:#fff}
         .card.al-quiet:hover{transform:none}
         .card.al-lock:hover,.card.al-speak:hover,.card.al-shot:hover{transform:translateY(-3px);transition:transform .15s ease}
         .wind-out{color:#34d399;font-weight:700}
@@ -9737,6 +9854,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             data["pen_line"] = ""
             data["split_ha"] = data.get("nfl_ha") or ""
             data["split_dn"] = data.get("nfl_pt") or ""
+            try:
+                data["today_spot"], data["today_split"] = _today_spot_nfl(item, data)
+            except Exception:
+                data["today_spot"], data["today_split"] = "", ""
             data["match_boost"] = 0
             odds_hit = bool(methods) or books_n >= 2
             notes = []
@@ -9844,6 +9965,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         data["split_dn"] = f"day {_sl(dy)} · night {_sl(nt)}"
         vl, vr = splits.get("vl") or {}, splits.get("vr") or {}
         data["split_lr"] = f"vs LHP {_sl(vl)} · vs RHP {_sl(vr)}" if (vl or vr) else ""
+        try:
+            data["today_spot"], data["today_split"] = _today_spot_mlb(item, data, splits)
+        except Exception:
+            data["today_spot"], data["today_split"] = "", ""
         if aw.get("slg") and hm.get("slg") and aw["slg"] >= hm["slg"] + 0.040 and data.get("matchup") and "(away)" in data.get("matchup"):
             match_boost += 3
             align = int(align) + 3
@@ -10082,7 +10207,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     f'<div class="{klass}">'
                     f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 Anytime TD</span></div>'
                     f'{_petty_meter(align)}'
-                    f'{pulse_html}'
+                    + (f'<div class="today-spot"><b>TODAY</b> {data.get("today_spot")}<br>{data.get("today_split")}</div>' if data.get("today_spot") else "")
+                    + f'{pulse_html}'
                     f'<div class="al-tags">{"".join(pills)}</div>'
                     f'<div class="card-foot" title="Board score is the ticket stack. Align score is data + odds + context.">Board score {item.get("score") or "—"} · Confidence {align} · Attack {data.get("attack")}</div>'
                     f"</div>",
@@ -10126,7 +10252,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
                 f'{_petty_meter(align)}'
-                f'{peek}'
+                + (f'<div class="today-spot"><b>TODAY</b> {data.get("today_spot")}<br>{data.get("today_split")}</div>' if data.get("today_spot") else "")
+                + f'{peek}'
                 f'<details class="al-fold"{opened}><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
                 f'<details class="al-fold"{opened}><summary title="Pitcher, park vibe, weather, odds stamps">🧠 Context</summary>'
