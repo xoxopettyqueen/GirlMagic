@@ -104060,5 +104060,225 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.67
+  },
+  {
+    "id": "2026-09-16_Isaiah Williams_shop_lean_168",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Isaiah Williams",
+    "score": 0,
+    "edge": 168,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 550,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 600,
+      "caesars": 525,
+      "draftkings": 550,
+      "fanatics": 700,
+      "fanduel": 500,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:05:47.331623+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Greg Dulcich_shop_lean_103",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Greg Dulcich",
+    "score": 0,
+    "edge": 103,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 475,
+      "caesars": 600,
+      "draftkings": 600,
+      "fanatics": 700,
+      "fanduel": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:05:47.345845+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Jayden Reed_shop_take_54",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Jayden Reed",
+    "score": 0,
+    "edge": 54,
+    "best_price": 320,
+    "best_book": "bet365",
+    "median": 260,
+    "book_prices": {
+      "bet365": 320,
+      "betmgm": 280,
+      "caesars": 260,
+      "draftkings": 230,
+      "fanatics": 280,
+      "fanduel": 260,
+      "hardrockbet": 250
+    },
+    "price_bucket": "under +400",
+    "ending": 20,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T01:05:47.368036+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Kyle Pitts Sr._shop_lean_49",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Kyle Pitts Sr.",
+    "score": 0,
+    "edge": 49,
+    "best_price": 400,
+    "best_book": "fanatics",
+    "median": 330,
+    "book_prices": {
+      "betmgm": 270,
+      "caesars": 340,
+      "draftkings": 390,
+      "fanatics": 400,
+      "fanduel": 330,
+      "hardrockbet": 325,
+      "bet365": 320
+    },
+    "price_bucket": "+400s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:05:47.374804+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Buffalo Bills D/ST_shop_take_48",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Buffalo Bills D/ST",
+    "score": 0,
+    "edge": 48,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 500,
+      "draftkings": 650,
+      "fanatics": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T01:05:47.375889+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Jahmyr Gibbs_shop_lean_41",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Jahmyr Gibbs",
+    "score": 0,
+    "edge": 41,
+    "best_price": -270,
+    "best_book": "fanatics",
+    "median": -320,
+    "book_prices": {
+      "bet365": -323,
+      "betmgm": -295,
+      "caesars": -320,
+      "draftkings": -320,
+      "fanatics": -270,
+      "fanduel": -330,
+      "hardrockbet": -325
+    },
+    "price_bucket": "under +400",
+    "ending": 70,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:05:47.383427+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Chris Brooks_shop_lean_40",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Chris Brooks",
+    "score": 0,
+    "edge": 40,
+    "best_price": 225,
+    "best_book": "bet365",
+    "median": 180,
+    "book_prices": {
+      "bet365": 225,
+      "betmgm": 230,
+      "caesars": 169,
+      "draftkings": 180,
+      "fanatics": 200,
+      "fanduel": 165,
+      "hardrockbet": 170
+    },
+    "price_bucket": "under +400",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:05:47.385157+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
