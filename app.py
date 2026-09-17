@@ -9062,11 +9062,11 @@ def render_alignment_tab(ev_board, watch_board=None):
             continue
         # Matchup layer — MLB only. NFL uses nflverse form already on the card.
         if sport == "NFL":
-            data["park_line"] = data.get("park_line") or "NFL — no park factor"
-            data["vs_line"] = data.get("vs_line") or (data.get("summary") or "nflverse form")
-            data["pen_line"] = data.get("pen_line") or "DVP in lab next"
-            data["split_ha"] = data.get("split_ha") or ""
-            data["split_dn"] = data.get("split_dn") or ""
+            data["park_line"] = ""
+            data["vs_line"] = ""
+            data["pen_line"] = ""
+            data["split_ha"] = data.get("nfl_ha") or ""
+            data["split_dn"] = data.get("nfl_pt") or ""
             data["match_boost"] = 0
             odds_hit = bool(methods) or books_n >= 2
             notes = []
@@ -9291,7 +9291,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         pen_html = ""
         if data.get("pen_line"):
             pen_html = f'<div class="card-line"><b>VS BULLPEN</b> {data.get("pen_line")}</div>'
-        with cols[i % 2]:
+        with cols[i % max(1, len(cols))]:
             if sport == "NFL":
                 st.markdown(
                     f'<div class="{klass}">'
