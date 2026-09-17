@@ -103675,5 +103675,191 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.8
+  },
+  {
+    "id": "2026-09-16_KaVontae Turpin_shop_lean_147",
+    "date": "2026-09-16",
+    "time": "05:53 PM",
+    "player": "KaVontae Turpin",
+    "score": 0,
+    "edge": 147,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 650,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 575,
+      "caesars": 650,
+      "draftkings": 650,
+      "fanatics": 800,
+      "fanduel": 650,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T00:53:41.671991+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Chris Bell_shop_take_90",
+    "date": "2026-09-16",
+    "time": "05:53 PM",
+    "player": "Chris Bell",
+    "score": 0,
+    "edge": 90,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 650,
+    "book_prices": {
+      "betmgm": 600,
+      "caesars": 650,
+      "draftkings": 650,
+      "fanatics": 750,
+      "fanduel": 700,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:53:41.682913+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Darnell Mooney_shop_take_83",
+    "date": "2026-09-16",
+    "time": "05:53 PM",
+    "player": "Darnell Mooney",
+    "score": 0,
+    "edge": 83,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 750,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 575,
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 650,
+      "fanduel": 800,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:53:41.685827+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Kyle Juszczyk_shop_take_68",
+    "date": "2026-09-16",
+    "time": "05:53 PM",
+    "player": "Kyle Juszczyk",
+    "score": 0,
+    "edge": 68,
+    "best_price": 750,
+    "best_book": "fanduel",
+    "median": 675,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 575,
+      "caesars": 675,
+      "draftkings": 650,
+      "fanatics": 900,
+      "fanduel": 750,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:53:41.690035+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Jake Ferguson_shop_lean_44",
+    "date": "2026-09-16",
+    "time": "05:53 PM",
+    "player": "Jake Ferguson",
+    "score": 0,
+    "edge": 44,
+    "best_price": 310,
+    "best_book": "fanatics",
+    "median": 260,
+    "book_prices": {
+      "bet365": 265,
+      "betmgm": 240,
+      "caesars": 250,
+      "draftkings": 260,
+      "fanatics": 310,
+      "fanduel": 250,
+      "hardrockbet": 260
+    },
+    "price_bucket": "under +400",
+    "ending": 10,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T00:53:41.706357+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Miami Dolphins D/ST_shop_lean_35",
+    "date": "2026-09-16",
+    "time": "05:53 PM",
+    "player": "Miami Dolphins D/ST",
+    "score": 0,
+    "edge": 35,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 700,
+    "book_prices": {
+      "draftkings": 750,
+      "fanatics": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T00:53:41.712106+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
