@@ -1705,11 +1705,99 @@ def render_card_guide():
     st.caption("Keep this quiet. You’re not supposed to know how the colors talk.")
 
 
+GLOSSARY_V2 = {
+    "📊 Data": [
+        ("⚡ Exit Velocity (EV)", "How hard the ball leaves the bat. 95+ mph = bomb potential."),
+        ("💥 Hard-Hit Rate (HH%)", "Share of balls hit 95+ mph. Higher = consistent power."),
+        ("🎯 Barrel Rate", "Ideal HR contact — launch angle + EV in the sweet spot."),
+        ("💣 HR L7", "Homers in the last 7 games. Short-term heat."),
+        ("📈 SLG L7", "Slugging last 7 games. Total-base heat."),
+        ("🔥 Heating", "Recent uptick in EV + HH. Trend is cooking."),
+        ("💎 Longshot", "Price +500 or longer. Chaos lane."),
+    ],
+    "🧠 Context": [
+        ("⚾ Pitcher Matchup", "Who’s on the mound and whether they feed bombs or kill them. SP HR/9 lives here."),
+        ("🏟️ Park Vibe", "Stadium power rating. Hot Porch 💥 bombs fly. Cold Porch 🧊 pitcher’s park."),
+        ("💸 Odds Cluster", "Multiple books on the same stamp = market confidence."),
+        ("🧠 Board Note", "Board still decides if we ticket it. Align is the whisper, Board is the ticket."),
+    ],
+    "⚙️ Splits": [
+        ("🏠 Home / Away", "Some bats only cook at home. Some only on the road."),
+        ("🌙 Day / Night", "Sun vs lights. Production changes."),
+        ("🆚 vs LHP / RHP", "Handedness split. Lefties vs righties."),
+    ],
+    "💸 Odds": [
+        ("FD Pattern", "FanDuel +400+ ending 10/20/30/60/70/90."),
+        ("FD 600", "Specific FanDuel number we watch."),
+        ("MGM 25 / 50 / 75 / 00", "Same-team BetMGM group endings."),
+        ("MGM Exact", "Same MGM price, same team."),
+        ("DK 10", "DraftKings ends in 10."),
+        ("Multi-book Shorten", "Price dropped on 2+ books."),
+        ("Books Tight", "Ticket books within 50 points."),
+        ("Exact Match", "Books agree on the number."),
+        ("EV Support", "Expected value backing the pick."),
+        ("Fanatics vs MGM", "Fanatics 80+ longer than MGM = signal book."),
+        ("MGM", "Signal and grouping. Not the ticket we buy."),
+    ],
+    "💎 Tags": [
+        ("🔥 Heating", "EV + HH trending up."),
+        ("🎶 Rhythm", "Digit / book stamp fired."),
+        ("🧠 Board Take", "Green on the Board."),
+        ("💅 Petty Upside", "High-risk high-style lane."),
+        ("💎 Longshot", "+500 or longer."),
+        ("Priority / Premium / Support", "Priority can unlock TAKE with 2 premium. Support never greens alone."),
+    ],
+    "🏟️ Park Vibes": [
+        ("💥 Hot Porch", "HR factor 130+. Bombs fly."),
+        ("🔥 Live Air", "110–129. Ball carries."),
+        ("🌬️ Neutral", "90–109. Average park."),
+        ("🧊 Cold Porch", "Under 90. Pitcher’s park."),
+    ],
+    "🏈 NFL": [
+        ("📊 Player Pulse", "Usage + momentum. Heating / cooling / role."),
+        ("🎯 Attack Angle", "How we hunt them: TD, yards, receptions, or longshot."),
+        ("🐣 Rookie", "This-year draftee. Pop risk."),
+        ("🛡️ DVP", "Last 10 games, per game, what that D gave this position. Home / road / primetime of the defense."),
+        ("🏈 Anytime TD", "The only NFL ticket on this board."),
+        ("Show Active / Whispers / Homework", "NFL: under +500 / longshot / rookies-low volume."),
+    ],
+    "⚾ MLB": [
+        ("0.5 HR Over", "The only baseball ticket. One homer."),
+        ("VS BULLPEN", "Only prints when this hitter has PA vs that team’s current relievers."),
+        ("Alignment Score", "Data + odds + context. 85+ can show on Active."),
+        ("Tickets vs Research", "Receipts ledger. What we told people to bet vs what we were studying."),
+    ],
+}
+
+
 def render_mini_glossary():
-    st.markdown("### 💅 Girl Magic Glossary")
-    st.markdown("**Shhh. This is the language.**")
-    st.caption("You weren’t supposed to see this, but since you’re here — learn it, use it, don’t talk too loud about it.")
-    st.markdown("Welcome to the language of the Board — the slang, the signals, the chaos, the math, and the petty. If you can speak this, you can roll with us.")
+    st.markdown("### ✨ Girl Magic Glossary 2.0")
+    st.caption("Learn the vibe, then roll the slate.")
+    q = st.text_input("Search the vibe…", key="gloss_q")
+    cats = list(GLOSSARY_V2.keys())
+    cat = st.radio("Category", cats, horizontal=True, key="gloss_cat")
+    rows = list(GLOSSARY_V2.get(cat) or [])
+    if q.strip():
+        needle = q.lower()
+        rows = []
+        for _, items in GLOSSARY_V2.items():
+            for t, d in items:
+                if needle in t.lower() or needle in d.lower():
+                    rows.append((t, d))
+    cols = st.columns(2)
+    if not rows:
+        st.info("Nothing in the language matched that search.")
+        return
+    for i, (term, defn) in enumerate(rows):
+        with cols[i % 2]:
+            st.markdown(
+                f'<div class="card" title="{defn}"><div class="card-kicker">GLOSSARY</div>'
+                f'<div class="card-name" style="font-size:1.05rem">{term}</div>'
+                f'<div class="card-line">{defn}</div></div>',
+                unsafe_allow_html=True,
+            )
+    st.caption("Learn the vibe, then roll the slate.")
+    return
     st.markdown("**🔖 Tags**")
     st.markdown(
         "- **FD Pattern** — FanDuel’s rhythm. +400 or higher ending 10/20/30/60/70/90.\n"
