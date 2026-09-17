@@ -10244,9 +10244,9 @@ def main():
     @keyframes gmPulse{0%,100%{box-shadow:0 0 10px rgba(244,114,182,.35)}50%{box-shadow:0 0 20px rgba(192,132,252,.7)}}
     </style>
     """, unsafe_allow_html=True)
-    MAIN_TABS = ["Align", "Board", "Shop", "Labs", "Narratives", "Vault", "How"]
+    MAIN_TABS = ["Align", "Board", "Shop", "Labs", "Vault", "How"]
     if active_sport() == "NFL":
-        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs", "Narratives", "Vault", "How"]
+        MAIN_TABS = ["Align", "Board", "Shop", "Need One", "Labs", "Vault", "How"]
     if st.session_state.get("main_nav") not in MAIN_TABS:
         st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
@@ -10322,23 +10322,8 @@ def main():
         page = admin_map.get(sub, "Grade:Results")
     elif main == "How":
         page = "Code:"
-    elif main == "Narratives":
-        page = "Narratives:"
     else:
         page = f"{main}:{sub or ''}"
-    if page == "Narratives:":
-        st.markdown("#### 📰 Narratives")
-        st.caption("One-liners from the same Fetch. Not a new odds engine.")
-        bag = list(ev_board or [])[:25]
-        if not bag:
-            st.info("Fetch first.")
-        for item in bag:
-            tags = ", ".join(str(m) for m in (item.get("methods") or [])[:3]) or "no stamp"
-            why = item.get("why") or item.get("num_tag") or ""
-            st.markdown(
-                f"**{item.get('player')}** — {format_odds(item.get('best_price'))} "
-                f"{book_label(item.get('best_book'))}. {tags}. {why}"
-            )
     if page == "Align:":
         render_alignment_tab(ev_board, watch_board)
     if page == "Board:":
