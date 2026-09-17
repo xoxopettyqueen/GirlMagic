@@ -4973,7 +4973,15 @@ def log_bet_this(ev_board, watch_board=None):
             if not already(item.get("player") or "", "take_it"):
                 append_row(item, "take_it")
             freeze_take_to_ledger(item, "take_it")
-    # Watch / coverage stay on the Board and in the lock. They are not graded tickets.
+    for item in list(watch_board or []) + [x for x in ev_board if not x.get("is_bet")]:
+        if item.get("is_bet"):
+            continue
+        stamps, _ms = stamp_count(item.get("methods") or [])
+        if stamps < 1:
+            continue
+        if stamps >= 2:
+            continue
+        append_row(item, "watch")
 
     if added:
         save_results(rows)
@@ -5313,6 +5321,7 @@ def fetch_nfl_td_scorers():
 
 
 GRADE_SOURCES = ("take_it", "shop_take", "manual_hr")
+STUDY_SOURCES = ("watch", "shop_lean", "coverage")
 
 
 def _official_hr_for_date(date_str):
@@ -5331,8 +5340,9 @@ def auto_grade_pending():
             if row.get("result") != "PENDING":
                 continue
             src = str(row.get("source") or "")
-            if src not in GRADE_SOURCES:
+            if src not in GRADE_SOURCES and src not in STUDY_SOURCES:
                 continue
+            study = src in STUDY_SOURCES
             mkt = str(row.get("market") or "").lower()
             if src.startswith("need_one"):
                 skipped += 1
@@ -5346,19 +5356,21 @@ def auto_grade_pending():
             player = row.get("player") or ""
             rushed = st.session_state.get("nfl_rush_td") or set()
             if is_nfl_qb(player) and not any(names_match_grade(player, x) for x in rushed):
-                row["result"] = "MISS"
+                row["result"] = "LEARN_MISS" if study else "MISS"
                 row["graded_by"] = tag + "_qb_not_rush"
                 misses += 1
                 continue
             if any(names_match_grade(player, h) for h in hit_set):
-                row["result"] = "HIT"
+                row["result"] = "LEARN_HIT" if study else "HIT"
                 row["graded_by"] = tag
+                row["hit_why"] = list(row.get("methods") or [])
+                row["hit_when"] = str(row.get("date") or "")[:10]
                 if row.get("ending") is None and row.get("best_price") is not None:
                     row["ending"] = last_two(row["best_price"])
                 hits += 1
                 continue
             if miss_pool and any(names_match_grade(player, f) for f in miss_pool):
-                row["result"] = "MISS"
+                row["result"] = "LEARN_MISS" if study else "MISS"
                 row["graded_by"] = tag
                 misses += 1
             else:
@@ -5373,7 +5385,7 @@ def auto_grade_pending():
         if row.get("result") != "PENDING":
             continue
         src = str(row.get("source") or "")
-        if src not in GRADE_SOURCES:
+        if src not in GRADE_SOURCES and src not in STUDY_SOURCES:
             continue
         if str(row.get("market") or "") == "anytime_td":
             skipped += 1
@@ -5382,7 +5394,7 @@ def auto_grade_pending():
         if not d:
             skipped += 1
             continue
-        key = (_fold_name(row.get("player") or ""), d)
+        key = (_fold_name(row.get("player") or ""), d, "study" if src in STUDY_SOURCES else "ticket")
         if key in seen_ticket:
             row["result"] = "SKIP_DUP"
             row["graded_by"] = "one_per_day"
@@ -5396,9 +5408,10 @@ def auto_grade_pending():
         tag = "mlb_auto"
         for row in batch:
             player = row.get("player") or ""
+            study = str(row.get("source") or "") in STUDY_SOURCES
             if any(names_match_grade(player, h) for h in hit_set):
-                row["result"] = "HIT"
-                row["graded_by"] = tag
+                row["result"] = "LEARN_HIT" if study else "HIT"
+                row["graded_by"] = tag + ("_study" if study else "")
                 row["graded_date"] = d
                 row["hit_why"] = list(row.get("methods") or [])
                 row["hit_when"] = d
@@ -5406,15 +5419,11 @@ def auto_grade_pending():
                     row["ending"] = last_two(row["best_price"])
                 hits += 1
             elif miss_pool and any(names_match_grade(player, f) for f in miss_pool):
-                row["result"] = "MISS"
-                row["graded_by"] = tag
+                row["result"] = "LEARN_MISS" if study else "MISS"
+                row["graded_by"] = tag + ("_study" if study else "")
                 misses += 1
             else:
                 skipped += 1
-    for row in rows:
-        if row.get("result") == "PENDING" and str(row.get("source") or "") not in GRADE_SOURCES:
-            row["result"] = "EYES"
-            row["graded_by"] = "not_a_ticket"
     flipped = repair_mlb_hits(rows)
     save_results(rows)
     extra = f" · repaired {flipped} false HIT" if flipped else ""
@@ -12202,7 +12211,7 @@ def main():
         window = st.selectbox("Compare", ["This week vs last week", "This week only"], key="pa_window")
         focus_src = st.selectbox(
             "Log slice",
-            ["Tickets only (TAKE IT)", "All graded", "Shop TAKE"],
+            ["Tickets only (TAKE IT)", "Study layer (Watch)", "All graded", "Shop TAKE"],
             key="pa_src",
         )
         week = [r for r in rows if _in(r, start, end)]
@@ -12210,12 +12219,20 @@ def main():
         if focus_src.startswith("Tickets"):
             week = [r for r in week if r.get("source") in GRADE_SOURCES]
             prevw = [r for r in prevw if r.get("source") in GRADE_SOURCES]
+        elif focus_src.startswith("Study"):
+            week = [r for r in week if r.get("source") in STUDY_SOURCES]
+            prevw = [r for r in prevw if r.get("source") in STUDY_SOURCES]
         elif focus_src.startswith("Shop"):
             week = [r for r in week if r.get("source") == "shop_take"]
             prevw = [r for r in prevw if r.get("source") == "shop_take"]
 
-        hits = [r for r in week if r.get("result") == "HIT"]
-        graded = [r for r in week if r.get("result") in ("HIT", "MISS")]
+        hit_ok = ("LEARN_HIT", "HIT") if focus_src.startswith("Study") else ("HIT",)
+        miss_ok = ("LEARN_MISS", "MISS") if focus_src.startswith("Study") else ("MISS",)
+        if focus_src.startswith("All"):
+            hit_ok = ("HIT", "LEARN_HIT")
+            miss_ok = ("MISS", "LEARN_MISS")
+        hits = [r for r in week if r.get("result") in hit_ok]
+        graded = [r for r in week if r.get("result") in hit_ok + miss_ok]
         def _is_ticket(r):
             src = str(r.get("source") or "")
             if src in ("take_it", "shop_take", "manual_hr"):
@@ -12420,7 +12437,8 @@ def main():
             f'<div class="pa-sub"><b>Book</b> = who had the number we logged when it hit.</div>'
             f'<div class="pa-sub"><b>Ending</b> = last two digits of that price. +450 ends in 50.</div>'
             f'<div class="pa-sub"><b>All-log hit rate</b> is every HIT and MISS we marked — Watch, Shop lean, coverage, the pile. That number will sit near 8–15% because a +500 homer is already a long shot.</div>'
-            f'<div class="pa-sub"><b>Ticket hit rate</b> is only TAKE IT / Shop take / 2+ core stamps. Use that one to judge the model.</div>'
+            f'<div class="pa-sub"><b>Ticket hit rate</b> is only TAKE IT / Shop take. Use that one to judge the model.</div>'
+            f'<div class="pa-sub"><b>Study layer</b> is Watch / lean — same box score, separate grade (LEARN HIT/MISS) so we can loosen or tighten stamps without wrecking the ticket rate.</div>'
             f'</div>',
             unsafe_allow_html=True,
         )
