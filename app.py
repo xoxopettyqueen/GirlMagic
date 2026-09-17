@@ -8973,7 +8973,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         key="align_view",
         help="Active = Locked + Spoke. Whispers = not a ticket yet. Homework = still cooking.",
     )
-    perfect = [c for c in cards if c[0] >= 85][:10]
+    perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Alignment Picks")
         st.caption("Data spoke. Odds agreed. Board’s got the final say.")
@@ -8996,7 +8996,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         })
     save_align_events(ev_log)
     if view.startswith("🎯"):
-        cards = [c for c in cards if c[0] >= 85][:10]
+        cards = [c for c in cards if c[0] >= 85][:24]
     elif view.startswith("🫧"):
         cards = [c for c in cards if 70 <= c[0] < 85]
     elif view.startswith("📚"):
