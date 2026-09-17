@@ -102562,5 +102562,36 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.86
+  },
+  {
+    "id": "2026-09-16_Antonio Williams_shop_take_57",
+    "date": "2026-09-16",
+    "time": "05:23 PM",
+    "player": "Antonio Williams",
+    "score": 0,
+    "edge": 57,
+    "best_price": 475,
+    "best_book": "fanatics",
+    "median": 417,
+    "book_prices": {
+      "betmgm": 500,
+      "caesars": 400,
+      "draftkings": 425,
+      "fanatics": 475,
+      "fanduel": 410,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T00:23:47.278752+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
