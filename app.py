@@ -9238,14 +9238,11 @@ def _yearish(val):
 
 
 def _is_nfl_rookie(form):
-    """True for this season's draft class and last year's (year-2 still gets the chip)."""
+    """This season's draft class only. 2025 guys in 2026 are year two."""
     season = _nfl_season_year()
     dy = _yearish((form or {}).get("draft_year"))
     rs = _yearish((form or {}).get("rookie_season"))
-    years = [y for y in (dy, rs) if y]
-    if not years:
-        return False
-    return min(years) >= season - 1
+    return dy == season or rs == season
 
 
 def _petty_upside_from_item(item, sport="MLB", live=None):
@@ -9338,7 +9335,13 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
                         f"{rec.get('pt_td_g') or 0:.2f} TD ({int(rec.get('pt_g') or 0)} PT games)"
                     )
                 break
-        if best and (best.get("rec_td_g") or 0) >= 0.6:
+        dvp_tdg = 0.0
+        if best:
+            if str(pos).upper() == "RB":
+                dvp_tdg = float((best.get("rush_td_g") or 0) + (best.get("rec_td_g") or 0))
+            else:
+                dvp_tdg = float(best.get("rec_td_g") or 0)
+        if best and dvp_tdg >= 0.6:
             score += 8
         return {
             "score": min(120, score),
@@ -9373,6 +9376,7 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "away_yds": form.get("away_yds"),
             "pt_yds": form.get("pt_yds"),
             "pt_td": form.get("pt_td"),
+            "dvp_tdg": dvp_tdg,
         }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
@@ -9802,8 +9806,8 @@ def _today_html(data):
     dead = ("0 / 0" in split) or split.startswith("home 0") or "0 yds / 0 TD" in split
     if dead or split in ("usage sample thin",):
         split = ""
-    extra = f"<br>{split}" if split else ""
-    return f'<div class="today-spot"><b>Today</b>{spot}{extra}</div>'
+    extra = f" · {split}" if split else ""
+    return f'<div class="al-pack">📍 {spot}{extra}</div>'
 
 
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
@@ -9894,18 +9898,22 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 hr7 = int(float(bit))
         except Exception:
             hr7 = 0
-        contact = sum([
-            1 if ev and ev >= 89 else 0,
-            1 if hh is not None and hh >= 42 else 0,
-            1 if brl is not None and brl >= 8 else 0,
-        ])
         near = data.get("near_hr") or 0
         xslg = data.get("xslg")
+        la = data.get("la")
         juice = bool(near >= 6 or (xslg is not None and xslg >= 0.480))
-        # HOT = loud contact, not "has a number." Rookie/call-up can ride if contact exists.
-        data_hit = bool(
-            contact >= 2 and (hot or hr7 >= 1 or juice or (xslg is not None and xslg >= 0.420))
-        ) or bool(contact >= 1 and data.get("rookie") and ((ev or 0) >= 88 or (brl or 0) >= 7))
+        contact = sum([
+            1 if ev and ev >= 89.5 else 0,
+            1 if hh is not None and hh >= 42 else 0,
+            1 if brl is not None and brl >= 8 else 0,
+            1 if xslg is not None and xslg >= 0.420 else 0,
+            1 if la is not None and 18 <= float(la) <= 35 else 0,
+            1 if hot or hr7 >= 1 else 0,
+        ])
+        # Barrel is the homer skill. 3+ flags = hot. 2 = mid. 0–1 = cold.
+        elite_barrel = brl is not None and brl >= 11 and ev and ev >= 90
+        data_hit = bool(contact >= 3 or elite_barrel)
+        data["flag_n"] = contact
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -9944,20 +9952,21 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 td_n = 0
             heating = "Heating" in str(data.get("trend") or "")
             role = str(data.get("role") or "")
-            data_hit = bool(
-                "nflverse miss" not in summ
-                and (
-                    form_share >= 0.10
-                    or heating
-                    or td_n >= 4
-                    or (role.endswith("1") and form_share >= 0.08)
-                    or (role.endswith(("2", "3")) and (form_share >= 0.08 or td_n >= 2 or heating))
-                    or (bool(data.get("rookie")) and (form_share >= 0.06 or td_n >= 1))
-                )
-            )
-            soft_nfl = bool("nflverse miss" not in summ) and bool(
-                form_share > 0 or td_n >= 1 or "tgt" in summ.lower() or role
-            )
+            try:
+                dvp_tdg = float(data.get("dvp_tdg") or 0)
+            except Exception:
+                dvp_tdg = 0.0
+            nfl_flags = sum([
+                1 if form_share >= 0.10 else 0,
+                1 if heating else 0,
+                1 if td_n >= 3 else 0,
+                1 if dvp_tdg >= 0.45 else 0,
+                1 if role.endswith(("1", "2", "3")) and form_share >= 0.07 else 0,
+            ])
+            data_hit = bool("nflverse miss" not in summ and nfl_flags >= 3)
+            soft_nfl = bool("nflverse miss" not in summ and nfl_flags == 2)
+            data["flag_n"] = nfl_flags
+            data["dvp_tdg"] = dvp_tdg
             data["nfl_data_hit"] = data_hit
             data["nfl_soft"] = soft_nfl
         board_take = bool(item.get("is_bet"))
@@ -9983,9 +9992,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if sport == "NFL":
             data_hit = bool(data.get("nfl_data_hit"))
             soft_data = bool(data.get("nfl_soft") or soft_data)
-        if data_hit or (soft_data and (hot or hr7 >= 1 or juice or contact >= 2)):
+        flags = int(data.get("flag_n") or contact or 0)
+        if data_hit or flags >= 3:
             data["data_tier"] = "hot"
-        elif soft_data or contact >= 1 or hr7 >= 1:
+        elif flags == 2:
             data["data_tier"] = "mid"
         else:
             data["data_tier"] = "cold"
@@ -10201,6 +10211,11 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         f'<div class="petty-box"><div class="petty-num">{n_mid}</div><div class="petty-label">DATA MID</div></div>'
         f'<div class="petty-box"><div class="petty-num">{n_cold}</div><div class="petty-label">DATA COLD</div></div>'
         f'<div class="petty-box"><div class="petty-num">{len(cards)}</div><div class="petty-label">SLATE +400</div></div>'
+        f'</div>'
+        f'<div class="al-pack" style="max-width:980px;margin:4px auto 10px;color:#b7a8c9;font-size:.78rem;line-height:1.45">'
+        f'<b style="color:#f9a8d4">HOT</b> — 3+ homer flags (EV 89.5+, HH 42%+, barrel 8%+, xSLG .420+, launch 18–35°, heat/HR L7). Barrel 11%+ and EV 90 is enough by itself. NFL: 3 of target share / heating / TDs / DVP paying TDs / used WR2-TE2-RB2.<br>'
+        f'<b style="color:#c4b5fd">MID</b> — exactly 2 flags. Fine profile, not the pile.<br>'
+        f'<b style="color:#9ca3af">COLD</b> — 0 or 1 flag. Still on the +400 slate.'
         f'</div>',
         unsafe_allow_html=True,
     )
