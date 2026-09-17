@@ -118316,5 +118316,100 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-17_TJ Friedl_shop_take_70",
+    "date": "2026-09-17",
+    "time": "08:50 AM",
+    "player": "TJ Friedl",
+    "score": 0,
+    "edge": 70,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 680,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 625,
+      "draftkings": 680,
+      "fanatics": 750,
+      "fanduel": 680,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T15:50:35.313029+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Sal Stewart_shop_lean_45",
+    "date": "2026-09-17",
+    "time": "08:50 AM",
+    "player": "Sal Stewart",
+    "score": 0,
+    "edge": 45,
+    "best_price": 375,
+    "best_book": "bet365",
+    "median": 320,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 240,
+      "caesars": 320,
+      "draftkings": 313,
+      "fanatics": 325,
+      "fanduel": 320,
+      "hardrockbet": 325
+    },
+    "price_bucket": "under +400",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T15:50:35.326870+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Max Muncy_shop_lean_40",
+    "date": "2026-09-17",
+    "time": "08:50 AM",
+    "player": "Max Muncy",
+    "score": 0,
+    "edge": 40,
+    "best_price": 280,
+    "best_book": "bet365",
+    "median": 220,
+    "book_prices": {
+      "bet365": 280,
+      "betmgm": 200,
+      "caesars": 220,
+      "draftkings": 215,
+      "fanatics": 210,
+      "fanduel": 230,
+      "hardrockbet": 250
+    },
+    "price_bucket": "under +400",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T15:50:35.330639+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
