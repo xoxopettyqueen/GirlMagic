@@ -10502,16 +10502,12 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 data_line += extra + f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             loud = data.get("data_tier") == "hot" and (data.get("has_odds_magic") or item.get("is_bet"))
             opened = " open"
-            peek = ""
-            if ev is not None and brl is not None:
-                peek = f'<div class="al-pack">EV {ev:.0f} · Barrel {brl:.1f}% · HR L7 {hr7 or "—"} · {format_odds(item.get("best_price"))}</div>'
             st.markdown(
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
                 f'{_petty_meter(align)}'
                 + _today_html(data)
-                + f'{peek}'
-                f'<details class="al-fold"{opened}><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
+                + f'<details class="al-fold"{opened}><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
                 f'<details class="al-fold"{opened}><summary title="Pitcher, park vibe, weather, odds stamps">🧠 Context</summary>'
                 f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · 🌡️ {data.get("weather") or ""}'
