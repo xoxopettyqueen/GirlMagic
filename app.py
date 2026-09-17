@@ -9466,19 +9466,33 @@ def render_alignment_tab(ev_board, watch_board=None):
                         draft_bit = "draft " + sm.split("draft", 1)[1].split("·")[0].strip()
                     except Exception:
                         draft_bit = ""
-                rook = "🐣 Rookie" if data.get("rookie") else ""
-                heat_txt = "trending up — more looks." if "Heating" in str(data.get("trend")) else "volume is quieter."
+                rook = " 🐣 Rookie — first-year pop risk." if data.get("rookie") else ""
+                tr = str(data.get("trend") or "")
+                if "Heating" in tr:
+                    heat_txt = "🔥 Heating: trending up — more targets and staying hot."
+                elif "Cooling" in tr:
+                    heat_txt = "🧊 Cooling: volume is quieter. Don’t force it."
+                else:
+                    heat_txt = "😐 Neutral: not a spike, not a fade."
+                role = data.get("role") or "skill"
+                atk = str(data.get("attack") or "💣 Anytime TD")
+                if "Reception" in atk:
+                    atk_txt = "🎯 Attack: Receptions + yards — catching and stacking, not only the TD."
+                elif "Longshot" in atk:
+                    atk_txt = "💎 Attack: Longshot TD — chaos price. Only if the vibe is loud."
+                else:
+                    atk_txt = "💣 Attack: Anytime TD — that’s the ticket lane."
                 pulse_html = (
                     f'<details class="al-fold" open><summary>🧠 Player Pulse</summary>'
-                    f'<div class="al-pack">{data.get("trend") or "😐"} — {heat_txt}<br>'
-                    f'<span title="WR1 = team top pass catcher">Role {data.get("role") or "—"}</span> {rook}<br>'
-                    f'🎯 Attack: {data.get("attack")} — that is the lane.<br>'
-                    f'<span title="Targets = how often the QB looks his way">{sm}</span></div></details>'
+                    f'<div class="al-pack">{heat_txt}<br>'
+                    f'<span title="Wide Receiver 1 = team’s top pass catcher">Role {role}</span> — first look.{rook}<br>'
+                    f'{atk_txt}<br>'
+                    f'<span title="Targets = how many times the QB throws his way">{sm}</span></div></details>'
                     f'<details class="al-fold" open><summary>⚔️ Matchup Vibe</summary>'
-                    f'<div class="al-pack"><span title="Last 10 games, per game, vs this position">{data.get("dvp_line") or "DVP not tagged"}</span><br>'
-                    f'<span title="His yards home vs road">{data.get("nfl_ha") or "—"}</span><br>'
+                    f'<div class="al-pack"><span title="Defense vs this position, last 10 games, PER GAME">{data.get("dvp_line") or "DVP not tagged"}</span><br>'
+                    f'<span title="His 2-season totals home vs road">{data.get("nfl_ha") or "—"}</span><br>'
                     f'<span title="Night / national TV">{data.get("nfl_pt") or "—"}</span></div></details>'
-                    f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
+                    f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree on the number">💸 Odds Pulse: {price} {book_label(item.get("best_book"))} · {stamps}</div>'
                 )
                 st.markdown(
                     f'<div class="{klass}">'
