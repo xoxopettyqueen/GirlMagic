@@ -105245,5 +105245,162 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Adam Trautman_shop_lean_66",
+    "date": "2026-09-16",
+    "time": "06:43 PM",
+    "player": "Adam Trautman",
+    "score": 0,
+    "edge": 66,
+    "best_price": 900,
+    "best_book": "bet365",
+    "median": 875,
+    "book_prices": {
+      "bet365": 900,
+      "betmgm": 1100,
+      "caesars": 850,
+      "draftkings": 850,
+      "fanatics": 1050,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:43:07.396214+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Marvin Mims Jr._shop_lean_61",
+    "date": "2026-09-16",
+    "time": "06:43 PM",
+    "player": "Marvin Mims Jr.",
+    "score": 0,
+    "edge": 61,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 637,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 950,
+      "caesars": 625,
+      "draftkings": 650,
+      "fanatics": 700,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:43:07.398882+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Malik Willis_shop_take_54",
+    "date": "2026-09-16",
+    "time": "06:43 PM",
+    "player": "Malik Willis",
+    "score": 0,
+    "edge": 54,
+    "best_price": 340,
+    "best_book": "fanatics",
+    "median": 270,
+    "book_prices": {
+      "bet365": 240,
+      "betmgm": 270,
+      "caesars": 260,
+      "draftkings": 270,
+      "fanatics": 340,
+      "fanduel": 300,
+      "hardrockbet": 275
+    },
+    "price_bucket": "under +400",
+    "ending": 40,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T01:43:07.401952+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Brian Thomas Jr._shop_lean_41",
+    "date": "2026-09-16",
+    "time": "06:43 PM",
+    "player": "Brian Thomas Jr.",
+    "score": 0,
+    "edge": 41,
+    "best_price": 340,
+    "best_book": "fanatics",
+    "median": 292,
+    "book_prices": {
+      "betmgm": 280,
+      "caesars": 290,
+      "draftkings": 295,
+      "fanatics": 340,
+      "hardrockbet": 275,
+      "bet365": 310
+    },
+    "price_bucket": "under +400",
+    "ending": 40,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:43:07.413354+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Adonai Mitchell_shop_lean_40",
+    "date": "2026-09-16",
+    "time": "06:43 PM",
+    "player": "Adonai Mitchell",
+    "score": 0,
+    "edge": 40,
+    "best_price": 380,
+    "best_book": "fanatics",
+    "median": 325,
+    "book_prices": {
+      "bet365": 325,
+      "betmgm": 300,
+      "caesars": 325,
+      "draftkings": 320,
+      "fanatics": 380,
+      "fanduel": 350,
+      "hardrockbet": 325
+    },
+    "price_bucket": "under +400",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:43:07.414577+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
