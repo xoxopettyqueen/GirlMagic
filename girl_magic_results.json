@@ -120739,7 +120739,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "take_it",
     "logged_at": "2026-09-17T20:31:54.161869+00:00",
     "price_source": "pregame_lock",
@@ -120748,7 +120748,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.71
+    "benford_cluster": 0.71,
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-17_Munetaka Murakami_take_it_69",
