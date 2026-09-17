@@ -12101,6 +12101,16 @@ def main():
 
         hits = [r for r in week if r.get("result") == "HIT"]
         graded = [r for r in week if r.get("result") in ("HIT", "MISS")]
+        def _is_ticket(r):
+            src = str(r.get("source") or "")
+            if src in ("take_it", "shop_take", "manual_hr"):
+                return True
+            if r.get("is_bet"):
+                return True
+            meths = r.get("methods") or []
+            return sum(1 for m in meths if is_core_method(normalize_method_name(m))) >= 2
+        ticket_graded = [r for r in graded if _is_ticket(r)]
+        ticket_hits = [r for r in hits if _is_ticket(r)]
         prev_hits = [r for r in prevw if r.get("result") == "HIT"]
         prev_graded = [r for r in prevw if r.get("result") in ("HIT", "MISS")]
         bomb = "TD" if active_sport() == "NFL" else "HR"
@@ -12280,11 +12290,12 @@ def main():
 
         week_rate = rate(len(hits), len(graded))
         prev_rate = rate(len(prev_hits), len(prev_graded))
+        ticket_rate = rate(len(ticket_hits), len(ticket_graded))
         c1, c2, c3, c4 = st.columns(4)
         c1.metric(f"{bombs} this week", len(hits_u), delta=len(hits_u) - len(prev_hits_u) if not window.endswith("only") else None)
-        c2.metric("Graded", len(graded))
-        c3.metric("Hit rate", week_rate, delta=None if window.endswith("only") else f"last {prev_rate}")
-        c4.metric("Repeat names", sum(1 for n in names.values() if n >= 2))
+        c2.metric("Everything graded", len(graded))
+        c3.metric("All-log hit rate", f"{week_rate}%" if week_rate is not None else "—")
+        c4.metric("Ticket hit rate", f"{ticket_rate}%" if ticket_rate is not None else "—")
         st.markdown(
             f'<div class="pa-card"><div class="pa-h">How to read this page</div>'
             f'<div class="pa-sub">This is a report card of what already happened. It does not pick tonight.</div>'
@@ -12293,6 +12304,8 @@ def main():
             f'<div class="pa-sub"><b>Hotter / colder</b> = more or fewer hits than last week.</div>'
             f'<div class="pa-sub"><b>Book</b> = who had the number we logged when it hit.</div>'
             f'<div class="pa-sub"><b>Ending</b> = last two digits of that price. +450 ends in 50.</div>'
+            f'<div class="pa-sub"><b>All-log hit rate</b> is every HIT and MISS we marked — Watch, Shop lean, coverage, the pile. That number will sit near 8–15% because a +500 homer is already a long shot.</div>'
+            f'<div class="pa-sub"><b>Ticket hit rate</b> is only TAKE IT / Shop take / 2+ core stamps. Use that one to judge the model.</div>'
             f'</div>',
             unsafe_allow_html=True,
         )
