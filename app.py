@@ -11861,14 +11861,29 @@ def main():
 
         endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross = pack_hits(hits, graded)
         wd_hits, wd_grad = Counter(), Counter()
+        wd_book_hits, wd_book_grad = Counter(), Counter()
+        wd_end_hits = Counter()
         for r in hits:
             dd = _row_day(r)
-            if dd:
-                wd_hits[dd.strftime("%A")] += 1
+            if not dd:
+                continue
+            day = dd.strftime("%A")
+            wd_hits[day] += 1
+            bk = book_label(r.get("best_book"))
+            if bk:
+                wd_book_hits[(day, bk)] += 1
+            e = _ending(r)
+            if e is not None:
+                wd_end_hits[(day, e)] += 1
         for r in graded:
             dd = _row_day(r)
-            if dd:
-                wd_grad[dd.strftime("%A")] += 1
+            if not dd:
+                continue
+            day = dd.strftime("%A")
+            wd_grad[day] += 1
+            bk = book_label(r.get("best_book"))
+            if bk:
+                wd_book_grad[(day, bk)] += 1
         p_end, p_book, p_buck, p_fam, p_meth, p_names, *_rest = pack_hits(prev_hits, prev_graded)
 
         def arrow(now, then):
@@ -11985,6 +12000,22 @@ def main():
                     "By weekday", "HR count that weekday — rate uses all graded that weekday",
                     wd_rows, max(wd_hits.values() or [1]), wd_grad, {},
                 ), unsafe_allow_html=True)
+                lines = []
+                for d in order:
+                    if not wd_hits[d] and not wd_grad[d]:
+                        continue
+                    books_d = [(b, n) for (day, b), n in wd_book_hits.items() if day == d]
+                    books_d.sort(key=lambda x: -x[1])
+                    ends_d = [(e, n) for (day, e), n in wd_end_hits.items() if day == d]
+                    ends_d.sort(key=lambda x: -x[1])
+                    top_b = ", ".join(f"{b} {n}" for b, n in books_d[:3]) or "—"
+                    top_e = ", ".join(f"{e:02d}×{n}" if isinstance(e, int) else f"{e}×{n}" for e, n in ends_d[:3]) or "—"
+                    n_h, n_g = wd_hits[d], wd_grad[d]
+                    pct = f"{100 * n_h / n_g:.0f}%" if n_g else "—"
+                    lines.append(f"- **{d}** — {n_h} HR / {n_g} graded ({pct}). Books: {top_b}. Endings: {top_e}")
+                if lines:
+                    st.markdown("**Books + endings by weekday** (same window — compare week to week with the dropdown)")
+                    st.markdown("\n".join(lines))
         with right:
             picks = [(k, n) for k, n in names.most_common() if k and n >= 2]
             pick_rows = []
