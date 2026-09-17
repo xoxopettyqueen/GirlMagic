@@ -8835,10 +8835,6 @@ def render_alignment_tab(ev_board, watch_board=None):
             1 if brl is not None and brl >= 8 else 0,
         ])
         data_hit = bool(contact >= 2 and (hot or hr7 >= 1))
-        if sport == "NFL":
-            data_hit = "nflverse miss" not in (summ or "") and bool(summ)
-            long_lane = px >= 115
-            rhythm = rhythm or bool(methods)
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -8854,6 +8850,10 @@ def render_alignment_tab(ev_board, watch_board=None):
             for m in methods
         )
         long_lane = 500 <= px <= 999 or (px >= 500 and data.get("longshot"))
+        if sport == "NFL":
+            data_hit = bool(summ) and "nflverse miss" not in summ
+            long_lane = px >= 115 or data.get("longshot")
+            rhythm = rhythm or bool(methods)
         board_take = bool(item.get("is_bet"))
         board_score = int(item.get("score") or 0)
         # HARD GATE: data + clustered books + a stamp + 70+ align.
@@ -8872,7 +8872,32 @@ def render_alignment_tab(ev_board, watch_board=None):
         if not keep:
             hidden += 1
             continue
-        # Matchup layer — only for names that already cleared the bar.
+        # Matchup layer — MLB only. NFL uses nflverse form already on the card.
+        if sport == "NFL":
+            data["park_line"] = data.get("park_line") or "NFL — no park factor"
+            data["vs_line"] = data.get("vs_line") or (data.get("summary") or "nflverse form")
+            data["pen_line"] = data.get("pen_line") or "DVP in lab next"
+            data["split_ha"] = data.get("split_ha") or ""
+            data["split_dn"] = data.get("split_dn") or ""
+            data["match_boost"] = 0
+            odds_hit = bool(methods) or books_n >= 2
+            notes = []
+            if data.get("longshot"):
+                notes.append("Longshot price")
+            if methods:
+                notes.append("Digit / book-stamp method fired")
+            if not notes:
+                notes.append("Usage + odds. Board still tickets.")
+            if align >= 100:
+                vibe = "🔒 Locked"
+            elif align >= 85:
+                vibe = "💬 Spoke"
+            elif align >= 60:
+                vibe = "🫧 Whisper"
+            else:
+                vibe = "📚 Homework"
+            cards.append((align, item, data, notes, vibe))
+            continue
         park_f = _park_hr_factor(data.get("matchup") or "")
         if not park_f or park_f == 100:
             park_f = _park_hr_factor((data.get("summary") or ""))
