@@ -12020,14 +12020,17 @@ def main():
         .pa-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(236,72,153,.25)}
         .pa-hero h3{font-family:'Playfair Display',serif;margin:0;color:#fff;font-size:1.55rem}
         .pa-quote{color:#fce7f3;font-style:italic;margin:6px 0 0;font-size:.92rem}
-        .pa-card{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:12px 14px;margin-bottom:10px}
-        .pa-h{font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:#f9a8d4;font-weight:800;margin:0 0 8px}
-        .pa-sub{font-size:.62rem;color:#9ca3af;margin:-4px 0 8px}
-        .pa-row{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:.84rem}
-        .pa-bar{height:8px;border-radius:99px;background:#2a2038;flex:1;overflow:hidden}
-        .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#a855f7);box-shadow:0 0 8px rgba(244,114,182,.45)}
+        .pa-card{background:#16101f;border:1px solid #2a2038;border-radius:18px;padding:16px 16px 12px;margin-bottom:14px}
+        .pa-h{font-size:1.02rem;letter-spacing:0;text-transform:none;color:#fce7f3;font-weight:800;margin:0 0 4px;font-family:'Space Grotesk',sans-serif}
+        .pa-sub{font-size:.78rem;color:#c4b5d6;margin:0 0 12px;line-height:1.4}
+        .pa-row{display:grid;grid-template-columns:minmax(120px,1.3fr) 1fr minmax(108px,auto);align-items:center;gap:10px;margin:8px 0;font-size:.86rem}
+        .pa-name{color:#fce7f3;font-weight:650;line-height:1.25}
+        .pa-bar{height:10px;border-radius:99px;background:#2a2038;overflow:hidden}
+        .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#a855f7)}
+        .pa-stat{color:#f9a8d4;font-size:.78rem;font-weight:700;text-align:right;white-space:nowrap}
         .pa-n{font-weight:800;color:#f9a8d4;min-width:28px;text-align:right}
         .pa-pct{color:#c4b5d6;font-size:.72rem}
+        .pa-trend{font-size:.68rem;color:#86efac;font-weight:700}
         .pa-foot{text-align:center;color:#f9a8d4;font-size:.78rem;margin:18px 0 8px;opacity:.9}
         @keyframes pa-spark{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
         .pa-spark{animation:pa-spark 2.4s ease-in-out infinite}
@@ -12035,9 +12038,9 @@ def main():
         """, unsafe_allow_html=True)
         hero_take = "Run it, baddie" if petty_on() else "TAKE IT"
         st.markdown(
-            '<div class="pa-hero pa-spark"><h3>Petty Analytics</h3>'
-            '<p class="pa-quote">If the odds look ugly, they probably lying.</p>'
-            f'<p class="pa-quote" style="font-size:.75rem;opacity:.85">{active_sport()} recap. {hero_take} rules did not change.</p></div>',
+            '<div class="pa-hero pa-spark"><h3>What already cashed</h3>'
+            '<p class="pa-quote">A scoreboard of hits we already graded. This is not tonight’s Board.</p>'
+            f'<p class="pa-quote" style="font-size:.75rem;opacity:.85">{active_sport()} · last week in this window · ticket rules did not change.</p></div>',
             unsafe_allow_html=True,
         )
 
@@ -12191,35 +12194,73 @@ def main():
             if window.endswith("only") or then == 0 and now == 0:
                 return ""
             if now > then:
-                return " ^"
+                return "up"
             if now < then:
-                return " v"
-            return " ="
+                return "down"
+            return "same"
 
         def rate(n_hit, n_all):
             if not n_all:
-                return "—"
-            return f"{100 * n_hit / n_all:.0f}%"
+                return None
+            return int(round(100 * n_hit / n_all))
 
-        def bar_row(label, n, mx, extra="", crown=False):
+        STAMP_PLAIN = {
+            "Kelly Support": "value tag",
+            "EV Premium": "price looked long vs the pack",
+            "Shop LEAN": "Shop said lean",
+            "Shop TAKE": "Shop said take",
+            "Fanatics Rogue": "Fanatics way off the pack",
+            "Stayed in the group": "stayed in the MGM group",
+            "Books tight": "books bunched together",
+            "MGM Exact": "same MGM price, same team",
+            "FD Pattern": "FanDuel ending we like",
+            "Multi-book method": "more than one book agreed",
+            "DK 10": "DraftKings ended in 10",
+            "FD 600": "FanDuel +600",
+            "Exact Match": "same number on 2+ books",
+            "Petty Pressure": "pressure stamps",
+            "Classic Girl Magic": "classic stamps",
+            "Cute But Not Serious": "cute name stuff — not why we fire",
+        }
+
+        def plain_label(k):
+            s = str(k)
+            if s in STAMP_PLAIN:
+                return STAMP_PLAIN[s]
+            if s.isdigit() and len(s) <= 2:
+                return f"ended in {s.zfill(2)}"
+            if s.startswith("+") or s.startswith("under"):
+                return s.replace("under", "shorter than")
+            return s
+
+        def bar_row(label, n, mx, extra="", crown=False, unit="hits"):
             w = 0 if mx <= 0 else int(100 * n / mx)
-            cr = "TOP · " if crown else ""
+            cr = "Leading · " if crown else ""
             return (
-                f'<div class="pa-row"><span>{cr}{label}</span>'
+                f'<div class="pa-row"><span class="pa-name">{cr}{label}</span>'
                 f'<div class="pa-bar"><div class="pa-fill" style="width:{w}%"></div></div>'
-                f'<span class="pa-n">{n}</span><span class="pa-pct">{extra}</span></div>'
+                f'<span class="pa-stat">{n} {unit}{extra}</span></div>'
             )
 
-        def section_html(title, subtitle, items, mx, rate_map=None, prev_map=None):
+        def section_html(title, subtitle, items, mx, rate_map=None, prev_map=None, unit="hits"):
             rows_h = []
             for i, (k, n) in enumerate(items):
-                extra = ""
+                bits = []
                 if rate_map is not None:
-                    extra = rate(n, rate_map.get(k, 0))
+                    pct = rate(n, rate_map.get(k, 0))
+                    if pct is None:
+                        bits.append(" · no rate yet")
+                    else:
+                        bits.append(f" · {pct}% cashed")
                 if prev_map is not None:
-                    extra += arrow(n, prev_map.get(k, 0))
-                rows_h.append(bar_row(k, n, mx, extra, crown=(i == 0)))
-            body = "".join(rows_h) if rows_h else '<div class="pa-pct">None yet</div>'
+                    tr = arrow(n, prev_map.get(k, 0))
+                    if tr == "up":
+                        bits.append(" · hotter")
+                    elif tr == "down":
+                        bits.append(" · colder")
+                extra = "".join(bits)
+                rows_h.append(bar_row(plain_label(k), n, mx, extra, crown=(i == 0), unit=unit))
+            body = "".join(rows_h) if rows_h else '<div class="pa-sub">Nothing graded in this box yet.</div>'
             return f'<div class="pa-card"><div class="pa-h">{title}</div><div class="pa-sub">{subtitle}</div>{body}</div>'
 
         week_rate = rate(len(hits), len(graded))
@@ -12230,14 +12271,13 @@ def main():
         c3.metric("Hit rate", week_rate, delta=None if window.endswith("only") else f"last {prev_rate}")
         c4.metric("Repeat names", sum(1 for n in names.values() if n >= 2))
         st.markdown(
-            f'<div class="pa-card"><div class="pa-h">Cheat sheet</div>'
-            f'<div class="pa-sub">Read left to right. Pink bar = count. % = cash rate.</div>'
-            f'<div class="pa-row"><b>Pink bar</b> unique {bomb}s — one name, one date</div>'
-            f'<div class="pa-row"><b>%</b> cash rate = hits ÷ graded tickets with that tag</div>'
-            f'<div class="pa-row"><b>^</b> hotter than last week &nbsp; <b>v</b> colder</div>'
-            f'<div class="pa-row"><b>Books</b> who held the price when it hit</div>'
-            f'<div class="pa-row"><b>00 / 50 / 10</b> last two digits that cashed</div>'
-            f'<div class="pa-row"><b>QB</b> rush TD counts. Pass TD does not.</div>'
+            f'<div class="pa-card"><div class="pa-h">How to read this page</div>'
+            f'<div class="pa-sub">This is a report card of what already happened. It does not pick tonight.</div>'
+            f'<div class="pa-sub"><b>Hits</b> = unique {bomb}s (one player, one day).</div>'
+            f'<div class="pa-sub"><b>% cashed</b> = hits ÷ times we graded that same tag. 8% of 80 is not the same as 50% of 2.</div>'
+            f'<div class="pa-sub"><b>Hotter / colder</b> = more or fewer hits than last week.</div>'
+            f'<div class="pa-sub"><b>Book</b> = who had the number we logged when it hit.</div>'
+            f'<div class="pa-sub"><b>Ending</b> = last two digits of that price. +450 ends in 50.</div>'
             f'</div>',
             unsafe_allow_html=True,
         )
@@ -12295,15 +12335,18 @@ def main():
         mx_m = max(methods_c.values() or [1])
         with left:
             st.markdown(section_html(
-                "Endings that cashed", "Last two digits. % = cash rate on that ending.",
+                "Which endings hit",
+                "Last two digits of the price. Example: +450 ends in 50.",
                 endings.most_common(8), mx_e, end_g, p_end,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Books that paid", "Best-price book on the hit.",
+                "Which books paid",
+                "The book attached to the price we logged on the hit.",
                 books.most_common(8), mx_bk, book_g, p_book,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Price that cashed", "Lane the number lived in. % = cash rate in that lane.",
+                "Which price range hit",
+                "Ballpark of the number. +800s vs +400s vs shorter than +400.",
                 buckets.most_common(8), mx_bu, buck_g, p_buck,
             ), unsafe_allow_html=True)
             if active_sport() == "NFL":
@@ -12317,15 +12360,18 @@ def main():
                 ends_d = sorted([(e, n) for (day, e), n in wd_end_hits.items() if day == d], key=lambda x: -x[1])
                 if not wd_hits[d] and not wd_grad[d] and active_sport() != "MLB":
                     continue
-                top_b = ", ".join(b for b, _n in books_d[:3]) or "quiet"
-                top_e = ", ".join(str(e) for e, _n in ends_d[:3]) or "—"
-                label = f"{d} · {top_b} · {top_e}"
+                if not wd_hits[d]:
+                    label = f"{d} — no hits"
+                else:
+                    top_b = ", ".join(b for b, _n in books_d[:2]) or "no book"
+                    top_e = ", ".join(f"ends {str(e).zfill(2)}" for e, _n in ends_d[:2]) or "no ending"
+                    label = f"{d} — paid on {top_b} · {top_e}"
                 wd_label_rows.append((label, wd_hits[d]))
                 wd_label_g[label] = wd_grad[d]
             if wd_label_rows:
                 st.markdown(section_html(
-                    "What cashed that day",
-                    "Day first. Then the books. Then the endings. Number = unique scores that day.",
+                    "What hit by day",
+                    "How many unique scores that weekday. Line also shows the books and endings that showed up most.",
                     wd_label_rows, max((n for _l, n in wd_label_rows) or [1]), wd_label_g, {},
                 ), unsafe_allow_html=True)
         with right:
@@ -12334,26 +12380,30 @@ def main():
                 if k and n >= 2 and _qb_ok(k)
             ]
             pick_rows = []
+            mx_p = max((x[1] for x in picks), default=1)
             for i, (pl, n) in enumerate(picks[:12]):
-                pick_rows.append(bar_row(f"{pl} · {n} {bombs}", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
-            picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-pct">None yet</div>'
+                pick_rows.append(bar_row(pl, n, mx_p, "", crown=(i == 0), unit=bombs))
+            picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-sub">Nobody hit on two different days in this window.</div>'
             st.markdown(
-                '<div class="pa-card"><div class="pa-h">Same name, two days</div>'
-                f'<div class="pa-sub">One {bomb} per player per date. Duplicates dropped. {"NFL: 2+ days, not 4 in one game." if active_sport()=="NFL" else "MLB: 2+ unique dates this window."}</div>'
+                '<div class="pa-card"><div class="pa-h">Same player, more than one day</div>'
+                f'<div class="pa-sub">Counted once per day. This is “they went twice this week,” not four scores in one game.</div>'
                 + picks_html +
                 '</div>',
                 unsafe_allow_html=True,
             )
             st.markdown(section_html(
-                "Families that cashed", f"One family per unique {bomb}",
+                "Stamp families that hit",
+                "Buckets we group stamps into. Cute is flavor. Pressure / classic is the real pile.",
                 families.most_common(6), mx_f, None, p_fam,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Stamps on the hits", f"A name can wear more than one stamp",
+                "Stamps on the hits",
+                "Why the ticket was tagged. One player can wear more than one stamp.",
                 methods_c.most_common(10), mx_m, meth_g, p_meth,
             ), unsafe_allow_html=True)
 
-        st.markdown("**Family x method crossover**")
+        st.markdown("**Which family wore which stamp**")
+        st.caption("Same hits, cut two ways. Read it as “this pile of stamps showed up with that family.”")
         top_m = [m for m, _ in methods_c.most_common(6)]
         top_f = [f for f, _ in families.most_common(4)]
         if top_m and top_f:
@@ -12367,7 +12417,8 @@ def main():
             st.caption("Need more graded HRs for the matrix.")
 
         if fade:
-            st.markdown("**Fade list** (MISS rows that already wore a fade / lengthen tag)")
+            st.markdown("**Fade list**")
+            st.caption("Names we graded MISS that already had a fade / lengthen tag. Not a bet list.")
             st.write(", ".join(f"{k} ({n})" for k, n in fade.most_common(8)))
 
         recap_lines = [
