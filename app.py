@@ -12325,9 +12325,18 @@ def main():
                 continue
             day = dd.strftime("%A")
             wd_hits[day] += 1
-            bk = book_label(r.get("best_book"))
-            if bk:
-                wd_book_hits[(day, bk)] += 1
+            books_on_row = set()
+            bp = r.get("book_prices") or {}
+            if isinstance(bp, dict):
+                for b in bp:
+                    lab = book_label(b)
+                    if lab:
+                        books_on_row.add(lab)
+            if r.get("best_book"):
+                books_on_row.add(book_label(r.get("best_book")))
+            for lab in books_on_row:
+                if lab:
+                    wd_book_hits[(day, lab)] += 1
             e = _ending(r)
             if e is not None:
                 wd_end_hits[(day, e)] += 1
@@ -12524,15 +12533,15 @@ def main():
                 if not wd_hits[d]:
                     label = f"{d}"
                 else:
-                    top_b = books_d[0][0] if books_d else "—"
+                    mix = ", ".join(f"{b} {n}" for b, n in books_d[:3]) or "—"
                     top_e = str(ends_d[0][0]).zfill(2) if ends_d else "—"
-                    label = f"{d} · {top_b} · ends {top_e}"
+                    label = f"{d} · {mix} · ends {top_e}"
                 wd_label_rows.append((label, wd_hits[d]))
                 wd_label_g[label] = wd_grad[d]
             if wd_label_rows:
                 st.markdown(section_html(
                     "What hit by day",
-                    "How many unique scores that weekday. Line also shows the books and endings that showed up most.",
+                    "Unique scores that weekday. Books listed are every book on the ticket, not only the longest number. Fanatics often looks like #1 because it is the longest price we stored.",
                     wd_label_rows, max((n for _l, n in wd_label_rows) or [1]), wd_label_g, {},
                 ), unsafe_allow_html=True)
         with right:
