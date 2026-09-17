@@ -9122,7 +9122,10 @@ def render_alignment_tab(ev_board, watch_board=None):
         .wind-in{color:#f87171;font-weight:700}
         .wind-cross{color:#fbbf24}
         .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
-        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:480px;margin:0 auto 14px;padding:14px 16px;border-radius:16px;animation:alIn .35s ease-out}
+        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:520px;min-height:280px;margin:0 auto 28px;padding:24px;border-radius:18px;animation:alIn .35s ease-out}
+        .card.al-lock .card-name,.card.al-speak .card-name{font-size:1.35rem}
+        .al-pack{font-size:.88rem}
+        .card-foot{font-size:.72rem;font-style:italic;text-align:center}
         @keyframes alIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
         .al-kv{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #24182f;padding:2px 0;font-size:.74rem}
         .al-sec{font-size:.62rem;letter-spacing:1.4px;text-transform:uppercase;color:#00e6c3;margin:6px 0 3px;font-weight:800}
@@ -9475,7 +9478,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 )
                 st.markdown(
                     f'<div class="{klass}">'
-                    f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 {vibe} · TD · {align}</span></div>'
+                    f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 TD · {align}</span></div>'
                     f'{_petty_meter(align)}'
                     f'{pulse_html}'
                     f'<div class="al-tags">{"".join(pills)}</div>'
@@ -9509,7 +9512,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 data_line += f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             st.markdown(
                 f'<div class="{klass}">'
-                f'<div class="card-name">{item.get("player")} <span class="card-kicker">{vibe} · {align}</span></div>'
+                f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ HR · {align}</span></div>'
                 f'{_petty_meter(align)}'
                 f'<details class="al-fold" open><summary>📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
