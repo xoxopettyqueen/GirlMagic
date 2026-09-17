@@ -11776,11 +11776,19 @@ def main():
         .pa-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(236,72,153,.25)}
         .pa-hero h3{font-family:'Playfair Display',serif;margin:0;color:#fff;font-size:1.55rem}
         .pa-quote{color:#fce7f3;font-style:italic;margin:6px 0 0;font-size:.92rem}
-        .pa-card{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:12px 14px;margin-bottom:10px}
-        .pa-h{font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:#f9a8d4;font-weight:800;margin:0 0 8px}
-        .pa-sub{font-size:.62rem;color:#9ca3af;margin:-4px 0 8px}
+        .pa-card{background:linear-gradient(180deg,#1a1024,#120818);border:1px solid #3b1d4a;border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:0 0 18px rgba(168,85,247,.18)}
+        .pa-h{font-size:.82rem;letter-spacing:1.2px;text-transform:uppercase;color:#f9a8d4;font-weight:800;margin:0 0 8px}
+        .pa-sub{font-size:.68rem;color:#c4b5d6;margin:-2px 0 10px}
+        .pa-grid{display:flex;flex-wrap:wrap;gap:8px}
+        .pa-chip{min-width:108px;background:#221033;border:1px solid #6d28d9;border-radius:14px;padding:8px 10px;text-align:center;box-shadow:0 0 12px rgba(236,72,153,.2)}
+        .pa-chip.top{border-color:#f472b6;box-shadow:0 0 16px rgba(244,114,182,.45)}
+        .pa-chip .n{font-size:1.15rem;font-weight:800;background:linear-gradient(90deg,#f472b6,#a855f7);-webkit-background-clip:text;color:transparent}
+        .pa-chip .l{font-size:.72rem;color:#e9d5ff;font-weight:700}
+        .pa-chip .p{font-size:.62rem;color:#c4b5d6}
+        .pa-day{flex:1;min-width:160px;background:#1a1024;border:1px solid #7c3aed;border-radius:16px;padding:10px 12px}
+        .pa-day h4{margin:0 0 4px;color:#f9a8d4;font-size:.88rem}
         .pa-row{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:.84rem}
-        .pa-bar{height:6px;border-radius:99px;background:#2a2038;flex:1;overflow:hidden}
+        .pa-bar{height:8px;border-radius:99px;background:#2a2038;flex:1;overflow:hidden}
         .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#a855f7);box-shadow:0 0 8px rgba(244,114,182,.45)}
         .pa-n{font-weight:800;color:#f9a8d4;min-width:28px;text-align:right}
         .pa-pct{color:#c4b5d6;font-size:.72rem}
@@ -11862,6 +11870,9 @@ def main():
             return out
         hits_u = _unique_hits(hits)
         prev_hits_u = _unique_hits(prev_hits)
+        if active_sport() == "NFL":
+            hits_u = [r for r in hits_u if not is_nfl_qb(r.get("player") or "")]
+            prev_hits_u = [r for r in prev_hits_u if not is_nfl_qb(r.get("player") or "")]
 
         def pack_hits(hit_rows, graded_rows):
             endings = Counter(); books = Counter(); buckets = Counter()
@@ -11959,15 +11970,19 @@ def main():
             )
 
         def section_html(title, subtitle, items, mx, rate_map=None, prev_map=None):
-            rows_h = []
+            chips = []
             for i, (k, n) in enumerate(items):
                 extra = ""
                 if rate_map is not None:
                     extra = rate(n, rate_map.get(k, 0))
                 if prev_map is not None:
                     extra += arrow(n, prev_map.get(k, 0))
-                rows_h.append(bar_row(k, n, mx, extra, crown=(i == 0)))
-            body = "".join(rows_h) if rows_h else '<div class="pa-pct">None yet</div>'
+                top = " top" if i == 0 else ""
+                chips.append(
+                    f'<div class="pa-chip{top}"><div class="n">{n}</div>'
+                    f'<div class="l">{k}</div><div class="p">{extra}</div></div>'
+                )
+            body = '<div class="pa-grid">' + "".join(chips) + "</div>" if chips else '<div class="pa-pct">None yet</div>'
             return f'<div class="pa-card"><div class="pa-h">{title}</div><div class="pa-sub">{subtitle}</div>{body}</div>'
 
         week_rate = rate(len(hits), len(graded))
@@ -12001,7 +12016,7 @@ def main():
 
         focus_hits = [r for r in hits if matches_focus(r)]
         if chosen != "(all)":
-            st.caption(f"Focus {chosen}: {len(focus_hits)} HR this slice")
+            st.caption(f"Focus {chosen}: {len(focus_hits)} {bomb}s this slice")
 
         # streaks: consecutive HIT dates
         by_player_days = defaultdict(set)
@@ -12031,7 +12046,7 @@ def main():
         mx_m = max(methods_c.values() or [1])
         with left:
             st.markdown(section_html(
-                "Hot Endings", "Top endings - count of HRs - hit rate vs all graded with that ending",
+                "Hot Endings", f"Last two digits on unique {bomb}s — % is hit rate in that ending",
                 endings.most_common(8), mx_e, end_g, p_end,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
@@ -12039,43 +12054,40 @@ def main():
                 books.most_common(8), mx_bk, book_g, p_book,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Money Lanes", "Top buckets - efficiency = HR / graded in that lane",
+                "Money Lanes", f"Price lane on unique {bomb}s — % = hits / graded in that lane",
                 buckets.most_common(8), mx_bu, buck_g, p_buck,
             ), unsafe_allow_html=True)
             if active_sport() == "NFL":
                 order = ("Thursday", "Sunday", "Monday")
             else:
                 order = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-            wd_rows = [(d, wd_hits[d]) for d in order]
-            if wd_rows:
-                st.markdown(section_html(
-                    "By weekday", f"Unique {bomb}s that weekday — not raw log rows",
-                    wd_rows, max(wd_hits.values() or [1]), wd_grad, {},
-                ), unsafe_allow_html=True)
-                lines = []
-                for d in order:
-                    if not wd_hits[d] and not wd_grad[d]:
-                        continue
-                    books_d = [(b, n) for (day, b), n in wd_book_hits.items() if day == d]
-                    books_d.sort(key=lambda x: -x[1])
-                    ends_d = [(e, n) for (day, e), n in wd_end_hits.items() if day == d]
-                    ends_d.sort(key=lambda x: -x[1])
-                    top_b = ", ".join(f"{b} {n}" for b, n in books_d[:3]) or "—"
-                    top_e = ", ".join(f"{e:02d}×{n}" if isinstance(e, int) else f"{e}×{n}" for e, n in ends_d[:3]) or "—"
-                    n_h, n_g = wd_hits[d], wd_grad[d]
-                    pct = f"{100 * n_h / n_g:.0f}%" if n_g else "—"
-                    lines.append(
-                        f"- **{d}** — what cashed: books {top_b}. endings {top_e}. "
-                        f"({n_h} unique {bomb}s / {n_g} graded = {pct})"
-                    )
-                if lines:
-                    st.markdown(
-                    "**What cashed that day** — books + endings. "
-                    + ("NFL lanes: Thursday night / Sunday / Monday night." if active_sport() == "NFL" else "MLB: every weekday in the window.")
+            day_cards = []
+            nfl_label = {"Thursday": "TNF", "Sunday": "Sunday", "Monday": "MNF"}
+            for d in order:
+                books_d = sorted([(b, n) for (day, b), n in wd_book_hits.items() if day == d], key=lambda x: -x[1])
+                ends_d = sorted([(e, n) for (day, e), n in wd_end_hits.items() if day == d], key=lambda x: -x[1])
+                top_b = ", ".join(f"{b} {n}" for b, n in books_d[:3]) or "quiet"
+                top_e = ", ".join(f"{int(e):02d}" if str(e).isdigit() else str(e) for e, n in ends_d[:3]) or "—"
+                n_h, n_g = wd_hits[d], wd_grad[d]
+                pct = f"{100 * n_h / n_g:.0f}%" if n_g else "—"
+                title = nfl_label.get(d, d) if active_sport() == "NFL" else d
+                day_cards.append(
+                    f'<div class="pa-day"><h4>{title}</h4>'
+                    f'<div class="n" style="font-size:1.2rem;font-weight:800;color:#f9a8d4">{n_h} {bomb}s</div>'
+                    f'<div class="p">Books: {top_b}</div>'
+                    f'<div class="p">Ends: {top_e} · {pct} of graded</div></div>'
                 )
-                    st.markdown("\n".join(lines))
+            st.markdown(
+                f'<div class="pa-card"><div class="pa-h">What cashed</div>'
+                f'<div class="pa-sub">{"TNF / Sunday / MNF" if active_sport()=="NFL" else "Weekdays"} — books and endings, not raw volume</div>'
+                f'<div class="pa-grid">{"".join(day_cards)}</div></div>',
+                unsafe_allow_html=True,
+            )
         with right:
-            picks = [(k, n) for k, n in names.most_common() if k and n >= 2]
+            picks = [
+                (k, n) for k, n in names.most_common()
+                if k and n >= 2 and not (active_sport() == "NFL" and is_nfl_qb(k))
+            ]
             pick_rows = []
             for i, (pl, n) in enumerate(picks[:12]):
                 pick_rows.append(bar_row(f"{pl} · {n} {bombs} this window", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
