@@ -9585,6 +9585,43 @@ def _confidence_rows_from_odds(min_price=400):
     return out
 
 
+_MLB_PARK_TZ = {
+    "yankees": "America/New_York", "red sox": "America/New_York",
+    "blue jays": "America/Toronto", "orioles": "America/New_York",
+    "rays": "America/New_York", "white sox": "America/Chicago",
+    "guardians": "America/New_York", "tigers": "America/New_York",
+    "royals": "America/Chicago", "twins": "America/Chicago",
+    "astros": "America/Chicago", "athletics": "America/Los_Angeles",
+    "angels": "America/Los_Angeles", "mariners": "America/Los_Angeles",
+    "rangers": "America/Chicago", "braves": "America/New_York",
+    "marlins": "America/New_York", "mets": "America/New_York",
+    "phillies": "America/New_York", "nationals": "America/New_York",
+    "cubs": "America/Chicago", "reds": "America/New_York",
+    "brewers": "America/Chicago", "pirates": "America/New_York",
+    "cardinals": "America/Chicago", "diamondbacks": "America/Phoenix",
+    "rockies": "America/Denver", "dodgers": "America/Los_Angeles",
+    "padres": "America/Los_Angeles", "giants": "America/Los_Angeles",
+}
+
+_NFL_TZ = {
+    "New York": "America/New_York", "Buffalo": "America/New_York",
+    "Miami": "America/New_York", "New England": "America/New_York",
+    "Pittsburgh": "America/New_York", "Baltimore": "America/New_York",
+    "Cincinnati": "America/New_York", "Cleveland": "America/New_York",
+    "Philadelphia": "America/New_York", "Washington": "America/New_York",
+    "Atlanta": "America/New_York", "Carolina": "America/New_York",
+    "Tampa": "America/New_York", "Jacksonville": "America/New_York",
+    "Chicago": "America/Chicago", "Green Bay": "America/Chicago",
+    "Minnesota": "America/Chicago", "Detroit": "America/New_York",
+    "Dallas": "America/Chicago", "Houston": "America/Chicago",
+    "Indianapolis": "America/New_York", "Tennessee": "America/Chicago",
+    "Kansas City": "America/Chicago", "New Orleans": "America/Chicago",
+    "Denver": "America/Denver", "Arizona": "America/Phoenix",
+    "Las Vegas": "America/Los_Angeles", "Los Angeles": "America/Los_Angeles",
+    "San Francisco": "America/Los_Angeles", "Seattle": "America/Los_Angeles",
+}
+
+
 def _az_dt(iso):
     if not iso:
         return None
@@ -9592,6 +9629,21 @@ def _az_dt(iso):
         return datetime.fromisoformat(str(iso).replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
     except Exception:
         return None
+
+
+def _local_kick(iso, zone_name):
+    if not iso:
+        return None
+    try:
+        from zoneinfo import ZoneInfo
+        utc = datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
+        if utc.tzinfo is None:
+            utc = utc.replace(tzinfo=timezone.utc)
+        if zone_name:
+            return utc.astimezone(ZoneInfo(zone_name))
+    except Exception:
+        pass
+    return _az_dt(iso)
 
 
 def _event_commence(item):
@@ -9618,10 +9670,14 @@ def _today_spot_mlb(item, data, splits):
     elif "home" in mu.lower():
         ha = "home"
     iso, ev = _event_commence(item)
-    dt = _az_dt(iso)
+    home_name = ""
+    if ev:
+        home_name = ev.get("home_team") or ""
+    zone = _MLB_PARK_TZ.get(_team_key(home_name)) or _MLB_PARK_TZ.get(_team_key(item.get("team") or ""))
+    dt = _local_kick(iso, zone)
     night = True
     if dt:
-        night = dt.hour >= 16
+        night = dt.hour >= 17
     side = splits.get(ha) or {}
     other = splits.get("home" if ha == "away" else "away") or {}
     when = splits.get("night" if night else "day") or {}
@@ -9636,7 +9692,7 @@ def _today_spot_mlb(item, data, splits):
         f"{'Night' if night else 'Day'} game",
     ]
     if dt:
-        bits.append(dt.strftime("%-I:%M %p AZ"))
+        bits.append(dt.strftime("%-I:%M %p") + " local")
     vibe = []
     s1, s2 = slg(side), slg(other)
     if s1 is not None and s2 is not None:
@@ -9660,14 +9716,18 @@ def _today_spot_mlb(item, data, splits):
 
 def _today_spot_nfl(item, data, form=None):
     iso, ev = _event_commence(item)
-    dt = _az_dt(iso)
+    home_name = (ev or {}).get("home_team") or ""
+    zone = None
+    for key, zn in _NFL_TZ.items():
+        if key.lower() in home_name.lower():
+            zone = zn
+            break
+    dt = _local_kick(iso, zone)
     ha = "road"
     blob = " ".join(str(x) for x in (item.get("events") or [item.get("event") or ""]))
     team = str(item.get("team") or data.get("nfl_team") or "")
     if ev:
         if team and str(ev.get("home_team") or "") and team.lower() in str(ev.get("home_team") or "").lower():
-            ha = "home"
-        elif ev.get("home_team") and ev.get("home_team") in blob and team and team.lower() in str(ev.get("home_team") or "").lower():
             ha = "home"
         elif ev.get("away_team") and team.lower() in str(ev.get("away_team") or "").lower():
             ha = "road"
@@ -9677,7 +9737,7 @@ def _today_spot_nfl(item, data, form=None):
         pt = wd in ("Thursday", "Monday") or (wd == "Sunday" and dt.hour >= 18)
     bits = [ha.title(), "Primetime" if pt else "Not primetime"]
     if dt:
-        bits.append(dt.strftime("%a %-I:%M %p AZ"))
+        bits.append(dt.strftime("%a %-I:%M %p") + " local")
     form = form or {}
     hy, ay = int(form.get("home_yds") or 0), int(form.get("away_yds") or 0)
     vibe = []
