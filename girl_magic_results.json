@@ -95367,7 +95367,7 @@
     ],
     "core": 4,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-17T00:20:39.348217+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -95375,7 +95375,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-16_Myles Price_watch_45",
@@ -108107,5 +108108,56 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Kyle Juszczyk_take_it_83",
+    "date": "2026-09-16",
+    "time": "09:20 PM",
+    "player": "Kyle Juszczyk",
+    "score": 83,
+    "edge": 69,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 675,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 525,
+      "caesars": 675,
+      "draftkings": 650,
+      "fanatics": 900,
+      "fanduel": 750,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": 525,
+    "mgm_ending": 25,
+    "methods": [
+      "Match 25",
+      "MGM 25",
+      "HardRock 00",
+      "FD 50",
+      "Fanatics over pack",
+      "Fanatics Loud",
+      "Stayed in the group",
+      "Fanatics Drift",
+      "B365 over HardRock",
+      "B365 Exact",
+      "Multi-book method",
+      "B365 over MGM",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 14,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-17T04:20:22.960517+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "SAN FRANCISCO 49ERS NFL",
+    "market": "anytime_td",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.43
   }
 ]
