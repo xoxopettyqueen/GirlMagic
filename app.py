@@ -481,8 +481,15 @@ st.set_page_config(page_title="Girl Magic Odds ✨", page_icon="👑", layout="w
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
-.stApp{background:#0b0612;color:#fce7f3;font-family:'Inter',sans-serif}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@500;700&display=swap');
+.stApp{background:#0c0a1a;color:#fce7f3;font-family:'Inter',sans-serif}
+.stButton>button{font-family:'Space Grotesk',sans-serif!important;letter-spacing:.06em;text-transform:uppercase;transition:transform .15s,box-shadow .15s!important}
+.stButton>button:hover{transform:translateY(-2px);box-shadow:0 0 16px rgba(255,62,191,.45)!important}
+.petty-banner{animation:pettyGlow 2.8s ease-in-out infinite}
+@keyframes pettyGlow{0%,100%{box-shadow:0 0 0 rgba(255,62,191,0)}50%{box-shadow:0 0 18px rgba(255,62,191,.55)}}
+.al-chip{animation:chipPulse 2.6s ease-in-out infinite}
+@keyframes chipPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
+.gm-num{color:#00e6c3;font-weight:700}
 /* medium width - not full bleed, not phone-narrow on desktop */
 .main .block-container,
 [data-testid="stMainBlockContainer"],
@@ -554,8 +561,10 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .meter-bar.filled-low{background:#6b7280}
 .stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:6px 8px;font-size:.75rem}
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
-.footer{text-align:center;color:#f9a8d4;font-size:.82rem;margin-top:28px;padding-bottom:18px;line-height:1.55}
+.footer{text-align:center;color:#f9a8d4;font-size:.82rem;margin-top:28px;padding-bottom:18px;line-height:1.55;overflow:hidden}
 .footer b{color:#00e6c3}
+.footer-ticker{display:inline-block;white-space:nowrap;animation:tick 18s linear infinite;font-family:'Space Grotesk',sans-serif;letter-spacing:.04em}
+@keyframes tick{0%{transform:translateX(12%)}100%{transform:translateX(-12%)}}
 .glossary-block{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:14px 16px;margin-bottom:12px;font-size:.88rem;line-height:1.55}
 .glossary-block h4{color:#f9a8d4;margin:0 0 8px 0;font-size:1rem}
 .glossary-block b{color:#fbcfe8}
@@ -642,6 +651,7 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 .site-kicker{color:#fde68a;font-size:.72rem;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;margin:0 0 8px}
 .site-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.05;margin:0 0 6px;background:linear-gradient(90deg,#ff3ebf,#9b5fff,#00e6c3,#ff3ebf);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:titleIn .6s ease-out,gmShine 8s linear infinite}
 @keyframes gmShine{0%{background-position:0%}100%{background-position:220%}}
+@keyframes alFill{from{width:0}to{width:var(--w,100%)}}
 .site-sub{color:#fce7f3;font-size:.92rem;margin:0 0 4px;max-width:740px;line-height:1.45;animation:fadeUp .7s ease-out .12s both}
 .site-quote{color:#fde68a;font-size:.88rem;font-style:italic;margin:0 0 8px}
 .site-live{color:#f9a8d4;font-size:.78rem;margin:0 0 8px}
@@ -687,8 +697,8 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .wg-counts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:2px 0 6px;font-size:.78rem;color:#e9d5ff}
 .wg-counts b{color:#f9a8d4}
 .wg-books{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start}
-.pulse-pill{display:inline-block;background:#120818;border:1px solid #a855f7;border-radius:999px;padding:3px 10px;font-size:.7rem;font-weight:700;color:#fce7f3;cursor:pointer;background-image:linear-gradient(#120818,#120818),linear-gradient(90deg,#f472b6,#a855f7);background-origin:border-box;box-shadow:0 0 8px rgba(168,85,247,.2)}
-.pulse-pill:hover,.pulse-pill[open]{box-shadow:0 0 14px rgba(244,114,182,.45);border-color:#f9a8d4}
+.pulse-pill{display:inline-block;background:#120818;border:1px solid #a855f7;border-radius:999px;padding:3px 10px;font-size:.7rem;font-weight:700;color:#fce7f3;cursor:pointer;background-image:linear-gradient(#120818,#120818),linear-gradient(90deg,#f472b6,#a855f7);background-origin:border-box;box-shadow:0 0 8px rgba(168,85,247,.2);transition:transform .15s,box-shadow .15s}
+.pulse-pill:hover,.pulse-pill[open]{transform:translateY(-2px);box-shadow:0 0 16px rgba(244,114,182,.5);border-color:#f9a8d4}
 .pulse-pill summary{list-style:none;cursor:pointer}
 .pulse-pill summary::-webkit-details-marker{display:none}
 .pulse-pop{margin-top:6px;background:#100818;border:1px solid #3b0764;border-radius:12px;padding:6px 8px;min-width:160px}
@@ -1637,7 +1647,8 @@ def site_hero_html(sport, slate_label, games_n, lock_n, fetch_time):
     return (
         '<div class="site-hero"><div class="site-hero-top"><div>'
         '<div class="site-title">Girl Magic Odds</div>'
-        f'<p class="site-quote">{daily_quote()}</p>'
+        '<p class="site-quote" id="gm-quote">'+daily_quote()+'</p>'
+        '<script>setInterval(function(){var q=["If the odds look ugly, they probably lying.","Don’t chase vibes — chase value.","Green names are gospel. Everything else is homework.","Chaos pays better than cute numbers.","Data spoke. Odds agreed. Board decides."];var e=document.getElementById("gm-quote");if(e)e.textContent=q[Math.floor(Date.now()/10000)%q.length];},10000);</script>'
         f'<p class="site-sub">Where intuition meets petty precision. {lane} Green names are gospel.</p>'
         f'<p class="site-live">Last fetch {live} — {breathe}</p>'
         '<div class="site-chips">'
@@ -8822,10 +8833,10 @@ def _petty_meter(align):
     a = max(0, min(120, int(align or 0)))
     w = int(a / 120 * 100)
     return (
-        f'<div style="background:#2a2038;border-radius:999px;height:8px;margin:6px 0 8px">'
-        f'<div style="width:{w}%;height:8px;border-radius:999px;'
-        f'background:linear-gradient(90deg,#a855f7,#ec4899)"></div></div>'
-        f'<div style="font-size:.68rem;color:#c4b5d6">DATA 🔮 &nbsp; ODDS 🎰 &nbsp; ALIGN 💫 &nbsp; {a}</div>'
+        f'<div style="background:#2a2038;border-radius:999px;height:8px;margin:6px 0 8px;overflow:hidden">'
+        f'<div class="al-fill" style="width:{w}%;height:8px;border-radius:999px;'
+        f'background:linear-gradient(90deg,#9b5fff,#ff3ebf,#00e6c3);animation:alFill .7s ease-out"></div></div>'
+        f'<div style="font-size:.68rem;color:#c4b5d6">DATA 🔮 &nbsp; ODDS 🎰 &nbsp; ALIGN 💫 &nbsp; <span class="gm-num">{a}</span></div>'
     )
 
 
@@ -9167,7 +9178,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<span class="score-pill">{align}</span>'
                 f'<div class="card-name">{item.get("player")}</div>'
                 f'{_petty_meter(align)}'
-                f'<div class="card-line"><b>DATA</b> {data.get("summary")}</div>'
+                f'<div class="card-line" title="Exit velo = how hard. Hard-hit = 95mph+. Barrel = HR-looking contact. HR L7 = homers last 7."><b>DATA</b> {data.get("summary")}</div>'
                 f'<div class="card-line"><b>ODDS</b> {price} {book_label(item.get("best_book"))} · {stamps}</div>'
                 f'<div class="card-line"><b>PARK</b> {porch} ({pf}) · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
                 f'<div class="card-line"><b>VS SP</b> {vs_bit}</div>'
@@ -11800,9 +11811,9 @@ def main():
         site_section_close()
 
     st.markdown(
-        '<div class="footer">✨ Girl Magic Odds — fluent in chaos, powered by precision.<br>'
-        "Park vibe: 💥 Hot Porch · 🔥 Live Air · 🌬️ Neutral · 🧊 Cold Porch<br>"
-        '<span style="font-size:.75rem;color:#c4b5d6">Board picks the name. Shop picks the number. Grade keeps us honest.</span></div>',
+        '<div class="footer"><div class="footer-ticker">✨ Girl Magic Odds — fluent in chaos, powered by precision · '
+        "💥 Hot Porch = bombs fly · 🔥 Live Air = ball carries · 🌬️ Neutral = average · 🧊 Cold Porch = balls die · "
+        "Board picks the name · Shop picks the number · Grade keeps us honest ✨</div></div>",
         unsafe_allow_html=True,
     )
 
