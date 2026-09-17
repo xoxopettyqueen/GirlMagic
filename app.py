@@ -1175,6 +1175,7 @@ SUPPORT_ONLY = {
     "FD 40", "MGM 60", "MGM 10", "MGM 40",
     "EV Support", "Kelly Support", "EV Caution", "Kelly Caution",
     "Trend Heating", "Trend Cooling", "Trend Chaotic",
+    "B365 over HardRock", "B365 over MGM", "Fanatics over pack", "HardRock over pack",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
 # Name magic can still use a slightly wider set
@@ -1747,6 +1748,10 @@ GLOSSARY_V2 = {
         ("Caesars / HardRock / Fanatics", "Ticket books we can buy. Fanatics alone without DK/FD/MGM = Watch, not Take."),
         ("Kelly", "Bankroll confidence. Does not pick the name. 10%+ loud, under 1% homework."),
         ("I Just Need One", "0.5 rush / rec / reception lines at +100 or higher. Board clearance is still manual."),
+        ("B365 over HardRock", "SUPPORT only. Bet365 longer than Hard Rock. Does not green a ticket alone."),
+        ("B365 over MGM", "SUPPORT only. Bet365 longer than MGM. Signal, not a Take."),
+        ("Fanatics over pack", "SUPPORT only. Fanatics 100+ longer than the DK/FD/MGM/HR/365 pack. Drift tell, not main-bitch energy."),
+        ("HardRock over pack", "SUPPORT only. Hard Rock 50+ longer than the rest of the pack. Look-at-it stamp, not a Take."),
     ],
     "💎 Tags": [
         ("🔥 Heating", "EV + HH trending up."),
@@ -7055,6 +7060,36 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "methods": ["B365 over MGM"], "gap": int(gap2),
             })
             methods_map[player].append("B365 over MGM")
+        fa = by_book.get("fanatics")
+        pack = [int(by_book[k]) for k in ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365") if by_book.get(k) is not None]
+        if fa is not None and pack:
+            try:
+                med = sorted(pack)[len(pack) // 2]
+                gapf = int(fa) - int(med)
+                if gapf >= 100:
+                    results.append({
+                        "type": "trend", "trend_kind": "good", "label": player,
+                        "reason": f"💜 Fanatics over the pack by {gapf} · FA {format_odds(fa)} · pack ~{format_odds(med)}",
+                        "methods": ["Fanatics over pack"], "gap": gapf,
+                    })
+                    methods_map[player].append("Fanatics over pack")
+            except Exception:
+                pass
+        hr = by_book.get("hardrockbet")
+        pack2 = [int(by_book[k]) for k in ("draftkings", "fanduel", "betmgm", "fanatics", "bet365") if by_book.get(k) is not None]
+        if hr is not None and pack2:
+            try:
+                med2 = sorted(pack2)[len(pack2) // 2]
+                gaph = int(hr) - int(med2)
+                if gaph >= 50:
+                    results.append({
+                        "type": "trend", "trend_kind": "good", "label": player,
+                        "reason": f"💜 HardRock over the pack by {gaph} · HR {format_odds(hr)} · pack ~{format_odds(med2)}",
+                        "methods": ["HardRock over pack"], "gap": gaph,
+                    })
+                    methods_map[player].append("HardRock over pack")
+            except Exception:
+                pass
 
     FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365")
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
