@@ -8917,13 +8917,16 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             if defn and defn.lower() in evn.lower():
                 best = rec
                 dvp_line = (
-                    f"last {int(rec.get('g') or 0)} g vs {pos or 'skill'} {defn}: "
-                    f"{rec.get('rec_yds_g') or 0:.0f} yds/g · {rec.get('rec_td_g') or 0:.2f} TD/g · "
-                    f"D home {rec.get('home_yds_g') or 0:.0f} yds/{rec.get('home_td_g') or 0:.2f} TD · "
-                    f"D road {rec.get('road_yds_g') or 0:.0f} yds/{rec.get('road_td_g') or 0:.2f} TD"
+                    f"last {int(rec.get('g') or 0)} games vs {pos or 'skill'} {defn} — PER GAME: "
+                    f"{rec.get('rec_yds_g') or 0:.0f} yds · {rec.get('rec_td_g') or 0:.2f} TD · "
+                    f"when that D is home {rec.get('home_yds_g') or 0:.0f} yds / {rec.get('home_td_g') or 0:.2f} TD · "
+                    f"when that D is on the road {rec.get('road_yds_g') or 0:.0f} yds / {rec.get('road_td_g') or 0:.2f} TD"
                 )
                 if rec.get("pt_g"):
-                    dvp_line += f" · PT {rec.get('pt_yds_g') or 0:.0f} yds/{rec.get('pt_td_g') or 0:.2f} TD ({int(rec.get('pt_g') or 0)} g)"
+                    dvp_line += (
+                        f" · primetime PER GAME {rec.get('pt_yds_g') or 0:.0f} yds / "
+                        f"{rec.get('pt_td_g') or 0:.2f} TD ({int(rec.get('pt_g') or 0)} PT games)"
+                    )
                 break
         if best and (best.get("rec_td_g") or 0) >= 0.6:
             score += 8
@@ -8941,8 +8944,8 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "weather": "",
             "wind_lane": "cross",
             "dvp_line": dvp_line,
-            "nfl_ha": f"home {int(form.get('home_yds') or 0)} yds · road {int(form.get('away_yds') or 0)} yds",
-            "nfl_pt": f"primetime {int(form.get('pt_yds') or 0)} yds / {int(form.get('pt_td') or 0)} TD",
+            "nfl_ha": f"HIS 2-season totals — home {int(form.get('home_yds') or 0)} yds · road {int(form.get('away_yds') or 0)} yds",
+            "nfl_pt": f"HIS primetime totals — {int(form.get('pt_yds') or 0)} yds / {int(form.get('pt_td') or 0)} TD",
             "nfl_pos": pos,
             "trend": "🔥 Heating" if (form.get("tgt_share") or 0) >= 0.18 or (form.get("rec_td") or 0) >= 6 else ("🧊 Cooling" if (form.get("tgt_share") or 0) and float(form.get("tgt_share") or 0) < 0.08 else "😐 Neutral"),
             "role": (
@@ -9124,13 +9127,14 @@ def render_alignment_tab(ev_board, watch_board=None):
         .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
         .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:520px;min-height:280px;margin:0 auto 28px;padding:24px;border-radius:18px;animation:alIn .35s ease-out}
         .card.al-lock .card-name,.card.al-speak .card-name{font-size:1.35rem}
-        .al-pack{font-size:.88rem}
+        .al-pack{font-size:.95rem;line-height:1.4}
+        .card.al-lock .card-name,.card.al-speak .card-name,.card.al-shot .card-name,.card.al-home .card-name{font-size:1.45rem}
         .card-foot{font-size:.72rem;font-style:italic;text-align:center}
         @keyframes alIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
         .al-kv{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #24182f;padding:2px 0;font-size:.74rem}
         .al-sec{font-size:.62rem;letter-spacing:1.4px;text-transform:uppercase;color:#00e6c3;margin:6px 0 3px;font-weight:800}
         .al-tags{text-align:center;margin-top:6px}
-        .al-pack{font-size:.76rem;line-height:1.28;color:#fce7f3;margin:0 0 4px}
+        .al-pack{font-size:.95rem;line-height:1.4;color:#fce7f3;margin:0 0 6px}
         details.al-fold{margin:4px 0}
         details.al-fold>summary{cursor:pointer;color:#00e6c3;font-size:.62rem;letter-spacing:1.3px;text-transform:uppercase;font-weight:800}
         @keyframes alShimmer{0%{left:-40%}100%{left:120%}}
