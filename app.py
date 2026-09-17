@@ -2502,7 +2502,7 @@ def render_need_one_tracker():
             bits.append(f"{m}: {s['hit']}/{n}")
         st.caption("By prop · " + " · ".join(bits))
     else:
-        st.caption("Percents fill after Auto-grade or HIT/MISS on Results (Need One rows).")
+        st.caption("Percents fill after the site grades finished games from the box score.")
 
 
 def build_need_one_board(rows, want_types):
@@ -10193,10 +10193,10 @@ def main():
     _ag = f"auto_grade_ran_{active_sport()}"
     last_ag = float(st.session_state.get(_ag) or 0)
     pending_n = sum(1 for r in results_for_sport() if r.get("result") == "PENDING")
-    due = last_ag == 0 or (time.time() - last_ag) > 600
-    if pending_n and due:
+    due = last_ag == 0 or (time.time() - last_ag) > 90
+    if due:
         try:
-            with st.spinner(f"Auto-grading {pending_n} pending..."):
+            with st.spinner("Grading from box scores..."):
                 h, m, s, msg = auto_grade_pending()
             st.session_state[_ag] = time.time()
             if h or m:
@@ -10347,6 +10347,13 @@ def main():
                 st.session_state["new_fetch"] = True
                 st.session_state["last_fetch_time"] = now_az()
                 st.success(f"Loaded {len(df)} props · {now_az()} AZ")
+                try:
+                    h, m, s, msg = auto_grade_pending()
+                    st.session_state[_ag] = time.time()
+                    if h or m:
+                        st.caption(f"⚡ Auto-grade after fetch: {h} HIT · {m} MISS · {s} still open")
+                except Exception:
+                    pass
             else:
                 dbg = st.session_state.get("fetch_debug") or {}
                 raw = ", ".join(dbg.get("raw_books") or []) or "none"
@@ -11604,7 +11611,7 @@ def main():
         st.markdown(
             '<div class="info-box"><b>How to read this.</b> '
             "Board green = Run it, baddie (source take_it). Shop TAKE/LEAN = the number we would buy. "
-            "Watch = eyes only. Grade HIT/MISS or the rates stay frozen. "
+            "Watch = eyes only. The site grades finished games from the box score. "
             "Banner “on our list” = box-score names that were take_it, watch, shop_take, or shop_lean.</div>",
             unsafe_allow_html=True,
         )
