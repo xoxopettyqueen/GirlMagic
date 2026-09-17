@@ -9027,11 +9027,12 @@ def render_alignment_tab(ev_board, watch_board=None):
         .wind-in{color:#f87171;font-weight:700}
         .wind-cross{color:#fbbf24}
         .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
-        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:560px;margin:0 auto 18px;padding:22px}
+        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:480px;margin:0 auto 14px;padding:14px 16px;border-radius:16px;animation:alIn .35s ease-out}
+        @keyframes alIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
         .al-kv{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #24182f;padding:2px 0;font-size:.74rem}
         .al-sec{font-size:.62rem;letter-spacing:1.4px;text-transform:uppercase;color:#00e6c3;margin:6px 0 3px;font-weight:800}
         .al-tags{text-align:center;margin-top:6px}
-        .al-pack{font-size:.78rem;line-height:1.35;color:#fce7f3;margin:0 0 6px}
+        .al-pack{font-size:.76rem;line-height:1.28;color:#fce7f3;margin:0 0 4px}
         details.al-fold{margin:4px 0}
         details.al-fold>summary{cursor:pointer;color:#00e6c3;font-size:.62rem;letter-spacing:1.3px;text-transform:uppercase;font-weight:800}
         @keyframes alShimmer{0%{left:-40%}100%{left:120%}}
@@ -9401,8 +9402,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 data_line += f' · HR L7 {hr7 or "—"} · SLG L7 {slg7 or "—"} · Heating {heat} · Longshot {"Yes" if data.get("longshot") else "No"}'
             st.markdown(
                 f'<div class="{klass}">'
-                f'<div class="card-kicker">{vibe} · Alignment {align}</div>'
-                f'<div class="card-name">{item.get("player")}</div>'
+                f'<div class="card-name">{item.get("player")} <span class="card-kicker">{vibe} · {align}</span></div>'
                 f'{_petty_meter(align)}'
                 f'<details class="al-fold" open><summary>📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
