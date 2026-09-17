@@ -4991,6 +4991,8 @@ def log_shop_calls(df):
         player = r.get("player")
         if not player:
             continue
+        if active_sport() == "NFL" and is_nfl_qb(player):
+            continue
         src = "shop_take" if r["action"] == "TAKE" else "shop_lean"
         if already_shop(player, src):
             continue
@@ -7405,6 +7407,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         if fair is None:
             fair, fair_p, fair_mode = med, american_implied(med), "median"
         ev, kelly_f = ev_from_fair(best, fair)
+        premium_core = count_core_methods(meths)
         for t in value_method_tags(ev, kelly_f):
             if t not in display_meths:
                 display_meths.append(t)
@@ -7422,7 +7425,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             "ev": ev, "kelly_frac": kelly_f, "is_bet": False,
             "why": f"Score {score}/100 · {core_count} core · edge {int(edge)}",
             "methods": display_meths, "score": score, "bars": bars, "level": level,
-            "method_count": core_count, "team": team_map.get(player, ""),
+            "method_count": core_count, "premium_core": premium_core,
+            "team": team_map.get(player, ""),
             "events": list(player_events.get(player, [])),
             "event": next(iter(player_events.get(player, [])), ""),
         }
@@ -10149,12 +10153,25 @@ def main():
     pass_n = len(passes_all)
     multi_names = {e["player"] for e in ev_board}
     # Same buckets as MLB. Week-1 "hide PASS" made 0 Not Today / 0 Watch look broken.
-    watch_only = [
-        w for w in watch_board
-        if w["player"] not in multi_names and (w.get("method_count") or 0) < methods_min()
-    ]
+    VALUE_FAKE = {"EV Premium", "Kelly Premium", "EV Support", "Kelly Support"}
+    def _premium(item):
+        if item.get("premium_core") is not None:
+            return int(item.get("premium_core") or 0)
+        return count_core_methods([m for m in (item.get("methods") or []) if m not in VALUE_FAKE])
+    take_names = {e["player"] for e in ev_board if e.get("is_bet")}
+    watch_only, seen_w = [], set(take_names)
+    for src in list(watch_board or []) + [e for e in ev_board if not e.get("is_bet")]:
+        pl = src.get("player")
+        if not pl or pl in seen_w:
+            continue
+        pc = _premium(src)
+        if 1 <= pc < methods_min():
+            watch_only.append(src)
+            seen_w.add(pl)
     watch_n = len(watch_only)
-    cov_names = multi_names | {w["player"] for w in watch_only}
+    watch_names = {w["player"] for w in watch_only}
+    pass_n = len([e for e in ev_board if not e.get("is_bet") and e.get("player") not in watch_names])
+    cov_names = multi_names | watch_names
     coverage_only = [
         c for c in coverage_board
         if c["player"] not in cov_names
@@ -11817,6 +11834,22 @@ def main():
         graded = [r for r in week if r.get("result") in ("HIT", "MISS")]
         prev_hits = [r for r in prevw if r.get("result") == "HIT"]
         prev_graded = [r for r in prevw if r.get("result") in ("HIT", "MISS")]
+        bomb = "TD" if active_sport() == "NFL" else "HR"
+        bombs = "TDs" if active_sport() == "NFL" else "HRs"
+
+        def _unique_hits(hit_rows):
+            seen, out = set(), []
+            for r in hit_rows:
+                pl = clean_name(r.get("player") or "")
+                dd = str(r.get("date") or "")[:10]
+                key = (pl.lower(), dd)
+                if not pl or key in seen:
+                    continue
+                seen.add(key)
+                out.append(r)
+            return out
+        hits_u = _unique_hits(hits)
+        prev_hits_u = _unique_hits(prev_hits)
 
         def pack_hits(hit_rows, graded_rows):
             endings = Counter(); books = Counter(); buckets = Counter()
@@ -11859,11 +11892,15 @@ def main():
                             fade[r["player"]] += 1
             return endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross
 
-        endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross = pack_hits(hits, graded)
+        endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross = pack_hits(hits_u, graded)
+        names = Counter()
+        for r in hits_u:
+            if r.get("player"):
+                names[r["player"]] += 1
         wd_hits, wd_grad = Counter(), Counter()
         wd_book_hits, wd_book_grad = Counter(), Counter()
         wd_end_hits = Counter()
-        for r in hits:
+        for r in hits_u:
             dd = _row_day(r)
             if not dd:
                 continue
@@ -11924,7 +11961,7 @@ def main():
         week_rate = rate(len(hits), len(graded))
         prev_rate = rate(len(prev_hits), len(prev_graded))
         c1, c2, c3, c4 = st.columns(4)
-        c1.metric("HRs this week", len(hits), delta=len(hits) - len(prev_hits) if not window.endswith("only") else None)
+        c1.metric(f"{bombs} this week", len(hits_u), delta=len(hits_u) - len(prev_hits_u) if not window.endswith("only") else None)
         c2.metric("Graded", len(graded))
         c3.metric("Hit rate", week_rate, delta=None if window.endswith("only") else f"last {prev_rate}")
         c4.metric("Repeat names", sum(1 for n in names.values() if n >= 2))
@@ -11997,7 +12034,7 @@ def main():
             wd_rows = [(d, wd_hits[d]) for d in order if wd_hits[d] or wd_grad[d]]
             if wd_rows:
                 st.markdown(section_html(
-                    "By weekday", "HR count that weekday — rate uses all graded that weekday",
+                    "By weekday", f"Unique {bomb}s that weekday — not raw log rows",
                     wd_rows, max(wd_hits.values() or [1]), wd_grad, {},
                 ), unsafe_allow_html=True)
                 lines = []
@@ -12012,7 +12049,10 @@ def main():
                     top_e = ", ".join(f"{e:02d}×{n}" if isinstance(e, int) else f"{e}×{n}" for e, n in ends_d[:3]) or "—"
                     n_h, n_g = wd_hits[d], wd_grad[d]
                     pct = f"{100 * n_h / n_g:.0f}%" if n_g else "—"
-                    lines.append(f"- **{d}** — {n_h} HR / {n_g} graded ({pct}). Books: {top_b}. Endings: {top_e}")
+                    lines.append(
+                        f"- **{d}** — what cashed: books {top_b}. endings {top_e}. "
+                        f"({n_h} unique {bomb}s / {n_g} graded = {pct})"
+                    )
                 if lines:
                     st.markdown("**Books + endings by weekday** (same window — compare week to week with the dropdown)")
                     st.markdown("\n".join(lines))
@@ -12020,11 +12060,11 @@ def main():
             picks = [(k, n) for k, n in names.most_common() if k and n >= 2]
             pick_rows = []
             for i, (pl, n) in enumerate(picks[:12]):
-                pick_rows.append(bar_row(f"{pl} · {n} HRs this window", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
+                pick_rows.append(bar_row(f"{pl} · {n} {bombs} this window", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
             picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-pct">None yet</div>'
             st.markdown(
                 '<div class="pa-card"><div class="pa-h">Repeat Offenders</div>'
-                '<div class="pa-sub">Unique HRs in this date window — not a game streak</div>'
+                f'<div class="pa-sub">One {bomb} per player per date. Duplicates dropped. NFL week-1: 2+ days, not 4 bombs in one game.</div>'
                 + picks_html +
                 '</div>',
                 unsafe_allow_html=True,
