@@ -120168,42 +120168,155 @@
     "graded_by": "one_per_day"
   },
   {
-    "id": "2026-09-17_Junior Caminero_watch_33",
+    "id": "2026-09-17_Jonah Heim_shop_take_132",
     "date": "2026-09-17",
     "time": "10:33 AM",
-    "player": "Junior Caminero",
-    "score": 33,
-    "edge": 37,
-    "best_price": 440,
+    "player": "Jonah Heim",
+    "score": 0,
+    "edge": 132,
+    "best_price": 950,
     "best_book": "fanatics",
-    "median": 392.5,
+    "median": 800,
     "book_prices": {
-      "draftkings": 370,
-      "fanatics": 440,
-      "fanduel": 410,
-      "hardrockbet": 375
+      "caesars": 750,
+      "draftkings": 800,
+      "fanatics": 950,
+      "fanduel": 900,
+      "hardrockbet": 750
     },
-    "price_bucket": "+400s",
-    "ending": 40,
-    "mgm_locked": null,
-    "mgm_ending": null,
+    "price_bucket": "+800-999",
+    "ending": 50,
     "methods": [
-      "DK FD-style",
-      "FD Pattern",
-      "Books tight",
-      "EV Premium",
-      "Kelly Support"
+      "Shop TAKE"
     ],
-    "core": 2,
+    "core": 0,
     "result": "PENDING",
-    "source": "watch",
-    "logged_at": "2026-09-17T17:33:22.129854+00:00",
-    "price_source": "pregame_lock",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T17:33:26.133037+00:00",
+    "price_source": "shop",
     "sport": "MLB",
-    "team": "TAMPA BAY RAYS",
-    "market": "batter_home_runs",
-    "benford_tag": "Fake",
-    "benford_note": "",
-    "benford_cluster": 0.5
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Hunter Feduccia_shop_lean_92",
+    "date": "2026-09-17",
+    "time": "10:33 AM",
+    "player": "Hunter Feduccia",
+    "score": 0,
+    "edge": 92,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 700,
+    "book_prices": {
+      "bet365": 625,
+      "caesars": 525,
+      "draftkings": 700,
+      "fanatics": 750,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T17:33:26.140254+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Brandon Lowe_shop_take_80",
+    "date": "2026-09-17",
+    "time": "10:33 AM",
+    "player": "Brandon Lowe",
+    "score": 0,
+    "edge": 80,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 750,
+      "fanatics": 750,
+      "fanduel": 550,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T17:33:26.149235+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Teoscar Hern\u00e1ndez_shop_take_58",
+    "date": "2026-09-17",
+    "time": "10:33 AM",
+    "player": "Teoscar Hern\u00e1ndez",
+    "score": 0,
+    "edge": 58,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 472,
+    "book_prices": {
+      "bet365": 375,
+      "caesars": 475,
+      "draftkings": 450,
+      "fanatics": 550,
+      "fanduel": 470,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T17:33:26.155698+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Freddie Freeman_shop_lean_44",
+    "date": "2026-09-17",
+    "time": "10:33 AM",
+    "player": "Freddie Freeman",
+    "score": 0,
+    "edge": 44,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 482,
+    "book_prices": {
+      "bet365": 375,
+      "caesars": 475,
+      "draftkings": 475,
+      "fanatics": 550,
+      "fanduel": 490,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T17:33:26.164363+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
