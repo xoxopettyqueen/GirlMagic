@@ -8800,19 +8800,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         """,
         unsafe_allow_html=True,
     )
-    st.markdown(
-        '<div class="how-to">'
-        "<b>How to read this (plain English):</b><br>"
-        "• The <b>Board</b> is still who we bet. This page is the why.<br>"
-        "• Pink number = do the <b>books</b> and the <b>bat</b> agree? "
-        "Under 30 = fighting. 30–70 = shrug. 70–100 = yes. 100+ = loud.<br>"
-        "• <b>EV</b> = how hard the ball comes off the bat. "
-        "<b>HH%</b> = how often it’s smoked. <b>Barrel</b> = the HR-looking contact.<br>"
-        "• <b>LONGSHOT</b> is a longer price we still want on the list — not a skip tag.<br>"
-        "• <b>LOCKED IN / SPEAKING</b> = look first. <b>WHISPER / NOT YET</b> = homework, not a ticket."
-        "</div>",
-        unsafe_allow_html=True,
-    )
+    pass
     if not rows:
         st.info("Hit Fetch on the Board first. Align only reads names already on today’s slate.")
         return
@@ -8978,10 +8966,17 @@ def render_alignment_tab(ev_board, watch_board=None):
             vibe = "📚 Homework"
         cards.append((align, item, data, notes, vibe))
     cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
+    view = st.radio(
+        "Show",
+        ["🎯 Active", "🫧 Whispers", "📚 Homework"],
+        horizontal=True,
+        key="align_view",
+        help="Active = Locked + Spoke. Whispers = not a ticket yet. Homework = still cooking.",
+    )
     perfect = [c for c in cards if c[0] >= 85][:10]
-    if perfect:
-        st.markdown("#### ✨ Petty’s Perfect Alignment Picks")
-        st.caption("Data spoke. Odds agreed. Board still decides if we ticket it.")
+    if view.startswith("🎯") and perfect:
+        st.markdown("#### ✨ Alignment Picks")
+        st.caption("Data spoke. Odds agreed. Board’s got the final say.")
         top = st.columns(min(3, len(perfect[:3])))
         shown_perfect = set()
         for i, (align, item, data, notes, vibe) in enumerate(perfect[:6]):
@@ -9000,7 +8995,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                     f'<div class="card bet"><div class="card-kicker">{vibe}</div>'
                     f'<div class="card-name">{item.get("player")}</div>'
                     f'{_petty_meter(align)}'
-                    f'<div class="card-line">DATA {evs} EV · {hhs} HH · {brs} Bbl</div>'
+                    f'<div class="card-line">DATA {evs} EV · {hhs} HH · Barrel {brs}</div>'
                     f'<div class="card-line">VS {data.get("matchup") or "—"}</div>'
                     f'<div class="card-line">{data.get("weather") or ""}</div></div>',
                     unsafe_allow_html=True,
@@ -9023,13 +9018,7 @@ def render_alignment_tab(ev_board, watch_board=None):
             "summary": data.get("summary"),
         })
     save_align_events(ev_log)
-    view = st.radio(
-        "Show",
-        ["🎯 Active", "🫧 Whispers", "📚 Homework"],
-        horizontal=True,
-        key="align_view",
-    )
-    if view == "🎯 Active":
+    if view.startswith("🎯"):
         cards = []
     elif view.startswith("🫧"):
         cards = [c for c in cards if 70 <= c[0] < 85]
@@ -9089,7 +9078,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f"</div>",
                 unsafe_allow_html=True,
             )
-    st.caption("We pull the hitting numbers for you. You do not upload a spreadsheet. Board still makes the bet call.")
+    pass
 
 
 def main():
