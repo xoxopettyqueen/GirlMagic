@@ -120155,7 +120155,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "take_it",
     "logged_at": "2026-09-17T17:25:18.875818+00:00",
     "price_source": "pregame_lock",
@@ -120164,6 +120164,7 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.57
+    "benford_cluster": 0.57,
+    "graded_by": "one_per_day"
   }
 ]
