@@ -119269,5 +119269,157 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-17_Jackson Hawes_shop_take_83",
+    "date": "2026-09-17",
+    "time": "09:51 AM",
+    "player": "Jackson Hawes",
+    "score": 0,
+    "edge": 83,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 850,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 900,
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 1000,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T16:51:05.937050+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-17_Joshua Palmer_shop_take_66",
+    "date": "2026-09-17",
+    "time": "09:51 AM",
+    "player": "Joshua Palmer",
+    "score": 0,
+    "edge": 66,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 525,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 525,
+      "caesars": 525,
+      "draftkings": 500,
+      "fanatics": 600,
+      "fanduel": 550,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T16:51:05.939215+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-17_Buffalo Bills D/ST_shop_lean_48",
+    "date": "2026-09-17",
+    "time": "09:51 AM",
+    "player": "Buffalo Bills D/ST",
+    "score": 0,
+    "edge": 48,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "betmgm": 500,
+      "draftkings": 650,
+      "fanatics": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T16:51:05.944609+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-17_Dawson Knox_shop_lean_38",
+    "date": "2026-09-17",
+    "time": "09:51 AM",
+    "player": "Dawson Knox",
+    "score": 0,
+    "edge": 38,
+    "best_price": 550,
+    "best_book": "bet365",
+    "median": 500,
+    "book_prices": {
+      "bet365": 550,
+      "betmgm": 450,
+      "caesars": 500,
+      "draftkings": 550,
+      "fanatics": 525,
+      "fanduel": 500,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T16:51:05.946244+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-17_Detroit Lions D/ST_shop_lean_35",
+    "date": "2026-09-17",
+    "time": "09:51 AM",
+    "player": "Detroit Lions D/ST",
+    "score": 0,
+    "edge": 35,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 700,
+    "book_prices": {
+      "betmgm": 625,
+      "draftkings": 800,
+      "fanatics": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T16:51:05.948051+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
