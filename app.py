@@ -1717,7 +1717,7 @@ GLOSSARY_V2 = {
         ("Eyes / WATCH", "Log it for grade. Do not force the ticket."),
         ("Run It", "The Board. Who cleared. Number next to the name = Board score."),
         ("Money Talks", "Shop. Which book and whether the number is mispriced. Board can be green and Shop can still say DON'T."),
-        ("Alignment", "Scouting card. Data + odds + park. Not the bet slip."),
+        ("Confidence Score", "0–100. How confident this card is. Data + odds + context. Not a credit score."),
         ("Need One", "0.5 rush / catch / reception, plus money. Separate from HR and Anytime TD."),
         ("Receipts", "Spoke / Locks / Tracker / Time Machine. Grade HIT or MISS. Undo exists."),
         ("Tickets vs Research", "Tickets = TAKE + Shop TAKE. Research = WATCH + LEAN. TAKE must beat Research or we raise the floor."),
@@ -1727,9 +1727,9 @@ GLOSSARY_V2 = {
     ],
     "💫 Scores": [
         ("Board score", "The ticket stack on Run It. This is the number next to names on the Board. Align does not use this next to the name."),
-        ("Align score", "Data + odds + context on the Align tab. Labeled “align score.” Not the Board score."),
+        ("Confidence vs Board", "Confidence is the 0–100 on this tab. Board score is the ticket stack on Run It."),
         ("Petty Upside / Edge", "How loud the data side is. Footer line on Align cards."),
-        ("Active / Whispers / Homework", "MLB: Align 85+ / 70–84 / under 70. NFL: plus-money under +500 / +500+ longshots / rookies and thin volume."),
+        ("Active / Whispers / Homework", "MLB: Confidence 85+ / 70–84 / under 70. NFL: plus-money under +500 / +500+ longshots / rookies and thin volume."),
         ("Weekly adjust", "Receipts + Tracker by tag. Cold stamps get demoted. Hot support can get watched harder. Never blindly keep a dead tell."),
         ("Tickets vs Research", "Recap pills: Tickets = TAKE / Shop TAKE. Research = WATCH / LEAN. Grade both. TAKE must beat Research or the floor goes up."),
         ("Caesars 90 / HardRock 50 / 00", "Other-book endings we now stamp and track. Support until n ≥ 25 and they beat baseline."),
@@ -8301,7 +8301,8 @@ def odds_alignment_score(item, data_boost=0):
         score += min(16, int(item.get("edge") or 0) // 12)
     except Exception:
         pass
-    return int(score) + int(data_boost or 0)
+    raw = int(score) + int(data_boost or 0)
+    return max(1, min(100, int(round(raw * 100 / 155))))
 
 
 _NFL_TEAMS = {
@@ -9380,13 +9381,12 @@ def _align_kv(label, value, tip=""):
 
 
 def _petty_meter(align):
-    a = max(0, min(120, int(align or 0)))
-    w = int(a / 120 * 100)
+    a = max(0, min(100, int(align or 0)))
     return (
         f'<div style="background:#2a2038;border-radius:999px;height:8px;margin:6px 0 8px;overflow:hidden">'
-        f'<div class="al-fill" style="width:{w}%;height:8px;border-radius:999px;'
+        f'<div class="al-fill" style="width:{a}%;height:8px;border-radius:999px;'
         f'background:linear-gradient(90deg,#9b5fff,#ff3ebf,#00e6c3);animation:alFill .7s ease-out"></div></div>'
-        f'<div style="font-size:.68rem;color:#c4b5d6">data 🔮 · odds 🎰 · <span class="gm-num">align score {a}</span></div>'
+        f'<div style="font-size:.68rem;color:#c4b5d6">data 🔮 · odds 🎰 · <span class="gm-num">Confidence {a}</span></div>'
     )
 
 
@@ -9410,7 +9410,7 @@ def render_alignment_tab(ev_board, watch_board=None):
             seen_p[k] = it
     rows = list(seen_p.values())
     st.markdown(
-        '<div class="queen-banner">✨ Align · when the data speaks and the odds agree, that’s Girl Magic</div>',
+        '<div class="queen-banner">✨ Confidence · when the data speaks and the odds agree, that’s Girl Magic</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
@@ -9675,7 +9675,7 @@ def render_alignment_tab(ev_board, watch_board=None):
     )
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
-        st.markdown("#### ✨ Alignment Picks")
+        st.markdown("#### ✨ Confidence picks")
         st.caption("Data spoke. Odds agreed. Board’s got the final say.")
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
@@ -9819,7 +9819,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                     f'{_petty_meter(align)}'
                     f'{pulse_html}'
                     f'<div class="al-tags">{"".join(pills)}</div>'
-                    f'<div class="card-foot" title="Board score is the ticket stack. Align score is data + odds + context.">Board score {item.get("score") or "—"} · Align {align} · Attack {data.get("attack")}</div>'
+                    f'<div class="card-foot" title="Board score is the ticket stack. Align score is data + odds + context.">Board score {item.get("score") or "—"} · Confidence {align} · Attack {data.get("attack")}</div>'
                     f"</div>",
                     unsafe_allow_html=True,
                 )
@@ -9869,7 +9869,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<details class="al-fold" open><summary title="Home/away, day/night, vs left and right">⚙️ Splits</summary>'
                 f'<div class="al-pack">🏠 {data.get("split_ha") or "—"}<br>🌙 {data.get("split_dn") or "—"}<br>🆚 {data.get("split_lr") or "—"}</div></details>'
                 f'<div class="al-tags">{"".join(pills)}</div>'
-                f'<div class="card-foot">Board score {item.get("score") or "—"} · Align {align} · Board still decides if we ticket it.</div>'
+                f'<div class="card-foot">Board score {item.get("score") or "—"} · Confidence {align} · Board still decides if we ticket it.</div>'
                 f"</div>",
                 unsafe_allow_html=True,
             )
@@ -10401,7 +10401,7 @@ def main():
         st.session_state["main_nav"] = "Align"
     NAV_LABELS = {
         "Board": "💚 Run It",
-        "Align": "✨ Alignment",
+        "Align": "✨ Confidence",
         "Shop": "💸 Money Talks",
         "Need One": "🎯 Need One",
         "Labs": "🧪 Petty Lab",
