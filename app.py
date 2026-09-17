@@ -9387,9 +9387,67 @@ def _petty_meter(align):
     )
 
 
-def render_alignment_tab(ev_board, watch_board=None):
-    """New Align tab. Odds engine untouched. Longshots stay on the list."""
-    raw_rows = list(ev_board or []) + list(watch_board or [])
+def _confidence_rows_from_odds(min_price=400):
+    """Every slate name at +min_price or longer, even if Board/Watch missed them."""
+    odds = st.session_state.get("odds") or []
+    if not odds:
+        return []
+    try:
+        df = pd.DataFrame(odds)
+    except Exception:
+        return []
+    if df.empty or "player" not in df.columns:
+        return []
+    out = []
+    for player, g in df.groupby("player"):
+        prices = pd.to_numeric(g.get("price"), errors="coerce").dropna().tolist()
+        if not prices:
+            continue
+        try:
+            best = int(max(prices))
+        except Exception:
+            continue
+        if best < min_price:
+            continue
+        books = [str(b) for b in g.get("book").tolist()] if "book" in g.columns else []
+        book_px = {}
+        for _, r in g.iterrows():
+            try:
+                book_px[str(r.get("book") or "")] = int(r.get("price"))
+            except Exception:
+                pass
+        events = []
+        if "event" in g.columns:
+            events = [e for e in g["event"].dropna().astype(str).unique().tolist() if e]
+        team = ""
+        if "team" in g.columns:
+            team = str(g["team"].dropna().astype(str).iloc[0]) if g["team"].notna().any() else ""
+        best_book = ""
+        try:
+            idx = prices.index(max(prices))
+            best_book = books[idx] if idx < len(books) else (books[0] if books else "")
+        except Exception:
+            best_book = books[0] if books else ""
+        out.append({
+            "player": player,
+            "best_price": best,
+            "best_book": best_book,
+            "book_prices": book_px,
+            "methods": [],
+            "score": 0,
+            "is_bet": False,
+            "edge": 0,
+            "team": team,
+            "events": events,
+            "event": events[0] if events else "",
+        })
+    return out
+
+
+def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
+    """Data + odds overlay. Reads Board/Watch AND the raw +400 slate."""
+    raw_rows = list(ev_board or []) + list(watch_board or []) + list(coverage_board or [])
+    raw_rows.extend(_confidence_rows_from_odds(400))
     seen_p = {}
     for it in raw_rows:
         k = _fold_player(it.get("player"))
@@ -9442,7 +9500,7 @@ def render_alignment_tab(ev_board, watch_board=None):
     )
     pass
     if not rows:
-        st.info("Hit Fetch on the Board first. Align only reads names already on today’s slate.")
+        st.info("Hit Fetch first. Confidence reads every +400 name on the slate, not just Board greens.")
         return
     sport = active_sport()
     live = {}
@@ -9502,22 +9560,29 @@ def render_alignment_tab(ev_board, watch_board=None):
         board_take = bool(item.get("is_bet"))
         board_watch = bool(item.get("is_watch") or item.get("watch"))
         board_score = int(item.get("score") or 0)
-        # Board/stamps can keep a name even if Savant/nflverse missed.
+        soft_data = bool(
+            (ev and ev >= 88)
+            or (hh is not None and hh >= 38)
+            or (brl is not None and brl >= 6)
+            or hr7 >= 1
+            or hot
+            or juice
+            or rookie_spike
+        )
+        # Confidence = looks good in the data AND has a real ticket price.
         keep = False
-        if align >= 70 and books_n >= 2 and rhythm:
-            keep = True
-        if board_take and align >= 65:
-            keep = True
-        if board_watch and align >= 70 and (rhythm or books_n >= 2):
-            keep = True
-        if data_hit and books_n >= 2 and align >= 70:
-            keep = True
-        if rookie_spike and books_n >= 2 and align >= 70 and rhythm:
-            keep = True
-        if sport == "NFL" and signed_px < 100:
-            keep = False
-        if sport != "NFL" and px and px < 200:
-            keep = False
+        if sport == "NFL":
+            if signed_px >= 100 and (soft_data or data_hit or rhythm or board_take or bool(summ)):
+                keep = True
+            if signed_px < 100:
+                keep = False
+        else:
+            if px >= 400 and (soft_data or data_hit or rhythm or board_take or board_watch):
+                keep = True
+            if px >= 400 and books_n >= 1 and align >= 55:
+                keep = True
+            if px and px < 400:
+                keep = False
         if not keep:
             hidden += 1
             continue
@@ -9675,7 +9740,7 @@ def render_alignment_tab(ev_board, watch_board=None):
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
-        st.caption("70+ lands here. 85+ still reads Locked/Spoke on the card. Board still tickets.")
+        st.caption("+400 or longer. Data + books on one card. Board still decides the ticket.")
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -9708,12 +9773,12 @@ def render_alignment_tab(ev_board, watch_board=None):
         elif view.startswith("📚"):
             cards = [c for c in cards if c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
     elif view.startswith("🎯"):
-        # Active = cleared 70+. 85+ still gets the Locked/Spoke card vibe.
-        cards = [c for c in cards if c[0] >= 70][:40]
+        # Active = every kept name at +400+. This tab is the scouting list.
+        cards = list(cards)[:40]
     elif view.startswith("🫧"):
-        cards = [c for c in cards if 60 <= c[0] < 70]
+        cards = [c for c in cards if (c[1].get("best_price") or 0) >= 750 or c[2].get("longshot")]
     elif view.startswith("📚"):
-        cards = [c for c in cards if c[0] < 60]
+        cards = [c for c in cards if c[0] < 55]
     cols = st.columns(2)
     already = set()
     shown_i = 0
@@ -10472,7 +10537,7 @@ def main():
     else:
         page = f"{main}:{sub or ''}"
     if page == "Align:":
-        render_alignment_tab(ev_board, watch_board)
+        render_alignment_tab(ev_board, watch_board, coverage_board)
     if page == "Board:":
         site_section_open(
             "👑 WHO",
