@@ -8688,8 +8688,14 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             bits.append(f"home {int(form.get('home_yds') or 0)} / road {int(form.get('away_yds') or 0)} yds")
         if form.get("pt_yds"):
             bits.append(f"primetime {int(form['pt_yds'])} yds / {int(form.get('pt_td') or 0)} TD")
-        if form.get("draft_round"):
-            bits.append(f"draft R{int(form['draft_round'])} P{int(form.get('draft_pick') or 0)} '{str(form.get('draft_year') or '')[-2:]}")
+        try:
+            dr = form.get("draft_round")
+            dp = form.get("draft_pick")
+            dy = form.get("draft_year")
+            if dr is not None and str(dr) not in ("", "nan", "None"):
+                bits.append(f"draft R{int(float(dr))} P{int(float(dp or 0))} '{str(dy or '')[-2:]}")
+        except Exception:
+            pass
         if form.get("carries"):
             bits.append(f"{int(form['carries'])} car")
         tds = (form.get("rec_td") or 0) + (form.get("rush_td") or 0)
