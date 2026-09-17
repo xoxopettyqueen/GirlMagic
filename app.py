@@ -9771,6 +9771,29 @@ def _today_spot_nfl(item, data, form=None):
     return " · ".join(bits), (" · ".join(vibe) if vibe else "")
 
 
+def _apply_today_split_score(data):
+    """Career-best split today is a trap if they are cold. Weaker split always cuts."""
+    txt = (str(data.get("today_split") or "") + " " + str(data.get("today_spot") or "")).lower()
+    cold = "cold" in str(data.get("summary") or "").lower() or "HR L7 0" in str(data.get("summary") or "")
+    ds = int(data.get("data_score") or 0)
+    louder = "louder" in txt or "when he slugs" in txt or "road guy" in txt or "home guy" in txt
+    softer = "quieter" in txt or "softer" in txt or "louder on the road" in txt or "louder at home" in txt
+    if softer:
+        ds -= 14
+        data["split_fit"] = "bad spot"
+        if data.get("data_tier") == "hot":
+            data["data_tier"] = "mid"
+    elif louder and cold:
+        ds -= 10
+        data["split_fit"] = "trap split"
+        if data.get("data_tier") == "hot":
+            data["data_tier"] = "mid"
+    elif louder:
+        ds += 6
+        data["split_fit"] = "good spot"
+    data["data_score"] = max(0, ds)
+
+
 def _today_html(data):
     spot = str(data.get("today_spot") or "").strip()
     split = str(data.get("today_split") or "").strip()
@@ -9879,12 +9902,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         near = data.get("near_hr") or 0
         xslg = data.get("xslg")
         juice = bool(near >= 6 or (xslg is not None and xslg >= 0.480))
+        # HOT = loud contact, not "has a number." Rookie/call-up can ride if contact exists.
         data_hit = bool(
-            (contact >= 1 and (hot or hr7 >= 1 or juice or (brl or 0) >= 6 or (ev or 0) >= 88))
-            or (brl or 0) >= 8
-            or hr7 >= 1
-            or bool(data.get("rookie"))
-        )
+            contact >= 2 and (hot or hr7 >= 1 or juice or (xslg is not None and xslg >= 0.420))
+        ) or bool(contact >= 1 and data.get("rookie") and ((ev or 0) >= 88 or (brl or 0) >= 7))
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -9926,14 +9947,12 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             data_hit = bool(
                 "nflverse miss" not in summ
                 and (
-                    form_share >= 0.05
+                    form_share >= 0.10
                     or heating
-                    or td_n >= 1
-                    or role.endswith(("1", "2", "3"))
-                    or "TE" in role
-                    or "RB" in role
-                    or "WR" in role
-                    or bool(data.get("rookie"))
+                    or td_n >= 4
+                    or (role.endswith("1") and form_share >= 0.08)
+                    or (role.endswith(("2", "3")) and (form_share >= 0.08 or td_n >= 2 or heating))
+                    or (bool(data.get("rookie")) and (form_share >= 0.06 or td_n >= 1))
                 )
             )
             soft_nfl = bool("nflverse miss" not in summ) and bool(
@@ -10020,6 +10039,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 data["today_spot"], data["today_split"] = _today_spot_nfl(item, data)
             except Exception:
                 data["today_spot"], data["today_split"] = "", ""
+            _apply_today_split_score(data)
             data["match_boost"] = 0
             odds_hit = bool(methods) or books_n >= 2
             notes = []
@@ -10126,6 +10146,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             data["today_spot"], data["today_split"] = _today_spot_mlb(item, data, splits)
         except Exception:
             data["today_spot"], data["today_split"] = "", ""
+        _apply_today_split_score(data)
         if aw.get("slg") and hm.get("slg") and aw["slg"] >= hm["slg"] + 0.040 and data.get("matchup") and "(away)" in data.get("matchup"):
             match_boost += 3
             align = int(align) + 3
@@ -10193,7 +10214,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
-        st.caption("Active = real data, not just stars. WR2 / TE2 / RB2 and mid-order bats stay on this list when the usage or contact is live.")
+        st.caption(
+            "HOT = two loud contact flags + heat/HR/xSLG (NFL: real target share or heating). "
+            "MID = one flag. COLD = noise. Career-best split + cold week = trap, score drops. Worse split today always drops."
+        )
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -10236,7 +10260,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         -x[0],
         x[1].get("player") or "",
     ))
-    cards = cards[:40]
+    cards = cards[:16]
     cols = st.columns(2)
     already = set()
     shown_i = 0
