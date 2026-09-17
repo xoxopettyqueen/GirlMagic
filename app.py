@@ -9477,7 +9477,10 @@ def render_alignment_tab(ev_board, watch_board=None):
             1 if hh is not None and hh >= 42 else 0,
             1 if brl is not None and brl >= 8 else 0,
         ])
-        data_hit = bool(contact >= 2 and (hot or hr7 >= 1))
+        near = data.get("near_hr") or 0
+        xslg = data.get("xslg")
+        juice = bool(near >= 6 or (xslg is not None and xslg >= 0.480))
+        data_hit = bool(contact >= 2 and (hot or hr7 >= 1 or juice))
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -9645,6 +9648,10 @@ def render_alignment_tab(ev_board, watch_board=None):
             notes.append("Pack vs one book looks off")
         if item.get("num_tag"):
             notes.append("Numerology tag present")
+        if (data.get("near_hr") or 0) >= 4:
+            notes.append("Near-HR juice on Savant — balls that almost left")
+        if data.get("xslg") is not None and data.get("xslg") >= 0.450:
+            notes.append("xSLG is loud")
         if data_hit and odds_hit:
             notes.append("Data + odds both fired")
         if not notes:
@@ -9723,6 +9730,10 @@ def render_alignment_tab(ev_board, watch_board=None):
             pills.append('<span class="al-chip">💎 Longshot</span>')
         if "heating" in (data.get("summary") or ""):
             pills.append('<span class="al-chip">🔥 Heating</span>')
+        if (data.get("near_hr") or 0) >= 4:
+            pills.append(f'<span class="al-chip" title="Savant doubters + mostly gone">💥 Near-HR {int(data.get("near_hr"))}</span>')
+        if data.get("xslg") is not None and data.get("xslg") >= 0.450:
+            pills.append(f'<span class="al-chip" title="Savant expected slugging">📈 xSLG {data.get("xslg"):.3f}</span>')
         if set(str(m) for m in (item.get("methods") or [])) & _ALIGN_DIGIT:
             pills.append('<span class="al-chip">💜 Rhythm</span>')
         if item.get("is_bet"):
