@@ -4973,15 +4973,7 @@ def log_bet_this(ev_board, watch_board=None):
             if not already(item.get("player") or "", "take_it"):
                 append_row(item, "take_it")
             freeze_take_to_ledger(item, "take_it")
-    for item in list(watch_board or []) + [x for x in ev_board if not x.get("is_bet")]:
-        if item.get("is_bet"):
-            continue
-        stamps, _ms = stamp_count(item.get("methods") or [])
-        if stamps < 1:
-            continue
-        if stamps >= 2:
-            continue
-        append_row(item, "watch")
+    # Watch / coverage stay on the Board and in the lock. They are not graded tickets.
 
     if added:
         save_results(rows)
@@ -5320,6 +5312,9 @@ def fetch_nfl_td_scorers():
 
 
 
+GRADE_SOURCES = ("take_it", "shop_take", "manual_hr")
+
+
 def _official_hr_for_date(date_str):
     hr_names, final_players, msg = fetch_mlb_hr_hitters(date_str)
     return set(hr_names or []), set(final_players or []), msg
@@ -5336,6 +5331,8 @@ def auto_grade_pending():
             if row.get("result") != "PENDING":
                 continue
             src = str(row.get("source") or "")
+            if src not in GRADE_SOURCES:
+                continue
             mkt = str(row.get("market") or "").lower()
             if src.startswith("need_one"):
                 skipped += 1
@@ -5371,8 +5368,12 @@ def auto_grade_pending():
 
     # MLB: grade against THAT row's game date, not today's whole homer list.
     by_date = defaultdict(list)
+    seen_ticket = set()
     for i, row in enumerate(rows):
         if row.get("result") != "PENDING":
+            continue
+        src = str(row.get("source") or "")
+        if src not in GRADE_SOURCES:
             continue
         if str(row.get("market") or "") == "anytime_td":
             skipped += 1
@@ -5381,6 +5382,12 @@ def auto_grade_pending():
         if not d:
             skipped += 1
             continue
+        key = (_fold_name(row.get("player") or ""), d)
+        if key in seen_ticket:
+            row["result"] = "SKIP_DUP"
+            row["graded_by"] = "one_per_day"
+            continue
+        seen_ticket.add(key)
         by_date[d].append(row)
     msgs = []
     for d, batch in by_date.items():
@@ -5393,6 +5400,8 @@ def auto_grade_pending():
                 row["result"] = "HIT"
                 row["graded_by"] = tag
                 row["graded_date"] = d
+                row["hit_why"] = list(row.get("methods") or [])
+                row["hit_when"] = d
                 if row.get("ending") is None and row.get("best_price") is not None:
                     row["ending"] = last_two(row["best_price"])
                 hits += 1
@@ -5402,6 +5411,10 @@ def auto_grade_pending():
                 misses += 1
             else:
                 skipped += 1
+    for row in rows:
+        if row.get("result") == "PENDING" and str(row.get("source") or "") not in GRADE_SOURCES:
+            row["result"] = "EYES"
+            row["graded_by"] = "not_a_ticket"
     flipped = repair_mlb_hits(rows)
     save_results(rows)
     extra = f" · repaired {flipped} false HIT" if flipped else ""
@@ -5418,6 +5431,8 @@ def repair_mlb_hits(rows=None):
     by_date = defaultdict(list)
     for row in rows:
         if str(row.get("result") or "").upper() != "HIT":
+            continue
+        if str(row.get("source") or "") not in GRADE_SOURCES:
             continue
         if str(row.get("market") or "") == "anytime_td":
             continue
@@ -12187,17 +12202,17 @@ def main():
         window = st.selectbox("Compare", ["This week vs last week", "This week only"], key="pa_window")
         focus_src = st.selectbox(
             "Log slice",
-            ["All graded", "Board TAKE IT / WATCH", "Shop TAKE / LEAN"],
+            ["Tickets only (TAKE IT)", "All graded", "Shop TAKE"],
             key="pa_src",
         )
         week = [r for r in rows if _in(r, start, end)]
         prevw = [r for r in rows if _in(r, last_start, last_end)]
-        if focus_src.startswith("Board"):
-            week = [r for r in week if r.get("source") in ("take_it", "watch")]
-            prevw = [r for r in prevw if r.get("source") in ("take_it", "watch")]
+        if focus_src.startswith("Tickets"):
+            week = [r for r in week if r.get("source") in GRADE_SOURCES]
+            prevw = [r for r in prevw if r.get("source") in GRADE_SOURCES]
         elif focus_src.startswith("Shop"):
-            week = [r for r in week if r.get("source") in ("shop_take", "shop_lean")]
-            prevw = [r for r in prevw if r.get("source") in ("shop_take", "shop_lean")]
+            week = [r for r in week if r.get("source") == "shop_take"]
+            prevw = [r for r in prevw if r.get("source") == "shop_take"]
 
         hits = [r for r in week if r.get("result") == "HIT"]
         graded = [r for r in week if r.get("result") in ("HIT", "MISS")]
