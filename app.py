@@ -9366,6 +9366,9 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "rookie": _is_nfl_rookie(form),
             "draft_year": form.get("draft_year"),
             "rookie_season": form.get("rookie_season"),
+            "tgt_share": form.get("tgt_share"),
+            "rec_td": form.get("rec_td"),
+            "rush_td": form.get("rush_td"),
         }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
@@ -9874,10 +9877,36 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         )
         long_lane = 500 <= px <= 999 or (px >= 500 and data.get("longshot"))
         if sport == "NFL":
-            # Usage is a boost, not a veto. nflverse miss still lists if Board/stamps fired.
-            data_hit = bool(summ) and "nflverse miss" not in summ
             long_lane = signed_px >= 100
             rhythm = rhythm or bool(methods)
+            form_share = 0.0
+            try:
+                form_share = float((data.get("tgt_share") or 0) or 0)
+            except Exception:
+                form_share = 0.0
+            if not form_share and "tgt" in summ.lower():
+                try:
+                    # "tgt 18%" style
+                    for part in summ.replace("%", " %").split():
+                        pass
+                except Exception:
+                    pass
+            td_n = 0
+            try:
+                td_n = int(float(data.get("rec_td") or data.get("td") or 0))
+            except Exception:
+                td_n = 0
+            heating = "Heating" in str(data.get("trend") or "")
+            role = str(data.get("role") or "")
+            data_hit = bool(
+                form_share >= 0.12
+                or heating
+                or td_n >= 3
+                or (role.endswith("1") and "nflverse miss" not in summ)
+            )
+            soft_nfl = bool(form_share >= 0.08 or td_n >= 1 or "tgt" in summ.lower()) and "nflverse miss" not in summ
+            data["nfl_data_hit"] = data_hit
+            data["nfl_soft"] = soft_nfl
         board_take = bool(item.get("is_bet"))
         board_watch = bool(item.get("is_watch") or item.get("watch"))
         board_score = int(item.get("score") or 0)
@@ -9898,12 +9927,44 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if not keep:
             hidden += 1
             continue
+        if sport == "NFL":
+            data_hit = bool(data.get("nfl_data_hit"))
+            soft_data = bool(data.get("nfl_soft") or soft_data)
         if data_hit or (soft_data and (hot or hr7 >= 1 or juice or contact >= 2)):
             data["data_tier"] = "hot"
         elif soft_data or contact >= 1 or hr7 >= 1:
             data["data_tier"] = "mid"
         else:
             data["data_tier"] = "cold"
+        dscore = 0
+        if sport == "NFL":
+            try:
+                dscore += min(40, int(float(data.get("tgt_share") or 0) * 200))
+            except Exception:
+                pass
+            try:
+                dscore += min(25, int(data.get("rec_td") or 0) * 6)
+            except Exception:
+                pass
+            if "Heating" in str(data.get("trend") or ""):
+                dscore += 15
+            if str(data.get("role") or "").endswith("1"):
+                dscore += 10
+            if data.get("rookie"):
+                dscore += 5
+        else:
+            if ev:
+                dscore += 18 if ev >= 91 else (12 if ev >= 89 else (6 if ev >= 87 else 0))
+            if hh is not None:
+                dscore += 16 if hh >= 45 else (10 if hh >= 42 else (5 if hh >= 38 else 0))
+            if brl is not None:
+                dscore += 20 if brl >= 12 else (14 if brl >= 10 else (8 if brl >= 8 else 0))
+            if xslg is not None:
+                dscore += 12 if xslg >= 0.480 else (6 if xslg >= 0.420 else 0)
+            dscore += 12 if hr7 >= 2 else (6 if hr7 >= 1 else 0)
+            if hot:
+                dscore += 10
+        data["data_score"] = int(dscore)
         data["soft_data"] = soft_data
         data["data_hit"] = data_hit
         data["has_odds_magic"] = bool(rhythm or board_take)
@@ -9928,13 +9989,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             if not notes:
                 notes.append("Usage + odds. Board still tickets.")
             if not data.get("has_odds_magic"):
-                align = max(1, int(align * 0.72) - 8)
-                notes.append("Data only — no odds stamp, score took a hit")
-                if data.get("data_tier") == "hot":
-                    data["data_tier"] = "mid"
-                elif data.get("data_tier") == "mid":
-                    data["data_tier"] = "cold"
-                data["quiet"] = True
+                notes.append("Data only — no odds stamp")
+                data["quiet"] = data.get("data_tier") != "hot"
             if align >= 100:
                 vibe = "🔒 Locked"
             elif align >= 85:
@@ -10058,13 +10114,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if not notes:
             notes.append("Cleared the data bar. Still check the Board before you ticket.")
         if not data.get("has_odds_magic"):
-            align = max(1, int(align * 0.72) - 8)
-            notes.append("Data only — no odds stamp, score took a hit")
-            if data.get("data_tier") == "hot":
-                data["data_tier"] = "mid"
-            elif data.get("data_tier") == "mid":
-                data["data_tier"] = "cold"
-            data["quiet"] = True
+            notes.append("Data only — no odds stamp")
+            data["quiet"] = data.get("data_tier") != "hot"
         if align >= 100:
             vibe = "🔒 Locked"
         elif align >= 85:
@@ -10101,7 +10152,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
-        st.caption("Active = data hot. Pink glow = stamp too. Dim card = good data, no odds trick yet. Tap Data/Context/Splits to open.")
+        st.caption("Active = best data only, sorted loudest contact/usage first. Stamp is extra glow, not the invite.")
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -10127,23 +10178,24 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             except Exception:
                 return 0
         if view.startswith("🎯"):
-            cards = [c for c in cards if 100 <= _px(c[1]) < 500 and c[2].get("data_tier") in ("hot", "mid")][:40]
+            cards = [c for c in cards if c[2].get("data_tier") == "hot"]
         elif view.startswith("🫧"):
-            cards = [c for c in cards if c[2].get("longshot") or _px(c[1]) >= 500]
+            cards = [c for c in cards if c[2].get("data_tier") == "mid"]
         elif view.startswith("📚"):
             cards = [c for c in cards if c[2].get("data_tier") == "cold" or c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
     elif view.startswith("🎯"):
         cards = [c for c in cards if c[2].get("data_tier") == "hot"]
-        cards.sort(key=lambda x: (
-            0 if x[2].get("has_odds_magic") or x[1].get("is_bet") else 1,
-            -x[0],
-            x[1].get("player") or "",
-        ))
-        cards = cards[:40]
     elif view.startswith("🫧"):
-        cards = [c for c in cards if c[2].get("data_tier") == "mid"][:40]
+        cards = [c for c in cards if c[2].get("data_tier") == "mid"]
     elif view.startswith("📚"):
-        cards = [c for c in cards if c[2].get("data_tier") == "cold"][:40]
+        cards = [c for c in cards if c[2].get("data_tier") == "cold"]
+    cards.sort(key=lambda x: (
+        -int(x[2].get("data_score") or 0),
+        0 if x[2].get("has_odds_magic") or x[1].get("is_bet") else 1,
+        -x[0],
+        x[1].get("player") or "",
+    ))
+    cards = cards[:40]
     cols = st.columns(2)
     already = set()
     shown_i = 0
