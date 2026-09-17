@@ -8374,7 +8374,7 @@ def fetch_hitter_splits(batter_id, year=None):
     try:
         r = requests.get(
             f"https://statsapi.mlb.com/api/v1/people/{batter_id}/stats",
-            params={"stats": "statSplits", "group": "hitting", "sitCodes": "h,a,d,n", "season": year},
+            params={"stats": "statSplits", "group": "hitting", "sitCodes": "h,a,d,n,vl,vr", "season": year},
             timeout=12,
         )
         r.raise_for_status()
@@ -8399,7 +8399,37 @@ def fetch_hitter_splits(batter_id, year=None):
             out["day"] = row
         elif "night" in code or code == "n":
             out["night"] = row
+        elif "left" in code or code in ("vl", "l", "vs lhp", "vs left"):
+            out["vl"] = row
+        elif "right" in code or code in ("vr", "r", "vs rhp", "vs right"):
+            out["vr"] = row
     return out
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_pitcher_profile(pitcher_id, year=None):
+    if not pitcher_id:
+        return {}
+    year = year or datetime.now().year
+    try:
+        r = requests.get(
+            f"https://statsapi.mlb.com/api/v1/people/{pitcher_id}/stats",
+            params={"stats": "season", "group": "pitching", "season": year},
+            timeout=12,
+        )
+        r.raise_for_status()
+        splits = (((r.json() or {}).get("stats") or [{}])[0].get("splits") or [])
+        stt = (splits[0].get("stat") if splits else {}) or {}
+    except Exception:
+        return {}
+    try:
+        hr = float(stt.get("homeRuns") or 0)
+        ip = float(stt.get("inningsPitched") or 0)
+        era = float(stt.get("era") or 0)
+        hr9 = (hr / ip * 9.0) if ip else None
+    except Exception:
+        hr9, era = None, None
+    return {"hr9": hr9, "era": era}
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
@@ -8882,6 +8912,8 @@ def render_alignment_tab(ev_board, watch_board=None):
         .wind-in{color:#f87171;font-weight:700}
         .wind-cross{color:#fbbf24}
         .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
+        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:center;max-width:520px;margin-left:auto;margin-right:auto}
+        .card-name{background:linear-gradient(90deg,#ff3ebf,#9b5fff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
         @keyframes alShimmer{0%{left:-40%}100%{left:120%}}
         </style>
         """,
@@ -9029,9 +9061,20 @@ def render_alignment_tab(ev_board, watch_board=None):
         if bp.get("era") and bp["era"] < 3.5:
             match_boost -= 3
         align = int(align) + int(match_boost)
+        pp = {}
+        try:
+            if opp:
+                pp = fetch_pitcher_profile(fetch_mlb_player_id(opp)) or {}
+        except Exception:
+            pp = {}
         vs_line = "no sample vs this SP"
         if vpa:
             vs_line = f"vs {opp} · {int(vhr or 0)} HR in {int(vpa)} PA · SLG {slg or 0:.3f}"
+        if pp.get("hr9"):
+            vs_line += f" · SP HR/9 {pp['hr9']:.2f} ERA {pp.get('era') or '—'}"
+        if pp.get("hr9") and pp["hr9"] >= 1.3:
+            match_boost += 4
+            align = int(align) + 4
         park_line = f"HR factor {park_f}"
         if vs_pen.get("pa"):
             pen_line = (
@@ -9052,6 +9095,8 @@ def render_alignment_tab(ev_board, watch_board=None):
             return f"SLG {row['slg']:.3f} / {int(row.get('hr') or 0)} HR"
         data["split_ha"] = f"home {_sl(hm)} · away {_sl(aw)}"
         data["split_dn"] = f"day {_sl(dy)} · night {_sl(nt)}"
+        vl, vr = splits.get("vl") or {}, splits.get("vr") or {}
+        data["split_lr"] = f"vs LHP {_sl(vl)} · vs RHP {_sl(vr)}" if (vl or vr) else ""
         if aw.get("slg") and hm.get("slg") and aw["slg"] >= hm["slg"] + 0.040 and data.get("matchup") and "(away)" in data.get("matchup"):
             match_boost += 3
             align = int(align) + 3
@@ -9121,7 +9166,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         cards = [c for c in cards if 70 <= c[0] < 85]
     elif view.startswith("📚"):
         cards = [c for c in cards if c[0] < 70]
-    cols = st.columns(3)
+    cols = st.columns(2)
     already = set()
     shown_i = 0
     for align, item, data, notes, vibe in cards[:40]:
@@ -9184,22 +9229,20 @@ def render_alignment_tab(ev_board, watch_board=None):
                 f'<span class="score-pill">{align}</span>'
                 f'<div class="card-name">{item.get("player")}</div>'
                 f'{_petty_meter(align)}'
-                f'<div class="card-line" title="Exit velo = how hard. Hard-hit = 95mph+. Barrel = HR-looking contact. HR L7 = homers last 7."><b>DATA</b> {data.get("summary")}</div>'
+                f'<div class="card-line" title="Exit Velocity = how hard the ball leaves. Hard-Hit Rate = % at 95mph+. Barrel Rate = HR-quality contact. HR last 7 = recent bombs. Slugging last 7 = extra-base heat."><b>DATA</b> {data.get("summary")}</div>'
                 f'<div class="card-line"><b>ODDS</b> {price} {book_label(item.get("best_book"))} · {stamps}</div>'
-                f'<div class="card-line"><b>PARK</b> {porch} ({pf}) · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
+                f'<div class="card-line" title="Park vibe = how often balls leave this yard vs league average. 100 = normal."><b>PARK</b> {porch} ({pf}) · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
                 f'<div class="card-line"><b>VS SP</b> {vs_bit}</div>'
                 f'{pen_html}'
                 f'<div class="card-line">{"".join(pills)}</div>'
                 f'<div class="card-line"><span class="al-chip">{data.get("split_ha") or ""}</span> '
-                f'<span class="al-chip">{data.get("split_dn") or ""}</span></div>'
+                f'<span class="al-chip">{data.get("split_dn") or ""}</span> '
+                f'<span class="al-chip">{data.get("split_lr") or ""}</span></div>'
                 f'<div class="card-foot">Board {item.get("score") or "—"} · Upside {data.get("score")}</div>'
                 f"</div>",
                 unsafe_allow_html=True,
             )
-    st.caption(
-        "Board still decides if we ticket it. "
-        "VS BULLPEN only shows when this hitter has plate appearances against that team’s current relievers. No sample = no line."
-    )
+    pass
 
 
 def main():
