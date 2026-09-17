@@ -1742,7 +1742,11 @@ GLOSSARY_V2 = {
         ("📈 SLG L7", "Slugging last 7 games. Total-base heat."),
         ("🔥 Heating", "Recent uptick in EV + HH. Trend is cooking."),
         ("💎 Longshot", "Price +500 or longer. Chaos lane."),
-        ("Savant pull", "Live Baseball Savant leaderboard. EV, hard-hit, barrel. No CSV drop."),
+        ("xSLG", "Savant expected slugging from how hard / at what angle they hit it. Not the box-score SLG."),
+        ("xHR", "Savant expected homers. If xHR > actual HRs they are leaving bombs on the field."),
+        ("near-HR", "Doubters + mostly gone on the Savant HR board. Almost left the yard."),
+        ("LA / launch angle", "Average launch angle. 20°+ is fly-ball juice. Not a true FB% — Savant does not give FB% on that CSV."),
+        ("Savant pull", "Live Baseball Savant: EV, HH, barrel, xSLG, xHR, near-HR. No CSV drop."),
         ("Contact gate", "Align only keeps hitters who clear EV / HH / barrel plus recent heat. Not the whole slate."),
         ("SP HR/9", "How many homers that starter allows per nine. Higher = friendlier to bats."),
         ("ERA next to SP", "Starter ERA. Context only. Not a ticket by itself."),
@@ -8390,6 +8394,81 @@ def fetch_savant_exit_velo(year=None):
 
 
 @st.cache_data(ttl=1800, show_spinner=False)
+def fetch_savant_expected(year=None):
+    """Free Savant expected stats — xBA / xSLG / xwOBA."""
+    year = year or datetime.now().year
+    url = (
+        "https://baseballsavant.mlb.com/leaderboard/expected_statistics"
+        f"?type=batter&year={year}&position=&team=&min=1&csv=true"
+    )
+    try:
+        r = requests.get(url, timeout=25, headers={"User-Agent": "GirlMagic/1.0"})
+        r.raise_for_status()
+        from io import StringIO
+        df = pd.read_csv(StringIO(r.text))
+    except Exception:
+        return {}
+    out = {}
+    name_col = df.columns[0]
+    for _, row in df.iterrows():
+        key = _savant_name_fold(row.get(name_col))
+        if not key:
+            continue
+        def num(*names):
+            for n in names:
+                if n in row and pd.notna(row[n]):
+                    try:
+                        return float(row[n])
+                    except Exception:
+                        continue
+            return None
+        out[key] = {
+            "xba": num("est_ba"),
+            "xslg": num("est_slg"),
+            "xwoba": num("est_woba"),
+            "slg": num("slg"),
+        }
+    return out
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def fetch_savant_hr_tracker(year=None):
+    """Free Savant HR board — doubters / mostly gone / xHR. Near-HR juice."""
+    year = year or datetime.now().year
+    url = f"https://baseballsavant.mlb.com/leaderboard/home-runs?year={year}&csv=true"
+    try:
+        r = requests.get(url, timeout=25, headers={"User-Agent": "GirlMagic/1.0"})
+        r.raise_for_status()
+        from io import StringIO
+        df = pd.read_csv(StringIO(r.text))
+    except Exception:
+        return {}
+    out = {}
+    name_col = "player" if "player" in df.columns else df.columns[0]
+    for _, row in df.iterrows():
+        key = _savant_name_fold(row.get(name_col))
+        if not key:
+            continue
+        def num(*names):
+            for n in names:
+                if n in row and pd.notna(row[n]):
+                    try:
+                        return float(row[n])
+                    except Exception:
+                        continue
+            return None
+        out[key] = {
+            "doubters": num("doubters"),
+            "mostly_gone": num("mostly_gone"),
+            "no_doubters": num("no_doubters"),
+            "xhr": num("xhr"),
+            "hr_total": num("hr_total"),
+            "xhr_diff": num("xhr_diff"),
+        }
+    return out
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
 def fetch_mlb_hot_window(days=14):
     """Last N days HR / SLG via MLB Stats API. Low PA included."""
     end = datetime.now(timezone(timedelta(hours=-7))).date()
@@ -8829,8 +8908,15 @@ def load_live_mlb_data():
         ll = _MLB_PARK_LL.get(team)
         if ll:
             weather[team] = fetch_open_meteo(*ll)
+    ev = fetch_savant_exit_velo()
+    exp = fetch_savant_expected()
+    hrtr = fetch_savant_hr_tracker()
+    for k, extra in exp.items():
+        ev.setdefault(k, {}).update(extra)
+    for k, extra in hrtr.items():
+        ev.setdefault(k, {}).update(extra)
     return {
-        "ev": fetch_savant_exit_velo(),
+        "ev": ev,
         "hot14": fetch_mlb_hot_window(14),
         "hot7": fetch_mlb_hot_window(7),
         "rookies": fetch_mlb_rookies(),
@@ -9149,6 +9235,12 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
     ev = sav.get("ev")
     hh = sav.get("hh")
     brl = sav.get("barrel")
+    xslg = sav.get("xslg")
+    xwoba = sav.get("xwoba")
+    la = sav.get("la")
+    doubters = sav.get("doubters")
+    mostly = sav.get("mostly_gone")
+    xhr = sav.get("xhr")
     if ev:
         bits.append(f"EV {ev:.1f}")
         if ev >= 91:
@@ -9167,6 +9259,25 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             score += 14
         elif brl >= 6:
             score += 7
+    if xslg is not None:
+        bits.append(f"xSLG {xslg:.3f}")
+        if xslg >= 0.500:
+            score += 8
+        elif xslg >= 0.420:
+            score += 4
+    if la is not None:
+        bits.append(f"LA {la:.0f}°")
+        if la >= 20:
+            score += 3
+    if doubters is not None or mostly is not None:
+        near = int((doubters or 0) + (mostly or 0))
+        bits.append(f"near-HR {near}")
+        if near >= 8:
+            score += 6
+        elif near >= 4:
+            score += 3
+    if xhr is not None:
+        bits.append(f"xHR {xhr:.0f}")
     hr7 = h7.get("hr")
     hr14 = h14.get("hr")
     slg7 = h7.get("slg")
@@ -9228,6 +9339,11 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         "ev": ev,
         "hh": hh,
         "barrel": brl,
+        "xslg": xslg,
+        "xwoba": xwoba,
+        "la": la,
+        "near_hr": int((doubters or 0) + (mostly or 0)) if (doubters is not None or mostly is not None) else None,
+        "xhr": xhr,
         "matchup": matchup,
         "weather": weather_line,
         "wind_lane": wind_lane,
@@ -9719,7 +9835,16 @@ def render_alignment_tab(ev_board, watch_board=None):
                 else (data.get("summary") or "—")
             )
             if ev is not None and hh is not None and brl is not None:
-                data_line += f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
+                extra = ""
+                if data.get("xslg") is not None:
+                    extra += f' · <span title="Expected slugging from contact quality">xSLG {data["xslg"]:.3f}</span>'
+                if data.get("la") is not None:
+                    extra += f' · <span title="Average launch angle. 20°+ = fly-ball juice">LA {data["la"]:.0f}°</span>'
+                if data.get("near_hr") is not None:
+                    extra += f' · <span title="Savant doubters + mostly gone = almost left the yard">near-HR {int(data["near_hr"])}</span>'
+                if data.get("xhr") is not None:
+                    extra += f' · <span title="Savant expected home runs">xHR {data["xhr"]:.0f}</span>'
+                data_line += extra + f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             st.markdown(
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
