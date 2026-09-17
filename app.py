@@ -1759,6 +1759,9 @@ GLOSSARY_V2 = {
         ("B365 over MGM", "SUPPORT only. Bet365 longer than MGM. Signal, not a Take."),
         ("Fanatics over pack", "SUPPORT only. Fanatics 100+ longer than the DK/FD/MGM/HR/365 pack. Drift tell, not main-bitch energy."),
         ("HardRock over pack", "SUPPORT only. Hard Rock 50+ longer than the rest of the pack. Look-at-it stamp, not a Take."),
+        ("Mispriced line", "The number is off the pack. Longer than the other books = extra juice / value. Shorter = you’re paying a tax. Shop is where we judge that. Support stamps flag it. They do not Take by themselves."),
+        ("Out of place / outlier", "One book is far from the cluster. Look. Don’t auto-buy."),
+        ("Fair / pack", "Where the ticket books sit together. Shop compares your number to that pack."),
     ],
     "💎 Tags": [
         ("🔥 Heating", "EV + HH trending up."),
@@ -12181,9 +12184,27 @@ def main():
         st.markdown(
             '<div class="how-hero"><h3>Girl Magic — How We Run It</h3>'
             f'<p>Quote of the day: {quotes[q_i]}</p>'
-            "<p>We don’t chase vibes. We chase value. The Board clears names. The Shop picks numbers. Everything else is homework.</p></div>",
+            "<p>New here? Read the walkthrough under this box. Then open Glossary 2.0. You do not need our slang to use the math.</p></div>",
             unsafe_allow_html=True,
         )
+        with st.expander("👋 How to use this site if you don’t know us", expanded=True):
+            st.markdown(
+                "1. **Fetch** the slate. Nothing moves until that happens.\n"
+                "2. **Alignment** = data + odds in one card. Hover a word if you don’t know it. "
+                "This is the scouting report. It is **not** the bet slip.\n"
+                "3. **Run It** = the Board. Green names are the ticket list. Gray is homework. "
+                "The number next to the name is the **Board score**, not Align.\n"
+                "4. **Money Talks** = Shop. Which book to buy and whether the number is **mispriced** "
+                "(too long vs the pack = value, too short = tax).\n"
+                "5. **Need One** = 0.5 rush / catch / reception props. Separate from homers and TDs.\n"
+                "6. **Receipts** = did yesterday’s greens actually go. This is how we adjust.\n"
+                "7. **How We Roll** = this page. Glossary at the bottom. Search any word on a card.\n\n"
+                "**Mispriced line:** the number is off the pack. Longer than the other books = they may be "
+                "giving extra juice. Shorter than the pack = you’re paying a tax. We stamp those. "
+                "Support stamps (B365 over HardRock / MGM, Fanatics or HardRock over the pack) are "
+                "*look at it* energy. They do not green a ticket alone.\n\n"
+                "MLB ticket = **0.5 HR only**. NFL Align ticket = **plus-money Anytime TD only**."
+            )
         st.markdown(
             '<div class="how-box">'
             + (
