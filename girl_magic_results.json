@@ -107303,5 +107303,37 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Kalif Raymond_shop_take_61",
+    "date": "2026-09-16",
+    "time": "07:33 PM",
+    "player": "Kalif Raymond",
+    "score": 0,
+    "edge": 61,
+    "best_price": 340,
+    "best_book": "fanatics",
+    "median": 270,
+    "book_prices": {
+      "bet365": 225,
+      "betmgm": 270,
+      "caesars": 255,
+      "draftkings": 290,
+      "fanatics": 340,
+      "fanduel": 260,
+      "hardrockbet": 275
+    },
+    "price_bucket": "under +400",
+    "ending": 40,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T02:33:40.701090+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
