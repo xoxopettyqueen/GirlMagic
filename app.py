@@ -12124,15 +12124,15 @@ def main():
         c3.metric("Hit rate", week_rate, delta=None if window.endswith("only") else f"last {prev_rate}")
         c4.metric("Repeat names", sum(1 for n in names.values() if n >= 2))
         st.markdown(
-            f'<div class="pa-card"><div class="pa-h">How to read this</div>'
-            f'<div class="pa-sub">'
-            f'<b>Bar</b> = unique {bomb}s (one name, one date — not duplicate logs). '
-            f'<b>Number</b> = how many. <b>%</b> = those hits ÷ every graded row with that tag. '
-            f'<b>^ / v</b> = up or down vs last week. '
-            f'<b>Who is paying</b> = book that held the best price on the hit. '
-            f'<b>By weekday</b> = which day it went; line under it is the books + endings that cashed. '
-            f'<b>NFL QBs</b> = rushing TD only. Passing TD does not count.'
-            f'</div></div>',
+            f'<div class="pa-card"><div class="pa-h">Cheat sheet</div>'
+            f'<div class="pa-sub">Read left to right. Pink bar = count. % = cash rate.</div>'
+            f'<div class="pa-row"><b>Pink bar</b> unique {bomb}s — one name, one date</div>'
+            f'<div class="pa-row"><b>%</b> cash rate = hits ÷ graded tickets with that tag</div>'
+            f'<div class="pa-row"><b>^</b> hotter than last week &nbsp; <b>v</b> colder</div>'
+            f'<div class="pa-row"><b>Books</b> who held the price when it hit</div>'
+            f'<div class="pa-row"><b>00 / 50 / 10</b> last two digits that cashed</div>'
+            f'<div class="pa-row"><b>QB</b> rush TD counts. Pass TD does not.</div>'
+            f'</div>',
             unsafe_allow_html=True,
         )
 
@@ -12141,7 +12141,7 @@ def main():
         filter_opts += [f"book:{k}" for k, _ in books.most_common(6)]
         filter_opts += [f"method:{k}" for k, _ in methods_c.most_common(8)]
         filter_opts += [f"player:{k}" for k, _ in names.most_common(8) if k]
-        chosen = st.selectbox("Focus a line (filters the recap text below)", filter_opts, key="pa_focus")
+        chosen = st.selectbox("Zoom one book, ending, stamp, or name", filter_opts, key="pa_focus")
 
         def matches_focus(r):
             if chosen == "(all)":
@@ -12189,39 +12189,39 @@ def main():
         mx_m = max(methods_c.values() or [1])
         with left:
             st.markdown(section_html(
-                "Hot Endings", f"Last two digits on unique {bomb}s — % is hit rate in that ending",
+                "Endings that cashed", "Last two digits. % = cash rate on that ending.",
                 endings.most_common(8), mx_e, end_g, p_end,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Who is Paying the Bills", "Top books - best-price book on the HIT row",
+                "Books that paid", "Best-price book on the hit.",
                 books.most_common(8), mx_bk, book_g, p_book,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Money Lanes", f"Price lane on unique {bomb}s — % = hits / graded in that lane",
+                "Price that cashed", "Lane the number lived in. % = cash rate in that lane.",
                 buckets.most_common(8), mx_bu, buck_g, p_buck,
             ), unsafe_allow_html=True)
             if active_sport() == "NFL":
                 order = ("Thursday", "Sunday", "Monday")
             else:
                 order = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-            wd_rows = [(d, wd_hits[d]) for d in order if wd_hits[d] or wd_grad[d] or active_sport() == "MLB"]
-            if wd_rows:
+            wd_label_rows = []
+            wd_label_g = {}
+            for d in order:
+                books_d = sorted([(b, n) for (day, b), n in wd_book_hits.items() if day == d], key=lambda x: -x[1])
+                ends_d = sorted([(e, n) for (day, e), n in wd_end_hits.items() if day == d], key=lambda x: -x[1])
+                if not wd_hits[d] and not wd_grad[d] and active_sport() != "MLB":
+                    continue
+                top_b = ", ".join(b for b, _n in books_d[:3]) or "quiet"
+                top_e = ", ".join(str(e) for e, _n in ends_d[:3]) or "—"
+                label = f"{d} · {top_b} · {top_e}"
+                wd_label_rows.append((label, wd_hits[d]))
+                wd_label_g[label] = wd_grad[d]
+            if wd_label_rows:
                 st.markdown(section_html(
-                    "By weekday",
-                    f"Unique {bomb}s · NFL = Thu/Sun/Mon · MLB = all 7 days",
-                    wd_rows, max(list(wd_hits.values()) or [1]), wd_grad, {},
+                    "What cashed that day",
+                    "Day first. Then the books. Then the endings. Number = unique scores that day.",
+                    wd_label_rows, max((n for _l, n in wd_label_rows) or [1]), wd_label_g, {},
                 ), unsafe_allow_html=True)
-                bits = []
-                for d in order:
-                    books_d = sorted([(b, n) for (day, b), n in wd_book_hits.items() if day == d], key=lambda x: -x[1])
-                    ends_d = sorted([(e, n) for (day, e), n in wd_end_hits.items() if day == d], key=lambda x: -x[1])
-                    if not books_d and not ends_d:
-                        continue
-                    top_b = ", ".join(f"{b}" for b, _n in books_d[:3])
-                    top_e = ", ".join(str(e) for e, _n in ends_d[:3])
-                    bits.append(f"{d}: {top_b} · {top_e}")
-                if bits:
-                    st.caption("What cashed — " + " · ".join(bits))
         with right:
             picks = [
                 (k, n) for k, n in names.most_common()
@@ -12232,18 +12232,18 @@ def main():
                 pick_rows.append(bar_row(f"{pl} · {n} {bombs}", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
             picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-pct">None yet</div>'
             st.markdown(
-                '<div class="pa-card"><div class="pa-h">Repeat Offenders</div>'
+                '<div class="pa-card"><div class="pa-h">Same name, two days</div>'
                 f'<div class="pa-sub">One {bomb} per player per date. Duplicates dropped. {"NFL: 2+ days, not 4 in one game." if active_sport()=="NFL" else "MLB: 2+ unique dates this window."}</div>'
                 + picks_html +
                 '</div>',
                 unsafe_allow_html=True,
             )
             st.markdown(section_html(
-                "The Girl Magic Pantheon", f"Petty families — one family per unique {bomb}",
+                "Families that cashed", f"One family per unique {bomb}",
                 families.most_common(6), mx_f, None, p_fam,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Top methods", f"Tags on unique {bomb}s — a name can wear more than one",
+                "Stamps on the hits", f"A name can wear more than one stamp",
                 methods_c.most_common(10), mx_m, meth_g, p_meth,
             ), unsafe_allow_html=True)
 
