@@ -6856,12 +6856,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-13T16:51:28.136323+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-13_Denzel Boston_shop_lean_31",
@@ -34730,12 +34731,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-13T20:54:30.198914+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-13_Emari Demercado_shop_take_51",
@@ -48703,12 +48705,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-14T21:20:01.270428+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-14_Evan Engram_shop_take_55",
@@ -52852,12 +52855,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-15T01:04:58.629914+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-14_Derrick Henry_watch_51",
@@ -97007,12 +97011,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-17T00:20:44.531345+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Deshaun Watson_shop_lean_183",
@@ -97290,12 +97295,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.534954+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Daniel Jones_shop_lean_156",
@@ -97322,12 +97328,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-17T00:20:44.535236+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Tyler Higbee_shop_take_154",
@@ -97673,12 +97680,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-17T00:20:44.538668+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Kimani Vidal_shop_take_115",
@@ -97953,12 +97961,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.541556+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Kaytron Allen_shop_lean_110",
@@ -98303,12 +98312,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.545180+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Rashod Bateman_shop_take_93",
@@ -98399,12 +98409,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-17T00:20:44.546149+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Andrei Iosivas_shop_take_88",
@@ -99063,12 +99074,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.553023+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Dalton Schultz_shop_take_60",
@@ -99127,12 +99139,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.553636+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Justice Hill_shop_take_59",
@@ -99255,12 +99268,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.554845+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Jalen Coker_shop_take_58",
@@ -99446,12 +99460,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-17T00:20:44.556636+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Ray Davis_shop_take_54",
@@ -103506,12 +103521,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-17T00:33:51.507435+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Andrei Iosivas_shop_lean_136",
@@ -103634,12 +103650,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:33:51.515830+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_John Bates_shop_take_101",
@@ -105189,12 +105206,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T01:23:40.338764+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Tommy Tremble_shop_take_67",
@@ -107957,12 +107975,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-17T04:13:58.184302+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_Nate Boerkircher_shop_lean_93",
@@ -108050,12 +108069,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-17T04:13:58.218565+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto_qb_not_rush"
   },
   {
     "id": "2026-09-16_J. Michael Sturdivant_shop_lean_35",
