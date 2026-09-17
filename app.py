@@ -554,7 +554,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .meter-bar.filled-low{background:#6b7280}
 .stTabs [data-baseweb="tab"]{background:#1a0f28;border-radius:8px;color:#f9a8d4;font-weight:600;padding:6px 8px;font-size:.75rem}
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important}
-.footer{text-align:center;color:#f9a8d4;font-size:.9rem;margin-top:28px;opacity:.9;padding-bottom:16px}
+.footer{text-align:center;color:#f9a8d4;font-size:.82rem;margin-top:28px;padding-bottom:18px;line-height:1.55}
+.footer b{color:#00e6c3}
 .glossary-block{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:14px 16px;margin-bottom:12px;font-size:.88rem;line-height:1.55}
 .glossary-block h4{color:#f9a8d4;margin:0 0 8px 0;font-size:1rem}
 .glossary-block b{color:#fbcfe8}
@@ -639,7 +640,8 @@ div[role="radiogroup"] label p, div[role="radiogroup"] label span{color:#fce7f3!
 @keyframes heroShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .site-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .site-kicker{color:#fde68a;font-size:.72rem;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;margin:0 0 8px}
-.site-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.05;color:#fff;margin:0 0 6px;text-shadow:0 0 22px rgba(244,114,182,.45),0 6px 18px rgba(15,6,24,.45);animation:titleIn .6s ease-out}
+.site-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.05;margin:0 0 6px;background:linear-gradient(90deg,#ff3ebf,#9b5fff,#00e6c3,#ff3ebf);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:titleIn .6s ease-out,gmShine 8s linear infinite}
+@keyframes gmShine{0%{background-position:0%}100%{background-position:220%}}
 .site-sub{color:#fce7f3;font-size:.92rem;margin:0 0 4px;max-width:740px;line-height:1.45;animation:fadeUp .7s ease-out .12s both}
 .site-quote{color:#fde68a;font-size:.88rem;font-style:italic;margin:0 0 8px}
 .site-live{color:#f9a8d4;font-size:.78rem;margin:0 0 8px}
@@ -5674,7 +5676,7 @@ def render_whats_going_today():
     else:
         queen = "Queen says: Run It names went." if take_n else "Queen says: waiting on first-pitch receipts."
 
-    books_block = "".join(pills) if pills else '<span class="pulse-pill">Nobody on the list has gone yet.</span>'
+    books_block = "".join(pills) if pills else '<span class="pulse-pill">No names have rolled yet — odds still sleeping.</span>'
     mlb_on = "on" if sport == "MLB" else ""
     nfl_on = "on" if sport == "NFL" else ""
     html = (
@@ -9255,7 +9257,7 @@ def main():
         st.session_state["onboard_step"] = "welcome"
     step = st.session_state.get("onboard_step") or "welcome"
     if step == "welcome":
-        st.caption("💫 Girl Magic Odds has its own language — learn the vibe, then roll the slate.")
+        st.caption("💫 Girl Magic Odds speaks fluent chaos. Learn the code, then roll.")
         b1, b2 = st.columns(2)
         with b1:
             if st.button("💅 Glossary", type="primary", use_container_width=True):
@@ -9291,7 +9293,7 @@ def main():
                 st.rerun()
     st.toggle("Petty Mode 💅", value=True, key="petty_mode", help="Changes labels only. TAKE IT rules stay the same.")
     if petty_on():
-        st.markdown('<div class="petty-banner">💅 Petty Mode ON — words get louder. Math does not change.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="petty-banner">💅 Petty Mode ON — louder words, same math.</div>', unsafe_allow_html=True)
     else:
         st.markdown('<div class="petty-off-banner">Plain labels on. Same Board rules.</div>', unsafe_allow_html=True)
     st.markdown("""
@@ -11798,7 +11800,8 @@ def main():
         site_section_close()
 
     st.markdown(
-        '<div class="footer">♛ Girl Magic Odds · She Got Game · Petty Queen · Me & My Girls We Rolling<br>'
+        '<div class="footer">✨ Girl Magic Odds — fluent in chaos, powered by precision.<br>'
+        "Park vibe: 💥 Hot Porch · 🔥 Live Air · 🌬️ Neutral · 🧊 Cold Porch<br>"
         '<span style="font-size:.75rem;color:#c4b5d6">Board picks the name. Shop picks the number. Grade keeps us honest.</span></div>',
         unsafe_allow_html=True,
     )
