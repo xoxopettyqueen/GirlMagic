@@ -11487,9 +11487,11 @@ def main():
         )
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
         if active_sport() == "NFL":
+            rush_td = st.session_state.get("nfl_rush_td") or set()
             rows_view = [
                 r for r in rows_view
-                if not is_nfl_qb(r.get("player") or "")
+                if (not is_nfl_qb(r.get("player") or ""))
+                or any(names_match(r.get("player") or "", x) for x in rush_td)
             ]
         ticket_src = ("take_it", "shop_take", "manual_hr")
         research_src = ("watch", "shop_lean")
@@ -11862,9 +11864,14 @@ def main():
             return out
         hits_u = _unique_hits(hits)
         prev_hits_u = _unique_hits(prev_hits)
+        rush_td = st.session_state.get("nfl_rush_td") or set()
+        def _qb_ok(name):
+            if active_sport() != "NFL" or not is_nfl_qb(name or ""):
+                return True
+            return any(names_match(name, x) for x in rush_td)
         if active_sport() == "NFL":
-            hits_u = [r for r in hits_u if not is_nfl_qb(r.get("player") or "")]
-            prev_hits_u = [r for r in prev_hits_u if not is_nfl_qb(r.get("player") or "")]
+            hits_u = [r for r in hits_u if _qb_ok(r.get("player") or "")]
+            prev_hits_u = [r for r in prev_hits_u if _qb_ok(r.get("player") or "")]
 
         def pack_hits(hit_rows, graded_rows):
             endings = Counter(); books = Counter(); buckets = Counter()
@@ -11980,6 +11987,18 @@ def main():
         c2.metric("Graded", len(graded))
         c3.metric("Hit rate", week_rate, delta=None if window.endswith("only") else f"last {prev_rate}")
         c4.metric("Repeat names", sum(1 for n in names.values() if n >= 2))
+        st.markdown(
+            f'<div class="pa-card"><div class="pa-h">How to read this</div>'
+            f'<div class="pa-sub">'
+            f'<b>Bar</b> = unique {bomb}s (one name, one date — not duplicate logs). '
+            f'<b>Number</b> = how many. <b>%</b> = those hits ÷ every graded row with that tag. '
+            f'<b>^ / v</b> = up or down vs last week. '
+            f'<b>Who is paying</b> = book that held the best price on the hit. '
+            f'<b>By weekday</b> = which day it went; line under it is the books + endings that cashed. '
+            f'<b>NFL QBs</b> = rushing TD only. Passing TD does not count.'
+            f'</div></div>',
+            unsafe_allow_html=True,
+        )
 
         filter_opts = ["(all)"]
         filter_opts += [f"ending:{k}" for k, _ in endings.most_common(8)]
@@ -12070,7 +12089,7 @@ def main():
         with right:
             picks = [
                 (k, n) for k, n in names.most_common()
-                if k and n >= 2 and not (active_sport() == "NFL" and is_nfl_qb(k))
+                if k and n >= 2 and _qb_ok(k)
             ]
             pick_rows = []
             for i, (pl, n) in enumerate(picks[:12]):
