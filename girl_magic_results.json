@@ -74156,12 +74156,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-16T04:24:50.607334+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-15_John Peck_shop_lean_34",
@@ -76391,12 +76392,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-16T15:40:09.178411+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-16_Joshua Baez_shop_take_78",
@@ -80095,12 +80097,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-16T16:00:12.343645+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-16_Jake McCarthy_shop_lean_65",
