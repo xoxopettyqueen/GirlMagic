@@ -8688,39 +8688,72 @@ def fetch_nflverse_week_stats(year=None):
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def fetch_nfl_dvp():
-    """Yards/TDs allowed by a defense to a position (WR/RB/TE/QB)."""
-    form_src = fetch_nflverse_week_stats()
-    # Rebuild from weekly file so we can group opponent x position
+    """Last 10 games only. Per-game rates + D home/road + primetime."""
     year = datetime.now().year
     frames = []
     for y in (year, year - 1):
         try:
             frames.append(pd.read_csv(
-                f"https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_{y}.csv",
-                usecols=lambda c: c in ("player_display_name", "position", "opponent_team", "week",
-                                       "receiving_yards", "receiving_tds", "rushing_yards", "rushing_tds", "passing_tds"),
+                f"https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_{y}.csv"
             ))
         except Exception:
             pass
     if not frames:
         return {}
     df = pd.concat(frames, ignore_index=True)
-    if "opponent_team" not in df.columns or "position" not in df.columns:
+    need = {"opponent_team", "position", "week"}
+    if df.empty or not need.issubset(set(df.columns)):
         return {}
+    if "season" not in df.columns:
+        df["season"] = year
+    df["week"] = pd.to_numeric(df["week"], errors="coerce")
+    df["season"] = pd.to_numeric(df["season"], errors="coerce")
+    weeks = (
+        df[["season", "week"]].drop_duplicates().dropna()
+        .sort_values(["season", "week"], ascending=False)
+        .head(10)
+    )
+    df = df.merge(weeks, on=["season", "week"], how="inner")
+    try:
+        gdf = pd.read_csv(
+            "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv"
+        )
+        keep = [c for c in ("season", "week", "weekday", "home_team", "away_team") if c in gdf.columns]
+        gdf = gdf[keep]
+        df = df.merge(gdf, how="left", on=["season", "week"])
+        df = df[(df["opponent_team"] == df["home_team"]) | (df["opponent_team"] == df["away_team"])]
+    except Exception:
+        gdf = None
+    if "home_team" in df.columns:
+        df["def_home"] = df["opponent_team"] == df["home_team"]
+    else:
+        df["def_home"] = False
+    if "weekday" in df.columns:
+        df["primetime"] = df["weekday"].astype(str).str.lower().isin(["thursday", "monday"])
+    else:
+        df["primetime"] = False
     out = {}
     for (defn, pos), g in df.groupby(["opponent_team", "position"]):
-        rec = pd.to_numeric(g.get("receiving_yards"), errors="coerce").fillna(0).sum()
-        rtd = pd.to_numeric(g.get("receiving_tds"), errors="coerce").fillna(0).sum()
-        rush = pd.to_numeric(g.get("rushing_yards"), errors="coerce").fillna(0).sum()
-        rtd2 = pd.to_numeric(g.get("rushing_tds"), errors="coerce").fillna(0).sum()
-        ptd = pd.to_numeric(g.get("passing_tds"), errors="coerce").fillna(0).sum()
+        games = int(g[["season", "week"]].drop_duplicates().shape[0]) or 1
+        rec = float(pd.to_numeric(g.get("receiving_yards"), errors="coerce").fillna(0).sum())
+        rtd = float(pd.to_numeric(g.get("receiving_tds"), errors="coerce").fillna(0).sum())
+        home = g[g["def_home"] == True]
+        road = g[g["def_home"] == False]
+        pt = g[g["primetime"] == True]
+        hg = max(1, int(home[["season", "week"]].drop_duplicates().shape[0])) if len(home) else 0
+        rg = max(1, int(road[["season", "week"]].drop_duplicates().shape[0])) if len(road) else 0
+        pg = max(1, int(pt[["season", "week"]].drop_duplicates().shape[0])) if len(pt) else 0
         out[f"{defn}|{pos}"] = {
-            "rec_yds": float(rec),
-            "rec_td": float(rtd),
-            "rush_yds": float(rush),
-            "rush_td": float(rtd2),
-            "pass_td": float(ptd),
-            "g": int(g["week"].nunique()) if "week" in g.columns else len(g),
+            "g": games,
+            "rec_yds_g": rec / games,
+            "rec_td_g": rtd / games,
+            "home_yds_g": float(pd.to_numeric(home.get("receiving_yards"), errors="coerce").fillna(0).sum()) / hg if hg else 0,
+            "road_yds_g": float(pd.to_numeric(road.get("receiving_yards"), errors="coerce").fillna(0).sum()) / rg if rg else 0,
+            "home_td_g": float(pd.to_numeric(home.get("receiving_tds"), errors="coerce").fillna(0).sum()) / hg if hg else 0,
+            "road_td_g": float(pd.to_numeric(road.get("receiving_tds"), errors="coerce").fillna(0).sum()) / rg if rg else 0,
+            "pt_yds_g": float(pd.to_numeric(pt.get("receiving_yards"), errors="coerce").fillna(0).sum()) / pg if pg else 0,
+            "pt_td_g": float(pd.to_numeric(pt.get("receiving_tds"), errors="coerce").fillna(0).sum()) / pg if pg else 0,
+            "pt_g": int(pt[["season", "week"]].drop_duplicates().shape[0]) if len(pt) else 0,
         }
     return out
 
@@ -8796,12 +8829,15 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             if defn and defn.lower() in evn.lower():
                 best = rec
                 dvp_line = (
-                    f"DVP vs {pos or 'skill'} {defn}: "
-                    f"{int(rec.get('rec_yds') or 0)} rec yds / {int(rec.get('rec_td') or 0)} rec TD · "
-                    f"{int(rec.get('rush_yds') or 0)} rush yds / {int((rec.get('rush_td') or 0)+(rec.get('pass_td') or 0))} other TD"
+                    f"last {int(rec.get('g') or 0)} g vs {pos or 'skill'} {defn}: "
+                    f"{rec.get('rec_yds_g') or 0:.0f} yds/g · {rec.get('rec_td_g') or 0:.2f} TD/g · "
+                    f"D home {rec.get('home_yds_g') or 0:.0f} yds/{rec.get('home_td_g') or 0:.2f} TD · "
+                    f"D road {rec.get('road_yds_g') or 0:.0f} yds/{rec.get('road_td_g') or 0:.2f} TD"
                 )
+                if rec.get("pt_g"):
+                    dvp_line += f" · PT {rec.get('pt_yds_g') or 0:.0f} yds/{rec.get('pt_td_g') or 0:.2f} TD ({int(rec.get('pt_g') or 0)} g)"
                 break
-        if best and (best.get("rec_td") or 0) + (best.get("rush_td") or 0) >= 6:
+        if best and (best.get("rec_td_g") or 0) >= 0.6:
             score += 8
         return {
             "score": min(120, score),
