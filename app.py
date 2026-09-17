@@ -9369,6 +9369,10 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "tgt_share": form.get("tgt_share"),
             "rec_td": form.get("rec_td"),
             "rush_td": form.get("rush_td"),
+            "home_yds": form.get("home_yds"),
+            "away_yds": form.get("away_yds"),
+            "pt_yds": form.get("pt_yds"),
+            "pt_td": form.get("pt_td"),
         }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
@@ -9742,25 +9746,29 @@ def _today_spot_nfl(item, data, form=None):
     if dt:
         bits.append(dt.strftime("%a %-I:%M %p") + " local")
     form = form or {}
-    hy, ay = int(form.get("home_yds") or 0), int(form.get("away_yds") or 0)
+    hy = int(form.get("home_yds") or data.get("home_yds") or 0)
+    ay = int(form.get("away_yds") or data.get("away_yds") or 0)
+    pty = int(form.get("pt_yds") or data.get("pt_yds") or 0)
+    ptd = int(form.get("pt_td") or data.get("pt_td") or 0)
     vibe = []
-    if ha == "home" and hy or ay:
-        if hy >= ay + 40:
-            vibe.append(f"home guy ({hy} yds home / {ay} road)")
-        elif ay >= hy + 40:
-            vibe.append(f"home today but he's been louder on the road ({ay} vs {hy})")
+    if hy or ay:
+        if ha == "home":
+            if hy >= ay + 40:
+                vibe.append(f"home guy — {hy} yds home / {ay} road")
+            elif ay >= hy + 40:
+                vibe.append(f"home tonight, louder on the road — {ay} road / {hy} home")
+            else:
+                vibe.append(f"{hy} yds home / {ay} road")
         else:
-            vibe.append(f"home {hy} / road {ay} yds")
-    if ha == "road":
-        if ay >= hy + 40:
-            vibe.append(f"road guy ({ay} yds road / {hy} home)")
-        elif hy >= ay + 40:
-            vibe.append(f"road today but he's been louder at home ({hy} vs {ay})")
-        else:
-            vibe.append(f"home {hy} / road {ay} yds")
-    if pt:
-        vibe.append(f"primetime history {int(form.get('pt_yds') or 0)} yds / {int(form.get('pt_td') or 0)} TD")
-    return " · ".join(bits), (" · ".join(vibe) if vibe else "usage sample thin")
+            if ay >= hy + 40:
+                vibe.append(f"road guy — {ay} yds road / {hy} home")
+            elif hy >= ay + 40:
+                vibe.append(f"road tonight, louder at home — {hy} home / {ay} road")
+            else:
+                vibe.append(f"{hy} yds home / {ay} road")
+    if pt and (pty or ptd):
+        vibe.append(f"primetime history {pty} yds / {ptd} TD")
+    return " · ".join(bits), (" · ".join(vibe) if vibe else "")
 
 
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
@@ -9859,7 +9867,12 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         near = data.get("near_hr") or 0
         xslg = data.get("xslg")
         juice = bool(near >= 6 or (xslg is not None and xslg >= 0.480))
-        data_hit = bool(contact >= 2 and (hot or hr7 >= 1 or juice))
+        data_hit = bool(
+            (contact >= 1 and (hot or hr7 >= 1 or juice or (brl or 0) >= 6 or (ev or 0) >= 88))
+            or (brl or 0) >= 8
+            or hr7 >= 1
+            or bool(data.get("rookie"))
+        )
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -9899,12 +9912,21 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             heating = "Heating" in str(data.get("trend") or "")
             role = str(data.get("role") or "")
             data_hit = bool(
-                form_share >= 0.12
-                or heating
-                or td_n >= 3
-                or (role.endswith("1") and "nflverse miss" not in summ)
+                "nflverse miss" not in summ
+                and (
+                    form_share >= 0.05
+                    or heating
+                    or td_n >= 1
+                    or role.endswith(("1", "2", "3"))
+                    or "TE" in role
+                    or "RB" in role
+                    or "WR" in role
+                    or bool(data.get("rookie"))
+                )
             )
-            soft_nfl = bool(form_share >= 0.08 or td_n >= 1 or "tgt" in summ.lower()) and "nflverse miss" not in summ
+            soft_nfl = bool("nflverse miss" not in summ) and bool(
+                form_share > 0 or td_n >= 1 or "tgt" in summ.lower() or role
+            )
             data["nfl_data_hit"] = data_hit
             data["nfl_soft"] = soft_nfl
         board_take = bool(item.get("is_bet"))
@@ -9948,10 +9970,15 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 pass
             if "Heating" in str(data.get("trend") or ""):
                 dscore += 15
-            if str(data.get("role") or "").endswith("1"):
+            role_s = str(data.get("role") or "")
+            if role_s.endswith("1"):
                 dscore += 10
+            elif role_s.endswith("2"):
+                dscore += 12
+            elif role_s.endswith("3"):
+                dscore += 11
             if data.get("rookie"):
-                dscore += 5
+                dscore += 8
         else:
             if ev:
                 dscore += 18 if ev >= 91 else (12 if ev >= 89 else (6 if ev >= 87 else 0))
@@ -9964,6 +9991,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             dscore += 12 if hr7 >= 2 else (6 if hr7 >= 1 else 0)
             if hot:
                 dscore += 10
+            if data.get("rookie"):
+                dscore += 14
         data["data_score"] = int(dscore)
         data["soft_data"] = soft_data
         data["data_hit"] = data_hit
@@ -10152,7 +10181,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
-        st.caption("Active = best data only, sorted loudest contact/usage first. Stamp is extra glow, not the invite.")
+        st.caption("Active = real data, not just stars. WR2 / TE2 / RB2 and mid-order bats stay on this list when the usage or contact is live.")
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -10219,7 +10248,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if data.get("quiet") or not data.get("has_odds_magic"):
             pills.append('<span class="al-chip">📚 No odds stamp</span>')
         if data.get("rookie"):
-            pills.append('<span class="al-chip">🐣 Rookie</span>')
+            pills.append('<span class="al-chip">🐣 Rookie / call-up</span>')
+        role_s = str(data.get("role") or "")
+        if sport == "NFL" and role_s:
+            pills.append(f'<span class="al-chip">👑 {role_s}</span>')
         if data.get("longshot"):
             pills.append('<span class="al-chip">💎 Longshot</span>')
         if "heating" in (data.get("summary") or ""):
@@ -10305,12 +10337,12 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     atk_txt = "Attack — anytime touchdown."
                 dvp = (data.get("dvp_line") or "No DVP tag yet.").replace(" · ", "<br>")
                 pulse_html = (
-                    f'<details class="al-fold"><summary title="How they are being used right now">🧠 Player Pulse</summary>'
+                    f'<details class="al-fold" open><summary title="How they are being used right now">🧠 Player Pulse</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
                     f'👑 <span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
                     f'🎯 {atk_txt}<br>'
                     f'📈 <span title="Targets = throws his way">{vol}</span></div></details>'
-                    f'<details class="al-fold"><summary title="DVP last 10 games per game + his home/road/primetime totals">⚔️ Matchup Vibe</summary>'
+                    f'<details class="al-fold" open><summary title="DVP last 10 games per game + his home/road/primetime totals">⚔️ Matchup Vibe</summary>'
                     f'<div class="al-pack">🛡️ <span title="Last 10 games, per game">{dvp}</span><br>'
                     f'🏠 {data.get("nfl_ha") or ""}<br>🌙 {data.get("nfl_pt") or ""}</div></details>'
                     f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
@@ -10356,7 +10388,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     extra += f' · <span title="Average launch angle. 20–35° is the homer window">LA {data["la"]:.0f}°</span>'
                 data_line += extra + f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             loud = data.get("data_tier") == "hot" and (data.get("has_odds_magic") or item.get("is_bet"))
-            opened = " open" if loud else ""
+            opened = " open"
             peek = ""
             if ev is not None and brl is not None:
                 peek = f'<div class="al-pack">EV {ev:.0f} · Barrel {brl:.1f}% · HR L7 {hr7 or "—"} · {format_odds(item.get("best_price"))}</div>'
