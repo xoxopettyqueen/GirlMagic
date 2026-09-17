@@ -2119,7 +2119,7 @@ FAIR_WEIGHTS = {
     "draftkings": 0.15,
 }
 FAIR_OTHER_WEIGHT = 0.10
-SHOP_GAP_TAKE_LONG = 35
+SHOP_GAP_TAKE_LONG = 50
 SHOP_GAP_LEAN_LONG = 25
 SHOP_GAP_DONT_LONG = -35
 SHOP_GAP_TAKE_MID = 50
@@ -5332,12 +5332,9 @@ def auto_grade_pending():
         player = row.get("player") or ""
         rushed = st.session_state.get("nfl_rush_td") or set()
         if active_sport() == "NFL" and is_nfl_qb(player) and not any(names_match(player, x) for x in rushed):
-            if miss_pool and any(names_match(player, f) for f in miss_pool):
-                row["result"] = "MISS"
-                row["graded_by"] = tag
-                misses += 1
-            else:
-                skipped += 1
+            row["result"] = "MISS"
+            row["graded_by"] = tag + "_qb_not_rush"
+            misses += 1
             continue
         if any(names_match(player, h) for h in hit_set):
             row["result"] = "HIT"
@@ -11291,7 +11288,7 @@ def main():
             f"**{active_sport()} only** — {n_sport} graded {sport_cfg().get('hits', 'plays')}. "
             f"{other} ({n_other} graded) is hidden while this sport is selected. "
             f"n &lt; {tracker_min_n()} hidden unless it is a core family. "
-            "HOT = over 15%. Δ is vs this sport’s TAKE IT baseline."
+            "HOT = n≥8 and beats this sport’s TAKE baseline (not a 4-play fluke)."
         )
         today_rows = [r for r in sport_rows if r.get("date") == today_az() and r.get("result") in ("HIT", "MISS")]
         today_hits = [r for r in today_rows if r.get("result") == "HIT"]
@@ -11366,12 +11363,12 @@ def main():
                     continue
                 pct = 100 * s["hit"] / t
                 delta = pct - base
-                hot = pct > 15
-                beat = compare_baseline and pct > base + 0.5
+                hot = pct > max(15, base) and t >= 8
+                beat = compare_baseline and pct > base + 0.5 and t >= 8
                 cls = "rate-chip beat" if beat or hot else "rate-chip"
                 sign = "+" if delta >= 0 else ""
                 badge = ' <span class="tag tag-strong">HOT</span>' if hot else ""
-                thin = " · thin n" if t < min_n else ""
+                thin = " · thin n" if t < 8 else ""
                 beat_html = f'<div class="rate-beat">{sign}{delta:.0f} Δ vs {base:.0f}%</div>'
                 out.append(
                     f'<div class="{cls}">'
@@ -11385,7 +11382,11 @@ def main():
         method_stats, book_stats, ending_stats, bucket_stats, number_stats, book_end_stats, score_stats = build_tracker_stats(sport_rows)
 
         st.markdown("#### By Petty Score lane")
-        st.caption("Does a higher score actually hit more? Grade TAKE / PASS so these fill in.")
+        st.caption(
+            "Higher lane is not automatically better. "
+            "HOT only if n≥8 and the rate beats this sport’s TAKE baseline. "
+            "If 85–100 is under that line, do not treat the score as a ticket."
+        )
         chips = chips_from_stats(score_stats, compare_baseline=True)
         st.markdown(
             "".join(chips) if chips else f"_(Need graded plays with n >= {TRACKER_MIN_N})_",
@@ -11485,6 +11486,11 @@ def main():
             key="results_src_filter",
         )
         rows_view = [r for r in rows if r.get("date") == today_az()] if today_only else rows
+        if active_sport() == "NFL":
+            rows_view = [
+                r for r in rows_view
+                if not is_nfl_qb(r.get("player") or "")
+            ]
         ticket_src = ("take_it", "shop_take", "manual_hr")
         research_src = ("watch", "shop_lean")
         if src_f.startswith("🎟️"):
@@ -11598,10 +11604,16 @@ def main():
         st.markdown("".join(chips_ti) if chips_ti else "_(Need more graded TAKE IT)_", unsafe_allow_html=True)
 
         st.markdown("#### Methods on WATCH (graded)")
+        st.caption(
+            "Old weeks logged almost nobody as WATCH — that 0% is leftover, not today’s box. "
+            "EV / Kelly chips alone are not a Watch method."
+        )
         chips_wa = []
         for name, s in sorted(method_by_src["watch"].items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
             t = s["hit"] + s["miss"]
             if t < 5:
+                continue
+            if name in ("EV Support", "Kelly Support", "EV Premium", "Kelly Premium", "EV Caution", "Kelly Caution"):
                 continue
             pct = 100 * s["hit"] / t
             chips_wa.append(
@@ -12030,8 +12042,11 @@ def main():
                 "Money Lanes", "Top buckets - efficiency = HR / graded in that lane",
                 buckets.most_common(8), mx_bu, buck_g, p_buck,
             ), unsafe_allow_html=True)
-            order = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-            wd_rows = [(d, wd_hits[d]) for d in order if wd_hits[d] or wd_grad[d]]
+            if active_sport() == "NFL":
+                order = ("Thursday", "Sunday", "Monday")
+            else:
+                order = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+            wd_rows = [(d, wd_hits[d]) for d in order]
             if wd_rows:
                 st.markdown(section_html(
                     "By weekday", f"Unique {bomb}s that weekday — not raw log rows",
@@ -12054,7 +12069,10 @@ def main():
                         f"({n_h} unique {bomb}s / {n_g} graded = {pct})"
                     )
                 if lines:
-                    st.markdown("**Books + endings by weekday** (same window — compare week to week with the dropdown)")
+                    st.markdown(
+                    "**What cashed that day** — books + endings. "
+                    + ("NFL lanes: Thursday night / Sunday / Monday night." if active_sport() == "NFL" else "MLB: every weekday in the window.")
+                )
                     st.markdown("\n".join(lines))
         with right:
             picks = [(k, n) for k, n in names.most_common() if k and n >= 2]
