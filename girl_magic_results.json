@@ -94708,7 +94708,7 @@
     ],
     "core": 7,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-17T00:20:39.196864+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -94716,7 +94716,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-16_Kyle Monangai_watch_52",
@@ -103982,5 +103983,82 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-16_Breece Hall_watch_35",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "Breece Hall",
+    "score": 35,
+    "edge": -3,
+    "best_price": -105,
+    "best_book": "fanatics",
+    "median": -115,
+    "book_prices": {
+      "bet365": -116,
+      "betmgm": -120,
+      "caesars": -110,
+      "draftkings": -115,
+      "fanatics": -105,
+      "fanduel": -110,
+      "hardrockbet": -115
+    },
+    "price_bucket": "under +400",
+    "ending": 5,
+    "mgm_locked": -120,
+    "mgm_ending": 20,
+    "methods": [
+      "B365 over MGM",
+      "Books tight",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "core": 4,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-17T01:05:37.405651+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "NEW YORK JETS NFL",
+    "market": "anytime_td",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-16_James Jordan_watch_39",
+    "date": "2026-09-16",
+    "time": "06:05 PM",
+    "player": "James Jordan",
+    "score": 39,
+    "edge": -65,
+    "best_price": 1050,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "caesars": 900,
+      "fanatics": 1050,
+      "fanduel": 900
+    },
+    "price_bucket": "+1000+",
+    "ending": 50,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Fanatics Rogue",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-17T01:05:38.796534+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "",
+    "market": "anytime_td",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.67
   }
 ]
