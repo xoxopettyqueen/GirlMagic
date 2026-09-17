@@ -8944,8 +8944,8 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "weather": "",
             "wind_lane": "cross",
             "dvp_line": dvp_line,
-            "nfl_ha": f"HIS 2-season totals — home {int(form.get('home_yds') or 0)} yds · road {int(form.get('away_yds') or 0)} yds",
-            "nfl_pt": f"HIS primetime totals — {int(form.get('pt_yds') or 0)} yds / {int(form.get('pt_td') or 0)} TD",
+            "nfl_ha": f"His last two seasons — {int(form.get('home_yds') or 0)} yards at home, {int(form.get('away_yds') or 0)} on the road.",
+            "nfl_pt": f"His primetime — {int(form.get('pt_yds') or 0)} yards, {int(form.get('pt_td') or 0)} TDs.",
             "nfl_pos": pos,
             "trend": "🔥 Heating" if (form.get("tgt_share") or 0) >= 0.18 or (form.get("rec_td") or 0) >= 6 else ("🧊 Cooling" if (form.get("tgt_share") or 0) and float(form.get("tgt_share") or 0) < 0.08 else "😐 Neutral"),
             "role": (
@@ -9184,9 +9184,10 @@ def render_alignment_tab(ev_board, watch_board=None):
         except Exception:
             books_n = len(item.get("book_prices") or item.get("books") or {})
         try:
-            px = abs(int(item.get("best_price") or 0))
+            signed_px = int(item.get("best_price") or 0)
         except Exception:
-            px = 0
+            signed_px = 0
+        px = abs(signed_px)
         rhythm = bool(set(str(m) for m in methods) & _ALIGN_DIGIT) or any(
             str(m).startswith("MGM") or str(m).startswith("DK") or str(m).startswith("FD") or "Exact" in str(m)
             for m in methods
@@ -9194,7 +9195,8 @@ def render_alignment_tab(ev_board, watch_board=None):
         long_lane = 500 <= px <= 999 or (px >= 500 and data.get("longshot"))
         if sport == "NFL":
             data_hit = bool(summ) and "nflverse miss" not in summ
-            long_lane = px >= 115 or data.get("longshot")
+            # Plus-money TD only. Favorites (-175) do not belong on this board.
+            long_lane = signed_px >= 100
             rhythm = rhythm or bool(methods)
         board_take = bool(item.get("is_bet"))
         board_score = int(item.get("score") or 0)
@@ -9211,6 +9213,8 @@ def render_alignment_tab(ev_board, watch_board=None):
             keep = True
         if board_take and data_hit and align >= 70:
             keep = True
+        if sport == "NFL" and signed_px < 100:
+            keep = False
         if not keep:
             hidden += 1
             continue
@@ -9386,11 +9390,11 @@ def render_alignment_tab(ev_board, watch_board=None):
     if sport == "NFL":
         def _px(it):
             try:
-                return abs(int(it.get("best_price") or 0))
+                return int(it.get("best_price") or 0)
             except Exception:
                 return 0
         if view.startswith("🎯"):
-            cards = [c for c in cards if _px(c[1]) < 500][:24]
+            cards = [c for c in cards if 100 <= _px(c[1]) < 500][:24]
         elif view.startswith("🫧"):
             cards = [c for c in cards if c[2].get("longshot") or _px(c[1]) >= 500]
         elif view.startswith("📚"):
@@ -9459,40 +9463,43 @@ def render_alignment_tab(ev_board, watch_board=None):
             pen_html = f'<div class="card-line"><b>VS BULLPEN</b> {data.get("pen_line")}</div>'
         with cols[i % max(1, len(cols))]:
             if sport == "NFL":
-                draft_bit = ""
-                sm = data.get("summary") or ""
-                if "draft" in sm:
-                    try:
-                        draft_bit = "draft " + sm.split("draft", 1)[1].split("·")[0].strip()
-                    except Exception:
-                        draft_bit = ""
-                rook = " 🐣 Rookie — first-year pop risk." if data.get("rookie") else ""
+                sm_raw = data.get("summary") or ""
+                keep = []
+                for p in sm_raw.replace("·", "•").split("•"):
+                    pl = p.strip().lower()
+                    if not p.strip():
+                        continue
+                    if pl.startswith(("home", "road", "primetime", "draft", "longshot")):
+                        continue
+                    keep.append(p.strip())
+                vol = " • ".join(keep[:4]) if keep else ""
+                rook = " Rookie year." if data.get("rookie") else ""
                 tr = str(data.get("trend") or "")
                 if "Heating" in tr:
-                    heat_txt = "🔥 Heating: trending up — more targets and staying hot."
+                    heat_txt = "Heating — more targets right now."
                 elif "Cooling" in tr:
-                    heat_txt = "🧊 Cooling: volume is quieter. Don’t force it."
+                    heat_txt = "Cooling — volume is down."
                 else:
-                    heat_txt = "😐 Neutral: not a spike, not a fade."
+                    heat_txt = "Steady — no spike, no fade."
                 role = data.get("role") or "skill"
-                atk = str(data.get("attack") or "💣 Anytime TD")
+                atk = str(data.get("attack") or "Anytime TD")
                 if "Reception" in atk:
-                    atk_txt = "🎯 Attack: Receptions + yards — catching and stacking, not only the TD."
+                    atk_txt = "Attack — receptions and yards."
                 elif "Longshot" in atk:
-                    atk_txt = "💎 Attack: Longshot TD — chaos price. Only if the vibe is loud."
+                    atk_txt = "Attack — longshot touchdown."
                 else:
-                    atk_txt = "💣 Attack: Anytime TD — that’s the ticket lane."
+                    atk_txt = "Attack — anytime touchdown."
+                dvp = (data.get("dvp_line") or "No DVP tag yet.").replace(" · ", "<br>")
                 pulse_html = (
                     f'<details class="al-fold" open><summary>🧠 Player Pulse</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
-                    f'<span title="Wide Receiver 1 = team’s top pass catcher">Role {role}</span> — first look.{rook}<br>'
+                    f'<span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
                     f'{atk_txt}<br>'
-                    f'<span title="Targets = how many times the QB throws his way">{sm}</span></div></details>'
+                    f'<span title="Targets = throws his way">{vol}</span></div></details>'
                     f'<details class="al-fold" open><summary>⚔️ Matchup Vibe</summary>'
-                    f'<div class="al-pack"><span title="Defense vs this position, last 10 games, PER GAME">{data.get("dvp_line") or "DVP not tagged"}</span><br>'
-                    f'<span title="His 2-season totals home vs road">{data.get("nfl_ha") or "—"}</span><br>'
-                    f'<span title="Night / national TV">{data.get("nfl_pt") or "—"}</span></div></details>'
-                    f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree on the number">💸 Odds Pulse: {price} {book_label(item.get("best_book"))} · {stamps}</div>'
+                    f'<div class="al-pack"><span title="Last 10 games, per game">{dvp}</span><br>'
+                    f'{data.get("nfl_ha") or ""}<br>{data.get("nfl_pt") or ""}</div></details>'
+                    f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
                 )
                 st.markdown(
                     f'<div class="{klass}">'
