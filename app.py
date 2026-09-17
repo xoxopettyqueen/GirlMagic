@@ -8686,8 +8686,47 @@ def fetch_nflverse_week_stats(year=None):
     return out
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_nfl_dvp():
+    """Yards/TDs allowed by a defense to a position (WR/RB/TE/QB)."""
+    form_src = fetch_nflverse_week_stats()
+    # Rebuild from weekly file so we can group opponent x position
+    year = datetime.now().year
+    frames = []
+    for y in (year, year - 1):
+        try:
+            frames.append(pd.read_csv(
+                f"https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_{y}.csv",
+                usecols=lambda c: c in ("player_display_name", "position", "opponent_team", "week",
+                                       "receiving_yards", "receiving_tds", "rushing_yards", "rushing_tds", "passing_tds"),
+            ))
+        except Exception:
+            pass
+    if not frames:
+        return {}
+    df = pd.concat(frames, ignore_index=True)
+    if "opponent_team" not in df.columns or "position" not in df.columns:
+        return {}
+    out = {}
+    for (defn, pos), g in df.groupby(["opponent_team", "position"]):
+        rec = pd.to_numeric(g.get("receiving_yards"), errors="coerce").fillna(0).sum()
+        rtd = pd.to_numeric(g.get("receiving_tds"), errors="coerce").fillna(0).sum()
+        rush = pd.to_numeric(g.get("rushing_yards"), errors="coerce").fillna(0).sum()
+        rtd2 = pd.to_numeric(g.get("rushing_tds"), errors="coerce").fillna(0).sum()
+        ptd = pd.to_numeric(g.get("passing_tds"), errors="coerce").fillna(0).sum()
+        out[f"{defn}|{pos}"] = {
+            "rec_yds": float(rec),
+            "rec_td": float(rtd),
+            "rush_yds": float(rush),
+            "rush_td": float(rtd2),
+            "pass_td": float(ptd),
+            "g": int(g["week"].nunique()) if "week" in g.columns else len(g),
+        }
+    return out
+
+
 def load_live_nfl_data():
-    return {"form": fetch_nflverse_week_stats()}
+    return {"form": fetch_nflverse_week_stats(), "dvp": fetch_nfl_dvp()}
 
 
 def _petty_upside_from_item(item, sport="MLB", live=None):
@@ -8706,14 +8745,21 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         form = (live.get("form") or {}).get(key) or {}
         bits = []
         score = 22
-        if form.get("tgt_share") is not None:
-            bits.append(f"tgt {form['tgt_share']*100:.0f}%")
-            if form["tgt_share"] >= 0.18:
-                score += 14
-        if form.get("targets"):
-            bits.append(f"{int(form['targets'])} tgt (2 szn)")
-        if form.get("rec_yds"):
-            bits.append(f"{int(form['rec_yds'])} rec yds")
+        try:
+            ts = form.get("tgt_share")
+            if ts is not None and str(ts) not in ("nan", "None", ""):
+                bits.append(f"tgt {float(ts)*100:.0f}%")
+                if float(ts) >= 0.18:
+                    score += 14
+        except Exception:
+            pass
+        try:
+            if form.get("targets"):
+                bits.append(f"{int(float(form['targets']))} tgt (2 szn)")
+            if form.get("rec_yds"):
+                bits.append(f"{int(float(form['rec_yds']))} rec yds")
+        except Exception:
+            pass
         if form.get("away_yds") or form.get("home_yds"):
             bits.append(f"home {int(form.get('home_yds') or 0)} / road {int(form.get('away_yds') or 0)} yds")
         if form.get("pt_yds"):
@@ -8738,19 +8784,42 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             score += 8
         if not form:
             bits.append("nflverse miss — still listed")
+        pos = str(form.get("pos") or item.get("position") or "")
+        evn = " ".join(str(x) for x in (item.get("events") or [item.get("event") or ""]))
+        dvp_line = ""
+        dvp = live.get("dvp") or {}
+        best = None
+        for k, rec in dvp.items():
+            defn, pcode = (k.split("|", 1) + [""])[:2]
+            if pos and pcode.upper() != pos.upper():
+                continue
+            if defn and defn.lower() in evn.lower():
+                best = rec
+                dvp_line = (
+                    f"DVP vs {pos or 'skill'} {defn}: "
+                    f"{int(rec.get('rec_yds') or 0)} rec yds / {int(rec.get('rec_td') or 0)} rec TD · "
+                    f"{int(rec.get('rush_yds') or 0)} rush yds / {int((rec.get('rush_td') or 0)+(rec.get('pass_td') or 0))} other TD"
+                )
+                break
+        if best and (best.get("rec_td") or 0) + (best.get("rush_td") or 0) >= 6:
+            score += 8
         return {
             "score": min(120, score),
             "longshot": longshot,
             "rookie": False,
-            "summary": " · ".join(bits) if bits else "odds only",
+            "summary": " · ".join(bits) if bits else "Anytime TD · usage",
             "boost": 6 if form else 2,
             "sport": "NFL",
             "ev": None,
             "hh": None,
             "barrel": None,
-            "matchup": "",
+            "matchup": dvp_line,
             "weather": "",
             "wind_lane": "cross",
+            "dvp_line": dvp_line,
+            "nfl_ha": f"home {int(form.get('home_yds') or 0)} yds · road {int(form.get('away_yds') or 0)} yds",
+            "nfl_pt": f"primetime {int(form.get('pt_yds') or 0)} yds / {int(form.get('pt_td') or 0)} TD",
+            "nfl_pos": pos,
         }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
@@ -9222,7 +9291,25 @@ def render_alignment_tab(ev_board, watch_board=None):
         pen_html = ""
         if data.get("pen_line"):
             pen_html = f'<div class="card-line"><b>VS BULLPEN</b> {data.get("pen_line")}</div>'
-        with cols[i % 3]:
+        with cols[i % 2]:
+            if sport == "NFL":
+                st.markdown(
+                    f'<div class="{klass}">'
+                    f'<div class="card-kicker">{vibe} · ANYTIME TD · {align}</div>'
+                    f'<span class="score-pill">{align}</span>'
+                    f'<div class="card-name">{item.get("player")}</div>'
+                    f'{_petty_meter(align)}'
+                    f'<div class="card-line"><b>USAGE</b> {data.get("summary")}</div>'
+                    f'<div class="card-line"><b>ODDS</b> {price} {book_label(item.get("best_book"))} · {stamps}</div>'
+                    f'<div class="card-line"><b>DVP</b> {data.get("dvp_line") or "no defense tag yet"}</div>'
+                    f'<div class="card-line"><b>HOME / ROAD</b> {data.get("nfl_ha") or "—"}</div>'
+                    f'<div class="card-line"><b>PRIMETIME</b> {data.get("nfl_pt") or "—"}</div>'
+                    f'<div class="card-line">{"".join(pills)}</div>'
+                    f'<div class="card-foot">Board {item.get("score") or "—"} · Edge {data.get("score")} · TD board not HR board</div>'
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+                continue
             st.markdown(
                 f'<div class="{klass}">'
                 f'<div class="card-kicker">{vibe} · {align}</div>'
