@@ -9222,6 +9222,32 @@ def load_live_nfl_data():
     return {"form": fetch_nflverse_week_stats(), "dvp": fetch_nfl_dvp()}
 
 
+def _nfl_season_year():
+    now = datetime.now()
+    return now.year if now.month >= 3 else now.year - 1
+
+
+def _yearish(val):
+    try:
+        s = str(val or "").strip()
+        if s in ("", "nan", "None"):
+            return None
+        return int(float(s[:4]))
+    except Exception:
+        return None
+
+
+def _is_nfl_rookie(form):
+    """True for this season's draft class and last year's (year-2 still gets the chip)."""
+    season = _nfl_season_year()
+    dy = _yearish((form or {}).get("draft_year"))
+    rs = _yearish((form or {}).get("rookie_season"))
+    years = [y for y in (dy, rs) if y]
+    if not years:
+        return False
+    return min(years) >= season - 1
+
+
 def _petty_upside_from_item(item, sport="MLB", live=None):
     """Petty Upside from LIVE Savant + Stats API. Longshots never dropped."""
     try:
@@ -9337,7 +9363,9 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
                 else (f"{pos}2" if pos and (form.get("tgt_share") or 0) >= 0.12 else (pos or "skill"))
             ),
             "attack": "💎 Longshot TD" if p >= 500 else ("🎯 Receptions + yards" if (form.get("tgt_share") or 0) >= 0.18 else "💣 Anytime TD"),
-            "rookie": bool(str(form.get("draft_year") or "")[-4:] == str(datetime.now().year) or str(form.get("rookie_season") or "")[-4:] == str(datetime.now().year)),
+            "rookie": _is_nfl_rookie(form),
+            "draft_year": form.get("draft_year"),
+            "rookie_season": form.get("rookie_season"),
         }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
@@ -9953,6 +9981,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             pills.append('<span class="al-chip">📚 Data cold</span>')
         if data.get("quiet") or not data.get("has_odds_magic"):
             pills.append('<span class="al-chip">📚 No odds stamp</span>')
+        if data.get("rookie"):
+            pills.append('<span class="al-chip">🐣 Rookie</span>')
         if data.get("longshot"):
             pills.append('<span class="al-chip">💎 Longshot</span>')
         if "heating" in (data.get("summary") or ""):
@@ -9995,8 +10025,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             klass = "card al-lock"
         elif data.get("data_tier") == "hot":
             klass = "card al-speak"
-        elif data.get("quiet") or not data.get("has_odds_magic"):
+        elif sport != "NFL" and (data.get("quiet") or not data.get("has_odds_magic")):
             klass = "card al-quiet"
+        elif sport == "NFL":
+            klass = "card al-shot" if data.get("longshot") else "card al-home"
         wlane = data.get("wind_lane") or "cross"
         vs_l = data.get("vs_line") or ""
         if vs_l.lower().startswith("vs ") and (data.get("matchup") or "").split("(")[0].strip().lower() in vs_l.lower():
@@ -10018,7 +10050,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                         continue
                     keep.append(p.strip())
                 vol = " • ".join(keep[:4]) if keep else ""
-                rook = " Rookie year." if data.get("rookie") else ""
+                rook = " 🐣 Rookie." if data.get("rookie") else ""
                 tr = str(data.get("trend") or "")
                 if "Heating" in tr:
                     heat_txt = "🔥 Heating — more targets right now."
@@ -10036,12 +10068,12 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     atk_txt = "Attack — anytime touchdown."
                 dvp = (data.get("dvp_line") or "No DVP tag yet.").replace(" · ", "<br>")
                 pulse_html = (
-                    f'<details class="al-fold" open><summary title="How they are being used right now">🧠 Player Pulse</summary>'
+                    f'<details class="al-fold"><summary title="How they are being used right now">🧠 Player Pulse</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
                     f'👑 <span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
                     f'🎯 {atk_txt}<br>'
                     f'📈 <span title="Targets = throws his way">{vol}</span></div></details>'
-                    f'<details class="al-fold" open><summary title="DVP last 10 games per game + his home/road/primetime totals">⚔️ Matchup Vibe</summary>'
+                    f'<details class="al-fold"><summary title="DVP last 10 games per game + his home/road/primetime totals">⚔️ Matchup Vibe</summary>'
                     f'<div class="al-pack">🛡️ <span title="Last 10 games, per game">{dvp}</span><br>'
                     f'🏠 {data.get("nfl_ha") or ""}<br>🌙 {data.get("nfl_pt") or ""}</div></details>'
                     f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
