@@ -9306,19 +9306,34 @@ def render_alignment_tab(ev_board, watch_board=None):
             pen_html = f'<div class="card-line"><b>VS BULLPEN</b> {data.get("pen_line")}</div>'
         with cols[i % max(1, len(cols))]:
             if sport == "NFL":
+                draft_bit = ""
+                sm = data.get("summary") or ""
+                if "draft" in sm:
+                    try:
+                        draft_bit = "draft " + sm.split("draft", 1)[1].split("·")[0].strip()
+                    except Exception:
+                        draft_bit = ""
+                use_rows = (
+                    _align_kv("Usage", sm, "Targets, yards, TDs from nflverse this season + last")
+                    + _align_kv("Odds", f"{price} {book_label(item.get('best_book'))} · {stamps}")
+                    + _align_kv("DVP Matchup", data.get("dvp_line") or "defense not tagged yet", "What that D has given this position")
+                    + _align_kv("Home / Road", data.get("nfl_ha") or "—")
+                    + _align_kv("Primetime", data.get("nfl_pt") or "—")
+                )
+                why_rows = (
+                    (_align_kv("Draft Profile", draft_bit) if draft_bit else "")
+                    + _align_kv("Book Cluster", stamps)
+                    + _align_kv("Board Note", "Anytime TD board — not a homer card")
+                )
                 st.markdown(
                     f'<div class="{klass}">'
-                    f'<div class="card-kicker">{vibe} · ANYTIME TD · {align}</div>'
-                    f'<span class="score-pill">{align}</span>'
+                    f'<div class="card-kicker">{vibe} · 🏈 Anytime TD · {align}</div>'
                     f'<div class="card-name">{item.get("player")}</div>'
                     f'{_petty_meter(align)}'
-                    f'<div class="card-line"><b>USAGE</b> {data.get("summary")}</div>'
-                    f'<div class="card-line"><b>ODDS</b> {price} {book_label(item.get("best_book"))} · {stamps}</div>'
-                    f'<div class="card-line"><b>DVP</b> {data.get("dvp_line") or "no defense tag yet"}</div>'
-                    f'<div class="card-line"><b>HOME / ROAD</b> {data.get("nfl_ha") or "—"}</div>'
-                    f'<div class="card-line"><b>PRIMETIME</b> {data.get("nfl_pt") or "—"}</div>'
-                    f'<div class="card-line">{"".join(pills)}</div>'
-                    f'<div class="card-foot">Board {item.get("score") or "—"} · Edge {data.get("score")} · TD board not HR board</div>'
+                    f'<div class="al-sec">Usage + Odds</div>{use_rows}'
+                    f'<div class="al-sec">Context</div>{why_rows}'
+                    f'<div class="al-tags">{"".join(pills)}</div>'
+                    f'<div class="card-foot">Board Score {item.get("score") or "—"} · Edge {data.get("score")} · TD Board not HR Board</div>'
                     f"</div>",
                     unsafe_allow_html=True,
                 )
