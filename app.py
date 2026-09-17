@@ -9479,11 +9479,11 @@ def render_alignment_tab(ev_board, watch_board=None):
         cards.append((align, item, data, notes, vibe))
     cards.sort(key=lambda x: (-x[0], x[1].get("player") or ""))
     view = st.radio(
-        "Show",
+        "align_view_pills",
         ["🎯 Active", "🫧 Whispers", "📚 Homework"],
         horizontal=True,
         key="align_view",
-        help="NFL: Active = TD under +500. Whispers = longshot. Homework = rookies / low volume. MLB: Locked+Spoke / mid / leftover.",
+        label_visibility="collapsed",
     )
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
