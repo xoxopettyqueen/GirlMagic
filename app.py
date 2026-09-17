@@ -11776,17 +11776,9 @@ def main():
         .pa-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(236,72,153,.25)}
         .pa-hero h3{font-family:'Playfair Display',serif;margin:0;color:#fff;font-size:1.55rem}
         .pa-quote{color:#fce7f3;font-style:italic;margin:6px 0 0;font-size:.92rem}
-        .pa-card{background:linear-gradient(180deg,#1a1024,#120818);border:1px solid #3b1d4a;border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:0 0 18px rgba(168,85,247,.18)}
-        .pa-h{font-size:.82rem;letter-spacing:1.2px;text-transform:uppercase;color:#f9a8d4;font-weight:800;margin:0 0 8px}
-        .pa-sub{font-size:.68rem;color:#c4b5d6;margin:-2px 0 10px}
-        .pa-grid{display:flex;flex-wrap:wrap;gap:8px}
-        .pa-chip{min-width:108px;background:#221033;border:1px solid #6d28d9;border-radius:14px;padding:8px 10px;text-align:center;box-shadow:0 0 12px rgba(236,72,153,.2)}
-        .pa-chip.top{border-color:#f472b6;box-shadow:0 0 16px rgba(244,114,182,.45)}
-        .pa-chip .n{font-size:1.15rem;font-weight:800;background:linear-gradient(90deg,#f472b6,#a855f7);-webkit-background-clip:text;color:transparent}
-        .pa-chip .l{font-size:.72rem;color:#e9d5ff;font-weight:700}
-        .pa-chip .p{font-size:.62rem;color:#c4b5d6}
-        .pa-day{flex:1;min-width:160px;background:#1a1024;border:1px solid #7c3aed;border-radius:16px;padding:10px 12px}
-        .pa-day h4{margin:0 0 4px;color:#f9a8d4;font-size:.88rem}
+        .pa-card{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:12px 14px;margin-bottom:10px}
+        .pa-h{font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:#f9a8d4;font-weight:800;margin:0 0 8px}
+        .pa-sub{font-size:.62rem;color:#9ca3af;margin:-4px 0 8px}
         .pa-row{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:.84rem}
         .pa-bar{height:8px;border-radius:99px;background:#2a2038;flex:1;overflow:hidden}
         .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#a855f7);box-shadow:0 0 8px rgba(244,114,182,.45)}
@@ -11801,7 +11793,7 @@ def main():
         st.markdown(
             '<div class="pa-hero pa-spark"><h3>Petty Analytics</h3>'
             '<p class="pa-quote">If the odds look ugly, they probably lying.</p>'
-            f'<p class="pa-quote" style="font-size:.75rem;opacity:.85">Recap only. {hero_take} rules did not change.</p></div>',
+            f'<p class="pa-quote" style="font-size:.75rem;opacity:.85">{active_sport()} recap. {hero_take} rules did not change.</p></div>',
             unsafe_allow_html=True,
         )
 
@@ -11970,19 +11962,15 @@ def main():
             )
 
         def section_html(title, subtitle, items, mx, rate_map=None, prev_map=None):
-            chips = []
+            rows_h = []
             for i, (k, n) in enumerate(items):
                 extra = ""
                 if rate_map is not None:
                     extra = rate(n, rate_map.get(k, 0))
                 if prev_map is not None:
                     extra += arrow(n, prev_map.get(k, 0))
-                top = " top" if i == 0 else ""
-                chips.append(
-                    f'<div class="pa-chip{top}"><div class="n">{n}</div>'
-                    f'<div class="l">{k}</div><div class="p">{extra}</div></div>'
-                )
-            body = '<div class="pa-grid">' + "".join(chips) + "</div>" if chips else '<div class="pa-pct">None yet</div>'
+                rows_h.append(bar_row(k, n, mx, extra, crown=(i == 0)))
+            body = "".join(rows_h) if rows_h else '<div class="pa-pct">None yet</div>'
             return f'<div class="pa-card"><div class="pa-h">{title}</div><div class="pa-sub">{subtitle}</div>{body}</div>'
 
         week_rate = rate(len(hits), len(graded))
@@ -12061,28 +12049,24 @@ def main():
                 order = ("Thursday", "Sunday", "Monday")
             else:
                 order = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-            day_cards = []
-            nfl_label = {"Thursday": "TNF", "Sunday": "Sunday", "Monday": "MNF"}
-            for d in order:
-                books_d = sorted([(b, n) for (day, b), n in wd_book_hits.items() if day == d], key=lambda x: -x[1])
-                ends_d = sorted([(e, n) for (day, e), n in wd_end_hits.items() if day == d], key=lambda x: -x[1])
-                top_b = ", ".join(f"{b} {n}" for b, n in books_d[:3]) or "quiet"
-                top_e = ", ".join(f"{int(e):02d}" if str(e).isdigit() else str(e) for e, n in ends_d[:3]) or "—"
-                n_h, n_g = wd_hits[d], wd_grad[d]
-                pct = f"{100 * n_h / n_g:.0f}%" if n_g else "—"
-                title = nfl_label.get(d, d) if active_sport() == "NFL" else d
-                day_cards.append(
-                    f'<div class="pa-day"><h4>{title}</h4>'
-                    f'<div class="n" style="font-size:1.2rem;font-weight:800;color:#f9a8d4">{n_h} {bomb}s</div>'
-                    f'<div class="p">Books: {top_b}</div>'
-                    f'<div class="p">Ends: {top_e} · {pct} of graded</div></div>'
-                )
-            st.markdown(
-                f'<div class="pa-card"><div class="pa-h">What cashed</div>'
-                f'<div class="pa-sub">{"TNF / Sunday / MNF" if active_sport()=="NFL" else "Weekdays"} — books and endings, not raw volume</div>'
-                f'<div class="pa-grid">{"".join(day_cards)}</div></div>',
-                unsafe_allow_html=True,
-            )
+            wd_rows = [(d, wd_hits[d]) for d in order if wd_hits[d] or wd_grad[d] or active_sport() == "MLB"]
+            if wd_rows:
+                st.markdown(section_html(
+                    "By weekday",
+                    f"Unique {bomb}s · NFL = Thu/Sun/Mon · MLB = all 7 days",
+                    wd_rows, max(list(wd_hits.values()) or [1]), wd_grad, {},
+                ), unsafe_allow_html=True)
+                bits = []
+                for d in order:
+                    books_d = sorted([(b, n) for (day, b), n in wd_book_hits.items() if day == d], key=lambda x: -x[1])
+                    ends_d = sorted([(e, n) for (day, e), n in wd_end_hits.items() if day == d], key=lambda x: -x[1])
+                    if not books_d and not ends_d:
+                        continue
+                    top_b = ", ".join(f"{b}" for b, _n in books_d[:3])
+                    top_e = ", ".join(str(e) for e, _n in ends_d[:3])
+                    bits.append(f"{d}: {top_b} · {top_e}")
+                if bits:
+                    st.caption("What cashed — " + " · ".join(bits))
         with right:
             picks = [
                 (k, n) for k, n in names.most_common()
@@ -12090,21 +12074,21 @@ def main():
             ]
             pick_rows = []
             for i, (pl, n) in enumerate(picks[:12]):
-                pick_rows.append(bar_row(f"{pl} · {n} {bombs} this window", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
+                pick_rows.append(bar_row(f"{pl} · {n} {bombs}", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
             picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-pct">None yet</div>'
             st.markdown(
                 '<div class="pa-card"><div class="pa-h">Repeat Offenders</div>'
-                f'<div class="pa-sub">One {bomb} per player per date. Duplicates dropped. NFL week-1: 2+ days, not 4 bombs in one game.</div>'
+                f'<div class="pa-sub">One {bomb} per player per date. Duplicates dropped. {"NFL: 2+ days, not 4 in one game." if active_sport()=="NFL" else "MLB: 2+ unique dates this window."}</div>'
                 + picks_html +
                 '</div>',
                 unsafe_allow_html=True,
             )
             st.markdown(section_html(
-                "The Girl Magic Pantheon", "Petty Families - one family counted once per HIT",
+                "The Girl Magic Pantheon", f"Petty families — one family per unique {bomb}",
                 families.most_common(6), mx_f, None, p_fam,
             ), unsafe_allow_html=True)
             st.markdown(section_html(
-                "Top methods", "Tag volume on HIT rows (a HR can wear more than one)",
+                "Top methods", f"Tags on unique {bomb}s — a name can wear more than one",
                 methods_c.most_common(10), mx_m, meth_g, p_meth,
             ), unsafe_allow_html=True)
 
