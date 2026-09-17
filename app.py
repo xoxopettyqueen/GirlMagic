@@ -5580,11 +5580,11 @@ def render_run_it_recap():
         or book_label(r.get("best_book") or "") == "Fanatics"
         for r in keep
     )
-    queen = "Queen says: Run It names went." + (" Fanatics loud again." if fn_loud else "")
+    queen = "Queen says: these names actually went." + (" Fanatics was on a lot of them." if fn_loud else "")
     st.markdown(f'<div class="wg-queen" style="text-align:left">{queen}</div>', unsafe_allow_html=True)
     slice_r = st.radio(
         "recap_slice",
-        ["All graded", "Tickets only", "Research only"],
+        ["Hits only", "Misses only", "Tickets only", "Research only", "All unique names"],
         horizontal=True,
         key="recap_slice",
         label_visibility="collapsed",
@@ -5593,9 +5593,11 @@ def render_run_it_recap():
         keep = [r for r in keep if str(r.get("source") or "") in ("take_it", "shop_take", "bet_this", "take")]
     elif slice_r.startswith("Research"):
         keep = [r for r in keep if str(r.get("source") or "") in ("watch", "shop_lean", "lean", "research")]
-    hits = sum(1 for r in keep if str(r.get("result")).upper() == "HIT")
-    misses = sum(1 for r in keep if str(r.get("result")).upper() == "MISS")
-    st.caption(f"{hits} HIT · {misses} MISS · {len(keep)} on the recap")
+    elif slice_r.startswith("Hits"):
+        keep = [r for r in keep if str(r.get("result") or "").upper() == "HIT"]
+    elif slice_r.startswith("Misses"):
+        keep = [r for r in keep if str(r.get("result") or "").upper() == "MISS"]
+    raw_n = len(keep)
 
     lock = st.session_state.get("pregame_lock") or load_pregame()
 
@@ -5683,14 +5685,14 @@ def render_run_it_recap():
     body = []
     for item in slice_rows:
         badge = '<span class="recap-badge">🔥 Best Price</span>' if any(_fn_best(item["name"], b) for b in (item.get("books") or [item.get("book")])) else ""
-        cnt = ("×%s" % item["n"]) if item["n"] > 1 else "—"
+        logs = str(item["n"])
         body.append(
-            "<tr class='%s %s' title='%s'><td class='sig'>%s</td><td>%s</td><td>%s</td><td>%s%s</td><td>%s</td><td>%s</td></tr>"
-            % (item["res_cls"], item["sig_cls"], item["tip"], item["sig_show"], item["res_show"], item["name"], item["book"], badge, item["prop"], cnt)
+            "<tr class='%s %s' title='%s'><td class='sig'>%s</td><td>%s</td><td>%s</td><td>%s%s</td><td>%s</td></tr>"
+            % (item["res_cls"], item["sig_cls"], item["tip"], item["sig_show"], item["res_show"], item["name"], item["book"], badge, logs)
         )
     html = (
         '<div class="recap-wrap"><table class="recap-table">'
-        "<thead><tr><th class='sig'>Signal</th><th>Result</th><th>Player</th><th>Book</th><th>Prop</th><th>Count</th></tr></thead>"
+        "<thead><tr><th class='sig'>We called it</th><th>Did it go?</th><th>Player</th><th>Book logged</th><th>Times logged</th></tr></thead>"
         "<tbody>%s</tbody></table></div>"
     ) % "".join(body)
     st.markdown(html, unsafe_allow_html=True)
@@ -5704,7 +5706,12 @@ def render_run_it_recap():
             st.session_state["recap_page"] = min(pages - 1, page + 1)
             st.rerun()
     with nav3:
-        st.caption("Rows %s–%s of %s unique" % (page * PAGE + 1, min((page + 1) * PAGE, total), total))
+        st.caption(
+            "Names %s–%s of %s unique · %s raw log rows. "
+            "Times logged = duplicate Fetch/TAKE rows, not extra homers. "
+            "We called it = highest call on that name (TAKE beats WATCH)."
+            % (page * PAGE + 1, min((page + 1) * PAGE, total), total, raw_n)
+        )
 
 
 
@@ -10952,10 +10959,9 @@ def main():
         st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
         st.markdown("#### Run It Recap")
         st.caption(
-            "This is the grade sheet for names we already logged today — not live odds. "
-            "TAKE = we would have bet it. HIT / MISS = whether the homer (or TD) actually happened. "
-            "Book = where the number lived. Count = how many log rows that name stacked (duplicates, not extra bombs). "
-            "Pulse under the table is just the day’s noise."
+            "One row per unique name. Hits only is the default vibe. "
+            "Did it go? = the homer happened. Times logged = we saved that name more than once. "
+            "Not extra bombs."
         )
         render_run_it_recap()
         st.markdown("#### Pregame prices")
