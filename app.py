@@ -8934,6 +8934,16 @@ def save_align_events(rows):
         pass
 
 
+def _align_kv(label, value, tip=""):
+    if value in (None, "", "—"):
+        return ""
+    tip_attr = f' title="{tip}"' if tip else ""
+    return (
+        f'<div class="al-kv"{tip_attr}><span>{label}</span>'
+        f'<span class="gm-num">{value}</span></div>'
+    )
+
+
 def _petty_meter(align):
     a = max(0, min(120, int(align or 0)))
     w = int(a / 120 * 100)
@@ -8981,8 +8991,11 @@ def render_alignment_tab(ev_board, watch_board=None):
         .wind-in{color:#f87171;font-weight:700}
         .wind-cross{color:#fbbf24}
         .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
-        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:center;max-width:520px;margin-left:auto;margin-right:auto}
-        .card-name{background:linear-gradient(90deg,#ff3ebf,#9b5fff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:560px;margin:0 auto 18px;padding:22px}
+        .al-kv{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #2a2038;padding:4px 0;font-size:.78rem}
+        .al-kv span:first-child{color:#c4b5d6;letter-spacing:.04em;text-transform:uppercase;font-size:.64rem}
+        .al-sec{font-size:.62rem;letter-spacing:1.4px;text-transform:uppercase;color:#f9a8d4;margin:10px 0 4px;font-weight:800}
+        .al-tags{text-align:center;margin-top:8px}
         @keyframes alShimmer{0%{left:-40%}100%{left:120%}}
         </style>
         """,
@@ -9310,22 +9323,48 @@ def render_alignment_tab(ev_board, watch_board=None):
                     unsafe_allow_html=True,
                 )
                 continue
+            ev = data.get("ev")
+            hh = data.get("hh")
+            brl = data.get("barrel")
+            summ = data.get("summary") or ""
+            hr7 = ""
+            slg7 = ""
+            try:
+                if "HR L7" in summ:
+                    hr7 = summ.split("HR L7")[1].strip().split()[0]
+                if "SLG7" in summ:
+                    slg7 = summ.split("SLG7")[1].strip().split()[0]
+            except Exception:
+                pass
+            heat = "Yes" if "heating" in summ else "No"
+            rows = (
+                _align_kv("Exit Velocity (Avg)", f"{ev:.1f} mph" if ev else "—", "How hard the ball leaves the bat")
+                + _align_kv("Hard-Hit Rate", f"{hh:.0f}%" if hh is not None else "—", "% of balls 95 mph+")
+                + _align_kv("Barrel Rate", f"{brl:.1f}%" if brl is not None else "—", "Ideal HR-contact rate")
+                + _align_kv("HR Last 7 Games", hr7 or "—", "Recent power")
+                + _align_kv("SLG Last 7 Games", slg7 or "—", "Recent total bases")
+                + _align_kv("Heating Trend", heat)
+                + _align_kv("Longshot", "Yes" if data.get("longshot") else "No")
+            )
+            ctx = (
+                _align_kv("Pitcher", vs_bit)
+                + _align_kv("Park Vibe", f"{porch} ({pf}) · {data.get('weather') or ''}", "100 = league average HR park")
+                + (_align_kv("Bullpen", data.get("pen_line")) if data.get("pen_line") else "")
+                + _align_kv("Odds", f"{price} {book_label(item.get('best_book'))} · {stamps}")
+            )
             st.markdown(
                 f'<div class="{klass}">'
-                f'<div class="card-kicker">{vibe} · {align}</div>'
-                f'<span class="score-pill">{align}</span>'
+                f'<div class="card-kicker">{vibe} · Alignment {align}</div>'
                 f'<div class="card-name">{item.get("player")}</div>'
                 f'{_petty_meter(align)}'
-                f'<div class="card-line" title="Exit Velocity = how hard the ball leaves. Hard-Hit Rate = % at 95mph+. Barrel Rate = HR-quality contact. HR last 7 = recent bombs. Slugging last 7 = extra-base heat."><b>DATA</b> {data.get("summary")}</div>'
-                f'<div class="card-line"><b>ODDS</b> {price} {book_label(item.get("best_book"))} · {stamps}</div>'
-                f'<div class="card-line" title="Park vibe = how often balls leave this yard vs league average. 100 = normal."><b>PARK</b> {porch} ({pf}) · <span class="wind-{wlane}">{data.get("weather") or ""}</span></div>'
-                f'<div class="card-line"><b>VS SP</b> {vs_bit}</div>'
-                f'{pen_html}'
-                f'<div class="card-line">{"".join(pills)}</div>'
-                f'<div class="card-line"><span class="al-chip">{data.get("split_ha") or ""}</span> '
-                f'<span class="al-chip">{data.get("split_dn") or ""}</span> '
-                f'<span class="al-chip">{data.get("split_lr") or ""}</span></div>'
-                f'<div class="card-foot">Board {item.get("score") or "—"} · Upside {data.get("score")}</div>'
+                f'<div class="al-sec">Data</div>{rows}'
+                f'<div class="al-sec">Context</div>{ctx}'
+                f'<div class="al-sec">Splits</div>'
+                f'<div class="al-kv"><span>Home / Away</span><span>{data.get("split_ha") or "—"}</span></div>'
+                f'<div class="al-kv"><span>Day / Night</span><span>{data.get("split_dn") or "—"}</span></div>'
+                f'<div class="al-kv"><span>vs LHP / RHP</span><span>{data.get("split_lr") or "—"}</span></div>'
+                f'<div class="al-tags">{"".join(pills)}</div>'
+                f'<div class="card-foot">Board Score {item.get("score") or "—"} · Upside {data.get("score")} · Board still decides if we ticket it.</div>'
                 f"</div>",
                 unsafe_allow_html=True,
             )
