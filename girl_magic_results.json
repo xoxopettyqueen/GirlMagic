@@ -120166,37 +120166,5 @@
     "benford_note": "",
     "benford_cluster": 0.57,
     "graded_by": "one_per_day"
-  },
-  {
-    "id": "2026-09-17_Isaac TeSlaa_shop_lean_48",
-    "date": "2026-09-17",
-    "time": "10:32 AM",
-    "player": "Isaac TeSlaa",
-    "score": 0,
-    "edge": 48,
-    "best_price": 525,
-    "best_book": "bet365",
-    "median": 450,
-    "book_prices": {
-      "bet365": 525,
-      "betmgm": 425,
-      "caesars": 450,
-      "draftkings": 450,
-      "fanatics": 420,
-      "fanduel": 500,
-      "hardrockbet": 475
-    },
-    "price_bucket": "+500s",
-    "ending": 25,
-    "methods": [
-      "Shop LEAN"
-    ],
-    "core": 0,
-    "result": "PENDING",
-    "source": "shop_lean",
-    "logged_at": "2026-09-17T17:32:51.089591+00:00",
-    "price_source": "shop",
-    "sport": "NFL",
-    "market": "anytime_td"
   }
 ]
