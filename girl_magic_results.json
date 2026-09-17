@@ -120027,11 +120027,73 @@
     "benford_cluster": 0.86
   },
   {
-    "id": "2026-09-17_Mickey Moniak_take_it_58",
+    "id": "2026-09-17_Henry Davis_shop_take_138",
+    "date": "2026-09-17",
+    "time": "10:25 AM",
+    "player": "Henry Davis",
+    "score": 0,
+    "edge": 138,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 750,
+    "book_prices": {
+      "bet365": 850,
+      "caesars": 750,
+      "draftkings": 650,
+      "fanatics": 750,
+      "fanduel": 750,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T17:25:04.694936+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Adley Rutschman_shop_take_85",
+    "date": "2026-09-17",
+    "time": "10:25 AM",
+    "player": "Adley Rutschman",
+    "score": 0,
+    "edge": 85,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 642,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 525,
+      "caesars": 625,
+      "draftkings": 660,
+      "fanatics": 750,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T17:25:04.705637+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-17_Mickey Moniak_shop_take_63",
     "date": "2026-09-17",
     "time": "10:25 AM",
     "player": "Mickey Moniak",
-    "score": 58,
+    "score": 0,
     "edge": 63,
     "best_price": 475,
     "best_book": "fanatics",
@@ -120047,29 +120109,15 @@
     },
     "price_bucket": "+400s",
     "ending": 75,
-    "mgm_locked": 375,
-    "mgm_ending": 75,
     "methods": [
-      "FD+MGM classic",
-      "B365 over HardRock",
-      "Stayed in the group",
-      "Match 75",
-      "B365 over MGM",
-      "MGM 75",
-      "FD Pattern",
-      "EV Premium",
-      "Kelly Support"
+      "Shop TAKE"
     ],
-    "core": 3,
+    "core": 0,
     "result": "PENDING",
-    "source": "take_it",
-    "logged_at": "2026-09-17T17:25:01.646241+00:00",
-    "price_source": "pregame_lock",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T17:25:04.710981+00:00",
+    "price_source": "shop",
     "sport": "MLB",
-    "team": "COLORADO ROCKIES",
-    "market": "batter_home_runs",
-    "benford_tag": "Authentic",
-    "benford_note": "",
-    "benford_cluster": 0.57
+    "market": "batter_home_runs"
   }
 ]
