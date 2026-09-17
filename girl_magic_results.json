@@ -106064,5 +106064,100 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.71
+  },
+  {
+    "id": "2026-09-16_Deshaun Watson_shop_take_135",
+    "date": "2026-09-16",
+    "time": "06:53 PM",
+    "player": "Deshaun Watson",
+    "score": 0,
+    "edge": 135,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 500,
+    "book_prices": {
+      "bet365": 350,
+      "betmgm": 360,
+      "caesars": 450,
+      "draftkings": 600,
+      "fanatics": 650,
+      "fanduel": 550,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-17T01:53:51.313923+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Jalen McMillan_shop_lean_46",
+    "date": "2026-09-16",
+    "time": "06:53 PM",
+    "player": "Jalen McMillan",
+    "score": 0,
+    "edge": 46,
+    "best_price": 370,
+    "best_book": "fanatics",
+    "median": 315,
+    "book_prices": {
+      "bet365": 300,
+      "betmgm": 333,
+      "caesars": 305,
+      "draftkings": 310,
+      "fanatics": 370,
+      "fanduel": 320
+    },
+    "price_bucket": "under +400",
+    "ending": 70,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:53:51.354715+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Ryan Flournoy_shop_lean_45",
+    "date": "2026-09-16",
+    "time": "06:53 PM",
+    "player": "Ryan Flournoy",
+    "score": 0,
+    "edge": 45,
+    "best_price": 380,
+    "best_book": "fanatics",
+    "median": 325,
+    "book_prices": {
+      "bet365": 350,
+      "betmgm": 270,
+      "caesars": 320,
+      "draftkings": 320,
+      "fanatics": 380,
+      "fanduel": 330,
+      "hardrockbet": 325
+    },
+    "price_bucket": "under +400",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T01:53:51.356350+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
