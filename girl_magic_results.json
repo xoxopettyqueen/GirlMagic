@@ -90848,18 +90848,18 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-17T00:04:45.234457+00:00",
+    "logged_at": "2026-09-17T00:04:45.291935+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
   },
   {
-    "id": "2026-09-16_Dylan Beavers_shop_lean_165",
+    "id": "2026-09-16_Dylan Beavers_shop_lean_152",
     "date": "2026-09-16",
     "time": "05:04 PM",
     "player": "Dylan Beavers",
     "score": 0,
-    "edge": 165,
+    "edge": 152,
     "best_price": 900,
     "best_book": "fanatics",
     "median": 700,
@@ -90868,7 +90868,7 @@
       "caesars": 700,
       "draftkings": 700,
       "fanatics": 900,
-      "fanduel": 800
+      "fanduel": 850
     },
     "price_bucket": "+800-999",
     "ending": 0,
@@ -90878,7 +90878,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-17T00:04:45.236004+00:00",
+    "logged_at": "2026-09-17T00:04:45.293250+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -90909,7 +90909,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-17T00:04:45.240908+00:00",
+    "logged_at": "2026-09-17T00:04:45.297047+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
@@ -90941,7 +90941,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-17T00:04:45.245613+00:00",
+    "logged_at": "2026-09-17T00:04:45.301706+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
