@@ -9888,7 +9888,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     perfect = [c for c in cards if c[0] >= 85][:24]
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
-        st.caption("Whole slate, data-first. +400+. A stamp is a bonus. Board still tickets.")
+        st.caption("Active = data hot. Pink glow = stamp too. Dim card = good data, no odds trick yet. Tap Data/Context/Splits to open.")
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
         if align < 70:
@@ -9920,7 +9920,13 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         elif view.startswith("📚"):
             cards = [c for c in cards if c[2].get("data_tier") == "cold" or c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
     elif view.startswith("🎯"):
-        cards = [c for c in cards if c[2].get("data_tier") == "hot"][:40]
+        cards = [c for c in cards if c[2].get("data_tier") == "hot"]
+        cards.sort(key=lambda x: (
+            0 if x[2].get("has_odds_magic") or x[1].get("is_bet") else 1,
+            -x[0],
+            x[1].get("player") or "",
+        ))
+        cards = cards[:40]
     elif view.startswith("🫧"):
         cards = [c for c in cards if c[2].get("data_tier") == "mid"][:40]
     elif view.startswith("📚"):
@@ -9985,7 +9991,11 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             klass = "card al-speak"
         if align >= 100 or item.get("is_bet"):
             klass = "card al-lock"
-        if data.get("quiet") or not data.get("has_odds_magic"):
+        if data.get("data_tier") == "hot" and (data.get("has_odds_magic") or item.get("is_bet")):
+            klass = "card al-lock"
+        elif data.get("data_tier") == "hot":
+            klass = "card al-speak"
+        elif data.get("quiet") or not data.get("has_odds_magic"):
             klass = "card al-quiet"
         wlane = data.get("wind_lane") or "cross"
         vs_l = data.get("vs_line") or ""
@@ -10075,17 +10085,23 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 if data.get("la") is not None:
                     extra += f' · <span title="Average launch angle. 20–35° is the homer window">LA {data["la"]:.0f}°</span>'
                 data_line += extra + f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
+            loud = data.get("data_tier") == "hot" and (data.get("has_odds_magic") or item.get("is_bet"))
+            opened = " open" if loud else ""
+            peek = ""
+            if ev is not None and brl is not None:
+                peek = f'<div class="al-pack">EV {ev:.0f} · Barrel {brl:.1f}% · HR L7 {hr7 or "—"} · {format_odds(item.get("best_price"))}</div>'
             st.markdown(
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
                 f'{_petty_meter(align)}'
-                f'<details class="al-fold" open><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
+                f'{peek}'
+                f'<details class="al-fold"{opened}><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
-                f'<details class="al-fold" open><summary title="Pitcher, park vibe, weather, odds stamps">🧠 Context</summary>'
+                f'<details class="al-fold"{opened}><summary title="Pitcher, park vibe, weather, odds stamps">🧠 Context</summary>'
                 f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · 🌡️ {data.get("weather") or ""}'
                 + (f"<br>🧩 {data.get('pen_line')}" if data.get("pen_line") else "")
                 + f"<br>💸 {price} {book_label(item.get('best_book'))} · {stamps}</div></details>"
-                f'<details class="al-fold" open><summary title="Home/away, day/night, vs left and right">⚙️ Splits</summary>'
+                f'<details class="al-fold"{opened}><summary title="Home/away, day/night, vs left and right">⚙️ Splits</summary>'
                 f'<div class="al-pack">🏠 {data.get("split_ha") or "—"}<br>🌙 {data.get("split_dn") or "—"}<br>🆚 {data.get("split_lr") or "—"}</div></details>'
                 f'<div class="al-tags">{"".join(pills)}</div>'
                 f'<div class="card-foot">Board score {item.get("score") or "—"} · Confidence {align} · Board still decides if we ticket it.</div>'
