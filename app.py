@@ -1830,7 +1830,10 @@ GLOSSARY_V2 = {
         ("🎯 Attack Angle", "Anytime TD, receptions + yards, or longshot TD. That’s the lane."),
         ("WR1 / RB1", "Top usage at that position. WR2 / RB2 = second look."),
         ("Targets", "How many times the QB throws his way."),
-        ("🐣 Rookie", "Drafted this year. Pop risk, not a free lock."),
+        ("🐣 Rookie", "Drafted this year. Pop risk, not a free lock. Thin week-1 usage can fall back to preseason."),
+        ("🌱 Preseason sample", "Regular-season usage is thin, so we use ESPN preseason targets / yards / TDs. Support only. Never a lock by itself."),
+        ("🌸 Spring sample", "MLB call-up / rookie with no Savant yet. Spring SLG + HR fill the hole. Softer than live Statcast."),
+        ("NBA rookies (later)", "Same rule when NBA lands: preseason box if the regular sample is empty. Not built yet."),
         ("🛡️ DVP", "Last 10 games, PER GAME, what that defense gave this position. Also split when that D is home, on the road, and in primetime."),
         ("His last two seasons", "That player’s home / road / primetime totals. Not per game. Different from DVP."),
         ("NFL Show filters", "Active = +100 to +499. Whispers = +500+. Homework = rookies / missing usage."),
@@ -9043,6 +9046,7 @@ def load_live_mlb_data():
         "hot14": fetch_mlb_hot_window(14),
         "hot7": fetch_mlb_hot_window(7),
         "rookies": fetch_mlb_rookies(),
+        "spring": fetch_mlb_spring_hitting(),
         "slate": slate,
         "weather": weather,
         "hr9": fetch_team_hr9(),
@@ -9232,6 +9236,118 @@ def load_live_nfl_data():
     return {"form": fetch_nflverse_week_stats(), "dvp": fetch_nfl_dvp()}
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_espn_nfl_preseason(name, year=None):
+    """Rookie fallback. ESPN season type 1 = preseason. Never overrides a real REG sample."""
+    year = year or _nfl_season_year()
+    q = str(name or "").strip()
+    if not q:
+        return {}
+    try:
+        sr = requests.get(
+            "https://site.web.api.espn.com/apis/common/v3/search",
+            params={"region": "us", "lang": "en", "query": q, "limit": 8, "type": "player"},
+            timeout=15,
+        )
+        items = (sr.json() or {}).get("items") or []
+    except Exception:
+        return {}
+    aid = None
+    want = _fold_player(q)
+    for it in items:
+        if str(it.get("sport") or "").lower() != "football":
+            continue
+        if _fold_player(it.get("displayName")) == want:
+            aid = it.get("id")
+            break
+    if not aid:
+        return {}
+    try:
+        stt = requests.get(
+            f"https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/{year}/types/1/athletes/{aid}/statistics/0",
+            timeout=15,
+        )
+        if stt.status_code != 200:
+            return {}
+        cats = ((stt.json() or {}).get("splits") or {}).get("categories") or []
+    except Exception:
+        return {}
+    bag = {}
+    for c in cats:
+        for s in c.get("stats") or []:
+            bag[str(s.get("name") or "")] = s.get("value")
+    rec_yds = float(bag.get("receivingYards") or 0)
+    rec_td = float(bag.get("receivingTouchdowns") or 0)
+    tgt = float(bag.get("receivingTargets") or 0)
+    rush_yds = float(bag.get("rushingYards") or 0)
+    rush_td = float(bag.get("rushingTouchdowns") or 0)
+    car = float(bag.get("rushingAttempts") or 0)
+    gp = float(bag.get("gamesPlayed") or 0)
+    if not (rec_yds or tgt or rush_yds or car or rec_td or rush_td):
+        return {}
+    return {
+        "preseason": True,
+        "weeks": int(gp) if gp else 1,
+        "targets": tgt,
+        "rec_yds": rec_yds,
+        "rec_td": rec_td,
+        "carries": car,
+        "rush_yds": rush_yds,
+        "rush_td": rush_td,
+        "tgt_share": (tgt / max(gp, 1) / 8.0) if tgt else None,  # rough, not real share
+        "home_yds": 0,
+        "away_yds": 0,
+        "pt_yds": 0,
+        "pt_td": 0,
+    }
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_mlb_spring_hitting(year=None):
+    """Spring training hitting. Fallback for rookies / call-ups with no Savant yet."""
+    year = year or datetime.now().year
+    try:
+        r = requests.get(
+            "https://statsapi.mlb.com/api/v1/stats",
+            params={
+                "stats": "season",
+                "group": "hitting",
+                "season": year,
+                "gameType": "S",
+                "limit": 800,
+                "sportId": 1,
+            },
+            timeout=25,
+        )
+        splits = ((r.json() or {}).get("stats") or [{}])[0].get("splits") or []
+    except Exception:
+        return {}
+    out = {}
+    for row in splits:
+        stt = row.get("stat") or {}
+        name = ((row.get("player") or {}).get("fullName")) or ""
+        key = _fold_player(name)
+        if not key:
+            continue
+        def ni(*ks):
+            for k in ks:
+                if stt.get(k) not in (None, ""):
+                    try:
+                        return float(str(stt.get(k)).replace("%", ""))
+                    except Exception:
+                        continue
+            return None
+        out[key] = {
+            "pa": ni("plateAppearances"),
+            "hr": ni("homeRuns"),
+            "avg": ni("avg"),
+            "slg": ni("slg"),
+            "ops": ni("ops"),
+            "spring": True,
+        }
+    return out
+
+
 def _nfl_season_year():
     now = datetime.now()
     return now.year if now.month >= 3 else now.year - 1
@@ -9269,8 +9385,21 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
     live = live or {}
     if sport == "NFL":
         form = (live.get("form") or {}).get(key) or {}
+        used_pre = False
+        thin = (not form) or (int(form.get("weeks") or 0) <= 1 and float(form.get("targets") or 0) + float(form.get("carries") or 0) < 8)
+        if thin:
+            pre = fetch_espn_nfl_preseason(name)
+            if pre:
+                used_pre = True
+                form = {**pre, **{k: v for k, v in form.items() if v not in (None, "", 0, 0.0)}}
+                form["preseason"] = True
+                if not form.get("draft_year"):
+                    form["draft_year"] = _nfl_season_year()
         bits = []
         score = 22
+        if used_pre:
+            bits.append("preseason sample")
+            score += 4
         try:
             ts = form.get("tgt_share")
             if ts is not None and str(ts) not in ("nan", "None", ""):
@@ -9387,6 +9516,7 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "pt_yds": form.get("pt_yds"),
             "pt_td": form.get("pt_td"),
             "dvp_tdg": dvp_tdg,
+            "sample": "preseason" if used_pre else "regular",
         }
     sav = (live.get("ev") or {}).get(key) or {}
     h7 = (live.get("hot7") or {}).get(key) or {}
@@ -9456,7 +9586,19 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
     if rookie:
         bits.append("rookie")
         score += 8
-    if not sav and not h14:
+    spring = (live.get("spring") or {}).get(key) or {}
+    used_spring = False
+    if (not sav or ev is None) and spring:
+        used_spring = True
+        bits.append(f"spring SLG {spring.get('slg') or '—'} · {int(spring.get('hr') or 0)} HR")
+        try:
+            if float(spring.get("slg") or 0) >= 0.500:
+                score += 6
+            if float(spring.get("hr") or 0) >= 3:
+                score += 4
+        except Exception:
+            pass
+    if not sav and not h14 and not used_spring:
         bits.append("live feed miss — name still listed")
     team_raw = item.get("team") or ""
     evname = " ".join(item.get("events") or [item.get("event") or ""])
@@ -9507,6 +9649,8 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         "matchup": matchup,
         "weather": weather_line,
         "wind_lane": wind_lane,
+        "sample": "spring" if used_spring else "regular",
+        "spring_slg": (spring or {}).get("slg") if used_spring else None,
     }
 
 
@@ -10362,6 +10506,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             pills.append('<span class="al-chip">📚 No odds stamp</span>')
         if data.get("rookie"):
             pills.append('<span class="al-chip">🐣 Rookie / call-up</span>')
+        if data.get("sample") == "preseason":
+            pills.append('<span class="al-chip">🌱 Preseason sample</span>')
+        if data.get("sample") == "spring":
+            pills.append('<span class="al-chip">🌸 Spring sample</span>')
         role_s = str(data.get("role") or "")
         if sport == "NFL" and role_s:
             pills.append(f'<span class="al-chip">👑 {role_s}</span>')
