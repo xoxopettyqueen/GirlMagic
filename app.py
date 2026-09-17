@@ -12020,20 +12020,20 @@ def main():
         .pa-hero{background:linear-gradient(90deg,#db2777,#7c3aed);border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 0 24px rgba(236,72,153,.25)}
         .pa-hero h3{font-family:'Playfair Display',serif;margin:0;color:#fff;font-size:1.55rem}
         .pa-quote{color:#fce7f3;font-style:italic;margin:6px 0 0;font-size:.92rem}
-        .pa-card{background:#120c1c;border:1px solid #2e2440;border-radius:22px;padding:18px 18px 14px;margin-bottom:16px}
-        .pa-h{font-size:1.12rem;letter-spacing:0;text-transform:none;color:#fff;font-weight:800;margin:0 0 4px;font-family:'Playfair Display',serif}
-        .pa-sub{font-size:.8rem;color:#b7a8c9;margin:0 0 14px;line-height:1.45}
-        .pa-item{padding:10px 0;border-bottom:1px solid #24182f}
-        .pa-item:last-child{border-bottom:none;padding-bottom:2px}
-        .pa-item.top{background:linear-gradient(90deg,rgba(219,39,119,.16),transparent);margin:0 -10px;padding:10px;border-radius:12px;border-bottom:none}
-        .pa-toprow{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-        .pa-name{color:#fce7f3;font-weight:700;font-size:.95rem;line-height:1.3}
-        .pa-count{color:#fff;font-weight:800;font-size:1.05rem;white-space:nowrap}
-        .pa-bar{height:7px;border-radius:99px;background:#2a2038;overflow:hidden;margin:7px 0 6px}
+        .pa-card{background:#120c1c;border:1px solid #2e2440;border-radius:16px;padding:12px 12px 8px;margin-bottom:10px}
+        .pa-h{font-size:.95rem;letter-spacing:0;text-transform:none;color:#fff;font-weight:800;margin:0 0 2px;font-family:'Space Grotesk',sans-serif}
+        .pa-sub{font-size:.7rem;color:#b7a8c9;margin:0 0 8px;line-height:1.35}
+        .pa-item{padding:5px 0;border-bottom:1px solid #24182f}
+        .pa-item:last-child{border-bottom:none;padding-bottom:1px}
+        .pa-item.top{background:linear-gradient(90deg,rgba(219,39,119,.12),transparent);margin:0 -6px;padding:6px;border-radius:10px;border-bottom:none}
+        .pa-toprow{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+        .pa-name{color:#fce7f3;font-weight:650;font-size:.8rem;line-height:1.2}
+        .pa-count{color:#fff;font-weight:800;font-size:.8rem;white-space:nowrap}
+        .pa-bar{height:4px;border-radius:99px;background:#2a2038;overflow:hidden;margin:4px 0 3px}
         .pa-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f472b6,#c084fc)}
         .pa-item.top .pa-fill{background:linear-gradient(90deg,#fb7185,#f0abfc)}
-        .pa-meta{display:flex;flex-wrap:wrap;gap:6px}
-        .pa-pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:.68rem;font-weight:700;border:1px solid #3b2a4f;color:#e9d5ff;background:#1a1224}
+        .pa-meta{display:flex;flex-wrap:wrap;gap:4px}
+        .pa-pill{display:inline-block;border-radius:999px;padding:1px 6px;font-size:.6rem;font-weight:700;border:1px solid #3b2a4f;color:#e9d5ff;background:#1a1224}
         .pa-pill.rate{border-color:#7c3aed;color:#f5d0fe}
         .pa-pill.hot{border-color:#34d399;color:#bbf7d0}
         .pa-pill.cold{border-color:#f87171;color:#fecaca}
@@ -12152,7 +12152,7 @@ def main():
                 if bkt:
                     buckets[bkt] += 1
                 if r.get("player"):
-                    names[r["player"]] += 1
+                    names[clean_name(r.get("player"))] += 1
                 seen_fam = set()
                 for m in r.get("methods") or []:
                     nm = normalize_method_name(m)
@@ -12403,18 +12403,26 @@ def main():
                     wd_label_rows, max((n for _l, n in wd_label_rows) or [1]), wd_label_g, {},
                 ), unsafe_allow_html=True)
         with right:
-            picks = [
-                (k, n) for k, n in names.most_common()
-                if k and n >= 2 and _qb_ok(k)
-            ]
+            days_by_player = defaultdict(set)
+            for r in hits_u:
+                pl = clean_name(r.get("player") or "")
+                dd = str(r.get("date") or "")[:10]
+                if pl and dd:
+                    days_by_player[pl].add(dd)
+            picks = sorted(
+                [(pl, len(ds), sorted(ds)) for pl, ds in days_by_player.items() if len(ds) >= 2 and _qb_ok(pl)],
+                key=lambda x: (-x[1], x[0]),
+            )
             pick_rows = []
             mx_p = max((x[1] for x in picks), default=1)
-            for i, (pl, n) in enumerate(picks[:12]):
-                pick_rows.append(bar_row(pl, n, mx_p, None, crown=(i == 0), unit=bombs))
-            picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-sub">Nobody hit on two different days in this window.</div>'
+            for i, (pl, n, ds) in enumerate(picks[:12]):
+                shown = ", ".join(d[5:] for d in ds[:4])
+                pills = [f'<span class="pa-pill">{shown}</span>']
+                pick_rows.append(bar_row(pl, n, mx_p, pills, crown=(i == 0), unit="days"))
+            picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-sub">Nobody went yard on two different days in this window.</div>'
             st.markdown(
-                '<div class="pa-card"><div class="pa-h">Same player, more than one day</div>'
-                f'<div class="pa-sub">Counted once per day. This is “they went twice this week,” not four scores in one game.</div>'
+                '<div class="pa-card"><div class="pa-h">Hit on 2+ different days</div>'
+                f'<div class="pa-sub">Only this window. One day = one {bomb}, even if we logged him four times. Dates are under the name.</div>'
                 + picks_html +
                 '</div>',
                 unsafe_allow_html=True,
@@ -12458,7 +12466,7 @@ def main():
             "Top buckets: " + ", ".join(f"{k} {n}" for k, n in buckets.most_common(5)),
             "Families: " + ", ".join(f"{k} {n}" for k, n in families.most_common(4)),
             "Methods: " + ", ".join(f"{k} {n}" for k, n in methods_c.most_common(6)),
-            "Picks: " + ", ".join(f"{k} {n}" for k, n in picks[:8]),
+            "Picks: " + ", ".join(f"{k} {n}" for k, n, *_ in picks[:8]),
             "If the odds look ugly, they probably lying.",
         ]
         st.download_button(
