@@ -1743,10 +1743,10 @@ GLOSSARY_V2 = {
         ("🔥 Heating", "Recent uptick in EV + HH. Trend is cooking."),
         ("💎 Longshot", "Price +500 or longer. Chaos lane."),
         ("xSLG", "Savant expected slugging from how hard / at what angle they hit it. Not the box-score SLG."),
-        ("xHR", "Savant expected homers. If xHR > actual HRs they are leaving bombs on the field."),
-        ("near-HR", "Doubters + mostly gone on the Savant HR board. Almost left the yard."),
+        ("xHR / near-HR", "Hidden on the card. Season Savant counts that looked like a second HR number. Still used quietly in the score."),
+        ("Loud contact", "Barrel 10%+ or xSLG .450+. That's the readable version of 'almost gone.'"),
         ("LA / launch angle", "Average launch angle. 20°+ is fly-ball juice. Not a true FB% — Savant does not give FB% on that CSV."),
-        ("Savant pull", "Live Baseball Savant: EV, HH, barrel, xSLG, xHR, near-HR. No CSV drop."),
+        ("Savant pull", "Live Baseball Savant on the card: EV, HH, barrel, xSLG, launch angle, last-7 HRs."),
         ("Contact gate", "Align only keeps hitters who clear EV / HH / barrel plus recent heat. Not the whole slate."),
         ("SP HR/9", "How many homers that starter allows per nine. Higher = friendlier to bats."),
         ("ERA next to SP", "Starter ERA. Context only. Not a ticket by itself."),
@@ -9271,13 +9271,11 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             score += 3
     if doubters is not None or mostly is not None:
         near = int((doubters or 0) + (mostly or 0))
-        bits.append(f"near-HR {near}")
         if near >= 8:
             score += 6
         elif near >= 4:
             score += 3
-    if xhr is not None:
-        bits.append(f"xHR {xhr:.0f}")
+    # xHR / near-HR stay in the data object for scoring only — not on the card.
     hr7 = h7.get("hr")
     hr14 = h14.get("hr")
     slg7 = h7.get("slg")
@@ -9650,7 +9648,7 @@ def render_alignment_tab(ev_board, watch_board=None):
         if item.get("num_tag"):
             notes.append("Numerology tag present")
         if (data.get("near_hr") or 0) >= 4:
-            notes.append("Near-HR juice on Savant — balls that almost left")
+            notes.append("Contact is loud (barrel / xSLG)")
         if data.get("xslg") is not None and data.get("xslg") >= 0.450:
             notes.append("xSLG is loud")
         if data_hit and odds_hit:
@@ -9733,8 +9731,8 @@ def render_alignment_tab(ev_board, watch_board=None):
             pills.append('<span class="al-chip">💎 Longshot</span>')
         if "heating" in (data.get("summary") or ""):
             pills.append('<span class="al-chip">🔥 Heating</span>')
-        if (data.get("near_hr") or 0) >= 4:
-            pills.append(f'<span class="al-chip" title="Savant doubters + mostly gone">💥 Near-HR {int(data.get("near_hr"))}</span>')
+        if (data.get("xslg") is not None and data.get("xslg") >= 0.450) or (data.get("barrel") or 0) >= 10:
+            pills.append('<span class="al-chip" title="Barrel or xSLG is loud">💥 Loud contact</span>')
         if data.get("xslg") is not None and data.get("xslg") >= 0.450:
             pills.append(f'<span class="al-chip" title="Savant expected slugging">📈 xSLG {data.get("xslg"):.3f}</span>')
         if set(str(m) for m in (item.get("methods") or [])) & _ALIGN_DIGIT:
@@ -9853,11 +9851,7 @@ def render_alignment_tab(ev_board, watch_board=None):
                 if data.get("xslg") is not None:
                     extra += f' · <span title="Expected slugging from contact quality">xSLG {data["xslg"]:.3f}</span>'
                 if data.get("la") is not None:
-                    extra += f' · <span title="Average launch angle. 20°+ = fly-ball juice">LA {data["la"]:.0f}°</span>'
-                if data.get("near_hr") is not None:
-                    extra += f' · <span title="Savant doubters + mostly gone = almost left the yard">near-HR {int(data["near_hr"])}</span>'
-                if data.get("xhr") is not None:
-                    extra += f' · <span title="Savant expected home runs">xHR {data["xhr"]:.0f}</span>'
+                    extra += f' · <span title="Average launch angle. 20–35° is the homer window">LA {data["la"]:.0f}°</span>'
                 data_line += extra + f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             st.markdown(
                 f'<div class="{klass}">'
