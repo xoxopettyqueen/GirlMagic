@@ -10893,7 +10893,12 @@ def main():
     if page == "Lines:Lock":
         st.markdown('<div class="queen-banner">🔒 Pregame Lock · open / now / close</div>', unsafe_allow_html=True)
         st.markdown("#### Run It Recap")
-        st.caption("Completed props only. Pulse at the bottom stays tiny.")
+        st.caption(
+            "This is the grade sheet for names we already logged today — not live odds. "
+            "TAKE = we would have bet it. HIT / MISS = whether the homer (or TD) actually happened. "
+            "Book = where the number lived. Count = how many log rows that name stacked (duplicates, not extra bombs). "
+            "Pulse under the table is just the day’s noise."
+        )
         render_run_it_recap()
         st.markdown("#### Pregame prices")
         st.caption(
@@ -11198,7 +11203,8 @@ def main():
         site_section_open(
             "📡 LEARN",
             "Tracker",
-            "Hit rates after we grade. Board TAKE and Shop TAKE both count. Small n stays hidden.",
+            "Hit rates after we grade. Board TAKE and Shop TAKE both count. Small n stays hidden. "
+            "If TAKE % sits on top of WATCH %, the green list is too fat — raise the floor next week.",
         )
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
         st.markdown(
@@ -11805,6 +11811,15 @@ def main():
             return endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross
 
         endings, books, buckets, families, methods_c, names, end_g, book_g, buck_g, meth_g, fade, cross = pack_hits(hits, graded)
+        wd_hits, wd_grad = Counter(), Counter()
+        for r in hits:
+            dd = _row_day(r)
+            if dd:
+                wd_hits[dd.strftime("%A")] += 1
+        for r in graded:
+            dd = _row_day(r)
+            if dd:
+                wd_grad[dd.strftime("%A")] += 1
         p_end, p_book, p_buck, p_fam, p_meth, p_names, *_rest = pack_hits(prev_hits, prev_graded)
 
         def arrow(now, then):
@@ -11914,16 +11929,22 @@ def main():
                 "Money Lanes", "Top buckets - efficiency = HR / graded in that lane",
                 buckets.most_common(8), mx_bu, buck_g, p_buck,
             ), unsafe_allow_html=True)
+            order = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+            wd_rows = [(d, wd_hits[d]) for d in order if wd_hits[d] or wd_grad[d]]
+            if wd_rows:
+                st.markdown(section_html(
+                    "By weekday", "HR count that weekday — rate uses all graded that weekday",
+                    wd_rows, max(wd_hits.values() or [1]), wd_grad, {},
+                ), unsafe_allow_html=True)
         with right:
             picks = [(k, n) for k, n in names.most_common() if k and n >= 2]
             pick_rows = []
             for i, (pl, n) in enumerate(picks[:12]):
-                st_s = f" - {streaks[pl]}-day streak" if pl in streaks else ""
-                pick_rows.append(bar_row(f"{pl}{st_s}", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
+                pick_rows.append(bar_row(f"{pl} · {n} HRs this window", n, max((x[1] for x in picks), default=1), "", crown=(i == 0)))
             picks_html = "".join(pick_rows) if pick_rows else '<div class="pa-pct">None yet</div>'
             st.markdown(
                 '<div class="pa-card"><div class="pa-h">Repeat Offenders</div>'
-                '<div class="pa-sub">Petty Picks (2+ hits)</div>'
+                '<div class="pa-sub">Unique HRs in this date window — not a game streak</div>'
                 + picks_html +
                 '</div>',
                 unsafe_allow_html=True,
