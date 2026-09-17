@@ -108038,5 +108038,69 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Braelon Allen_shop_lean_45",
+    "date": "2026-09-16",
+    "time": "09:15 PM",
+    "player": "Braelon Allen",
+    "score": 0,
+    "edge": 45,
+    "best_price": 360,
+    "best_book": "fanatics",
+    "median": 305,
+    "book_prices": {
+      "bet365": 300,
+      "betmgm": 240,
+      "caesars": 305,
+      "draftkings": 310,
+      "fanatics": 360,
+      "fanduel": 310,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T04:15:02.252968+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-16_Mason Taylor_shop_lean_33",
+    "date": "2026-09-16",
+    "time": "09:15 PM",
+    "player": "Mason Taylor",
+    "score": 0,
+    "edge": 33,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 475,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 475,
+      "caesars": 475,
+      "draftkings": 500,
+      "fanatics": 525,
+      "fanduel": 470,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-17T04:15:02.262704+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
