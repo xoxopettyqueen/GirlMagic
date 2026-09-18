@@ -138922,7 +138922,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "take_it",
     "logged_at": "2026-09-18T20:33:08.244673+00:00",
     "price_source": "pregame_lock",
@@ -138931,7 +138931,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.43
+    "benford_cluster": 0.43,
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Luis Torrens_shop_lean_54",
@@ -139019,12 +139020,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_lean",
     "logged_at": "2026-09-18T20:33:13.254854+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Ian Happ_shop_lean_41",
@@ -139051,11 +139053,12 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_lean",
     "logged_at": "2026-09-18T20:33:13.256207+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   }
 ]
