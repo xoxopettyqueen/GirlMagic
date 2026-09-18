@@ -122542,5 +122542,69 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.6
+  },
+  {
+    "id": "2026-09-17_Khalil Shakir_shop_lean_68",
+    "date": "2026-09-17",
+    "time": "07:26 PM",
+    "player": "Khalil Shakir",
+    "score": 0,
+    "edge": 68,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 255,
+      "betmgm": 525,
+      "caesars": 625,
+      "draftkings": 850,
+      "fanatics": 700,
+      "fanduel": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-18T02:26:27.143317+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-17_Sam LaPorta_shop_lean_42",
+    "date": "2026-09-17",
+    "time": "07:26 PM",
+    "player": "Sam LaPorta",
+    "score": 0,
+    "edge": 42,
+    "best_price": 475,
+    "best_book": "hardrockbet",
+    "median": 420,
+    "book_prices": {
+      "bet365": 240,
+      "betmgm": 450,
+      "caesars": 390,
+      "draftkings": 400,
+      "fanatics": 420,
+      "fanduel": 450,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-18T02:26:27.146476+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
