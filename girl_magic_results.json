@@ -52750,12 +52750,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-15T01:04:58.628140+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-14"
   },
   {
     "id": "2026-09-14_Dallas Goedert_shop_lean_45",
@@ -91740,7 +91745,7 @@
       "Kelly Support"
     ],
     "core": 12,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-17T00:20:37.095845+00:00",
     "price_source": "pregame_lock",
@@ -91749,7 +91754,23 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.71
+    "benford_cluster": 0.71,
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "FD 50",
+      "Multi-book method",
+      "Match 75",
+      "B365 over MGM",
+      "B365 50",
+      "MGM Exact",
+      "Fanatics Loud",
+      "Fanatics Rogue",
+      "B365 over HardRock",
+      "MGM 75",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "hit_when": "2026-09-16"
   },
   {
     "id": "2026-09-16_Malik Washington_take_it_100",
@@ -98263,12 +98284,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.542172+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-16"
   },
   {
     "id": "2026-09-16_Brevyn Spann-Ford_shop_lean_106",
@@ -119290,12 +119316,17 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-17T16:43:23.962268+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop LEAN"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Sam LaPorta_watch_61",
@@ -119396,12 +119427,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-17T16:51:05.939215+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Buffalo Bills D/ST_shop_lean_48",
@@ -122129,7 +122165,7 @@
       "Kelly Support"
     ],
     "core": 14,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-17T22:04:09.794795+00:00",
     "price_source": "pregame_lock",
@@ -122138,7 +122174,25 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.57
+    "benford_cluster": 0.57,
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "FD+MGM classic",
+      "B365 25",
+      "B365 over HardRock",
+      "Multi-book method",
+      "Stayed in the group",
+      "Fanatics Loud",
+      "HardRock 50",
+      "Match 25",
+      "FD 600",
+      "MGM 25",
+      "Last one left",
+      "B365 over MGM",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Jameson Williams_watch_62",
