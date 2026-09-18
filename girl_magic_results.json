@@ -52351,12 +52351,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-15T01:04:58.623849+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-14"
   },
   {
     "id": "2026-09-14_Sean Tucker_shop_take_95",
@@ -52492,12 +52497,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-15T01:04:58.625307+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-14"
   },
   {
     "id": "2026-09-14_Mark Andrews_shop_take_70",
@@ -97806,12 +97816,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-17T00:20:44.537368+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-16"
   },
   {
     "id": "2026-09-16_Xavier Hutchinson_shop_take_123",
@@ -108958,12 +108973,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-17T04:58:12.215905+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-16"
   },
   {
     "id": "2026-09-16_Rashid Shaheed_shop_lean_46",
@@ -118771,7 +118791,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "watch",
     "logged_at": "2026-09-17T16:43:20.976352+00:00",
     "price_source": "pregame_lock",
@@ -118780,7 +118800,15 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "B365 over HardRock",
+      "Books tight",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Brock Wright_watch_98",
@@ -118903,7 +118931,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "watch",
     "logged_at": "2026-09-17T16:43:21.068659+00:00",
     "price_source": "pregame_lock",
@@ -118912,7 +118940,17 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Books tight",
+      "B365 over HardRock",
+      "MGM 40",
+      "B365 over MGM",
+      "EV Support",
+      "Kelly Support"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Jackson Hawes_watch_90",
@@ -119038,7 +119076,7 @@
       "Kelly Premium"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "watch",
     "logged_at": "2026-09-17T16:43:21.159556+00:00",
     "price_source": "pregame_lock",
@@ -119047,7 +119085,16 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.57
+    "benford_cluster": 0.57,
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "B365 over HardRock",
+      "B365 over MGM",
+      "DK FD-style",
+      "EV Support",
+      "Kelly Premium"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Sione Vaki_watch_83",
@@ -119220,12 +119267,17 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-17T16:43:23.956636+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Isaac TeSlaa_shop_take_59",
@@ -119492,12 +119544,17 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-17T16:51:05.946244+00:00",
     "price_source": "shop",
     "sport": "NFL",
-    "market": "anytime_td"
+    "market": "anytime_td",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Shop LEAN"
+    ],
+    "hit_when": "2026-09-17"
   },
   {
     "id": "2026-09-17_Detroit Lions D/ST_shop_lean_35",
