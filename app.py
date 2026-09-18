@@ -1731,7 +1731,8 @@ GLOSSARY_V2 = {
         ("Confidence vs Board", "Confidence is the 0–100 on this tab. Board score is the ticket stack on Run It."),
         ("Petty Upside / Edge", "How loud the data side is. Footer line on Align cards."),
         ("Active / Whispers / Homework", "MLB: Active = 70+ (85+ still Locked/Spoke on the card). Whispers = 60–69. Homework = under 60. NFL: Active = +100 to +499. Whispers = +500+. Homework = rookies / thin volume. Missing Savant or nflverse does not hide a Board/stamped name."),
-        ("Hot / Mid / Cold data", "Hot = 3+ data flags (barrel / EV / HH / xSLG / L7 heat / DVP). Mid = exactly 2. Cold = 0–1. Stamps do not invent Hot."),
+        ("Hot / Mid / Cold data", "Hot = 3 real flags (MLB: EV 90+, HH 44%+, barrel 9%+, xSLG .450+, plus already-hot OR due). Due = loud contact with 0–1 HR L7. Already-hot = HR L7 2+ / heating. You do not need 2 homers this week to make the pile. Mid = 2. Cold = 0–1. Active max 12."),
+        ("Due", "Barrel / xSLG / EV is loud and they have 0 or 1 HR in the last 7. That’s the ‘owed a bomb’ lane. Not the same as already heating."),
         ("Weekly adjust", "Receipts + Tracker by tag. Cold stamps get demoted. Hot support can get watched harder. Never blindly keep a dead tell."),
         ("Tickets vs Research", "Recap pills: Tickets = TAKE / Shop TAKE. Research = WATCH / LEAN. Grade both. TAKE must beat Research or the floor goes up."),
         ("Caesars 90 / HardRock 50 / 00", "Other-book endings we now stamp and track. Support until n ≥ 25 and they beat baseline."),
@@ -10077,7 +10078,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     )
     pass
     if not rows:
-        st.info("Hit Fetch first. Confidence reads every +400 name on the slate, not just Board greens.")
+        st.info("Hit Fetch first. Confidence scores the +400 slate, then Active only keeps the pile.")
         return
     sport = active_sport()
     live = {}
@@ -10108,18 +10109,27 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         xslg = data.get("xslg")
         la = data.get("la")
         juice = bool(near >= 6 or (xslg is not None and xslg >= 0.480))
+        loud_contact = bool(
+            (brl is not None and brl >= 9)
+            or (xslg is not None and xslg >= 0.450)
+            or (ev and ev >= 91)
+        )
+        due = bool(loud_contact and hr7 <= 1)
+        heating_now = bool(hot or hr7 >= 2)
         contact = sum([
-            1 if ev and ev >= 89.5 else 0,
-            1 if hh is not None and hh >= 42 else 0,
-            1 if brl is not None and brl >= 8 else 0,
-            1 if xslg is not None and xslg >= 0.420 else 0,
-            1 if la is not None and 18 <= float(la) <= 35 else 0,
-            1 if hot or hr7 >= 1 else 0,
+            1 if ev and ev >= 90 else 0,
+            1 if hh is not None and hh >= 44 else 0,
+            1 if brl is not None and brl >= 9 else 0,
+            1 if xslg is not None and xslg >= 0.450 else 0,
+            1 if heating_now or due else 0,
         ])
-        # Barrel is the homer skill. 3+ flags = hot. 2 = mid. 0–1 = cold.
-        elite_barrel = brl is not None and brl >= 11 and ev and ev >= 90
+        # Launch angle is context, not a hot flag.
+        # Due = loud contact + 0–1 HR L7. Heat = already going (HR L7 2+ / heating).
+        elite_barrel = brl is not None and brl >= 12 and ev and ev >= 91
         data_hit = bool(contact >= 3 or elite_barrel)
         data["flag_n"] = contact
+        data["due"] = due
+        data["heating_now"] = heating_now
         rookie_spike = bool(data.get("rookie") and ((ev and ev >= 90) or (hh is not None and hh >= 42)))
         books_n = 0
         try:
@@ -10411,17 +10421,17 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     n_hot = sum(1 for c in cards if c[2].get("data_tier") == "hot")
     n_mid = sum(1 for c in cards if c[2].get("data_tier") == "mid")
     n_cold = sum(1 for c in cards if c[2].get("data_tier") == "cold")
+    n_board = sum(1 for c in cards if c[2].get("data_tier") == "hot" and c[1].get("is_bet"))
     st.markdown(
         f'<div class="petty-row">'
-        f'<div class="petty-box"><div class="petty-num">{n_hot}</div><div class="petty-label">DATA HOT</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{n_mid}</div><div class="petty-label">DATA MID</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{n_cold}</div><div class="petty-label">DATA COLD</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{len(cards)}</div><div class="petty-label">SLATE +400</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{n_hot}</div><div class="petty-label">THE PILE</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{n_board}</div><div class="petty-label">ALSO RUN IT</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{n_mid + n_cold}</div><div class="petty-label">NOT THE PILE</div></div>'
         f'</div>'
         f'<div class="tier-row">'
-        f'<div class="tier-card tier-hot"><b>🔥 HOT · the pile</b><p>3+ flags. MLB: EV 89.5+ · HH 42%+ · barrel 8%+ · xSLG .420+ · launch 18–35° · heat / HR L7. Barrel 11%+ and EV 90 is enough by itself. NFL: 3 of target share / heating / TDs / DVP paying TDs / used WR2-TE2-RB2.</p></div>'
-        f'<div class="tier-card tier-mid"><b>💅 MID · fine profile</b><p>Exactly 2 flags. Cute contact or usage. Not the pile. Stamps can still make her loud.</p></div>'
-        f'<div class="tier-card tier-cold"><b>🧊 COLD · still on the slate</b><p>0 or 1 flag. +400 names we keep honest. Homework unless a stamp slaps.</p></div>'
+        f'<div class="tier-card tier-hot"><b>🔥 HOT · what Active shows</b><p>3 real flags. MLB: EV 90+ · HH 44%+ · barrel 9%+ · xSLG .450+ · and either already hot (HR L7 2+) or DUE (loud contact + 0–1 HR L7). Barrel 12% + EV 91 is enough alone. You do not need 2 bombs this week. NFL: 3 of target share / heating / TDs / DVP / used WR2-TE2-RB2.</p></div>'
+        f'<div class="tier-card tier-mid"><b>💅 MID · Whispers</b><p>Exactly 2 flags. Cute. Not listed on Active.</p></div>'
+        f'<div class="tier-card tier-cold"><b>🧊 COLD · Homework</b><p>0–1 flag. Buried on purpose. The +400 slate is not the product.</p></div>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -10436,8 +10446,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     if view.startswith("🎯"):
         st.markdown("#### ✨ Confidence picks")
         st.caption(
-            "🔥 Hot = 3+ flags. 💅 Mid = 2. 🧊 Cold = 0–1. "
-            "Career-best split + cold week = 🪤 trap. Worse split today always drops."
+            "Active is the pile only — max 12 cards. Mid/cold live under Whispers / Homework. "
+            "💚 Board take = also on Run It. 🪤 trap split still cuts a hot name down."
         )
     ev_log = load_align_events()
     for align, item, data, notes, vibe in cards:
@@ -10481,7 +10491,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         -x[0],
         x[1].get("player") or "",
     ))
-    cards = cards[:16]
+    cards = cards[:12] if view.startswith("🎯") else cards[:16]
     cols = st.columns(2)
     already = set()
     shown_i = 0
@@ -10515,8 +10525,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             pills.append(f'<span class="al-chip">👑 {role_s}</span>')
         if data.get("longshot"):
             pills.append('<span class="al-chip">💎 Longshot</span>')
-        if "heating" in (data.get("summary") or ""):
+        if "heating" in (data.get("summary") or "") or data.get("heating_now"):
             pills.append('<span class="al-chip">🔥 Heating</span>')
+        if data.get("due"):
+            pills.append('<span class="al-chip">⌛ Due</span>')
         if (data.get("xslg") is not None and data.get("xslg") >= 0.450) or (data.get("barrel") or 0) >= 10:
             pills.append('<span class="al-chip" title="Barrel or xSLG is loud">💥 Loud contact</span>')
         if data.get("xslg") is not None and data.get("xslg") >= 0.450:
