@@ -125475,7 +125475,7 @@
     ],
     "core": 2,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-18T14:22:18.112711+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -125483,7 +125483,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-18_Oswald Peraza_watch_17",
@@ -131902,7 +131903,7 @@
     ],
     "core": 1,
     "result": "SKIP_DUP",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-18T15:30:00.489581+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -131911,7 +131912,8 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.86,
-    "graded_by": "one_per_day"
+    "graded_by": "one_per_day",
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-18_Colton Cowser_watch_10",
@@ -138884,5 +138886,51 @@
     "sport": "MLB",
     "market": "batter_home_runs",
     "graded_by": "one_per_day"
+  },
+  {
+    "id": "2026-09-18_Michael Conforto_take_it_54",
+    "date": "2026-09-18",
+    "time": "01:33 PM",
+    "player": "Michael Conforto",
+    "score": 54,
+    "edge": 101,
+    "best_price": 550,
+    "best_book": "hardrockbet",
+    "median": 400,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 400,
+      "draftkings": 388,
+      "fanatics": 340,
+      "fanduel": 400,
+      "hardrockbet": 550,
+      "bet365": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "mgm_locked": 450,
+    "mgm_ending": 50,
+    "methods": [
+      "HardRock over pack",
+      "Stayed in the group",
+      "Match 50",
+      "MGM 50",
+      "HardRock 50",
+      "Multi-book Shorten",
+      "B365 over MGM",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-18T20:33:08.244673+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "CHICAGO CUBS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.43
   }
 ]
