@@ -136415,7 +136415,7 @@
     ],
     "core": 2,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-18T19:18:58.024110+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -136423,7 +136423,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.6
+    "benford_cluster": 0.6,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-18_Victor Mesa Jr._watch_24",
@@ -136965,5 +136966,87 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Isiah Kiner-Falefa_take_it_89",
+    "date": "2026-09-18",
+    "time": "12:38 PM",
+    "player": "Isiah Kiner-Falefa",
+    "score": 89,
+    "edge": 168,
+    "best_price": 1400,
+    "best_book": "fanatics",
+    "median": 1260,
+    "book_prices": {
+      "draftkings": 1380,
+      "fanatics": 1400,
+      "fanduel": 1260,
+      "betmgm": 1150,
+      "caesars": 1100
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 1150,
+    "mgm_ending": 50,
+    "methods": [
+      "FD+MGM classic",
+      "MGM 50",
+      "Stayed in the group",
+      "Match 50",
+      "Multi-book Shorten",
+      "Fanatics over pack",
+      "FD Pattern",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 4,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-18T19:38:50.708405+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "BOSTON RED SOX",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-18_John Rave_watch_19",
+    "date": "2026-09-18",
+    "time": "12:38 PM",
+    "player": "John Rave",
+    "score": 19,
+    "edge": -80,
+    "best_price": 1050,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "bet365": 900,
+      "fanatics": 1050,
+      "fanduel": 880
+    },
+    "price_bucket": "+1000+",
+    "ending": 50,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Fanatics Rogue",
+      "Fanatics over pack",
+      "Books tight",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-18T19:38:50.808290+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "KANSAS CITY ROYALS",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.33
   }
 ]
