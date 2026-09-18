@@ -136182,5 +136182,162 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.71
+  },
+  {
+    "id": "2026-09-18_Jes\u00fas S\u00e1nchez_shop_lean_152",
+    "date": "2026-09-18",
+    "time": "11:23 AM",
+    "player": "Jes\u00fas S\u00e1nchez",
+    "score": 0,
+    "edge": 152,
+    "best_price": 800,
+    "best_book": "bet365",
+    "median": 665,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 800,
+      "caesars": 625,
+      "draftkings": 630,
+      "fanatics": 700,
+      "fanduel": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-18T18:23:17.476242+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Samuel Basallo_shop_lean_53",
+    "date": "2026-09-18",
+    "time": "11:23 AM",
+    "player": "Samuel Basallo",
+    "score": 0,
+    "edge": 53,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 652,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 625,
+      "draftkings": 680,
+      "fanatics": 700,
+      "fanduel": 680,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-18T18:23:17.522967+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Dylan Beavers_shop_take_51",
+    "date": "2026-09-18",
+    "time": "11:23 AM",
+    "player": "Dylan Beavers",
+    "score": 0,
+    "edge": 51,
+    "best_price": 650,
+    "best_book": "hardrockbet",
+    "median": 578,
+    "book_prices": {
+      "betmgm": 650,
+      "caesars": 575,
+      "draftkings": 582,
+      "fanatics": 525,
+      "fanduel": 540,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-18T18:23:17.525454+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Mike Yastrzemski_shop_lean_48",
+    "date": "2026-09-18",
+    "time": "11:23 AM",
+    "player": "Mike Yastrzemski",
+    "score": 0,
+    "edge": 48,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 600,
+      "caesars": 575,
+      "draftkings": 574,
+      "fanatics": 650,
+      "fanduel": 610,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-18T18:23:17.532239+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Sal Stewart_shop_lean_28",
+    "date": "2026-09-18",
+    "time": "11:23 AM",
+    "player": "Sal Stewart",
+    "score": 0,
+    "edge": 28,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 520,
+    "book_prices": {
+      "bet365": 525,
+      "betmgm": 425,
+      "caesars": 500,
+      "draftkings": 511,
+      "fanatics": 550,
+      "fanduel": 520,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-18T18:23:17.555381+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
