@@ -7495,8 +7495,21 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     coverage_board = []
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if is_blocked_player(player): continue
-        # MLB lineups only. Cached RotoWire HR names must never wipe the NFL Board.
-        if active_sport() != "NFL" and lineup_names and len(lineup_names) >= 40 and name_in_lineup(player, lineup_names) is False: continue
+        # MLB lineups only. Skip the filter if RotoWire barely matches the slate.
+        if active_sport() != "NFL" and lineup_names and len(lineup_names) >= 40:
+            if st.session_state.get("_lineup_filter_ok") is None:
+                uniq = []
+                try:
+                    uniq = list(df["player"].dropna().unique())
+                except Exception:
+                    uniq = []
+                hits = sum(1 for p in uniq if name_in_lineup(p, lineup_names))
+                ok = hits >= max(20, int(0.25 * max(len(uniq), 1)))
+                st.session_state["_lineup_filter_ok"] = ok
+                if not ok:
+                    st.session_state["_lineup_filter_note"] = f"Lineups ignored — only {hits}/{len(uniq)} odds names matched."
+            if st.session_state.get("_lineup_filter_ok") and name_in_lineup(player, lineup_names) is False:
+                continue
         if active_sport() == "NFL" and is_nfl_qb(player):
             continue
         prices = g["price"].dropna().tolist()
@@ -10838,6 +10851,8 @@ def main():
                     msg = short_lineup_msg(msg, len(names))
                     st.session_state["lineup_names"] = names
                     st.session_state["lineup_msg"] = msg
+                    st.session_state.pop("_lineup_filter_ok", None)
+                    st.session_state.pop("_lineup_filter_note", None)
                     (st.success if names else st.warning)(msg)
             with b2:
                 if st.button("Grade HRs", use_container_width=True):
@@ -10958,6 +10973,8 @@ def main():
                 st.session_state["last_selected"] = list(chosen)
                 st.session_state["new_fetch"] = True
                 st.session_state["last_fetch_time"] = now_az()
+                st.session_state.pop("_lineup_filter_ok", None)
+                st.session_state.pop("_lineup_filter_note", None)
                 st.success(f"Loaded {len(df)} props · {now_az()} AZ")
                 try:
                     h, m, s, msg = auto_grade_pending()
@@ -11164,6 +11181,8 @@ def main():
             have.add(name)
         watch_n = len(watch_only)
     pick_n = len(team_picks)
+    if st.session_state.get("_lineup_filter_note"):
+        st.caption(st.session_state.get("_lineup_filter_note"))
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
     mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
@@ -11502,6 +11521,16 @@ def main():
             picks_by_game = defaultdict(list)
             for item in team_picks:
                 picks_by_game[_strip_game_clock(_item_game(item) or "Game")].append(item)
+
+            def _rows_for_game(game_name, mapping):
+                hit = list(mapping.get(game_name) or [])
+                if hit:
+                    return hit
+                out = []
+                for k, rows in mapping.items():
+                    if event_matches_chosen(k, [game_name]) or event_matches_chosen(game_name, [k]):
+                        out.extend(rows)
+                return out
             extra = [g for g in (set(by_game) | set(picks_by_game)) if g not in slate_games]
             all_games = slate_games + extra
 
@@ -11589,8 +11618,8 @@ def main():
                 f"{', '.join(show_kinds) or 'nothing selected'}"
             )
             for game in sorted(visible_games, key=_game_rank):
-                items = [x for x in by_game.get(game, []) if _keep_card(x)] if "TAKE IT" in show_kinds else []
-                picks = [x for x in picks_by_game.get(game, []) if _keep_card(x)] if "TEAM PICK" in show_kinds else []
+                items = [x for x in _rows_for_game(game, by_game) if _keep_card(x)] if "TAKE IT" in show_kinds else []
+                picks = [x for x in _rows_for_game(game, picks_by_game) if _keep_card(x)] if "TEAM PICK" in show_kinds else []
                 items = sorted(items, key=lambda x: -x.get("score", 0))
                 picks = sorted(picks, key=lambda x: -x.get("score", 0))
                 if not items and not picks and (name_q or min_score or time_win != "All times"):
@@ -11625,7 +11654,11 @@ def main():
                         except Exception:
                             pass
                     if wire_n:
-                        st.caption(f"On the wire · {wire_n} 0.5 HR lines · nobody cleared TAKE IT / team pick yet.")
+                        st.caption(
+                            f"On the wire · {wire_n} 0.5 HR lines · "
+                            f"{take_n} TAKE / {pick_n} team picks on the whole board · "
+                            f"none landed on this game header."
+                        )
                     else:
                         st.caption("Books have not posted 0.5 HR on this game yet. Fetch again closer to first pitch.")
 
