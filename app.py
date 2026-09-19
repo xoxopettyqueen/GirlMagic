@@ -519,6 +519,20 @@ try:
 except ImportError:
     HAS_AUTOREFRESH = False
 
+    def st_autorefresh(interval=60000, key="odds_refresh"):
+        """Fallback: reload the tab on a timer so Fetch / grade stay automatic."""
+        ms = int(interval or 60000)
+        sec = max(30, int(ms / 1000))
+        try:
+            import streamlit.components.v1 as components
+            components.html(
+                f"<script>setTimeout(function(){{window.parent.location.reload()}}, {ms});</script>",
+                height=0,
+            )
+        except Exception:
+            pass
+        return int(time.time() // sec)
+
 try:
     from bs4 import BeautifulSoup
     HAS_BS4 = True
@@ -1130,7 +1144,7 @@ NAME_METHODS_MIN = 3
 NAME_MAX_PAIRS = 50
 OUTLIER_GAP = 150
 BOOK_CLUSTER_GAP = 50  # max spread across focus books to count as 'tight'
-REFRESH_MINUTES = 20
+REFRESH_MINUTES = 8
 FD_MIN = 400
 MOVE_PRICE_MIN = 500
 # 0.5 HR Over sanity - reject absurd API longshots (not real pregame 1HR prices)
@@ -1767,7 +1781,7 @@ def render_card_guide():
 
 GLOSSARY_V2 = {
     "🧭 How": [
-        ("Fetch", "The only moment new odds and Lock snapshots save. Nothing else on the site is live until you Fetch."),
+        ("Fetch", "Loads odds + Lock. The app now auto-loads today’s games, auto-Fetches the first time, auto-grades box scores, and refreshes about every 8 minutes. Fetch is still there if you want it now."),
         ("Green / TAKE", "Cleared the list. Two premium stamps. Score hold is 85 now, not 70. This is the ticket."),
         ("Gray / PASS", "Tags fired. Floor missed. Homework, not a dare."),
         ("Eyes / WATCH", "Log it for grade. Do not force the ticket."),
@@ -10806,10 +10820,7 @@ def main():
             st.session_state.pop(k, None)
         st.session_state.pop("prev_ev", None)
 
-    if HAS_AUTOREFRESH:
-        refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
-    else:
-        refresh_count = 0
+    refresh_count = st_autorefresh(interval=REFRESH_MINUTES * 60 * 1000, key="odds_refresh")
     if "sport" not in st.session_state:
         qp = "MLB"
         try:
@@ -10932,11 +10943,15 @@ def main():
     ev_n = len(st.session_state.get("events") or [])
     with st.sidebar:
         st.markdown("**Slate**")
-        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft}")
+        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft} · auto every {REFRESH_MINUTES}m")
+        if not st.session_state.get("events"):
+            st.session_state["_autoload_events"] = True
         if st.button("Load games", type="primary", use_container_width=True) or st.session_state.pop("_autoload_events", False):
             raw = fetch_events_oddsapi(odds_key, sport_cfg()["key"])
             st.session_state["events"] = filter_events_today(raw)
             st.session_state["events_raw_count"] = len(raw or [])
+            if st.session_state.get("events") and not st.session_state.get("odds"):
+                st.session_state["auto_once"] = True
         if active_sport() == "MLB":
             b1, b2 = st.columns(2)
             with b1:
@@ -11036,7 +11051,7 @@ def main():
         manual_fetch = st.button("Fetch", type="primary", use_container_width=True)
         if "last_refresh_count" not in st.session_state:
             st.session_state["last_refresh_count"] = refresh_count
-        auto_fetch = HAS_AUTOREFRESH and refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
+        auto_fetch = refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
         first_load = bool(chosen) and not st.session_state.get("odds") and st.session_state.get("auto_once") is not False
         try:
             af = str(st.query_params.get("autofetch", "") or "").lower()
@@ -11046,7 +11061,6 @@ def main():
         if auto_fetch:
             st.session_state["last_refresh_count"] = refresh_count
         if first_load:
-            st.session_state["auto_once"] = False
             auto_fetch = True
         if ping_fetch and chosen:
             auto_fetch = True
@@ -11067,6 +11081,7 @@ def main():
                 st.session_state["last_selected"] = list(chosen)
                 st.session_state["new_fetch"] = True
                 st.session_state["last_fetch_time"] = now_az()
+                st.session_state["auto_once"] = False
                 st.session_state.pop("_lineup_filter_ok", None)
                 st.session_state.pop("_lineup_filter_note", None)
                 st.success(f"Loaded {len(df)} props · {now_az()} AZ")
@@ -11119,10 +11134,22 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
-    results, ev_board, fallen, watch_board, coverage_board = (
-        run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
-        if not df.empty else ([], [], [], [], [])
+    board_key = (
+        active_sport(),
+        st.session_state.get("last_fetch_time"),
+        len(odds),
+        tuple(selected_events or [])[:12],
     )
+    packed = st.session_state.get("_board_pack")
+    if (not new_fetch) and st.session_state.get("_board_key") == board_key and packed:
+        results, ev_board, fallen, watch_board, coverage_board = packed
+    else:
+        results, ev_board, fallen, watch_board, coverage_board = (
+            run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
+            if not df.empty else ([], [], [], [], [])
+        )
+        st.session_state["_board_pack"] = (results, ev_board, fallen, watch_board, coverage_board)
+        st.session_state["_board_key"] = board_key
     st.session_state["ev_board"] = ev_board
     st.session_state["watch_board"] = watch_board
     st.session_state["coverage_board"] = coverage_board
