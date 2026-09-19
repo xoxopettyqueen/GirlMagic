@@ -24,6 +24,31 @@
       "best_book": "fanatics",
       "time": "09:30 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "JJ Wetherholt",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Fanatics Rogue",
+        "Rivers short vs pack",
+        "HardRock 50",
+        "Fanatics over pack",
+        "B365 over MGM",
+        "Match 25",
+        "MGM 25",
+        "Multi-book method",
+        "FD Pattern",
+        "DK FD-style",
+        "Stayed in the group",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "09:30 AM",
+      "sport": "MLB"
     }
   ]
 }
