@@ -265,6 +265,36 @@ def b365_a_bit_over_fd(book_prices):
     return 15 <= gap <= 80, gap
 
 
+def betrivers_vs_pack(book_prices):
+    """How far BetRivers sits vs FD/DK/MGM/365 median. Study only — not a ticket stamp."""
+    books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
+    br = books.get("betrivers")
+    if br is None:
+        return False, 0, None
+    pack = []
+    for k in ("fanduel", "draftkings", "betmgm", "bet365"):
+        if books.get(k) is not None:
+            try:
+                pack.append(int(books[k]))
+            except Exception:
+                pass
+    if len(pack) < 2:
+        return False, 0, None
+    try:
+        br_i = int(br)
+    except Exception:
+        return False, 0, None
+    med = sorted(pack)[len(pack) // 2]
+    gap = br_i - med
+    if gap >= 100:
+        return True, gap, "Rivers way over pack"
+    if 25 <= gap <= 99:
+        return True, gap, "Rivers a bit over pack"
+    if gap <= -75:
+        return True, gap, "Rivers short vs pack"
+    return False, gap, None
+
+
 def fd_pattern_a_little_long(book_prices, fd_is_pattern=True):
     """
     FD pattern number sitting 15–75 longer than DK/MGM on the SHORT plus-money guys.
@@ -1097,7 +1127,7 @@ ALIGN_EVENTS_FILE = "girl_magic_align_events.json"  # NEW. Never writes odds his
 TAKE_LEDGER_FILE = "girl_magic_take_ledger.json"
 HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
-PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics", "bet365"}
+PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics", "bet365", "betrivers"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics", "bet365": "Bet365"}
 # The five we actually study every day. MGM = signal. 365 = ticket + signal.
 CORE_WATCH_BOOKS = ("fanduel", "draftkings", "bet365", "betmgm", "fanatics")
@@ -1127,6 +1157,22 @@ BOOK_ALIASES = {
     "fanatics_mi": "fanatics",
     "fanatics_oh": "fanatics",
     "fanatics_ny": "fanatics",
+    "betrivers": "betrivers",
+    "bet_rivers": "betrivers",
+    "rivers": "betrivers",
+    "betrivers_az": "betrivers",
+    "betrivers_pa": "betrivers",
+    "betrivers_nj": "betrivers",
+    "betrivers_ny": "betrivers",
+    "betrivers_il": "betrivers",
+    "betrivers_in": "betrivers",
+    "betrivers_va": "betrivers",
+    "betrivers_la": "betrivers",
+    "betrivers_co": "betrivers",
+    "betrivers_ia": "betrivers",
+    "betrivers_mi": "betrivers",
+    "betrivers_oh": "betrivers",
+    "betrivers_wv": "betrivers",
 }
 
 def normalize_book(key):
@@ -1143,8 +1189,10 @@ def normalize_book(key):
         return "fanduel"
     if "betmgm" in k or k == "mgm":
         return "betmgm"
+    if "rivers" in k:
+        return "betrivers"
     return BOOK_ALIASES.get(k, k)
-LATE_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics", "bet365"}
+LATE_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics", "bet365", "betrivers"}
 # ── Board gates (re-eval Tracker 2026-08-25) ─────────────────
 # Baseline TAKE IT ~11% (n=256). Promote 25s / Exact / multi-book / FD combos.
 # Demote 50s from priority (10% / 9% on TAKE). DK 10 = core only (6% on TAKE alone).
@@ -1268,6 +1316,7 @@ SUPPORT_ONLY = {
     "Trend Heating", "Trend Cooling", "Trend Chaotic",
     "B365 over HardRock", "B365 over MGM",
     "Fanatics over pack",
+    "Rivers way over pack", "Rivers a bit over pack", "Rivers short vs pack",
     "Caesars 90", "HardRock 50", "HardRock 00",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
@@ -1300,6 +1349,7 @@ TRACKER_ALWAYS = {
     "FD 90", "FD 50", "FD 40", "MGM 60", "MGM 10", "MGM 40",
     "B365 over HardRock", "B365 over MGM", "B365 way over MGM", "B365 a bit over FD",
     "Fanatics over pack", "FD a little long",
+    "Rivers way over pack", "Rivers a bit over pack", "Rivers short vs pack",
     "Mispriced line", "Caesars 90", "HardRock 50", "HardRock 00",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
@@ -1880,6 +1930,7 @@ GLOSSARY_V2 = {
         ("B365 over MGM", "Bet365 at least 40 longer than MGM. Support. Look."),
         ("B365 way over MGM", "Stamp. 365 WAY longer than MGM. Only greens if a classic trick also fired (DK 10, FD Pattern/600, MGM 25 / Exact). 365 + Exact Match / MGM 50 is not enough."),
         ("B365 a bit over FD", "Stamp. 365 is 15–80 longer than FanDuel. Same rule: needs a classic FD / DK / MGM-25 partner. Never greens alone."),
+        ("BetRivers", "Pulled with the US books. Tracked vs FD/DK/MGM/365. Tags: Rivers way over pack (100+), a bit over (25–99), short vs pack (−75). Study only — does not green a ticket."),
         ("FD 600", "Specific FanDuel number we watch."),
         ("MGM 25 / 50 / 75 / 00", "Same-team BetMGM group endings."),
         ("MGM Exact", "Same MGM price, same team."),
@@ -2215,6 +2266,8 @@ def collect_petty_alerts(ev_board, results):
             alerts.append(f"FD a little long · {item.get('player')}")
         if "B365 a bit over FD" in ms:
             alerts.append(f"365 a bit over FD · {item.get('player')}")
+        if "Rivers way over pack" in ms:
+            alerts.append(f"Rivers way over pack · {item.get('player')}")
     seen, out = set(), []
     for a in alerts:
         if a not in seen:
@@ -2876,7 +2929,7 @@ def shop_block_reasons(r):
 
 
 # ── Trend Lab (display + scores only — does not gate TAKE) ──
-_TREND_TICKETS = ("draftkings", "fanduel", "bet365", "betmgm", "fanatics", "hardrockbet")
+_TREND_TICKETS = ("draftkings", "fanduel", "bet365", "betmgm", "fanatics", "hardrockbet", "betrivers")
 
 
 def _trend_window_rows(rows, days):
@@ -3961,6 +4014,7 @@ def book_label(b):
     if "fanatic" in b: return "Fanatics"
     if "caesars" in b or "williamhill" in b: return "Caesars"
     if "bet365" in b or b in ("365", "b365"): return "Bet365"
+    if "rivers" in b: return "BetRivers"
     if b in ("untagged", "unknown", "-", ""): return "Untagged"
     return b.title() if b else "Untagged"
 
@@ -6156,7 +6210,7 @@ def render_whats_going_today():
             return "DON'T", "wg-dont", "🔴"
         return tag, "", "✨"
 
-    FOCUS = ["DK", "FD", "HardRock", "MGM", "Fanatics", "Caesars", "Bet365"]
+    FOCUS = ["DK", "FD", "HardRock", "MGM", "Fanatics", "Caesars", "Bet365", "BetRivers"]
     lock = st.session_state.get("pregame_lock") or load_pregame()
     by_names = defaultdict(list)
     for n, tag in listed:
@@ -6409,7 +6463,7 @@ def _price_line_for_card(prices):
     """DK · FD · HardRock · MGM order for signal cards."""
     if not prices:
         return ""
-    order = [("draftkings", "DK"), ("fanduel", "FD"), ("bet365", "Bet365"), ("betmgm", "MGM"), ("fanatics", "Fanatics"), ("hardrockbet", "HardRock"), ("caesars", "Caesars")]
+    order = [("draftkings", "DK"), ("fanduel", "FD"), ("bet365", "Bet365"), ("betmgm", "MGM"), ("fanatics", "Fanatics"), ("betrivers", "BetRivers"), ("hardrockbet", "HardRock"), ("caesars", "Caesars")]
     parts = []
     for key, lab in order:
         p = prices.get(key)
@@ -6676,6 +6730,7 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
         "fanduel", "draftkings", "betmgm", "fanatics",
         "hardrockbet", "hardrockbet_az", "hardrockbet_oh", "hardrockbet_fl",
         "caesars", "williamhill_us",
+        "betrivers",
     ])
     dbg = st.session_state.setdefault("oddsapi_region_debug", {})
 
@@ -7227,7 +7282,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
     # Lock had them on DK/FD/MGM - current fetch does not (true "missing from books")
     lock = st.session_state.get("pregame_lock") or load_pregame()
-    FOCUS_LATE = ("draftkings", "fanduel", "bet365", "betmgm", "fanatics", "hardrockbet")
+    FOCUS_LATE = ("draftkings", "fanduel", "bet365", "betmgm", "fanatics", "hardrockbet", "betrivers")
     now_by_player = defaultdict(set)
     for _, r in df.iterrows():
         bk = str(r.get("book") or "").lower()
@@ -7536,6 +7591,23 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "methods": ["B365 a bit over FD"], "gap": int(gap_fd),
             })
             methods_map[player].append("B365 a bit over FD")
+        ok_br, gap_br, br_tag = False, 0, None
+        try:
+            ok_br, gap_br, br_tag = betrivers_vs_pack(by_book)
+        except Exception:
+            ok_br, gap_br, br_tag = False, 0, None
+        if ok_br and br_tag:
+            results.append({
+                "type": "trend",
+                "trend_kind": "good" if gap_br > 0 else "warn",
+                "label": player,
+                "reason": (
+                    f"{'💜' if gap_br > 0 else '👀'} {br_tag} by {int(gap_br)} · "
+                    f"Rivers {format_odds(by_book.get('betrivers'))}"
+                ),
+                "methods": [br_tag], "gap": int(gap_br),
+            })
+            methods_map[player].append(br_tag)
         fa = by_book.get("fanatics")
         pack = [int(by_book[k]) for k in ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365") if by_book.get(k) is not None]
         if fa is not None and pack:
