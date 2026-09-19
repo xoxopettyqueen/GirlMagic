@@ -27463,5 +27463,133 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Ronny Mauricio_shop_take_156",
+    "date": "2026-09-19",
+    "time": "11:10 AM",
+    "player": "Ronny Mauricio",
+    "score": 0,
+    "edge": 156,
+    "best_price": 870,
+    "best_book": "fanduel",
+    "median": 650,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 600,
+      "fanatics": 650,
+      "fanduel": 870,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T18:10:54.990719+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Bryce Harper_shop_take_63",
+    "date": "2026-09-19",
+    "time": "11:10 AM",
+    "player": "Bryce Harper",
+    "score": 0,
+    "edge": 63,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 430,
+    "book_prices": {
+      "betmgm": 380,
+      "betrivers": 475,
+      "caesars": 425,
+      "draftkings": 454,
+      "fanatics": 500,
+      "fanduel": 430,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T18:10:55.014353+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Cam Smith_shop_take_62",
+    "date": "2026-09-19",
+    "time": "11:10 AM",
+    "player": "Cam Smith",
+    "score": 0,
+    "edge": 62,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 525,
+    "book_prices": {
+      "bet365": 550,
+      "betmgm": 525,
+      "betrivers": 500,
+      "caesars": 525,
+      "draftkings": 500,
+      "fanatics": 600,
+      "fanduel": 520,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T18:10:55.014721+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Jackson Chourio_shop_lean_34",
+    "date": "2026-09-19",
+    "time": "11:10 AM",
+    "player": "Jackson Chourio",
+    "score": 0,
+    "edge": 34,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 475,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 390,
+      "betrivers": 480,
+      "caesars": 475,
+      "draftkings": 475,
+      "fanatics": 500,
+      "fanduel": 450,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T18:10:55.040499+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
