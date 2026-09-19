@@ -1691,6 +1691,21 @@
       "best_book": "fanatics",
       "time": "12:54 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Chris Olave",
+      "source": "take_it",
+      "score": 35,
+      "methods": [
+        "Books tight",
+        "DK 10",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 210,
+      "best_book": "draftkings",
+      "time": "01:01 PM",
+      "sport": "NFL"
     }
   ]
 }
