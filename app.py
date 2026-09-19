@@ -9112,6 +9112,7 @@ def _park_hr_factor(venue):
     return 100
 
 
+@st.cache_data(ttl=900, show_spinner=False)
 def load_live_mlb_data():
     slate = fetch_mlb_slate_context()
     weather = {}
@@ -9317,6 +9318,7 @@ def fetch_nfl_dvp():
     return out
 
 
+@st.cache_data(ttl=900, show_spinner=False)
 def load_live_nfl_data():
     return {"form": fetch_nflverse_week_stats(), "dvp": fetch_nfl_dvp()}
 
@@ -9472,8 +9474,13 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         form = (live.get("form") or {}).get(key) or {}
         used_pre = False
         thin = (not form) or (int(form.get("weeks") or 0) <= 1 and float(form.get("targets") or 0) + float(form.get("carries") or 0) < 8)
-        if thin:
-            pre = fetch_espn_nfl_preseason(name)
+        if thin and _is_nfl_rookie(form):
+            n_pre = int(st.session_state.get("_pre_calls") or 0)
+            if n_pre >= 8:
+                pre = {}
+            else:
+                pre = fetch_espn_nfl_preseason(name)
+                st.session_state["_pre_calls"] = n_pre + 1
             if pre:
                 used_pre = True
                 form = {**pre, **{k: v for k, v in form.items() if v not in (None, "", 0, 0.0)}}
@@ -10165,6 +10172,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         st.info("Hit Fetch first. Confidence scores the +400 slate, then Active only keeps the pile.")
         return
     sport = active_sport()
+    st.session_state["_align_enrich"] = 0
     live = {}
     if sport != "NFL":
         with st.spinner("Pulling Savant EV / HH / Barrel + last 7–14 day HRs…"):
@@ -10379,11 +10387,22 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if "vs " in (data.get("matchup") or ""):
             opp = (data.get("matchup") or "").split("vs ", 1)[-1].split("(")[0].strip()
         vs = {}
-        bid = fetch_mlb_player_id(item.get("player"))
-        if opp:
-            pid = fetch_mlb_player_id(opp)
-            vs = fetch_vs_pitcher(bid, pid) or {}
-        splits = fetch_hitter_splits(bid) or {}
+        splits = {}
+        worth = bool(
+            data.get("data_tier") in ("hot", "mid")
+            or item.get("is_bet")
+            or int(data.get("flag_n") or 0) >= 2
+        )
+        enrich_n = int(st.session_state.get("_align_enrich") or 0)
+        if worth and enrich_n < 40:
+            st.session_state["_align_enrich"] = enrich_n + 1
+            bid = fetch_mlb_player_id(item.get("player"))
+            if opp:
+                pid = fetch_mlb_player_id(opp)
+                vs = fetch_vs_pitcher(bid, pid) or {}
+            splits = fetch_hitter_splits(bid) or {}
+        else:
+            bid = None
         tk = _team_key(item.get("team") or "")
         # opposing team pitching: use event home/away
         evn = " ".join(item.get("events") or [item.get("event") or ""])
@@ -10394,7 +10413,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 break
         bp = ((live.get("hr9") or {}).get(opp_team) or {})
         vs_pen = {}
-        if bid and opp_team:
+        if bid and opp_team and enrich_n < 16:
             rps = fetch_reliever_ids(opp_team)
             vs_pen = fetch_batter_vs_relievers(bid, [x["id"] for x in rps]) or {}
         match_boost = 0
@@ -10533,24 +10552,28 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             "Active is the pile only — max 12 cards. Mid/cold live under Whispers / Homework. "
             "💚 Board take = also on Run It. 🪤 trap split still cuts a hot name down."
         )
-    ev_log = load_align_events()
-    for align, item, data, notes, vibe in cards:
-        if align < 70:
-            continue
-        ev_log.append({
-            "date": today_az(),
-            "sport": sport,
-            "player": item.get("player"),
-            "align": align,
-            "vibe": vibe,
-            "longshot": data.get("longshot"),
-            "rookie": data.get("rookie"),
-            "price": item.get("best_price"),
-            "book": item.get("best_book"),
-            "methods": list(item.get("methods") or [])[:6],
-            "summary": data.get("summary"),
-        })
-    save_align_events(ev_log)
+    if view.startswith("🎯"):
+        ev_log = load_align_events()
+        logged = 0
+        for align, item, data, notes, vibe in cards:
+            if data.get("data_tier") != "hot" or logged >= 20:
+                continue
+            ev_log.append({
+                "date": today_az(),
+                "sport": sport,
+                "player": item.get("player"),
+                "align": align,
+                "vibe": vibe,
+                "longshot": data.get("longshot"),
+                "rookie": data.get("rookie"),
+                "price": item.get("best_price"),
+                "book": item.get("best_book"),
+                "methods": list(item.get("methods") or [])[:6],
+                "summary": data.get("summary"),
+            })
+            logged += 1
+        if logged:
+            save_align_events(ev_log[-400:])
     if sport == "NFL":
         def _px(it):
             try:
