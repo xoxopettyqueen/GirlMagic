@@ -10913,16 +10913,34 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         x[1].get("player") or "",
     ))
     n_hot = sum(1 for c in cards if c[2].get("data_tier") == "hot")
-    pile = [c for c in cards if c[2].get("data_tier") == "hot"][:12]
-    pile_names = {c[1].get("player") for c in pile}
-    n_pile = len(pile)
-    n_also = sum(1 for c in cards if c[1].get("is_bet") and c[1].get("player") not in pile_names)
+    n_mid = sum(1 for c in cards if c[2].get("data_tier") == "mid")
+    n_cold = sum(1 for c in cards if c[2].get("data_tier") == "cold")
+    n_pile = min(12, n_hot)
     st.markdown(
-        f'<div class="petty-row">'
-        f'<div class="petty-box"><div class="petty-num">{n_pile}</div><div class="petty-label">THE PILE</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{n_also}</div><div class="petty-label">ALSO RUN IT</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{max(0, n_hot - n_pile)}</div><div class="petty-label">CUT FROM PILE</div></div>'
-        f'</div>'
+        """
+        <style>
+        .cf-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin:8px auto 18px;max-width:1200px}
+        .cf-stat{width:340px;min-height:160px;padding:24px;border-radius:18px;background:#14121E;
+          border:2px solid transparent;background-image:linear-gradient(#14121E,#14121E),linear-gradient(120deg,#f472b6,#c084fc,#2dd4bf);
+          background-origin:padding-box,border-box;background-clip:padding-box,border-box;
+          display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+          transition:transform .18s ease,box-shadow .18s ease}
+        .cf-stat.hot:hover{transform:translateY(-6px);box-shadow:0 0 22px rgba(244,114,182,.45)}
+        .cf-stat.mid:hover{transform:translateY(-6px);box-shadow:0 0 18px rgba(45,212,191,.35)}
+        .cf-stat.cold:hover{transform:translateY(-6px);box-shadow:0 0 16px rgba(192,132,252,.28)}
+        .cf-stat .n{font-size:24px;font-weight:800;line-height:1;background:linear-gradient(90deg,#f9a8d4,#e9d5ff,#67e8f9);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+        .cf-stat .l{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#e9d5ff;font-weight:700}
+        </style>
+        """
+        f'<div class="cf-stats">'
+        f'<div class="cf-stat hot"><div class="n">{n_pile}</div><div class="l">Active Board</div></div>'
+        f'<div class="cf-stat mid"><div class="n">{n_mid}</div><div class="l">Whispers</div></div>'
+        f'<div class="cf-stat cold"><div class="n">{n_cold}</div><div class="l">Homework</div></div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
         f'<div class="tier-row">'
         f'<div class="tier-card tier-hot"><b>🔥 HOT · Active</b><p>Confidence 70–100. Pink-purple glow. Heating / Rhythm / Petty Upside can fire. Max 12 cards.</p></div>'
         f'<div class="tier-card tier-mid"><b>✨ MID · Whispers</b><p>Confidence 50–69. Teal. Rhythm only. Not the pile.</p></div>'
