@@ -1187,10 +1187,9 @@ SCORE_SOFT_TAKE = 85      # was 70 — that made TAKE ≈ WATCH. 85+ only.
 # 9/13 eval: TAKE needs 2+ of these. One tag = WATCH. HardRock/Caesars endings are noise.
 TAKE_STAMP_METHODS = {
     "DK 10",
-    "MGM 25", "MGM 50", "MGM 75",
-    "Match 25", "Match 50", "Match 75",
-    "MGM Exact", "Exact Match",
-    "Last one left", "Stayed in the group",
+    "MGM 25",
+    "Match 25",
+    "MGM Exact",
     "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
     "Fanatics Rogue",
     "B365 way over MGM",
@@ -1419,6 +1418,8 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
         return False
     need = methods_min()
     if stamps < 2:
+        return False
+    if not (ms & CLASSIC_TRICK_STAMPS):
         return False
     if ms & B365_TELL_STAMPS and not (ms & CLASSIC_TRICK_STAMPS):
         return False
@@ -11327,6 +11328,7 @@ def main():
         st.session_state.get("last_fetch_time"),
         len(odds),
         tuple(selected_events or [])[:12],
+        "take_v5",
     )
     packed = st.session_state.get("_board_pack")
     if (not new_fetch) and st.session_state.get("_board_key") == board_key and packed:
@@ -11366,11 +11368,21 @@ def main():
             sc = int(item.get("score") or 0)
             # MLB: Benford/Num can lean off a thin green.
             if not nfl_loose_mode():
-                if item.get("is_bet") and not elite_take_ok(item) and sc < 50:
+                still = qualifies_take_it(
+                    item.get("method_count") or 0,
+                    item.get("methods") or [],
+                    item.get("edge") or 0,
+                    item.get("best_price"),
+                    item.get("book_prices") or {},
+                    item.get("best_book"),
+                    sc,
+                )
+                if item.get("is_bet") and not still:
+                    item["is_bet"] = False
+                    item["why"] = (item.get("why") or "") + " · not a real ticket"
+                elif item.get("is_bet") and not elite_take_ok(item) and sc < 50:
                     item["is_bet"] = False
                     item["why"] = (item.get("why") or "") + " · LEAN — score too thin without Benford/Num"
-                elif item.get("is_bet") and sc >= SCORE_SOFT_TAKE and not elite_take_ok(item):
-                    item["why"] = (item.get("why") or "") + " · petty score hold"
             elif item.get("is_bet") and HAS_NFL_MATH:
                 # Num-only Fanatics longshots are not TAKE.
                 if not nfl_take_ok(
@@ -11384,67 +11396,11 @@ def main():
                 ):
                     item["is_bet"] = False
                     item["why"] = (item.get("why") or "") + " · not a DK/FD ticket"
-    frozen_takes = set()
-    try:
-        for n in ledger_names_today() or []:
-            frozen_takes.add(_fold_player(n))
-        for r in load_results() or []:
-            if r.get("date") not in ledger_dates():
-                continue
-            if r.get("source") not in ("take_it", "shop_take"):
-                continue
-            frozen_takes.add(_fold_player(r.get("player")))
-    except Exception:
-        frozen_takes = frozen_takes or set()
-    if frozen_takes:
-        for item in ev_board or []:
-            if _fold_player(item.get("player")) in frozen_takes:
-                item["is_bet"] = True
-        have = {_fold_player(e.get("player")) for e in (ev_board or [])}
-        try:
-            extras = []
-            for r in load_results() or []:
-                if r.get("date") not in ledger_dates():
-                    continue
-                if r.get("source") not in ("take_it", "shop_take"):
-                    continue
-                k = _fold_player(r.get("player"))
-                if not k or k in have:
-                    continue
-                extras.append({
-                    "player": r.get("player"),
-                    "best_price": r.get("best_price"),
-                    "best_book": r.get("best_book"),
-                    "book_prices": r.get("book_prices") or {},
-                    "methods": list(r.get("methods") or []),
-                    "score": r.get("score") or 80,
-                    "edge": r.get("edge") or 0,
-                    "is_bet": True,
-                    "event": r.get("event") or "",
-                    "events": [r.get("event") or ""],
-                    "team": r.get("team") or "",
-                    "why": "FROZEN TAKE · logged earlier today · board gate cannot wipe it",
-                    "method_count": len(r.get("methods") or []),
-                })
-                have.add(k)
-            if extras:
-                ev_board = list(ev_board or []) + extras
-        except Exception:
-            pass
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     if not df.empty:
         log_shop_calls(df)
-    live_takes = [e.get("player") for e in ev_board if e.get("is_bet")]
-    frozen = ledger_names_today()
-    merged, seen = [], set()
-    for n in live_takes + frozen:
-        k = _fold_name(clean_name(n or ""))
-        if not k or k in seen:
-            continue
-        seen.add(k)
-        merged.append(n)
-    st.session_state["last_take_names"] = merged
+    st.session_state["last_take_names"] = [e.get("player") for e in ev_board if e.get("is_bet")]
     try:
         shop_now = build_shop_board(df) if not df.empty else []
         st.session_state["last_shop_take_names"] = [
