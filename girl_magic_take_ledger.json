@@ -1311,6 +1311,23 @@
       "best_book": "fanduel",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Brian Thomas Jr.",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "Multi-book method",
+        "MGM Exact",
+        "Fanatics Loud",
+        "DK FD-style",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 380,
+      "best_book": "fanatics",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
