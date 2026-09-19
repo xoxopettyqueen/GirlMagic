@@ -43739,5 +43739,71 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-19_Raheim Sanders_shop_take_116",
+    "date": "2026-09-19",
+    "time": "03:50 PM",
+    "player": "Raheim Sanders",
+    "score": 0,
+    "edge": 116,
+    "best_price": 950,
+    "best_book": "bet365",
+    "median": 850,
+    "book_prices": {
+      "bet365": 950,
+      "betmgm": 725,
+      "betrivers": 800,
+      "caesars": 850,
+      "draftkings": 850,
+      "fanatics": 900,
+      "fanduel": 850,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:50:52.275781+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Noah Gray_shop_take_99",
+    "date": "2026-09-19",
+    "time": "03:50 PM",
+    "player": "Noah Gray",
+    "score": 0,
+    "edge": 99,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 637,
+    "book_prices": {
+      "bet365": 500,
+      "betmgm": 625,
+      "betrivers": 550,
+      "caesars": 650,
+      "draftkings": 700,
+      "fanatics": 750,
+      "fanduel": 650,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:50:52.281586+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
