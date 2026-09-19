@@ -1986,6 +1986,24 @@
       "best_book": "fanatics",
       "time": "03:02 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Dansby Swanson",
+      "source": "take_it",
+      "score": 83,
+      "methods": [
+        "Multi-book method",
+        "FD Pattern",
+        "MGM Exact",
+        "Fanatics Rogue",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "03:42 PM",
+      "sport": "MLB"
     }
   ]
 }
