@@ -42468,5 +42468,101 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-19_Joe Mack_shop_take_169",
+    "date": "2026-09-19",
+    "time": "03:03 PM",
+    "player": "Joe Mack",
+    "score": 0,
+    "edge": 169,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 760,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 650,
+      "betrivers": 850,
+      "caesars": 750,
+      "draftkings": 770,
+      "fanatics": 950,
+      "fanduel": 820,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:03:05.510976+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Francisco Lindor_shop_take_95",
+    "date": "2026-09-19",
+    "time": "03:03 PM",
+    "player": "Francisco Lindor",
+    "score": 0,
+    "edge": 95,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:03:05.516810+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Manny Machado_shop_take_50",
+    "date": "2026-09-19",
+    "time": "03:03 PM",
+    "player": "Manny Machado",
+    "score": 0,
+    "edge": 50,
+    "best_price": 475,
+    "best_book": "fanatics",
+    "median": 412,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 400,
+      "betrivers": 430,
+      "caesars": 400,
+      "draftkings": 459,
+      "fanatics": 475,
+      "fanduel": 390,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:03:05.523425+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
