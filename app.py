@@ -251,6 +251,20 @@ def b365_way_over_mgm(book_prices):
     return False, gap
 
 
+def b365_a_bit_over_fd(book_prices):
+    """365 a little longer than FanDuel. Separate tell from 365 vs MGM. Not combined."""
+    books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
+    b365 = books.get("bet365")
+    fd = books.get("fanduel")
+    if b365 is None or fd is None:
+        return False, 0
+    try:
+        gap = int(b365) - int(fd)
+    except Exception:
+        return False, 0
+    return 15 <= gap <= 80, gap
+
+
 def fd_pattern_a_little_long(book_prices, fd_is_pattern=True):
     """
     FD pattern number sitting 15–75 longer than DK/MGM on the SHORT plus-money guys.
@@ -1085,6 +1099,9 @@ HISTORY_MAX_AGE_HOURS = 18
 ROTOWIRE_URL = "https://www.rotowire.com/baseball/daily-lineups.php"
 PREFERRED = {"fanduel", "draftkings", "betmgm", "hardrockbet", "caesars", "fanatics", "bet365"}
 CORE_BOOKS = {"fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM", "fanatics": "Fanatics", "bet365": "Bet365"}
+# The five we actually study every day. MGM = signal. 365 = ticket + signal.
+CORE_WATCH_BOOKS = ("fanduel", "draftkings", "bet365", "betmgm", "fanatics")
+CORE_WATCH_LABELS = ("FD", "DK", "Bet365", "MGM", "Fanatics")
 # Ticket = book we buy. MGM is signal-only (11% as ticket vs 13% baseline).
 TICKET_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "bet365"}
 VALUE_BOOKS = {"draftkings", "fanduel", "hardrockbet", "fanatics", "bet365"}
@@ -1127,7 +1144,7 @@ def normalize_book(key):
     if "betmgm" in k or k == "mgm":
         return "betmgm"
     return BOOK_ALIASES.get(k, k)
-LATE_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics"}
+LATE_BOOKS = {"fanduel", "draftkings", "betmgm", "fanatics", "bet365"}
 # ── Board gates (re-eval Tracker 2026-08-25) ─────────────────
 # Baseline TAKE IT ~11% (n=256). Promote 25s / Exact / multi-book / FD combos.
 # Demote 50s from priority (10% / 9% on TAKE). DK 10 = core only (6% on TAKE alone).
@@ -1177,6 +1194,7 @@ TAKE_STAMP_METHODS = {
     "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
     "Fanatics Rogue",
     "B365 way over MGM",
+    "B365 a bit over FD",
 }
 # Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
 NFL_STAMP_METHODS = {
@@ -1189,6 +1207,7 @@ NFL_STAMP_METHODS = {
     "Stayed in the group",
     "FD a little long",
     "B365 way over MGM",
+    "B365 a bit over FD",
 }
 
 PRIORITY_METHODS = {
@@ -1196,6 +1215,7 @@ PRIORITY_METHODS = {
     "DK 10",
     "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
     "B365 way over MGM",
+    "B365 a bit over FD",
     "Multi-book Shorten",
     "Books tight",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
@@ -1204,7 +1224,7 @@ PRIORITY_METHODS = {
 }
 TAKE_HOT_ENDS = {10, 25, 50, 75, 90}  # ticket ending (DK/FD/HR). MGM-50 *method* is still support-only
 TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}  # +600s need a real priority tag, not MGM juice
-TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "hardrockbet", "fanatics", "caesars"}
+TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "hardrockbet", "fanatics", "caesars", "bet365"}
 BOOK_PERSONALITY = {
     "Fanatics Rogue", "Caesars Classic", "HardRock Heater",
     "FD 90", "FD 40", "FD 50",
@@ -1222,6 +1242,7 @@ TAKE_IT_STRONG = {
     "DK 10",
     "FD 600", "FD Pattern", "FD a little long",
     "B365 way over MGM",
+    "B365 a bit over FD",
     "Multi-book method",
     "FD+MGM classic",
     "MGM Exact",
@@ -1274,7 +1295,8 @@ TRACKER_ALWAYS = {
     "All books same", "Books tight", "FD+MGM classic",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
     "FD 90", "FD 50", "FD 40", "MGM 60", "MGM 10", "MGM 40",
-    "B365 over HardRock", "B365 over MGM", "Fanatics over pack",
+    "B365 over HardRock", "B365 over MGM", "B365 way over MGM", "B365 a bit over FD",
+    "Fanatics over pack", "FD a little long",
     "Mispriced line", "Caesars 90", "HardRock 50", "HardRock 00",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
@@ -1631,7 +1653,7 @@ PETTY_FAMILIES = {
     "Classic Girl Magic": {
         "MGM 25", "MGM 50", "MGM Exact", "Match 25", "Match 50",
         "FD Pattern", "FD 600", "DK 10", "FD+MGM classic",
-        "FD a little long", "B365 way over MGM",
+        "FD a little long", "B365 way over MGM", "B365 a bit over FD",
     },
     "Petty Pressure": {
         "Multi-book Shorten", "Multi-book method", "Books tight",
@@ -1784,6 +1806,7 @@ GLOSSARY_V2 = {
     "🧭 How": [
         ("Fetch", "Loads odds + Lock. Does not grade games. Box scores only run on Receipts → Results."),
         ("Live tracking", "Box scores only on Results. Odds movement is tracked until first pitch / kick, then that game’s lock freezes (open stays, latest stops, close stamps)."),
+        ("Five books", "FD, DK, Bet365, MGM, Fanatics. Movement, missing-book ghosts, Tracker hit rates, Pulse pills, and Today’s five on Tracker. 365 vs MGM and 365 vs FD stay separate tells on Alerts — not two Pulse lines."),
         ("Green / TAKE", "Cleared the list. Two premium stamps. Score hold is 85 now, not 70. This is the ticket."),
         ("Gray / PASS", "Tags fired. Floor missed. Homework, not a dare."),
         ("Eyes / WATCH", "Log it for grade. Do not force the ticket."),
@@ -1848,7 +1871,8 @@ GLOSSARY_V2 = {
         ("FD Pattern", "FanDuel +400+ ending 10/20/30/60/70/90."),
         ("FD a little long", "FD pattern number 15–75 longer than DK or MGM on the short plus-money guys (+400 to +750). Those have been cashing. Flyer +1100 with FD +75 is not this stamp."),
         ("B365 over MGM", "Bet365 at least 40 longer than MGM. Support. Look."),
-        ("B365 way over MGM", "Bet365 100+ longer than MGM, or 75+ in the +300–+800 lane. This one has been going. Counts toward the stamp floor. Still needs a second stamp to TAKE."),
+        ("B365 way over MGM", "365 WAY longer than MGM (100+, or 75+ in the +300–+800 lane). Its own stamp. Not mixed with FD."),
+        ("B365 a bit over FD", "365 is 15–80 longer than FanDuel. Separate stamp from 365 vs MGM. Both can fire on the same name. They never combine into one tag."),
         ("FD 600", "Specific FanDuel number we watch."),
         ("MGM 25 / 50 / 75 / 00", "Same-team BetMGM group endings."),
         ("MGM Exact", "Same MGM price, same team."),
@@ -2146,6 +2170,8 @@ def collect_petty_alerts(ev_board, results):
             alerts.append(f"365 over MGM · {r.get('label')}")
         if "FD a little long" in meths:
             alerts.append(f"FD a little long · {r.get('label')}")
+        if "B365 a bit over FD" in meths:
+            alerts.append(f"365 a bit over FD · {r.get('label')}")
         if "FD under MGM" in meths:
             import re as _re
             m = _re.search(r"by (\d+)", reason)
@@ -2180,6 +2206,8 @@ def collect_petty_alerts(ev_board, results):
             alerts.append(f"365 over MGM · {item.get('player')}")
         if "FD a little long" in ms:
             alerts.append(f"FD a little long · {item.get('player')}")
+        if "B365 a bit over FD" in ms:
+            alerts.append(f"365 a bit over FD · {item.get('player')}")
     seen, out = set(), []
     for a in alerts:
         if a not in seen:
@@ -2841,7 +2869,7 @@ def shop_block_reasons(r):
 
 
 # ── Trend Lab (display + scores only — does not gate TAKE) ──
-_TREND_TICKETS = ("draftkings", "fanduel", "hardrockbet", "fanatics")
+_TREND_TICKETS = ("draftkings", "fanduel", "bet365", "betmgm", "fanatics", "hardrockbet")
 
 
 def _trend_window_rows(rows, days):
@@ -6039,7 +6067,7 @@ def render_whats_going_today():
             return "DON'T", "wg-dont", "🔴"
         return tag, "", "✨"
 
-    FOCUS = ["DK", "FD", "HardRock", "MGM", "Fanatics", "Caesars"]
+    FOCUS = ["DK", "FD", "HardRock", "MGM", "Fanatics", "Caesars", "Bet365"]
     lock = st.session_state.get("pregame_lock") or load_pregame()
     by_names = defaultdict(list)
     for n, tag in listed:
@@ -6097,34 +6125,14 @@ def render_whats_going_today():
     else:
         queen = "Queen says: graded Hits on the list." if take_n else "Queen says: Pulse only moves when Results grades a HIT."
 
-    tell_pills = []
-    for item in list(st.session_state.get("ev_board") or []) + list(st.session_state.get("flag_results") or []):
-        ms = set(item.get("methods") or [])
-        name = item.get("player") or item.get("label") or ""
-        if not name:
-            continue
-        if "B365 way over MGM" in ms:
-            tell_pills.append('<span class="pulse-pill">365 way · %s</span>' % name)
-        elif "B365 over MGM" in ms:
-            tell_pills.append('<span class="pulse-pill">365 over MGM · %s</span>' % name)
-        if "FD a little long" in ms:
-            tell_pills.append('<span class="pulse-pill">FD a little long · %s</span>' % name)
-    seen_t, uniq_tells = set(), []
-    for t in tell_pills:
-        if t not in seen_t:
-            seen_t.add(t)
-            uniq_tells.append(t)
-    tell_block = "".join(uniq_tells[:8])
     books_block = "".join(pills) if pills else '<span class="pulse-pill">No graded Hits yet.</span>'
-    if tell_block:
-        books_block += tell_block
     mlb_on = "on" if sport == "MLB" else ""
     nfl_on = "on" if sport == "NFL" else ""
     html = (
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">HIT pills = Results only. 365 / FD-long pills = pregame tells. Odds freeze at first lock. Fetch is manual.</div>'
+        '<div class="wg-sub">One pill per book. HIT names only. Same shape for DK / FD / MGM / HardRock / Fanatics / Caesars / Bet365.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
@@ -6140,6 +6148,37 @@ def render_whats_going_today():
         books_block, queen,
     )
     st.markdown(html, unsafe_allow_html=True)
+
+
+def render_daily_desk():
+    """Five-book daily card. Does not change gates."""
+    rows = results_for_sport()
+    today = today_az()
+    day = [r for r in rows if r.get("date") in (today, today_mlb_date())]
+    graded = [r for r in day if str(r.get("result") or "").upper() in ("HIT", "MISS")]
+    takes = [r for r in day if str(r.get("source") or "") in ("take_it", "shop_take")]
+    chips = []
+    for key, lab in zip(CORE_WATCH_BOOKS, CORE_WATCH_LABELS):
+        want = book_label(key)
+        bucket = [r for r in graded if book_label(r.get("best_book") or "") == want]
+        h = sum(1 for r in bucket if str(r.get("result")).upper() == "HIT")
+        n = len(bucket)
+        chips.append(f'<span class="pulse-pill">{lab} {h}/{n}</span>')
+    tell_n = 0
+    for r in day:
+        ms = set(r.get("methods") or [])
+        if ms & {"B365 way over MGM", "B365 a bit over FD", "B365 over MGM", "DK 10", "FD Pattern", "FD a little long", "Fanatics Rogue", "MGM 25"}:
+            tell_n += 1
+    st.markdown(
+        '<div class="wg-wrap" style="margin:8px 0 12px">'
+        '<div class="wg-title">Today’s five · FD · DK · 365 · MGM · Fanatics</div>'
+        '<div class="wg-sub">HIT/MISS on the ticket book. Tells stay on Alerts. Pulse is still one pill per book.</div>'
+        '<div class="wg-books">' + "".join(chips) +
+        f'<span class="pulse-pill">Tickets {len(takes)}</span>'
+        f'<span class="pulse-pill">Tells logged {tell_n}</span>'
+        '</div></div>',
+        unsafe_allow_html=True,
+    )
 
 
 def build_tracker_stats(rows):
@@ -6284,7 +6323,7 @@ def _price_line_for_card(prices):
     """DK · FD · HardRock · MGM order for signal cards."""
     if not prices:
         return ""
-    order = [("draftkings", "DK"), ("fanduel", "FD"), ("hardrockbet", "HardRock"), ("betmgm", "MGM"), ("caesars", "Caesars")]
+    order = [("draftkings", "DK"), ("fanduel", "FD"), ("bet365", "Bet365"), ("betmgm", "MGM"), ("fanatics", "Fanatics"), ("hardrockbet", "HardRock"), ("caesars", "Caesars")]
     parts = []
     for key, lab in order:
         p = prices.get(key)
@@ -7102,7 +7141,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
 
     # Lock had them on DK/FD/MGM - current fetch does not (true "missing from books")
     lock = st.session_state.get("pregame_lock") or load_pregame()
-    FOCUS_LATE = ("draftkings", "fanduel", "betmgm", "hardrockbet")
+    FOCUS_LATE = ("draftkings", "fanduel", "bet365", "betmgm", "fanatics", "hardrockbet")
     now_by_player = defaultdict(set)
     for _, r in df.iterrows():
         bk = str(r.get("book") or "").lower()
@@ -7390,6 +7429,27 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             methods_map[player].append(tag)
             if way:
                 methods_map[player].append("B365 over MGM")
+        ok_fd, gap_fd = False, 0
+        try:
+            ok_fd, gap_fd = b365_a_bit_over_fd(by_book)
+        except Exception:
+            b3, fd = by_book.get("bet365"), by_book.get("fanduel")
+            if b3 is not None and fd is not None:
+                try:
+                    gap_fd = int(b3) - int(fd)
+                    ok_fd = 15 <= gap_fd <= 80
+                except Exception:
+                    ok_fd, gap_fd = False, 0
+        if ok_fd:
+            results.append({
+                "type": "trend", "trend_kind": "good", "label": player,
+                "reason": (
+                    f"💚 Bet365 a bit over FD by {int(gap_fd)} · "
+                    f"365 {format_odds(by_book.get('bet365'))} · FD {format_odds(by_book.get('fanduel'))}"
+                ),
+                "methods": ["B365 a bit over FD"], "gap": int(gap_fd),
+            })
+            methods_map[player].append("B365 a bit over FD")
         fa = by_book.get("fanatics")
         pack = [int(by_book[k]) for k in ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365") if by_book.get(k) is not None]
         if fa is not None and pack:
@@ -12457,6 +12517,7 @@ def main():
             "If TAKE % sits on top of WATCH %, the green list is too fat — raise the floor next week.",
         )
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
+        render_daily_desk()
         st.markdown(
             '<div class="info-box"><b>How to read this.</b> '
             "Board green = Run it, baddie (source take_it). Shop TAKE/LEAN = the number we would buy. "
