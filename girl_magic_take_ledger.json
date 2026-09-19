@@ -1602,6 +1602,27 @@
       "best_book": "fanatics",
       "time": "12:45 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Mike Yastrzemski",
+      "source": "take_it",
+      "score": 54,
+      "methods": [
+        "HardRock 00",
+        "B365 over MGM",
+        "FD Pattern",
+        "Books tight",
+        "FD+MGM classic",
+        "Match 50",
+        "MGM 50",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "12:45 PM",
+      "sport": "MLB"
     }
   ]
 }
