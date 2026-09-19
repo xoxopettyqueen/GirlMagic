@@ -2079,6 +2079,26 @@
       "best_book": "draftkings",
       "time": "03:50 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tyrone Taylor",
+      "source": "take_it",
+      "score": 86,
+      "methods": [
+        "Fanatics over pack",
+        "MGM Exact",
+        "Fanatics Rogue",
+        "B365 over MGM",
+        "HardRock 50",
+        "Multi-book Shorten",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 750,
+      "best_book": "fanatics",
+      "time": "03:59 PM",
+      "sport": "MLB"
     }
   ]
 }
