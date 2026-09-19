@@ -38177,5 +38177,203 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.62
+  },
+  {
+    "id": "2026-09-19_Kaytron Allen_shop_take_172",
+    "date": "2026-09-19",
+    "time": "12:09 PM",
+    "player": "Kaytron Allen",
+    "score": 0,
+    "edge": 172,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 700,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 825,
+      "betrivers": 750,
+      "caesars": 650,
+      "draftkings": 650,
+      "fanatics": 600,
+      "fanduel": 750,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:09:17.030665+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Darnell Mooney_shop_lean_131",
+    "date": "2026-09-19",
+    "time": "12:09 PM",
+    "player": "Darnell Mooney",
+    "score": 0,
+    "edge": 131,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 750,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 625,
+      "betrivers": 700,
+      "caesars": 750,
+      "draftkings": 750,
+      "fanatics": 900,
+      "fanduel": 850,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T19:09:17.041244+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Theo Johnson_shop_lean_131",
+    "date": "2026-09-19",
+    "time": "12:09 PM",
+    "player": "Theo Johnson",
+    "score": 0,
+    "edge": 131,
+    "best_price": 900,
+    "best_book": "bet365",
+    "median": 800,
+    "book_prices": {
+      "bet365": 900,
+      "betmgm": 600,
+      "betrivers": 850,
+      "caesars": 800,
+      "draftkings": 850,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T19:09:17.043975+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Josh Oliver_shop_take_80",
+    "date": "2026-09-19",
+    "time": "12:09 PM",
+    "player": "Josh Oliver",
+    "score": 0,
+    "edge": 80,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 500,
+      "betrivers": 600,
+      "caesars": 550,
+      "draftkings": 600,
+      "fanatics": 650,
+      "fanduel": 550,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:09:17.062551+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Kalif Raymond_shop_take_50",
+    "date": "2026-09-19",
+    "time": "12:09 PM",
+    "player": "Kalif Raymond",
+    "score": 0,
+    "edge": 50,
+    "best_price": 370,
+    "best_book": "fanatics",
+    "median": 302,
+    "book_prices": {
+      "bet365": 290,
+      "betmgm": 360,
+      "betrivers": 240,
+      "caesars": 305,
+      "draftkings": 350,
+      "fanatics": 370,
+      "fanduel": 300,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:09:17.100994+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Kendre Miller_shop_lean_48",
+    "date": "2026-09-19",
+    "time": "12:09 PM",
+    "player": "Kendre Miller",
+    "score": 0,
+    "edge": 48,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 687,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 625,
+      "betrivers": 600,
+      "caesars": 675,
+      "draftkings": 850,
+      "fanatics": 700,
+      "fanduel": 1000,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T19:09:17.104338+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
