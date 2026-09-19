@@ -1174,6 +1174,26 @@
       "best_book": "fanduel",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "DeMario Douglas",
+      "source": "take_it",
+      "score": 76,
+      "methods": [
+        "Multi-book method",
+        "B365 over MGM",
+        "MGM Exact",
+        "Fanatics over pack",
+        "Fanatics Loud",
+        "B365 50",
+        "DK FD-style",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 450,
+      "best_book": "fanatics",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
