@@ -143397,5 +143397,44 @@
     "sport": "MLB",
     "market": "batter_home_runs",
     "graded_by": "one_per_day"
+  },
+  {
+    "id": "2026-09-18_Brett Harris_watch_89",
+    "date": "2026-09-18",
+    "time": "06:37 PM",
+    "player": "Brett Harris",
+    "score": 89,
+    "edge": 208,
+    "best_price": 1050,
+    "best_book": "fanatics",
+    "median": 855.0,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 960,
+      "fanatics": 1050,
+      "fanduel": 750
+    },
+    "price_bucket": "+1000+",
+    "ending": 50,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD 50",
+      "Fanatics Rogue",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-19T01:37:52.585366+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "SAN FRANCISCO GIANTS",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.5
   }
 ]
