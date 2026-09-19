@@ -9327,6 +9327,7 @@ def fetch_vs_pitcher(batter_id, pitcher_id):
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
+@st.cache_data(ttl=3600, show_spinner=False)
 def fetch_hitter_splits(batter_id, year=None):
     """Home/away + day/night. Pitch-type ISO is not on this free endpoint."""
     if not batter_id:
@@ -9335,7 +9336,7 @@ def fetch_hitter_splits(batter_id, year=None):
     try:
         r = requests.get(
             f"https://statsapi.mlb.com/api/v1/people/{batter_id}/stats",
-            params={"stats": "statSplits", "group": "hitting", "sitCodes": "h,a,d,n,vl,vr", "season": year},
+            params={"stats": "statSplits", "group": "hitting", "sitCodes": "h,a,d,n,vl,vr", "season": year, "sportId": 1},
             timeout=12,
         )
         r.raise_for_status()
@@ -9351,18 +9352,20 @@ def fetch_hitter_splits(batter_id, year=None):
                 return float(stt.get(k))
             except Exception:
                 return None
-        row = {"hr": ni("homeRuns"), "slg": ni("slg"), "avg": ni("avg")}
-        if "home" in code or code == "h":
+        row = {"hr": ni("homeRuns"), "slg": ni("slg"), "avg": ni("avg"), "ops": ni("ops")}
+        desc = str((s.get("split") or {}).get("description") or "").lower()
+        blob = f"{code} {desc}"
+        if blob.strip() in ("h", "home") or "home" in blob:
             out["home"] = row
-        elif "away" in code or code == "a":
+        elif blob.strip() in ("a", "away") or "away" in blob or "road" in blob:
             out["away"] = row
-        elif code in ("d", "day") or "day" in code and "night" not in code:
+        elif blob.strip() in ("d", "day") or ("day" in blob and "night" not in blob):
             out["day"] = row
-        elif "night" in code or code == "n":
+        elif blob.strip() in ("n", "night") or "night" in blob:
             out["night"] = row
-        elif "left" in code or code in ("vl", "l", "vs lhp", "vs left"):
+        elif "left" in blob or blob.strip() in ("vl", "lhp", "vs l"):
             out["vl"] = row
-        elif "right" in code or code in ("vr", "r", "vs rhp", "vs right"):
+        elif "right" in blob or blob.strip() in ("vr", "rhp", "vs r"):
             out["vr"] = row
     return out
 
@@ -10840,15 +10843,13 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             or int(data.get("flag_n") or 0) >= 2
         )
         enrich_n = int(st.session_state.get("_align_enrich") or 0)
+        bid = fetch_mlb_player_id(item.get("player"))
+        splits = fetch_hitter_splits(bid) or {}
         if worth and enrich_n < 40:
             st.session_state["_align_enrich"] = enrich_n + 1
-            bid = fetch_mlb_player_id(item.get("player"))
             if opp:
                 pid = fetch_mlb_player_id(opp)
                 vs = fetch_vs_pitcher(bid, pid) or {}
-            splits = fetch_hitter_splits(bid) or {}
-        else:
-            bid = None
         tk = _team_key(item.get("team") or "")
         # opposing team pitching: use event home/away
         evn = " ".join(item.get("events") or [item.get("event") or ""])
@@ -10909,14 +10910,27 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         data["match_boost"] = match_boost
         hm, aw = splits.get("home") or {}, splits.get("away") or {}
         dy, nt = splits.get("day") or {}, splits.get("night") or {}
-        def _sl(row):
-            if not row or row.get("slg") is None:
-                return "—"
-            return f"SLG {row['slg']:.3f} / {int(row.get('hr') or 0)} HR"
-        data["split_ha"] = f"home {_sl(hm)} · away {_sl(aw)}"
-        data["split_dn"] = f"day {_sl(dy)} · night {_sl(nt)}"
+        def _avg(row):
+            if not row:
+                return None
+            if row.get("avg") is not None:
+                return f"{row['avg']:.3f} AVG"
+            if row.get("slg") is not None:
+                return f"{row['slg']:.3f} SLG"
+            return None
+        ha_h, ha_a = _avg(hm), _avg(aw)
+        data["split_ha"] = f"🏠 Home {ha_h} / 🚗 Away {ha_a}" if ha_h and ha_a else ""
+        dn_d, dn_n = _avg(dy), _avg(nt)
+        data["split_dn"] = f"☀️ Day {dn_d} / 🌙 Night {dn_n}" if dn_d and dn_n else ""
         vl, vr = splits.get("vl") or {}, splits.get("vr") or {}
-        data["split_lr"] = f"vs LHP {_sl(vl)} · vs RHP {_sl(vr)}" if (vl or vr) else ""
+        lv, rv = _avg(vl), _avg(vr)
+        data["split_lr"] = f"LHP {lv} / RHP {rv}" if lv and rv else ""
+        try:
+            if ha_h and ha_a and hm.get("avg") is not None and aw.get("avg") is not None:
+                bump = int(round((float(hm["avg"]) - float(aw["avg"])) * 100))
+                data["split_adv"] = bump
+        except Exception:
+            data["split_adv"] = 0
         try:
             data["today_spot"], data["today_split"] = _today_spot_mlb(item, data, splits)
         except Exception:
@@ -10954,6 +10968,13 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             notes.append("Data only — no odds stamp")
             data["quiet"] = data.get("data_tier") != "hot"
         conf, tier, dq, oq, cq, ctags = confidence_score(data, item, sport)
+        try:
+            adv = int(data.get("split_adv") or 0)
+            if adv:
+                conf = _clamp100(conf + max(-8, min(8, adv)))
+                tier = "hot" if conf >= 70 else "mid" if conf >= 50 else "cold"
+        except Exception:
+            pass
         data["conf"] = conf
         data["data_q"] = dq
         data["odds_q"] = oq
@@ -11256,8 +11277,13 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · 🌡️ {data.get("weather") or ""}'
                 + (f"<br>🧩 {data.get('pen_line')}" if data.get("pen_line") else "")
                 + f"<br>💸 {price} {book_label(item.get('best_book'))} · {stamps}</div></details>"
-                f'<details class="al-fold"{opened}><summary title="Home/away, day/night, vs left and right">⚙️ Splits</summary>'
-                f'<div class="al-pack">🏠 {data.get("split_ha") or "—"}<br>🌙 {data.get("split_dn") or "—"}<br>🆚 {data.get("split_lr") or "—"}</div></details>'
+                f'<details class="al-fold"{opened}><summary title="Split data compares player performance across conditions">⚙️ Splits</summary>'
+                f'<div class="al-pack">'
+                + (f'{data.get("split_ha")}<br>' if data.get("split_ha") else "")
+                + (f'{data.get("split_dn")}<br>' if data.get("split_dn") else "")
+                + (f'🆚 {data.get("split_lr")}' if data.get("split_lr") else "")
+                + ('<span style="opacity:.6">No split sample yet</span>' if not (data.get("split_ha") or data.get("split_dn") or data.get("split_lr")) else "")
+                + '</div></details>'
                 f'<div class="al-tags">{"".join(pills)}</div>'
                 f'<div class="card-foot">Board score {item.get("score") or "—"} · Confidence {align} · Board still decides if we ticket it.</div>'
                 f"</div>",
