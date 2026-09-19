@@ -124224,7 +124224,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-18T14:22:17.392792+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -124232,7 +124232,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.25
+    "benford_cluster": 0.25,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-18_Anthony Volpe_watch_59",
@@ -143122,5 +143123,41 @@
     "sport": "MLB",
     "market": "batter_home_runs",
     "graded_by": "one_per_day"
+  },
+  {
+    "id": "2026-09-18_Braden Montgomery_watch_23",
+    "date": "2026-09-18",
+    "time": "06:28 PM",
+    "player": "Braden Montgomery",
+    "score": 23,
+    "edge": 25,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 910.0,
+    "book_prices": {
+      "betmgm": 775,
+      "fanatics": 950,
+      "fanduel": 870
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "mgm_locked": 775,
+    "mgm_ending": 75,
+    "methods": [
+      "Fanatics Rogue",
+      "EV Support",
+      "Kelly Support"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-19T01:28:30.934786+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "CHICAGO WHITE SOX",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.5
   }
 ]
