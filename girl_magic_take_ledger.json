@@ -1105,6 +1105,30 @@
       "best_book": "fanatics",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tommy Tremble",
+      "source": "take_it",
+      "score": 86,
+      "methods": [
+        "Multi-book method",
+        "B365 over MGM",
+        "FD 600",
+        "MGM 25",
+        "Fanatics over pack",
+        "HardRock 50",
+        "FD+MGM classic",
+        "Fanatics Loud",
+        "B365 over HardRock",
+        "Match 25",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "draftkings",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
