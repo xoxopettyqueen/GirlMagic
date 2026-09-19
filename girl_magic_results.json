@@ -40089,5 +40089,170 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.8
+  },
+  {
+    "id": "2026-09-19_Noah Fant_shop_take_159",
+    "date": "2026-09-19",
+    "time": "12:46 PM",
+    "player": "Noah Fant",
+    "score": 0,
+    "edge": 159,
+    "best_price": 950,
+    "best_book": "bet365",
+    "median": 825,
+    "book_prices": {
+      "bet365": 950,
+      "betmgm": 675,
+      "betrivers": 1000,
+      "caesars": 800,
+      "draftkings": 800,
+      "fanatics": 900,
+      "fanduel": 850,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:46:13.510668+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Xavier Legette_shop_take_64",
+    "date": "2026-09-19",
+    "time": "12:46 PM",
+    "player": "Xavier Legette",
+    "score": 0,
+    "edge": 64,
+    "best_price": 575,
+    "best_book": "fanatics",
+    "median": 500,
+    "book_prices": {
+      "bet365": 500,
+      "betmgm": 500,
+      "betrivers": 400,
+      "caesars": 500,
+      "draftkings": 550,
+      "fanatics": 575,
+      "fanduel": 500,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:46:13.542583+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Deshaun Watson_shop_take_60",
+    "date": "2026-09-19",
+    "time": "12:46 PM",
+    "player": "Deshaun Watson",
+    "score": 0,
+    "edge": 60,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 390,
+      "betrivers": 430,
+      "caesars": 600,
+      "draftkings": 600,
+      "fanatics": 650,
+      "fanduel": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:46:13.549655+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Brian Robinson_shop_take_56",
+    "date": "2026-09-19",
+    "time": "12:46 PM",
+    "player": "Brian Robinson",
+    "score": 0,
+    "edge": 56,
+    "best_price": 400,
+    "best_book": "fanatics",
+    "median": 340,
+    "book_prices": {
+      "bet365": 350,
+      "betmgm": 250,
+      "betrivers": 205,
+      "caesars": 340,
+      "draftkings": 340,
+      "fanatics": 400,
+      "fanduel": 350,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+400s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:46:13.551869+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Tyjae Spears_shop_lean_42",
+    "date": "2026-09-19",
+    "time": "12:46 PM",
+    "player": "Tyjae Spears",
+    "score": 0,
+    "edge": 42,
+    "best_price": 390,
+    "best_book": "bet365",
+    "median": 345,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 280,
+      "betrivers": 260,
+      "caesars": 340,
+      "draftkings": 350,
+      "fanatics": 380,
+      "fanduel": 350,
+      "hardrockbet": 325
+    },
+    "price_bucket": "under +400",
+    "ending": 90,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T19:46:13.571442+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
