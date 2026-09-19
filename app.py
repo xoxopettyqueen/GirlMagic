@@ -2463,6 +2463,7 @@ SHOP_BOOKS = [
     ("fanduel", "FD"),
     ("betmgm", "MGM"),
     ("bet365", "365"),
+    ("betrivers", "RIV"),
     ("fanatics", "FN"),
     ("hardrockbet", "HR"),
     ("caesars", "CZ"),
@@ -3632,7 +3633,7 @@ def render_shop_tab(df):
         unsafe_allow_html=True,
     )
     st.caption(
-        "Ticket = DK / FD / HardRock / Fanatics — never MGM. "
+        "Ticket = DK / FD / HardRock / Fanatics / 365 — never MGM. Rivers is a price column so we can see the gap. "
         "Kelly = quarter-Kelly in units (20u roll). SKIP = no bet. "
         "TAKE / LEAN still need a real gap. This is size, not a second Board."
     )
