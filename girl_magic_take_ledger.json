@@ -1194,6 +1194,26 @@
       "best_book": "fanatics",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Cam Skattebo",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "Multi-book method",
+        "MGM 25",
+        "HardRock 50",
+        "FD 50",
+        "Rivers short vs pack",
+        "B365 over HardRock",
+        "Match 25",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "draftkings",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
