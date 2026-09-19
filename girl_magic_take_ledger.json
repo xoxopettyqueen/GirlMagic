@@ -1234,6 +1234,26 @@
       "best_book": "fanatics",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Rhamondre Stevenson",
+      "source": "take_it",
+      "score": 61,
+      "methods": [
+        "Multi-book method",
+        "B365 over MGM",
+        "DK 10",
+        "B365 way over MGM",
+        "Rivers short vs pack",
+        "Fanatics Loud",
+        "MGM 10",
+        "EV Premium",
+        "Kelly Premium"
+      ],
+      "best_price": 115,
+      "best_book": "fanatics",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
