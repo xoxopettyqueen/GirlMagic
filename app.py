@@ -635,6 +635,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .petty-box{flex:1;min-width:88px;background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:14px 8px;text-align:center}
 .petty-num{font-size:1.7rem;font-weight:800;color:#f472b6;line-height:1}
 .petty-label{font-size:.62rem;color:#c4b5d6;margin-top:6px;letter-spacing:.8px;text-transform:uppercase}
+.cf-stats{display:flex!important;gap:24px!important;justify-content:center!important;align-items:stretch;flex-wrap:nowrap;margin:8px auto 16px!important;max-width:100%;width:100%}
+.cf-stat{width:320px!important;min-width:320px!important;max-width:320px!important;height:140px!important;min-height:140px!important;max-height:140px!important;padding:20px!important;border-radius:12px!important;box-sizing:border-box!important;flex:0 0 320px!important}
 .rate-chip{display:inline-block;background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin:4px;text-align:center;min-width:72px;vertical-align:top}
 .rate-chip.beat{border:2px solid #34d399;background:linear-gradient(155deg,#0c2418,#1a0f28);box-shadow:0 0 0 1px rgba(52,211,153,.25)}
 .rate-chip.beat .rate-pct{color:#6ee7b7}
@@ -11203,10 +11205,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .cf-stat .l{font-size:13px!important;letter-spacing:1px;text-transform:uppercase;color:#e9d5ff;font-weight:700}
         </style>
         """
-        f'<div class="cf-stats">'
-        f'<div class="cf-stat hot"><div class="n">{n_pile}</div><div class="l">Active Board</div></div>'
-        f'<div class="cf-stat mid"><div class="n">{n_mid}</div><div class="l">Whispers</div></div>'
-        f'<div class="cf-stat cold"><div class="n">{n_cold}</div><div class="l">Homework</div></div>'
+        f'<div class="cf-stats" style="display:flex;gap:24px;justify-content:center;width:100%;margin:8px 0 16px">'
+        f'<div class="cf-stat hot" style="width:320px;height:140px;padding:20px;border-radius:12px;flex:0 0 320px"><div class="n">{n_pile}</div><div class="l">Active Board</div></div>'
+        f'<div class="cf-stat mid" style="width:320px;height:140px;padding:20px;border-radius:12px;flex:0 0 320px"><div class="n">{n_mid}</div><div class="l">Whispers</div></div>'
+        f'<div class="cf-stat cold" style="width:320px;height:140px;padding:20px;border-radius:12px;flex:0 0 320px"><div class="n">{n_cold}</div><div class="l">Homework</div></div>'
         f'</div>',
         unsafe_allow_html=True,
     )
