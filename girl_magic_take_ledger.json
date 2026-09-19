@@ -1214,6 +1214,26 @@
       "best_book": "draftkings",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Juwan Johnson",
+      "source": "take_it",
+      "score": 71,
+      "methods": [
+        "Multi-book method",
+        "B365 over MGM",
+        "FD Pattern",
+        "B365 way over MGM",
+        "Fanatics Loud",
+        "B365 75",
+        "DK FD-style",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 420,
+      "best_book": "fanatics",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
