@@ -214,6 +214,25 @@
       "best_book": "fanatics",
       "time": "09:31 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Bo Bichette",
+      "source": "take_it",
+      "score": 80,
+      "methods": [
+        "HardRock 00",
+        "DK 10",
+        "MGM Exact",
+        "Multi-book method",
+        "FD Pattern",
+        "FD 90",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "09:31 AM",
+      "sport": "MLB"
     }
   ]
 }
