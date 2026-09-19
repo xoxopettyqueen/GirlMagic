@@ -609,8 +609,20 @@ st.markdown("""
   margin-right:auto!important;
 }
 @media (max-width:640px){
-  .main .block-container,[data-testid="stMainBlockContainer"]{padding:0.65rem 0.75rem!important}
-  h1{font-size:1.65rem!important}
+  .main .block-container,[data-testid="stMainBlockContainer"]{padding:0.55rem 0.55rem!important}
+  h1{font-size:1.45rem!important}
+  .cf-stats{flex-wrap:wrap!important;gap:10px!important}
+  .cf-stat{width:100%!important;min-width:0!important;max-width:100%!important;flex:1 1 100%!important;height:96px!important;min-height:96px!important;max-height:96px!important;padding:12px!important}
+  .cf-stat .n{font-size:28px!important}
+  .cf-stat .l{font-size:11px!important}
+  .tier-row{flex-wrap:wrap!important;gap:8px!important}
+  .tier-card{min-width:0!important;width:100%!important}
+  .card{padding:10px 10px!important;font-size:.82rem!important;overflow-x:hidden}
+  .card-name{font-size:1.05rem!important;word-break:break-word}
+  .today-bubble{padding:8px 10px!important;font-size:.78rem!important}
+  .al-pack{font-size:.82rem!important;word-break:break-word}
+  .queen-banner{font-size:.72rem!important;white-space:normal!important;line-height:1.3}
+  div[role="radiogroup"] label{padding:8px 10px!important;font-size:0.68rem!important}
 }
 div[role="radiogroup"]{flex-wrap:wrap!important;gap:4px!important;margin:6px 0 12px!important}
 div[role="radiogroup"] label{
@@ -635,8 +647,8 @@ h1{font-family:'Playfair Display',serif!important;font-weight:900!important;colo
 .petty-box{flex:1;min-width:88px;background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:14px 8px;text-align:center}
 .petty-num{font-size:1.7rem;font-weight:800;color:#f472b6;line-height:1}
 .petty-label{font-size:.62rem;color:#c4b5d6;margin-top:6px;letter-spacing:.8px;text-transform:uppercase}
-.cf-stats{display:flex!important;gap:24px!important;justify-content:center!important;align-items:stretch;flex-wrap:nowrap;margin:8px auto 16px!important;max-width:100%;width:100%}
-.cf-stat{width:320px!important;min-width:320px!important;max-width:320px!important;height:140px!important;min-height:140px!important;max-height:140px!important;padding:20px!important;border-radius:12px!important;box-sizing:border-box!important;flex:0 0 320px!important}
+.cf-stats{display:flex!important;gap:24px!important;justify-content:center!important;align-items:stretch;flex-wrap:wrap;margin:8px auto 16px!important;max-width:100%;width:100%}
+.cf-stat{width:320px;max-width:100%;height:140px;padding:20px;border-radius:12px;box-sizing:border-box;flex:1 1 280px}
 .rate-chip{display:inline-block;background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin:4px;text-align:center;min-width:72px;vertical-align:top}
 .rate-chip.beat{border:2px solid #34d399;background:linear-gradient(155deg,#0c2418,#1a0f28);box-shadow:0 0 0 1px rgba(52,211,153,.25)}
 .rate-chip.beat .rate-pct{color:#6ee7b7}
@@ -11341,7 +11353,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         x[1].get("player") or "",
     ))
     cards = cards[:12] if view.startswith("🎯") else cards[:16]
-    cols = st.columns(2)
+    cols = None
     already = set()
     shown_i = 0
     for align, item, data, notes, vibe in cards[:40]:
@@ -11433,7 +11445,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         pen_html = ""
         if data.get("pen_line"):
             pen_html = f'<div class="card-line"><b>VS BULLPEN</b> {data.get("pen_line")}</div>'
-        with cols[i % max(1, len(cols))]:
+        with st.container():
             if sport == "NFL":
                 sm_raw = data.get("summary") or ""
                 keep = []
