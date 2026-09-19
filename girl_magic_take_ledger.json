@@ -1583,6 +1583,25 @@
       "best_book": "fanatics",
       "time": "12:45 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jac Caglianone",
+      "source": "take_it",
+      "score": 80,
+      "methods": [
+        "FD Pattern",
+        "FD+MGM classic",
+        "Fanatics Rogue",
+        "Stayed in the group",
+        "Match 50",
+        "MGM 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "12:45 PM",
+      "sport": "MLB"
     }
   ]
 }
