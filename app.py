@@ -11188,8 +11188,9 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     st.markdown(
         """
         <style>
-        .cf-stats{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:4px auto 12px;max-width:1100px}
-        .cf-stat{width:300px;height:140px;padding:20px;border-radius:12px;background:#14121E;
+        .cf-stats{display:flex;gap:10px;justify-content:flex-start;flex-wrap:nowrap;margin:4px 0 12px;max-width:980px}
+        .cf-stat{flex:1 1 320px;max-width:320px;height:140px!important;min-height:140px!important;max-height:140px!important;
+          padding:20px!important;border-radius:12px!important;box-sizing:border-box;background:#14121E;
           border:2px solid transparent;background-image:linear-gradient(#14121E,#14121E),linear-gradient(120deg,#f472b6,#c084fc,#2dd4bf);
           background-origin:padding-box,border-box;background-clip:padding-box,border-box;
           display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
@@ -11197,9 +11198,9 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .cf-stat.hot:hover{transform:translateY(-4px);box-shadow:0 0 15px rgba(244,114,182,.32)}
         .cf-stat.mid:hover{transform:translateY(-4px);box-shadow:0 0 13px rgba(45,212,191,.25)}
         .cf-stat.cold:hover{transform:translateY(-4px);box-shadow:0 0 11px rgba(192,132,252,.20)}
-        .cf-stat .n{font-size:36px;font-weight:800;line-height:1;background:linear-gradient(90deg,#f9a8d4,#e9d5ff,#67e8f9);
+        .cf-stat .n{font-size:36px!important;font-weight:800;line-height:1;background:linear-gradient(90deg,#f9a8d4,#e9d5ff,#67e8f9);
           -webkit-background-clip:text;background-clip:text;color:transparent}
-        .cf-stat .l{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#e9d5ff;font-weight:700}
+        .cf-stat .l{font-size:13px!important;letter-spacing:1px;text-transform:uppercase;color:#e9d5ff;font-weight:700}
         </style>
         """
         f'<div class="cf-stats">'
