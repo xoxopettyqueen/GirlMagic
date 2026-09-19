@@ -6735,18 +6735,19 @@ def _fetch_events_oddsapi_cached(api_key, sport_key, t_from, t_to):
     r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params=params, timeout=15)
     r.raise_for_status()
     data = r.json() or []
-    try:
-        r2 = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
-        if r2.status_code == 200:
-            extra = r2.json() or []
-            seen = {str(x.get("id") or "") for x in data}
-            for ev in extra:
-                eid = str(ev.get("id") or "")
-                if eid and eid not in seen:
-                    data.append(ev)
-                    seen.add(eid)
-    except Exception:
-        pass
+    if len(data) < 8:
+        try:
+            r2 = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
+            if r2.status_code == 200:
+                extra = r2.json() or []
+                seen = {str(x.get("id") or "") for x in data}
+                for ev in extra:
+                    eid = str(ev.get("id") or "")
+                    if eid and eid not in seen:
+                        data.append(ev)
+                        seen.add(eid)
+        except Exception:
+            pass
     data.sort(key=lambda e: str(e.get("commence_time") or ""))
     return data
 
@@ -9343,7 +9344,39 @@ _PARK_HR = {
 }
 
 
-@st.cache_data(ttl=3600, show_spinner=False)
+def prefetch_mlb_splits(names):
+    """Warm ID + split caches in parallel. Same work, not a single-file line."""
+    uniq, seen = [], set()
+    for n in names or []:
+        k = _fold_player(n)
+        if not k or k in seen:
+            continue
+        seen.add(k)
+        uniq.append(n)
+    if not uniq:
+        return
+    try:
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        with ThreadPoolExecutor(max_workers=min(12, len(uniq))) as pool:
+            futs = [pool.submit(fetch_mlb_player_id, n) for n in uniq]
+            ids = []
+            for f in as_completed(futs):
+                try:
+                    ids.append(f.result())
+                except Exception:
+                    pass
+            id_ok = [i for i in ids if i]
+            if id_ok:
+                list(pool.map(fetch_hitter_splits, id_ok))
+    except Exception:
+        for n in uniq[:24]:
+            try:
+                fetch_hitter_splits(fetch_mlb_player_id(n))
+            except Exception:
+                pass
+
+
+@st.cache_data(ttl=86400, show_spinner=False)
 def fetch_mlb_player_id(name):
     q = str(name or "").strip()
     if not q:
@@ -10684,6 +10717,11 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if better or (it.get("is_bet") and not prev.get("is_bet")):
             seen_p[k] = it
     rows = list(seen_p.values())
+    if active_sport() != "NFL":
+        try:
+            prefetch_mlb_splits([r.get("player") for r in rows[:120]])
+        except Exception:
+            pass
     st.markdown(
         '<div class="queen-banner">✨ Confidence · when the data speaks and the odds agree, that’s Girl Magic</div>',
         unsafe_allow_html=True,
@@ -10992,11 +11030,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         enrich_n = int(st.session_state.get("_align_enrich") or 0)
         bid = fetch_mlb_player_id(item.get("player"))
         splits = fetch_hitter_splits(bid) or {}
-        if worth and enrich_n < 40:
+        if worth and enrich_n < 40 and opp:
             st.session_state["_align_enrich"] = enrich_n + 1
-            if opp:
-                pid = fetch_mlb_player_id(opp)
-                vs = fetch_vs_pitcher(bid, pid) or {}
+            pid = fetch_mlb_player_id(opp)
+            vs = fetch_vs_pitcher(bid, pid) or {}
         tk = _team_key(item.get("team") or "")
         # opposing team pitching: use event home/away
         evn = " ".join(item.get("events") or [item.get("event") or ""])
@@ -11031,7 +11068,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         align = int(align) + int(match_boost)
         pp = {}
         try:
-            if opp:
+            if opp and bid:
                 pp = fetch_pitcher_profile(fetch_mlb_player_id(opp)) or {}
         except Exception:
             pp = {}
@@ -11770,6 +11807,8 @@ def main():
     prev_df = pd.DataFrame(prev) if prev else None
     selected_events = st.session_state.get("last_selected") or chosen or []
     new_fetch = st.session_state.pop("new_fetch", False)
+    if new_fetch:
+        st.session_state["_align_enrich"] = 0
     board_key = (
         active_sport(),
         st.session_state.get("last_fetch_time"),
