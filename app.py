@@ -6139,56 +6139,35 @@ def render_whats_going_today():
     mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
     sport = active_sport()
     cfg = sport_cfg()
+    live = list(st.session_state.get("ev_board") or [])
+    live_takes = [e for e in live if e.get("is_bet")]
+    live_watch = list(st.session_state.get("watch_board") or [])
+    live_lean = []
+    for r in st.session_state.get("last_shop_rows") or []:
+        if str(r.get("action") or "") == "LEAN":
+            live_lean.append(r)
+    take_n = len({_fold_player(e.get("player")) for e in live_takes if e.get("player")})
+    lean_n = len({_fold_player(e.get("player")) for e in live_lean if e.get("player")})
+    watch_n = len({_fold_player(e.get("player")) for e in live_watch if e.get("player")})
     today = today_az()
     extra = today_mlb_date() if sport != "NFL" else today
-    day = [r for r in rows if r.get("date") in (today, extra)]
-    def _src(r):
-        return str(r.get("source") or "")
-    def _uniq(pool):
-        seen, out = set(), []
-        for r in pool:
-            k = _fold_player(r.get("player"))
-            if not k or k in seen:
-                continue
-            seen.add(k)
-            out.append(r)
-        return out
-    take_n = len(_uniq([r for r in day if _src(r) in ("take_it", "shop_take", "bet_this", "take")]))
-    lean_n = len(_uniq([r for r in day if _src(r) in ("shop_lean", "lean")]))
-    watch_n = len(_uniq([r for r in day if _src(r) == "watch"]))
-    hit_n = len(_uniq([r for r in day if str(r.get("result") or "").upper() == "HIT"]))
+    hit_n = len({
+        _fold_player(r.get("player"))
+        for r in rows
+        if r.get("date") in (today, extra) and str(r.get("result") or "").upper() == "HIT"
+    })
     mlb_hr = hit_n
-    listed = []
-    for r in _uniq(day):
-        s = _src(r)
-        if s in ("take_it", "shop_take", "bet_this", "take"):
-            listed.append((r.get("player") or "", "TAKE"))
-        elif s in ("shop_lean", "lean"):
-            listed.append((r.get("player") or "", "LEAN"))
-        elif s == "watch":
-            listed.append((r.get("player") or "", "WATCH"))
+    listed = [(e.get("player") or "", "TAKE") for e in live_takes]
+    listed += [(e.get("player") or "", "LEAN") for e in live_lean]
+    listed += [(e.get("player") or "", "WATCH") for e in live_watch]
     hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "HRs")
     prop_word = "TD prop" if sport == "NFL" else "HR prop"
-    # Book pills from today's logged prices (lock first number). Not live box scores.
-    book_ending = defaultdict(list)
     end_ct = Counter()
     lock_now = st.session_state.get("pregame_lock") or load_pregame()
-    for r in day:
-        bl = book_label(r.get("best_book") or "")
-        px = r.get("best_price")
-        pname = r.get("player")
-        if lock_now and pname:
-            for kn, data in (lock_now or {}).items():
-                if not names_match(pname, kn):
-                    continue
-                for b, info in ((data or {}).get("books") or {}).items():
-                    if book_label(b) != bl:
-                        continue
-                    slot = info if isinstance(info, dict) else {}
-                    px = slot.get("first_price") or slot.get("price") or px
-                    break
-                break
-        end = last_two(px) if px is not None else r.get("ending")
+    for e in live_takes:
+        bl = book_label(e.get("best_book") or "")
+        px = e.get("best_price")
+        end = last_two(px) if px is not None else None
         if bl and end is not None:
             try:
                 end_ct[(bl, int(end))] += 1
@@ -6264,7 +6243,7 @@ def render_whats_going_today():
     if sport == "NFL":
         queen = "Queen says: the TDs on the list are the ones that matter." if take_n else "Queen says: NFL lane — ticket books only."
     else:
-        queen = "Queen says: these are today’s logged tickets." if take_n else "Queen says: Fetch pregame so TAKE / WATCH land here."
+        queen = "Queen says: Pulse = live Board greens, not the archive." if take_n else "Queen says: Fetch so the live list shows."
 
     books_block = "".join(pills) if pills else '<span class="pulse-pill">No tickets logged yet.</span>'
     mlb_on = "on" if sport == "MLB" else ""
@@ -6273,7 +6252,7 @@ def render_whats_going_today():
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">Counts = today’s logged TAKE / LEAN / WATCH. Pills = that book’s locked ending. Hits grade on Results.</div>'
+        '<div class="wg-sub">Counts = live Board TAKE + Shop LEAN + Watch. Pills = those ticket books only. Archive stays on Receipts.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
@@ -11112,10 +11091,10 @@ def main():
     )
     _rs = load_results() or []
     _td = today_az()
-    _take_today = sum(1 for r in _rs if r.get("date") in (_td, today_mlb_date()) and r.get("source") in ("take_it", "shop_take"))
+    _live_t = sum(1 for e in (st.session_state.get("ev_board") or []) if e.get("is_bet"))
     st.caption(
-        f"Archive {_rs and len(_rs) or 0} rows · {(st.session_state.get('_results_source') or '?')} · "
-        f"{_take_today} TAKE today · GitHub {'on' if _gh_configured() else 'OFF — secrets missing, reboot wipes'}"
+        f"Archive {len(_rs)} graded/logged rows · {(st.session_state.get('_results_source') or '?')} · "
+        f"Live TAKE {_live_t} · GitHub {'on' if _gh_configured() else 'OFF'}"
     )
     try:
         sport_pick = st.segmented_control(
@@ -11476,8 +11455,9 @@ def main():
     st.session_state["last_take_names"] = [e.get("player") for e in ev_board if e.get("is_bet")]
     try:
         shop_now = build_shop_board(df) if not df.empty else []
+        st.session_state["last_shop_rows"] = shop_now
         st.session_state["last_shop_take_names"] = [
-            r.get("player") for r in shop_now if r.get("action") in ("TAKE", "LEAN")
+            r.get("player") for r in shop_now if r.get("action") == "TAKE"
         ]
     except Exception:
         st.session_state["last_shop_take_names"] = st.session_state.get("last_shop_take_names") or []
