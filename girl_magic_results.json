@@ -8648,5 +8648,122 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-18_Brice Turang_shop_lean_50",
+    "date": "2026-09-18",
+    "time": "08:53 PM",
+    "player": "Brice Turang",
+    "score": 0,
+    "edge": 50,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 900,
+      "fanatics": 950,
+      "fanduel": 900,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:53:47.272676+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Joey Ortiz_shop_lean_47",
+    "date": "2026-09-18",
+    "time": "08:53 PM",
+    "player": "Joey Ortiz",
+    "score": 0,
+    "edge": 47,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 920,
+      "fanatics": 950,
+      "fanduel": 900,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:53:47.272769+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Carlos Narv\u00e1ez_shop_lean_32",
+    "date": "2026-09-18",
+    "time": "08:53 PM",
+    "player": "Carlos Narv\u00e1ez",
+    "score": 0,
+    "edge": 32,
+    "best_price": 820,
+    "best_book": "draftkings",
+    "median": 800,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 820,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 20,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:53:47.273168+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Daylen Lile_shop_lean_30",
+    "date": "2026-09-18",
+    "time": "08:53 PM",
+    "player": "Daylen Lile",
+    "score": 0,
+    "edge": 30,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 605,
+    "book_prices": {
+      "fanatics": 650,
+      "fanduel": 560
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:53:47.273328+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
