@@ -2324,6 +2324,15 @@ def collect_petty_alerts(ev_board, results):
             _push("b365_fd", f"365 a bit over FD · {name}", 68, item, books)
         if "Rivers way over pack" in ms:
             _push("rivers", f"Rivers way over pack · {name}", 80, item, books)
+        why = str(item.get("why") or "")
+        summ = str(item.get("summary") or "")
+        blob = f"{why} {summ} {' '.join(str(m) for m in ms)}".lower()
+        if "wind out" in blob or "blowing out" in blob:
+            _push("wx", f"Wind out · {name}", 72, item, books)
+        if "hot porch" in blob or "live air" in blob:
+            _push("park", f"Hot park · {name}", 68, item, books)
+        if "Trend Heating" in ms or "heating" in blob:
+            _push("trend", f"Trend heating · {name}", 64, item, books)
 
     # One name per family-ish; keep highest score.
     best = {}
@@ -2343,6 +2352,9 @@ def collect_petty_alerts(ev_board, results):
         mixed.extend(lst[:2] if fam != "fd_mgm" else lst[:1])
     hot = sorted([a for a in mixed if a["tier"] == "hot"], key=lambda x: -x["score"])[:2]
     mid = sorted([a for a in mixed if a["tier"] == "mid"], key=lambda x: -x["score"])[:3]
+    ctx = [a for a in mixed if a["family"] in ("wx", "park", "trend", "spot")]
+    if ctx and not any((a.get("family") in ("wx", "park", "trend", "spot")) for a in mid + hot):
+        mid = (mid[:2] + [ctx[0]])[:3]
     warn = sorted([a for a in mixed if a["tier"] == "warn"], key=lambda x: -x["score"])[:1]
     gold = sorted([a for a in mixed if a["tier"] == "gold"], key=lambda x: -x["score"])[:1]
     cold = sorted([a for a in mixed if a["tier"] == "cold"], key=lambda x: -x["score"])[:1]
