@@ -1516,6 +1516,28 @@
       "best_book": "fanatics",
       "time": "12:37 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Emanuel Wilson",
+      "source": "take_it",
+      "score": 82,
+      "methods": [
+        "Multi-book method",
+        "B365 50",
+        "MGM Exact",
+        "Fanatics over pack",
+        "HardRock 50",
+        "FD 50",
+        "Match 75",
+        "Fanatics Loud",
+        "MGM 75",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "draftkings",
+      "time": "12:38 PM",
+      "sport": "NFL"
     }
   ]
 }
