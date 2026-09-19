@@ -8381,5 +8381,141 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-18_Gleyber Torres_shop_lean_45",
+    "date": "2026-09-18",
+    "time": "08:37 PM",
+    "player": "Gleyber Torres",
+    "score": 0,
+    "edge": 45,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 890,
+    "book_prices": {
+      "draftkings": 950,
+      "fanduel": 830
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:37:48.127801+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Mike Yastrzemski_shop_lean_30",
+    "date": "2026-09-18",
+    "time": "08:37 PM",
+    "player": "Mike Yastrzemski",
+    "score": 0,
+    "edge": 30,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 605,
+    "book_prices": {
+      "fanatics": 650,
+      "fanduel": 560
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:37:48.128078+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Colt Keith_shop_lean_28",
+    "date": "2026-09-18",
+    "time": "08:37 PM",
+    "player": "Colt Keith",
+    "score": 0,
+    "edge": 28,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 670,
+    "book_prices": {
+      "draftkings": 670,
+      "fanatics": 700,
+      "fanduel": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:37:48.128242+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Dylan Crews_shop_lean_25",
+    "date": "2026-09-18",
+    "time": "08:37 PM",
+    "player": "Dylan Crews",
+    "score": 0,
+    "edge": 25,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 560,
+    "book_prices": {
+      "fanatics": 600,
+      "fanduel": 520
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:37:48.128354+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Mauricio Dub\u00f3n_shop_lean_25",
+    "date": "2026-09-18",
+    "time": "08:37 PM",
+    "player": "Mauricio Dub\u00f3n",
+    "score": 0,
+    "edge": 25,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 910,
+    "book_prices": {
+      "fanatics": 950,
+      "fanduel": 870
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T03:37:48.128466+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
