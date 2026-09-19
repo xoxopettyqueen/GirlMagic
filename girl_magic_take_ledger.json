@@ -708,6 +708,28 @@
       "best_book": "fanatics",
       "time": "10:16 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "JJ Bleday",
+      "source": "take_it",
+      "score": 66,
+      "methods": [
+        "B365 over HardRock",
+        "B365 over MGM",
+        "MGM Exact",
+        "MGM 25",
+        "Stayed in the group",
+        "FD+MGM classic",
+        "FD Pattern",
+        "Multi-book method",
+        "Match 25",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 450,
+      "best_book": "fanatics",
+      "time": "10:16 AM",
+      "sport": "MLB"
     }
   ]
 }
