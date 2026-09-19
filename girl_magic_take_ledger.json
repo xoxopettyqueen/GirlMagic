@@ -96,6 +96,29 @@
       "best_book": "draftkings",
       "time": "09:30 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Bryan Reynolds",
+      "source": "take_it",
+      "score": 90,
+      "methods": [
+        "Rivers short vs pack",
+        "Fanatics Rogue",
+        "Fanatics over pack",
+        "HardRock 50",
+        "Match 25",
+        "Multi-book method",
+        "MGM 25",
+        "FD Pattern",
+        "Stayed in the group",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 750,
+      "best_book": "fanatics",
+      "time": "09:30 AM",
+      "sport": "MLB"
     }
   ]
 }
