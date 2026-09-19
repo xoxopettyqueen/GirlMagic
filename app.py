@@ -10755,14 +10755,15 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         x[1].get("player") or "",
     ))
     n_hot = sum(1 for c in cards if c[2].get("data_tier") == "hot")
-    n_mid = sum(1 for c in cards if c[2].get("data_tier") == "mid")
-    n_cold = sum(1 for c in cards if c[2].get("data_tier") == "cold")
-    n_board = sum(1 for c in cards if c[2].get("data_tier") == "hot" and c[1].get("is_bet"))
+    pile = [c for c in cards if c[2].get("data_tier") == "hot"][:12]
+    pile_names = {c[1].get("player") for c in pile}
+    n_pile = len(pile)
+    n_also = sum(1 for c in cards if c[1].get("is_bet") and c[1].get("player") not in pile_names)
     st.markdown(
         f'<div class="petty-row">'
-        f'<div class="petty-box"><div class="petty-num">{n_hot}</div><div class="petty-label">THE PILE</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{n_board}</div><div class="petty-label">ALSO RUN IT</div></div>'
-        f'<div class="petty-box"><div class="petty-num">{n_mid + n_cold}</div><div class="petty-label">NOT THE PILE</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{n_pile}</div><div class="petty-label">THE PILE</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{n_also}</div><div class="petty-label">ALSO RUN IT</div></div>'
+        f'<div class="petty-box"><div class="petty-num">{max(0, n_hot - n_pile)}</div><div class="petty-label">CUT FROM PILE</div></div>'
         f'</div>'
         f'<div class="tier-row">'
         f'<div class="tier-card tier-hot"><b>🔥 HOT · what Active shows</b><p>3 real flags. MLB: EV 90+ · HH 44%+ · barrel 9%+ · xSLG .450+ · and either already hot (HR L7 2+) or DUE (loud contact + 0–1 HR L7). Barrel 12% + EV 91 is enough alone. You do not need 2 bombs this week. NFL: 3 of target share / heating / TDs / DVP / used WR2-TE2-RB2.</p></div>'
@@ -10814,13 +10815,13 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             except Exception:
                 return 0
         if view.startswith("🎯"):
-            cards = [c for c in cards if c[2].get("data_tier") == "hot"]
+            cards = [c for c in cards if c[2].get("data_tier") == "hot"][:12]
         elif view.startswith("🫧"):
             cards = [c for c in cards if c[2].get("data_tier") == "mid"]
         elif view.startswith("📚"):
             cards = [c for c in cards if c[2].get("data_tier") == "cold" or c[2].get("rookie") or "nflverse miss" in (c[2].get("summary") or "")]
     elif view.startswith("🎯"):
-        cards = [c for c in cards if c[2].get("data_tier") == "hot"]
+        cards = [c for c in cards if c[2].get("data_tier") == "hot"][:12]
     elif view.startswith("🫧"):
         cards = [c for c in cards if c[2].get("data_tier") == "mid"]
     elif view.startswith("📚"):
