@@ -1771,6 +1771,27 @@
       "best_book": "fanatics",
       "time": "01:02 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Konata Mumpfield",
+      "source": "take_it",
+      "score": 60,
+      "methods": [
+        "Fanatics over pack",
+        "Fanatics Loud",
+        "Rivers way over pack",
+        "HardRock 00",
+        "Multi-book method",
+        "Fanatics Drift",
+        "MGM Exact",
+        "FD 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "draftkings",
+      "time": "01:09 PM",
+      "sport": "NFL"
     }
   ]
 }
