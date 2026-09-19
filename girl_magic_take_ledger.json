@@ -254,6 +254,25 @@
       "best_book": "hardrockbet",
       "time": "09:31 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Zach Neto",
+      "source": "take_it",
+      "score": 67,
+      "methods": [
+        "MGM 60",
+        "HardRock 50",
+        "MGM Exact",
+        "FD a little long",
+        "Multi-book method",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 475,
+      "best_book": "fanatics",
+      "time": "09:31 AM",
+      "sport": "MLB"
     }
   ]
 }
