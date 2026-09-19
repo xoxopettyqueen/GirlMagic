@@ -1345,6 +1345,23 @@
       "best_book": "draftkings",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Dallas Goedert",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "Multi-book method",
+        "Books tight",
+        "DK 10",
+        "MGM 10",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 210,
+      "best_book": "draftkings",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
