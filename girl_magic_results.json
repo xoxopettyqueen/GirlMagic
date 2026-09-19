@@ -40808,5 +40808,203 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Carlos Cortes_shop_take_143",
+    "date": "2026-09-19",
+    "time": "01:08 PM",
+    "player": "Carlos Cortes",
+    "score": 0,
+    "edge": 143,
+    "best_price": 990,
+    "best_book": "draftkings",
+    "median": 850,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 850,
+      "betrivers": 1000,
+      "caesars": 850,
+      "draftkings": 990,
+      "fanatics": 800,
+      "fanduel": 680,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 90,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T20:08:39.401893+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Travis Bazzana_shop_lean_110",
+    "date": "2026-09-19",
+    "time": "01:08 PM",
+    "player": "Travis Bazzana",
+    "score": 0,
+    "edge": 110,
+    "best_price": 900,
+    "best_book": "fanduel",
+    "median": 775,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 725,
+      "betrivers": 800,
+      "caesars": 750,
+      "draftkings": 680,
+      "fanatics": 800,
+      "fanduel": 900,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T20:08:39.402873+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Tommy Edman_shop_take_67",
+    "date": "2026-09-19",
+    "time": "01:08 PM",
+    "player": "Tommy Edman",
+    "score": 0,
+    "edge": 67,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 690,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 310,
+      "betrivers": 650,
+      "caesars": 700,
+      "draftkings": 610,
+      "fanatics": 750,
+      "fanduel": 680,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T20:08:39.407051+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Mookie Betts_shop_take_64",
+    "date": "2026-09-19",
+    "time": "01:08 PM",
+    "player": "Mookie Betts",
+    "score": 0,
+    "edge": 64,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 482,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 340,
+      "betrivers": 500,
+      "caesars": 475,
+      "draftkings": 441,
+      "fanatics": 550,
+      "fanduel": 490,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T20:08:39.407800+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Jo Adell_shop_lean_43",
+    "date": "2026-09-19",
+    "time": "01:08 PM",
+    "player": "Jo Adell",
+    "score": 0,
+    "edge": 43,
+    "best_price": 475,
+    "best_book": "fanatics",
+    "median": 427,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 333,
+      "betrivers": 460,
+      "caesars": 425,
+      "draftkings": 447,
+      "fanatics": 475,
+      "fanduel": 430,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T20:08:39.411363+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_CJ Abrams_shop_lean_40",
+    "date": "2026-09-19",
+    "time": "01:08 PM",
+    "player": "CJ Abrams",
+    "score": 0,
+    "edge": 40,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 437,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 425,
+      "betrivers": 440,
+      "caesars": 425,
+      "draftkings": 435,
+      "fanatics": 500,
+      "fanduel": 470,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T20:08:39.412947+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
