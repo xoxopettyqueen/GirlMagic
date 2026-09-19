@@ -1922,6 +1922,28 @@
       "best_book": "fanatics",
       "time": "02:55 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Joe Mack",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Fanatics over pack",
+        "Multi-book method",
+        "FD Pattern",
+        "DK FD-style",
+        "Rivers a bit over pack",
+        "MGM Exact",
+        "Fanatics Rogue",
+        "B365 over MGM",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "03:02 PM",
+      "sport": "MLB"
     }
   ]
 }
