@@ -38375,5 +38375,103 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Bryan Reynolds_shop_take_63",
+    "date": "2026-09-19",
+    "time": "12:10 PM",
+    "player": "Bryan Reynolds",
+    "score": 0,
+    "edge": 63,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 665,
+    "book_prices": {
+      "bet365": 650,
+      "betmgm": 625,
+      "betrivers": 575,
+      "caesars": 700,
+      "draftkings": 690,
+      "fanatics": 750,
+      "fanduel": 680,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:10:48.847676+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Dansby Swanson_shop_lean_48",
+    "date": "2026-09-19",
+    "time": "12:10 PM",
+    "player": "Dansby Swanson",
+    "score": 0,
+    "edge": 48,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 435,
+    "book_prices": {
+      "bet365": 350,
+      "betmgm": 390,
+      "betrivers": 410,
+      "caesars": 425,
+      "draftkings": 446,
+      "fanatics": 500,
+      "fanduel": 470,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T19:10:48.851463+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Ke'Bryan Hayes_shop_lean_28",
+    "date": "2026-09-19",
+    "time": "12:10 PM",
+    "player": "Ke'Bryan Hayes",
+    "score": 0,
+    "edge": 28,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 800,
+    "book_prices": {
+      "betmgm": 825,
+      "betrivers": 1000,
+      "caesars": 750,
+      "draftkings": 800,
+      "fanatics": 800,
+      "fanduel": 710,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T19:10:48.855744+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
