@@ -220,7 +220,7 @@ def fanatics_price_logic(book_prices):
 
 
 def b365_over_mgm(book_prices):
-    """Bet365 plus-price longer than BetMGM."""
+    """Bet365 plus-price longer than BetMGM. Tiny 10-pt gaps are not a tell."""
     books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
     b365 = books.get("bet365")
     mgm = books.get("betmgm")
@@ -230,7 +230,55 @@ def b365_over_mgm(book_prices):
         gap = int(b365) - int(mgm)
     except Exception:
         return False, 0
-    return gap > 0, gap
+    return gap >= 40, gap
+
+
+def b365_way_over_mgm(book_prices):
+    """365 way longer than MGM. The one that has been cashing."""
+    ok, gap = b365_over_mgm(book_prices)
+    if not ok:
+        return False, gap
+    books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
+    try:
+        lane = min(abs(int(books.get("bet365"))), abs(int(books.get("betmgm"))))
+    except Exception:
+        lane = 0
+    if gap >= 100:
+        return True, gap
+    if gap >= 75 and 300 <= lane <= 800:
+        return True, gap
+    return False, gap
+
+
+def fd_pattern_a_little_long(book_prices, fd_is_pattern=True):
+    """
+    FD pattern number sitting 15–75 longer than DK/MGM on the SHORT plus-money guys.
+    +1100 flyers with FD +75 are noise. +450–+700 with FD a touch long has been hitting.
+    """
+    if not fd_is_pattern:
+        return False, 0, None
+    books = {_norm_book(k): v for k, v in (book_prices or {}).items()}
+    fd = books.get("fanduel")
+    if fd is None:
+        return False, 0, None
+    try:
+        fd_i = int(fd)
+    except Exception:
+        return False, 0, None
+    if not (400 <= abs(fd_i) <= 750):
+        return False, 0, fd_i
+    peers = []
+    for k in ("draftkings", "betmgm"):
+        if books.get(k) is not None:
+            try:
+                peers.append(int(books[k]))
+            except Exception:
+                pass
+    if not peers:
+        return False, 0, fd_i
+    base = min(peers)
+    gap = fd_i - base
+    return 15 <= gap <= 75, gap, fd_i
 
 
 def letter_value(ch):
@@ -1111,8 +1159,9 @@ TAKE_STAMP_METHODS = {
     "Match 25", "Match 50", "Match 75",
     "MGM Exact", "Exact Match",
     "Last one left", "Stayed in the group",
-    "FD Pattern", "FD 600", "FD+MGM classic",
+    "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
     "Fanatics Rogue",
+    "B365 way over MGM",
 }
 # Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
 NFL_STAMP_METHODS = {
@@ -1123,12 +1172,15 @@ NFL_STAMP_METHODS = {
     "DK 10",
     "Fanatics Rogue",
     "Stayed in the group",
+    "FD a little long",
+    "B365 way over MGM",
 }
 
 PRIORITY_METHODS = {
     "MGM 25", "Match 25", "MGM Exact",
     "DK 10",
-    "FD Pattern", "FD 600", "FD+MGM classic",
+    "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
+    "B365 way over MGM",
     "Multi-book Shorten",
     "Books tight",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
@@ -1153,7 +1205,8 @@ HOT_BOOK_ENDS = {
 TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
     "DK 10",
-    "FD 600", "FD Pattern",
+    "FD 600", "FD Pattern", "FD a little long",
+    "B365 way over MGM",
     "Multi-book method",
     "FD+MGM classic",
     "MGM Exact",
@@ -1175,7 +1228,7 @@ SUPPORT_ONLY = {
     "FD 40", "MGM 60", "MGM 10", "MGM 40",
     "EV Support", "Kelly Support", "EV Caution", "Kelly Caution",
     "Trend Heating", "Trend Cooling", "Trend Chaotic",
-    "B365 over HardRock", "B365 over MGM", "Fanatics over pack", "HardRock over pack",
+    "B365 over HardRock", "B365 over MGM", "Fanatics over pack",
     "Caesars 90", "HardRock 50", "HardRock 00",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
@@ -1191,7 +1244,7 @@ NOISE_METHODS = {
     "Just Appeared", "Added Late", "Gone Missing", "Not in lineup", "In lineup · missing books",
     "Price moved", "Multi-book Lengthen", "FADE · Shot way up", "FADE · Drop >100", "FADE · FD highest",
     "FD under MGM", "Shortening", "Lengthening", "Stuck price", "Outlier higher",
-    "HOT", "HardRock highest", "MLB auto HR", "Was DK 10", "Manual HR log",
+    "HOT", "HardRock highest", "HardRock over pack", "MLB auto HR", "Was DK 10", "Manual HR log",
 }
 TRACKER_BLOCKLIST = {
     "HOT", "HardRock highest", "MLB auto HR", "Was DK 10", "Manual HR log",
@@ -1206,7 +1259,7 @@ TRACKER_ALWAYS = {
     "All books same", "Books tight", "FD+MGM classic",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
     "FD 90", "FD 50", "FD 40", "MGM 60", "MGM 10", "MGM 40",
-    "B365 over HardRock", "B365 over MGM", "Fanatics over pack", "HardRock over pack",
+    "B365 over HardRock", "B365 over MGM", "Fanatics over pack",
     "Mispriced line", "Caesars 90", "HardRock 50", "HardRock 00",
 }
 FD_ENDINGS = (10, 20, 30, 60, 70, 90)
@@ -1563,6 +1616,7 @@ PETTY_FAMILIES = {
     "Classic Girl Magic": {
         "MGM 25", "MGM 50", "MGM Exact", "Match 25", "Match 50",
         "FD Pattern", "FD 600", "DK 10", "FD+MGM classic",
+        "FD a little long", "B365 way over MGM",
     },
     "Petty Pressure": {
         "Multi-book Shorten", "Multi-book method", "Books tight",
@@ -1690,6 +1744,8 @@ TAG_DISPLAY = {
     "Caesars Classic": "Caesars Stamp",
     "MGM Exact": "MGM Signal",
     "FD Pattern": "FD Rhythm",
+    "FD a little long": "FD a little long",
+    "B365 way over MGM": "365 way over MGM",
 }
 
 
@@ -1774,6 +1830,9 @@ GLOSSARY_V2 = {
     ],
     "💸 Odds": [
         ("FD Pattern", "FanDuel +400+ ending 10/20/30/60/70/90."),
+        ("FD a little long", "FD pattern number 15–75 longer than DK or MGM on the short plus-money guys (+400 to +750). Those have been cashing. Flyer +1100 with FD +75 is not this stamp."),
+        ("B365 over MGM", "Bet365 at least 40 longer than MGM. Support. Look."),
+        ("B365 way over MGM", "Bet365 100+ longer than MGM, or 75+ in the +300–+800 lane. This one has been going. Counts toward the stamp floor. Still needs a second stamp to TAKE."),
         ("FD 600", "Specific FanDuel number we watch."),
         ("MGM 25 / 50 / 75 / 00", "Same-team BetMGM group endings."),
         ("MGM Exact", "Same MGM price, same team."),
@@ -1788,9 +1847,9 @@ GLOSSARY_V2 = {
         ("Kelly", "Bankroll confidence. Does not pick the name. 10%+ loud, under 1% homework."),
         ("I Just Need One", "0.5 rush / rec / reception lines at +100 or higher. Board clearance is still manual."),
         ("B365 over HardRock", "SUPPORT only. Bet365 longer than Hard Rock. Does not green a ticket alone."),
-        ("B365 over MGM", "SUPPORT only. Bet365 longer than MGM. Signal, not a Take."),
+        ("B365 over MGM", "Support. 365 is 40+ longer than MGM. Look. The loud version is B365 way over MGM."),
         ("Fanatics over pack", "SUPPORT only. Fanatics 100+ longer than the DK/FD/MGM/HR/365 pack. Drift tell, not main-bitch energy."),
-        ("HardRock over pack", "SUPPORT only. Hard Rock 50+ longer than the rest of the pack. Look-at-it stamp, not a Take."),
+        ("HardRock over pack", "We leave this alone. Hard Rock being longer than the pack is not a tell — they rarely have the best number. Not a stamp."),
         ("Mispriced line", "The number is off the pack. Longer than the other books = extra juice / value. Shorter = you’re paying a tax. Shop is where we judge that. Support stamps flag it. They do not Take by themselves."),
         ("Out of place / outlier", "One book is far from the cluster. Look. Don’t auto-buy."),
         ("Fair / pack", "Where the ticket books sit together. Shop compares your number to that pack."),
@@ -7252,12 +7311,19 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             if b3 is not None and mg is not None and int(b3) > int(mg):
                 ok2, gap2 = True, int(b3) - int(mg)
         if ok2:
+            way, _ = b365_way_over_mgm(by_book)
+            tag = "B365 way over MGM" if way else "B365 over MGM"
             results.append({
                 "type": "trend", "trend_kind": "good", "label": player,
-                "reason": f"💚 Bet365 over MGM by {int(gap2)} · 365 {format_odds(by_book.get('bet365'))} · MGM {format_odds(by_book.get('betmgm'))}",
-                "methods": ["B365 over MGM"], "gap": int(gap2),
+                "reason": (
+                    f"💚 Bet365 {'WAY ' if way else ''}over MGM by {int(gap2)} · "
+                    f"365 {format_odds(by_book.get('bet365'))} · MGM {format_odds(by_book.get('betmgm'))}"
+                ),
+                "methods": [tag], "gap": int(gap2),
             })
-            methods_map[player].append("B365 over MGM")
+            methods_map[player].append(tag)
+            if way:
+                methods_map[player].append("B365 over MGM")
         fa = by_book.get("fanatics")
         pack = [int(by_book[k]) for k in ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365") if by_book.get(k) is not None]
         if fa is not None and pack:
@@ -7273,21 +7339,8 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                     methods_map[player].append("Fanatics over pack")
             except Exception:
                 pass
-        hr = by_book.get("hardrockbet")
-        pack2 = [int(by_book[k]) for k in ("draftkings", "fanduel", "betmgm", "fanatics", "bet365") if by_book.get(k) is not None]
-        if hr is not None and pack2:
-            try:
-                med2 = sorted(pack2)[len(pack2) // 2]
-                gaph = int(hr) - int(med2)
-                if gaph >= 50:
-                    results.append({
-                        "type": "trend", "trend_kind": "good", "label": player,
-                        "reason": f"💜 HardRock over the pack by {gaph} · HR {format_odds(hr)} · pack ~{format_odds(med2)}",
-                        "methods": ["HardRock over pack"], "gap": gaph,
-                    })
-                    methods_map[player].append("HardRock over pack")
-            except Exception:
-                pass
+        # HardRock longer than the pack is not a tell. They rarely post the best number.
+        # Do not stamp "HardRock over pack".
 
     FOCUS_KEYS = ("draftkings", "fanduel", "betmgm", "hardrockbet", "bet365")
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
@@ -7367,6 +7420,24 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 "type": "fd", "label": player,
                 "reason": "FD Pattern/600 + MGM classic 25/50/75 (combo - tracking)",
                 "event": "", "methods": ["FD+MGM classic"],
+            })
+    # FD pattern sitting a little long on the short plus-money names
+    px_tmp = defaultdict(dict)
+    for _, r in df.iterrows():
+        try:
+            px_tmp[r["player"]][normalize_book(r.get("book"))] = int(r["price"])
+        except Exception:
+            pass
+    for player, ms in list(methods_map.items()):
+        if "FD Pattern" not in set(ms) and "FD 600" not in set(ms):
+            continue
+        ok_fd, gap_fd, fd_px = fd_pattern_a_little_long(px_tmp.get(player) or {}, True)
+        if ok_fd and "FD a little long" not in set(ms):
+            methods_map[player].append("FD a little long")
+            results.append({
+                "type": "fd", "label": player,
+                "reason": f"FD pattern a little long by {int(gap_fd)} on {format_odds(fd_px)} (short plus-money lane)",
+                "event": "", "methods": ["FD a little long"],
             })
     # Book personalities from Tracker week (display + TAKE helpers)
     px_map = defaultdict(dict)
@@ -13472,11 +13543,11 @@ def main():
                 "6. **Receipts** = did yesterday’s greens actually go. This is how we adjust.\n"
                 "7. **How We Roll** = this page. Glossary at the bottom. Search any word on a card.\n"
                 "8. **Weekly loop** — Receipts grades every logged Take and Watch. Tracker splits hit rate by tag "
-                "(DK 10, MGM groups, B365 over HardRock, Fanatics over pack, HardRock over pack). "
+                "(DK 10, MGM groups, B365 over HardRock, Fanatics over pack). "
                 "If a stamp is cold for a week, it stays support or we fade it. Nothing is set-and-forget.\n\n"
                 "**Mispriced line:** the number is off the pack. Longer than the other books = they may be "
                 "giving extra juice. Shorter than the pack = you’re paying a tax. We stamp those. "
-                "Support stamps (B365 over HardRock / MGM, Fanatics or HardRock over the pack) are "
+                "Support stamps (B365 over HardRock / MGM, Fanatics over the pack) are "
                 "*look at it* energy. They do not green a ticket alone.\n\n"
                 "MLB ticket = **0.5 HR only**. NFL Align ticket = **plus-money Anytime TD only**."
             )
