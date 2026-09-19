@@ -44086,5 +44086,134 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.88
+  },
+  {
+    "id": "2026-09-19_Sal Stewart_shop_take_105",
+    "date": "2026-09-19",
+    "time": "03:59 PM",
+    "player": "Sal Stewart",
+    "score": 0,
+    "edge": 105,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 372,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 280,
+      "betrivers": 350,
+      "caesars": 370,
+      "draftkings": 475,
+      "fanatics": 500,
+      "fanduel": 390,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:59:30.432383+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_CJ Abrams_shop_take_69",
+    "date": "2026-09-19",
+    "time": "03:59 PM",
+    "player": "CJ Abrams",
+    "score": 0,
+    "edge": 69,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 440,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 425,
+      "betrivers": 440,
+      "caesars": 425,
+      "draftkings": 440,
+      "fanatics": 525,
+      "fanduel": 440,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:59:30.434642+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Elly De La Cruz_shop_lean_47",
+    "date": "2026-09-19",
+    "time": "03:59 PM",
+    "player": "Elly De La Cruz",
+    "score": 0,
+    "edge": 47,
+    "best_price": 425,
+    "best_book": "bet365",
+    "median": 390,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 333,
+      "betrivers": 360,
+      "caesars": 305,
+      "draftkings": 390,
+      "fanatics": 410,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+400s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T22:59:30.439848+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Shea Langeliers_shop_lean_44",
+    "date": "2026-09-19",
+    "time": "03:59 PM",
+    "player": "Shea Langeliers",
+    "score": 0,
+    "edge": 44,
+    "best_price": 460,
+    "best_book": "fanatics",
+    "median": 400,
+    "book_prices": {
+      "bet365": 390,
+      "caesars": 400,
+      "draftkings": 400,
+      "fanatics": 460,
+      "fanduel": 420,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T22:59:30.441197+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
