@@ -1268,7 +1268,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-09-19T01:43:33.092441+00:00",
     "price_source": "pregame_lock",
@@ -1278,7 +1278,18 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.71,
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "FD 50",
+      "Stayed in the group",
+      "Match 00",
+      "MGM 00",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Pavin Smith_shop_take_183",
@@ -1864,12 +1875,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_take",
     "logged_at": "2026-09-19T01:43:35.960639+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Julio Rodr\u00edguez_shop_lean_70",
@@ -2365,12 +2377,18 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-19T01:43:35.961287+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop LEAN"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Corbin Carroll_shop_lean_35",
@@ -4762,12 +4780,18 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-19T01:57:26.504332+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Josh Bell_shop_take_117",
@@ -6313,7 +6337,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "watch",
     "logged_at": "2026-09-19T02:17:16.434635+00:00",
     "price_source": "pregame_lock",
@@ -6322,7 +6346,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Teoscar Hern\u00e1ndez_watch_31",
@@ -6398,7 +6423,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "watch",
     "logged_at": "2026-09-19T02:17:16.440967+00:00",
     "price_source": "pregame_lock",
@@ -6407,7 +6432,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.83
+    "benford_cluster": 0.83,
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Will Smith_watch_7",
@@ -6565,12 +6591,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_take",
     "logged_at": "2026-09-19T02:17:18.365063+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Jonah Cox_shop_lean_65",
