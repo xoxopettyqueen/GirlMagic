@@ -1730,6 +1730,25 @@
       "best_book": "draftkings",
       "time": "01:02 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Alex Bregman",
+      "source": "take_it",
+      "score": 78,
+      "methods": [
+        "Multi-book method",
+        "FD Pattern",
+        "MGM 10",
+        "MGM Exact",
+        "Fanatics Rogue",
+        "B365 over MGM",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "01:02 PM",
+      "sport": "MLB"
     }
   ]
 }
