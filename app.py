@@ -2211,7 +2211,7 @@ def petty_notes_for(item):
 
 
 def _alert_score(gap_strength, trend_pts, volume_pts):
-    return max(0, min(100, int(round(0.5 * gap_strength + 0.3 * trend_pts + 0.2 * volume_pts))))
+    return max(0, min(100, int(round(0.4 * gap_strength + 0.3 * trend_pts + 0.3 * volume_pts))))
 
 
 def _alert_tier(score):
@@ -2236,19 +2236,39 @@ def collect_petty_alerts(ev_board, results):
             return 20
         return 50
 
-    def _vol_pts(item, books=None):
-        n = len(books or item.get("book_prices") or item.get("books") or {})
-        return min(100, 30 + n * 15)
+    def _pattern_pts(item, family):
+        ms = set((item or {}).get("methods") or [])
+        if family == "benford":
+            return 25
+        if family == "dk_fd":
+            return 90
+        if family in ("mgm_exact", "fd_long"):
+            return 75
+        if "FD Pattern" in ms or "DK 10" in ms or "MGM Exact" in ms:
+            return 80
+        if family.startswith("b365") or family == "rivers":
+            return 55
+        return 45
 
     def _push(family, text, gap_s, item=None, books=None):
         tr = _trend_pts(item or {})
-        vo = _vol_pts(item or {}, books)
-        sc = _alert_score(gap_s, tr, vo)
+        pat = _pattern_pts(item or {}, family)
+        sc = _alert_score(gap_s, tr, pat)
+        if family == "benford":
+            tier = "warn"
+        elif family == "rivers":
+            tier = "gold"
+        elif gap_s >= 70:
+            tier = "hot"
+        elif tr >= 50 and sc >= 50:
+            tier = "mid"
+        else:
+            tier = _alert_tier(sc)
         raw.append({
             "family": family,
             "text": text,
             "score": sc,
-            "tier": _alert_tier(sc),
+            "tier": tier,
             "player": (item or {}).get("player") or (item or {}).get("label") or "",
         })
 
@@ -2323,8 +2343,10 @@ def collect_petty_alerts(ev_board, results):
         mixed.extend(lst[:2] if fam != "fd_mgm" else lst[:1])
     hot = sorted([a for a in mixed if a["tier"] == "hot"], key=lambda x: -x["score"])[:2]
     mid = sorted([a for a in mixed if a["tier"] == "mid"], key=lambda x: -x["score"])[:3]
+    warn = sorted([a for a in mixed if a["tier"] == "warn"], key=lambda x: -x["score"])[:1]
+    gold = sorted([a for a in mixed if a["tier"] == "gold"], key=lambda x: -x["score"])[:1]
     cold = sorted([a for a in mixed if a["tier"] == "cold"], key=lambda x: -x["score"])[:1]
-    used = {id(x) for x in hot + mid + cold}
+    used = {id(x) for x in hot + mid + warn + gold + cold}
     if len(hot) < 1 and mixed:
         extra = sorted(mixed, key=lambda x: -x["score"])
         for a in extra:
@@ -2337,7 +2359,7 @@ def collect_petty_alerts(ev_board, results):
         rest = [a for a in mixed if id(a) not in used]
         if rest:
             cold = [min(rest, key=lambda x: x["score"])]
-    out = hot + mid + cold
+    out = hot + mid + warn + gold + cold
     return out[:6]
 
 
@@ -11797,7 +11819,7 @@ def main():
         for a in alerts[:6]:
             if isinstance(a, dict):
                 tier = a.get("tier") or "mid"
-                icon = "🔥" if tier == "hot" else "✨" if tier == "mid" else "🧊"
+                icon = {"hot": "🔥", "mid": "✨", "warn": "🧊", "gold": "🪄", "cold": "🧊"}.get(tier, "✨")
                 bits.append(
                     f'<div class="pa-line {tier}">{icon} {a.get("text")} · {a.get("score")}</div>'
                 )
@@ -11812,6 +11834,8 @@ def main():
               box-shadow:0 0 12px rgba(244,114,182,.28);animation:alShimmer 3s linear infinite}
             .pa-line.mid{background:#102a28;border:1px solid #2dd4bf;color:#ccfbf1}
             .pa-line.cold{background:#1f2937;border:1px solid #6b7280;color:#d1d5db}
+            .pa-line.warn{background:linear-gradient(90deg,#1f1315,#3f1d1d);border:1px solid #f87171;color:#fecaca}
+            .pa-line.gold{background:#2a2310;border:1px solid #fbbf24;color:#fde68a}
             </style>
             """
             + '<div class="alert-strip">' + "".join(bits) + "</div>",
