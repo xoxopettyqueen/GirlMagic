@@ -9496,5 +9496,119 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.4
+  },
+  {
+    "id": "2026-09-18_Luis Garc\u00eda Jr._shop_take_81",
+    "date": "2026-09-18",
+    "time": "09:15 PM",
+    "player": "Luis Garc\u00eda Jr.",
+    "score": 0,
+    "edge": 81,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 562,
+    "book_prices": {
+      "caesars": 525,
+      "draftkings": 564,
+      "fanatics": 650,
+      "fanduel": 560
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T04:15:41.065407+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Luis Campusano_shop_lean_68",
+    "date": "2026-09-18",
+    "time": "09:15 PM",
+    "player": "Luis Campusano",
+    "score": 0,
+    "edge": 68,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 710,
+    "book_prices": {
+      "bet365": 700,
+      "caesars": 700,
+      "draftkings": 710,
+      "fanatics": 800,
+      "fanduel": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T04:15:41.065569+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Josh Lowe_shop_lean_45",
+    "date": "2026-09-18",
+    "time": "09:15 PM",
+    "player": "Josh Lowe",
+    "score": 0,
+    "edge": 45,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 690,
+    "book_prices": {
+      "fanatics": 750,
+      "fanduel": 630
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T04:15:41.065921+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Esteury Ruiz_shop_lean_28",
+    "date": "2026-09-18",
+    "time": "09:15 PM",
+    "player": "Esteury Ruiz",
+    "score": 0,
+    "edge": 28,
+    "best_price": 820,
+    "best_book": "draftkings",
+    "median": 800,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 820,
+      "fanduel": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 20,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T04:15:41.066127+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
