@@ -40537,5 +40537,38 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Germie Bernard_shop_take_94",
+    "date": "2026-09-19",
+    "time": "12:54 PM",
+    "player": "Germie Bernard",
+    "score": 0,
+    "edge": 94,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "bet365": 1200,
+      "betmgm": 575,
+      "betrivers": 650,
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T19:54:33.709541+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
