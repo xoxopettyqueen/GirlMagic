@@ -6139,45 +6139,12 @@ def render_whats_going_today():
     mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
     sport = active_sport()
     cfg = sport_cfg()
-    live = list(st.session_state.get("ev_board") or [])
-    live_takes = [e for e in live if e.get("is_bet")]
-    live_watch = list(st.session_state.get("watch_board") or [])
-    live_lean = []
-    for r in st.session_state.get("last_shop_rows") or []:
-        if str(r.get("action") or "") == "LEAN":
-            live_lean.append(r)
-    take_n = len({_fold_player(e.get("player")) for e in live_takes if e.get("player")})
-    lean_n = len({_fold_player(e.get("player")) for e in live_lean if e.get("player")})
-    watch_n = len({_fold_player(e.get("player")) for e in live_watch if e.get("player")})
-    today = today_az()
-    extra = today_mlb_date() if sport != "NFL" else today
-    hit_n = len({
-        _fold_player(r.get("player"))
-        for r in rows
-        if r.get("date") in (today, extra) and str(r.get("result") or "").upper() == "HIT"
-    })
-    mlb_hr = hit_n
-    listed = [(e.get("player") or "", "TAKE") for e in live_takes]
-    listed += [(e.get("player") or "", "LEAN") for e in live_lean]
-    listed += [(e.get("player") or "", "WATCH") for e in live_watch]
+    listed = [(n, tag) for n, tag in (hr_status or []) if tag and tag != "NOT ON LIST"]
+    take_n = sum(1 for _n, t in listed if t == "TAKE")
+    lean_n = sum(1 for _n, t in listed if t in ("SHOP LEAN", "LEAN"))
+    watch_n = sum(1 for _n, t in listed if t in ("WATCH", "BOARD"))
     hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "HRs")
     prop_word = "TD prop" if sport == "NFL" else "HR prop"
-    end_ct = Counter()
-    lock_now = st.session_state.get("pregame_lock") or load_pregame()
-    for e in live_takes:
-        bl = book_label(e.get("best_book") or "")
-        px = e.get("best_price")
-        end = last_two(px) if px is not None else None
-        if bl and end is not None:
-            try:
-                end_ct[(bl, int(end))] += 1
-            except Exception:
-                pass
-    by_book = defaultdict(list)
-    for (bl, end), cnt in end_ct.items():
-        by_book[bl].append((int(end), int(cnt)))
-    for bl in by_book:
-        by_book[bl].sort(key=lambda x: (-x[1], x[0]))
 
     def _norm_tag(tag):
         if tag == "TAKE":
@@ -6222,11 +6189,13 @@ def render_whats_going_today():
     for bl in FOCUS:
         items = by_book.get(bl) or []
         people = by_names.get(bl) or []
+        if not items and not people:
+            continue
         top = items[0] if items else None
         if top:
-            label = "%s · %s ended +x%02d" % (bl, top[1], top[0])
+            label = "%s · %s cashed +x%02d" % (bl, top[1], top[0])
         else:
-            label = "%s · —" % bl
+            label = "%s · cashed" % bl
         pop = ['<div class="wg-player" style="opacity:.8">How to read: book · how many went · last two digits of the price.</div>']
         if top:
             extra = " · ".join("%s ended +x%02d" % (c, e) for e, c in items[:3])
@@ -6241,18 +6210,18 @@ def render_whats_going_today():
         )
 
     if sport == "NFL":
-        queen = "Queen says: the TDs on the list are the ones that matter." if take_n else "Queen says: NFL lane — ticket books only."
+        queen = "Queen says: these TDs already cashed." if mlb_hr else "Queen says: Pulse waits on graded TDs."
     else:
-        queen = "Queen says: Pulse = live Board greens, not the archive." if take_n else "Queen says: Fetch so the live list shows."
+        queen = "Queen says: these bombs already cashed." if mlb_hr else "Queen says: Pulse waits on graded homers."
 
-    books_block = "".join(pills) if pills else '<span class="pulse-pill">No tickets logged yet.</span>'
+    books_block = "".join(pills) if pills else '<span class="pulse-pill">No cashed HRs yet.</span>'
     mlb_on = "on" if sport == "MLB" else ""
     nfl_on = "on" if sport == "NFL" else ""
     html = (
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">Counts = live Board TAKE + Shop LEAN + Watch. Pills = those ticket books only. Archive stays on Receipts.</div>'
+        '<div class="wg-sub">Cashed homers only. TAKE / LEAN / WATCH = which of those bombs were on our list. Grade on Results.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
