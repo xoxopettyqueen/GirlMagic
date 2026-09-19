@@ -25184,5 +25184,133 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.86
+  },
+  {
+    "id": "2026-09-19_Ezequiel Tovar_shop_take_169",
+    "date": "2026-09-19",
+    "time": "09:39 AM",
+    "player": "Ezequiel Tovar",
+    "score": 0,
+    "edge": 169,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 775,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 675,
+      "betrivers": 750,
+      "caesars": 750,
+      "draftkings": 670,
+      "fanatics": 950,
+      "fanduel": 830,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T16:39:07.766710+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Jarren Duran_shop_take_74",
+    "date": "2026-09-19",
+    "time": "09:39 AM",
+    "player": "Jarren Duran",
+    "score": 0,
+    "edge": 74,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "betmgm": 650,
+      "betrivers": 525,
+      "caesars": 575,
+      "draftkings": 578,
+      "fanatics": 650,
+      "fanduel": 540,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T16:39:07.772157+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Gunnar Henderson_shop_take_68",
+    "date": "2026-09-19",
+    "time": "09:39 AM",
+    "player": "Gunnar Henderson",
+    "score": 0,
+    "edge": 68,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 675,
+    "book_prices": {
+      "bet365": 650,
+      "betmgm": 550,
+      "betrivers": 600,
+      "caesars": 700,
+      "draftkings": 710,
+      "fanatics": 750,
+      "fanduel": 710,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T16:39:07.773272+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Jake Bauers_shop_lean_33",
+    "date": "2026-09-19",
+    "time": "09:39 AM",
+    "player": "Jake Bauers",
+    "score": 0,
+    "edge": 33,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 483,
+    "book_prices": {
+      "betmgm": 450,
+      "caesars": 475,
+      "draftkings": 483,
+      "fanatics": 525,
+      "fanduel": 490
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T16:39:07.783484+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
