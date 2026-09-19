@@ -49,6 +49,29 @@
       "best_book": "fanatics",
       "time": "09:30 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jarren Duran",
+      "source": "take_it",
+      "score": 94,
+      "methods": [
+        "HardRock 50",
+        "MGM Exact",
+        "Last one left",
+        "Match 25",
+        "Multi-book method",
+        "MGM 25",
+        "FD Pattern",
+        "DK FD-style",
+        "Stayed in the group",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanatics",
+      "time": "09:30 AM",
+      "sport": "MLB"
     }
   ]
 }
