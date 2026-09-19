@@ -2210,71 +2210,135 @@ def petty_notes_for(item):
     return notes
 
 
+def _alert_score(gap_strength, trend_pts, volume_pts):
+    return max(0, min(100, int(round(0.5 * gap_strength + 0.3 * trend_pts + 0.2 * volume_pts))))
+
+
+def _alert_tier(score):
+    if score >= 70:
+        return "hot"
+    if score >= 50:
+        return "mid"
+    return "cold"
+
+
 def collect_petty_alerts(ev_board, results):
     if HAS_NFL_MATH and active_sport() == "NFL":
         extra = nfl_petty_alerts(ev_board, results, limit=8)
-        # still keep MGM Exact / shorten from flags
         return extra
-    alerts = []
+    raw = []
+
+    def _trend_pts(item):
+        tr = str((item or {}).get("conf_trend") or (item or {}).get("trend") or "")
+        if "Heat" in tr:
+            return 80
+        if "Cool" in tr:
+            return 20
+        return 50
+
+    def _vol_pts(item, books=None):
+        n = len(books or item.get("book_prices") or item.get("books") or {})
+        return min(100, 30 + n * 15)
+
+    def _push(family, text, gap_s, item=None, books=None):
+        tr = _trend_pts(item or {})
+        vo = _vol_pts(item or {}, books)
+        sc = _alert_score(gap_s, tr, vo)
+        raw.append({
+            "family": family,
+            "text": text,
+            "score": sc,
+            "tier": _alert_tier(sc),
+            "player": (item or {}).get("player") or (item or {}).get("label") or "",
+        })
+
     for r in results or []:
         meths = r.get("methods") or []
+        lab = r.get("label")
+        fake = {"player": lab, "book_prices": r.get("book_prices") or r.get("books") or {}}
         if r.get("type") == "mgm_exact" or "MGM Exact" in meths:
-            alerts.append(f"MGM Exact · {r.get('label')}")
+            _push("mgm_exact", f"MGM Exact · {lab}", 78, fake)
         if "Multi-book Shorten" in meths:
-            alerts.append(f"Multi-book Shorten · {r.get('label')}")
-        reason = str(r.get("reason") or "")
+            _push("shorten", f"Multi-book Shorten · {lab}", 72, fake)
         if "B365 way over MGM" in meths:
-            alerts.append(f"365 WAY over MGM · {r.get('label')}")
-        if "B365 over MGM" in meths:
-            alerts.append(f"365 over MGM · {r.get('label')}")
+            _push("b365_mgm", f"365 WAY over MGM · {lab}", 88, fake)
+        elif "B365 over MGM" in meths:
+            _push("b365_mgm", f"365 over MGM · {lab}", 62, fake)
         if "FD a little long" in meths:
-            alerts.append(f"FD a little long · {r.get('label')}")
+            _push("fd_long", f"FD a little long · {lab}", 70, fake)
         if "B365 a bit over FD" in meths:
-            alerts.append(f"365 a bit over FD · {r.get('label')}")
+            _push("b365_fd", f"365 a bit over FD · {lab}", 68, fake)
+        if "Rivers way over pack" in meths:
+            _push("rivers", f"Rivers way over pack · {lab}", 80, fake)
         if "FD under MGM" in meths:
             import re as _re
-            m = _re.search(r"by (\d+)", reason)
-            if m:
-                gap = int(m.group(1))
-                # We like FD 10-100 under MGM. Exact 100 on a pile of names is template, not a shout.
-                if 25 <= gap <= 90:
-                    alerts.append(f"FD under MGM by {gap} · {r.get('label')}")
+            m = _re.search(r"by (\d+)", str(r.get("reason") or ""))
+            gap = int(m.group(1)) if m else 0
+            if 40 <= gap <= 90:
+                _push("fd_mgm", f"FD under MGM by {gap} · {lab}", min(100, gap), fake)
     for item in ev_board or []:
         ms = set(item.get("methods") or [])
+        name = item.get("player")
+        books = item.get("book_prices") or {}
         if "DK 10" in ms and ("FD Pattern" in ms or "FD 600" in ms):
-            alerts.append(f"DK 10 + FD Pattern · {item.get('player')}")
+            _push("dk_fd", f"DK 10 + FD Pattern · {name}", 86, item, books)
         bf = item.get("benford") or {}
         if str(bf.get("tag", "")).lower() == "fake":
-            alerts.append(f"Benford Fake · {item.get('player')}")
-        books = item.get("book_prices") or {}
+            _push("benford", f"Benford Fake · {name}", 55, item, books)
         fd, mgm = books.get("fanduel"), books.get("betmgm")
         if fd is not None and mgm is not None:
             try:
                 gap = int(mgm) - int(fd)
             except Exception:
                 gap = 0
-            # Banner the sweet gap only. 100-flat is how books copy each other.
-            extra = bool(ms & {"DK 10", "FD Pattern", "FD 600", "MGM Exact", "Exact Match"}) or any(
-                str(x).startswith("MGM ") or str(x).startswith("Match ") for x in ms
-            )
-            if 25 <= gap <= 90 or (10 <= gap <= 99 and extra):
-                alerts.append(f"FD under MGM by {gap} · {item.get('player')}")
+            extra = bool(ms & {"DK 10", "FD Pattern", "FD 600", "MGM Exact"})
+            if 40 <= gap <= 90 or (50 <= gap <= 99 and extra):
+                _push("fd_mgm", f"FD under MGM by {gap} · {name}", min(100, gap), item, books)
         if "B365 way over MGM" in ms:
-            alerts.append(f"365 WAY over MGM · {item.get('player')}")
+            _push("b365_mgm", f"365 WAY over MGM · {name}", 88, item, books)
         elif "B365 over MGM" in ms:
-            alerts.append(f"365 over MGM · {item.get('player')}")
+            _push("b365_mgm", f"365 over MGM · {name}", 62, item, books)
         if "FD a little long" in ms:
-            alerts.append(f"FD a little long · {item.get('player')}")
+            _push("fd_long", f"FD a little long · {name}", 70, item, books)
         if "B365 a bit over FD" in ms:
-            alerts.append(f"365 a bit over FD · {item.get('player')}")
+            _push("b365_fd", f"365 a bit over FD · {name}", 68, item, books)
         if "Rivers way over pack" in ms:
-            alerts.append(f"Rivers way over pack · {item.get('player')}")
-    seen, out = set(), []
-    for a in alerts:
-        if a not in seen:
-            seen.add(a)
-            out.append(a)
-    return out[:12]
+            _push("rivers", f"Rivers way over pack · {name}", 80, item, books)
+
+    # One name per family-ish; keep highest score.
+    best = {}
+    for a in raw:
+        key = (a["family"], _fold_player(a.get("player")))
+        prev = best.get(key)
+        if prev is None or a["score"] > prev["score"]:
+            best[key] = a
+    pool = list(best.values())
+    # Don't flood one family.
+    by_fam = defaultdict(list)
+    for a in pool:
+        by_fam[a["family"]].append(a)
+    mixed = []
+    for fam, lst in by_fam.items():
+        lst.sort(key=lambda x: -x["score"])
+        mixed.extend(lst[:2] if fam != "fd_mgm" else lst[:1])
+    hot = sorted([a for a in mixed if a["tier"] == "hot"], key=lambda x: -x["score"])[:2]
+    mid = sorted([a for a in mixed if a["tier"] == "mid"], key=lambda x: -x["score"])[:3]
+    cold = sorted([a for a in mixed if a["tier"] == "cold"], key=lambda x: -x["score"])[:1]
+    used = {id(x) for x in hot + mid + cold}
+    if len(hot) < 1 and mixed:
+        extra = sorted(mixed, key=lambda x: -x["score"])
+        for a in extra:
+            if id(a) not in used:
+                a = dict(a)
+                a["tier"] = "hot" if a["score"] >= 60 else a["tier"]
+                hot.append(a)
+                break
+    if len(cold) < 1:
+        rest = [a for a in mixed if id(a) not in used]
+        if rest:
+            cold = [min(rest, key=lambda x: x["score"])]
+    out = hot + mid + cold
+    return out[:6]
 
 
 def american_implied(p):
@@ -11703,8 +11767,28 @@ def main():
     mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
     alerts = collect_petty_alerts(ev_board, results)
     if alerts:
+        bits = []
+        for a in alerts[:6]:
+            if isinstance(a, dict):
+                tier = a.get("tier") or "mid"
+                icon = "🔥" if tier == "hot" else "✨" if tier == "mid" else "🧊"
+                bits.append(
+                    f'<div class="pa-line {tier}">{icon} {a.get("text")} · {a.get("score")}</div>'
+                )
+            else:
+                bits.append(f'<div class="pa-line mid">✨ {a}</div>')
         st.markdown(
-            '<div class="alert-strip">' + "<br>".join(f"🚨 Petty Alert: {a}" for a in alerts[:8]) + "</div>",
+            """
+            <style>
+            .alert-strip{background:#1a1028;border:1px solid #f472b6;border-radius:16px;padding:10px 12px;margin:8px 0 12px}
+            .pa-line{border-radius:12px;padding:6px 10px;margin:4px 0;font-size:.82rem;font-weight:650}
+            .pa-line.hot{background:linear-gradient(90deg,#3b1024,#2a1040);border:1px solid #f472b6;
+              box-shadow:0 0 12px rgba(244,114,182,.28);animation:alShimmer 3s linear infinite}
+            .pa-line.mid{background:#102a28;border:1px solid #2dd4bf;color:#ccfbf1}
+            .pa-line.cold{background:#1f2937;border:1px solid #6b7280;color:#d1d5db}
+            </style>
+            """
+            + '<div class="alert-strip">' + "".join(bits) + "</div>",
             unsafe_allow_html=True,
         )
     st.markdown(f"""
