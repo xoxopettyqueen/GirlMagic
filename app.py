@@ -4413,10 +4413,25 @@ def event_matches_chosen(ev, chosen):
         return True
     if ev_l in {c.lower() for c in chosen_bases}:
         return True
+    def _sides(s):
+        s = str(s or "").lower().replace(" vs. ", " @ ").replace(" vs ", " @ ")
+        parts = [p.strip() for p in s.split("@")]
+        return parts if len(parts) == 2 else []
+
+    def _nick(side):
+        toks = [t for t in side.replace(".", "").split() if t not in ("the", "of")]
+        return toks[-1] if toks else side
+
+    ev_sides = _sides(ev_base)
     for c in chosen_bases:
-        parts_c = [p.strip() for p in str(c).lower().split("@")]
+        parts_c = _sides(c)
         if len(parts_c) == 2 and parts_c[0] and parts_c[1] and parts_c[0] in ev_l and parts_c[1] in ev_l:
             return True
+        if ev_sides and parts_c:
+            a_ok = _nick(ev_sides[0]) in parts_c[0] or _nick(parts_c[0]) in ev_sides[0]
+            b_ok = _nick(ev_sides[1]) in parts_c[1] or _nick(parts_c[1]) in ev_sides[1]
+            if a_ok and b_ok:
+                return True
     return False
 
 def name_in_lineup(player, lineup_names):
@@ -6720,11 +6735,19 @@ def _fetch_events_oddsapi_cached(api_key, sport_key, t_from, t_to):
     r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params=params, timeout=15)
     r.raise_for_status()
     data = r.json() or []
-    # if the windowed call is empty, fall back so we never show zero on a live day
-    if not data:
+    try:
         r2 = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
-        r2.raise_for_status()
-        data = r2.json() or []
+        if r2.status_code == 200:
+            extra = r2.json() or []
+            seen = {str(x.get("id") or "") for x in data}
+            for ev in extra:
+                eid = str(ev.get("id") or "")
+                if eid and eid not in seen:
+                    data.append(ev)
+                    seen.add(eid)
+    except Exception:
+        pass
+    data.sort(key=lambda e: str(e.get("commence_time") or ""))
     return data
 
 
@@ -12282,6 +12305,7 @@ def main():
                 return _game_sort_key(game_name)
 
             visible_games = [g for g in all_games if _in_time_win(g)]
+            _last_band = None
             st.caption(
                 f"{len(visible_games)} games after filters · min score {min_score} · "
                 f"{', '.join(show_kinds) or 'nothing selected'}"
@@ -12293,6 +12317,16 @@ def main():
                 picks = sorted(picks, key=lambda x: -x.get("score", 0))
                 if not items and not picks and (name_q or min_score or time_win != "All times"):
                     continue
+                band = "🌙 Late"
+                t0 = _resolve_commence(game)
+                try:
+                    dt0 = datetime.fromisoformat(str(t0).replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=-7)))
+                    band = "☀️ Early" if dt0.hour < 17 else "🌙 Late"
+                except Exception:
+                    pass
+                if band != _last_band:
+                    _last_band = band
+                    st.markdown(f'<div class="game-head" style="opacity:.75;font-size:.78rem">{band} slate</div>', unsafe_allow_html=True)
                 st.markdown(
                     f'<div class="board-wrap"><div class="game-head">{_fmt_game_header(game)}</div></div>',
                     unsafe_allow_html=True,
@@ -12325,8 +12359,7 @@ def main():
                     if wire_n:
                         st.caption(
                             f"On the wire · {wire_n} 0.5 HR lines · "
-                            f"{take_n} TAKE / {pick_n} team picks on the whole board · "
-                            f"none landed on this game header."
+                            f"no TAKE / team pick mapped to this header yet."
                         )
                     else:
                         st.caption("Books have not posted 0.5 HR on this game yet. Fetch again closer to first pitch.")
