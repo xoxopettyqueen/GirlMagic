@@ -1878,6 +1878,28 @@
       "best_book": "hardrockbet",
       "time": "02:55 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jackson Merrill",
+      "source": "take_it",
+      "score": 59,
+      "methods": [
+        "HardRock 00",
+        "MGM 00",
+        "FD 90",
+        "Multi-book method",
+        "FD Pattern",
+        "Stayed in the group",
+        "MGM Exact",
+        "Match 00",
+        "Last one left",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "02:55 PM",
+      "sport": "MLB"
     }
   ]
 }
