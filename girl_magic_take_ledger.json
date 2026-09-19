@@ -886,6 +886,29 @@
       "best_book": "draftkings",
       "time": "10:24 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jake Bauers",
+      "source": "take_it",
+      "score": 84,
+      "methods": [
+        "MGM 50",
+        "Books tight",
+        "FD 90",
+        "Stayed in the group",
+        "Fanatics Rogue",
+        "FD+MGM classic",
+        "Last one left",
+        "Match 50",
+        "FD Pattern",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "10:32 AM",
+      "sport": "MLB"
     }
   ]
 }
