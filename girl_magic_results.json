@@ -10906,5 +10906,147 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-18_Josh Jung_shop_lean_92",
+    "date": "2026-09-18",
+    "time": "10:18 PM",
+    "player": "Josh Jung",
+    "score": 0,
+    "edge": 92,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 830,
+    "book_prices": {
+      "caesars": 750,
+      "fanatics": 950,
+      "fanduel": 830
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T05:18:43.386836+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Nathan Lukes_shop_lean_58",
+    "date": "2026-09-18",
+    "time": "10:18 PM",
+    "player": "Nathan Lukes",
+    "score": 0,
+    "edge": 58,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 850,
+    "book_prices": {
+      "caesars": 850,
+      "fanatics": 950,
+      "fanduel": 830
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T05:18:43.387685+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_Alejandro Kirk_shop_lean_52",
+    "date": "2026-09-18",
+    "time": "10:18 PM",
+    "player": "Alejandro Kirk",
+    "score": 0,
+    "edge": 52,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 700,
+    "book_prices": {
+      "caesars": 700,
+      "fanatics": 800,
+      "fanduel": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T05:18:43.388125+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_George Springer_shop_take_52",
+    "date": "2026-09-18",
+    "time": "10:18 PM",
+    "player": "George Springer",
+    "score": 0,
+    "edge": 52,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 500,
+    "book_prices": {
+      "caesars": 500,
+      "fanatics": 600,
+      "fanduel": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T05:18:43.388426+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-18_A.J. Ewing_shop_lean_46",
+    "date": "2026-09-18",
+    "time": "10:18 PM",
+    "player": "A.J. Ewing",
+    "score": 0,
+    "edge": 46,
+    "best_price": 870,
+    "best_book": "draftkings",
+    "median": 830,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 870,
+      "fanatics": 800,
+      "fanduel": 830,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T05:18:43.388958+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
