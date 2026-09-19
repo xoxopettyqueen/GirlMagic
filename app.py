@@ -14,6 +14,7 @@ import pandas as pd
 import requests
 import json
 import os
+import copy
 import base64
 from collections import defaultdict, Counter
 try:
@@ -11142,13 +11143,15 @@ def main():
     )
     packed = st.session_state.get("_board_pack")
     if (not new_fetch) and st.session_state.get("_board_key") == board_key and packed:
-        results, ev_board, fallen, watch_board, coverage_board = packed
+        results, ev_board, fallen, watch_board, coverage_board = copy.deepcopy(packed)
     else:
         results, ev_board, fallen, watch_board, coverage_board = (
             run_flags(df, prev_df, record_history=new_fetch, selected_events=selected_events)
             if not df.empty else ([], [], [], [], [])
         )
-        st.session_state["_board_pack"] = (results, ev_board, fallen, watch_board, coverage_board)
+        st.session_state["_board_pack"] = copy.deepcopy(
+            (results, ev_board, fallen, watch_board, coverage_board)
+        )
         st.session_state["_board_key"] = board_key
     st.session_state["ev_board"] = ev_board
     st.session_state["watch_board"] = watch_board
@@ -11194,6 +11197,53 @@ def main():
                 ):
                     item["is_bet"] = False
                     item["why"] = (item.get("why") or "") + " · not a DK/FD ticket"
+    frozen_takes = set()
+    try:
+        for n in ledger_names_today() or []:
+            frozen_takes.add(_fold_player(n))
+        for r in load_results() or []:
+            if r.get("date") not in ledger_dates():
+                continue
+            if r.get("source") not in ("take_it", "shop_take"):
+                continue
+            frozen_takes.add(_fold_player(r.get("player")))
+    except Exception:
+        frozen_takes = frozen_takes or set()
+    if frozen_takes:
+        for item in ev_board or []:
+            if _fold_player(item.get("player")) in frozen_takes:
+                item["is_bet"] = True
+        have = {_fold_player(e.get("player")) for e in (ev_board or [])}
+        try:
+            extras = []
+            for r in load_results() or []:
+                if r.get("date") not in ledger_dates():
+                    continue
+                if r.get("source") not in ("take_it", "shop_take"):
+                    continue
+                k = _fold_player(r.get("player"))
+                if not k or k in have:
+                    continue
+                extras.append({
+                    "player": r.get("player"),
+                    "best_price": r.get("best_price"),
+                    "best_book": r.get("best_book"),
+                    "book_prices": r.get("book_prices") or {},
+                    "methods": list(r.get("methods") or []),
+                    "score": r.get("score") or 80,
+                    "edge": r.get("edge") or 0,
+                    "is_bet": True,
+                    "event": r.get("event") or "",
+                    "events": [r.get("event") or ""],
+                    "team": r.get("team") or "",
+                    "why": "FROZEN TAKE · logged earlier today · board gate cannot wipe it",
+                    "method_count": len(r.get("methods") or []),
+                })
+                have.add(k)
+            if extras:
+                ev_board = list(ev_board or []) + extras
+        except Exception:
+            pass
     if ev_board or watch_board:
         log_bet_this(ev_board, watch_board)
     if not df.empty:
