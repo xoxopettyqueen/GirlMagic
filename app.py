@@ -1931,6 +1931,7 @@ GLOSSARY_V2 = {
         ("B365 way over MGM", "Stamp. 365 WAY longer than MGM. Only greens if a classic trick also fired (DK 10, FD Pattern/600, MGM 25 / Exact). 365 + Exact Match / MGM 50 is not enough."),
         ("B365 a bit over FD", "Stamp. 365 is 15–80 longer than FanDuel. Same rule: needs a classic FD / DK / MGM-25 partner. Never greens alone."),
         ("BetRivers", "Pulled with the US books. Tracked vs FD/DK/MGM/365. Tags: Rivers way over pack (100+), a bit over (25–99), short vs pack (−75). Study only — does not green a ticket."),
+        ("Confidence Score", "0–100. 40% data quality + 35% odds agreement + 25% context. HOT 70–100 Active. MID 50–69 Whispers. COLD 0–49 Homework. Heating = data ≥70 or score jumped 10. Rhythm = odds ≥70. Petty Upside = context ≥70."),
         ("FD 600", "Specific FanDuel number we watch."),
         ("MGM 25 / 50 / 75 / 00", "Same-team BetMGM group endings."),
         ("MGM Exact", "Same MGM price, same team."),
@@ -8748,6 +8749,132 @@ def odds_alignment_score(item, data_boost=0):
     return max(1, min(100, int(round(raw * 100 / 155))))
 
 
+def _clamp100(n):
+    try:
+        return max(0, min(100, int(round(float(n)))))
+    except Exception:
+        return 0
+
+
+def data_quality_score(data, sport="MLB"):
+    s = 28
+    if sport == "NFL":
+        try:
+            ts = float(data.get("tgt_share") or 0)
+            if ts >= 0.18:
+                s += 15
+            elif ts >= 0.10:
+                s += 8
+        except Exception:
+            pass
+        try:
+            s += min(10, int(float(data.get("targets") or 0)) // 8)
+        except Exception:
+            pass
+        try:
+            s += min(10, int(float(data.get("rec_yds") or 0)) // 80)
+        except Exception:
+            pass
+        try:
+            s += min(15, int(float(data.get("rec_td") or data.get("td") or 0)) * 5)
+        except Exception:
+            pass
+        role = str(data.get("role") or "")
+        if "1" in role[-2:]:
+            s += 15
+        elif "2" in role[-2:]:
+            s += 6
+        if "Heating" in str(data.get("trend") or ""):
+            s += 10
+        return _clamp100(s)
+    ev, hh, brl = data.get("ev"), data.get("hh"), data.get("barrel")
+    if ev and ev >= 90:
+        s += 10
+    if hh is not None and hh >= 44:
+        s += 10
+    if brl is not None and brl >= 9:
+        s += 10
+    xslg = data.get("xslg")
+    if xslg is not None and xslg >= 0.450:
+        s += 10
+    if data.get("heating_now"):
+        s += 15
+    elif data.get("due"):
+        s += 8
+    if "heating" in str(data.get("summary") or "").lower():
+        s += 10
+    return _clamp100(s)
+
+
+def odds_agreement_score(item):
+    return _clamp100(odds_alignment_score(item, 0))
+
+
+def context_strength_score(data, sport="MLB"):
+    s = 25
+    blob = " ".join(str(data.get(k) or "") for k in (
+        "park_line", "vs_line", "pen_line", "today_spot", "today_split",
+        "dvp_line", "nfl_ha", "nfl_pt", "matchup", "wind_lane",
+    )).lower()
+    if sport == "NFL":
+        if "soft" in blob or "feast" in blob:
+            s += 20
+        if "home" in blob:
+            s += 10
+        if "primetime" in blob or "sunday night" in blob or "monday" in blob:
+            s += 10
+        if "dome" in blob:
+            s += 10
+        if "mismatch" in blob or "dvp" in blob:
+            s += 15
+        return _clamp100(s)
+    if "hot porch" in blob or "live air" in blob or "factor 1" in blob:
+        s += 20
+    if "vs " in blob and any(x in blob for x in ("era", "hr/9", "soft")):
+        s += 15
+    if data.get("wind_lane") == "out" or "wind out" in blob:
+        s += 10
+    if "loud" in blob or "boost" in blob:
+        s += 10
+    return _clamp100(s)
+
+
+def confidence_score(data, item, sport="MLB"):
+    dq = data_quality_score(data, sport)
+    oq = odds_agreement_score(item)
+    cq = context_strength_score(data, sport)
+    conf = _clamp100(0.4 * dq + 0.35 * oq + 0.25 * cq)
+    if conf >= 70:
+        tier = "hot"
+    elif conf >= 50:
+        tier = "mid"
+    else:
+        tier = "cold"
+    tags = []
+    if dq >= 70:
+        tags.append("Heating")
+    if oq >= 70:
+        tags.append("Rhythm")
+    if cq >= 70:
+        tags.append("Petty Upside")
+    return conf, tier, dq, oq, cq, tags
+
+
+def confidence_trend_label(player, conf):
+    hist = st.session_state.setdefault("_conf_hist", {})
+    key = _fold_player(player)
+    prev = hist.get(key)
+    hist[key] = conf
+    if prev is None:
+        return "Stable"
+    delta = conf - int(prev)
+    if delta >= 10:
+        return "Heating"
+    if delta <= -10:
+        return "Cooling"
+    return "Stable"
+
+
 _NFL_TEAMS = {
     "ARI": ["arizona", "cardinals"], "ATL": ["atlanta", "falcons"],
     "BAL": ["baltimore", "ravens"], "BUF": ["buffalo", "bills"],
@@ -10008,13 +10135,13 @@ def _align_kv(label, value, tip=""):
     )
 
 
-def _petty_meter(align):
+def _petty_meter(align, tier=None):
     a = max(0, min(100, int(align or 0)))
+    if tier is None:
+        tier = "hot" if a >= 70 else "mid" if a >= 50 else "cold"
     return (
-        f'<div style="background:#2a2038;border-radius:999px;height:8px;margin:6px 0 8px;overflow:hidden">'
-        f'<div class="al-fill" style="width:{a}%;height:8px;border-radius:999px;'
-        f'background:linear-gradient(90deg,#9b5fff,#ff3ebf,#00e6c3);animation:alFill .7s ease-out"></div></div>'
-        f'<div style="font-size:.68rem;color:#c4b5d6">data 🔮 · odds 🎰 · <span class="gm-num">Confidence {a}</span></div>'
+        f'<div class="cf-bar {tier}"><span style="width:{a}%"></span></div>'
+        f'<div style="font-size:.68rem;color:#c4b5d6">Confidence Score <span class="gm-num">{a}</span> · 40% data · 35% odds · 25% context</div>'
     )
 
 
@@ -10351,7 +10478,29 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         """
         <style>
         .al-lock{border-color:#f472b6!important;box-shadow:0 0 14px rgba(244,114,182,.35);background:linear-gradient(165deg,#2a1020,#16101f)!important;position:relative;overflow:hidden}
-        .al-lock::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:6px;background:linear-gradient(90deg,transparent,#f9a8d4,transparent);animation:alShimmer 2.4s linear infinite}
+        .al-lock::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:6px;background:linear-gradient(90deg,transparent,#f9a8d4,transparent);animation:alShimmer 3s linear infinite}
+        .cf-hot{border:2px solid transparent!important;background:
+          linear-gradient(#16101f,#16101f) padding-box,
+          linear-gradient(120deg,#f472b6,#c084fc,#f472b6) border-box!important;
+          box-shadow:0 0 18px rgba(244,114,182,.4);position:relative;overflow:hidden}
+        .cf-hot::after{content:"";position:absolute;top:0;left:-45%;width:40%;height:5px;background:linear-gradient(90deg,transparent,#f9a8d4,transparent);animation:alShimmer 3s linear infinite}
+        .cf-hot:hover{transform:translateY(-4px);transition:transform .18s ease}
+        .cf-hot .card-name{background:linear-gradient(90deg,#f9a8d4,#e9d5ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .cf-mid{border-color:#2dd4bf!important;box-shadow:0 0 10px rgba(45,212,191,.22)}
+        .cf-mid:hover{transform:translateY(-2px)}
+        .cf-cold{border-color:#6b7280!important;box-shadow:none;opacity:.78}
+        .cf-cold:hover{transform:none}
+        .cf-cold .card-name{color:#9ca3af!important}
+        .cf-bar{height:8px;border-radius:99px;background:#1e1b2e;overflow:hidden;margin:6px 0 8px}
+        .cf-bar span{display:block;height:100%;border-radius:99px}
+        .cf-bar.hot span{background:linear-gradient(90deg,#f472b6,#c084fc);animation:alShimmer 3s linear infinite}
+        .cf-bar.mid span{background:#2dd4bf}
+        .cf-bar.cold span{background:#6b7280}
+        .cf-tag{display:inline-block;border-radius:999px;padding:2px 8px;margin:0 4px 4px 0;font-size:.62rem;font-weight:800;letter-spacing:.4px}
+        .cf-tag.heat{background:#3b1020;border:1px solid #fb7185;color:#fb7185}
+        .cf-tag.rhythm{background:#102a28;border:1px solid #2dd4bf;color:#5eead4}
+        .cf-tag.upside{background:#2a1040;border:1px solid #e879f9;color:#f5d0fe}
+        .cf-tag.cool{background:#111827;border:1px solid #6b7280;color:#9ca3af}
         .al-speak{border-color:#a855f7!important;box-shadow:0 0 12px rgba(168,85,247,.3)}
         .al-shot{border-color:#2dd4bf!important;box-shadow:0 0 12px rgba(45,212,191,.28)}
         .al-home{opacity:.88;border-color:#3f3a48!important}
@@ -10740,14 +10889,23 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if not data.get("has_odds_magic"):
             notes.append("Data only — no odds stamp")
             data["quiet"] = data.get("data_tier") != "hot"
-        if align >= 100:
-            vibe = "🔒 Locked"
-        elif align >= 85:
-            vibe = "💬 Spoke"
-        elif align >= 60:
-            vibe = "🫧 Whisper"
+        conf, tier, dq, oq, cq, ctags = confidence_score(data, item, sport)
+        data["conf"] = conf
+        data["data_q"] = dq
+        data["odds_q"] = oq
+        data["ctx_q"] = cq
+        data["data_tier"] = tier
+        data["conf_tags"] = ctags
+        data["conf_trend"] = confidence_trend_label(item.get("player"), conf)
+        if data["conf_trend"] == "Heating" and "Heating" not in ctags:
+            ctags.append("Heating")
+        align = conf
+        if conf >= 70:
+            vibe = "🔥 HOT"
+        elif conf >= 50:
+            vibe = "✨ MID"
         else:
-            vibe = "📚 Homework"
+            vibe = "❄️ COLD"
         cards.append((align, item, data, notes, vibe))
     cards.sort(key=lambda x: (
         0 if x[2].get("data_tier") == "hot" else 1 if x[2].get("data_tier") == "mid" else 2,
@@ -10766,9 +10924,9 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         f'<div class="petty-box"><div class="petty-num">{max(0, n_hot - n_pile)}</div><div class="petty-label">CUT FROM PILE</div></div>'
         f'</div>'
         f'<div class="tier-row">'
-        f'<div class="tier-card tier-hot"><b>🔥 HOT · what Active shows</b><p>3 real flags. MLB: EV 90+ · HH 44%+ · barrel 9%+ · xSLG .450+ · and either already hot (HR L7 2+) or DUE (loud contact + 0–1 HR L7). Barrel 12% + EV 91 is enough alone. You do not need 2 bombs this week. NFL: 3 of target share / heating / TDs / DVP / used WR2-TE2-RB2.</p></div>'
-        f'<div class="tier-card tier-mid"><b>💅 MID · Whispers</b><p>Exactly 2 flags. Cute. Not listed on Active.</p></div>'
-        f'<div class="tier-card tier-cold"><b>🧊 COLD · Homework</b><p>0–1 flag. Buried on purpose. The +400 slate is not the product.</p></div>'
+        f'<div class="tier-card tier-hot"><b>🔥 HOT · Active</b><p>Confidence 70–100. Pink-purple glow. Heating / Rhythm / Petty Upside can fire. Max 12 cards.</p></div>'
+        f'<div class="tier-card tier-mid"><b>✨ MID · Whispers</b><p>Confidence 50–69. Teal. Rhythm only. Not the pile.</p></div>'
+        f'<div class="tier-card tier-cold"><b>❄️ COLD · Homework</b><p>Confidence 0–49. Gray. Board says no.</p></div>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -10827,9 +10985,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     elif view.startswith("📚"):
         cards = [c for c in cards if c[2].get("data_tier") == "cold"]
     cards.sort(key=lambda x: (
-        -int(x[2].get("data_score") or 0),
-        0 if x[2].get("has_odds_magic") or x[1].get("is_bet") else 1,
-        -x[0],
+        -int(x[2].get("conf") or x[0] or 0),
         x[1].get("player") or "",
     ))
     cards = cards[:12] if view.startswith("🎯") else cards[:16]
@@ -10848,11 +11004,23 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         pills = []
         tier = data.get("data_tier")
         if tier == "hot":
-            pills.append('<span class="al-chip">🔥 Data hot</span>')
+            pills.append('<span class="al-chip">🔥 HOT</span>')
         elif tier == "mid":
-            pills.append('<span class="al-chip">🫧 Data mid</span>')
+            pills.append('<span class="al-chip">✨ MID</span>')
         else:
-            pills.append('<span class="al-chip">📚 Data cold</span>')
+            pills.append('<span class="al-chip">❄️ COLD</span>')
+        for tg in data.get("conf_tags") or []:
+            cls = "heat" if tg == "Heating" else "rhythm" if tg == "Rhythm" else "upside"
+            if tier == "cold":
+                continue
+            if tier == "mid" and tg != "Rhythm":
+                continue
+            pills.append(f'<span class="cf-tag {cls}">{tg}</span>')
+        tr = data.get("conf_trend") or "Stable"
+        if tr == "Cooling":
+            pills.append('<span class="cf-tag cool">Cooling</span>')
+        elif tr == "Stable" and tier != "cold":
+            pills.append('<span class="cf-tag cool">Stable</span>')
         if data.get("quiet") or not data.get("has_odds_magic"):
             pills.append('<span class="al-chip">📚 No odds stamp</span>')
         if data.get("rookie"):
@@ -10897,21 +11065,13 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             porch = "🧊 Cold Porch"
         price = format_odds(item.get("best_price"))
         stamps = " · ".join(str(m) for m in (item.get("methods") or [])[:4]) or "no stamp"
-        klass = "card al-home"
-        if data.get("longshot") and align >= 70:
-            klass = "card al-shot"
-        if align >= 85:
-            klass = "card al-speak"
-        if align >= 100 or item.get("is_bet"):
-            klass = "card al-lock"
-        if data.get("data_tier") == "hot" and (data.get("has_odds_magic") or item.get("is_bet")):
-            klass = "card al-lock"
-        elif data.get("data_tier") == "hot":
-            klass = "card al-speak"
-        elif sport != "NFL" and (data.get("quiet") or not data.get("has_odds_magic")):
-            klass = "card al-quiet"
-        elif sport == "NFL":
-            klass = "card al-shot" if data.get("longshot") else "card al-home"
+        tier = data.get("data_tier") or "cold"
+        if tier == "hot":
+            klass = "card al-lock cf-hot"
+        elif tier == "mid":
+            klass = "card al-shot cf-mid"
+        else:
+            klass = "card al-home cf-cold"
         wlane = data.get("wind_lane") or "cross"
         vs_l = data.get("vs_line") or ""
         if vs_l.lower().startswith("vs ") and (data.get("matchup") or "").split("(")[0].strip().lower() in vs_l.lower():
@@ -10964,7 +11124,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 st.markdown(
                     f'<div class="{klass}">'
                     f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏈 Anytime TD</span></div>'
-                    f'{_petty_meter(align)}'
+                    f'{_petty_meter(align, data.get("data_tier"))}'
                     + _today_html(data)
                     + f'{pulse_html}'
                     f'<div class="al-tags">{"".join(pills)}</div>'
@@ -11006,7 +11166,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             st.markdown(
                 f'<div class="{klass}">'
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
-                f'{_petty_meter(align)}'
+                f'{_petty_meter(align, data.get("data_tier"))}'
                 + _today_html(data)
                 + f'<details class="al-fold"{opened}><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
                 f'<div class="al-pack">{data_line}</div></details>'
