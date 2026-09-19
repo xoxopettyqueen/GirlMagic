@@ -6049,12 +6049,66 @@ def render_whats_going_today():
     mlb_hr, n_graded, by_book, on_list, pair_list, hr_status = build_whats_going_today(rows)
     sport = active_sport()
     cfg = sport_cfg()
-    listed = [(n, tag) for n, tag in (hr_status or []) if tag and tag != "NOT ON LIST"]
-    take_n = sum(1 for _n, t in listed if t == "TAKE")
-    lean_n = sum(1 for _n, t in listed if t in ("SHOP LEAN", "LEAN"))
-    watch_n = sum(1 for _n, t in listed if t in ("WATCH", "BOARD"))
+    today = today_az()
+    extra = today_mlb_date() if sport != "NFL" else today
+    day = [r for r in rows if r.get("date") in (today, extra)]
+    def _src(r):
+        return str(r.get("source") or "")
+    def _uniq(pool):
+        seen, out = set(), []
+        for r in pool:
+            k = _fold_player(r.get("player"))
+            if not k or k in seen:
+                continue
+            seen.add(k)
+            out.append(r)
+        return out
+    take_n = len(_uniq([r for r in day if _src(r) in ("take_it", "shop_take", "bet_this", "take")]))
+    lean_n = len(_uniq([r for r in day if _src(r) in ("shop_lean", "lean")]))
+    watch_n = len(_uniq([r for r in day if _src(r) == "watch"]))
+    hit_n = len(_uniq([r for r in day if str(r.get("result") or "").upper() == "HIT"]))
+    mlb_hr = hit_n
+    listed = []
+    for r in _uniq(day):
+        s = _src(r)
+        if s in ("take_it", "shop_take", "bet_this", "take"):
+            listed.append((r.get("player") or "", "TAKE"))
+        elif s in ("shop_lean", "lean"):
+            listed.append((r.get("player") or "", "LEAN"))
+        elif s == "watch":
+            listed.append((r.get("player") or "", "WATCH"))
     hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "HRs")
     prop_word = "TD prop" if sport == "NFL" else "HR prop"
+    # Book pills from today's logged prices (lock first number). Not live box scores.
+    book_ending = defaultdict(list)
+    end_ct = Counter()
+    lock_now = st.session_state.get("pregame_lock") or load_pregame()
+    for r in day:
+        bl = book_label(r.get("best_book") or "")
+        px = r.get("best_price")
+        pname = r.get("player")
+        if lock_now and pname:
+            for kn, data in (lock_now or {}).items():
+                if not names_match(pname, kn):
+                    continue
+                for b, info in ((data or {}).get("books") or {}).items():
+                    if book_label(b) != bl:
+                        continue
+                    slot = info if isinstance(info, dict) else {}
+                    px = slot.get("first_price") or slot.get("price") or px
+                    break
+                break
+        end = last_two(px) if px is not None else r.get("ending")
+        if bl and end is not None:
+            try:
+                end_ct[(bl, int(end))] += 1
+            except Exception:
+                pass
+    by_book = defaultdict(list)
+    for (bl, end), cnt in end_ct.items():
+        by_book[bl].append((int(end), int(cnt)))
+    for bl in by_book:
+        by_book[bl].sort(key=lambda x: (-x[1], x[0]))
 
     def _norm_tag(tag):
         if tag == "TAKE":
@@ -6099,10 +6153,7 @@ def render_whats_going_today():
     for bl in FOCUS:
         items = by_book.get(bl) or []
         people = by_names.get(bl) or []
-        if not items and not people:
-            continue
         top = items[0] if items else None
-        # top = (ending, count) of live hits on that book
         if top:
             label = "%s · %s ended +x%02d" % (bl, top[1], top[0])
         else:
@@ -6123,16 +6174,16 @@ def render_whats_going_today():
     if sport == "NFL":
         queen = "Queen says: the TDs on the list are the ones that matter." if take_n else "Queen says: NFL lane — ticket books only."
     else:
-        queen = "Queen says: graded Hits on the list." if take_n else "Queen says: Pulse only moves when Results grades a HIT."
+        queen = "Queen says: these are today’s logged tickets." if take_n else "Queen says: Fetch pregame so TAKE / WATCH land here."
 
-    books_block = "".join(pills) if pills else '<span class="pulse-pill">No graded Hits yet.</span>'
+    books_block = "".join(pills) if pills else '<span class="pulse-pill">No tickets logged yet.</span>'
     mlb_on = "on" if sport == "MLB" else ""
     nfl_on = "on" if sport == "NFL" else ""
     html = (
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">One pill per book. HIT names only. Same shape for DK / FD / MGM / HardRock / Fanatics / Caesars / Bet365.</div>'
+        '<div class="wg-sub">Counts = today’s logged TAKE / LEAN / WATCH. Pills = that book’s locked ending. Hits grade on Results.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
