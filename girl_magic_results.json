@@ -127128,12 +127128,18 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-18T14:22:22.496977+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop LEAN"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Shea Langeliers_shop_take_80",
@@ -127834,12 +127840,18 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-18T14:22:22.509390+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Coby Mayo_shop_take_58",
@@ -128434,12 +128446,18 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-18T14:22:22.520286+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop LEAN"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Dylan Beavers_shop_lean_43",
@@ -140307,12 +140325,18 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "shop_lean",
     "logged_at": "2026-09-18T21:07:34.185831+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop LEAN"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Gleyber Torres_shop_lean_47",
@@ -141749,12 +141773,18 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-18T23:27:21.192929+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Michael Busch_shop_take_72",
@@ -142707,12 +142737,18 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-09-19T00:53:08.182425+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-09-18",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-09-18"
   },
   {
     "id": "2026-09-18_Dustin Harris_shop_lean_70",
