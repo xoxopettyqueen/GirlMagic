@@ -1643,6 +1643,28 @@
       "best_book": "draftkings",
       "time": "12:46 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Josh Jung",
+      "source": "take_it",
+      "score": 97,
+      "methods": [
+        "Fanatics over pack",
+        "MGM 75",
+        "HardRock 00",
+        "FD Pattern",
+        "Stayed in the group",
+        "Fanatics Rogue",
+        "Last one left",
+        "FD+MGM classic",
+        "Match 75",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "12:54 PM",
+      "sport": "MLB"
     }
   ]
 }
