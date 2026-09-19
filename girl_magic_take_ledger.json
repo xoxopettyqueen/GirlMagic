@@ -571,6 +571,26 @@
       "best_book": "draftkings",
       "time": "10:04 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Isaac Paredes",
+      "source": "take_it",
+      "score": 77,
+      "methods": [
+        "B365 over MGM",
+        "MGM Exact",
+        "Fanatics Rogue",
+        "FD 90",
+        "FD Pattern",
+        "HardRock 00",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "10:04 AM",
+      "sport": "MLB"
     }
   ]
 }
