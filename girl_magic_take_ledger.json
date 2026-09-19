@@ -1273,6 +1273,25 @@
       "best_book": "draftkings",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Noah Gray",
+      "source": "take_it",
+      "score": 83,
+      "methods": [
+        "MGM 25",
+        "Fanatics over pack",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "Fanatics Loud",
+        "Match 25",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "draftkings",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
