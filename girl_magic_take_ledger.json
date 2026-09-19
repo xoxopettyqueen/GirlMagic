@@ -1792,6 +1792,28 @@
       "best_book": "draftkings",
       "time": "01:09 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Ozzie Albies",
+      "source": "take_it",
+      "score": 79,
+      "methods": [
+        "HardRock 00",
+        "MGM 00",
+        "FD Pattern",
+        "Stayed in the group",
+        "Fanatics Rogue",
+        "Multi-book Shorten",
+        "B365 over MGM",
+        "Match 00",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "02:55 PM",
+      "sport": "MLB"
     }
   ]
 }
