@@ -27242,5 +27242,71 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.25
+  },
+  {
+    "id": "2026-09-19_Jackson Chourio_shop_take_116",
+    "date": "2026-09-19",
+    "time": "10:54 AM",
+    "player": "Jackson Chourio",
+    "score": 0,
+    "edge": 116,
+    "best_price": 600,
+    "best_book": "draftkings",
+    "median": 475,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 390,
+      "betrivers": 480,
+      "caesars": 475,
+      "draftkings": 600,
+      "fanatics": 525,
+      "fanduel": 440,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T17:54:56.475311+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Griffin Conine_shop_take_52",
+    "date": "2026-09-19",
+    "time": "10:54 AM",
+    "player": "Griffin Conine",
+    "score": 0,
+    "edge": 52,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 482,
+    "book_prices": {
+      "bet365": 400,
+      "betmgm": 400,
+      "betrivers": 475,
+      "caesars": 500,
+      "draftkings": 507,
+      "fanatics": 550,
+      "fanduel": 490,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T17:54:56.482707+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
