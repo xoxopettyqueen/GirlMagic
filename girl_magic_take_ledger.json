@@ -1623,6 +1623,26 @@
       "best_book": "fanatics",
       "time": "12:45 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jahan Dotson",
+      "source": "take_it",
+      "score": 85,
+      "methods": [
+        "Multi-book method",
+        "FD 600",
+        "Match 75",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "MGM 75",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "draftkings",
+      "time": "12:46 PM",
+      "sport": "NFL"
     }
   ]
 }
