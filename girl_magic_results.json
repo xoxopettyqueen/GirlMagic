@@ -43451,5 +43451,170 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-19_Tank Bigsby_shop_take_136",
+    "date": "2026-09-19",
+    "time": "03:42 PM",
+    "player": "Tank Bigsby",
+    "score": 0,
+    "edge": 136,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 520,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 650,
+      "betrivers": 540,
+      "caesars": 500,
+      "draftkings": 500,
+      "fanatics": 650,
+      "fanduel": 500,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:42:59.526160+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Olamide Zaccheaus_shop_take_128",
+    "date": "2026-09-19",
+    "time": "03:42 PM",
+    "player": "Olamide Zaccheaus",
+    "score": 0,
+    "edge": 128,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 775,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 900,
+      "betrivers": 850,
+      "caesars": 700,
+      "draftkings": 700,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:42:59.531474+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Brevyn Spann-Ford_shop_take_120",
+    "date": "2026-09-19",
+    "time": "03:42 PM",
+    "player": "Brevyn Spann-Ford",
+    "score": 0,
+    "edge": 120,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 725,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 750,
+      "betrivers": 650,
+      "caesars": 700,
+      "draftkings": 850,
+      "fanatics": 1000,
+      "fanduel": 700,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T22:42:59.536271+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Elic Ayomanor_shop_lean_98",
+    "date": "2026-09-19",
+    "time": "03:42 PM",
+    "player": "Elic Ayomanor",
+    "score": 0,
+    "edge": 98,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 825,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 675,
+      "betrivers": 1050,
+      "caesars": 800,
+      "draftkings": 800,
+      "fanatics": 900,
+      "fanduel": 850,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T22:42:59.546136+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Adonai Mitchell_shop_lean_43",
+    "date": "2026-09-19",
+    "time": "03:42 PM",
+    "player": "Adonai Mitchell",
+    "score": 0,
+    "edge": 43,
+    "best_price": 400,
+    "best_book": "fanatics",
+    "median": 345,
+    "book_prices": {
+      "bet365": 350,
+      "betmgm": 310,
+      "betrivers": 325,
+      "caesars": 340,
+      "draftkings": 340,
+      "fanatics": 400,
+      "fanduel": 360,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T22:42:59.613961+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
