@@ -1254,6 +1254,25 @@
       "best_book": "fanatics",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Davante Adams",
+      "source": "take_it",
+      "score": 83,
+      "methods": [
+        "HardRock 00",
+        "Multi-book method",
+        "MGM Exact",
+        "FD 50",
+        "MGM 00",
+        "Match 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 750,
+      "best_book": "draftkings",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
