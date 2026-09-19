@@ -25839,5 +25839,167 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-19_Vladimir Guerrero Jr._shop_take_104",
+    "date": "2026-09-19",
+    "time": "10:05 AM",
+    "player": "Vladimir Guerrero Jr.",
+    "score": 0,
+    "edge": 104,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 539,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 600,
+      "betrivers": 500,
+      "caesars": 525,
+      "draftkings": 539,
+      "fanatics": 650,
+      "fanduel": 540,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T17:05:03.083250+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_JJ Wetherholt_shop_lean_76",
+    "date": "2026-09-19",
+    "time": "10:05 AM",
+    "player": "JJ Wetherholt",
+    "score": 0,
+    "edge": 76,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 835,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 525,
+      "betrivers": 700,
+      "caesars": 950,
+      "draftkings": 920,
+      "fanatics": 950,
+      "fanduel": 920,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T17:05:03.089365+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Andrew Vaughn_shop_take_62",
+    "date": "2026-09-19",
+    "time": "10:05 AM",
+    "player": "Andrew Vaughn",
+    "score": 0,
+    "edge": 62,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 685,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 525,
+      "betrivers": 650,
+      "caesars": 700,
+      "draftkings": 690,
+      "fanatics": 750,
+      "fanduel": 680,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-19T17:05:03.095630+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Jac Caglianone_shop_lean_48",
+    "date": "2026-09-19",
+    "time": "10:05 AM",
+    "player": "Jac Caglianone",
+    "score": 0,
+    "edge": 48,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "median": 650,
+    "book_prices": {
+      "betmgm": 550,
+      "caesars": 700,
+      "draftkings": 640,
+      "fanatics": 650,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T17:05:03.100980+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Pavin Smith_shop_lean_42",
+    "date": "2026-09-19",
+    "time": "10:05 AM",
+    "player": "Pavin Smith",
+    "score": 0,
+    "edge": 42,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 935,
+    "book_prices": {
+      "bet365": 1100,
+      "betmgm": 1000,
+      "betrivers": 750,
+      "caesars": 950,
+      "draftkings": 920,
+      "fanatics": 950,
+      "fanduel": 900,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-19T17:05:03.105046+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
