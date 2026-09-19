@@ -5247,7 +5247,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "watch",
     "logged_at": "2026-09-19T02:09:57.338295+00:00",
     "price_source": "pregame_lock",
@@ -5256,7 +5256,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.33
+    "benford_cluster": 0.33,
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Cooper Pratt_watch_20",
@@ -5329,7 +5330,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "watch",
     "logged_at": "2026-09-19T02:09:57.345306+00:00",
     "price_source": "pregame_lock",
@@ -5338,7 +5339,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_J.T. Realmuto_watch_12",
@@ -5371,7 +5373,7 @@
       "Kelly Support"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-09-19T02:09:57.354567+00:00",
     "price_source": "pregame_lock",
@@ -5380,7 +5382,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Jeremiah Jackson_watch_15",
@@ -5493,7 +5496,7 @@
       "Kelly Support"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-09-19T02:09:57.377329+00:00",
     "price_source": "pregame_lock",
@@ -5502,7 +5505,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.75
+    "benford_cluster": 0.75,
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Thomas Saggese_watch_9",
@@ -5657,12 +5661,13 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-19T02:09:59.114599+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-09-18_Lars Nootbaar_shop_lean_108",
@@ -5688,12 +5693,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.114862+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Zach Neto_shop_lean_96",
@@ -5719,12 +5725,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.115052+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Hunter Goodman_shop_take_82",
@@ -5778,12 +5785,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.115536+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Heliot Ramos_shop_lean_66",
@@ -5869,12 +5877,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.116327+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Fernando Tatis Jr._shop_lean_49",
@@ -5900,12 +5909,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.116448+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Kyle Stowers_shop_lean_46",
@@ -5931,12 +5941,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.116606+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Leody Taveras_shop_lean_45",
@@ -5958,12 +5969,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "SKIP_DUP",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.116796+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "one_per_day"
   },
   {
     "id": "2026-09-18_Bo Bichette_shop_lean_37",
@@ -5987,12 +5999,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.117085+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Mark Vientos_shop_lean_35",
@@ -6014,12 +6027,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.117213+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Brandon Marsh_shop_lean_34",
@@ -6043,12 +6057,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.117304+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Bryson Stott_shop_lean_29",
@@ -6072,12 +6087,13 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-09-19T02:09:59.117525+00:00",
     "price_source": "shop",
     "sport": "MLB",
-    "market": "batter_home_runs"
+    "market": "batter_home_runs",
+    "graded_by": "mlb_auto_study"
   },
   {
     "id": "2026-09-18_Austin Wells_shop_lean_25",
