@@ -2026,12 +2026,41 @@ GLOSSARY_V2 = {
 }
 
 
+WALKTHROUGH_V2 = [
+    ("🪄 How to use this site",
+     "Fetch the slate. Confidence = scouting 0–100, not the slip. Run It = greens are the ticket. Money Talks = which book. Need One = 0.5 rush/catch. Receipts = grade. Weekly: if a stamp is cold, demote it."),
+    ("🔥 Morning run",
+     "Load games → pick today’s cards → Fetch (only moment odds + Lock save) → lineups on → read green first. Gray and eyes are not a dare."),
+    ("💚 The Board",
+     "Green / TAKE = we play it. Gray / PASS = homework. Eyes / WATCH = log it, don’t force. Petty Score ranks. 85+ can hold a green. It cannot invent one."),
+    ("💋 After the games",
+     "Results: PENDING → HIT or MISS. Undo exists. Log a HR that wasn’t on the Board. Auto-grade reads boxes. Don’t invent a trick mid-slate."),
+    ("💎 Tags → methods → TAKE",
+     "Priority can unlock TAKE. You still need 2 Premium. Support never greens alone. Family chips are folders. Cute is never why you fire."),
+    ("💸 Shop vs Board",
+     "Board = who cleared. Shop = which number. Same name can be green and DON’T. If Shop says DON’T, don’t talk yourself into it."),
+    ("🏠 The other rooms",
+     "Digits / MGM / DK / FD = pattern rooms. Names only with a book method. Trend Lab does not change TAKE. Moves = 500+ only."),
+    ("🔒 Lock",
+     "Open = first look. Now = latest pregame. Close = last number before the book vanished at first pitch. Live chase ends there."),
+    ("📋 Tracker / Backtest",
+     "Hit rate by tag. Ignore tiny n. TAKE should beat WATCH. Pulse is what already cashed — not tonight’s Board."),
+    ("🎟️ Books we use",
+     "Tickets: DK, FD, HardRock, Fanatics, Caesars. MGM is a tell. Bet365 is tracked. Other books compare only."),
+    ("💋 House rules",
+     "0.5 HR Over only. No 2+. No unders. Green is the list. Two Premium + one Priority beats a cute name match. Secrets stay on the cards."),
+]
+
+
 def render_mini_glossary():
     st.caption("Search a word. Same definitions hover on Confidence cards.")
     q = st.text_input("Search the vibe…", key="gloss_q")
-    cats = list(GLOSSARY_V2.keys())
+    cats = list(GLOSSARY_V2.keys()) + ["🪄 Walkthrough"]
     cat = st.radio("Category", cats, horizontal=True, key="gloss_cat")
-    rows = list(GLOSSARY_V2.get(cat) or [])
+    if cat == "🪄 Walkthrough":
+        rows = list(WALKTHROUGH_V2)
+    else:
+        rows = list(GLOSSARY_V2.get(cat) or [])
     if q.strip():
         needle = q.lower()
         rows = []
@@ -2039,19 +2068,23 @@ def render_mini_glossary():
             for t, d in items:
                 if needle in t.lower() or needle in d.lower():
                     rows.append((t, d))
+        for t, d in WALKTHROUGH_V2:
+            if needle in t.lower() or needle in d.lower():
+                rows.append((t, d))
     cols = st.columns(2)
     if not rows:
         st.info("Nothing in the language matched that search.")
         return
     for i, (term, defn) in enumerate(rows):
         with cols[i % 2]:
+            kick = "WALKTHROUGH" if term.startswith(("🪄", "🔥", "💚", "💋", "💎", "💸", "🏠", "🔒", "📋", "🎟️")) else "GLOSSARY"
             st.markdown(
-                f'<div class="card" title="{defn}"><div class="card-kicker">GLOSSARY</div>'
+                f'<div class="card" title="{defn}"><div class="card-kicker">{kick}</div>'
                 f'<div class="card-name" style="font-size:1.05rem">{term}</div>'
                 f'<div class="card-line">{defn}</div></div>',
                 unsafe_allow_html=True,
             )
-    st.caption("Learn the vibe, then roll the slate.")
+    st.caption("Glossary 2.0 — Girl Magic is a language and a system. Learn the vibe, then roll the slate.")
     return
     st.markdown("**🔖 Tags**")
     st.markdown(
@@ -14334,12 +14367,18 @@ def main():
         st.markdown(
             '<div class="how-hero"><h3>✨ Girl Magic Glossary 2.0</h3>'
             f'<p>Quote of the day: {quotes[q_i]}</p>'
-            "<p>This is the language. Search it. Walkthrough is under the cards if you are new.</p></div>",
+            "<p>This is the language. Search it. Walkthrough lives in the chips — same cards, same glow.</p>"
+            "<p>Learn the vibe, then roll the slate.</p></div>",
             unsafe_allow_html=True,
         )
         render_mini_glossary()
-        st.markdown('<div class="how-tier">Daily flow</div>', unsafe_allow_html=True)
-        with st.expander("👋 How to use this site if you don’t know us", expanded=True):
+        site_section_close()
+        if False:
+            st.markdown("hidden walkthrough leftovers")
+        if False:
+            st.markdown('<div class="how-tier">Daily flow</div>', unsafe_allow_html=True)
+        if False:
+         with st.expander("👋 How to use this site if you don’t know us", expanded=True):
             st.markdown(
                 "1. **Fetch** the slate. Nothing moves until that happens.\n"
                 "2. **Confidence** = data + odds in one card, 0–100. Hover a word if you don’t know it. "
