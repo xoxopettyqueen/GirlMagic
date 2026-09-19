@@ -10257,6 +10257,88 @@ def save_align_events(rows):
         pass
 
 
+def confidence_week_stats():
+    """Join Confidence log to graded Results for the last 7 AZ days."""
+    logs = load_align_events()
+    rows = results_for_sport() or []
+    today = today_az()
+    try:
+        end = datetime.strptime(today, "%Y-%m-%d").date()
+    except Exception:
+        end = datetime.now().date()
+    start = end - timedelta(days=6)
+    hits = {}
+    for r in rows:
+        d = str(r.get("date") or "")[:10]
+        try:
+            dd = datetime.strptime(d, "%Y-%m-%d").date()
+        except Exception:
+            continue
+        if dd < start or dd > end:
+            continue
+        res = str(r.get("result") or "").upper()
+        if res not in ("HIT", "MISS", "PUSH"):
+            continue
+        hits[(_fold_player(r.get("player")), d)] = res.lower()
+    buckets = {k: {"hit": 0, "miss": 0, "push": 0, "n": 0, "conf_hit": []} for k in ("Active", "Whispers", "Homework")}
+    graded = []
+    for rec in logs:
+        d = str(rec.get("date") or "")[:10]
+        try:
+            dd = datetime.strptime(d, "%Y-%m-%d").date()
+        except Exception:
+            continue
+        if dd < start or dd > end:
+            continue
+        if rec.get("sport") and rec.get("sport") != active_sport():
+            continue
+        res = hits.get((_fold_player(rec.get("player") or rec.get("player_id")), d))
+        if not res:
+            continue
+        cat = rec.get("category") or (
+            "Active" if int(rec.get("confidence_score") or rec.get("align") or 0) >= 70
+            else "Whispers" if int(rec.get("confidence_score") or rec.get("align") or 0) >= 50
+            else "Homework"
+        )
+        if cat not in buckets:
+            cat = "Homework"
+        buckets[cat]["n"] += 1
+        buckets[cat][res] += 1
+        if res == "hit":
+            buckets[cat]["conf_hit"].append(int(rec.get("confidence_score") or rec.get("align") or 0))
+        graded.append(res)
+    def _rate(b):
+        den = b["hit"] + b["miss"]
+        return (100.0 * b["hit"] / den) if den else None
+    tot_h = sum(b["hit"] for b in buckets.values())
+    tot_m = sum(b["miss"] for b in buckets.values())
+    overall = (100.0 * tot_h / (tot_h + tot_m)) if (tot_h + tot_m) else None
+    return overall, buckets, tot_h + tot_m
+
+
+def render_confidence_tracker():
+    overall, buckets, n = confidence_week_stats()
+    if not n:
+        st.caption("Confidence Tracker · grade Results this week and the hit rates show here.")
+        return
+    fire = "🔥" if (overall or 0) >= 20 else "✨"
+    bits = []
+    for cat in ("Active", "Whispers", "Homework"):
+        b = buckets[cat]
+        r = None
+        den = b["hit"] + b["miss"]
+        if den:
+            r = 100.0 * b["hit"] / den
+        bits.append(f"{cat} = {r:.0f}% hits" if r is not None else f"{cat} = —")
+    st.markdown(
+        f'<div class="alert-strip" style="margin:8px 0 14px">'
+        f'This week’s Confidence hit rate: <b>{overall:.0f}%</b> {fire} · n={n}<br>'
+        f'{" | ".join(bits)}'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+
 def _align_kv(label, value, tip=""):
     if value in (None, "", "—"):
         return ""
@@ -11069,16 +11151,16 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     st.markdown(
         """
         <style>
-        .cf-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin:8px auto 18px;max-width:1200px}
-        .cf-stat{width:340px;min-height:160px;padding:24px;border-radius:18px;background:#14121E;
+        .cf-stats{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:4px auto 12px;max-width:1100px}
+        .cf-stat{width:300px;height:140px;padding:20px;border-radius:12px;background:#14121E;
           border:2px solid transparent;background-image:linear-gradient(#14121E,#14121E),linear-gradient(120deg,#f472b6,#c084fc,#2dd4bf);
           background-origin:padding-box,border-box;background-clip:padding-box,border-box;
-          display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+          display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
           transition:transform .18s ease,box-shadow .18s ease}
-        .cf-stat.hot:hover{transform:translateY(-6px);box-shadow:0 0 22px rgba(244,114,182,.45)}
-        .cf-stat.mid:hover{transform:translateY(-6px);box-shadow:0 0 18px rgba(45,212,191,.35)}
-        .cf-stat.cold:hover{transform:translateY(-6px);box-shadow:0 0 16px rgba(192,132,252,.28)}
-        .cf-stat .n{font-size:24px;font-weight:800;line-height:1;background:linear-gradient(90deg,#f9a8d4,#e9d5ff,#67e8f9);
+        .cf-stat.hot:hover{transform:translateY(-4px);box-shadow:0 0 15px rgba(244,114,182,.32)}
+        .cf-stat.mid:hover{transform:translateY(-4px);box-shadow:0 0 13px rgba(45,212,191,.25)}
+        .cf-stat.cold:hover{transform:translateY(-4px);box-shadow:0 0 11px rgba(192,132,252,.20)}
+        .cf-stat .n{font-size:36px;font-weight:800;line-height:1;background:linear-gradient(90deg,#f9a8d4,#e9d5ff,#67e8f9);
           -webkit-background-clip:text;background-clip:text;color:transparent}
         .cf-stat .l{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#e9d5ff;font-weight:700}
         </style>
@@ -11112,17 +11194,26 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             "Active is the pile only — max 12 cards. Mid/cold live under Whispers / Homework. "
             "💚 Board take = also on Run It. 🪤 trap split still cuts a hot name down."
         )
-    if view.startswith("🎯"):
+    if True:
         ev_log = load_align_events()
         logged = 0
+        have = {(str(r.get("date")), _fold_player(r.get("player")), str(r.get("sport") or "")) for r in ev_log}
         for align, item, data, notes, vibe in cards:
-            if data.get("data_tier") != "hot" or logged >= 20:
+            if logged >= 40:
+                break
+            key = (today_az(), _fold_player(item.get("player")), sport)
+            if key in have:
                 continue
+            tier = data.get("data_tier") or "cold"
+            cat = "Active" if tier == "hot" else "Whispers" if tier == "mid" else "Homework"
             ev_log.append({
                 "date": today_az(),
                 "sport": sport,
                 "player": item.get("player"),
+                "player_id": _fold_player(item.get("player")),
                 "align": align,
+                "confidence_score": int(data.get("conf") or align or 0),
+                "category": cat,
                 "vibe": vibe,
                 "longshot": data.get("longshot"),
                 "rookie": data.get("rookie"),
@@ -11131,9 +11222,10 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 "methods": list(item.get("methods") or [])[:6],
                 "summary": data.get("summary"),
             })
+            have.add(key)
             logged += 1
         if logged:
-            save_align_events(ev_log[-400:])
+            save_align_events(ev_log[-500:])
     if sport == "NFL":
         def _px(it):
             try:
@@ -11955,6 +12047,10 @@ def main():
     )
     sub = None
     if main == "Labs":
+        try:
+            render_confidence_tracker()
+        except Exception:
+            pass
         sub = st.radio(
             "Labs",
             ["Trend", "Pattern", "Benford", "Motion", "Magic"],
