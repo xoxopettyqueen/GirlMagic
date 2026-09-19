@@ -1152,6 +1152,28 @@
       "best_book": "fanatics",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Romeo Doubs",
+      "source": "take_it",
+      "score": 74,
+      "methods": [
+        "Multi-book method",
+        "MGM 40",
+        "Books tight",
+        "MGM Exact",
+        "FD 90",
+        "B365 Exact",
+        "Rivers a bit over pack",
+        "B365 75",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 290,
+      "best_book": "fanduel",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
