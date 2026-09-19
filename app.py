@@ -1196,6 +1196,13 @@ TAKE_STAMP_METHODS = {
     "B365 way over MGM",
     "B365 a bit over FD",
 }
+# 365 is a stamp, but it only greens with a real FD / DK / MGM-25 trick.
+B365_TELL_STAMPS = {"B365 way over MGM", "B365 a bit over FD"}
+CLASSIC_TRICK_STAMPS = {
+    "DK 10",
+    "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
+    "MGM 25", "Match 25", "MGM Exact",
+}
 # Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
 NFL_STAMP_METHODS = {
     "DK FD-style",
@@ -1214,8 +1221,6 @@ PRIORITY_METHODS = {
     "MGM 25", "Match 25", "MGM Exact",
     "DK 10",
     "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
-    "B365 way over MGM",
-    "B365 a bit over FD",
     "Multi-book Shorten",
     "Books tight",
     "Caesars Classic", "HardRock Heater", "Fanatics Rogue",
@@ -1241,8 +1246,6 @@ TAKE_IT_STRONG = {
     "Match 25", "MGM 25",
     "DK 10",
     "FD 600", "FD Pattern", "FD a little long",
-    "B365 way over MGM",
-    "B365 a bit over FD",
     "Multi-book method",
     "FD+MGM classic",
     "MGM Exact",
@@ -1264,7 +1267,8 @@ SUPPORT_ONLY = {
     "FD 40", "MGM 60", "MGM 10", "MGM 40",
     "EV Support", "Kelly Support", "EV Caution", "Kelly Caution",
     "Trend Heating", "Trend Cooling", "Trend Chaotic",
-    "B365 over HardRock", "B365 over MGM", "Fanatics over pack",
+    "B365 over HardRock", "B365 over MGM",
+    "Fanatics over pack",
     "Caesars 90", "HardRock 50", "HardRock 00",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
@@ -1415,6 +1419,8 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
         return False
     need = methods_min()
     if stamps < 2:
+        return False
+    if ms & B365_TELL_STAMPS and not (ms & CLASSIC_TRICK_STAMPS):
         return False
     if core_count < need and stamps < 2:
         return False
@@ -1871,8 +1877,8 @@ GLOSSARY_V2 = {
         ("FD Pattern", "FanDuel +400+ ending 10/20/30/60/70/90."),
         ("FD a little long", "FD pattern number 15–75 longer than DK or MGM on the short plus-money guys (+400 to +750). Those have been cashing. Flyer +1100 with FD +75 is not this stamp."),
         ("B365 over MGM", "Bet365 at least 40 longer than MGM. Support. Look."),
-        ("B365 way over MGM", "365 WAY longer than MGM (100+, or 75+ in the +300–+800 lane). Its own stamp. Not mixed with FD."),
-        ("B365 a bit over FD", "365 is 15–80 longer than FanDuel. Separate stamp from 365 vs MGM. Both can fire on the same name. They never combine into one tag."),
+        ("B365 way over MGM", "Stamp. 365 WAY longer than MGM. Only greens if a classic trick also fired (DK 10, FD Pattern/600, MGM 25 / Exact). 365 + Exact Match / MGM 50 is not enough."),
+        ("B365 a bit over FD", "Stamp. 365 is 15–80 longer than FanDuel. Same rule: needs a classic FD / DK / MGM-25 partner. Never greens alone."),
         ("FD 600", "Specific FanDuel number we watch."),
         ("MGM 25 / 50 / 75 / 00", "Same-team BetMGM group endings."),
         ("MGM Exact", "Same MGM price, same team."),
@@ -4850,43 +4856,54 @@ def _save_results_github(rows):
 
 
 def load_results():
-    """Prefer the richer of local + GitHub. Never throw away local for an empty remote."""
+    """Prefer the richer of local + GitHub + session. Never throw away a full file for empty."""
+    cached = st.session_state.get("_results_cache")
     local = _load_local_json(RESULTS_FILE, [])
     if not isinstance(local, list):
         local = []
     gh = _load_results_github()
-    status = st.session_state.get("_results_gh_status", "unconfigured")
-
-    if gh is None:
-        # unconfigured or error -> local only
-        st.session_state["_results_source"] = "local" if local else "empty"
-        return local
-
-    if not gh and local:
-        # remote missing/empty but we have local (pre-GitHub day or failed upload)
-        st.session_state["_results_source"] = "local>github_empty"
-        return local
-
-    if gh and not local:
+    pieces = []
+    if isinstance(cached, list) and cached:
+        pieces.append(cached)
+    if local:
+        pieces.append(local)
+    if isinstance(gh, list) and gh:
+        pieces.append(gh)
+    if not pieces:
+        if gh is None:
+            st.session_state["_results_source"] = "empty"
+        elif not gh:
+            st.session_state["_results_source"] = "github_empty"
+        else:
+            st.session_state["_results_source"] = "empty"
+        return cached if isinstance(cached, list) else []
+    merged = pieces[0]
+    for extra in pieces[1:]:
+        merged = _merge_results_lists(merged, extra)
+    st.session_state["_results_cache"] = merged
+    if isinstance(gh, list) and gh and not local:
         st.session_state["_results_source"] = "github"
-        # mirror to local so session is fast
-        _save_local_json(RESULTS_FILE, gh)
-        return gh
-
-    if gh and local:
-        merged = _merge_results_lists(local, gh)
+        _save_local_json(RESULTS_FILE, merged)
+    elif local and not gh:
+        st.session_state["_results_source"] = "local"
+    else:
         st.session_state["_results_source"] = "merged"
-        return merged
-
-    st.session_state["_results_source"] = "empty"
-    return []
+    return merged
 
 
 def save_results(rows):
+    # NEVER write an empty list over the archive.
+    if not rows:
+        keep = st.session_state.get("_results_cache") or _load_local_json(RESULTS_FILE, [])
+        if keep:
+            return
     # NEVER write today-only over the archive. Union with GitHub first.
     gh = _load_results_github()
     if isinstance(gh, list) and gh:
         rows = _merge_results_lists(gh, rows)
+    if st.session_state.get("_results_cache"):
+        rows = _merge_results_lists(st.session_state["_results_cache"], rows)
+    st.session_state["_results_cache"] = rows
     _save_local_json(RESULTS_FILE, rows)
     if _gh_configured():
         ok = _save_results_github(rows)
@@ -4940,15 +4957,30 @@ def undo_result(row_id, source):
 
 
 def load_take_ledger():
-    """Durable Run It names. Survives board drop + session reset (same Cloud box)."""
-    if not os.path.exists(TAKE_LEDGER_FILE):
-        return {}
-    try:
-        with open(TAKE_LEDGER_FILE, "r") as f:
-            data = json.load(f)
-        return data if isinstance(data, dict) else {}
-    except Exception:
-        return {}
+    """Durable Run It names. Local + GitHub so a Cloud reboot does not wipe greens."""
+    local = {}
+    if os.path.exists(TAKE_LEDGER_FILE):
+        try:
+            with open(TAKE_LEDGER_FILE, "r") as f:
+                local = json.load(f)
+        except Exception:
+            local = {}
+    if not isinstance(local, dict):
+        local = {}
+    gh, status = _gh_load_json(TAKE_LEDGER_FILE, "_ledger_sha")
+    if status == "ok" and isinstance(gh, dict) and gh:
+        out = dict(gh)
+        for day, rows in local.items():
+            bucket = list(out.get(day) or [])
+            have = {_fold_player(x.get("player")) for x in bucket}
+            for row in rows or []:
+                k = _fold_player((row or {}).get("player"))
+                if k and k not in have:
+                    bucket.append(row)
+                    have.add(k)
+            out[day] = bucket
+        return out
+    return local
 
 
 def save_take_ledger(data):
@@ -4957,6 +4989,8 @@ def save_take_ledger(data):
             json.dump(data, f, indent=2)
     except Exception:
         pass
+    if _gh_configured() and data:
+        _gh_save_json(TAKE_LEDGER_FILE, data, "_ledger_sha", "girl magic take ledger")
 
 
 def ledger_dates():
@@ -10971,6 +11005,8 @@ def main():
     if "history_loaded" not in st.session_state:
         load_history()
         st.session_state["pregame_lock"] = load_pregame()
+        load_results()
+        load_take_ledger()
         st.session_state["history_loaded"] = True
     if "pending_page" not in st.session_state:
         st.session_state["pending_page"] = 0
@@ -10999,6 +11035,13 @@ def main():
     st.markdown(
         site_hero_html(sport, cfg["label"], _games_n, _lock_n, _fetch),
         unsafe_allow_html=True,
+    )
+    _rs = load_results() or []
+    _td = today_az()
+    _take_today = sum(1 for r in _rs if r.get("date") in (_td, today_mlb_date()) and r.get("source") in ("take_it", "shop_take"))
+    st.caption(
+        f"Archive {_rs and len(_rs) or 0} rows · {(st.session_state.get('_results_source') or '?')} · "
+        f"{_take_today} TAKE today · GitHub {'on' if _gh_configured() else 'OFF — secrets missing, reboot wipes'}"
     )
     try:
         sport_pick = st.segmented_control(
