@@ -1400,6 +1400,31 @@
       "best_book": "draftkings",
       "time": "12:08 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Konnor Griffin",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "HardRock 00",
+        "Multi-book method",
+        "B365 over MGM",
+        "FD Pattern",
+        "MGM 25",
+        "Fanatics over pack",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "Match 25",
+        "Fanatics Rogue",
+        "Stayed in the group",
+        "DK FD-style",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "12:18 PM",
+      "sport": "MLB"
     }
   ]
 }
