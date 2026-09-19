@@ -4436,6 +4436,25 @@ def event_matches_chosen(ev, chosen):
                 return True
     return False
 
+
+def _event_sides(s):
+    s = _strip_game_clock(str(s or "")).lower().replace(" vs. ", " @ ").replace(" vs ", " @ ").replace(" at ", " @ ")
+    parts = [p.strip() for p in s.split("@")]
+    return parts if len(parts) == 2 else []
+
+
+def _event_nick(side):
+    toks = [t for t in str(side or "").replace(".", "").split() if t not in ("the", "of")]
+    return toks[-1] if toks else str(side or "")
+
+
+def game_nick_key(s):
+    sides = _event_sides(s)
+    if len(sides) != 2:
+        return _strip_game_clock(s).lower().strip()
+    return f"{_event_nick(sides[0])}|{_event_nick(sides[1])}"
+
+
 def name_in_lineup(player, lineup_names):
     if not lineup_names:
         return None
@@ -12338,20 +12357,45 @@ def main():
             if not slate_games:
                 slate_games = list(commence_by_event.keys())
 
-            by_game = defaultdict(list)
-            for item in takes:
-                by_game[_strip_game_clock(item.get("event") or "Game")].append(item)
-            picks_by_game = defaultdict(list)
-            for item in team_picks:
-                picks_by_game[_strip_game_clock(_item_game(item) or "Game")].append(item)
+            def _canon_event(item):
+                raw = _strip_game_clock(_item_game(item) or item.get("event") or "")
+                if raw and raw.lower() not in ("game", "none", ""):
+                    return raw
+                team = str(item.get("team") or "").lower()
+                nick = _event_nick(team)
+                if not nick:
+                    return raw or "Game"
+                for e in st.session_state.get("events") or []:
+                    away = e.get("away_team") or ""
+                    home = e.get("home_team") or ""
+                    blob = f"{away} {home}".lower()
+                    if nick and nick in blob:
+                        return f"{away} @ {home}"
+                return raw or "Game"
 
-            def _rows_for_game(game_name, mapping):
+            by_game = defaultdict(list)
+            by_game_key = defaultdict(list)
+            for item in takes:
+                g = _canon_event(item)
+                by_game[g].append(item)
+                by_game_key[game_nick_key(g)].append(item)
+            picks_by_game = defaultdict(list)
+            picks_by_key = defaultdict(list)
+            for item in team_picks:
+                g = _canon_event(item)
+                picks_by_game[g].append(item)
+                picks_by_key[game_nick_key(g)].append(item)
+
+            def _rows_for_game(game_name, mapping, key_map=None):
                 hit = list(mapping.get(game_name) or [])
                 if hit:
                     return hit
+                nk = game_nick_key(game_name)
+                if key_map and key_map.get(nk):
+                    return list(key_map.get(nk) or [])
                 out = []
                 for k, rows in mapping.items():
-                    if event_matches_chosen(k, [game_name]) or event_matches_chosen(game_name, [k]):
+                    if game_nick_key(k) == nk or event_matches_chosen(k, [game_name]) or event_matches_chosen(game_name, [k]):
                         out.extend(rows)
                 return out
             extra = [g for g in (set(by_game) | set(picks_by_game)) if g not in slate_games]
@@ -12395,6 +12439,8 @@ def main():
             def _in_time_win(game_name):
                 t = _resolve_commence(game_name)
                 if event_has_started(t):
+                    if by_game.get(game_name) or picks_by_game.get(game_name) or by_game_key.get(game_nick_key(game_name)):
+                        return True
                     return False
                 if time_win == "All times":
                     return True
@@ -12442,8 +12488,8 @@ def main():
                 f"{', '.join(show_kinds) or 'nothing selected'}"
             )
             for game in sorted(visible_games, key=_game_rank):
-                items = [x for x in _rows_for_game(game, by_game) if _keep_card(x)] if "TAKE IT" in show_kinds else []
-                picks = [x for x in _rows_for_game(game, picks_by_game) if _keep_card(x)] if "TEAM PICK" in show_kinds else []
+                items = [x for x in _rows_for_game(game, by_game, by_game_key) if _keep_card(x)] if "TAKE IT" in show_kinds else []
+                picks = [x for x in _rows_for_game(game, picks_by_game, picks_by_key) if _keep_card(x)] if "TEAM PICK" in show_kinds else []
                 items = sorted(items, key=lambda x: -x.get("score", 0))
                 picks = sorted(picks, key=lambda x: -x.get("score", 0))
                 if not items and not picks and (name_q or min_score or time_win != "All times"):
