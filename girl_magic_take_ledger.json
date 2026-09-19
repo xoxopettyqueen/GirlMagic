@@ -1292,6 +1292,25 @@
       "best_book": "draftkings",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Kaytron Allen",
+      "source": "take_it",
+      "score": 63,
+      "methods": [
+        "HardRock 00",
+        "MGM 25",
+        "Rivers short vs pack",
+        "B365 over HardRock",
+        "Match 25",
+        "B365 850",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "fanduel",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
