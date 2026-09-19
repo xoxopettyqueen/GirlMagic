@@ -273,6 +273,23 @@
       "best_book": "fanatics",
       "time": "09:31 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Griffin Conine",
+      "source": "take_it",
+      "score": 67,
+      "methods": [
+        "MGM Exact",
+        "FD a little long",
+        "Multi-book method",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "09:31 AM",
+      "sport": "MLB"
     }
   ]
 }
