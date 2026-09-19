@@ -1328,6 +1328,23 @@
       "best_book": "fanatics",
       "time": "12:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Kyren Williams",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "MGM 25",
+        "Books tight",
+        "Match 25",
+        "Rivers a bit over pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 425,
+      "best_book": "draftkings",
+      "time": "12:01 PM",
+      "sport": "NFL"
     }
   ]
 }
