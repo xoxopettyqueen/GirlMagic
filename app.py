@@ -1783,7 +1783,7 @@ def render_card_guide():
 GLOSSARY_V2 = {
     "🧭 How": [
         ("Fetch", "Loads odds + Lock. Does not grade games. Box scores only run on Receipts → Results."),
-        ("Live tracking", "Only Results reads live box scores. Board, Confidence, Pulse, Recap, and Lock stay on the pregame snapshot + logged rows."),
+        ("Live tracking", "Box scores only on Results. Odds movement is tracked until first pitch / kick, then that game’s lock freezes (open stays, latest stops, close stamps)."),
         ("Green / TAKE", "Cleared the list. Two premium stamps. Score hold is 85 now, not 70. This is the ticket."),
         ("Gray / PASS", "Tags fired. Floor missed. Homework, not a dare."),
         ("Eyes / WATCH", "Log it for grade. Do not force the ticket."),
@@ -2140,6 +2140,12 @@ def collect_petty_alerts(ev_board, results):
         if "Multi-book Shorten" in meths:
             alerts.append(f"Multi-book Shorten · {r.get('label')}")
         reason = str(r.get("reason") or "")
+        if "B365 way over MGM" in meths:
+            alerts.append(f"365 WAY over MGM · {r.get('label')}")
+        if "B365 over MGM" in meths:
+            alerts.append(f"365 over MGM · {r.get('label')}")
+        if "FD a little long" in meths:
+            alerts.append(f"FD a little long · {r.get('label')}")
         if "FD under MGM" in meths:
             import re as _re
             m = _re.search(r"by (\d+)", reason)
@@ -2168,12 +2174,18 @@ def collect_petty_alerts(ev_board, results):
             )
             if 25 <= gap <= 90 or (10 <= gap <= 99 and extra):
                 alerts.append(f"FD under MGM by {gap} · {item.get('player')}")
+        if "B365 way over MGM" in ms:
+            alerts.append(f"365 WAY over MGM · {item.get('player')}")
+        elif "B365 over MGM" in ms:
+            alerts.append(f"365 over MGM · {item.get('player')}")
+        if "FD a little long" in ms:
+            alerts.append(f"FD a little long · {item.get('player')}")
     seen, out = set(), []
     for a in alerts:
         if a not in seen:
             seen.add(a)
             out.append(a)
-    return out[:10]
+    return out[:12]
 
 
 def american_implied(p):
@@ -4402,19 +4414,34 @@ def update_pregame_lock(df):
                 "locked": True,
             }
         else:
-            # Keep open; walk latest (even if close already set, still track live path pre-close)
             first = int(prev["first_price"])
             close = prev.get("close_price")
+            live = False
+            try:
+                live = row_event_is_live(event or entry.get("event") or "", live_event_labels())
+            except Exception:
+                live = False
+            if live or close is not None:
+                frozen = int(close) if close is not None else int(prev.get("latest_price") or first)
+                latest, latest_at = frozen, prev.get("latest_at") or prev.get("first_at") or ts
+                if live and close is None:
+                    close, close_at = frozen, ts
+                else:
+                    close_at = prev.get("close_at")
+            else:
+                latest, latest_at = ip, ts
+                close_at = prev.get("close_at")
+            use = int(close) if close is not None else int(latest)
             entry["books"][book] = {
                 "first_price": first,
                 "first_at": prev.get("first_at") or ts,
-                "latest_price": ip,
-                "latest_at": ts,
+                "latest_price": latest,
+                "latest_at": latest_at,
                 "close_price": close,
-                "close_at": prev.get("close_at"),
-                "price": int(close) if close is not None else ip,
-                "ending": last_two(int(close) if close is not None else ip),
-                "seen_at": ts,
+                "close_at": close_at,
+                "price": use,
+                "ending": last_two(use),
+                "seen_at": ts if not live else (prev.get("seen_at") or ts),
                 "locked": True,
             }
         if "betmgm" in book or book == "mgm":
@@ -6070,14 +6097,34 @@ def render_whats_going_today():
     else:
         queen = "Queen says: graded Hits on the list." if take_n else "Queen says: Pulse only moves when Results grades a HIT."
 
-    books_block = "".join(pills) if pills else '<span class="pulse-pill">No names have rolled yet — odds still sleeping.</span>'
+    tell_pills = []
+    for item in list(st.session_state.get("ev_board") or []) + list(st.session_state.get("flag_results") or []):
+        ms = set(item.get("methods") or [])
+        name = item.get("player") or item.get("label") or ""
+        if not name:
+            continue
+        if "B365 way over MGM" in ms:
+            tell_pills.append('<span class="pulse-pill">365 way · %s</span>' % name)
+        elif "B365 over MGM" in ms:
+            tell_pills.append('<span class="pulse-pill">365 over MGM · %s</span>' % name)
+        if "FD a little long" in ms:
+            tell_pills.append('<span class="pulse-pill">FD a little long · %s</span>' % name)
+    seen_t, uniq_tells = set(), []
+    for t in tell_pills:
+        if t not in seen_t:
+            seen_t.add(t)
+            uniq_tells.append(t)
+    tell_block = "".join(uniq_tells[:8])
+    books_block = "".join(pills) if pills else '<span class="pulse-pill">No graded Hits yet.</span>'
+    if tell_block:
+        books_block += tell_block
     mlb_on = "on" if sport == "MLB" else ""
     nfl_on = "on" if sport == "NFL" else ""
     html = (
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">Pills = Results HIT only. Pregame lock book + that book’s last two. Live box scores stay on Results.</div>'
+        '<div class="wg-sub">HIT pills = Results only. 365 / FD-long pills = pregame tells. Odds freeze at first lock. Fetch is manual.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
@@ -10937,7 +10984,7 @@ def main():
     ev_n = len(st.session_state.get("events") or [])
     with st.sidebar:
         st.markdown("**Slate**")
-        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft} · auto every {REFRESH_MINUTES}m")
+        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft} · movement until first pitch")
         if not st.session_state.get("events"):
             st.session_state["_autoload_events"] = True
         if st.button("Load games", type="primary", use_container_width=True) or st.session_state.pop("_autoload_events", False):
