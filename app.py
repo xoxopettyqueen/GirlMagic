@@ -11524,13 +11524,6 @@ def main():
         site_hero_html(sport, cfg["label"], _games_n, _lock_n, _fetch),
         unsafe_allow_html=True,
     )
-    _rs = load_results() or []
-    _td = today_az()
-    _live_t = sum(1 for e in (st.session_state.get("ev_board") or []) if e.get("is_bet"))
-    st.caption(
-        f"Archive {len(_rs)} graded/logged rows · {(st.session_state.get('_results_source') or '?')} · "
-        f"Live TAKE {_live_t} · GitHub {'on' if _gh_configured() else 'OFF'}"
-    )
     try:
         sport_pick = st.segmented_control(
             "Pick your lane",
