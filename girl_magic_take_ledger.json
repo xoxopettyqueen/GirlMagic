@@ -360,6 +360,27 @@
       "best_book": "draftkings",
       "time": "09:31 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Tyler Stephenson",
+      "source": "take_it",
+      "score": 65,
+      "methods": [
+        "HardRock 00",
+        "MGM 75",
+        "Match 75",
+        "B365 over MGM",
+        "FD Pattern",
+        "FD 90",
+        "Stayed in the group",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "09:31 AM",
+      "sport": "MLB"
     }
   ]
 }
