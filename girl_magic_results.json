@@ -78496,5 +78496,135 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.62
+  },
+  {
+    "id": "2026-09-20_Cole Young_shop_take_65",
+    "date": "2026-09-20",
+    "time": "09:51 AM",
+    "player": "Cole Young",
+    "score": 0,
+    "edge": 65,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 660,
+    "book_prices": {
+      "bet365": 525,
+      "betmgm": 550,
+      "betrivers": 600,
+      "caesars": 700,
+      "draftkings": 690,
+      "fanatics": 750,
+      "fanduel": 630,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T16:51:07.523562+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Andres Chaparro_shop_take_59",
+    "date": "2026-09-20",
+    "time": "09:51 AM",
+    "player": "Andres Chaparro",
+    "score": 0,
+    "edge": 59,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 475,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 450,
+      "betrivers": 600,
+      "caesars": 425,
+      "draftkings": 414,
+      "fanatics": 525,
+      "fanduel": 480,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T16:51:07.527364+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Enrique Hern\u00e1ndez_shop_lean_57",
+    "date": "2026-09-20",
+    "time": "09:51 AM",
+    "player": "Enrique Hern\u00e1ndez",
+    "score": 0,
+    "edge": 57,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 647,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 400,
+      "caesars": 625,
+      "draftkings": 670,
+      "fanatics": 700,
+      "fanduel": 680
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T16:51:07.528762+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Vaughn Grissom_shop_lean_44",
+    "date": "2026-09-20",
+    "time": "09:51 AM",
+    "player": "Vaughn Grissom",
+    "score": 0,
+    "edge": 44,
+    "best_price": 830,
+    "best_book": "draftkings",
+    "median": 795,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 525,
+      "betrivers": 800,
+      "caesars": 750,
+      "draftkings": 830,
+      "fanatics": 800,
+      "fanduel": 790,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 30,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T16:51:07.549039+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
