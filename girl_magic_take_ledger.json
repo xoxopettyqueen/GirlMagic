@@ -4893,6 +4893,21 @@
       "best_book": "fanatics",
       "time": "10:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Chuba Hubbard",
+      "source": "take_it",
+      "score": 45,
+      "methods": [
+        "Multi-book Shorten",
+        "DK 10",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 125,
+      "best_book": "fanduel",
+      "time": "10:51 AM",
+      "sport": "NFL"
     }
   ]
 }
