@@ -5249,6 +5249,27 @@
       "best_book": "fanduel",
       "time": "12:11 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Garrett Wilson",
+      "source": "take_it",
+      "score": 80,
+      "methods": [
+        "Fanatics Loud",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "FD 50",
+        "Multi-book method",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 575,
+      "best_book": "fanatics",
+      "time": "12:11 PM",
+      "sport": "NFL"
     }
   ]
 }
