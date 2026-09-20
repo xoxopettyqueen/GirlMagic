@@ -50680,7 +50680,7 @@
     ],
     "core": 2,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:11:06.119671+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -50688,7 +50688,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.75
+    "benford_cluster": 0.75,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Jake McCarthy_watch_16",
@@ -63533,7 +63534,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:30:09.587670+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -63541,7 +63542,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.38
+    "benford_cluster": 0.38,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Gabriel Moreno_watch_41",
@@ -68349,7 +68351,7 @@
     ],
     "core": 3,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T15:17:51.132293+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -68357,7 +68359,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.43
+    "benford_cluster": 0.43,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Ryan O'Hearn_watch_33",
@@ -74035,5 +74038,53 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Bryce Harper_take_it_89",
+    "date": "2026-09-20",
+    "time": "08:50 AM",
+    "player": "Bryce Harper",
+    "score": 89,
+    "edge": 59,
+    "best_price": 450,
+    "best_book": "fanatics",
+    "median": 425.0,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 400,
+      "betrivers": 390,
+      "caesars": 425,
+      "draftkings": 445,
+      "fanatics": 450,
+      "fanduel": 440,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "mgm_locked": 400,
+    "mgm_ending": 0,
+    "methods": [
+      "MGM 25",
+      "Stayed in the group",
+      "Match 25",
+      "Multi-book method",
+      "Books tight",
+      "FD Pattern",
+      "Last one left",
+      "FD+MGM classic",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 6,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-20T15:50:16.943396+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "PHILADELPHIA PHILLIES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.88
   }
 ]
