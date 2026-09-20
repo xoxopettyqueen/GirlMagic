@@ -5186,6 +5186,23 @@
       "best_book": "fanduel",
       "time": "11:40 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jaylin Noel",
+      "source": "take_it",
+      "score": 78,
+      "methods": [
+        "Multi-book method",
+        "FD 600",
+        "MGM Exact",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanduel",
+      "time": "11:40 AM",
+      "sport": "NFL"
     }
   ]
 }
