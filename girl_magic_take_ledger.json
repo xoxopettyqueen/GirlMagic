@@ -4500,6 +4500,25 @@
       "best_book": "fanduel",
       "time": "10:20 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Mookie Betts",
+      "source": "take_it",
+      "score": 51,
+      "methods": [
+        "Rivers a bit over pack",
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "FD Pattern",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 425,
+      "best_book": "hardrockbet",
+      "time": "10:20 AM",
+      "sport": "MLB"
     }
   ]
 }
