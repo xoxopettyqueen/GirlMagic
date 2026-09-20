@@ -3183,6 +3183,28 @@
       "best_book": "fanatics",
       "time": "07:38 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Miguel Rojas",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Match 00",
+        "Stayed in the group",
+        "MGM 00",
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "DK 10",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "07:38 AM",
+      "sport": "MLB"
     }
   ]
 }
