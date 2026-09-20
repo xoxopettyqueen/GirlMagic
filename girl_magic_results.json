@@ -45640,5 +45640,137 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-19_Ben Sinnott_shop_lean_51",
+    "date": "2026-09-19",
+    "time": "05:02 PM",
+    "player": "Ben Sinnott",
+    "score": 0,
+    "edge": 51,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 912,
+    "book_prices": {
+      "bet365": 1200,
+      "betmgm": 625,
+      "betrivers": 1000,
+      "caesars": 900,
+      "draftkings": 900,
+      "fanatics": 925,
+      "fanduel": 950,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T00:02:06.548228+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Kalif Raymond_shop_lean_48",
+    "date": "2026-09-19",
+    "time": "05:02 PM",
+    "player": "Kalif Raymond",
+    "score": 0,
+    "edge": 48,
+    "best_price": 370,
+    "best_book": "fanatics",
+    "median": 302,
+    "book_prices": {
+      "bet365": 290,
+      "betmgm": 360,
+      "betrivers": 240,
+      "caesars": 305,
+      "draftkings": 360,
+      "fanatics": 370,
+      "fanduel": 300,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 70,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T00:02:06.557160+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Josh Downs_shop_lean_45",
+    "date": "2026-09-19",
+    "time": "05:02 PM",
+    "player": "Josh Downs",
+    "score": 0,
+    "edge": 45,
+    "best_price": 375,
+    "best_book": "bet365",
+    "median": 322,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 300,
+      "betrivers": 295,
+      "caesars": 305,
+      "draftkings": 330,
+      "fanatics": 370,
+      "fanduel": 320,
+      "hardrockbet": 325
+    },
+    "price_bucket": "under +400",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T00:02:06.561098+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Justice Hill_shop_lean_44",
+    "date": "2026-09-19",
+    "time": "05:02 PM",
+    "player": "Justice Hill",
+    "score": 0,
+    "edge": 44,
+    "best_price": 500,
+    "best_book": "draftkings",
+    "median": 445,
+    "book_prices": {
+      "bet365": 450,
+      "betmgm": 270,
+      "betrivers": 440,
+      "caesars": 450,
+      "draftkings": 500,
+      "fanatics": 420,
+      "fanduel": 450,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T00:02:06.562882+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
