@@ -3606,6 +3606,28 @@
       "best_book": "fanatics",
       "time": "08:36 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Cam Smith",
+      "source": "take_it",
+      "score": 71,
+      "methods": [
+        "FD 40",
+        "Match 50",
+        "MGM Exact",
+        "Stayed in the group",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "MGM 50",
+        "Last one left",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "08:36 AM",
+      "sport": "MLB"
     }
   ]
 }
