@@ -4583,6 +4583,28 @@
       "best_book": "draftkings",
       "time": "10:50 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Deshaun Watson",
+      "source": "take_it",
+      "score": 64,
+      "methods": [
+        "FD 600",
+        "Fanatics Loud",
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "HardRock 00",
+        "B365 way over MGM",
+        "B365 75",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "10:50 AM",
+      "sport": "NFL"
     }
   ]
 }
