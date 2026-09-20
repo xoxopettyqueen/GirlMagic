@@ -4858,6 +4858,24 @@
       "best_book": "hardrockbet",
       "time": "10:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Cade Otton",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "DK FD-style",
+        "FD a little long",
+        "Multi-book method",
+        "FD Pattern",
+        "HardRock 00",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 410,
+      "best_book": "fanduel",
+      "time": "10:51 AM",
+      "sport": "NFL"
     }
   ]
 }
