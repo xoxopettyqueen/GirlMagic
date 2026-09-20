@@ -4647,6 +4647,27 @@
       "best_book": "hardrockbet",
       "time": "10:50 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Will Shipley",
+      "source": "take_it",
+      "score": 82,
+      "methods": [
+        "Rivers a bit over pack",
+        "Match 50",
+        "Stayed in the group",
+        "MGM Exact",
+        "B365 Exact",
+        "B365 over MGM",
+        "MGM 50",
+        "B365 way over MGM",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 850,
+      "best_book": "draftkings",
+      "time": "10:50 AM",
+      "sport": "NFL"
     }
   ]
 }
