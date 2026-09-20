@@ -5585,6 +5585,23 @@
       "best_book": "draftkings",
       "time": "02:11 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Stefon Diggs",
+      "source": "take_it",
+      "score": 53,
+      "methods": [
+        "B365 50",
+        "MGM Exact",
+        "B365 over HardRock",
+        "Books tight",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 270,
+      "best_book": "fanduel",
+      "time": "02:11 PM",
+      "sport": "NFL"
     }
   ]
 }
