@@ -46880,5 +46880,99 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Alex Freeland_shop_take_148",
+    "date": "2026-09-19",
+    "time": "06:29 PM",
+    "player": "Alex Freeland",
+    "score": 0,
+    "edge": 148,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 775,
+    "book_prices": {
+      "betrivers": 500,
+      "caesars": 750,
+      "draftkings": 800,
+      "fanatics": 900,
+      "fanduel": 950,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T01:29:14.756671+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Fernando Tatis Jr._shop_take_95",
+    "date": "2026-09-19",
+    "time": "06:29 PM",
+    "player": "Fernando Tatis Jr.",
+    "score": 0,
+    "edge": 95,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 637,
+    "book_prices": {
+      "bet365": 375,
+      "betrivers": 540,
+      "caesars": 625,
+      "draftkings": 750,
+      "fanatics": 700,
+      "fanduel": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T01:29:14.758731+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Will Smith_shop_lean_40",
+    "date": "2026-09-19",
+    "time": "06:29 PM",
+    "player": "Will Smith",
+    "score": 0,
+    "edge": 40,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 500,
+    "book_prices": {
+      "bet365": 325,
+      "betrivers": 480,
+      "caesars": 475,
+      "draftkings": 500,
+      "fanatics": 550,
+      "fanduel": 500,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T01:29:14.762356+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
