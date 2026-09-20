@@ -5777,6 +5777,23 @@
       "best_book": "fanduel",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "De'Von Achane",
+      "source": "take_it",
+      "score": 93,
+      "methods": [
+        "Multi-book method",
+        "FD 50",
+        "MGM 60",
+        "DK 10",
+        "EV Premium",
+        "Kelly Premium"
+      ],
+      "best_price": 350,
+      "best_book": "fanduel",
+      "time": "03:01 PM",
+      "sport": "NFL"
     }
   ]
 }
