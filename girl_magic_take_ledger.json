@@ -4275,6 +4275,29 @@
       "best_book": "fanduel",
       "time": "09:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tim Tawa",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "MGM Exact",
+        "Multi-book method",
+        "Fanatics over pack",
+        "FD Pattern",
+        "HardRock 00",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "09:58 AM",
+      "sport": "MLB"
     }
   ]
 }
