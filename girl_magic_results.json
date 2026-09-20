@@ -78908,5 +78908,137 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.62
+  },
+  {
+    "id": "2026-09-20_Raheim Sanders_shop_take_206",
+    "date": "2026-09-20",
+    "time": "09:59 AM",
+    "player": "Raheim Sanders",
+    "score": 0,
+    "edge": 206,
+    "best_price": 950,
+    "best_book": "bet365",
+    "median": 750,
+    "book_prices": {
+      "bet365": 950,
+      "betmgm": 675,
+      "betrivers": 850,
+      "caesars": 750,
+      "draftkings": 750,
+      "fanatics": 900,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T16:59:06.953346+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Tank Bigsby_shop_lean_141",
+    "date": "2026-09-20",
+    "time": "09:59 AM",
+    "player": "Tank Bigsby",
+    "score": 0,
+    "edge": 141,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 600,
+      "betrivers": 550,
+      "caesars": 525,
+      "draftkings": 500,
+      "fanatics": 700,
+      "fanduel": 650,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T16:59:06.985535+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Cade Otton_shop_take_52",
+    "date": "2026-09-20",
+    "time": "09:59 AM",
+    "player": "Cade Otton",
+    "score": 0,
+    "edge": 52,
+    "best_price": 370,
+    "best_book": "fanatics",
+    "median": 302,
+    "book_prices": {
+      "bet365": 290,
+      "betmgm": 300,
+      "betrivers": 320,
+      "caesars": 305,
+      "draftkings": 300,
+      "fanatics": 370,
+      "fanduel": 320,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T16:59:07.099311+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Keenan Allen_shop_lean_49",
+    "date": "2026-09-20",
+    "time": "09:59 AM",
+    "player": "Keenan Allen",
+    "score": 0,
+    "edge": 49,
+    "best_price": 425,
+    "best_book": "bet365",
+    "median": 375,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 380,
+      "betrivers": 370,
+      "caesars": 360,
+      "draftkings": 380,
+      "fanatics": 420,
+      "fanduel": 370,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T16:59:07.118886+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
