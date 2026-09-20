@@ -5110,6 +5110,27 @@
       "best_book": "draftkings",
       "time": "11:40 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Devaughn Vele",
+      "source": "take_it",
+      "score": 82,
+      "methods": [
+        "Fanatics Loud",
+        "MGM 75",
+        "Match 75",
+        "MGM Exact",
+        "FD 50",
+        "Multi-book method",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 750,
+      "best_book": "fanduel",
+      "time": "11:40 AM",
+      "sport": "NFL"
     }
   ]
 }
