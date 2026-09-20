@@ -47842,5 +47842,48 @@
     "sport": "MLB",
     "market": "batter_home_runs",
     "graded_by": "mlb_auto_study"
+  },
+  {
+    "id": "2026-09-19_Francisco Alvarez_watch_65",
+    "date": "2026-09-19",
+    "time": "09:35 PM",
+    "player": "Francisco Alvarez",
+    "score": 65,
+    "edge": 185,
+    "best_price": 900,
+    "best_book": "bet365",
+    "median": 700,
+    "book_prices": {
+      "bet365": 900,
+      "betrivers": 700,
+      "caesars": 700,
+      "draftkings": 760,
+      "fanatics": 800,
+      "fanduel": 630,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "B365 over HardRock",
+      "FD Pattern",
+      "HardRock 00",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-20T04:35:18.031576+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "NEW YORK METS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.57
   }
 ]
