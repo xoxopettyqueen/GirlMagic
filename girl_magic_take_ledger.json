@@ -4605,6 +4605,27 @@
       "best_book": "fanatics",
       "time": "10:50 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Chris Brooks",
+      "source": "take_it",
+      "score": 86,
+      "methods": [
+        "DK FD-style",
+        "Match 50",
+        "Stayed in the group",
+        "MGM Exact",
+        "B365 Exact",
+        "Multi-book method",
+        "MGM 50",
+        "FD 90",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 290,
+      "best_book": "fanduel",
+      "time": "10:50 AM",
+      "sport": "NFL"
     }
   ]
 }
