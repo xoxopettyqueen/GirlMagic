@@ -5383,6 +5383,22 @@
       "best_book": "fanatics",
       "time": "12:11 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Woody Marks",
+      "source": "take_it",
+      "score": 64,
+      "methods": [
+        "MGM 75",
+        "MGM Exact",
+        "Match 75",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "draftkings",
+      "time": "12:11 PM",
+      "sport": "NFL"
     }
   ]
 }
