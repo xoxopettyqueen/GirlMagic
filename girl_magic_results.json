@@ -78577,5 +78577,104 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.4
+  },
+  {
+    "id": "2026-09-20_Pat Freiermuth_shop_take_54",
+    "date": "2026-09-20",
+    "time": "09:51 AM",
+    "player": "Pat Freiermuth",
+    "score": 0,
+    "edge": 54,
+    "best_price": 450,
+    "best_book": "fanatics",
+    "median": 390,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 380,
+      "betrivers": 390,
+      "caesars": 380,
+      "draftkings": 390,
+      "fanatics": 450,
+      "fanduel": 400,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T16:51:15.320918+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Denzel Boston_shop_lean_48",
+    "date": "2026-09-20",
+    "time": "09:51 AM",
+    "player": "Denzel Boston",
+    "score": 0,
+    "edge": 48,
+    "best_price": 420,
+    "best_book": "fanatics",
+    "median": 365,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 340,
+      "betrivers": 370,
+      "caesars": 350,
+      "draftkings": 360,
+      "fanatics": 420,
+      "fanduel": 390,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 20,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T16:51:15.365574+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Cade Otton_shop_lean_43",
+    "date": "2026-09-20",
+    "time": "09:51 AM",
+    "player": "Cade Otton",
+    "score": 0,
+    "edge": 43,
+    "best_price": 360,
+    "best_book": "fanatics",
+    "median": 302,
+    "book_prices": {
+      "bet365": 290,
+      "betmgm": 300,
+      "betrivers": 320,
+      "caesars": 305,
+      "draftkings": 300,
+      "fanatics": 360,
+      "fanduel": 320,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T16:51:15.377122+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
