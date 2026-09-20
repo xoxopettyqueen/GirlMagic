@@ -2971,6 +2971,30 @@
       "best_book": "draftkings",
       "time": "07:19 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Brett Harris",
+      "source": "take_it",
+      "score": 90,
+      "methods": [
+        "Match 50",
+        "FD+MGM classic",
+        "MGM Exact",
+        "Stayed in the group",
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "MGM 50",
+        "FD Pattern",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "07:30 AM",
+      "sport": "MLB"
     }
   ]
 }
