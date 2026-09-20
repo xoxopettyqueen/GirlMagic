@@ -3628,6 +3628,31 @@
       "best_book": "fanatics",
       "time": "08:36 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Adam Trautman",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "Fanatics Loud",
+        "MGM 75",
+        "Match 75",
+        "MGM Exact",
+        "Stayed in the group",
+        "B365 Exact",
+        "B365 over MGM",
+        "B365 a bit over FD",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "HardRock 00",
+        "B365 way over MGM",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 850,
+      "best_book": "draftkings",
+      "time": "08:48 AM",
+      "sport": "NFL"
     }
   ]
 }
