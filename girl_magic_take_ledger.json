@@ -2915,6 +2915,25 @@
       "best_book": "draftkings",
       "time": "07:19 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Evan Engram",
+      "source": "take_it",
+      "score": 83,
+      "methods": [
+        "DK FD-style",
+        "Fanatics Loud",
+        "MGM Exact",
+        "FD 50",
+        "Multi-book method",
+        "Books tight",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 420,
+      "best_book": "fanatics",
+      "time": "07:19 AM",
+      "sport": "NFL"
     }
   ]
 }
