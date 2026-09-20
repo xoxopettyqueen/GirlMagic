@@ -5683,6 +5683,26 @@
       "best_book": "hardrockbet",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Terry McLaurin",
+      "source": "take_it",
+      "score": 76,
+      "methods": [
+        "Rivers a bit over pack",
+        "DK FD-style",
+        "B365 Exact",
+        "Multi-book method",
+        "Fanatics over pack",
+        "FD Pattern",
+        "B365 25",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 430,
+      "best_book": "fanduel",
+      "time": "03:01 PM",
+      "sport": "NFL"
     }
   ]
 }
