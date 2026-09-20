@@ -46784,5 +46784,38 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-19_Demond Claiborne_shop_lean_88",
+    "date": "2026-09-19",
+    "time": "06:21 PM",
+    "player": "Demond Claiborne",
+    "score": 0,
+    "edge": 88,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 825,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 800,
+      "betrivers": 390,
+      "caesars": 850,
+      "draftkings": 850,
+      "fanatics": 1200,
+      "fanduel": 950,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T01:21:31.059579+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
