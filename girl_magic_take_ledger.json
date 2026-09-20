@@ -4923,6 +4923,30 @@
       "best_book": "fanduel",
       "time": "10:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Javier Sanoja",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "FD+MGM classic",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics over pack",
+        "FD Pattern",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1200,
+      "best_book": "fanatics",
+      "time": "11:40 AM",
+      "sport": "MLB"
     }
   ]
 }
