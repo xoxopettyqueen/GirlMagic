@@ -4710,6 +4710,26 @@
       "best_book": "fanatics",
       "time": "10:50 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Xavier Legette",
+      "source": "take_it",
+      "score": 84,
+      "methods": [
+        "Fanatics Loud",
+        "FD 50",
+        "MGM Exact",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "draftkings",
+      "time": "10:50 AM",
+      "sport": "NFL"
     }
   ]
 }
