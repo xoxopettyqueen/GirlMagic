@@ -4450,6 +4450,24 @@
       "best_book": "fanatics",
       "time": "10:20 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Xavier Hutchinson",
+      "source": "take_it",
+      "score": 56,
+      "methods": [
+        "Multi-book method",
+        "Multi-book Shorten",
+        "Books tight",
+        "DK 10",
+        "MGM 10",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 310,
+      "best_book": "draftkings",
+      "time": "10:20 AM",
+      "sport": "NFL"
     }
   ]
 }
