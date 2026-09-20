@@ -4468,6 +4468,38 @@
       "best_book": "draftkings",
       "time": "10:20 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Josh Bell",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "MGM 40",
+        "MGM Exact",
+        "Multi-book method",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 475,
+      "best_book": "fanatics",
+      "time": "10:20 AM",
+      "sport": "MLB"
+    },
+    {
+      "player": "Dallas Goedert",
+      "source": "take_it",
+      "score": 35,
+      "methods": [
+        "Books tight",
+        "DK 10",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 220,
+      "best_book": "fanduel",
+      "time": "10:20 AM",
+      "sport": "NFL"
     }
   ]
 }
