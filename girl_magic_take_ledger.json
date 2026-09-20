@@ -2099,6 +2099,25 @@
       "best_book": "fanatics",
       "time": "03:59 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Mike Trout",
+      "source": "take_it",
+      "score": 66,
+      "methods": [
+        "Multi-book method",
+        "FD Pattern",
+        "MGM Exact",
+        "B365 over MGM",
+        "FD a little long",
+        "MGM 60",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 475,
+      "best_book": "fanatics",
+      "time": "05:01 PM",
+      "sport": "MLB"
     }
   ]
 }
