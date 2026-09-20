@@ -87227,5 +87227,38 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-20_Josh Downs_shop_lean_46",
+    "date": "2026-09-20",
+    "time": "12:54 PM",
+    "player": "Josh Downs",
+    "score": 0,
+    "edge": 46,
+    "best_price": 375,
+    "best_book": "bet365",
+    "median": 315,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 280,
+      "betrivers": 310,
+      "caesars": 320,
+      "draftkings": 310,
+      "fanatics": 360,
+      "fanduel": 340,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T19:54:26.319136+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
