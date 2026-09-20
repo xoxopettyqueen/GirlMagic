@@ -5168,6 +5168,24 @@
       "best_book": "draftkings",
       "time": "11:40 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Chris Olave",
+      "source": "take_it",
+      "score": 68,
+      "methods": [
+        "DK FD-style",
+        "Multi-book method",
+        "FD Pattern",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 430,
+      "best_book": "fanduel",
+      "time": "11:40 AM",
+      "sport": "NFL"
     }
   ]
 }
