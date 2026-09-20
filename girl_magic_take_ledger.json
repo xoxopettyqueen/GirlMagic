@@ -5663,6 +5663,26 @@
       "best_book": "hardrockbet",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tyler Allgeier",
+      "source": "take_it",
+      "score": 85,
+      "methods": [
+        "FD a little long",
+        "Match 00",
+        "MGM 00",
+        "Multi-book method",
+        "FD Pattern",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "hardrockbet",
+      "time": "03:01 PM",
+      "sport": "NFL"
     }
   ]
 }
