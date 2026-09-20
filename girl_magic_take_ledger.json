@@ -3073,6 +3073,29 @@
       "best_book": "fanatics",
       "time": "07:30 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Thomas Saggese",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "FD+MGM classic",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "Multi-book method",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "07:37 AM",
+      "sport": "MLB"
     }
   ]
 }
