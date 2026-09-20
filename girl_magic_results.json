@@ -48778,5 +48778,38 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.71
+  },
+  {
+    "id": "2026-09-19_Tyquan Thornton_shop_lean_146",
+    "date": "2026-09-19",
+    "time": "09:51 PM",
+    "player": "Tyquan Thornton",
+    "score": 0,
+    "edge": 146,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 550,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 425,
+      "betrivers": 480,
+      "caesars": 550,
+      "draftkings": 600,
+      "fanatics": 700,
+      "fanduel": 550,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T04:51:12.639648+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
