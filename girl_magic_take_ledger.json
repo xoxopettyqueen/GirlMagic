@@ -5543,6 +5543,28 @@
       "best_book": "fanatics",
       "time": "12:54 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Michael Wilson",
+      "source": "take_it",
+      "score": 72,
+      "methods": [
+        "Fanatics Loud",
+        "Match 75",
+        "MGM 75",
+        "Multi-book method",
+        "FD Pattern",
+        "FD 90",
+        "HardRock 00",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 500,
+      "best_book": "draftkings",
+      "time": "02:11 PM",
+      "sport": "NFL"
     }
   ]
 }
