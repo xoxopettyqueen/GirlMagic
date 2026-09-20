@@ -4014,6 +4014,27 @@
       "best_book": "fanduel",
       "time": "09:17 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tank Bigsby",
+      "source": "take_it",
+      "score": 95,
+      "methods": [
+        "FD 600",
+        "Match 00",
+        "Stayed in the group",
+        "MGM 00",
+        "Multi-book method",
+        "B365 over HardRock",
+        "Fanatics Rogue",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "09:17 AM",
+      "sport": "NFL"
     }
   ]
 }
