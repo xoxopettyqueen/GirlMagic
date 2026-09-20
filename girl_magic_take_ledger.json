@@ -3743,6 +3743,26 @@
       "best_book": "fanduel",
       "time": "08:48 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jaxon Smith-Njigba",
+      "source": "take_it",
+      "score": 52,
+      "methods": [
+        "FD 40",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "Multi-book method",
+        "Books tight",
+        "B365 25",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 140,
+      "best_book": "draftkings",
+      "time": "08:48 AM",
+      "sport": "NFL"
     }
   ]
 }
