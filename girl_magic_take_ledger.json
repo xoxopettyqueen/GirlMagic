@@ -5443,6 +5443,26 @@
       "best_book": "draftkings",
       "time": "12:16 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "MarShawn Lloyd",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "MGM 75",
+        "Match 75",
+        "MGM Exact",
+        "FD 50",
+        "Stayed in the group",
+        "Multi-book method",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 850,
+      "best_book": "fanduel",
+      "time": "12:38 PM",
+      "sport": "NFL"
     }
   ]
 }
