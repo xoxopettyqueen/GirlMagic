@@ -2211,6 +2211,24 @@
       "best_book": "fanatics",
       "time": "06:13 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "MarShawn Lloyd",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "FD 40",
+        "Multi-book method",
+        "MGM 25",
+        "Books tight",
+        "Match 25",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 140,
+      "best_book": "fanduel",
+      "time": "06:13 PM",
+      "sport": "NFL"
     }
   ]
 }
