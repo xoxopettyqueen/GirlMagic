@@ -4786,6 +4786,24 @@
       "best_book": "draftkings",
       "time": "10:50 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tetairoa McMillan",
+      "source": "take_it",
+      "score": 64,
+      "methods": [
+        "Match 00",
+        "MGM 00",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "DK 10",
+        "EV Premium",
+        "Kelly Premium"
+      ],
+      "best_price": 275,
+      "best_book": "hardrockbet",
+      "time": "10:50 AM",
+      "sport": "NFL"
     }
   ]
 }
