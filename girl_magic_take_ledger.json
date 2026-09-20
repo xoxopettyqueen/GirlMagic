@@ -5794,6 +5794,23 @@
       "best_book": "fanduel",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jaylen Waddle",
+      "source": "take_it",
+      "score": 77,
+      "methods": [
+        "MGM 25",
+        "Multi-book method",
+        "Match 25",
+        "DK FD-style",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 400,
+      "best_book": "fanduel",
+      "time": "03:01 PM",
+      "sport": "NFL"
     }
   ]
 }
