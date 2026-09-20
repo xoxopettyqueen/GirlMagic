@@ -69416,5 +69416,201 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-20_Garrett Mitchell_shop_lean_103",
+    "date": "2026-09-20",
+    "time": "08:20 AM",
+    "player": "Garrett Mitchell",
+    "score": 0,
+    "edge": 103,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 525,
+      "betrivers": 600,
+      "caesars": 575,
+      "draftkings": 600,
+      "fanatics": 700,
+      "fanduel": 600,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T15:20:15.729849+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Pedro Ramirez_shop_lean_77",
+    "date": "2026-09-20",
+    "time": "08:20 AM",
+    "player": "Pedro Ramirez",
+    "score": 0,
+    "edge": 77,
+    "best_price": 700,
+    "best_book": "draftkings",
+    "median": 650,
+    "book_prices": {
+      "betmgm": 475,
+      "betrivers": 700,
+      "caesars": 575,
+      "draftkings": 700,
+      "fanatics": 650,
+      "fanduel": 560,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T15:20:15.740265+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Ke'Bryan Hayes_shop_lean_75",
+    "date": "2026-09-20",
+    "time": "08:20 AM",
+    "player": "Ke'Bryan Hayes",
+    "score": 0,
+    "edge": 75,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "betmgm": 900,
+      "betrivers": 900,
+      "caesars": 850,
+      "draftkings": 890,
+      "fanatics": 950,
+      "fanduel": 800,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T15:20:15.741899+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Dylan Crews_shop_take_66",
+    "date": "2026-09-20",
+    "time": "08:20 AM",
+    "player": "Dylan Crews",
+    "score": 0,
+    "edge": 66,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 550,
+      "betrivers": 575,
+      "caesars": 575,
+      "draftkings": 600,
+      "fanatics": 650,
+      "fanduel": 570,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T15:20:15.747782+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Freddie Freeman_shop_take_53",
+    "date": "2026-09-20",
+    "time": "08:20 AM",
+    "player": "Freddie Freeman",
+    "score": 0,
+    "edge": 53,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 534,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 425,
+      "betrivers": 575,
+      "caesars": 525,
+      "draftkings": 544,
+      "fanatics": 600,
+      "fanduel": 520,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T15:20:15.753260+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Mark Vientos_shop_lean_33",
+    "date": "2026-09-20",
+    "time": "08:20 AM",
+    "player": "Mark Vientos",
+    "score": 0,
+    "edge": 33,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 750,
+    "book_prices": {
+      "bet365": 650,
+      "betmgm": 525,
+      "betrivers": 750,
+      "caesars": 750,
+      "draftkings": 760,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T15:20:15.762603+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
