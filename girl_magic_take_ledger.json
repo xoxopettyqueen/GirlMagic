@@ -5703,6 +5703,25 @@
       "best_book": "fanduel",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Quentin Johnston",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "FD 600",
+        "MGM Exact",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanduel",
+      "time": "03:01 PM",
+      "sport": "NFL"
     }
   ]
 }
