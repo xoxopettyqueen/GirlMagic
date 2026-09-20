@@ -74894,5 +74894,170 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.75
+  },
+  {
+    "id": "2026-09-20_Theo Johnson_shop_take_86",
+    "date": "2026-09-20",
+    "time": "08:56 AM",
+    "player": "Theo Johnson",
+    "score": 0,
+    "edge": 86,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 775,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 600,
+      "betrivers": 800,
+      "caesars": 800,
+      "draftkings": 850,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T15:56:26.684381+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Jack Bech_shop_take_75",
+    "date": "2026-09-20",
+    "time": "08:56 AM",
+    "player": "Jack Bech",
+    "score": 0,
+    "edge": 75,
+    "best_price": 750,
+    "best_book": "bet365",
+    "median": 662,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 525,
+      "betrivers": 575,
+      "caesars": 675,
+      "draftkings": 650,
+      "fanatics": 750,
+      "fanduel": 750,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T15:56:26.709672+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Darren Waller_shop_lean_42",
+    "date": "2026-09-20",
+    "time": "08:56 AM",
+    "player": "Darren Waller",
+    "score": 0,
+    "edge": 42,
+    "best_price": 450,
+    "best_book": "fanatics",
+    "median": 400,
+    "book_prices": {
+      "bet365": 400,
+      "betmgm": 400,
+      "betrivers": 460,
+      "caesars": 380,
+      "draftkings": 425,
+      "fanatics": 450,
+      "fanduel": 390,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T15:56:26.772848+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Tre Tucker_shop_lean_42",
+    "date": "2026-09-20",
+    "time": "08:56 AM",
+    "player": "Tre Tucker",
+    "score": 0,
+    "edge": 42,
+    "best_price": 360,
+    "best_book": "fanatics",
+    "median": 307,
+    "book_prices": {
+      "bet365": 320,
+      "betmgm": 300,
+      "betrivers": 400,
+      "caesars": 305,
+      "draftkings": 300,
+      "fanatics": 360,
+      "fanduel": 310,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T15:56:26.777370+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Jayden Reed_shop_lean_40",
+    "date": "2026-09-20",
+    "time": "08:56 AM",
+    "player": "Jayden Reed",
+    "score": 0,
+    "edge": 40,
+    "best_price": 325,
+    "best_book": "fanatics",
+    "median": 280,
+    "book_prices": {
+      "bet365": 290,
+      "betmgm": 250,
+      "betrivers": 280,
+      "caesars": 265,
+      "draftkings": 280,
+      "fanatics": 325,
+      "fanduel": 280,
+      "hardrockbet": 275
+    },
+    "price_bucket": "under +400",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T15:56:26.780186+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
