@@ -4689,6 +4689,27 @@
       "best_book": "draftkings",
       "time": "10:50 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Rashod Bateman",
+      "source": "take_it",
+      "score": 61,
+      "methods": [
+        "DK FD-style",
+        "Fanatics Loud",
+        "FD a little long",
+        "Multi-book method",
+        "FD Pattern",
+        "HardRock 00",
+        "MGM 40",
+        "Rivers short vs pack",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 420,
+      "best_book": "fanatics",
+      "time": "10:50 AM",
+      "sport": "NFL"
     }
   ]
 }
