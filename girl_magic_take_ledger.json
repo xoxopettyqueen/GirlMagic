@@ -4388,6 +4388,26 @@
       "best_book": "hardrockbet",
       "time": "10:20 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Hunter Feduccia",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "MGM 25",
+        "Match 25",
+        "Fanatics over pack",
+        "Multi-book method",
+        "FD Pattern",
+        "FD+MGM classic",
+        "Fanatics Drift",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1100,
+      "best_book": "draftkings",
+      "time": "10:20 AM",
+      "sport": "MLB"
     }
   ]
 }
