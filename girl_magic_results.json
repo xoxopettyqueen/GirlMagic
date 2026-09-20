@@ -65962,7 +65962,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:38:16.829695+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -65970,7 +65970,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.62
+    "benford_cluster": 0.62,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Jung Hoo Lee_watch_39",
@@ -75374,5 +75375,56 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Salvador Perez_take_it_85",
+    "date": "2026-09-20",
+    "time": "09:17 AM",
+    "player": "Salvador Perez",
+    "score": 85,
+    "edge": 55,
+    "best_price": 650,
+    "best_book": "hardrockbet",
+    "median": 587.5,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 500,
+      "caesars": 625,
+      "hardrockbet": 650,
+      "fanatics": 650,
+      "fanduel": 540,
+      "betrivers": 500,
+      "draftkings": 563
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "mgm_locked": 500,
+    "mgm_ending": 0,
+    "methods": [
+      "Match 50",
+      "FD+MGM classic",
+      "FD a little long",
+      "Stayed in the group",
+      "B365 over MGM",
+      "Multi-book method",
+      "MGM 50",
+      "DK 10",
+      "FD Pattern",
+      "HardRock 50",
+      "Rivers short vs pack",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 6,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-20T16:17:10.436168+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "KANSAS CITY ROYALS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.5
   }
 ]
