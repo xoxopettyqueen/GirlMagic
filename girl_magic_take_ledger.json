@@ -5399,6 +5399,29 @@
       "best_book": "draftkings",
       "time": "12:11 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Gabriel Moreno",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "Match 00",
+        "MGM Exact",
+        "Stayed in the group",
+        "MGM 00",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "12:11 PM",
+      "sport": "MLB"
     }
   ]
 }
