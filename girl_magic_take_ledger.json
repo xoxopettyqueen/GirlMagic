@@ -2723,6 +2723,28 @@
       "best_book": "fanatics",
       "time": "07:19 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Roman Anthony",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "FD a little long",
+        "MGM 75",
+        "Match 75",
+        "MGM Exact",
+        "Stayed in the group",
+        "Multi-book method",
+        "FD Pattern",
+        "FD+MGM classic",
+        "HardRock 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "draftkings",
+      "time": "07:19 AM",
+      "sport": "MLB"
     }
   ]
 }
