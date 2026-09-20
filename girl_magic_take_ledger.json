@@ -2934,6 +2934,25 @@
       "best_book": "fanatics",
       "time": "07:19 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Justin Jefferson",
+      "source": "take_it",
+      "score": 52,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "Multi-book method",
+        "Books tight",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 170,
+      "best_book": "fanduel",
+      "time": "07:19 AM",
+      "sport": "NFL"
     }
   ]
 }
