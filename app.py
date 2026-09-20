@@ -5969,6 +5969,20 @@ def build_whats_going_today(rows):
         ]
     hr_names = []
     seen_hr = set()
+    official = []
+    try:
+        if active_sport() == "NFL":
+            official, _fin, _m = fetch_nfl_td_scorers()
+        else:
+            official, _fin, _m = fetch_mlb_hr_hitters()
+    except Exception:
+        official = []
+    for n in official or []:
+        k = _fold_player(n)
+        if not k or k in seen_hr:
+            continue
+        seen_hr.add(k)
+        hr_names.append(clean_name(n))
     for r in hits_logged:
         n = clean_name(r.get("player") or "")
         k = _fold_player(n)
@@ -6409,7 +6423,7 @@ def render_whats_going_today():
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">Cashed homers only. TAKE / LEAN / WATCH = which of those bombs were on our list. Grade on Results.</div>'
+        '<div class="wg-sub">HRs / TDs = official box scores today. TAKE / LEAN / WATCH = which of those were actually on our list. Everyone else cashed off the card.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
