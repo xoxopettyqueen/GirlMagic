@@ -4098,6 +4098,24 @@
       "best_book": "fanatics",
       "time": "09:42 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Mack Hollins",
+      "source": "take_it",
+      "score": 57,
+      "methods": [
+        "MGM Exact",
+        "Multi-book method",
+        "B365 over HardRock",
+        "Books tight",
+        "FD 90",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 290,
+      "best_book": "fanduel",
+      "time": "09:43 AM",
+      "sport": "NFL"
     }
   ]
 }
