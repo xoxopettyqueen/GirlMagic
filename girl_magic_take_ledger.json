@@ -3853,6 +3853,24 @@
       "best_book": "hardrockbet",
       "time": "08:50 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Rico Dowdle",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "B365 over MGM",
+        "B365 Exact",
+        "Multi-book method",
+        "MGM 60",
+        "DK 10",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 220,
+      "best_book": "fanduel",
+      "time": "08:56 AM",
+      "sport": "NFL"
     }
   ]
 }
