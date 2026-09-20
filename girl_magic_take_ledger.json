@@ -3465,6 +3465,28 @@
       "best_book": "fanduel",
       "time": "08:26 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Durham Smythe",
+      "source": "take_it",
+      "score": 97,
+      "methods": [
+        "MGM 25",
+        "Match 25",
+        "FD 50",
+        "B365 Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "B365 over HardRock",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "draftkings",
+      "time": "08:26 AM",
+      "sport": "NFL"
     }
   ]
 }
