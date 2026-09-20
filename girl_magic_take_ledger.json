@@ -3442,6 +3442,29 @@
       "best_book": "draftkings",
       "time": "08:25 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Troy Franklin",
+      "source": "take_it",
+      "score": 73,
+      "methods": [
+        "B365 50",
+        "Match 75",
+        "MGM 75",
+        "MGM Exact",
+        "B365 Exact",
+        "B365 over MGM",
+        "B365 over HardRock",
+        "Rivers way over pack",
+        "B365 way over MGM",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "fanduel",
+      "time": "08:26 AM",
+      "sport": "NFL"
     }
   ]
 }
