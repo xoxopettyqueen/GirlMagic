@@ -5722,6 +5722,25 @@
       "best_book": "fanduel",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tre' Harris",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "FD 50",
+        "MGM Exact",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 850,
+      "best_book": "fanduel",
+      "time": "03:01 PM",
+      "sport": "NFL"
     }
   ]
 }
