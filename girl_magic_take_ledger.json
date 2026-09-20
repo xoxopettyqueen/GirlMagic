@@ -4539,6 +4539,27 @@
       "best_book": "draftkings",
       "time": "10:50 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Josh Lowe",
+      "source": "take_it",
+      "score": 70,
+      "methods": [
+        "Rivers a bit over pack",
+        "MGM 25",
+        "FD 40",
+        "Match 25",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "10:50 AM",
+      "sport": "MLB"
     }
   ]
 }
