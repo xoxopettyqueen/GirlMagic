@@ -85985,5 +85985,166 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_James Wood_shop_lean_116",
+    "date": "2026-09-20",
+    "time": "12:16 PM",
+    "player": "James Wood",
+    "score": 0,
+    "edge": 116,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 700,
+    "book_prices": {
+      "bet365": 425,
+      "betrivers": 850,
+      "caesars": 625,
+      "draftkings": 700,
+      "fanatics": 800,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T19:16:08.330137+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Ronald Acu\u00f1a Jr._shop_take_100",
+    "date": "2026-09-20",
+    "time": "12:16 PM",
+    "player": "Ronald Acu\u00f1a Jr.",
+    "score": 0,
+    "edge": 100,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "median": 650,
+    "book_prices": {
+      "bet365": 450,
+      "betrivers": 650,
+      "caesars": 575,
+      "draftkings": 600,
+      "fanatics": 700,
+      "fanduel": 650,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T19:16:08.337972+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Alec Burleson_shop_lean_78",
+    "date": "2026-09-20",
+    "time": "12:16 PM",
+    "player": "Alec Burleson",
+    "score": 0,
+    "edge": 78,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 850,
+    "book_prices": {
+      "bet365": 350,
+      "betrivers": 700,
+      "caesars": 850,
+      "draftkings": 950,
+      "fanatics": 1100,
+      "fanduel": 900,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T19:16:08.342153+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Yordan Alvarez_shop_take_72",
+    "date": "2026-09-20",
+    "time": "12:16 PM",
+    "player": "Yordan Alvarez",
+    "score": 0,
+    "edge": 72,
+    "best_price": 650,
+    "best_book": "hardrockbet",
+    "median": 550,
+    "book_prices": {
+      "bet365": 300,
+      "betrivers": 550,
+      "caesars": 525,
+      "draftkings": 600,
+      "fanatics": 575,
+      "fanduel": 550,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T19:16:08.346561+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Randy Arozarena_shop_take_63",
+    "date": "2026-09-20",
+    "time": "12:16 PM",
+    "player": "Randy Arozarena",
+    "score": 0,
+    "edge": 63,
+    "best_price": 450,
+    "best_book": "bet365",
+    "median": 395,
+    "book_prices": {
+      "bet365": 450,
+      "betmgm": 310,
+      "betrivers": 420,
+      "caesars": 350,
+      "draftkings": 360,
+      "fanatics": 420,
+      "fanduel": 390,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T19:16:08.353453+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
