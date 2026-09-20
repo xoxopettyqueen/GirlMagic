@@ -2296,5 +2296,31 @@
       "time": "09:58 PM",
       "sport": "NFL"
     }
+  ],
+  "2026-09-20": [
+    {
+      "player": "Vinnie Pasquantino",
+      "source": "take_it",
+      "score": 91,
+      "methods": [
+        "Rivers a bit over pack",
+        "FD+MGM classic",
+        "FD a little long",
+        "MGM 25",
+        "MGM Exact",
+        "Match 25",
+        "B365 over MGM",
+        "Multi-book method",
+        "B365 over HardRock",
+        "FD Pattern",
+        "FD 90",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanatics",
+      "time": "07:10 AM",
+      "sport": "MLB"
+    }
   ]
 }
