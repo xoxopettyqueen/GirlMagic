@@ -3812,6 +3812,28 @@
       "best_book": "fanatics",
       "time": "08:50 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Pedro Ramirez",
+      "source": "take_it",
+      "score": 86,
+      "methods": [
+        "DK FD-style",
+        "MGM 75",
+        "Match 75",
+        "MGM Exact",
+        "Multi-book method",
+        "FD Pattern",
+        "Rivers way over pack",
+        "FD+MGM classic",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 690,
+      "best_book": "draftkings",
+      "time": "08:50 AM",
+      "sport": "MLB"
     }
   ]
 }
