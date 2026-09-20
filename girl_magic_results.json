@@ -58959,7 +58959,7 @@
     ],
     "core": 5,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:19:46.347324+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -58967,7 +58967,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.88
+    "benford_cluster": 0.88,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Jelani Woods_watch_73",
@@ -59366,7 +59367,7 @@
     ],
     "core": 8,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:19:46.531866+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -59374,7 +59375,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.38
+    "benford_cluster": 0.38,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Kalif Raymond_watch_62",
@@ -60284,7 +60286,7 @@
     ],
     "core": 4,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:19:47.097203+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -60292,7 +60294,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.62
+    "benford_cluster": 0.62,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Roschon Johnson_watch_45",
@@ -64721,7 +64724,7 @@
     ],
     "core": 6,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:30:38.749305+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -64729,7 +64732,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Kimani Vidal_watch_84",
@@ -70051,7 +70055,7 @@
     ],
     "core": 4,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T15:26:08.956189+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -70059,7 +70063,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.75
+    "benford_cluster": 0.75,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Dalton Schultz_watch_52",
@@ -70186,7 +70191,7 @@
     ],
     "core": 7,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T15:26:09.287435+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -70194,7 +70199,8 @@
     "market": "anytime_td",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.5
+    "benford_cluster": 0.5,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Elijah Higgins_watch_90",
@@ -77624,7 +77630,7 @@
     ],
     "core": 4,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T16:43:17.934172+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -77632,7 +77638,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Foster Moreau_watch_95",
@@ -77928,7 +77935,7 @@
     ],
     "core": 7,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T16:43:19.990024+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -77936,7 +77943,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 1.0
+    "benford_cluster": 1.0,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_Samaje Perine_shop_take_100",
@@ -83245,5 +83253,97 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Noah Gray_take_it_96",
+    "date": "2026-09-20",
+    "time": "11:40 AM",
+    "player": "Noah Gray",
+    "score": 96,
+    "edge": 112,
+    "best_price": 700,
+    "best_book": "bet365",
+    "median": 625.0,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 625,
+      "betrivers": 575,
+      "caesars": 625,
+      "draftkings": 600,
+      "fanatics": 650,
+      "fanduel": 650,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "mgm_locked": 625,
+    "mgm_ending": 25,
+    "methods": [
+      "Fanatics Loud",
+      "MGM 25",
+      "Stayed in the group",
+      "Match 25",
+      "B365 over MGM",
+      "Fanatics over pack",
+      "B365 over HardRock",
+      "Fanatics Rogue",
+      "B365 way over MGM",
+      "Rivers short vs pack",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 12,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-20T18:40:40.494779+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "KANSAS CITY CHIEFS NFL",
+    "market": "anytime_td",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.38
+  },
+  {
+    "id": "2026-09-20_Christian McCaffrey_watch_35",
+    "date": "2026-09-20",
+    "time": "11:40 AM",
+    "player": "Christian McCaffrey",
+    "score": 35,
+    "edge": -122,
+    "best_price": -210,
+    "best_book": "betmgm",
+    "median": -231.5,
+    "book_prices": {
+      "bet365": -233,
+      "betmgm": -210,
+      "betrivers": -240,
+      "caesars": -245,
+      "draftkings": -250,
+      "fanatics": -220,
+      "fanduel": -250,
+      "hardrockbet": -260
+    },
+    "price_bucket": "under +400",
+    "ending": 10,
+    "mgm_locked": -210,
+    "mgm_ending": 10,
+    "methods": [
+      "B365 a bit over FD",
+      "FD 50",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "core": 4,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-20T18:40:55.381915+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "SAN FRANCISCO 49ERS NFL",
+    "market": "anytime_td",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
   }
 ]
