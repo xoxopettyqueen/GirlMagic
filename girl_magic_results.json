@@ -46381,5 +46381,71 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.88
+  },
+  {
+    "id": "2026-09-19_Justice Hill_shop_take_52",
+    "date": "2026-09-19",
+    "time": "06:13 PM",
+    "player": "Justice Hill",
+    "score": 0,
+    "edge": 52,
+    "best_price": 500,
+    "best_book": "draftkings",
+    "median": 432,
+    "book_prices": {
+      "bet365": 450,
+      "betmgm": 270,
+      "betrivers": 440,
+      "caesars": 425,
+      "draftkings": 500,
+      "fanatics": 420,
+      "fanduel": 450,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T01:13:40.433129+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-19_Keenan Allen_shop_lean_40",
+    "date": "2026-09-19",
+    "time": "06:13 PM",
+    "player": "Keenan Allen",
+    "score": 0,
+    "edge": 40,
+    "best_price": 420,
+    "best_book": "fanatics",
+    "median": 375,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 375,
+      "betrivers": 350,
+      "caesars": 360,
+      "draftkings": 400,
+      "fanatics": 420,
+      "fanduel": 350,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 20,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T01:13:40.447196+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
