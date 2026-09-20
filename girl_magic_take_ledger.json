@@ -3545,6 +3545,27 @@
       "best_book": "draftkings",
       "time": "08:26 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Brewer Hicklen",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "FD Pattern",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "08:28 AM",
+      "sport": "MLB"
     }
   ]
 }
