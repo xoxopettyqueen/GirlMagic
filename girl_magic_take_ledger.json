@@ -5347,6 +5347,24 @@
       "best_book": "fanduel",
       "time": "12:11 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tyler Badie",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "FD 50",
+        "MGM Exact",
+        "Multi-book method",
+        "Fanatics over pack",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "draftkings",
+      "time": "12:11 PM",
+      "sport": "NFL"
     }
   ]
 }
