@@ -2430,6 +2430,26 @@
       "best_book": "fanatics",
       "time": "07:10 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Ben Rice",
+      "source": "take_it",
+      "score": 90,
+      "methods": [
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "DK 10",
+        "FD 90",
+        "MGM 60",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "07:10 AM",
+      "sport": "MLB"
     }
   ]
 }
