@@ -5088,6 +5088,28 @@
       "best_book": "fanduel",
       "time": "11:40 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tyler Shough",
+      "source": "take_it",
+      "score": 45,
+      "methods": [
+        "Fanatics Loud",
+        "MGM 25",
+        "Match 25",
+        "B365 Exact",
+        "B365 over MGM",
+        "B365 over HardRock",
+        "B365 way over MGM",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 750,
+      "best_book": "draftkings",
+      "time": "11:40 AM",
+      "sport": "NFL"
     }
   ]
 }
