@@ -14465,7 +14465,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-19T15:11:44.281812+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -14473,7 +14473,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.86
+    "benford_cluster": 0.86,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-19_Mike Yastrzemski_watch_58",
@@ -44489,7 +44490,7 @@
     ],
     "core": 2,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-19T23:33:50.435801+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -44497,7 +44498,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-19_Victor Caratini_watch_32",
@@ -44891,5 +44893,50 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Matt Olson_watch_74",
+    "date": "2026-09-19",
+    "time": "05:01 PM",
+    "player": "Matt Olson",
+    "score": 74,
+    "edge": 116,
+    "best_price": 326,
+    "best_book": "draftkings",
+    "median": 625,
+    "book_prices": {
+      "bet365": 300,
+      "betmgm": 270,
+      "betrivers": 295,
+      "caesars": 320,
+      "draftkings": 326,
+      "fanatics": 325,
+      "fanduel": 320,
+      "hardrockbet": 325
+    },
+    "price_bucket": "under +400",
+    "ending": 26,
+    "mgm_locked": 270,
+    "mgm_ending": 70,
+    "methods": [
+      "Fanatics over pack",
+      "HardRock 00",
+      "Fanatics Rogue",
+      "FD 50",
+      "Rivers short vs pack",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-20T00:01:28.214276+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "ATLANTA BRAVES",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.43
   }
 ]
