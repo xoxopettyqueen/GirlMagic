@@ -48731,5 +48731,91 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.8
+  },
+  {
+    "id": "2026-09-19_Bryan Torres_shop_lean_91",
+    "date": "2026-09-19",
+    "time": "09:51 PM",
+    "player": "Bryan Torres",
+    "score": 0,
+    "edge": 91,
+    "best_price": 900,
+    "best_book": "fanduel",
+    "median": 800,
+    "book_prices": {
+      "caesars": 750,
+      "draftkings": 760,
+      "fanatics": 800,
+      "fanduel": 900,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T04:51:02.387105+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Harry Ford-DUP_shop_lean_74",
+    "date": "2026-09-19",
+    "time": "09:51 PM",
+    "player": "Harry Ford-DUP",
+    "score": 0,
+    "edge": 74,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 870,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 890,
+      "fanatics": 950,
+      "fanduel": 830
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T04:51:02.397191+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-19_Christian Yelich_shop_lean_25",
+    "date": "2026-09-19",
+    "time": "09:51 PM",
+    "player": "Christian Yelich",
+    "score": 0,
+    "edge": 25,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 560,
+    "book_prices": {
+      "fanatics": 600,
+      "fanduel": 520
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T04:51:02.424351+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
