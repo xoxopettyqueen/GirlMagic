@@ -5203,6 +5203,29 @@
       "best_book": "fanduel",
       "time": "11:40 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jaylen Warren",
+      "source": "take_it",
+      "score": 83,
+      "methods": [
+        "FD 600",
+        "Fanatics Loud",
+        "MGM 25",
+        "Stayed in the group",
+        "MGM Exact",
+        "Match 25",
+        "Multi-book method",
+        "Fanatics over pack",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "draftkings",
+      "time": "12:11 PM",
+      "sport": "NFL"
     }
   ]
 }
