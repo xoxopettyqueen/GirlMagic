@@ -5741,6 +5741,24 @@
       "best_book": "fanduel",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Courtland Sutton",
+      "source": "take_it",
+      "score": 83,
+      "methods": [
+        "MGM 25",
+        "FD 50",
+        "Match 25",
+        "Multi-book method",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanduel",
+      "time": "03:01 PM",
+      "sport": "NFL"
     }
   ]
 }
