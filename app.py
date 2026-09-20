@@ -1924,7 +1924,9 @@ GLOSSARY_V2 = {
         ("xHR / near-HR", "Hidden on the card. Season Savant counts that looked like a second HR number. Still used quietly in the score."),
         ("Loud contact", "Barrel 10%+ or xSLG .450+. That's the readable version of 'almost gone.'"),
         ("LA / launch angle", "Average launch angle. 20°+ is fly-ball juice. Not a true FB% — Savant does not give FB% on that CSV."),
-        ("Savant pull", "Live Baseball Savant on the card: EV, HH, barrel, xSLG, launch angle, last-7 HRs."),
+        ("Savant pull", "Live Baseball Savant on the card: EV, HH, barrel, xSLG, launch angle, pulled air, last-7 HRs."),
+        ("Pulled air", "Savant: % of batted balls pulled in the air (FB/LD/PU to the pull side). ~17.5% of BBE, ~66% of homers. 22%+ is loud. On the Data line."),
+        ("AIR%", "Savant: fly + liner + popup. Not a homer by itself. Pulled air is the HR slice."),
         ("Contact gate", "Align only keeps hitters who clear EV / HH / barrel plus recent heat. Not the whole slate."),
         ("SP HR/9", "How many homers that starter allows per nine. Higher = friendlier to bats."),
         ("ERA next to SP", "Starter ERA. Context only. Not a ticket by itself."),
@@ -9004,6 +9006,11 @@ def data_quality_score(data, sport="MLB"):
         s += 10
     if brl is not None and brl >= 9:
         s += 10
+    pa = data.get("pull_air")
+    if pa is not None and pa >= 22:
+        s += 8
+    elif pa is not None and pa >= 18:
+        s += 4
     xslg = data.get("xslg")
     if xslg is not None and xslg >= 0.450:
         s += 10
@@ -9208,6 +9215,46 @@ def fetch_savant_expected(year=None):
             "xslg": num("est_slg"),
             "xwoba": num("est_woba"),
             "slg": num("slg"),
+        }
+    return out
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def fetch_savant_batted_ball(year=None):
+    """Savant pulled-air / AIR% / pull%. One CSV for the league."""
+    year = year or datetime.now().year
+    url = (
+        "https://baseballsavant.mlb.com/leaderboard/batted-ball"
+        f"?year={year}&min=1&type=batter&csv=true"
+    )
+    try:
+        r = requests.get(url, timeout=25, headers={"User-Agent": "GirlMagic/1.0"})
+        r.raise_for_status()
+        from io import StringIO
+        df = pd.read_csv(StringIO(r.text))
+    except Exception:
+        return {}
+    out = {}
+    name_col = "name" if "name" in df.columns else df.columns[1 if len(df.columns) > 1 else 0]
+    for _, row in df.iterrows():
+        key = _savant_name_fold(row.get(name_col))
+        if not key:
+            continue
+        def pct(*names):
+            for n in names:
+                if n in row and pd.notna(row[n]):
+                    try:
+                        v = float(row[n])
+                        return v * 100.0 if v <= 1.5 else v
+                    except Exception:
+                        continue
+            return None
+        out[key] = {
+            "pull_air": pct("pull_air_rate"),
+            "air": pct("air_rate"),
+            "pull": pct("pull_rate"),
+            "fb": pct("fb_rate"),
+            "bbe": pct("bbe") if False else (float(row["bbe"]) if "bbe" in row and pd.notna(row.get("bbe")) else None),
         }
     return out
 
@@ -9728,9 +9775,12 @@ def load_live_mlb_data():
     ev = fetch_savant_exit_velo()
     exp = fetch_savant_expected()
     hrtr = fetch_savant_hr_tracker()
+    bb = fetch_savant_batted_ball()
     for k, extra in exp.items():
         ev.setdefault(k, {}).update(extra)
     for k, extra in hrtr.items():
+        ev.setdefault(k, {}).update(extra)
+    for k, extra in bb.items():
         ev.setdefault(k, {}).update(extra)
     return {
         "ev": ev,
@@ -10258,6 +10308,18 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         bits.append(f"LA {la:.0f}°")
         if la >= 20:
             score += 3
+    pull_air = sav.get("pull_air")
+    air_pct = sav.get("air")
+    if pull_air is not None:
+        bits.append(f"Pulled air {pull_air:.0f}%")
+        if pull_air >= 25:
+            score += 10
+        elif pull_air >= 20:
+            score += 6
+        elif pull_air >= 17:
+            score += 3
+    if air_pct is not None and air_pct >= 70:
+        bits.append(f"AIR {air_pct:.0f}%")
     if doubters is not None or mostly is not None:
         near = int((doubters or 0) + (mostly or 0))
         if near >= 8:
@@ -10338,6 +10400,9 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         "ev": ev,
         "hh": hh,
         "barrel": brl,
+        "pull_air": sav.get("pull_air"),
+        "air_pct": sav.get("air"),
+        "pull_pct": sav.get("pull"),
         "xslg": xslg,
         "xwoba": xwoba,
         "la": la,
@@ -11416,6 +11481,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             pills.append('<span class="al-chip">🔥 Heating</span>')
         if data.get("due"):
             pills.append('<span class="al-chip">⌛ Due</span>')
+        if data.get("pull_air") is not None and data.get("pull_air") >= 22:
+            pills.append(f'<span class="al-chip" title="Pulled air leaders. Most homers live here">🪁 Pulled air {data["pull_air"]:.0f}%</span>')
         if (data.get("xslg") is not None and data.get("xslg") >= 0.450) or (data.get("barrel") or 0) >= 10:
             pills.append('<span class="al-chip" title="Barrel or xSLG is loud">💥 Loud contact</span>')
         if data.get("xslg") is not None and data.get("xslg") >= 0.450:
@@ -11538,6 +11605,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     extra += f' · <span title="Expected slugging from contact quality">xSLG {data["xslg"]:.3f}</span>'
                 if data.get("la") is not None:
                     extra += f' · <span title="Average launch angle. 20–35° is the homer window">LA {data["la"]:.0f}°</span>'
+                if data.get("pull_air") is not None:
+                    extra += f' · <span title="Pulled fly/liner/popup. ~17.5% of BBE, most homers live here">Pulled air {data["pull_air"]:.0f}%</span>'
                 data_line += extra + f' · 💣 HR L7 {hr7 or "—"} · 📈 SLG L7 {slg7 or "—"} · {"🔥 Heating" if heat=="Yes" else "🧊 Cold"} · {"💎 Longshot" if data.get("longshot") else ""}'
             loud = data.get("data_tier") == "hot" and (data.get("has_odds_magic") or item.get("is_bet"))
             opened = " open"
