@@ -5365,6 +5365,24 @@
       "best_book": "draftkings",
       "time": "12:11 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Kyle Monangai",
+      "source": "take_it",
+      "score": 76,
+      "methods": [
+        "Fanatics Loud",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "Fanatics over pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "12:11 PM",
+      "sport": "NFL"
     }
   ]
 }
