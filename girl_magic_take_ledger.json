@@ -4908,6 +4908,21 @@
       "best_book": "fanduel",
       "time": "10:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Christian Watson",
+      "source": "take_it",
+      "score": 41,
+      "methods": [
+        "Books tight",
+        "MGM Exact",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 230,
+      "best_book": "fanduel",
+      "time": "10:51 AM",
+      "sport": "NFL"
     }
   ]
 }
