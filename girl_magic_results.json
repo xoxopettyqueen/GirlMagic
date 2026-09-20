@@ -79526,5 +79526,100 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-20_Andrew Benintendi_shop_take_106",
+    "date": "2026-09-20",
+    "time": "10:06 AM",
+    "player": "Andrew Benintendi",
+    "score": 0,
+    "edge": 106,
+    "best_price": 625,
+    "best_book": "bet365",
+    "median": 525,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 550,
+      "betrivers": 650,
+      "caesars": 500,
+      "draftkings": 489,
+      "fanatics": 500,
+      "fanduel": 450,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T17:06:55.725449+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Kyle Teel_shop_take_99",
+    "date": "2026-09-20",
+    "time": "10:06 AM",
+    "player": "Kyle Teel",
+    "score": 0,
+    "edge": 99,
+    "best_price": 600,
+    "best_book": "bet365",
+    "median": 500,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 650,
+      "betrivers": 650,
+      "caesars": 500,
+      "draftkings": 483,
+      "fanatics": 420,
+      "fanduel": 430,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T17:06:55.734887+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Grant McCray_shop_lean_35",
+    "date": "2026-09-20",
+    "time": "10:06 AM",
+    "player": "Grant McCray",
+    "score": 0,
+    "edge": 35,
+    "best_price": 880,
+    "best_book": "fanduel",
+    "median": 825,
+    "book_prices": {
+      "caesars": 850,
+      "draftkings": 770,
+      "fanatics": 800,
+      "fanduel": 880
+    },
+    "price_bucket": "+800-999",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T17:06:55.791032+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
