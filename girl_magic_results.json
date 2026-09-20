@@ -56198,5 +56198,71 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.38
+  },
+  {
+    "id": "2026-09-20_Lawrence Butler_shop_lean_68",
+    "date": "2026-09-20",
+    "time": "07:19 AM",
+    "player": "Lawrence Butler",
+    "score": 0,
+    "edge": 68,
+    "best_price": 830,
+    "best_book": "draftkings",
+    "median": 725,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 650,
+      "betrivers": 650,
+      "caesars": 750,
+      "draftkings": 830,
+      "fanatics": 800,
+      "fanduel": 790,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 30,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-20T14:19:30.660347+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-20_Mookie Betts_shop_take_50",
+    "date": "2026-09-20",
+    "time": "07:19 AM",
+    "player": "Mookie Betts",
+    "score": 0,
+    "edge": 50,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 446,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 310,
+      "betrivers": 480,
+      "caesars": 425,
+      "draftkings": 468,
+      "fanatics": 500,
+      "fanduel": 470,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-20T14:19:30.677682+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
