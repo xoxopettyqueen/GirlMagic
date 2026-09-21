@@ -93877,5 +93877,137 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-21_George Springer_shop_take_152",
+    "date": "2026-09-21",
+    "time": "02:39 PM",
+    "player": "George Springer",
+    "score": 0,
+    "edge": 152,
+    "best_price": 750,
+    "best_book": "bet365",
+    "median": 587,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 550,
+      "betrivers": 650,
+      "caesars": 575,
+      "draftkings": 640,
+      "fanatics": 600,
+      "fanduel": 560,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-21T21:39:23.031394+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-21_Brady House_shop_take_142",
+    "date": "2026-09-21",
+    "time": "02:39 PM",
+    "player": "Brady House",
+    "score": 0,
+    "edge": 142,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 700,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 650,
+      "betrivers": 800,
+      "caesars": 700,
+      "draftkings": 670,
+      "fanatics": 750,
+      "fanduel": 680,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-21T21:39:23.031907+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-21_Ben Malgeri_shop_lean_86",
+    "date": "2026-09-21",
+    "time": "02:39 PM",
+    "player": "Ben Malgeri",
+    "score": 0,
+    "edge": 86,
+    "best_price": 950,
+    "best_book": "bet365",
+    "median": 850,
+    "book_prices": {
+      "bet365": 950,
+      "betmgm": 850,
+      "betrivers": 700,
+      "caesars": 850,
+      "draftkings": 840,
+      "fanatics": 950,
+      "fanduel": 870,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-21T21:39:23.035340+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-21_Dylan Crews_shop_take_59",
+    "date": "2026-09-21",
+    "time": "02:39 PM",
+    "player": "Dylan Crews",
+    "score": 0,
+    "edge": 59,
+    "best_price": 600,
+    "best_book": "bet365",
+    "median": 533,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 625,
+      "betrivers": 510,
+      "caesars": 525,
+      "draftkings": 541,
+      "fanatics": 550,
+      "fanduel": 520,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-21T21:39:23.036421+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
