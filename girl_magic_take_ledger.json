@@ -5830,6 +5830,23 @@
       "best_book": "draftkings",
       "time": "06:30 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tyler Warren",
+      "source": "take_it",
+      "score": 76,
+      "methods": [
+        "MGM 10",
+        "Multi-book method",
+        "DK FD-style",
+        "FD Pattern",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 425,
+      "best_book": "hardrockbet",
+      "time": "06:30 PM",
+      "sport": "NFL"
     }
   ]
 }
