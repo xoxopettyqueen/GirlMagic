@@ -91621,5 +91621,50 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-21_Shay Whitcomb_watch_60",
+    "date": "2026-09-21",
+    "time": "09:58 AM",
+    "player": "Shay Whitcomb",
+    "score": 60,
+    "edge": 96,
+    "best_price": 900,
+    "best_book": "betrivers",
+    "median": 850.0,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 600,
+      "betrivers": 900,
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 800,
+      "fanduel": 800,
+      "hardrockbet": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": 600,
+    "mgm_ending": 0,
+    "methods": [
+      "Rivers a bit over pack",
+      "B365 over MGM",
+      "Fanatics over pack",
+      "Fanatics Rogue",
+      "HardRock 50",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-21T16:58:58.969260+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "SAN FRANCISCO GIANTS",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.62
   }
 ]
