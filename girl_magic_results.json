@@ -60970,7 +60970,7 @@
     ],
     "core": 4,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-20T14:19:47.367022+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
@@ -60978,7 +60978,8 @@
     "market": "anytime_td",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.88
+    "benford_cluster": 0.88,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-20_TreVeyon Henderson_watch_56",
@@ -89008,5 +89009,49 @@
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-20_Rashee Rice_take_it_56",
+    "date": "2026-09-20",
+    "time": "06:38 PM",
+    "player": "Rashee Rice",
+    "score": 56,
+    "edge": 11,
+    "best_price": 150,
+    "best_book": "betmgm",
+    "median": 290.0,
+    "book_prices": {
+      "bet365": 145,
+      "betmgm": 150,
+      "betrivers": 138,
+      "caesars": 139,
+      "draftkings": 140,
+      "fanatics": 145,
+      "fanduel": 135,
+      "hardrockbet": 130
+    },
+    "price_bucket": "under +400",
+    "ending": 50,
+    "mgm_locked": 150,
+    "mgm_ending": 50,
+    "methods": [
+      "MGM Exact",
+      "Multi-book method",
+      "DK 10",
+      "MGM 40",
+      "EV Support",
+      "Kelly Support"
+    ],
+    "core": 6,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-21T01:38:24.287107+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "KANSAS CITY CHIEFS NFL",
+    "market": "anytime_td",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.5
   }
 ]
