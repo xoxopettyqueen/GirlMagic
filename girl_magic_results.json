@@ -91871,5 +91871,71 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.62
+  },
+  {
+    "id": "2026-09-21_CJ Abrams_shop_take_56",
+    "date": "2026-09-21",
+    "time": "10:38 AM",
+    "player": "CJ Abrams",
+    "score": 0,
+    "edge": 56,
+    "best_price": 575,
+    "best_book": "bet365",
+    "median": 522,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 400,
+      "betrivers": 550,
+      "caesars": 500,
+      "draftkings": 520,
+      "fanatics": 550,
+      "fanduel": 490,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-21T17:38:14.837910+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-21_Brooks Lee_shop_lean_53",
+    "date": "2026-09-21",
+    "time": "10:38 AM",
+    "player": "Brooks Lee",
+    "score": 0,
+    "edge": 53,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 640,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 600,
+      "betrivers": 650,
+      "caesars": 625,
+      "draftkings": 650,
+      "fanatics": 700,
+      "fanduel": 630,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-21T17:38:14.838367+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
