@@ -3805,6 +3805,46 @@
       "best_book": "fanatics",
       "time": "12:55 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Davante Adams",
+      "source": "take_it",
+      "score": 66,
+      "methods": [
+        "FD 600",
+        "Match 50",
+        "FD a little long",
+        "Multi-book method",
+        "MGM 50",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanduel",
+      "time": "12:55 PM",
+      "sport": "NFL"
+    },
+    {
+      "player": "Spencer Torkelson",
+      "source": "take_it",
+      "score": 51,
+      "methods": [
+        "FD 40",
+        "MGM 75",
+        "Match 75",
+        "MGM Exact",
+        "Stayed in the group",
+        "Books tight",
+        "Fanatics Rogue",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "12:55 PM",
+      "sport": "MLB"
     }
   ]
 }
