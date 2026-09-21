@@ -93327,5 +93327,70 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.43
+  },
+  {
+    "id": "2026-09-21_Riley Greene_shop_take_73",
+    "date": "2026-09-21",
+    "time": "01:03 PM",
+    "player": "Riley Greene",
+    "score": 0,
+    "edge": 73,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 482,
+    "book_prices": {
+      "bet365": 500,
+      "betmgm": 475,
+      "betrivers": 525,
+      "caesars": 475,
+      "draftkings": 416,
+      "fanatics": 550,
+      "fanduel": 490,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-21T20:03:31.588958+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-21_Eduardo Valencia_shop_take_60",
+    "date": "2026-09-21",
+    "time": "01:03 PM",
+    "player": "Eduardo Valencia",
+    "score": 0,
+    "edge": 60,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 550,
+    "book_prices": {
+      "betmgm": 425,
+      "betrivers": 600,
+      "caesars": 500,
+      "draftkings": 470,
+      "fanatics": 600,
+      "fanduel": 590,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-21T20:03:31.589839+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
