@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-09-21T01:30:10.236775+00:00",
+  "saved_at": "2026-09-21T01:30:26.078130+00:00",
   "price_history": [
     {
       "A.J. Ewing||bet365": 1400,
@@ -9588,81 +9588,308 @@
       "Xavier Worthy||hardrockbet": 225
     },
     {
-      "Blaze Alexander||bet365": 1250,
-      "Brice Turang||bet365": 625,
-      "Brice Turang||draftkings": 2200,
-      "Brice Turang||fanatics": 2500,
-      "Brice Turang||hardrockbet": 2000,
-      "Carlos Narv\u00e1ez||caesars": 2000,
-      "Carlos Narv\u00e1ez||draftkings": 2000,
-      "Carlos Narv\u00e1ez||fanatics": 2500,
-      "Carlos Narv\u00e1ez||fanduel": 1700,
-      "Carlos Narv\u00e1ez||hardrockbet": 1500,
-      "Christian Encarnacion-Strand||bet365": 650,
-      "Christian Yelich||bet365": 700,
-      "Christian Yelich||draftkings": 1800,
-      "Christian Yelich||fanatics": 2500,
-      "Christian Yelich||hardrockbet": 1750,
-      "Coby Mayo||bet365": 575,
-      "Coby Mayo||caesars": 1300,
-      "Coby Mayo||draftkings": 1100,
-      "Coby Mayo||fanatics": 1700,
-      "Coby Mayo||fanduel": 1700,
-      "Coby Mayo||hardrockbet": 1200,
-      "Colton Cowser||bet365": 900,
-      "Colton Cowser||caesars": 1100,
-      "Colton Cowser||draftkings": 950,
-      "Colton Cowser||fanatics": 1300,
-      "Colton Cowser||fanduel": 1500,
-      "Cooper Pratt||bet365": 1300,
-      "Cooper Pratt||hardrockbet": 2250,
-      "Dylan Beavers||bet365": 700,
-      "Dylan Beavers||caesars": 2000,
-      "Dylan Beavers||draftkings": 1800,
-      "Dylan Beavers||fanatics": 1900,
-      "Dylan Beavers||fanduel": 2200,
-      "Garrett Mitchell||bet365": 650,
-      "Garrett Mitchell||draftkings": 2200,
-      "Gunnar Henderson||bet365": 650,
-      "Gunnar Henderson||caesars": 1500,
-      "Gunnar Henderson||draftkings": 1300,
-      "Gunnar Henderson||fanatics": 1900,
-      "Gunnar Henderson||fanduel": 2000,
-      "Jackson Chourio||bet365": 550,
-      "Jackson Chourio||caesars": 1300,
-      "Jackson Chourio||draftkings": 1000,
-      "Jackson Chourio||fanatics": 1300,
-      "Jackson Chourio||fanduel": 1600,
-      "Jackson Chourio||hardrockbet": 1200,
-      "Jake Bauers||bet365": 390,
-      "Jake Bauers||caesars": 1500,
-      "Jake Bauers||draftkings": 1200,
-      "Jake Bauers||fanatics": 1900,
-      "Jake Bauers||fanduel": 1900,
-      "Jake Bauers||hardrockbet": 1400,
-      "Jeremiah Jackson||draftkings": 2500,
-      "Jeremiah Jackson||hardrockbet": 1600,
-      "Joey Ortiz||bet365": 1000,
-      "Joey Ortiz||draftkings": 2500,
-      "Joey Ortiz||hardrockbet": 2000,
-      "Leody Taveras||bet365": 1300,
-      "Leody Taveras||caesars": 1500,
-      "Leody Taveras||draftkings": 1400,
-      "Leody Taveras||fanatics": 1500,
-      "Leody Taveras||fanduel": 1900,
-      "Leody Taveras||hardrockbet": 1400,
-      "Luis Lara||bet365": 1100,
-      "Pete Alonso||bet365": 375,
-      "Pete Alonso||caesars": 1100,
-      "Pete Alonso||draftkings": 950,
-      "Pete Alonso||fanatics": 1200,
-      "Pete Alonso||fanduel": 1200,
-      "Pete Alonso||hardrockbet": 900,
-      "Samuel Basallo||bet365": 625,
-      "Samuel Basallo||caesars": 2000,
-      "Samuel Basallo||draftkings": 1600,
-      "Samuel Basallo||fanduel": 1800,
-      "Samuel Basallo||hardrockbet": 1400
+      "Alec Pierce||bet365": 1650,
+      "Anthony Gould||fanatics": 2200,
+      "Ashton Dulin||bet365": 1400,
+      "Blake Corum||bet365": 950,
+      "Blake Corum||betmgm": 850,
+      "Blake Corum||betrivers": 1100,
+      "Blake Corum||caesars": 1100,
+      "Blake Corum||draftkings": 1100,
+      "Blake Corum||fanatics": 1050,
+      "Blake Corum||fanduel": 1200,
+      "Blake Corum||hardrockbet": 1000,
+      "Brashard Smith||bet365": 1800,
+      "Brashard Smith||betrivers": 1100,
+      "Braxton Berrios||caesars": 2400,
+      "Braxton Berrios||draftkings": 2500,
+      "Cam Skattebo||bet365": 700,
+      "Cam Skattebo||betmgm": 725,
+      "Cam Skattebo||betrivers": 650,
+      "Cam Skattebo||caesars": 750,
+      "Cam Skattebo||draftkings": 750,
+      "Cam Skattebo||fanatics": 650,
+      "Cam Skattebo||fanduel": 700,
+      "Cam Skattebo||hardrockbet": 650,
+      "Colby Parkinson||bet365": 1500,
+      "Colby Parkinson||betmgm": 1250,
+      "Colby Parkinson||betrivers": 1400,
+      "Colby Parkinson||caesars": 1400,
+      "Colby Parkinson||draftkings": 1300,
+      "Colby Parkinson||fanatics": 1300,
+      "Colby Parkinson||fanduel": 1400,
+      "Colby Parkinson||hardrockbet": 1400,
+      "DJ Giddens||bet365": 1250,
+      "Daniel Jones||bet365": 575,
+      "Daniel Jones||betmgm": 825,
+      "Daniel Jones||betrivers": 850,
+      "Daniel Jones||caesars": 1100,
+      "Daniel Jones||draftkings": 1200,
+      "Daniel Jones||fanatics": 1300,
+      "Daniel Jones||fanduel": 1200,
+      "Daniel Jones||hardrockbet": 800,
+      "Darnell Mooney||bet365": 900,
+      "Darnell Mooney||betmgm": 600,
+      "Darnell Mooney||betrivers": 700,
+      "Darnell Mooney||caesars": 750,
+      "Darnell Mooney||draftkings": 700,
+      "Darnell Mooney||fanatics": 890,
+      "Darnell Mooney||fanduel": 800,
+      "Darnell Mooney||hardrockbet": 650,
+      "Davante Adams||bet365": 550,
+      "Davante Adams||betmgm": 650,
+      "Davante Adams||betrivers": 500,
+      "Davante Adams||caesars": 600,
+      "Davante Adams||draftkings": 600,
+      "Davante Adams||fanatics": 500,
+      "Davante Adams||fanduel": 550,
+      "Davante Adams||hardrockbet": 525,
+      "Davis Allen||bet365": 1100,
+      "Davis Allen||betmgm": 750,
+      "Davis Allen||betrivers": 1300,
+      "Davis Allen||caesars": 850,
+      "Davis Allen||draftkings": 850,
+      "Davis Allen||fanatics": 1000,
+      "Davis Allen||hardrockbet": 700,
+      "Deion Burks||betmgm": 2200,
+      "Deion Burks||betrivers": 1200,
+      "Deion Burks||caesars": 2300,
+      "Deion Burks||draftkings": 2500,
+      "Deion Burks||fanatics": 1900,
+      "Deion Burks||fanduel": 1200,
+      "Devin Singletary||bet365": 2500,
+      "Devin Singletary||betmgm": 1900,
+      "Devin Singletary||betrivers": 2500,
+      "Devin Singletary||caesars": 2300,
+      "Devin Singletary||draftkings": 2200,
+      "Devin Singletary||fanatics": 1800,
+      "Devin Singletary||fanduel": 2200,
+      "Devin Singletary||hardrockbet": 375,
+      "Isaiah Likely||bet365": 1500,
+      "Isaiah Likely||betmgm": 1500,
+      "Isaiah Likely||betrivers": 1600,
+      "Isaiah Likely||caesars": 2000,
+      "Isaiah Likely||draftkings": 2000,
+      "Isaiah Likely||fanatics": 1800,
+      "Isaiah Likely||fanduel": 1800,
+      "Isaiah Likely||hardrockbet": 2000,
+      "Jalen Royals||bet365": 2200,
+      "Jalen Royals||betrivers": 1600,
+      "Jared Wiley||bet365": 1200,
+      "Jaxson Dart||bet365": 1400,
+      "Jaxson Dart||betmgm": 1400,
+      "Jaxson Dart||betrivers": 1150,
+      "Jaxson Dart||caesars": 1500,
+      "Jaxson Dart||draftkings": 1400,
+      "Jaxson Dart||fanatics": 1050,
+      "Jaxson Dart||fanduel": 1500,
+      "Jaxson Dart||hardrockbet": 1400,
+      "Jonathan Taylor||bet365": -135,
+      "Jonathan Taylor||betmgm": 135,
+      "Jonathan Taylor||betrivers": 118,
+      "Jonathan Taylor||caesars": 123,
+      "Jonathan Taylor||draftkings": 120,
+      "Jonathan Taylor||fanatics": 125,
+      "Jonathan Taylor||fanduel": 115,
+      "Jonathan Taylor||hardrockbet": 125,
+      "Jordan Whittington||bet365": 550,
+      "Jordan Whittington||fanatics": 2200,
+      "Josh Downs||bet365": 375,
+      "Josh Downs||betmgm": 360,
+      "Josh Downs||betrivers": 285,
+      "Josh Downs||caesars": 400,
+      "Josh Downs||draftkings": 450,
+      "Josh Downs||fanatics": 475,
+      "Josh Downs||fanduel": 500,
+      "Josh Downs||hardrockbet": 450,
+      "Keenan Allen||bet365": 425,
+      "Keenan Allen||betmgm": 475,
+      "Keenan Allen||betrivers": 360,
+      "Keenan Allen||caesars": 475,
+      "Keenan Allen||draftkings": 500,
+      "Keenan Allen||fanatics": 525,
+      "Keenan Allen||fanduel": 500,
+      "Keenan Allen||hardrockbet": 475,
+      "Kenneth Walker||bet365": -200,
+      "Kenneth Walker||betrivers": -286,
+      "Kenneth Walker||caesars": -130,
+      "Kenneth Walker||draftkings": -130,
+      "Kenneth Walker||fanatics": -165,
+      "Kenneth Walker||fanduel": -130,
+      "Kenneth Walker||hardrockbet": -155,
+      "Konata Mumpfield||bet365": 650,
+      "Konata Mumpfield||betmgm": 525,
+      "Konata Mumpfield||betrivers": 600,
+      "Konata Mumpfield||caesars": 525,
+      "Konata Mumpfield||draftkings": 550,
+      "Konata Mumpfield||fanatics": 2000,
+      "Konata Mumpfield||fanduel": 2500,
+      "Konata Mumpfield||hardrockbet": 475,
+      "Kyren Williams||bet365": 320,
+      "Kyren Williams||betmgm": 400,
+      "Kyren Williams||betrivers": 410,
+      "Kyren Williams||caesars": 425,
+      "Kyren Williams||draftkings": 390,
+      "Kyren Williams||fanatics": 380,
+      "Kyren Williams||fanduel": 380,
+      "Kyren Williams||hardrockbet": 350,
+      "Laquon Treadwell||bet365": 1550,
+      "Laquon Treadwell||betmgm": 950,
+      "Laquon Treadwell||betrivers": 1150,
+      "Laquon Treadwell||caesars": 1100,
+      "Laquon Treadwell||draftkings": 1400,
+      "Laquon Treadwell||fanatics": 1500,
+      "Laquon Treadwell||fanduel": 1200,
+      "Malik Nabers||bet365": 1100,
+      "Malik Nabers||betmgm": 1150,
+      "Malik Nabers||betrivers": 1300,
+      "Malik Nabers||caesars": 1300,
+      "Malik Nabers||draftkings": 1400,
+      "Malik Nabers||fanatics": 1300,
+      "Malik Nabers||fanduel": 1300,
+      "Malik Nabers||hardrockbet": 1200,
+      "Matthew Stafford||bet365": 2200,
+      "Matthew Stafford||betmgm": 1500,
+      "Matthew Stafford||betrivers": 2400,
+      "Matthew Stafford||caesars": 1700,
+      "Matthew Stafford||draftkings": 2000,
+      "Matthew Stafford||fanatics": 2500,
+      "Matthew Stafford||fanduel": 1600,
+      "Matthew Stafford||hardrockbet": 1750,
+      "Max Klare||bet365": 1800,
+      "Max Klare||betrivers": 1300,
+      "Max Klare||caesars": 1500,
+      "Max Klare||draftkings": 1600,
+      "Max Klare||fanatics": 1700,
+      "Max Klare||fanduel": 1400,
+      "Mo Alie-Cox||bet365": 1200,
+      "Mo Alie-Cox||betmgm": 1800,
+      "Mo Alie-Cox||betrivers": 1200,
+      "Mo Alie-Cox||caesars": 1500,
+      "Mo Alie-Cox||draftkings": 1400,
+      "Mo Alie-Cox||fanatics": 1300,
+      "Mo Alie-Cox||fanduel": 1600,
+      "Najee Harris||bet365": 550,
+      "Najee Harris||betmgm": 650,
+      "Najee Harris||betrivers": 700,
+      "Najee Harris||caesars": 500,
+      "Najee Harris||draftkings": 2500,
+      "Najee Harris||fanatics": 2200,
+      "Najee Harris||fanduel": 2200,
+      "Najee Harris||hardrockbet": 2250,
+      "Nikko Remigio||bet365": 1800,
+      "Nikko Remigio||betrivers": 1300,
+      "Noah Gray||bet365": 600,
+      "Noah Gray||betrivers": 575,
+      "Noah Gray||caesars": 750,
+      "Noah Gray||draftkings": 750,
+      "Noah Gray||fanatics": 900,
+      "Noah Gray||fanduel": 900,
+      "Noah Gray||hardrockbet": 850,
+      "Odell Beckham Jr.||bet365": 1650,
+      "Odell Beckham Jr.||betmgm": 1300,
+      "Odell Beckham Jr.||betrivers": 1700,
+      "Odell Beckham Jr.||caesars": 1500,
+      "Odell Beckham Jr.||draftkings": 1500,
+      "Odell Beckham Jr.||fanatics": 1900,
+      "Odell Beckham Jr.||fanduel": 1600,
+      "Odell Beckham Jr.||hardrockbet": 1500,
+      "Patrick Mahomes||bet365": 320,
+      "Patrick Mahomes||betrivers": 310,
+      "Patrick Mahomes||caesars": 425,
+      "Patrick Mahomes||draftkings": 450,
+      "Patrick Mahomes||fanatics": 380,
+      "Patrick Mahomes||fanduel": 420,
+      "Patrick Mahomes||hardrockbet": 525,
+      "Patrick Ricard||betrivers": 2500,
+      "Puka Nacua||bet365": 525,
+      "Puka Nacua||betmgm": 650,
+      "Puka Nacua||fanatics": 600,
+      "Rashee Rice||bet365": 155,
+      "Rashee Rice||betrivers": 163,
+      "Rashee Rice||caesars": 205,
+      "Rashee Rice||draftkings": 195,
+      "Rashee Rice||fanatics": 200,
+      "Rashee Rice||fanduel": 175,
+      "Rashee Rice||hardrockbet": 210,
+      "Ronnie Rivers||betmgm": 2200,
+      "Ronnie Rivers||betrivers": 1500,
+      "Seth McGowan||bet365": 1200,
+      "Seth McGowan||betmgm": 1500,
+      "Seth McGowan||betrivers": 1600,
+      "Seth McGowan||caesars": 2200,
+      "Seth McGowan||draftkings": 2500,
+      "Seth McGowan||fanatics": 2500,
+      "Terrance Ferguson||bet365": 1650,
+      "Terrance Ferguson||betmgm": 1500,
+      "Terrance Ferguson||betrivers": 1500,
+      "Terrance Ferguson||caesars": 1400,
+      "Terrance Ferguson||draftkings": 1300,
+      "Terrance Ferguson||fanatics": 1050,
+      "Terrance Ferguson||fanduel": 1300,
+      "Terrance Ferguson||hardrockbet": 1500,
+      "Theo Johnson||bet365": 750,
+      "Theo Johnson||betmgm": 575,
+      "Theo Johnson||betrivers": 850,
+      "Theo Johnson||caesars": 750,
+      "Theo Johnson||draftkings": 850,
+      "Theo Johnson||fanatics": 700,
+      "Theo Johnson||fanduel": 800,
+      "Theo Johnson||hardrockbet": 650,
+      "Thomas Fidone II||bet365": 2500,
+      "Travis Kelce||bet365": 185,
+      "Travis Kelce||betrivers": 210,
+      "Travis Kelce||draftkings": 225,
+      "Travis Kelce||fanatics": 235,
+      "Travis Kelce||fanduel": 230,
+      "Travis Kelce||hardrockbet": 260,
+      "Tutu Atwell||bet365": 800,
+      "Tutu Atwell||betrivers": 600,
+      "Tutu Atwell||caesars": 800,
+      "Tutu Atwell||draftkings": 700,
+      "Tutu Atwell||fanatics": 800,
+      "Tutu Atwell||fanduel": 750,
+      "Tyler Higbee||bet365": 2000,
+      "Tyler Higbee||betmgm": 2500,
+      "Tyler Higbee||betrivers": 2400,
+      "Tyler Higbee||caesars": 2300,
+      "Tyler Higbee||draftkings": 450,
+      "Tyler Higbee||fanatics": 2000,
+      "Tyler Higbee||fanduel": 2200,
+      "Tyler Higbee||hardrockbet": 2000,
+      "Tyler Warren||bet365": 270,
+      "Tyler Warren||betmgm": 310,
+      "Tyler Warren||betrivers": 350,
+      "Tyler Warren||draftkings": 370,
+      "Tyler Warren||fanatics": 320,
+      "Tyler Warren||fanduel": 410,
+      "Tyler Warren||hardrockbet": 425,
+      "Tyquan Thornton||bet365": 575,
+      "Tyquan Thornton||betrivers": 650,
+      "Tyquan Thornton||caesars": 675,
+      "Tyquan Thornton||draftkings": 700,
+      "Tyquan Thornton||fanatics": 800,
+      "Tyquan Thornton||fanduel": 700,
+      "Tyquan Thornton||hardrockbet": 750,
+      "Tyrone Tracy Jr.||bet365": 650,
+      "Tyrone Tracy Jr.||betrivers": 700,
+      "Tyrone Tracy Jr.||caesars": 675,
+      "Tyrone Tracy Jr.||fanatics": 750,
+      "Xavier Smith||bet365": 1100,
+      "Xavier Smith||betmgm": 625,
+      "Xavier Smith||betrivers": 650,
+      "Xavier Smith||caesars": 900,
+      "Xavier Smith||draftkings": 850,
+      "Xavier Smith||fanatics": 1050,
+      "Xavier Smith||fanduel": 1000,
+      "Xavier Smith||hardrockbet": 800,
+      "Xavier Worthy||bet365": 250,
+      "Xavier Worthy||betrivers": 300,
+      "Xavier Worthy||caesars": 300,
+      "Xavier Worthy||draftkings": 300,
+      "Xavier Worthy||fanatics": 265,
+      "Xavier Worthy||fanduel": 320,
+      "Xavier Worthy||hardrockbet": 325
     }
   ],
   "presence_history": [
@@ -73480,269 +73707,1174 @@
     ],
     [
       [
-        "Jake Bauers",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Pete Alonso",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Gunnar Henderson",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Jake Bauers",
+        "Tyrone Tracy Jr.",
         "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Coby Mayo",
+        "Matthew Stafford",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Davante Adams",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Jordan Whittington",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Kyren Williams",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Mo Alie-Cox",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Nikko Remigio",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Terrance Ferguson",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Davis Allen",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Davis Allen",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Deion Burks",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Xavier Smith",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Davis Allen",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyler Warren",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Theo Johnson",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Brashard Smith",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Konata Mumpfield",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyler Higbee",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyler Higbee",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Josh Downs",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Najee Harris",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Jackson Chourio",
+        "Darnell Mooney",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Darnell Mooney",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tutu Atwell",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Keenan Allen",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Laquon Treadwell",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Laquon Treadwell",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Seth McGowan",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Laquon Treadwell",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Isaiah Likely",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Kenneth Walker",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tutu Atwell",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Jalen Royals",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Devin Singletary",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Mo Alie-Cox",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Jake Bauers",
+        "Ashton Dulin",
         "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Christian Yelich",
+        "Cam Skattebo",
         "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Christian Encarnacion-Strand",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Blake Corum",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Christian Yelich",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Cam Skattebo",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Joey Ortiz",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Blake Corum",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Colton Cowser",
+        "Colby Parkinson",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Brice Turang",
+        "Isaiah Likely",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Cam Skattebo",
         "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Dylan Beavers",
+        "Malik Nabers",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Malik Nabers",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Najee Harris",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Noah Gray",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Malik Nabers",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Devin Singletary",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Xavier Worthy",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Puka Nacua",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Puka Nacua",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Xavier Worthy",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Matthew Stafford",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jaxson Dart",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Jaxson Dart",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Jaxson Dart",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Max Klare",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Daniel Jones",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Mahomes",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Kyren Williams",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Konata Mumpfield",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Kyren Williams",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Daniel Jones",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Mo Alie-Cox",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Kyren Williams",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Alec Pierce",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Mo Alie-Cox",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Colby Parkinson",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Josh Downs",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Davante Adams",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Max Klare",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Rashee Rice",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Terrance Ferguson",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tutu Atwell",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Leody Taveras",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Tyler Warren",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Leody Taveras",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Brice Turang",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Leody Taveras",
+        "Davante Adams",
         "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Brice Turang",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Jonathan Taylor",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Jackson Chourio",
+        "Jonathan Taylor",
         "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Jackson Chourio",
+        "Tyler Warren",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyler Warren",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Theo Johnson",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Deion Burks",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Konata Mumpfield",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Konata Mumpfield",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Anthony Gould",
         "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Samuel Basallo",
+        "Seth McGowan",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Keenan Allen",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Isaiah Likely",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Kenneth Walker",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Kenneth Walker",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Terrance Ferguson",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Carlos Narv\u00e1ez",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Jackson Chourio",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Pete Alonso",
+        "Jonathan Taylor",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Gunnar Henderson",
+        "Travis Kelce",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Seth McGowan",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Smith",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Carlos Narv\u00e1ez",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Najee Harris",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Garrett Mitchell",
+        "Najee Harris",
         "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Coby Mayo",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Devin Singletary",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Colton Cowser",
+        "Devin Singletary",
         "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Colton Cowser",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Coby Mayo",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Garrett Mitchell",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Luis Lara",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Jake Bauers",
+        "Max Klare",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Coby Mayo",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Dylan Beavers",
+        "Najee Harris",
         "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Cooper Pratt",
+        "Isaiah Likely",
         "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Dylan Beavers",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Samuel Basallo",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Colton Cowser",
+        "Devin Singletary",
         "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Pete Alonso",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Dylan Beavers",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Leody Taveras",
+        "Tyler Higbee",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "New York Giants @ Los Angeles Rams"
       ],
       [
-        "Samuel Basallo",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Blaze Alexander",
-        "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Carlos Narv\u00e1ez",
+        "Josh Downs",
         "fanduel",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Indianapolis Colts @ Kansas City Chiefs"
       ],
       [
-        "Pete Alonso",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Joey Ortiz",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Jeremiah Jackson",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Gunnar Henderson",
-        "draftkings",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Gunnar Henderson",
-        "fanatics",
-        "Milwaukee Brewers @ Baltimore Orioles"
-      ],
-      [
-        "Christian Yelich",
+        "Xavier Worthy",
         "bet365",
-        "Milwaukee Brewers @ Baltimore Orioles"
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Daniel Jones",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Puka Nacua",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Darnell Mooney",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Matthew Stafford",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Matthew Stafford",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Terrance Ferguson",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Theo Johnson",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Davante Adams",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Mo Alie-Cox",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jordan Whittington",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Max Klare",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Patrick Mahomes",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Colby Parkinson",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Ronnie Rivers",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Patrick Mahomes",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Keenan Allen",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Deion Burks",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Colby Parkinson",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Davis Allen",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyler Higbee",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Xavier Smith",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Travis Kelce",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Mo Alie-Cox",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Blake Corum",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Darnell Mooney",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Theo Johnson",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Theo Johnson",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Malik Nabers",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Xavier Smith",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyrone Tracy Jr.",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyler Higbee",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Josh Downs",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Laquon Treadwell",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Darnell Mooney",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Jaxson Dart",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Seth McGowan",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Laquon Treadwell",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tutu Atwell",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Blake Corum",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Keenan Allen",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Kyren Williams",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Noah Gray",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Cam Skattebo",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Blake Corum",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Travis Kelce",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Travis Kelce",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Braxton Berrios",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Malik Nabers",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyler Warren",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jaxson Dart",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Daniel Jones",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jaxson Dart",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Terrance Ferguson",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Rashee Rice",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Brashard Smith",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Davante Adams",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Terrance Ferguson",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Nikko Remigio",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jonathan Taylor",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Konata Mumpfield",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Kyren Williams",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Colby Parkinson",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Isaiah Likely",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Deion Burks",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Kenneth Walker",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Davis Allen",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Laquon Treadwell",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Colby Parkinson",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Max Klare",
+        "draftkings",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Rashee Rice",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Rashee Rice",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyler Higbee",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Tyler Warren",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tyquan Thornton",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jonathan Taylor",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Josh Downs",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jonathan Taylor",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Josh Downs",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Smith",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Darnell Mooney",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Cam Skattebo",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Travis Kelce",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Smith",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Devin Singletary",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Seth McGowan",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Theo Johnson",
+        "betmgm",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "DJ Giddens",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Xavier Worthy",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Keenan Allen",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Matthew Stafford",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Isaiah Likely",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Blake Corum",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Davante Adams",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Jalen Royals",
+        "betrivers",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Kenneth Walker",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Noah Gray",
+        "draftkings",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Odell Beckham Jr.",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Patrick Mahomes",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Tutu Atwell",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Daniel Jones",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Keenan Allen",
+        "betmgm",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Cam Skattebo",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Deion Burks",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Konata Mumpfield",
+        "fanduel",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Malik Nabers",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Najee Harris",
+        "fanatics",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Rashee Rice",
+        "fanduel",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Jared Wiley",
+        "bet365",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Patrick Ricard",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Matthew Stafford",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Xavier Worthy",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ],
+      [
+        "Thomas Fidone II",
+        "bet365",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Ronnie Rivers",
+        "betrivers",
+        "New York Giants @ Los Angeles Rams"
+      ],
+      [
+        "Daniel Jones",
+        "fanatics",
+        "Indianapolis Colts @ Kansas City Chiefs"
       ]
     ]
   ],
@@ -75172,7 +76304,846 @@
         ]
       }
     ],
-    []
+    [
+      {
+        "event": "Indianapolis Colts @ Kansas City Chiefs",
+        "ending": 0,
+        "team": "INDIANAPOLIS COLTS NFL",
+        "players": [
+          "Seth McGowan",
+          "Deion Burks",
+          "Mo Alie-Cox"
+        ]
+      },
+      {
+        "event": "New York Giants @ Los Angeles Rams",
+        "ending": 25,
+        "team": "LOS ANGELES RAMS NFL",
+        "players": [
+          "Konata Mumpfield",
+          "Xavier Smith"
+        ]
+      },
+      {
+        "event": "New York Giants @ Los Angeles Rams",
+        "ending": 50,
+        "team": "NEW YORK GIANTS NFL",
+        "players": [
+          "Malik Nabers",
+          "Najee Harris"
+        ]
+      }
+    ]
   ],
-  "prev_ev": {}
+  "prev_ev": {
+    "Davante Adams": {
+      "methods": [
+        "MGM Exact",
+        "FD 50",
+        "B365 Exact",
+        "Multi-book method",
+        "B365 over HardRock",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 24,
+      "is_bet": true,
+      "method_count": 8,
+      "score": 59,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Tyler Warren": {
+      "methods": [
+        "MGM 10",
+        "Multi-book method",
+        "DK FD-style",
+        "FD Pattern",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 22,
+      "is_bet": true,
+      "method_count": 6,
+      "score": 70,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Xavier Smith": {
+      "methods": [
+        "Fanatics Loud",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "B365 Exact",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Multi-book Shorten",
+        "HardRock 00",
+        "B365 way over MGM",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 207,
+      "is_bet": false,
+      "method_count": 14,
+      "score": 100,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Odell Beckham Jr.": {
+      "methods": [
+        "Fanatics Loud",
+        "B365 over MGM",
+        "B365 a bit over FD",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Multi-book Shorten",
+        "Rivers way over pack",
+        "HardRock 00",
+        "B365 way over MGM",
+        "Fanatics Drift",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 106,
+      "is_bet": false,
+      "method_count": 12,
+      "score": 82,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Konata Mumpfield": {
+      "methods": [
+        "Fanatics Loud",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Multi-book Shorten",
+        "B365 way over MGM",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 1037,
+      "is_bet": false,
+      "method_count": 11,
+      "score": 100,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Davis Allen": {
+      "methods": [
+        "Fanatics Loud",
+        "B365 over MGM",
+        "B365 Exact",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Rivers way over pack",
+        "HardRock 00",
+        "B365 way over MGM",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 263,
+      "is_bet": false,
+      "method_count": 10,
+      "score": 95,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Darnell Mooney": {
+      "methods": [
+        "Fanatics Loud",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Multi-book Shorten",
+        "B365 way over MGM",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 160,
+      "is_bet": false,
+      "method_count": 10,
+      "score": 94,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Laquon Treadwell": {
+      "methods": [
+        "B365 50",
+        "Fanatics Loud",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "Multi-book Shorten",
+        "B365 way over MGM",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 328,
+      "is_bet": false,
+      "method_count": 9,
+      "score": 99,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Seth McGowan": {
+      "methods": [
+        "Fanatics Loud",
+        "Match 00",
+        "Stayed in the group",
+        "B365 Exact",
+        "MGM 00",
+        "Fanatics over pack",
+        "Rivers way over pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 85,
+      "is_bet": false,
+      "method_count": 9,
+      "score": 66,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Devin Singletary": {
+      "methods": [
+        "B365 over MGM",
+        "B365 Exact",
+        "B365 over HardRock",
+        "Multi-book Shorten",
+        "Rivers way over pack",
+        "B365 way over MGM",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 419,
+      "is_bet": false,
+      "method_count": 8,
+      "score": 99,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Malik Nabers": {
+      "methods": [
+        "Match 50",
+        "Fanatics Loud",
+        "Fanatics over pack",
+        "Multi-book Shorten",
+        "MGM 50",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 109,
+      "is_bet": false,
+      "method_count": 8,
+      "score": 83,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Terrance Ferguson": {
+      "methods": [
+        "MGM Exact",
+        "B365 over MGM",
+        "B365 over HardRock",
+        "Multi-book Shorten",
+        "HardRock 00",
+        "B365 way over MGM",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 98,
+      "is_bet": false,
+      "method_count": 8,
+      "score": 80,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Theo Johnson": {
+      "methods": [
+        "Rivers a bit over pack",
+        "Fanatics Loud",
+        "B365 over MGM",
+        "B365 over HardRock",
+        "B365 way over MGM",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 93,
+      "is_bet": false,
+      "method_count": 8,
+      "score": 75,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Najee Harris": {
+      "methods": [
+        "Match 50",
+        "Fanatics Loud",
+        "MGM 50",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 610,
+      "is_bet": false,
+      "method_count": 7,
+      "score": 95,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Josh Downs": {
+      "methods": [
+        "B365 75",
+        "Fanatics Loud",
+        "MGM 60",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 53,
+      "is_bet": false,
+      "method_count": 7,
+      "score": 66,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Deion Burks": {
+      "methods": [
+        "Match 00",
+        "Stayed in the group",
+        "MGM 00",
+        "Multi-book Shorten",
+        "Rivers short vs pack",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -86,
+      "is_bet": false,
+      "method_count": 7,
+      "score": 52,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Mo Alie-Cox": {
+      "methods": [
+        "Match 00",
+        "Stayed in the group",
+        "B365 Exact",
+        "MGM 00",
+        "Rivers short vs pack",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -100,
+      "is_bet": false,
+      "method_count": 7,
+      "score": 48,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Colby Parkinson": {
+      "methods": [
+        "B365 way over MGM",
+        "B365 over MGM",
+        "B365 over HardRock",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 109,
+      "is_bet": false,
+      "method_count": 6,
+      "score": 79,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Blake Corum": {
+      "methods": [
+        "Fanatics Loud",
+        "B365 way over MGM",
+        "B365 over MGM",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 106,
+      "is_bet": false,
+      "method_count": 6,
+      "score": 78,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Jordan Whittington": {
+      "methods": [
+        "Fanatics Drift",
+        "Fanatics over pack",
+        "Fanatics Alone",
+        "B365 Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -1665,
+      "is_bet": false,
+      "method_count": 6,
+      "score": 45,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Tyquan Thornton": {
+      "methods": [
+        "Fanatics over pack",
+        "HardRock 50",
+        "Fanatics Drift",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 88,
+      "is_bet": false,
+      "method_count": 5,
+      "score": 74,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Isaiah Likely": {
+      "methods": [
+        "HardRock 00",
+        "Rivers short vs pack",
+        "Fanatics Loud",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 70,
+      "is_bet": false,
+      "method_count": 5,
+      "score": 65,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Tyrone Tracy Jr.": {
+      "methods": [
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "Fanatics Alone",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 22,
+      "is_bet": false,
+      "method_count": 5,
+      "score": 62,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Cam Skattebo": {
+      "methods": [
+        "B365 over HardRock",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 32,
+      "is_bet": false,
+      "method_count": 5,
+      "score": 57,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Tutu Atwell": {
+      "methods": [
+        "B365 a bit over FD",
+        "FD 50",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 32,
+      "is_bet": false,
+      "method_count": 5,
+      "score": 57,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Brashard Smith": {
+      "methods": [
+        "Multi-book Shorten",
+        "B365 Exact",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 335,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 89,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Nikko Remigio": {
+      "methods": [
+        "Multi-book Shorten",
+        "B365 Exact",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 235,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 89,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Max Klare": {
+      "methods": [
+        "Fanatics over pack",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 283,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 85,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Noah Gray": {
+      "methods": [
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 91,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 65,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Tyler Higbee": {
+      "methods": [
+        "Rivers way over pack",
+        "HardRock 00",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 70,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 55,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Jaxson Dart": {
+      "methods": [
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 55,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 52,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Kenneth Walker": {
+      "methods": [
+        "DK FD-style",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 5,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 41,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Puka Nacua": {
+      "methods": [
+        "MGM Exact",
+        "Fanatics Drift",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 4,
+      "score": 35,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Keenan Allen": {
+      "methods": [
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 34,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 42,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Jonathan Taylor": {
+      "methods": [
+        "DK FD-style",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": 0,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 25,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Kyren Williams": {
+      "methods": [
+        "DK FD-style",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -7,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 25,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Alec Pierce": {
+      "methods": [
+        "B365 50",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 25,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Anthony Gould": {
+      "methods": [
+        "Fanatics Alone",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 25,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "DJ Giddens": {
+      "methods": [
+        "B365 50",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 25,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Thomas Fidone II": {
+      "methods": [
+        "B365 Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 25,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Jalen Royals": {
+      "methods": [
+        "Gone Missing",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 285,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 65,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Braxton Berrios": {
+      "methods": [
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 35,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 27,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Travis Kelce": {
+      "methods": [
+        "Gone Missing",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 13,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 22,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Xavier Worthy": {
+      "methods": [
+        "Gone Missing",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 8,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 21,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Rashee Rice": {
+      "methods": [
+        "Gone Missing",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "edge": 4,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 20,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Ashton Dulin": {
+      "methods": [
+        "Gone Missing",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 15,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Jared Wiley": {
+      "methods": [
+        "Gone Missing",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 15,
+      "events": [
+        "Indianapolis Colts @ Kansas City Chiefs"
+      ]
+    },
+    "Patrick Ricard": {
+      "methods": [
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -15,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 15,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    },
+    "Ronnie Rivers": {
+      "methods": [
+        "Just Appeared",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "edge": -365,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 15,
+      "events": [
+        "New York Giants @ Los Angeles Rams"
+      ]
+    }
+  }
 }
