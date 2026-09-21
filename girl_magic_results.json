@@ -92158,5 +92158,38 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-21_Ryan Jeffers_shop_take_159",
+    "date": "2026-09-21",
+    "time": "11:15 AM",
+    "player": "Ryan Jeffers",
+    "score": 0,
+    "edge": 159,
+    "best_price": 750,
+    "best_book": "bet365",
+    "median": 569,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 525,
+      "betrivers": 550,
+      "caesars": 575,
+      "draftkings": 563,
+      "fanatics": 650,
+      "fanduel": 560,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-21T18:15:41.690179+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
