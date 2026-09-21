@@ -89127,5 +89127,37 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.43
+  },
+  {
+    "id": "2026-09-20_Tyler Warren_shop_lean_44",
+    "date": "2026-09-20",
+    "time": "06:46 PM",
+    "player": "Tyler Warren",
+    "score": 0,
+    "edge": 44,
+    "best_price": 550,
+    "best_book": "fanduel",
+    "median": 450,
+    "book_prices": {
+      "bet365": 270,
+      "betmgm": 400,
+      "betrivers": 460,
+      "draftkings": 450,
+      "fanatics": 410,
+      "fanduel": 550,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-21T01:46:25.511221+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
