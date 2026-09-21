@@ -5864,6 +5864,23 @@
       "best_book": "draftkings",
       "time": "06:38 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Travis Kelce",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "DK FD-style",
+        "MGM Exact",
+        "Multi-book method",
+        "MGM 40",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 370,
+      "best_book": "draftkings",
+      "time": "06:38 PM",
+      "sport": "NFL"
     }
   ]
 }
