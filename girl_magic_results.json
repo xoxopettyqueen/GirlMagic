@@ -92126,5 +92126,37 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-21_Alejandro Kirk_shop_lean_32",
+    "date": "2026-09-21",
+    "time": "11:07 AM",
+    "player": "Alejandro Kirk",
+    "score": 0,
+    "edge": 32,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 820,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 575,
+      "betrivers": 850,
+      "draftkings": 830,
+      "fanatics": 800,
+      "fanduel": 820,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-21T18:07:41.426653+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
