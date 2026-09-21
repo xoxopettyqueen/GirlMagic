@@ -3737,6 +3737,29 @@
       "best_book": "hardrockbet",
       "time": "12:47 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Colton Cowser",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "FD 90",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "12:47 PM",
+      "sport": "MLB"
     }
   ]
 }
