@@ -5847,6 +5847,23 @@
       "best_book": "hardrockbet",
       "time": "06:30 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Rashee Rice",
+      "source": "take_it",
+      "score": 56,
+      "methods": [
+        "MGM Exact",
+        "Multi-book method",
+        "DK 10",
+        "MGM 40",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 310,
+      "best_book": "draftkings",
+      "time": "06:38 PM",
+      "sport": "NFL"
     }
   ]
 }
