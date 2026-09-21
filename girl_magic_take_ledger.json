@@ -5881,6 +5881,21 @@
       "best_book": "draftkings",
       "time": "06:38 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Puka Nacua",
+      "source": "take_it",
+      "score": 43,
+      "methods": [
+        "Fanatics Rogue",
+        "MGM Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "09:37 PM",
+      "sport": "NFL"
     }
   ]
 }
