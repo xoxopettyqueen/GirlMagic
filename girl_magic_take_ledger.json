@@ -5811,6 +5811,25 @@
       "best_book": "fanduel",
       "time": "03:01 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Davante Adams",
+      "source": "take_it",
+      "score": 59,
+      "methods": [
+        "MGM Exact",
+        "FD 50",
+        "B365 Exact",
+        "Multi-book method",
+        "B365 over HardRock",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "draftkings",
+      "time": "06:30 PM",
+      "sport": "NFL"
     }
   ]
 }
