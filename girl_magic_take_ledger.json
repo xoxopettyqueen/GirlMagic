@@ -430,6 +430,26 @@
       "best_book": "fanatics",
       "time": "09:34 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Will Smith",
+      "source": "take_it",
+      "score": 78,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "MGM Exact",
+        "Match 25",
+        "FD 50",
+        "Multi-book method",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "09:34 AM",
+      "sport": "MLB"
     }
   ]
 }
