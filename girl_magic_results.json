@@ -109968,5 +109968,103 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.38
+  },
+  {
+    "id": "2026-09-22_Francisco Alvarez_shop_take_124",
+    "date": "2026-09-22",
+    "time": "04:09 PM",
+    "player": "Francisco Alvarez",
+    "score": 0,
+    "edge": 124,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "median": 587,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 500,
+      "betrivers": 650,
+      "caesars": 575,
+      "draftkings": 700,
+      "fanatics": 525,
+      "fanduel": 470,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-22T23:09:26.090458+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-22_Mois\u00e9s Ballesteros_shop_take_50",
+    "date": "2026-09-22",
+    "time": "04:09 PM",
+    "player": "Mois\u00e9s Ballesteros",
+    "score": 0,
+    "edge": 50,
+    "best_price": 670,
+    "best_book": "draftkings",
+    "median": 650,
+    "book_prices": {
+      "betmgm": 525,
+      "betrivers": 650,
+      "caesars": 575,
+      "draftkings": 670,
+      "fanatics": 650,
+      "fanduel": 570,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-22T23:09:26.109700+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-22_Dominic Canzone_shop_lean_38",
+    "date": "2026-09-22",
+    "time": "04:09 PM",
+    "player": "Dominic Canzone",
+    "score": 0,
+    "edge": 38,
+    "best_price": 500,
+    "best_book": "fanatics",
+    "median": 460,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 425,
+      "betrivers": 450,
+      "caesars": 425,
+      "draftkings": 440,
+      "fanatics": 500,
+      "fanduel": 470,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-22T23:09:26.113210+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
