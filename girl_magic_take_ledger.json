@@ -1139,6 +1139,28 @@
       "best_book": "hardrockbet",
       "time": "01:04 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Michael Conforto",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "MGM Exact",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "Multi-book Shorten",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1200,
+      "best_book": "fanatics",
+      "time": "01:04 PM",
+      "sport": "MLB"
     }
   ]
 }
