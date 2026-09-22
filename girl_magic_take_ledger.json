@@ -1025,6 +1025,30 @@
       "best_book": "hardrockbet",
       "time": "12:56 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Gleyber Torres",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "FD+MGM classic",
+        "MGM 75",
+        "Match 75",
+        "Stayed in the group",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "12:56 PM",
+      "sport": "MLB"
     }
   ]
 }
