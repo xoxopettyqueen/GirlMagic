@@ -1453,6 +1453,29 @@
       "best_book": "fanatics",
       "time": "03:45 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Wilyer Abreu",
+      "source": "take_it",
+      "score": 93,
+      "methods": [
+        "DK FD-style",
+        "FD+MGM classic",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "B365 over MGM",
+        "Multi-book method",
+        "B365 over HardRock",
+        "FD Pattern",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 760,
+      "best_book": "draftkings",
+      "time": "03:45 PM",
+      "sport": "MLB"
     }
   ]
 }
