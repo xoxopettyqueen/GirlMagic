@@ -100548,7 +100548,7 @@
     ],
     "core": 1,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-22T16:42:04.404133+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -100556,7 +100556,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.75
+    "benford_cluster": 0.75,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-22_Ezequiel Tovar_watch_21",
@@ -107333,7 +107334,7 @@
     ],
     "core": 2,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-22T22:45:33.821715+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -107341,7 +107342,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.6
+    "benford_cluster": 0.6,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-22_Cedric Mullins_watch_33",
@@ -107546,7 +107548,7 @@
     ],
     "core": 2,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-22T22:45:34.173019+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -107554,7 +107556,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Fake",
     "benford_note": "",
-    "benford_cluster": 0.67
+    "benford_cluster": 0.67,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-22_Nick Loftin_watch_65",
@@ -109877,5 +109880,93 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-22_Brice Matthews_watch_22",
+    "date": "2026-09-22",
+    "time": "04:09 PM",
+    "player": "Brice Matthews",
+    "score": 22,
+    "edge": 31,
+    "best_price": 820,
+    "best_book": "fanduel",
+    "median": 785.0,
+    "book_prices": {
+      "draftkings": 770,
+      "fanatics": 800,
+      "fanduel": 820,
+      "caesars": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 20,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Books tight",
+      "DK FD-style",
+      "FD Pattern",
+      "EV Support",
+      "Kelly Support"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-22T23:09:22.110297+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "HOUSTON ASTROS",
+    "market": "batter_home_runs",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-22_Francisco Alvarez_watch_70",
+    "date": "2026-09-22",
+    "time": "04:09 PM",
+    "player": "Francisco Alvarez",
+    "score": 70,
+    "edge": 124,
+    "best_price": 750,
+    "best_book": "hardrockbet",
+    "median": 587.5,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 500,
+      "betrivers": 650,
+      "caesars": 575,
+      "draftkings": 700,
+      "fanatics": 525,
+      "hardrockbet": 750,
+      "fanduel": 470
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "mgm_locked": 500,
+    "mgm_ending": 0,
+    "methods": [
+      "Rivers a bit over pack",
+      "Match 00",
+      "Stayed in the group",
+      "MGM 00",
+      "B365 over MGM",
+      "Multi-book Shorten",
+      "FD Pattern",
+      "Last one left",
+      "HardRock 50",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-22T23:09:22.301753+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "NEW YORK METS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.38
   }
 ]
