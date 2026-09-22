@@ -540,6 +540,28 @@
       "best_book": "fanatics",
       "time": "09:34 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Ryan Waldschmidt",
+      "source": "take_it",
+      "score": 94,
+      "methods": [
+        "DK FD-style",
+        "Match 00",
+        "MGM Exact",
+        "MGM 00",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "09:34 AM",
+      "sport": "MLB"
     }
   ]
 }
