@@ -893,6 +893,30 @@
       "best_book": "fanatics",
       "time": "12:56 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jake McCarthy",
+      "source": "take_it",
+      "score": 95,
+      "methods": [
+        "MGM 75",
+        "Match 75",
+        "MGM Exact",
+        "Stayed in the group",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "HardRock 00",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "12:56 PM",
+      "sport": "MLB"
     }
   ]
 }
