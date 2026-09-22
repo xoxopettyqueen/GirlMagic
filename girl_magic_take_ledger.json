@@ -1836,6 +1836,30 @@
       "best_book": "draftkings",
       "time": "04:09 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Carson Benge",
+      "source": "take_it",
+      "score": 90,
+      "methods": [
+        "Match 50",
+        "Stayed in the group",
+        "MGM Exact",
+        "B365 over MGM",
+        "FD 50",
+        "Multi-book method",
+        "MGM 50",
+        "DK 10",
+        "Last one left",
+        "HardRock 50",
+        "Fanatics Drift",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "fanatics",
+      "time": "04:09 PM",
+      "sport": "MLB"
     }
   ]
 }
