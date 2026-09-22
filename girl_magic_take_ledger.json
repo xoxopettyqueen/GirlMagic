@@ -1541,6 +1541,27 @@
       "best_book": "fanatics",
       "time": "03:45 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Shay Whitcomb",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "MGM Exact",
+        "Match 25",
+        "Multi-book method",
+        "FD Pattern",
+        "HardRock 00",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 990,
+      "best_book": "draftkings",
+      "time": "03:53 PM",
+      "sport": "MLB"
     }
   ]
 }
