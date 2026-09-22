@@ -1388,6 +1388,28 @@
       "best_book": "hardrockbet",
       "time": "03:45 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Troy Johnston",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Match 00",
+        "Stayed in the group",
+        "MGM 00",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "DK 10",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "03:45 PM",
+      "sport": "MLB"
     }
   ]
 }
