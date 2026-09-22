@@ -1296,6 +1296,29 @@
       "best_book": "fanatics",
       "time": "02:50 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Zac Veen",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "DK FD-style",
+        "MGM 75",
+        "Match 75",
+        "Stayed in the group",
+        "MGM Exact",
+        "Multi-book method",
+        "Books tight",
+        "FD Pattern",
+        "FD+MGM classic",
+        "HardRock 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "02:50 PM",
+      "sport": "MLB"
     }
   ]
 }
