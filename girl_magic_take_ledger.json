@@ -962,6 +962,26 @@
       "best_book": "fanatics",
       "time": "12:56 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "J.P. Crawford",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "DK FD-style",
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "FD Pattern",
+        "FD 90",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 850,
+      "best_book": "hardrockbet",
+      "time": "12:56 PM",
+      "sport": "MLB"
     }
   ]
 }
