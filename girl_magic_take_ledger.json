@@ -1476,6 +1476,29 @@
       "best_book": "draftkings",
       "time": "03:45 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "TJ Rumfield",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "Match 00",
+        "MGM Exact",
+        "Stayed in the group",
+        "MGM 00",
+        "Multi-book method",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "03:45 PM",
+      "sport": "MLB"
     }
   ]
 }
