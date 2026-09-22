@@ -604,6 +604,27 @@
       "best_book": "hardrockbet",
       "time": "09:34 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jos\u00e9 Caballero",
+      "source": "take_it",
+      "score": 85,
+      "methods": [
+        "MGM 25",
+        "MGM Exact",
+        "Match 25",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "HardRock 00",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1200,
+      "best_book": "fanatics",
+      "time": "09:34 AM",
+      "sport": "MLB"
     }
   ]
 }
