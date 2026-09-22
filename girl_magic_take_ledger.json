@@ -1161,6 +1161,24 @@
       "best_book": "fanatics",
       "time": "01:04 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Cody Bellinger",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "FD 40",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "Fanatics Rogue",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "01:04 PM",
+      "sport": "MLB"
     }
   ]
 }
