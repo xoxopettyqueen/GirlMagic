@@ -386,6 +386,27 @@
       "best_book": "draftkings",
       "time": "09:34 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Yandy D\u00edaz",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "MGM 25",
+        "Match 25",
+        "FD 50",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "Multi-book method",
+        "Fanatics Rogue",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "09:34 AM",
+      "sport": "MLB"
     }
   ]
 }
