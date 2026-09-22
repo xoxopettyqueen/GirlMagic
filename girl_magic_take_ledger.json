@@ -820,6 +820,31 @@
       "best_book": "fanatics",
       "time": "09:58 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Ildemaro Vargas",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "MGM Exact",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "FD 90",
+        "HardRock 00",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "12:56 PM",
+      "sport": "MLB"
     }
   ]
 }
