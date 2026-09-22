@@ -493,6 +493,28 @@
       "best_book": "fanatics",
       "time": "09:34 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Adley Rutschman",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM Exact",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Multi-book method",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "09:34 AM",
+      "sport": "MLB"
     }
   ]
 }
