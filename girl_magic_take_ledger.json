@@ -1768,6 +1768,25 @@
       "best_book": "fanatics",
       "time": "04:01 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Austin Hays",
+      "source": "take_it",
+      "score": 50,
+      "methods": [
+        "Match 00",
+        "Stayed in the group",
+        "MGM 00",
+        "Books tight",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "04:01 PM",
+      "sport": "MLB"
     }
   ]
 }
