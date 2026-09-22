@@ -1276,6 +1276,26 @@
       "best_book": "hardrockbet",
       "time": "02:50 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Eduardo Valencia",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "FD 600",
+        "Match 75",
+        "MGM 75",
+        "Stayed in the group",
+        "Fanatics Rogue",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "02:50 PM",
+      "sport": "MLB"
     }
   ]
 }
