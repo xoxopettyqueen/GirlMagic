@@ -124251,5 +124251,46 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Isaac Collins_watch_53",
+    "date": "2026-09-23",
+    "time": "01:02 PM",
+    "player": "Isaac Collins",
+    "score": 53,
+    "edge": 129,
+    "best_price": 1800,
+    "best_book": "fanatics",
+    "median": 1350,
+    "book_prices": {
+      "betmgm": 1350,
+      "caesars": 1100,
+      "fanduel": 1120,
+      "draftkings": 1360,
+      "fanatics": 1800
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 1350,
+    "mgm_ending": 50,
+    "methods": [
+      "DK FD-style",
+      "Fanatics over pack",
+      "FD Pattern",
+      "Fanatics Drift",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-23T20:02:34.864548+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "KANSAS CITY ROYALS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0
   }
 ]
