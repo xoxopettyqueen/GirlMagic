@@ -124292,5 +124292,102 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-23_J.P. Crawford_shop_take_172",
+    "date": "2026-09-23",
+    "time": "01:02 PM",
+    "player": "J.P. Crawford",
+    "score": 0,
+    "edge": 172,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 750,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 650,
+      "betrivers": 750,
+      "caesars": 750,
+      "draftkings": 750,
+      "fanatics": 950,
+      "fanduel": 820,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-23T20:02:38.433447+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Luis Garc\u00eda Jr._shop_lean_62",
+    "date": "2026-09-23",
+    "time": "01:02 PM",
+    "player": "Luis Garc\u00eda Jr.",
+    "score": 0,
+    "edge": 62,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 622,
+    "book_prices": {
+      "bet365": 475,
+      "betrivers": 600,
+      "caesars": 625,
+      "draftkings": 620,
+      "fanatics": 700,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-23T20:02:38.447701+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Wyatt Langford_shop_lean_39",
+    "date": "2026-09-23",
+    "time": "01:02 PM",
+    "player": "Wyatt Langford",
+    "score": 0,
+    "edge": 39,
+    "best_price": 625,
+    "best_book": "bet365",
+    "median": 587,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 425,
+      "betrivers": 600,
+      "caesars": 575,
+      "draftkings": 553,
+      "fanatics": 600,
+      "fanduel": 570,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-23T20:02:38.459809+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
