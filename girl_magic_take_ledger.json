@@ -2027,6 +2027,29 @@
       "best_book": "draftkings",
       "time": "11:06 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Konnor Griffin",
+      "source": "take_it",
+      "score": 94,
+      "methods": [
+        "DK FD-style",
+        "Match 00",
+        "MGM Exact",
+        "MGM 00",
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "11:06 AM",
+      "sport": "MLB"
     }
   ]
 }
