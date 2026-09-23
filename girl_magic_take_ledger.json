@@ -2699,6 +2699,26 @@
       "best_book": "fanatics",
       "time": "02:11 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Francisco Lindor",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "FD Pattern",
+        "FD 90",
+        "MGM 10",
+        "HardRock 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 490,
+      "best_book": "fanatics",
+      "time": "02:11 PM",
+      "sport": "MLB"
     }
   ]
 }
