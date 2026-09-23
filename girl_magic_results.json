@@ -113047,7 +113047,7 @@
     ],
     "core": 5,
     "result": "PENDING",
-    "source": "watch",
+    "source": "take_it",
     "logged_at": "2026-09-23T14:48:39.228898+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
@@ -113055,7 +113055,8 @@
     "market": "batter_home_runs",
     "benford_tag": "Authentic",
     "benford_note": "",
-    "benford_cluster": 0.62
+    "benford_cluster": 0.62,
+    "upgraded_from": "watch"
   },
   {
     "id": "2026-09-23_Nathan Church_watch_74",
@@ -126771,5 +126772,58 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Sal Stewart_take_it_94",
+    "date": "2026-09-23",
+    "time": "04:34 PM",
+    "player": "Sal Stewart",
+    "score": 94,
+    "edge": 75,
+    "best_price": 575,
+    "best_book": "bet365",
+    "median": 575.0,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 525,
+      "betrivers": 525,
+      "caesars": 500,
+      "draftkings": 496,
+      "fanatics": 550,
+      "fanduel": 470,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 75,
+    "mgm_locked": 525,
+    "mgm_ending": 25,
+    "methods": [
+      "FD 600",
+      "Rivers a bit over pack",
+      "FD a little long",
+      "MGM 25",
+      "Stayed in the group",
+      "Match 25",
+      "B365 over MGM",
+      "Multi-book method",
+      "Fanatics over pack",
+      "B365 over HardRock",
+      "Fanatics Rogue",
+      "Last one left",
+      "FD+MGM classic",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 8,
+    "result": "PENDING",
+    "source": "take_it",
+    "logged_at": "2026-09-23T23:34:56.659369+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "CINCINNATI REDS",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.62
   }
 ]
