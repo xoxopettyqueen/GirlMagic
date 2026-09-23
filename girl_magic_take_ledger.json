@@ -1870,6 +1870,27 @@
       "best_book": "draftkings",
       "time": "07:56 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Michael Conforto",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "DK 10",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "07:56 AM",
+      "sport": "MLB"
     }
   ]
 }
