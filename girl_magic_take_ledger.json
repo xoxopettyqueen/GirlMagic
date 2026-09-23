@@ -2272,6 +2272,28 @@
       "best_book": "hardrockbet",
       "time": "11:38 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Marcus Semien",
+      "source": "take_it",
+      "score": 96,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "Multi-book method",
+        "FD Pattern",
+        "FD 90",
+        "HardRock 00",
+        "FD+MGM classic",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "fanatics",
+      "time": "11:38 AM",
+      "sport": "MLB"
     }
   ]
 }
