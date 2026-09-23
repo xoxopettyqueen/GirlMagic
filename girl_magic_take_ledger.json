@@ -2363,6 +2363,25 @@
       "best_book": "fanatics",
       "time": "11:46 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "A.J. Ewing",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Multi-book method",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "DK 10",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "11:46 AM",
+      "sport": "MLB"
     }
   ]
 }
