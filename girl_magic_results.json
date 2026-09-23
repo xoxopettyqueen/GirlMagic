@@ -121846,5 +121846,135 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Dansby Swanson_shop_take_125",
+    "date": "2026-09-23",
+    "time": "11:14 AM",
+    "player": "Dansby Swanson",
+    "score": 0,
+    "edge": 125,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 810,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 1000,
+      "betrivers": 650,
+      "caesars": 850,
+      "draftkings": 750,
+      "fanatics": 950,
+      "fanduel": 820,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-23T18:14:27.450858+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Christian Encarnacion-Strand_shop_lean_103",
+    "date": "2026-09-23",
+    "time": "11:14 AM",
+    "player": "Christian Encarnacion-Strand",
+    "score": 0,
+    "edge": 103,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 650,
+    "book_prices": {
+      "bet365": 575,
+      "betrivers": 575,
+      "caesars": 750,
+      "draftkings": 800,
+      "fanatics": 700,
+      "fanduel": 650,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-23T18:14:27.454378+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Jahmai Jones_shop_take_50",
+    "date": "2026-09-23",
+    "time": "11:14 AM",
+    "player": "Jahmai Jones",
+    "score": 0,
+    "edge": 50,
+    "best_price": 600,
+    "best_book": "fanatics",
+    "median": 570,
+    "book_prices": {
+      "bet365": 800,
+      "betmgm": 650,
+      "betrivers": 600,
+      "caesars": 525,
+      "draftkings": 541,
+      "fanatics": 600,
+      "fanduel": 520,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-23T18:14:27.469614+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Jonathan Aranda_shop_lean_40",
+    "date": "2026-09-23",
+    "time": "11:14 AM",
+    "player": "Jonathan Aranda",
+    "score": 0,
+    "edge": 40,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 600,
+    "book_prices": {
+      "bet365": 600,
+      "betmgm": 475,
+      "betrivers": 600,
+      "caesars": 700,
+      "draftkings": 670,
+      "fanatics": 700,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-23T18:14:27.474060+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
