@@ -12206,16 +12206,16 @@ def main():
     try:
         sport_pick = st.segmented_control(
             "Pick your lane",
-            options=["MLB", "NFL"],
-            default=sport,
+            options=["MLB", "NFL", "NBA"],
+            default=sport if sport in ("MLB", "NFL", "NBA") else "MLB",
             key="sport_pick",
-            help="MLB = 0.5 HR. NFL = Anytime TD.",
+            help="MLB = 0.5 HR. NFL = Anytime TD. NBA = P15 / 3s / boards (OPS).",
         )
     except Exception:
         sport_pick = st.radio(
             "Pick your lane",
-            ["MLB", "NFL"],
-            index=0 if sport != "NFL" else 1,
+            ["MLB", "NFL", "NBA"],
+            index=["MLB", "NFL", "NBA"].index(sport) if sport in ("MLB", "NFL", "NBA") else 0,
             horizontal=True,
             key="sport_pick",
         )
