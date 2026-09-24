@@ -13580,22 +13580,30 @@ def main():
                 h, m, s, msg = auto_grade_pending()
             st.success(f"{h} HIT · {m} MISS · {s} open - {msg}")
             st.rerun()
-        rows = results_for_sport()
+        rows = compact_player_logs(results_for_sport())
         n_all = len(rows)
-        n_pending_all = sum(1 for r in rows if r.get("result") == "PENDING")
-        n_today = sum(1 for r in rows if r.get("date") == today_az())
+        n_pending_all = sum(1 for r in rows if str(r.get("result") or r.get("status") or "") in ("PENDING", "STILL_UP"))
+        td = today_az()
+        today_keys = set()
+        for r in rows:
+            if str(r.get("date") or "")[:10] != td:
+                continue
+            today_keys.add(_row_dedupe_key(r))
+        n_today = len(today_keys)
         src = st.session_state.get("_results_source", "?")
         gh_st = st.session_state.get("_results_gh_status", "unconfigured")
         gh_save = st.session_state.get("_results_gh_save", "-")
+        gh_err = st.session_state.get("_gh_last_err") or ""
         lock_src = st.session_state.get("_pregame_source", "?")
         lock_n = len(lock_for_sport())
         hist_src = st.session_state.get("_history_source", "?")
         hist_save = st.session_state.get("_history_gh_save", "-")
         secrets_ok = "yes" if _gh_configured() else "NO - add GITHUB_TOKEN + GITHUB_REPO"
         st.caption(
-            f"{n_all} logged · {n_pending_all} waiting · {n_today} today · "
+            f"{n_all} unique logs · {n_pending_all} waiting · {n_today} unique today · "
             f"source={src} · GH load={gh_st} · GH save={gh_save} · "
             f"lock={lock_n} ({lock_src}) · hist={hist_src}/{hist_save} · secrets={secrets_ok}"
+            + (f" · GH err={gh_err[:80]}" if gh_st == "error" and gh_err else "")
         )
         if not _gh_configured():
             st.warning(
