@@ -2292,6 +2292,23 @@
       "best_book": "fanduel",
       "time": "09:07 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Kyren Williams",
+      "source": "take_it",
+      "score": 64,
+      "methods": [
+        "MGM 25",
+        "Caesars Classic",
+        "Match 25",
+        "HardRock 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 500,
+      "best_book": "draftkings",
+      "time": "09:07 AM",
+      "sport": "NFL"
     }
   ]
 }
