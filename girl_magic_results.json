@@ -150042,5 +150042,100 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-24_Seth McGowan_shop_take_119",
+    "date": "2026-09-24",
+    "time": "09:45 AM",
+    "player": "Seth McGowan",
+    "score": 0,
+    "edge": 119,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 875,
+    "book_prices": {
+      "bet365": 900,
+      "betmgm": 1200,
+      "betrivers": 1200,
+      "caesars": 800,
+      "draftkings": 750,
+      "fanatics": 850,
+      "fanduel": 950,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T16:45:24.946210+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-24_Jaxon Smith-Njigba_shop_lean_42",
+    "date": "2026-09-24",
+    "time": "09:45 AM",
+    "player": "Jaxon Smith-Njigba",
+    "score": 0,
+    "edge": 42,
+    "best_price": 600,
+    "best_book": "draftkings",
+    "median": 525,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 575,
+      "betrivers": 500,
+      "caesars": 600,
+      "draftkings": 600,
+      "fanatics": 500,
+      "fanduel": 550,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:45:25.015022+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
+  },
+  {
+    "id": "2026-09-24_Tory Horton_shop_lean_35",
+    "date": "2026-09-24",
+    "time": "09:45 AM",
+    "player": "Tory Horton",
+    "score": 0,
+    "edge": 35,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 850,
+    "book_prices": {
+      "bet365": 800,
+      "betrivers": 900,
+      "caesars": 800,
+      "fanatics": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:45:25.020826+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
