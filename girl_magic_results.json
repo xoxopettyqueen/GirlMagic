@@ -138242,7 +138242,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-24T19:54:23.264759+00:00",
+    "logged_at": "2026-09-24T19:54:48.671097+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -138266,7 +138266,7 @@
     "price": 750,
     "book": "fanatics",
     "created_at": "2026-09-24T16:49:38.301962+00:00",
-    "updated_at": "2026-09-24T19:54:23.264775+00:00"
+    "updated_at": "2026-09-24T19:54:48.671109+00:00"
   },
   {
     "id": "2026-09-24_Liam Hicks_take_it_100",
@@ -138586,7 +138586,7 @@
     "core": 5,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-24T19:54:23.436847+00:00",
+    "logged_at": "2026-09-24T19:54:48.746622+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "BOSTON RED SOX",
@@ -138612,7 +138612,7 @@
     "price": 1050,
     "book": "fanatics",
     "created_at": "2026-09-24T15:11:47.472271+00:00",
-    "updated_at": "2026-09-24T19:54:23.436862+00:00"
+    "updated_at": "2026-09-24T19:54:48.746633+00:00"
   },
   {
     "id": "2026-09-24_Cody Bellinger_take_it_81",
@@ -140132,7 +140132,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-24T19:54:23.082533+00:00",
+    "logged_at": "2026-09-24T19:54:48.551275+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MILWAUKEE BREWERS",
@@ -140160,7 +140160,7 @@
     "price": 950,
     "book": "fanatics",
     "created_at": "2026-09-24T15:12:00.854233+00:00",
-    "updated_at": "2026-09-24T19:54:23.082545+00:00"
+    "updated_at": "2026-09-24T19:54:48.551285+00:00"
   },
   {
     "id": "2026-09-24_Isaac Paredes_shop_lean_40",
@@ -141159,7 +141159,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-24T19:54:23.124576+00:00",
+    "logged_at": "2026-09-24T19:54:48.566539+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "PHILADELPHIA PHILLIES",
@@ -141185,7 +141185,7 @@
     "price": 950,
     "book": "bet365",
     "created_at": "2026-09-24T15:12:01.161276+00:00",
-    "updated_at": "2026-09-24T19:54:23.124592+00:00"
+    "updated_at": "2026-09-24T19:54:48.566554+00:00"
   },
   {
     "id": "2026-09-24_Tristan Peters_watch_52",
@@ -142138,7 +142138,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-24T19:54:23.505503+00:00",
+    "logged_at": "2026-09-24T19:54:48.785806+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -142151,7 +142151,7 @@
     "price": 950,
     "book": "fanatics",
     "created_at": "2026-09-24T15:12:04.897393+00:00",
-    "updated_at": "2026-09-24T19:54:23.505516+00:00"
+    "updated_at": "2026-09-24T19:54:48.785818+00:00"
   },
   {
     "id": "2026-09-24_Paul Goldschmidt_shop_take_96",
@@ -143922,7 +143922,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-24T19:54:23.054573+00:00",
+    "logged_at": "2026-09-24T19:54:48.535028+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -143935,7 +143935,7 @@
     "price": 950,
     "book": "fanatics",
     "created_at": "2026-09-24T15:12:04.919018+00:00",
-    "updated_at": "2026-09-24T19:54:23.054591+00:00"
+    "updated_at": "2026-09-24T19:54:48.535037+00:00"
   },
   {
     "id": "2026-09-24_Jake Burger_shop_lean_36",
@@ -145446,7 +145446,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-24T19:54:23.297488+00:00",
+    "logged_at": "2026-09-24T19:54:48.688918+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -145459,7 +145459,7 @@
     "price": 950,
     "book": "fanatics",
     "created_at": "2026-09-24T15:27:37.657396+00:00",
-    "updated_at": "2026-09-24T19:54:23.297503+00:00"
+    "updated_at": "2026-09-24T19:54:48.688929+00:00"
   },
   {
     "id": "2026-09-24_Ian Happ_take_it_100",
@@ -146734,7 +146734,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-24T19:54:23.216374+00:00",
+    "logged_at": "2026-09-24T19:54:48.615061+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -146747,7 +146747,7 @@
     "price": 780,
     "book": "draftkings",
     "created_at": "2026-09-24T15:35:44.329494+00:00",
-    "updated_at": "2026-09-24T19:54:23.216384+00:00"
+    "updated_at": "2026-09-24T19:54:48.615078+00:00"
   },
   {
     "id": "2026-09-24_Jonathan Aranda_shop_lean_35",
@@ -162093,7 +162093,7 @@
     "core": 6,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-24T19:54:22.344681+00:00",
+    "logged_at": "2026-09-24T19:54:48.149326+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "PHILADELPHIA PHILLIES",
@@ -162121,7 +162121,7 @@
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-09-24T19:53:34.906568+00:00",
-    "updated_at": "2026-09-24T19:54:22.344698+00:00"
+    "updated_at": "2026-09-24T19:54:48.149341+00:00"
   },
   {
     "id": "2026-09-24_Brayan Rocchio_watch_80",
@@ -162166,7 +162166,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-24T19:54:23.175812+00:00",
+    "logged_at": "2026-09-24T19:54:48.591527+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CLEVELAND GUARDIANS",
@@ -162176,7 +162176,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-24T19:54:23.175828+00:00",
+    "updated_at": "2026-09-24T19:54:48.591541+00:00",
     "player_name": "Brayan Rocchio",
     "stamps": [
       "HardRock 00",
@@ -162234,7 +162234,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-24T19:54:23.485451+00:00",
+    "logged_at": "2026-09-24T19:54:48.769765+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "PHILADELPHIA PHILLIES",
@@ -162244,7 +162244,7 @@
     "benford_cluster": 0.29,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-24T19:54:23.485470+00:00",
+    "updated_at": "2026-09-24T19:54:48.769795+00:00",
     "player_name": "Bryan De La Cruz",
     "stamps": [
       "MGM Exact",
@@ -162300,7 +162300,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-24T19:54:23.244832+00:00",
+    "logged_at": "2026-09-24T19:54:48.652080+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "BOSTON RED SOX",
@@ -162310,7 +162310,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-24T19:54:23.244847+00:00",
+    "updated_at": "2026-09-24T19:54:48.652095+00:00",
     "player_name": "Caleb Durbin",
     "stamps": [
       "MGM Exact",
@@ -162363,7 +162363,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-24T19:54:23.350828+00:00",
+    "logged_at": "2026-09-24T19:54:48.710347+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "BOSTON RED SOX",
@@ -162373,7 +162373,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-24T19:54:23.350844+00:00",
+    "updated_at": "2026-09-24T19:54:48.710358+00:00",
     "player_name": "Ceddanne Rafaela",
     "stamps": [
       "MGM Exact",
@@ -162426,7 +162426,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-24T19:54:23.403132+00:00",
+    "logged_at": "2026-09-24T19:54:48.732629+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "BOSTON RED SOX",
@@ -162436,7 +162436,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-24T19:54:23.403168+00:00",
+    "updated_at": "2026-09-24T19:54:48.732640+00:00",
     "player_name": "Mickey Gasper",
     "stamps": [
       "MGM Exact",
