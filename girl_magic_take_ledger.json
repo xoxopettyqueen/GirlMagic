@@ -2326,6 +2326,22 @@
       "best_book": "fanduel",
       "time": "09:07 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jaylen Warren",
+      "source": "take_it",
+      "score": 76,
+      "methods": [
+        "Multi-book method",
+        "FD 50",
+        "MGM Exact",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanduel",
+      "time": "09:07 AM",
+      "sport": "NFL"
     }
   ]
 }
