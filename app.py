@@ -12037,6 +12037,7 @@ def main():
         first_load = bool(chosen) and not st.session_state.get("odds")
         if first_load:
             auto_fetch = True
+        fetch_kind = "manual" if manual_fetch else ("timer" if auto_fetch and not first_load else "first")
         if (manual_fetch or auto_fetch) and chosen:
             with st.spinner("Fetching..."):
                 if sport_cfg().get("sgo") and (auto_lineups or not st.session_state.get("lineup_names")):
@@ -12056,8 +12057,13 @@ def main():
                 st.session_state["last_fetch_time"] = now_az()
                 st.session_state["slate_fetched_on"] = today_az()
                 st.session_state["auto_once"] = False
+                st.session_state["last_fetch_kind"] = fetch_kind
                 st.session_state.pop("_lineup_filter_ok", None)
                 st.session_state.pop("_lineup_filter_note", None)
+                if fetch_kind == "timer":
+                    st.caption("Auto-fetch completed · ledger unchanged · source=timer")
+                elif fetch_kind == "manual":
+                    st.caption("Manual fetch locked · ledger unchanged · source=local")
                 st.success(f"Loaded {len(df)} props · {now_az()} AZ")
             else:
                 dbg = st.session_state.get("fetch_debug") or {}
@@ -12857,9 +12863,11 @@ def main():
         render_trend_lab(ev_board, shop_rows)
     if page == "Shop:":
         if ev_board or watch_only:
-            log_bet_this(ev_board, watch_only)
+            n_w = log_bet_this(ev_board, watch_only)
+            st.caption(f"Watch/TAKE snapshot · movement captured · source=watch · wrote {n_w}")
         if df is not None and not getattr(df, "empty", True):
-            log_shop_calls(df)
+            n_s = log_shop_calls(df)
+            st.caption(f"Shop take logged · movement captured · source=shop · wrote {n_s}")
         site_section_open(
             "💸 PRICE",
             petty_label("Shop"),
