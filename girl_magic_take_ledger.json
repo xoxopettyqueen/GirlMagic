@@ -1686,6 +1686,27 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Michael Conforto",
+      "source": "take_it",
+      "score": 91,
+      "methods": [
+        "DK FD-style",
+        "Rivers a bit over pack",
+        "MGM 25",
+        "MGM Exact",
+        "Match 25",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
