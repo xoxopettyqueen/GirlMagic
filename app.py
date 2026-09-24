@@ -11012,6 +11012,103 @@ def _today_html(data):
     )
 
 
+def _db3_tone(score):
+    try:
+        s = float(score)
+    except Exception:
+        return "mid"
+    if s >= 0.6:
+        return "go"
+    if s <= 0.4:
+        return "no"
+    return "mid"
+
+
+def _data_block_30(data, sport="MLB"):
+    """Data Block 3.0 — hero + threat + tags + trend + stats. Hide empty lines."""
+    sport = (sport or "MLB").upper()
+    if sport == "NFL":
+        tgt = data.get("targets") or data.get("tgt")
+        hero = f'<div class="db3-hero db3-nfl">🏈 Targets {tgt if tgt is not None else "—"}</div>'
+        dvp = data.get("dvp_tdg")
+        try:
+            adv = 0.7 if float(dvp or 0) >= 1.5 else (0.3 if float(dvp or 0) <= 0.8 else 0.5)
+        except Exception:
+            adv = 0.5
+        threat = f'<div class="db3-bar db3-{_db3_tone(adv)}" title="Defense vs position"></div>'
+        role = data.get("role") or "skill"
+        tags = [
+            f'<span class="db3-tag mid">{role}</span>',
+            f'<span class="db3-tag {_db3_tone(adv)}">DVP {dvp if dvp is not None else "—"}</span>',
+        ]
+        tr = str(data.get("trend") or "")
+        strip = "db3-up" if "Heat" in tr else ("db3-dn" if "Cool" in tr else "db3-mix")
+        stats = []
+        for lab, key in (("Targets", "targets"), ("Rec", "receptions"), ("Yards", "rec_yds"), ("TD", "rec_td")):
+            v = data.get(key)
+            if v not in (None, "", 0, "0"):
+                stats.append(f'<div class="db3-stat">{lab} {v}</div>')
+        if data.get("dvp_line"):
+            stats.append(f'<div class="db3-stat">{data.get("dvp_line")}</div>')
+    elif sport == "NBA":
+        usg = data.get("usage")
+        hero = f'<div class="db3-hero db3-nba">🏀 Usage {usg if usg is not None else "—"}</div>'
+        threat = '<div class="db3-bar db3-mid" title="Matchup zone pending"></div>'
+        tags = ['<span class="db3-tag mid">NBA slate not live</span>']
+        strip = "db3-mix"
+        stats = []
+        if data.get("points_l7") is not None:
+            stats.append(f'<div class="db3-stat">Pts L7 {data.get("points_l7")}</div>')
+    else:
+        ev = data.get("ev")
+        hero = f'<div class="db3-hero db3-mlb">🎯 EV {ev:.1f}</div>' if ev is not None else '<div class="db3-hero db3-mlb">🎯 EV —</div>'
+        bars = []
+        pa = data.get("pull_air")
+        if pa is not None:
+            bars.append(f'<div class="db3-bar db3-{_db3_tone(0.35 + (float(pa) - 17.5) / 40)}" title="Pulled air {pa:.0f}%"></div>')
+        pf = data.get("park_factor") or data.get("pf")
+        try:
+            pf_v = float(str(pf).replace("HR", "").replace("+", "").replace("%", "") or 100)
+            bars.append(f'<div class="db3-bar db3-{_db3_tone((pf_v - 80) / 40)}" title="Park {pf}"></div>')
+        except Exception:
+            pass
+        if not bars:
+            bars.append('<div class="db3-bar db3-mid" title="Neutral mix"></div>')
+        threat = "".join(bars)
+        tags = []
+        if data.get("split_lr"):
+            tags.append(f'<span class="db3-tag mid">{data.get("split_lr")}</span>')
+        porch = data.get("porch") or data.get("park") or ""
+        if porch:
+            tags.append(f'<span class="db3-tag mid">{porch}</span>')
+        mx = str(data.get("matchup") or data.get("vs_line") or "")
+        if mx:
+            tags.append(f'<span class="db3-tag mid">{mx[:48]}</span>')
+        heat = "heating" in str(data.get("summary") or "").lower() or data.get("heating_now")
+        strip = "db3-up" if heat else "db3-mix"
+        stats = []
+        if ev is not None:
+            stats.append(f'<div class="db3-stat">EV {ev:.1f}</div>')
+        if data.get("hh") is not None:
+            stats.append(f'<div class="db3-stat">HH {data.get("hh"):.0f}%</div>')
+        if data.get("barrel") is not None:
+            stats.append(f'<div class="db3-stat">Barrel {data.get("barrel"):.1f}%</div>')
+        if data.get("xslg") is not None:
+            stats.append(f'<div class="db3-stat">xSLG {data.get("xslg"):.3f}</div>')
+        if data.get("pull_air") is not None:
+            stats.append(f'<div class="db3-stat">Pulled air {data.get("pull_air"):.0f}%</div>')
+        if data.get("la") is not None:
+            stats.append(f'<div class="db3-stat">LA {data.get("la"):.0f}°</div>')
+    tag_html = "".join(tags) if tags else ""
+    stat_html = "".join(stats) if stats else '<div class="db3-stat">Waiting on live sample</div>'
+    return (
+        f'<div class="db3">{hero}{threat}'
+        f'<div class="db3-tags">{tag_html}</div>'
+        f'<div class="db3-strip {strip}" title="Last-3 trend"></div>'
+        f'{stat_html}</div>'
+    )
+
+
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     """Data + odds overlay. Reads Board/Watch AND the raw +400 slate."""
     raw_rows = list(ev_board or []) + list(watch_board or []) + list(coverage_board or [])
@@ -11111,6 +11208,28 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .al-pack{font-size:.95rem;line-height:1.4;color:#fce7f3;margin:0 0 6px}
         details.al-fold{margin:4px 0}
         details.al-fold>summary{cursor:pointer;color:#00e6c3;font-size:.62rem;letter-spacing:1.3px;text-transform:uppercase;font-weight:800}
+        .db3{background:#14121E;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;margin:8px 0;display:flex;flex-direction:column;gap:12px}
+        .db3-hero{font-size:28px;font-weight:700;letter-spacing:.02em}
+        .db3-mlb{background:linear-gradient(90deg,#fb7185,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent;animation:db3sh 3s ease-in-out infinite}
+        .db3-nfl{background:linear-gradient(90deg,#2dd4bf,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent;animation:db3sh 3s ease-in-out infinite}
+        .db3-nba{background:linear-gradient(90deg,#60a5fa,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;animation:db3sh 3s ease-in-out infinite}
+        @keyframes db3sh{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
+        .db3-bar{height:8px;width:100%;border-radius:4px;margin-top:6px}
+        .db3-go{background:#34d399;box-shadow:0 0 10px rgba(52,211,153,.45)}
+        .db3-no{background:#f87171;animation:db3pulse 2.4s ease-in-out infinite}
+        .db3-mid{background:#fbbf24}
+        @keyframes db3pulse{0%,100%{opacity:1}50%{opacity:.55}}
+        .db3-tags{display:flex;flex-wrap:wrap;gap:6px}
+        .db3-tag{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:10px;font-size:12px;font-weight:600}
+        .db3-tag.go{border-color:#34d399;color:#bbf7d0}
+        .db3-tag.no{border-color:#f87171;color:#fecaca}
+        .db3-tag.mid{border-color:#6b7280;color:#d1d5db}
+        .db3-strip{height:6px;width:100%;border-radius:4px}
+        .db3-up{background:linear-gradient(90deg,#14532d,#34d399)}
+        .db3-dn{background:linear-gradient(90deg,#7f1d1d,#f87171)}
+        .db3-mix{background:linear-gradient(90deg,#854d0e,#fbbf24)}
+        .db3-stat{font-size:14px;font-weight:500;line-height:20px}
+        .db3-stat:nth-child(even){opacity:.7}
         @keyframes alShimmer{0%{left:-40%}100%{left:120%}}
         </style>
         """,
@@ -11726,6 +11845,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     atk_txt = "Attack — anytime touchdown."
                 dvp = (data.get("dvp_line") or "No DVP tag yet.").replace(" · ", "<br>")
                 pulse_html = (
+                    f'<details class="al-fold" open><summary title="Data Block 3.0">📊 Data</summary>'
+                    f'{_data_block_30(data, "NFL")}</details>'
                     f'<details class="al-fold" open><summary title="How they are being used right now">🧠 Player Pulse</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
                     f'👑 <span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
@@ -11785,8 +11906,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 f'<div class="card-name">{item.get("player")} <span class="card-kicker">⚾ 0.5 HR</span></div>'
                 f'{_petty_meter(align, data.get("data_tier"))}'
                 + _today_html(data)
-                + f'<details class="al-fold"{opened}><summary title="Exit velo, hard-hit, barrel, last-7 bombs and slugging">📊 Data</summary>'
-                f'<div class="al-pack">{data_line}</div></details>'
+                + f'<details class="al-fold"{opened}><summary title="Data Block 3.0 — EV, threat, park, trend">📊 Data</summary>'
+                f'{_data_block_30(data, "MLB")}</details>'
                 f'<details class="al-fold"{opened}><summary title="Pitcher, park vibe, weather, odds stamps">🧠 Context</summary>'
                 f'<div class="al-pack">⚾ {vs_bit}<br>🏟️ {porch} ({pf}) · 🌡️ {data.get("weather") or ""}'
                 + (f"<br>🧩 {data.get('pen_line')}" if data.get("pen_line") else "")
