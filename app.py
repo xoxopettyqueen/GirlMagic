@@ -6015,28 +6015,10 @@ def fetch_sport_desk(sport="MLB"):
         try:
             stt = requests.get("https://api.sleeper.app/v1/state/nfl", timeout=10).json()
             week = stt.get("week") or stt.get("leg")
-            players = requests.get("https://api.sleeper.app/v1/players/nfl", timeout=25).json()
-            for _pid, p in (players or {}).items():
-                if not isinstance(p, dict):
-                    continue
-                stt_p = str(p.get("injury_status") or "").strip()
-                if stt_p.lower() not in ("out", "doubtful", "questionable"):
-                    continue
-                pos = str(p.get("position") or "")
-                if pos not in ("QB", "RB", "WR", "TE"):
-                    continue
-                injuries.append({
-                    "player": p.get("full_name") or p.get("last_name") or "",
-                    "team": p.get("team") or "",
-                    "status": stt_p,
-                    "tone": "no" if stt_p.lower() in ("out", "doubtful") else "mid",
-                })
-                if len(injuries) >= 8:
-                    break
             return {
-                "games": [{"label": f"Sleeper week {week}", "status": str(stt.get("season_type") or "")}],
-                "injuries": injuries[:24],
-                "msg": f"Sleeper NFL · week {week} · {len(injuries)} injury tags",
+                "games": [{"label": f"Wk {week}", "status": str(stt.get("season_type") or "")}],
+                "injuries": [],
+                "msg": f"Sleeper NFL · week {week}",
             }
         except Exception:
             return {"games": [], "injuries": [], "msg": "Sleeper NFL miss"}
