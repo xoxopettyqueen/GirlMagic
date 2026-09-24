@@ -11247,35 +11247,18 @@ def _data_block_30(data, sport="MLB"):
     """Data Block 3.0 — hero + threat + tags + trend + stats. Hide empty lines."""
     sport = (sport or "MLB").upper()
     if sport == "NFL":
-        tgt = data.get("targets") or data.get("tgt")
-        if tgt is None:
-            import re as _re
-            m = _re.search(r"(\d+)\s*tgt", str(data.get("summary") or ""), _re.I)
-            if m:
-                tgt = m.group(1)
-        hero = f'<b>Targets {tgt if tgt is not None else "—"}</b><br>'
-        dvp = data.get("dvp_tdg")
-        try:
-            dvp_f = float(dvp)
-            dvp_s = f"{dvp_f:.2f}"
-            adv = 0.7 if dvp_f >= 1.5 else (0.3 if dvp_f <= 0.8 else 0.5)
-        except Exception:
-            dvp_s, adv = "—", 0.5
-        threat = f'<div class="db3-bar db3-{_db3_tone(adv)}" title="Defense vs position"></div>'
-        role = data.get("role") or "skill"
-        tags = [
-            f'<span class="db3-tag mid">{role}</span>',
-            f'<span class="db3-tag {_db3_tone(adv)}">DVP {dvp_s}</span>',
-        ]
-        tr = str(data.get("trend") or "")
-        strip = "db3-up" if "Heat" in tr else ("db3-dn" if "Cool" in tr else "db3-mix")
-        stats = []
-        for lab, key in (("Targets", "targets"), ("Rec", "receptions"), ("Yards", "rec_yds"), ("TD", "rec_td")):
-            v = data.get(key)
-            if v not in (None, "", 0, "0"):
-                stats.append(f'<div class="db3-stat">{lab} {v}</div>')
-        if tgt is not None and not data.get("targets"):
-            stats.append(f'<div class="db3-stat">Season tgt {tgt}</div>')
+        sm = str(data.get("summary") or "")
+        keep = []
+        for p in sm.replace("·", "•").split("•"):
+            pl = p.strip()
+            if not pl:
+                continue
+            low = pl.lower()
+            if low.startswith(("home", "road", "primetime", "draft", "longshot")):
+                continue
+            keep.append(pl)
+        line = " · ".join(keep[:5]) if keep else "No volume line yet"
+        return f'<div class="al-pack">{line}</div>'
     elif sport == "NBA":
         usg = data.get("usage")
         hero = f'<div class="db3-hero db3-nba">🏀 Usage {usg if usg is not None else "—"}</div>'
@@ -12089,7 +12072,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     atk_txt = "Attack — anytime touchdown."
                 dvp = (data.get("dvp_line") or "No DVP tag yet.").replace(" · ", "<br>")
                 pulse_html = (
-                    f'<details class="al-fold" open><summary title="Data Block 3.0">📊 Data</summary>'
+                    f'<details class="al-fold" open><summary title="Season volume only. Story is Pulse + Matchup.">📊 Usage</summary>'
                     f'{_data_block_30(data, "NFL")}</details>'
                     f'<details class="al-fold" open><summary title="How they are being used right now">🧠 Player Pulse</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
