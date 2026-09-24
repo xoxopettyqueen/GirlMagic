@@ -2342,6 +2342,22 @@
       "best_book": "fanduel",
       "time": "09:07 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Ladd McConkey",
+      "source": "take_it",
+      "score": 51,
+      "methods": [
+        "Books tight",
+        "Match 25",
+        "MGM 25",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 225,
+      "best_book": "draftkings",
+      "time": "09:07 AM",
+      "sport": "NFL"
     }
   ]
 }
