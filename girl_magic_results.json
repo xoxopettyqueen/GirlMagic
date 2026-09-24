@@ -149334,5 +149334,36 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-24_Tez Johnson_shop_lean_59",
+    "date": "2026-09-24",
+    "time": "09:23 AM",
+    "player": "Tez Johnson",
+    "score": 0,
+    "edge": 59,
+    "best_price": 900,
+    "best_book": "fanduel",
+    "median": 800,
+    "book_prices": {
+      "bet365": 800,
+      "betrivers": 700,
+      "caesars": 700,
+      "fanatics": 2000,
+      "fanduel": 900,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:23:25.414711+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
