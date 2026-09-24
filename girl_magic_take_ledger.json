@@ -2236,6 +2236,26 @@
       "best_book": "draftkings",
       "time": "09:07 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "David Montgomery",
+      "source": "take_it",
+      "score": 59,
+      "methods": [
+        "Match 75",
+        "MGM 75",
+        "MGM Exact",
+        "FD 50",
+        "Multi-book method",
+        "B365 over HardRock",
+        "HardRock 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanduel",
+      "time": "09:07 AM",
+      "sport": "NFL"
     }
   ]
 }
