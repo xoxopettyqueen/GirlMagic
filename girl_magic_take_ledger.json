@@ -1619,6 +1619,28 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jo Adell",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "FD 600",
+        "DK FD-style",
+        "FD+MGM classic",
+        "FD a little long",
+        "MGM 25",
+        "Match 25",
+        "B365 over MGM",
+        "Multi-book method",
+        "B365 over HardRock",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
