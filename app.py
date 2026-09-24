@@ -1874,7 +1874,8 @@ def render_card_guide():
 
 GLOSSARY_V2 = {
     "🧭 How": [
-        ("Fetch", "Loads odds + Lock. Does not grade games. Box scores only run on Receipts → Results."),
+        ("Fetch", "Loads the slate + Lock. Does not log tickets. Does not track movement. Shop writes the ledger."),
+        ("Shop movement", "Open Money Talks. That snapshot is the movement: price, book, gap, pack, ending. Fetch again does not add a ticket."),
         ("Live tracking", "Box scores only on Results. Odds movement is tracked until first pitch / kick, then that game’s lock freezes (open stays, latest stops, close stamps)."),
         ("Five books", "FD, DK, Bet365, MGM, Fanatics. Movement, missing-book ghosts, Tracker hit rates, Pulse pills, and Today’s five on Tracker. 365 vs MGM and 365 vs FD stay separate tells on Alerts — not two Pulse lines."),
         ("Green / TAKE", "Cleared the list. Two premium stamps. Score hold is 85 now, not 70. This is the ticket."),
@@ -12168,10 +12169,7 @@ def main():
                 ):
                     item["is_bet"] = False
                     item["why"] = (item.get("why") or "") + " · not a DK/FD ticket"
-    if ev_board or watch_board:
-        log_bet_this(ev_board, watch_board)
-    if not df.empty:
-        log_shop_calls(df)
+    # FETCH loads the slate only. Ledger + movement write on Shop.
     st.session_state["last_take_names"] = [e.get("player") for e in ev_board if e.get("is_bet")]
     try:
         shop_now = build_shop_board(df) if not df.empty else []
@@ -12851,6 +12849,10 @@ def main():
         shop_rows = build_shop_board(df) if df is not None and not getattr(df, "empty", True) else []
         render_trend_lab(ev_board, shop_rows)
     if page == "Shop:":
+        if ev_board or watch_only:
+            log_bet_this(ev_board, watch_only)
+        if df is not None and not getattr(df, "empty", True):
+            log_shop_calls(df)
         site_section_open(
             "💸 PRICE",
             petty_label("Shop"),
