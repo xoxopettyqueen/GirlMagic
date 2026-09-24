@@ -6002,8 +6002,10 @@ def fetch_sport_desk(sport="MLB"):
                 for ev in d.get("games") or []:
                     away = ((ev.get("teams") or {}).get("away") or {}).get("team") or {}
                     home = ((ev.get("teams") or {}).get("home") or {}).get("team") or {}
+                    def _abbr(tm):
+                        return tm.get("abbreviation") or str(tm.get("name") or "?")[:3].upper()
                     games.append({
-                        "label": f"{away.get('abbreviation') or away.get('name')} @ {home.get('abbreviation') or home.get('name')}",
+                        "label": f"{_abbr(away)}@{_abbr(home)}",
                         "status": ((ev.get("status") or {}).get("detailedState") or ""),
                     })
             return {"games": games, "injuries": [], "msg": f"MLB StatsAPI · {len(games)} games"}
@@ -6017,16 +6019,19 @@ def fetch_sport_desk(sport="MLB"):
             for _pid, p in (players or {}).items():
                 if not isinstance(p, dict):
                     continue
-                stt_p = str(p.get("injury_status") or "")
-                if not stt_p:
+                stt_p = str(p.get("injury_status") or "").strip()
+                if stt_p.lower() not in ("out", "doubtful", "questionable"):
+                    continue
+                pos = str(p.get("position") or "")
+                if pos not in ("QB", "RB", "WR", "TE"):
                     continue
                 injuries.append({
                     "player": p.get("full_name") or p.get("last_name") or "",
                     "team": p.get("team") or "",
                     "status": stt_p,
-                    "tone": "no" if stt_p.lower() in ("out", "doubtful", "ir") else "mid",
+                    "tone": "no" if stt_p.lower() in ("out", "doubtful") else "mid",
                 })
-                if len(injuries) >= 24:
+                if len(injuries) >= 8:
                     break
             return {
                 "games": [{"label": f"Sleeper week {week}", "status": str(stt.get("season_type") or "")}],
@@ -11245,17 +11250,24 @@ def _data_block_30(data, sport="MLB"):
     sport = (sport or "MLB").upper()
     if sport == "NFL":
         tgt = data.get("targets") or data.get("tgt")
-        hero = f'<div class="db3-hero db3-nfl">🏈 Targets {tgt if tgt is not None else "—"}</div>'
+        if tgt is None:
+            import re as _re
+            m = _re.search(r"(\d+)\s*tgt", str(data.get("summary") or ""), _re.I)
+            if m:
+                tgt = m.group(1)
+        hero = f'<div class="db3-hero db3-nfl">TGT {tgt if tgt is not None else "—"}</div>'
         dvp = data.get("dvp_tdg")
         try:
-            adv = 0.7 if float(dvp or 0) >= 1.5 else (0.3 if float(dvp or 0) <= 0.8 else 0.5)
+            dvp_f = float(dvp)
+            dvp_s = f"{dvp_f:.2f}"
+            adv = 0.7 if dvp_f >= 1.5 else (0.3 if dvp_f <= 0.8 else 0.5)
         except Exception:
-            adv = 0.5
+            dvp_s, adv = "—", 0.5
         threat = f'<div class="db3-bar db3-{_db3_tone(adv)}" title="Defense vs position"></div>'
         role = data.get("role") or "skill"
         tags = [
             f'<span class="db3-tag mid">{role}</span>',
-            f'<span class="db3-tag {_db3_tone(adv)}">DVP {dvp if dvp is not None else "—"}</span>',
+            f'<span class="db3-tag {_db3_tone(adv)}">DVP {dvp_s}</span>',
         ]
         tr = str(data.get("trend") or "")
         strip = "db3-up" if "Heat" in tr else ("db3-dn" if "Cool" in tr else "db3-mix")
@@ -11264,8 +11276,8 @@ def _data_block_30(data, sport="MLB"):
             v = data.get(key)
             if v not in (None, "", 0, "0"):
                 stats.append(f'<div class="db3-stat">{lab} {v}</div>')
-        if data.get("dvp_line"):
-            stats.append(f'<div class="db3-stat">{data.get("dvp_line")}</div>')
+        if tgt is not None and not data.get("targets"):
+            stats.append(f'<div class="db3-stat">Season tgt {tgt}</div>')
     elif sport == "NBA":
         usg = data.get("usage")
         hero = f'<div class="db3-hero db3-nba">🏀 Usage {usg if usg is not None else "—"}</div>'
@@ -11871,7 +11883,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         f'<span class="db3-tag {i.get("tone") or "mid"}">{i.get("player")} · {i.get("status")}</span>'
         for i in inj[:10]
     )
-    games = " · ".join((g.get("label") or "")[:22] for g in (desk.get("games") or [])[:8])
+    games = " · ".join((g.get("label") or "")[:11] for g in (desk.get("games") or [])[:6])
     extra = ""
     if active_sport() == "NBA":
         extra = '<div class="db3-stat">P15 · 3M3 · A3C · R7 · R10 · OPS not Confidence</div>'
