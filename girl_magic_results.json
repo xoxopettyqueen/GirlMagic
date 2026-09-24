@@ -150709,5 +150709,34 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 1.0
+  },
+  {
+    "id": "2026-09-24_Ollie Gordon II_shop_lean_35",
+    "date": "2026-09-24",
+    "time": "09:53 AM",
+    "player": "Ollie Gordon II",
+    "score": 0,
+    "edge": 35,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 900,
+    "book_prices": {
+      "bet365": 1100,
+      "betrivers": 800,
+      "caesars": 850,
+      "fanatics": 950
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:53:29.349314+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td"
   }
 ]
