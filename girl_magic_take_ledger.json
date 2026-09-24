@@ -1815,6 +1815,29 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jonathan Aranda",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "DK FD-style",
+        "Match 50",
+        "FD+MGM classic",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Fanatics Rogue",
+        "MGM 50",
+        "FD Pattern",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 750,
+      "best_book": "fanatics",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
