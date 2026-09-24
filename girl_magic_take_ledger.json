@@ -2971,6 +2971,27 @@
       "best_book": "hardrockbet",
       "time": "06:19 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Tommy Edman",
+      "source": "take_it",
+      "score": 95,
+      "methods": [
+        "FD 600",
+        "Rivers a bit over pack",
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book method",
+        "Fanatics over pack",
+        "Multi-book Shorten",
+        "Fanatics Drift",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "fanatics",
+      "time": "07:18 PM",
+      "sport": "MLB"
     }
   ]
 }
