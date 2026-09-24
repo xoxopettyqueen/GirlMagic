@@ -4056,6 +4056,14 @@ def get_odds_api_key():
 def get_sgo_key():
     return st.secrets.get("SGO_API_KEY", "d5422e23cc05702bf95197f6a98ec8ce")
 
+
+def get_sdio_key():
+    """SportsDataIO / FantasyData. Same key family."""
+    try:
+        return (st.secrets.get("SPORTSDATAIO_KEY") or st.secrets.get("FANTASYDATA_KEY") or "").strip()
+    except Exception:
+        return ""
+
 def format_odds(p):
     try: return f"{int(p):+d}"
     except Exception: return str(p)
@@ -5950,43 +5958,131 @@ def fetch_nba_board_pack():
 
 @st.cache_data(ttl=300, show_spinner=False)
 def fetch_sport_desk(sport="MLB"):
-    """ESPN scoreboard + injury tags. Lineup bar for MLB / NFL / NBA."""
+    """Live desk: SportsDataIO if keyed, else official MLB StatsAPI. No ESPN."""
     sport = (sport or "MLB").upper()
-    path = {
-        "MLB": "baseball/mlb",
-        "NFL": "football/nfl",
-        "NBA": "basketball/nba",
-    }.get(sport, "baseball/mlb")
     try:
-        day = datetime.strptime(today_az(), "%Y-%m-%d").strftime("%Y%m%d")
+        iso = today_az()
     except Exception:
-        day = datetime.now().strftime("%Y%m%d")
+        iso = datetime.now().strftime("%Y-%m-%d")
     games, injuries = [], []
-    try:
-        sb = requests.get(
-            f"https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard",
-            params={"dates": day},
-            timeout=15,
-        ).json()
-    except Exception:
-        return {"games": [], "injuries": [], "msg": f"ESPN {sport} miss"}
-    for ev in sb.get("events") or []:
-        comp = (ev.get("competitions") or [{}])[0]
-        status = ((comp.get("status") or {}).get("type") or {})
-        st_name = str(status.get("description") or status.get("name") or "")
-        games.append({"label": ev.get("shortName") or ev.get("name"), "status": st_name})
-        for c in comp.get("competitors") or []:
-            tm = (c.get("team") or {})
-            for inj in c.get("injuries") or []:
-                ath = inj.get("athlete") or {}
-                stt = str(inj.get("status") or "")
+    key = get_sdio_key()
+    if key:
+        slug = {"MLB": "mlb", "NFL": "nfl", "NBA": "nba"}.get(sport, "mlb")
+        url = f"https://api.sportsdata.io/v3/{slug}/scores/json/GamesByDate/{iso}"
+        try:
+            r = requests.get(url, headers={"Ocp-Apim-Subscription-Key": key}, timeout=15)
+            rows = r.json() if r.ok else []
+            if isinstance(rows, dict):
+                rows = rows.get("Games") or rows.get("games") or []
+            for g in rows or []:
+                away = g.get("AwayTeam") or g.get("AwayTeamName") or "?"
+                home = g.get("HomeTeam") or g.get("HomeTeamName") or "?"
+                games.append({"label": f"{away} @ {home}", "status": g.get("Status") or ""})
+            inj_url = f"https://api.sportsdata.io/v3/{slug}/scores/json/InjuredPlayers"
+            ir = requests.get(inj_url, headers={"Ocp-Apim-Subscription-Key": key}, timeout=12)
+            for p in (ir.json() if ir.ok and isinstance(ir.json(), list) else [])[:24]:
+                stt = str(p.get("Status") or p.get("InjuryStatus") or "")
                 injuries.append({
-                    "player": ath.get("displayName") or "",
-                    "team": tm.get("abbreviation"),
+                    "player": p.get("Name") or p.get("LastName") or "",
+                    "team": p.get("Team") or "",
                     "status": stt,
                     "tone": "no" if stt.lower() in ("out", "doubtful") else "mid",
                 })
-    return {"games": games, "injuries": injuries[:24], "msg": f"{len(games)} {sport} cards · {len(injuries)} injury tags"}
+            return {"games": games, "injuries": injuries[:24], "msg": f"SportsDataIO {sport} · {len(games)} games"}
+        except Exception:
+            pass
+    if sport == "MLB":
+        try:
+            r = requests.get(
+                f"{MLB_STATS}/schedule",
+                params={"sportId": 1, "date": iso, "hydrate": "probablePitcher,injuries"},
+                timeout=15,
+            ).json()
+            for d in r.get("dates") or []:
+                for ev in d.get("games") or []:
+                    away = ((ev.get("teams") or {}).get("away") or {}).get("team") or {}
+                    home = ((ev.get("teams") or {}).get("home") or {}).get("team") or {}
+                    games.append({
+                        "label": f"{away.get('abbreviation') or away.get('name')} @ {home.get('abbreviation') or home.get('name')}",
+                        "status": ((ev.get("status") or {}).get("detailedState") or ""),
+                    })
+            return {"games": games, "injuries": [], "msg": f"MLB StatsAPI · {len(games)} games"}
+        except Exception:
+            return {"games": [], "injuries": [], "msg": "MLB StatsAPI miss"}
+    if sport == "NFL":
+        try:
+            stt = requests.get("https://api.sleeper.app/v1/state/nfl", timeout=10).json()
+            week = stt.get("week") or stt.get("leg")
+            players = requests.get("https://api.sleeper.app/v1/players/nfl", timeout=25).json()
+            for _pid, p in (players or {}).items():
+                if not isinstance(p, dict):
+                    continue
+                stt_p = str(p.get("injury_status") or "")
+                if not stt_p:
+                    continue
+                injuries.append({
+                    "player": p.get("full_name") or p.get("last_name") or "",
+                    "team": p.get("team") or "",
+                    "status": stt_p,
+                    "tone": "no" if stt_p.lower() in ("out", "doubtful", "ir") else "mid",
+                })
+                if len(injuries) >= 24:
+                    break
+            return {
+                "games": [{"label": f"Sleeper week {week}", "status": str(stt.get("season_type") or "")}],
+                "injuries": injuries[:24],
+                "msg": f"Sleeper NFL · week {week} · {len(injuries)} injury tags",
+            }
+        except Exception:
+            return {"games": [], "injuries": [], "msg": "Sleeper NFL miss"}
+    if sport == "NBA":
+        try:
+            hdrs = {
+                "User-Agent": "Mozilla/5.0",
+                "Referer": "https://www.nba.com/",
+                "Origin": "https://www.nba.com",
+                "Accept": "application/json",
+            }
+            gdate = datetime.strptime(iso, "%Y-%m-%d").strftime("%m/%d/%Y")
+            r = requests.get(
+                "https://stats.nba.com/stats/scoreboardv2",
+                params={"GameDate": gdate, "LeagueID": "00", "DayOffset": "0"},
+                headers=hdrs,
+                timeout=15,
+            )
+            js = r.json() if r.ok else {}
+            result = {b.get("name"): b for b in (js.get("resultSets") or [])}
+            gh = result.get("GameHeader") or {}
+            headers = gh.get("headers") or []
+            rows = gh.get("rowSet") or []
+            idx = {h: i for i, h in enumerate(headers)}
+            for row in rows:
+                label = row[idx["GAMECODE"]] if "GAMECODE" in idx else "?"
+                stt = row[idx["GAME_STATUS_TEXT"]] if "GAME_STATUS_TEXT" in idx else ""
+                games.append({"label": str(label), "status": str(stt)})
+            return {"games": games, "injuries": [], "msg": f"NBA Stats · {len(games)} games"}
+        except Exception:
+            return {"games": [], "injuries": [], "msg": "NBA Stats miss — offseason or blocked"}
+    return {"games": [], "injuries": [], "msg": f"{sport} desk: free feed only"}
+
+
+def normalize_player(data, sport):
+    """One player shape for desk / Data Block. Missing fields stay None."""
+    d = data if isinstance(data, dict) else {}
+    name = d.get("name") or d.get("player") or d.get("full_name") or d.get("player_name") or ""
+    return {
+        "id": d.get("id") or d.get("player_id") or "",
+        "name": name,
+        "team": d.get("team") or d.get("abbreviation") or "",
+        "sport": (sport or "").upper(),
+        "position": d.get("position") or d.get("pos") or "",
+        "starter": d.get("starter") if "starter" in d else d.get("starter_status"),
+        "injury": d.get("injury") or d.get("injury_status") or d.get("status") or "",
+        "usage": d.get("usage") or d.get("usage_projection"),
+        "odds": d.get("odds") or d.get("best_price"),
+        "role": d.get("role") or "",
+        "rookie": bool(d.get("rookie") or d.get("rookie_flag")),
+    }
 
 
 def nba_ops_score(row):
@@ -11328,7 +11424,12 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .al-pack{font-size:.95rem;line-height:1.4;color:#fce7f3;margin:0 0 6px}
         details.al-fold{margin:4px 0}
         details.al-fold>summary{cursor:pointer;color:#00e6c3;font-size:.62rem;letter-spacing:1.3px;text-transform:uppercase;font-weight:800}
-        .db3{background:#14121E;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;margin:8px 0;display:flex;flex-direction:column;gap:12px}
+        .desk-bar{display:flex;align-items:center;gap:12px;min-height:48px;max-height:60px;overflow-x:auto;padding:8px 12px;margin:8px 0 12px;background:#1A1824;border:1px solid rgba(255,255,255,.08);border-radius:14px;white-space:nowrap}
+        .desk-bar .g{font-size:12px;font-weight:600;color:rgba(255,255,255,.85);margin-right:10px}
+        .desk-mlb{box-shadow:0 0 14px rgba(244,114,182,.22)}
+        .desk-nfl{box-shadow:0 0 14px rgba(45,212,191,.22)}
+        .desk-nba{box-shadow:0 0 14px rgba(96,165,250,.22)}
+        .db3{background:#1A1824;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;margin:8px 0;display:flex;flex-direction:column;gap:16px}
         .db3-hero{font-size:28px;font-weight:700;letter-spacing:.02em}
         .db3-mlb{background:linear-gradient(90deg,#fb7185,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent;animation:db3sh 3s ease-in-out infinite}
         .db3-nfl{background:linear-gradient(90deg,#2dd4bf,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent;animation:db3sh 3s ease-in-out infinite}
@@ -11776,11 +11877,12 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         extra = '<div class="db3-stat">P15 · 3M3 · A3C · R7 · R10 · OPS not Confidence</div>'
     hero_cls = {"NFL": "db3-nfl", "NBA": "db3-nba"}.get(active_sport(), "db3-mlb")
     empty_inj = '<span class="db3-tag mid">No injury tags</span>'
+    desk_cls = {"NFL": "desk-nfl", "NBA": "desk-nba"}.get(active_sport(), "desk-mlb")
     st.markdown(
-        f'<div class="db3"><div class="db3-hero {hero_cls}">Live desk · {desk.get("msg")}</div>'
-        f'<div class="db3-stat">{games or "No games on ESPN for this date"}</div>'
-        f'<div class="db3-tags">{bits or empty_inj}</div>'
-        f'{extra}</div>',
+        f'<div class="desk-bar {desk_cls}"><span class="g">{desk.get("msg")}</span>'
+        f'<span class="g">{games or "No games today"}</span>'
+        f'{bits or empty_inj}</div>'
+        + (f'<div class="db3-stat">{extra}</div>' if extra else ""),
         unsafe_allow_html=True,
     )
     st.markdown(
