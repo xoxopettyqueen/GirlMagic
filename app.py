@@ -5101,7 +5101,10 @@ def _normalize_ledger_row(row):
     r["created_at"] = r.get("created_at") or r.get("logged_at") or r.get("time") or ""
     r["updated_at"] = r.get("updated_at") or r.get("logged_at") or ""
     r["date"] = str(r.get("date") or "")[:10]
-    r["sport"] = r.get("sport") or ""
+    inferred = row_sport(r)
+    r["sport"] = inferred
+    if inferred == "NFL" and not r.get("market"):
+        r["market"] = "anytime_td"
     return r
 
 
@@ -5691,15 +5694,23 @@ def fetch_mlb_hr_hitters(date_str=None):
 
 
 @st.cache_data(ttl=180, show_spinner=False)
-def _fetch_nfl_td_scorers_cached():
+def _fetch_nfl_td_scorers_cached(dates_key=""):
     """Anytime TD scorers from ESPN. LIVE games + finals. Miss pool = finals only."""
     scorers, finished = set(), set()
     days = []
-    for dfn in (today_az, today_mlb_date):
-        try:
-            days.append(datetime.strptime(dfn(), "%Y-%m-%d").strftime("%Y%m%d"))
-        except Exception:
-            pass
+    for raw in str(dates_key or "").split(","):
+        raw = raw.strip()
+        if not raw:
+            continue
+        compact = raw.replace("-", "")
+        if len(compact) == 8 and compact.isdigit():
+            days.append(compact)
+    if not days:
+        for dfn in (today_az, today_mlb_date):
+            try:
+                days.append(datetime.strptime(dfn(), "%Y-%m-%d").strftime("%Y%m%d"))
+            except Exception:
+                pass
     if not days:
         days = [datetime.now().strftime("%Y%m%d")]
     days = list(dict.fromkeys(days))
@@ -5851,8 +5862,9 @@ def _fetch_nfl_td_scorers_cached():
     )
 
 
-def fetch_nfl_td_scorers():
-    packed = _fetch_nfl_td_scorers_cached()
+def fetch_nfl_td_scorers(dates=None):
+    key = ",".join(str(d).replace("-", "")[:8] if "-" not in str(d) else str(d).replace("-", "") for d in (dates or []))
+    packed = _fetch_nfl_td_scorers_cached(key)
     if len(packed) == 5:
         scorers, finished, msg, rush_td, qbs = packed
     else:
@@ -5887,49 +5899,63 @@ def auto_grade_pending():
     hits = misses = skipped = 0
     pending_n = sum(1 for r in rows if r.get("result") == "PENDING")
     if active_sport() == "NFL":
-        td_names, done_players, msg = fetch_nfl_td_scorers()
-        hit_set, miss_pool, tag = td_names, done_players, "nfl_auto"
+        by_date = defaultdict(list)
         for row in rows:
             if row.get("result") != "PENDING":
+                continue
+            if row_sport(row) != "NFL":
+                skipped += 1
                 continue
             src = str(row.get("source") or "")
             if src not in GRADE_SOURCES and src not in STUDY_SOURCES:
                 continue
-            study = src in STUDY_SOURCES
-            mkt = str(row.get("market") or "").lower()
             if src.startswith("need_one"):
                 skipped += 1
                 continue
-            if any(x in mkt for x in ("rush", "receiv", "reception", "yard")):
+            mkt = str(row.get("market") or "").lower()
+            if any(x in mkt for x in ("rush", "receiv", "reception", "yard")) and "td" not in mkt:
                 skipped += 1
                 continue
-            if mkt and "td" not in mkt and "touchdown" not in mkt and src not in ("take_it", "watch", "shop_take", "shop_lean"):
+            d = str(row.get("date") or "")[:10]
+            if not d:
                 skipped += 1
                 continue
-            player = row.get("player") or ""
-            rushed = st.session_state.get("nfl_rush_td") or set()
-            if is_nfl_qb(player) and not any(names_match_grade(player, x) for x in rushed):
-                row["result"] = "LEARN_MISS" if study else "MISS"
-                row["graded_by"] = tag + "_qb_not_rush"
-                misses += 1
-                continue
-            if any(names_match_grade(player, h) for h in hit_set):
-                row["result"] = "LEARN_HIT" if study else "HIT"
-                row["graded_by"] = tag
-                row["hit_why"] = list(row.get("methods") or [])
-                row["hit_when"] = str(row.get("date") or "")[:10]
-                if row.get("ending") is None and row.get("best_price") is not None:
-                    row["ending"] = last_two(row["best_price"])
-                hits += 1
-                continue
-            if miss_pool and any(names_match_grade(player, f) for f in miss_pool):
-                row["result"] = "LEARN_MISS" if study else "MISS"
-                row["graded_by"] = tag
-                misses += 1
-            else:
-                skipped += 1
+            row["sport"] = "NFL"
+            row["market"] = row.get("market") or "anytime_td"
+            by_date[d].append(row)
+        msgs = []
+        tag = "nfl_auto"
+        for d, batch in by_date.items():
+            td_names, done_players, msg = fetch_nfl_td_scorers([d])
+            msgs.append(f"{d} {msg}")
+            hit_set, miss_pool = td_names, done_players
+            for row in batch:
+                study = str(row.get("source") or "") in STUDY_SOURCES
+                player = row.get("player") or ""
+                rushed = st.session_state.get("nfl_rush_td") or set()
+                if is_nfl_qb(player) and miss_pool and not any(names_match_grade(player, x) for x in rushed):
+                    if any(names_match_grade(player, f) for f in miss_pool):
+                        row["result"] = "LEARN_MISS" if study else "MISS"
+                        row["graded_by"] = tag + "_qb_not_rush"
+                        misses += 1
+                        continue
+                if any(names_match_grade(player, h) for h in hit_set):
+                    row["result"] = "LEARN_HIT" if study else "HIT"
+                    row["graded_by"] = tag
+                    row["hit_why"] = list(row.get("methods") or [])
+                    row["hit_when"] = d
+                    if row.get("ending") is None and row.get("best_price") is not None:
+                        row["ending"] = last_two(row["best_price"])
+                    hits += 1
+                    continue
+                if miss_pool and any(names_match_grade(player, f) for f in miss_pool):
+                    row["result"] = "LEARN_MISS" if study else "MISS"
+                    row["graded_by"] = tag
+                    misses += 1
+                else:
+                    skipped += 1
         save_results(rows)
-        return hits, misses, skipped, f"{msg} · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
+        return hits, misses, skipped, " · ".join(msgs[:4]) + f" · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
 
     # MLB: grade against THAT row's game date, not today's whole homer list.
     by_date = defaultdict(list)
@@ -13627,6 +13653,12 @@ def main():
             f"lock={lock_n} ({lock_src}) · hist={hist_src}/{hist_save} · secrets={secrets_ok}"
             + (f" · GH err={gh_err[:80]}" if gh_st == "error" and gh_err else "")
         )
+        if active_sport() == "NFL":
+            mlb_n = len(results_for_sport(sport="MLB"))
+            st.info(
+                f"This tab is NFL only. {n_today} unique NFL tickets today stay PENDING until ESPN finals. "
+                f"MLB grades ({mlb_n} rows) are on the MLB lane — flip the sport toggle."
+            )
         if not _gh_configured():
             st.warning(
                 "GitHub secrets missing - Results, Lock, and movement history wipe on reboot. "
