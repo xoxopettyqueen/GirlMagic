@@ -11423,11 +11423,9 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .wind-out{color:#34d399;font-weight:700}
         .wind-in{color:#f87171;font-weight:700}
         .wind-cross{color:#fbbf24}
-        .al-chip{display:inline-block;border-radius:999px;padding:2px 8px;margin:2px 4px 0 0;font-size:.68rem;border:1px solid #2a2038;background:#1a1224}
-        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:520px;min-height:280px;margin:0 auto 28px;padding:24px;border-radius:18px;animation:alIn .35s ease-out}
-        .card.al-lock .card-name,.card.al-speak .card-name{font-size:1.35rem}
-        .al-pack{font-size:.95rem;line-height:1.4}
-        .card.al-lock .card-name,.card.al-speak .card-name,.card.al-shot .card-name,.card.al-home .card-name{font-size:1.45rem}
+        .al-chip{display:inline-block;border-radius:10px;padding:2px 8px;margin:2px 4px 0 0;font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,.08);background:#151321}
+        .card.al-lock,.card.al-speak,.card.al-shot,.card.al-home{text-align:left;max-width:520px;margin:0 auto 20px;padding:24px;border-radius:14px;background:#151321;border:1px solid rgba(255,255,255,.08);animation:alIn .35s ease-out}
+        .card.al-lock .card-name,.card.al-speak .card-name,.card.al-shot .card-name,.card.al-home .card-name{font-size:18px;font-weight:600}
         .card-foot{font-size:.72rem;font-style:italic;text-align:center}
         @keyframes alIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
         .al-kv{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #24182f;padding:2px 0;font-size:.74rem}
@@ -11441,7 +11439,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         .desk-mlb{box-shadow:0 0 14px rgba(244,114,182,.22)}
         .desk-nfl{box-shadow:0 0 14px rgba(45,212,191,.22)}
         .desk-nba{box-shadow:0 0 14px rgba(96,165,250,.22)}
-        .db3{background:#1A1824;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;margin:8px 0;display:flex;flex-direction:column;gap:16px}
+        .db3{background:#151321;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;margin:8px 0;display:flex;flex-direction:column;gap:12px}
         .db3-hero{font-size:28px;font-weight:700;letter-spacing:.02em}
         .db3-mlb{background:linear-gradient(90deg,#fb7185,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent;animation:db3sh 3s ease-in-out infinite}
         .db3-nfl{background:linear-gradient(90deg,#2dd4bf,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent;animation:db3sh 3s ease-in-out infinite}
