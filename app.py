@@ -5948,6 +5948,47 @@ def fetch_nba_board_pack():
     }
 
 
+@st.cache_data(ttl=300, show_spinner=False)
+def fetch_sport_desk(sport="MLB"):
+    """ESPN scoreboard + injury tags. Lineup bar for MLB / NFL / NBA."""
+    sport = (sport or "MLB").upper()
+    path = {
+        "MLB": "baseball/mlb",
+        "NFL": "football/nfl",
+        "NBA": "basketball/nba",
+    }.get(sport, "baseball/mlb")
+    try:
+        day = datetime.strptime(today_az(), "%Y-%m-%d").strftime("%Y%m%d")
+    except Exception:
+        day = datetime.now().strftime("%Y%m%d")
+    games, injuries = [], []
+    try:
+        sb = requests.get(
+            f"https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard",
+            params={"dates": day},
+            timeout=15,
+        ).json()
+    except Exception:
+        return {"games": [], "injuries": [], "msg": f"ESPN {sport} miss"}
+    for ev in sb.get("events") or []:
+        comp = (ev.get("competitions") or [{}])[0]
+        status = ((comp.get("status") or {}).get("type") or {})
+        st_name = str(status.get("description") or status.get("name") or "")
+        games.append({"label": ev.get("shortName") or ev.get("name"), "status": st_name})
+        for c in comp.get("competitors") or []:
+            tm = (c.get("team") or {})
+            for inj in c.get("injuries") or []:
+                ath = inj.get("athlete") or {}
+                stt = str(inj.get("status") or "")
+                injuries.append({
+                    "player": ath.get("displayName") or "",
+                    "team": tm.get("abbreviation"),
+                    "status": stt,
+                    "tone": "no" if stt.lower() in ("out", "doubtful") else "mid",
+                })
+    return {"games": games, "injuries": injuries[:24], "msg": f"{len(games)} {sport} cards · {len(injuries)} injury tags"}
+
+
 def nba_ops_score(row):
     """OPS = 0.30 role + 0.25 matchup + 0.20 pace + 0.15 usage + 0.10 trend. 0–100."""
     role = float(row.get("role_score") or 50)
@@ -11723,21 +11764,25 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         f'</div>',
         unsafe_allow_html=True,
     )
+    desk = fetch_sport_desk(active_sport())
+    inj = desk.get("injuries") or []
+    bits = "".join(
+        f'<span class="db3-tag {i.get("tone") or "mid"}">{i.get("player")} · {i.get("status")}</span>'
+        for i in inj[:10]
+    )
+    games = " · ".join((g.get("label") or "")[:22] for g in (desk.get("games") or [])[:8])
+    extra = ""
     if active_sport() == "NBA":
-        pack = fetch_nba_board_pack()
-        inj = pack.get("injuries") or []
-        bits = "".join(
-            f'<span class="db3-tag no">{i.get("player")} · {i.get("status")}</span>'
-            for i in inj[:12]
-        )
-        games = " · ".join((g.get("label") or "")[:28] for g in (pack.get("games") or [])[:6])
-        st.markdown(
-            f'<div class="db3"><div class="db3-hero db3-nba">🏀 OPS lane · {pack.get("msg")}</div>'
-            f'<div class="db3-stat">{games or "No NBA games on ESPN today"}</div>'
-            f'<div class="db3-tags">{bits or "<span class=db3-tag mid>No injury tags</span>"}</div>'
-            f'<div class="db3-stat">Markets: P15 · 3M3 · A3C · R7 · R10 · score = OPS not Confidence</div></div>',
-            unsafe_allow_html=True,
-        )
+        extra = '<div class="db3-stat">P15 · 3M3 · A3C · R7 · R10 · OPS not Confidence</div>'
+    hero_cls = {"NFL": "db3-nfl", "NBA": "db3-nba"}.get(active_sport(), "db3-mlb")
+    empty_inj = '<span class="db3-tag mid">No injury tags</span>'
+    st.markdown(
+        f'<div class="db3"><div class="db3-hero {hero_cls}">Live desk · {desk.get("msg")}</div>'
+        f'<div class="db3-stat">{games or "No games on ESPN for this date"}</div>'
+        f'<div class="db3-tags">{bits or empty_inj}</div>'
+        f'{extra}</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown(
         f'<div class="tier-row">'
         f'<div class="tier-card tier-hot"><b>🔥 HOT · Active</b><p>Confidence 70–100. Pink-purple glow. Heating / Rhythm / Petty Upside can fire. Max 12 cards.</p></div>'
