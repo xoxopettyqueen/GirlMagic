@@ -1887,6 +1887,10 @@ GLOSSARY_V2 = {
         ("Need One", "0.5 rush / catch / reception, plus money. Separate from HR and Anytime TD."),
         ("Receipts", "Spoke / Locks / Tracker / Time Machine. Grade HIT or MISS. Undo exists."),
         ("Tickets vs Research", "Tickets = TAKE + Shop TAKE. Research = WATCH + LEAN. TAKE must beat Research or we raise the floor."),
+        ("One log", "One TAKE and one WATCH per player per day. Fetch again updates that row. Hit rate = HIT / (HIT+MISS) only."),
+        ("STILL UP", "Box not final yet. Auto-grade flips HIT or MISS when the game is over. After 48 hours with a box, leftover PENDING is MISS."),
+        ("One log", "One TAKE and one WATCH per player per day. Fetch again updates the same row. Hit rate ignores PENDING and dups."),
+        ("STILL UP", "Game not final. Auto-grade closes HIT/MISS when the box is in. After 48 hours with a box, leftover PENDING becomes MISS."),
         ("Lock Open / Now / Close", "First look / latest pregame / last number before the book vanished at first pitch."),
         ("Ghosts / Late / Fallen", "Showed up late or disappeared vs the last snapshot. Not automatic Takes."),
         ("Petty Mode", "Louder words. Same math."),
@@ -5056,6 +5060,93 @@ def _save_local_json(filename, payload):
         return False
 
 
+def _log_family(source):
+    s = str(source or "")
+    if s in ("take_it", "shop_take", "bet_this", "take", "manual_hr"):
+        return "TAKE"
+    if s in ("watch", "shop_lean", "coverage"):
+        return "WATCH"
+    return s or "OTHER"
+
+
+def _normalize_ledger_row(row):
+    if not isinstance(row, dict):
+        return row
+    r = dict(row)
+    name = r.get("player") or r.get("player_name") or ""
+    r["player"] = name
+    r["player_name"] = name
+    fam = _log_family(r.get("source") or r.get("call_type"))
+    r["call_type"] = "TAKE" if fam == "TAKE" else ("WATCH" if fam == "WATCH" else (r.get("call_type") or fam))
+    res = str(r.get("result") or r.get("status") or "PENDING").upper()
+    r["result"] = r.get("result") or res
+    r["status"] = {"LEARN_HIT": "HIT", "LEARN_MISS": "MISS"}.get(res, res or "PENDING")
+    r["stamps"] = list(r.get("stamps") or r.get("methods") or [])
+    if not r.get("methods"):
+        r["methods"] = list(r["stamps"])
+    if r.get("price") and r.get("best_price") is None:
+        r["best_price"] = r.get("price")
+    if r.get("best_price") is not None:
+        r["price"] = r.get("best_price")
+    if r.get("book") and not r.get("best_book"):
+        r["best_book"] = r.get("book")
+    if r.get("best_book"):
+        r["book"] = r.get("best_book")
+    r["created_at"] = r.get("created_at") or r.get("logged_at") or r.get("time") or ""
+    r["updated_at"] = r.get("updated_at") or r.get("logged_at") or ""
+    r["date"] = str(r.get("date") or "")[:10]
+    r["sport"] = r.get("sport") or ""
+    return r
+
+
+def _row_dedupe_key(row):
+    d = str(row.get("date") or "")[:10]
+    p = _fold_player(row.get("player") or row.get("player_name") or "")
+    fam = _log_family(row.get("source") or row.get("call_type"))
+    sport = str(row.get("sport") or row.get("market") or "")
+    return (d, p, fam, sport)
+
+
+def compact_player_logs(rows):
+    """One TAKE and one WATCH per player per date per sport. Keep graded over pending."""
+    if not rows:
+        return rows or []
+    best = {}
+    order = []
+    rank = {"HIT": 0, "LEARN_HIT": 0, "MISS": 1, "LEARN_MISS": 1, "ERROR": 2, "PENDING": 3, "STILL_UP": 3, "SKIP_DUP": 9}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("result") or "") == "SKIP_DUP":
+            continue
+        key = _row_dedupe_key(row)
+        if not key[1]:
+            continue
+        prev = best.get(key)
+        if prev is None:
+            best[key] = row
+            order.append(key)
+            continue
+        pr, cr = str(prev.get("result") or "PENDING"), str(row.get("result") or "PENDING")
+        if rank.get(cr, 5) < rank.get(pr, 5):
+            # keep methods from both
+            meth = list(dict.fromkeys((prev.get("methods") or []) + (row.get("methods") or [])))
+            row = dict(row)
+            row["methods"] = meth
+            if _log_family(prev.get("source")) == "TAKE" and _log_family(row.get("source")) != "TAKE":
+                row["source"] = prev.get("source")
+            best[key] = row
+        elif rank.get(cr, 5) == rank.get(pr, 5):
+            meth = list(dict.fromkeys((prev.get("methods") or []) + (row.get("methods") or [])))
+            keep = prev if str(prev.get("logged_at") or "") >= str(row.get("logged_at") or "") else row
+            keep = dict(keep)
+            keep["methods"] = meth
+            if "shop_take" in (prev.get("source"), row.get("source")) and keep.get("source") == "watch":
+                keep["source"] = "take_it"
+            best[key] = keep
+    return [_normalize_ledger_row(best[k]) for k in order if k in best]
+
+
 def _merge_results_lists(a, b):
     """Union by id; prefer graded HIT/MISS over PENDING; keep newest logged_at."""
     by_id = {}
@@ -5082,7 +5173,7 @@ def _merge_results_lists(a, b):
             # newer logged_at wins
             if str(row.get("logged_at") or "") >= str(prev.get("logged_at") or ""):
                 by_id[rid] = row
-    return list(by_id.values())
+    return compact_player_logs(list(by_id.values()))
 
 
 def _load_results_github():
@@ -5126,6 +5217,7 @@ def load_results():
     merged = pieces[0]
     for extra in pieces[1:]:
         merged = _merge_results_lists(merged, extra)
+    merged = compact_player_logs(merged)
     st.session_state["_results_cache"] = merged
     if isinstance(gh, list) and gh and not local:
         st.session_state["_results_source"] = "github"
@@ -5149,6 +5241,7 @@ def save_results(rows):
         rows = _merge_results_lists(gh, rows)
     if st.session_state.get("_results_cache"):
         rows = _merge_results_lists(st.session_state["_results_cache"], rows)
+    rows = compact_player_logs(rows)
     st.session_state["_results_cache"] = rows
     _save_local_json(RESULTS_FILE, rows)
     if _gh_configured():
@@ -5311,19 +5404,38 @@ def log_bet_this(ev_board, watch_board=None):
     watch_board = watch_board or []
 
     def already(player, source):
-        """Block only the SAME source. WATCH can upgrade to take_it."""
+        """One TAKE family and one WATCH family per player per day."""
+        want = _log_family(source)
         for r in rows:
             if r.get("date") not in (today, today_mlb_date()):
                 continue
+            if str(r.get("sport") or active_sport()) not in (active_sport(), "", None):
+                if r.get("sport") and r.get("sport") != active_sport():
+                    continue
             if r.get("source") == "manual_hr":
                 continue
             if not names_match(r.get("player") or "", player):
                 continue
-            if r.get("source") == source:
-                return True
-            if source == "watch" and r.get("source") in ("take_it", "shop_take"):
-                return True
-        return False
+            if _log_family(r.get("source")) == want:
+                return r
+            if want == "WATCH" and _log_family(r.get("source")) == "TAKE":
+                return r
+        return None
+
+    def touch_row(existing, item, source):
+        existing["time"] = now_az()
+        existing["logged_at"] = now_utc_iso()
+        existing["updated_at"] = now_utc_iso()
+        meth = list(dict.fromkeys((existing.get("methods") or []) + [normalize_method_name(m) for m in (item.get("methods") or [])]))
+        existing["methods"] = meth
+        if source == "take_it":
+            existing["source"] = "take_it"
+        if existing.get("result") in (None, "", "STILL_UP"):
+            existing["result"] = "PENDING"
+        if item.get("best_price") and not existing.get("best_price"):
+            existing["best_price"] = item.get("best_price")
+            existing["best_book"] = item.get("best_book")
+            existing["ending"] = last_two(item.get("best_price"))
 
     def upgrade_watch_to_take(player):
         changed = False
@@ -5341,7 +5453,9 @@ def log_bet_this(ev_board, watch_board=None):
     def append_row(item, source):
         nonlocal added
         player = item["player"]
-        if already(player, source):
+        hit = already(player, source)
+        if hit:
+            touch_row(hit, item, source)
             return
         locked = get_locked(player)
         # Prefer FROZEN pregame lock prices - never learn from live numbers
@@ -5388,14 +5502,15 @@ def log_bet_this(ev_board, watch_board=None):
             "benford_tag": (item.get("benford") or {}).get("tag"),
             "benford_note": (item.get("benford") or {}).get("note"),
             "benford_cluster": (item.get("benford") or {}).get("cluster"),
+            "call_type": "TAKE" if source == "take_it" else "WATCH",
+            "status": "PENDING",
         })
         added += 1
 
     for item in ev_board:
         if item.get("is_bet") and stamp_count(item.get("methods") or [])[0] >= 2:
             upgrade_watch_to_take(item.get("player") or "")
-            if not already(item.get("player") or "", "take_it"):
-                append_row(item, "take_it")
+            append_row(item, "take_it")
             freeze_take_to_ledger(item, "take_it")
     for item in list(watch_board or []) + [x for x in ev_board if not x.get("is_bet")]:
         if item.get("is_bet"):
@@ -5403,12 +5518,9 @@ def log_bet_this(ev_board, watch_board=None):
         stamps, _ms = stamp_count(item.get("methods") or [])
         if stamps < 1:
             continue
-        if stamps >= 2:
-            continue
         append_row(item, "watch")
 
-    if added:
-        save_results(rows)
+    save_results(compact_player_logs(rows))
     return added
 
 
@@ -5422,12 +5534,17 @@ def log_shop_calls(df):
     added = 0
 
     def already_shop(player, source):
-        return any(
-            r.get("date") == today
-            and r.get("player") == player
-            and r.get("source") == source
-            for r in rows
-        )
+        want = _log_family(source)
+        for row in rows:
+            if row.get("date") not in (today, today_mlb_date()):
+                continue
+            if row.get("sport") and row.get("sport") != active_sport():
+                continue
+            if not names_match(row.get("player") or "", player):
+                continue
+            if _log_family(row.get("source")) == want:
+                return row
+        return None
 
     for r in shop:
         if r.get("action") not in ("TAKE", "LEAN"):
@@ -5438,7 +5555,13 @@ def log_shop_calls(df):
         if active_sport() == "NFL" and is_nfl_qb(player):
             continue
         src = "shop_take" if r["action"] == "TAKE" else "shop_lean"
-        if already_shop(player, src):
+        hit = already_shop(player, src)
+        if hit:
+            hit["updated_at"] = now_utc_iso()
+            hit["time"] = now_az()
+            if r.get("best") and not hit.get("best_price"):
+                hit["best_price"] = r.get("best")
+                hit["best_book"] = r.get("best_book")
             continue
         price = r.get("best")
         rows.append({
@@ -5847,7 +5970,22 @@ def auto_grade_pending():
                 row["graded_by"] = tag + ("_study" if study else "")
                 misses += 1
             else:
-                skipped += 1
+                age = 0
+                try:
+                    age = (datetime.strptime(today_az(), "%Y-%m-%d") - datetime.strptime(d[:10], "%Y-%m-%d")).days
+                except Exception:
+                    age = 0
+                if age >= 2 and hit_set:
+                    row["result"] = "LEARN_MISS" if study else "MISS"
+                    row["graded_by"] = tag + "_stale"
+                    misses += 1
+                elif age >= 2 and not hit_set and not miss_pool:
+                    row["result"] = "ERROR"
+                    row["graded_by"] = "box_missing"
+                    skipped += 1
+                else:
+                    row["result"] = "PENDING"
+                    skipped += 1
     flipped = repair_mlb_hits(rows)
     save_results(rows)
     extra = f" · repaired {flipped} false HIT" if flipped else ""
