@@ -2015,6 +2015,25 @@
       "best_book": "draftkings",
       "time": "08:35 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Heliot Ramos",
+      "source": "take_it",
+      "score": 74,
+      "methods": [
+        "FD 40",
+        "MGM 25",
+        "Match 25",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "Fanatics Rogue",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "08:35 AM",
+      "sport": "MLB"
     }
   ]
 }
