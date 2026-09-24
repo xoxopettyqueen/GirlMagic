@@ -1252,21 +1252,22 @@ TAKE_STAMP_METHODS = {
     "MGM 25",
     "Match 25",
     "MGM Exact",
-    "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
-    "Fanatics Rogue",
-    "B365 way over MGM",
-    "B365 a bit over FD",
+    "FD 600", "FD+MGM classic", "FD a little long",
+    "Books tight",
+    "Multi-book Shorten",
+    "Rivers way over pack",
 }
-# 365 is a stamp, but it only greens with a real FD / DK / MGM-25 trick.
-B365_TELL_STAMPS = {"B365 way over MGM", "B365 a bit over FD"}
+# 365 gap tells are study only. 365 as the *ticket book* still counts as a price.
+B365_TELL_STAMPS = set()
 CLASSIC_TRICK_STAMPS = {
     "DK 10",
-    "FD Pattern", "FD 600", "FD+MGM classic", "FD a little long",
+    "FD 600", "FD+MGM classic", "FD a little long",
     "MGM 25", "Match 25", "MGM Exact",
+    "Books tight",
+    "Multi-book Shorten",
 }
 # Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
 NFL_STAMP_METHODS = {
-    "DK FD-style",
     "Books tight", "Multi-book method", "Multi-book Shorten",
     "MGM 25", "Match 25", "MGM 75", "Match 75",
     "MGM Exact",
@@ -1274,8 +1275,6 @@ NFL_STAMP_METHODS = {
     "Fanatics Rogue",
     "Stayed in the group",
     "FD a little long",
-    "B365 way over MGM",
-    "B365 a bit over FD",
 }
 
 PRIORITY_METHODS = {
@@ -1288,8 +1287,8 @@ PRIORITY_METHODS = {
     "FD 90",
     "EV Premium", "Kelly Premium",
 }
-TAKE_HOT_ENDS = {10, 25, 50, 75, 90}  # ticket ending (DK/FD/HR). MGM-50 *method* is still support-only
-TAKE_STRONG_BUCKETS = {"+400s", "+500s", "+600s"}  # +600s need a real priority tag, not MGM juice
+TAKE_HOT_ENDS = {25, 75}  # 50/00/10 were volume. 25/75 beat the 13% floor.
+TAKE_STRONG_BUCKETS = {"+400s", "+500s"}  # +600s+ need a real stamp, not Shop TAKE by default
 TAKE_STRONG_BOOKS = {"fanduel", "draftkings", "hardrockbet", "fanatics", "caesars", "bet365"}
 BOOK_PERSONALITY = {
     "Fanatics Rogue", "Caesars Classic", "HardRock Heater",
@@ -1317,8 +1316,8 @@ TAKE_IT_STRONG = {
 }
 # SUPPORT = tagged / WATCH / Tracker only - never core, never unlocks alone
 SUPPORT_ONLY = {
-    "Books tight", "Exact Match", "All books same",
-    "DK FD-style", "Same on 3+ books",
+    "Exact Match", "All books same",
+    "DK FD-style", "FD Pattern", "Same on 3+ books",
     "Match 75", "MGM 75",
     "Match 50", "MGM 50",
     "Match 00", "MGM 00",
@@ -1328,9 +1327,9 @@ SUPPORT_ONLY = {
     "FD 40", "MGM 60", "MGM 10", "MGM 40",
     "EV Support", "Kelly Support", "EV Caution", "Kelly Caution",
     "Trend Heating", "Trend Cooling", "Trend Chaotic",
-    "B365 over HardRock", "B365 over MGM",
+    "B365 over HardRock", "B365 over MGM", "B365 way over MGM", "B365 a bit over FD",
     "Fanatics over pack",
-    "Rivers way over pack", "Rivers a bit over pack", "Rivers short vs pack",
+    "Rivers a bit over pack", "Rivers short vs pack",
     "Caesars 90", "HardRock 50", "HardRock 00",
 }
 TRACKER_MIN_N = 25  # hide thin samples on Tracker (n < 25)
@@ -1957,7 +1956,8 @@ GLOSSARY_V2 = {
         ("FD Pattern", "FanDuel +400+ ending 10/20/30/60/70/90."),
         ("FD a little long", "FD pattern number 15–75 longer than DK or MGM on the short plus-money guys (+400 to +750). Those have been cashing. Flyer +1100 with FD +75 is not this stamp."),
         ("B365 over MGM", "Bet365 at least 40 longer than MGM. Support. Look."),
-        ("B365 way over MGM", "Stamp. 365 WAY longer than MGM. Only greens if a classic trick also fired (DK 10, FD Pattern/600, MGM 25 / Exact). 365 + Exact Match / MGM 50 is not enough."),
+        ("B365 way over MGM", "Archived stamp. 5–10% at scale. Study only. 365 as the ticket *price* still counts."),
+        ("FD Pattern", "Archived stamp. 10% on 150 plays. Tag only. FD 600 still greens."),
         ("B365 a bit over FD", "Stamp. 365 is 15–80 longer than FanDuel. Same rule: needs a classic FD / DK / MGM-25 partner. Never greens alone."),
         ("BetRivers", "Pulled with the US books. Tracked vs FD/DK/MGM/365. Tags: Rivers way over pack (100+), a bit over (25–99), short vs pack (−75). Study only — does not green a ticket."),
         ("FD 600", "Specific FanDuel number we watch."),
@@ -2471,10 +2471,10 @@ FAIR_WEIGHTS = {
     "draftkings": 0.15,
 }
 FAIR_OTHER_WEIGHT = 0.10
-SHOP_GAP_TAKE_LONG = 50
-SHOP_GAP_LEAN_LONG = 25
+SHOP_GAP_TAKE_LONG = 70
+SHOP_GAP_LEAN_LONG = 40
 SHOP_GAP_DONT_LONG = -35
-SHOP_GAP_TAKE_MID = 50
+SHOP_GAP_TAKE_MID = 55
 SHOP_GAP_LEAN_MID = 40
 
 
@@ -2665,6 +2665,11 @@ def build_shop_board(df):
         vtags = value_method_tags(ev, kelly_f)
         if ktag == "Avoid" and action == "TAKE":
             action, why, cls = "LEAN", why + " · Kelly avoid (thin value)", "shop-lean"
+        end_best = last_two(best) if best is not None else None
+        if action == "TAKE" and end_best == 0:
+            action, why, cls = "LEAN", why + " · 00 ending is volume not edge", "shop-lean"
+        if action == "TAKE" and book_label(best_book) == "Fanatics" and edge < 80:
+            action, why, cls = "LEAN", why + " · Fanatics best is usually the long tax", "shop-lean"
         rows.append({
             "player": player, "event": event or "", "books": book_px,
             "best": best, "best_book": best_book, "median": med, "fair": fair,
