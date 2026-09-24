@@ -2358,6 +2358,21 @@
       "best_book": "draftkings",
       "time": "09:07 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Travis Etienne Jr.",
+      "source": "take_it",
+      "score": 35,
+      "methods": [
+        "Books tight",
+        "MGM Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 145,
+      "best_book": "draftkings",
+      "time": "09:07 AM",
+      "sport": "NFL"
     }
   ]
 }
