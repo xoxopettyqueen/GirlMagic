@@ -11227,6 +11227,22 @@ def _db3_tone(score):
     return "mid"
 
 
+def _strip_tag(html):
+    t = str(html or "")
+    out = []
+    skip = False
+    for ch in t:
+        if ch == "<":
+            skip = True
+            continue
+        if ch == ">":
+            skip = False
+            continue
+        if not skip:
+            out.append(ch)
+    return "".join(out).strip()
+
+
 def _data_block_30(data, sport="MLB"):
     """Data Block 3.0 — hero + threat + tags + trend + stats. Hide empty lines."""
     sport = (sport or "MLB").upper()
@@ -11237,7 +11253,7 @@ def _data_block_30(data, sport="MLB"):
             m = _re.search(r"(\d+)\s*tgt", str(data.get("summary") or ""), _re.I)
             if m:
                 tgt = m.group(1)
-        hero = f'<div class="db3-hero db3-nfl">TGT {tgt if tgt is not None else "—"}</div>'
+        hero = f'<b>Targets {tgt if tgt is not None else "—"}</b><br>'
         dvp = data.get("dvp_tdg")
         try:
             dvp_f = float(dvp)
@@ -11271,7 +11287,7 @@ def _data_block_30(data, sport="MLB"):
             stats.append(f'<div class="db3-stat">Pts L7 {data.get("points_l7")}</div>')
     else:
         ev = data.get("ev")
-        hero = f'<div class="db3-hero db3-mlb">🎯 EV {ev:.1f}</div>' if ev is not None else '<div class="db3-hero db3-mlb">🎯 EV —</div>'
+        hero = f'<b>EV {ev:.1f}</b><br>' if ev is not None else ""
         bars = []
         pa = data.get("pull_air")
         if pa is not None:
@@ -11309,14 +11325,9 @@ def _data_block_30(data, sport="MLB"):
             stats.append(f'<div class="db3-stat">Pulled air {data.get("pull_air"):.0f}%</div>')
         if data.get("la") is not None:
             stats.append(f'<div class="db3-stat">LA {data.get("la"):.0f}°</div>')
-    tag_html = "".join(tags) if tags else ""
-    stat_html = "".join(stats) if stats else '<div class="db3-stat">Waiting on live sample</div>'
-    return (
-        f'<div class="db3">{hero}{threat}'
-        f'<div class="db3-tags">{tag_html}</div>'
-        f'<div class="db3-strip {strip}" title="Last-3 trend"></div>'
-        f'{stat_html}</div>'
-    )
+    tag_html = (" · ".join(_strip_tag(t) for t in tags) + "<br>") if tags else ""
+    stat_html = " · ".join(_strip_tag(s) for s in stats)
+    return f'<div class="al-pack">{hero}{tag_html}{stat_html}</div>'
 
 
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
