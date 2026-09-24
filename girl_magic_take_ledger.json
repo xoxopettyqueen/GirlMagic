@@ -1879,6 +1879,26 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Zach Neto",
+      "source": "take_it",
+      "score": 67,
+      "methods": [
+        "Match 50",
+        "Stayed in the group",
+        "MGM Exact",
+        "Fanatics Rogue",
+        "MGM 50",
+        "Last one left",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
