@@ -1549,6 +1549,30 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Kyle Karros",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "MGM Exact",
+        "Multi-book method",
+        "B365 over HardRock",
+        "FD Pattern",
+        "FD+MGM classic",
+        "HardRock 50",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 830,
+      "best_book": "draftkings",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
