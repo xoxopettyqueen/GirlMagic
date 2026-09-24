@@ -995,6 +995,19 @@ SPORT_CFG = {
         "lock_count": "NFL TD",
         "shop_empty": "Fetch Anytime TD — Shop fills when the slate breathes.",
     },
+    "NBA": {
+        "key": "basketball_nba",
+        "market": "player_points",
+        "label": "NBA longshots · P15 / 3M3 / A3C / R7 / R10",
+        "hit": "cash",
+        "hits": "cashes",
+        "sgo": False,
+        "days": 2,
+        "when": "Tip",
+        "lock_caption": "NBA longshots locked pre-tip. OPS is not Confidence.",
+        "lock_count": "NBA props",
+        "shop_empty": "Fetch NBA player points first. Other markets ride the same slate.",
+    },
 }
 
 def active_sport():
@@ -1010,11 +1023,13 @@ def row_sport(r):
     if not isinstance(r, dict):
         return "MLB"
     s = str(r.get("sport") or "").strip().upper()
-    if s in ("NFL", "MLB"):
+    if s in ("NFL", "MLB", "NBA"):
         return s
     blob = " ".join(
         str(r.get(k) or "") for k in ("market", "source", "methods")
     ).lower()
+    if any(x in blob for x in ("p15", "3m3", "a3c", "nba", "player_points", "player_rebounds")):
+        return "NBA"
     if any(x in blob for x in ("anytime_td", "anytime td", "nfl", "touchdown")):
         return "NFL"
     if any(x in blob for x in ("batter_home_runs", "home_run", "homer", "mlb")):
@@ -5883,6 +5898,70 @@ def fetch_nfl_td_scorers(dates=None):
         kept.add(s)
     return kept, finished, msg
 
+
+@st.cache_data(ttl=300, show_spinner=False)
+def fetch_nba_board_pack():
+    """ESPN NBA scoreboard: games, injuries, projected starters. Free feed."""
+    games, injuries, starters = [], [], []
+    try:
+        day = datetime.strptime(today_az(), "%Y-%m-%d").strftime("%Y%m%d")
+    except Exception:
+        day = datetime.now().strftime("%Y%m%d")
+    try:
+        sb = requests.get(
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+            params={"dates": day},
+            timeout=15,
+        ).json()
+    except Exception:
+        return {"games": [], "injuries": [], "starters": [], "msg": "ESPN NBA miss"}
+    for ev in sb.get("events") or []:
+        comp = (ev.get("competitions") or [{}])[0]
+        status = ((comp.get("status") or {}).get("type") or {})
+        teams = []
+        for c in comp.get("competitors") or []:
+            tm = (c.get("team") or {})
+            teams.append({
+                "name": tm.get("displayName") or tm.get("abbreviation"),
+                "abbr": tm.get("abbreviation"),
+                "home": c.get("homeAway") == "home",
+            })
+            for inj in c.get("injuries") or []:
+                ath = inj.get("athlete") or {}
+                injuries.append({
+                    "player": ath.get("displayName") or "",
+                    "team": tm.get("abbreviation"),
+                    "status": str(inj.get("status") or inj.get("type") or ""),
+                    "detail": str(inj.get("details") or inj.get("longComment") or "")[:80],
+                })
+        games.append({
+            "label": ev.get("name") or ev.get("shortName"),
+            "status": status.get("description") or status.get("name"),
+            "time": ev.get("date"),
+            "teams": teams,
+        })
+    return {
+        "games": games,
+        "injuries": injuries[:40],
+        "starters": starters,
+        "msg": f"{len(games)} NBA games · {len(injuries)} injury tags",
+    }
+
+
+def nba_ops_score(row):
+    """OPS = 0.30 role + 0.25 matchup + 0.20 pace + 0.15 usage + 0.10 trend. 0–100."""
+    role = float(row.get("role_score") or 50)
+    match = float(row.get("matchup_rating") or 50)
+    pace = float(row.get("pace") or 50)
+    usg = float(row.get("usage") or 50)
+    trend = float(row.get("trend_last3") or 50)
+    if usg <= 1.5:
+        usg = usg * 100
+    ops = 0.30 * role + 0.25 * match + 0.20 * pace + 0.15 * usg + 0.10 * trend
+    return int(max(0, min(100, round(ops))))
+
+
+NBA_MARKETS = ("P15", "3M3", "A3C", "R7", "R10")
 
 
 GRADE_SOURCES = ("take_it", "shop_take", "manual_hr")
@@ -11644,6 +11723,21 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         f'</div>',
         unsafe_allow_html=True,
     )
+    if active_sport() == "NBA":
+        pack = fetch_nba_board_pack()
+        inj = pack.get("injuries") or []
+        bits = "".join(
+            f'<span class="db3-tag no">{i.get("player")} · {i.get("status")}</span>'
+            for i in inj[:12]
+        )
+        games = " · ".join((g.get("label") or "")[:28] for g in (pack.get("games") or [])[:6])
+        st.markdown(
+            f'<div class="db3"><div class="db3-hero db3-nba">🏀 OPS lane · {pack.get("msg")}</div>'
+            f'<div class="db3-stat">{games or "No NBA games on ESPN today"}</div>'
+            f'<div class="db3-tags">{bits or "<span class=db3-tag mid>No injury tags</span>"}</div>'
+            f'<div class="db3-stat">Markets: P15 · 3M3 · A3C · R7 · R10 · score = OPS not Confidence</div></div>',
+            unsafe_allow_html=True,
+        )
     st.markdown(
         f'<div class="tier-row">'
         f'<div class="tier-card tier-hot"><b>🔥 HOT · Active</b><p>Confidence 70–100. Pink-purple glow. Heating / Rhythm / Petty Upside can fire. Max 12 cards.</p></div>'
