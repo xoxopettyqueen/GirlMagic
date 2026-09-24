@@ -2373,6 +2373,27 @@
       "best_book": "draftkings",
       "time": "09:07 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Zay Flowers",
+      "source": "take_it",
+      "score": 64,
+      "methods": [
+        "Fanatics Loud",
+        "MGM Exact",
+        "FD 50",
+        "B365 over MGM",
+        "B365 Exact",
+        "Multi-book method",
+        "B365 way over MGM",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanduel",
+      "time": "09:45 AM",
+      "sport": "NFL"
     }
   ]
 }
