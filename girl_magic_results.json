@@ -150826,5 +150826,233 @@
     "benford_tag": "Authentic",
     "benford_note": "",
     "benford_cluster": 0.62
+  },
+  {
+    "id": "2026-09-24_Ezequiel Duran_shop_lean_128",
+    "date": "2026-09-24",
+    "time": "09:57 AM",
+    "player": "Ezequiel Duran",
+    "score": 0,
+    "edge": 128,
+    "best_price": 980,
+    "best_book": "draftkings",
+    "median": 850,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 600,
+      "betrivers": 1100,
+      "caesars": 750,
+      "draftkings": 980,
+      "fanatics": 950,
+      "fanduel": 800,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 80,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:57:37.879872+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Jordan Walker_shop_take_108",
+    "date": "2026-09-24",
+    "time": "09:57 AM",
+    "player": "Jordan Walker",
+    "score": 0,
+    "edge": 108,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 825,
+    "book_prices": {
+      "bet365": 900,
+      "betmgm": 650,
+      "betrivers": 750,
+      "caesars": 850,
+      "draftkings": 800,
+      "fanatics": 900,
+      "fanduel": 950,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T16:57:37.886197+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_James McCann_shop_take_93",
+    "date": "2026-09-24",
+    "time": "09:57 AM",
+    "player": "James McCann",
+    "score": 0,
+    "edge": 93,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 549,
+    "book_prices": {
+      "betmgm": 525,
+      "caesars": 525,
+      "draftkings": 549,
+      "fanatics": 650,
+      "fanduel": 560
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T16:57:37.890515+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Agust\u00edn Ram\u00edrez_shop_take_62",
+    "date": "2026-09-24",
+    "time": "09:57 AM",
+    "player": "Agust\u00edn Ram\u00edrez",
+    "score": 0,
+    "edge": 62,
+    "best_price": 750,
+    "best_book": "bet365",
+    "median": 690,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 800,
+      "betrivers": 650,
+      "caesars": 700,
+      "draftkings": 680,
+      "fanatics": 650,
+      "fanduel": 600,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T16:57:37.898095+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Drake Baldwin_shop_take_60",
+    "date": "2026-09-24",
+    "time": "09:57 AM",
+    "player": "Drake Baldwin",
+    "score": 0,
+    "edge": 60,
+    "best_price": 550,
+    "best_book": "fanatics",
+    "median": 480,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 390,
+      "betrivers": 500,
+      "caesars": 475,
+      "draftkings": 485,
+      "fanatics": 550,
+      "fanduel": 490,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T16:57:37.899407+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_JJ Bleday_shop_take_60",
+    "date": "2026-09-24",
+    "time": "09:57 AM",
+    "player": "JJ Bleday",
+    "score": 0,
+    "edge": 60,
+    "best_price": 650,
+    "best_book": "fanatics",
+    "median": 575,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 550,
+      "betrivers": 700,
+      "caesars": 575,
+      "draftkings": 586,
+      "fanatics": 650,
+      "fanduel": 570,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T16:57:37.899989+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_A.J. Ewing_shop_lean_50",
+    "date": "2026-09-24",
+    "time": "09:57 AM",
+    "player": "A.J. Ewing",
+    "score": 0,
+    "edge": 50,
+    "best_price": 870,
+    "best_book": "draftkings",
+    "median": 800,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 800,
+      "betrivers": 800,
+      "caesars": 850,
+      "draftkings": 870,
+      "fanatics": 750,
+      "fanduel": 800,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:57:37.905360+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
