@@ -149548,5 +149548,203 @@
     "benford_tag": "Fake",
     "benford_note": "",
     "benford_cluster": 0.5
+  },
+  {
+    "id": "2026-09-24_Miguel Vargas_shop_take_134",
+    "date": "2026-09-24",
+    "time": "09:35 AM",
+    "player": "Miguel Vargas",
+    "score": 0,
+    "edge": 134,
+    "best_price": 550,
+    "best_book": "bet365",
+    "median": 400,
+    "book_prices": {
+      "bet365": 550,
+      "betmgm": 500,
+      "betrivers": 350,
+      "caesars": 390,
+      "draftkings": 400,
+      "fanatics": 390,
+      "fanduel": 420,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T16:35:35.816694+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Sal Stewart_shop_lean_105",
+    "date": "2026-09-24",
+    "time": "09:35 AM",
+    "player": "Sal Stewart",
+    "score": 0,
+    "edge": 105,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 584,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 475,
+      "betrivers": 650,
+      "caesars": 575,
+      "draftkings": 593,
+      "fanatics": 700,
+      "fanduel": 570,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:35:35.823531+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Heriberto Hern\u00e1ndez_shop_lean_49",
+    "date": "2026-09-24",
+    "time": "09:35 AM",
+    "player": "Heriberto Hern\u00e1ndez",
+    "score": 0,
+    "edge": 49,
+    "best_price": 525,
+    "best_book": "bet365",
+    "median": 469,
+    "book_prices": {
+      "bet365": 525,
+      "betmgm": 450,
+      "betrivers": 410,
+      "caesars": 475,
+      "draftkings": 468,
+      "fanatics": 500,
+      "fanduel": 470,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:35:35.863984+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Elly De La Cruz_shop_lean_47",
+    "date": "2026-09-24",
+    "time": "09:35 AM",
+    "player": "Elly De La Cruz",
+    "score": 0,
+    "edge": 47,
+    "best_price": 475,
+    "best_book": "bet365",
+    "median": 430,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 525,
+      "betrivers": 430,
+      "caesars": 425,
+      "draftkings": 426,
+      "fanatics": 450,
+      "fanduel": 430,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:35:35.864578+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Kenley Jansen_shop_lean_42",
+    "date": "2026-09-24",
+    "time": "09:35 AM",
+    "player": "Kenley Jansen",
+    "score": 0,
+    "edge": 42,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 910,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 450,
+      "betrivers": 950,
+      "caesars": 950,
+      "draftkings": 920,
+      "fanatics": 950,
+      "fanduel": 870,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:35:35.868981+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-24_Bryce Harper_shop_lean_29",
+    "date": "2026-09-24",
+    "time": "09:35 AM",
+    "player": "Bryce Harper",
+    "score": 0,
+    "edge": 29,
+    "best_price": 525,
+    "best_book": "fanatics",
+    "median": 484,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 400,
+      "betrivers": 500,
+      "caesars": 500,
+      "draftkings": 478,
+      "fanatics": 525,
+      "fanduel": 490,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-24T16:35:35.874655+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
