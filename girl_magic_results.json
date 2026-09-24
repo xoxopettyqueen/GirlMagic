@@ -128184,5 +128184,136 @@
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Tommy Edman_shop_take_124",
+    "date": "2026-09-23",
+    "time": "07:26 PM",
+    "player": "Tommy Edman",
+    "score": 0,
+    "edge": 124,
+    "best_price": 750,
+    "best_book": "fanatics",
+    "median": 625,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 400,
+      "betrivers": 700,
+      "caesars": 575,
+      "draftkings": 700,
+      "fanatics": 750,
+      "fanduel": 650,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T02:26:12.423371+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Fernando Tatis Jr._shop_take_64",
+    "date": "2026-09-23",
+    "time": "07:26 PM",
+    "player": "Fernando Tatis Jr.",
+    "score": 0,
+    "edge": 64,
+    "best_price": 575,
+    "best_book": "fanatics",
+    "median": 487,
+    "book_prices": {
+      "bet365": 400,
+      "betmgm": 360,
+      "betrivers": 500,
+      "caesars": 475,
+      "draftkings": 475,
+      "fanatics": 575,
+      "fanduel": 550,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+500s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T02:26:12.434409+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Teoscar Hern\u00e1ndez_shop_take_64",
+    "date": "2026-09-23",
+    "time": "07:26 PM",
+    "player": "Teoscar Hern\u00e1ndez",
+    "score": 0,
+    "edge": 64,
+    "best_price": 440,
+    "best_book": "fanatics",
+    "median": 367,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 333,
+      "betrivers": 340,
+      "caesars": 350,
+      "draftkings": 360,
+      "fanatics": 440,
+      "fanduel": 380,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 40,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T02:26:12.435051+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
+  },
+  {
+    "id": "2026-09-23_Christian Moore_shop_take_52",
+    "date": "2026-09-23",
+    "time": "07:26 PM",
+    "player": "Christian Moore",
+    "score": 0,
+    "edge": 52,
+    "best_price": 575,
+    "best_book": "hardrockbet",
+    "median": 500,
+    "book_prices": {
+      "bet365": 475,
+      "betrivers": 650,
+      "caesars": 475,
+      "draftkings": 475,
+      "fanatics": 550,
+      "fanduel": 500,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+500s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-24T02:26:12.435647+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs"
   }
 ]
