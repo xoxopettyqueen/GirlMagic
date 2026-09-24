@@ -1752,6 +1752,23 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Cody Bellinger",
+      "source": "take_it",
+      "score": 81,
+      "methods": [
+        "Multi-book method",
+        "Fanatics Rogue",
+        "FD Pattern",
+        "DK 10",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
