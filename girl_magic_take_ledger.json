@@ -1838,6 +1838,25 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Mookie Betts",
+      "source": "take_it",
+      "score": 73,
+      "methods": [
+        "MGM Exact",
+        "B365 over MGM",
+        "Multi-book Shorten",
+        "Fanatics Rogue",
+        "HardRock 00",
+        "MGM 40",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
