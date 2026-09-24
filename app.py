@@ -12015,21 +12015,27 @@ def main():
                 st.session_state["selected_games"] = []
                 st.rerun()
         st.session_state["selected_games"] = chosen
-        manual_fetch = st.button("Fetch", type="primary", use_container_width=True)
+        fetched_on = st.session_state.get("slate_fetched_on")
+        already_today = fetched_on == today_az() and bool(st.session_state.get("odds"))
+        st.caption("Fetch loads the slate once. Shop tracks movement. Do not Fetch all day.")
+        force_again = False
+        if already_today:
+            force_again = st.checkbox("Fetch again (dev — slate already loaded today)", value=False, key="force_fetch")
+        manual_fetch = st.button(
+            "Fetch slate" if not already_today else "Slate loaded",
+            type="secondary",
+            use_container_width=True,
+            disabled=already_today and not force_again,
+            help="Fetch loads the slate. Once per day. Shop is movement.",
+        )
         if "last_refresh_count" not in st.session_state:
             st.session_state["last_refresh_count"] = refresh_count
+        # Auto-refetch on the timer. Reloads live odds only. Does not write the ledger.
         auto_fetch = refresh_count != st.session_state["last_refresh_count"] and bool(chosen)
-        first_load = bool(chosen) and not st.session_state.get("odds") and st.session_state.get("auto_once") is not False
-        try:
-            af = str(st.query_params.get("autofetch", "") or "").lower()
-        except Exception:
-            af = ""
-        ping_fetch = af in ("1", "true", "yes")
         if auto_fetch:
             st.session_state["last_refresh_count"] = refresh_count
+        first_load = bool(chosen) and not st.session_state.get("odds")
         if first_load:
-            auto_fetch = True
-        if ping_fetch and chosen:
             auto_fetch = True
         if (manual_fetch or auto_fetch) and chosen:
             with st.spinner("Fetching..."):
@@ -12048,6 +12054,7 @@ def main():
                 st.session_state["last_selected"] = list(chosen)
                 st.session_state["new_fetch"] = True
                 st.session_state["last_fetch_time"] = now_az()
+                st.session_state["slate_fetched_on"] = today_az()
                 st.session_state["auto_once"] = False
                 st.session_state.pop("_lineup_filter_ok", None)
                 st.session_state.pop("_lineup_filter_note", None)
