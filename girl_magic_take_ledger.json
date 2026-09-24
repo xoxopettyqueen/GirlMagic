@@ -1641,6 +1641,31 @@
       "best_book": "fanatics",
       "time": "08:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Liam Hicks",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "DK FD-style",
+        "Rivers a bit over pack",
+        "Match 75",
+        "MGM 75",
+        "Stayed in the group",
+        "MGM Exact",
+        "Multi-book method",
+        "Fanatics over pack",
+        "FD Pattern",
+        "HardRock 00",
+        "FD+MGM classic",
+        "Fanatics Drift",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1200,
+      "best_book": "fanatics",
+      "time": "08:11 AM",
+      "sport": "MLB"
     }
   ]
 }
