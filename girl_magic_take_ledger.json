@@ -1380,6 +1380,24 @@
       "best_book": "fanduel",
       "time": "12:30 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jaxon Smith-Njigba",
+      "source": "take_it",
+      "score": 66,
+      "methods": [
+        "MGM Exact",
+        "HardRock 50",
+        "FD 50",
+        "Rivers short vs pack",
+        "Multi-book method",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "draftkings",
+      "time": "12:30 PM",
+      "sport": "NFL"
     }
   ]
 }
