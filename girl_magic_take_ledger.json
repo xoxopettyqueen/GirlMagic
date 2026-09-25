@@ -1398,6 +1398,24 @@
       "best_book": "draftkings",
       "time": "12:30 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Davante Adams",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "Rivers short vs pack",
+        "MGM 25",
+        "Match 25",
+        "B365 Exact",
+        "HardRock 00",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "draftkings",
+      "time": "12:30 PM",
+      "sport": "NFL"
     }
   ]
 }
