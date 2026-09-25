@@ -1341,6 +1341,27 @@
       "best_book": "fanatics",
       "time": "12:22 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Seth McGowan",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "MGM Exact",
+        "MGM 50",
+        "Rivers way over pack",
+        "B365 over HardRock",
+        "FD 50",
+        "Match 50",
+        "HardRock 00",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanduel",
+      "time": "12:30 PM",
+      "sport": "NFL"
     }
   ]
 }
