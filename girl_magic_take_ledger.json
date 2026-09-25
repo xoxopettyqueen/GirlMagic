@@ -1467,6 +1467,27 @@
       "best_book": "hardrockbet",
       "time": "01:56 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Adael Amador",
+      "source": "take_it",
+      "score": 96,
+      "methods": [
+        "MGM Exact",
+        "FD+MGM classic",
+        "Fanatics Drift",
+        "MGM 25",
+        "Match 25",
+        "Fanatics over pack",
+        "FD Pattern",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "01:56 PM",
+      "sport": "MLB"
     }
   ]
 }
