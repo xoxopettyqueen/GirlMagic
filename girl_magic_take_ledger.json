@@ -1533,6 +1533,30 @@
       "best_book": "draftkings",
       "time": "01:56 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jake McCarthy",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "MGM Exact",
+        "HardRock 00",
+        "DK FD-style",
+        "B365 way over MGM",
+        "FD+MGM classic",
+        "B365 a bit over FD",
+        "MGM 25",
+        "Match 25",
+        "B365 over MGM",
+        "Multi-book method",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 900,
+      "best_book": "hardrockbet",
+      "time": "01:56 PM",
+      "sport": "MLB"
     }
   ]
 }
