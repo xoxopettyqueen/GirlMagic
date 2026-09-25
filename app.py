@@ -5564,6 +5564,7 @@ def log_shop_calls(df):
     rows = load_results()
     today = today_az()
     added = 0
+    touched = 0
 
     def already_shop(player, source):
         want = _log_family(source)
@@ -5591,9 +5592,12 @@ def log_shop_calls(df):
         if hit:
             hit["updated_at"] = now_utc_iso()
             hit["time"] = now_az()
+            if r["action"] == "TAKE" and hit.get("source") in ("watch", "shop_lean", "coverage"):
+                hit["source"] = "shop_take"
             if r.get("best") and not hit.get("best_price"):
                 hit["best_price"] = r.get("best")
                 hit["best_book"] = r.get("best_book")
+            touched += 1
             continue
         price = r.get("best")
         rows.append({
@@ -5613,7 +5617,7 @@ def log_shop_calls(df):
             "market": "anytime_td" if active_sport() == "NFL" else "batter_home_runs",
         })
         added += 1
-    if added:
+    if added or touched:
         save_results(rows)
     return added
 
