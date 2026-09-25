@@ -1700,6 +1700,28 @@
       "best_book": "hardrockbet",
       "time": "02:12 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Kody Clemens",
+      "source": "take_it",
+      "score": 85,
+      "methods": [
+        "FD+MGM classic",
+        "FD a little long",
+        "FD 90",
+        "MGM 25",
+        "Stayed in the group",
+        "Match 25",
+        "Multi-book method",
+        "FD Pattern",
+        "Last one left",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 500,
+      "best_book": "fanatics",
+      "time": "02:34 PM",
+      "sport": "MLB"
     }
   ]
 }
