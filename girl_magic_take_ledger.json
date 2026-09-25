@@ -1225,6 +1225,25 @@
       "best_book": "draftkings",
       "time": "09:38 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jaylen Warren",
+      "source": "take_it",
+      "score": 73,
+      "methods": [
+        "MGM Exact",
+        "B365 75",
+        "FD a little long",
+        "Caesars Classic",
+        "Multi-book method",
+        "FD 600",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanduel",
+      "time": "09:38 AM",
+      "sport": "NFL"
     }
   ]
 }
