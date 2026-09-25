@@ -1244,6 +1244,25 @@
       "best_book": "fanduel",
       "time": "09:38 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jadarian Price",
+      "source": "take_it",
+      "score": 60,
+      "methods": [
+        "MGM Exact",
+        "HardRock 50",
+        "FD 50",
+        "Fanatics Loud",
+        "Rivers a bit over pack",
+        "Multi-book method",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 750,
+      "best_book": "draftkings",
+      "time": "09:38 AM",
+      "sport": "NFL"
     }
   ]
 }
