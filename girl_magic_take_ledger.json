@@ -1654,6 +1654,27 @@
       "best_book": "hardrockbet",
       "time": "02:04 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Ezequiel Tovar",
+      "source": "take_it",
+      "score": 96,
+      "methods": [
+        "MGM Exact",
+        "HardRock 00",
+        "DK FD-style",
+        "FD a little long",
+        "Multi-book Shorten",
+        "B365 over MGM",
+        "Multi-book method",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 900,
+      "best_book": "hardrockbet",
+      "time": "02:12 PM",
+      "sport": "MLB"
     }
   ]
 }
