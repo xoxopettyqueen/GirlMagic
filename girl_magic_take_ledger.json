@@ -1263,6 +1263,34 @@
       "best_book": "draftkings",
       "time": "09:38 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Vaughn Grissom",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "MGM Exact",
+        "HardRock 50",
+        "DK FD-style",
+        "B365 way over MGM",
+        "FD+MGM classic",
+        "B365 over HardRock",
+        "Fanatics Drift",
+        "MGM 25",
+        "Match 25",
+        "B365 over MGM",
+        "Rivers a bit over pack",
+        "Multi-book method",
+        "FD Pattern",
+        "Stayed in the group",
+        "Fanatics over pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "09:39 AM",
+      "sport": "MLB"
     }
   ]
 }
