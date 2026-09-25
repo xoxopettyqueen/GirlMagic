@@ -12389,18 +12389,12 @@ def main():
                 st.session_state["selected_games"] = []
                 st.rerun()
         st.session_state["selected_games"] = chosen
-        fetched_on = st.session_state.get("slate_fetched_on")
-        already_today = fetched_on == today_az() and bool(st.session_state.get("odds"))
-        st.caption("Fetch loads the slate once. Shop tracks movement. Do not Fetch all day.")
-        force_again = False
-        if already_today:
-            force_again = st.checkbox("Fetch again (dev — slate already loaded today)", value=False, key="force_fetch")
+        st.caption("Fetch as many times as you need after sleep. Same name same day = one TAKE and one WATCH, not a new ticket.")
         manual_fetch = st.button(
-            "Fetch slate" if not already_today else "Slate loaded",
-            type="secondary",
+            "Fetch",
+            type="primary",
             use_container_width=True,
-            disabled=already_today and not force_again,
-            help="Fetch loads the slate. Once per day. Shop is movement.",
+            help="Reload live odds. Already-logged TAKE/WATCH stay one row.",
         )
         if "last_refresh_count" not in st.session_state:
             st.session_state["last_refresh_count"] = refresh_count
@@ -12434,10 +12428,6 @@ def main():
                 st.session_state["last_fetch_kind"] = fetch_kind
                 st.session_state.pop("_lineup_filter_ok", None)
                 st.session_state.pop("_lineup_filter_note", None)
-                if fetch_kind == "timer":
-                    st.caption("Auto-fetch completed · ledger unchanged · source=timer")
-                elif fetch_kind == "manual":
-                    st.caption("Manual fetch locked · ledger unchanged · source=local")
                 st.success(f"Loaded {len(df)} props · {now_az()} AZ")
             else:
                 dbg = st.session_state.get("fetch_debug") or {}
@@ -12556,7 +12546,12 @@ def main():
                 ):
                     item["is_bet"] = False
                     item["why"] = (item.get("why") or "") + " · not a DK/FD ticket"
-    # FETCH loads the slate only. Ledger + movement write on Shop.
+    # Fetch may run all day after sleep. Logging upserts by (player, date, TAKE|WATCH).
+    if new_fetch:
+        if ev_board or watch_board:
+            log_bet_this(ev_board, watch_board)
+        if not df.empty:
+            log_shop_calls(df)
     st.session_state["last_take_names"] = [e.get("player") for e in ev_board if e.get("is_bet")]
     try:
         shop_now = build_shop_board(df) if not df.empty else []
