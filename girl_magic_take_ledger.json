@@ -1205,6 +1205,26 @@
       "best_book": "fanduel",
       "time": "09:38 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Darnell Mooney",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "MGM Exact",
+        "HardRock 50",
+        "FD 50",
+        "Fanatics Drift",
+        "Fanatics Loud",
+        "Fanatics over pack",
+        "Multi-book method",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 750,
+      "best_book": "draftkings",
+      "time": "09:38 AM",
+      "sport": "NFL"
     }
   ]
 }
