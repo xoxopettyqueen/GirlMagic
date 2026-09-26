@@ -1174,6 +1174,29 @@
       "best_book": "hardrockbet",
       "time": "10:11 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Kyle Tucker",
+      "source": "take_it",
+      "score": 95,
+      "methods": [
+        "Fanatics Drift",
+        "B365 way over MGM",
+        "DK FD-style",
+        "B365 over HardRock",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "B365 over MGM",
+        "MGM Exact",
+        "FD 50",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "fanatics",
+      "time": "10:19 AM",
+      "sport": "MLB"
     }
   ]
 }
