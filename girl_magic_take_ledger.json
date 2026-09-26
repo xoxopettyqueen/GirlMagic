@@ -920,6 +920,26 @@
       "best_book": "fanatics",
       "time": "07:50 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Chase DeLauter",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "MGM Exact",
+        "DK FD-style",
+        "Fanatics Drift",
+        "Multi-book Shorten",
+        "Fanatics over pack",
+        "FD 600",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "fanatics",
+      "time": "07:50 AM",
+      "sport": "MLB"
     }
   ]
 }
