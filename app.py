@@ -8677,12 +8677,36 @@ def build_backtest_stats(rows, days=14):
         today_dt = datetime.now()
     cutoff = (today_dt - timedelta(days=days)).strftime("%Y-%m-%d")
 
-    graded = [
-        r for r in rows
-        if r.get("result") in ("HIT", "MISS")
-        and r.get("source") in ("take_it", "watch")
-        and (r.get("date") or "") >= cutoff
-    ]
+    def _bt_family(r):
+        fam = _log_family(r.get("source") or r.get("call_type"))
+        if fam == "TAKE":
+            return "take_it"
+        if fam == "WATCH":
+            return "watch"
+        return None
+
+    def _bt_hit(r):
+        res = str(r.get("result") or "").upper()
+        if res in ("HIT", "LEARN_HIT"):
+            return "HIT"
+        if res in ("MISS", "LEARN_MISS"):
+            return "MISS"
+        return None
+
+    graded = []
+    for r in rows:
+        if (r.get("date") or "") < cutoff:
+            continue
+        fam = _bt_family(r)
+        if not fam:
+            continue
+        outcome = _bt_hit(r)
+        if not outcome:
+            continue
+        rr = dict(r)
+        rr["_bt"] = fam
+        rr["result"] = outcome
+        graded.append(rr)
 
     def rate(subset):
         # One player, one vote. Dupes from extra fetches were inflating TAKE n.
@@ -8702,13 +8726,13 @@ def build_backtest_stats(rows, days=14):
 
     overall = {}
     for src in ("take_it", "watch"):
-        overall[src] = rate([r for r in graded if r.get("source") == src])
+        overall[src] = rate([r for r in graded if r.get("_bt") == src])
 
     by_date = {}
     for r in graded:
         d = r.get("date") or ""
         by_date.setdefault(d, {"take_it": [], "watch": []})
-        src = r.get("source")
+        src = r.get("_bt")
         if src in by_date[d]:
             by_date[d][src].append(r)
 
@@ -8721,7 +8745,7 @@ def build_backtest_stats(rows, days=14):
     # method rates within WATCH vs TAKE IT
     method_by_src = {"take_it": defaultdict(lambda: {"hit": 0, "miss": 0}), "watch": defaultdict(lambda: {"hit": 0, "miss": 0})}
     for r in graded:
-        src = r.get("source")
+        src = r.get("_bt") or r.get("source")
         if src not in method_by_src:
             continue
         is_hit = r["result"] == "HIT"
@@ -8752,12 +8776,28 @@ def build_shop_grade_stats(rows, days=14):
         today_dt = datetime.now()
     cutoff = (today_dt - timedelta(days=days)).strftime("%Y-%m-%d")
     shop_src = ("shop_take", "shop_lean")
-    graded = [
-        r for r in rows
-        if r.get("result") in ("HIT", "MISS")
-        and r.get("source") in shop_src
-        and (r.get("date") or "") >= cutoff
-    ]
+    graded = []
+    for r in rows:
+        if (r.get("date") or "") < cutoff:
+            continue
+        src = r.get("source")
+        if src not in shop_src:
+            meths = [str(m) for m in (r.get("methods") or [])]
+            if any("Shop LEAN" in m or m == "Shop LEAN" for m in meths) and src in ("watch", "shop_lean"):
+                src = "shop_lean"
+            elif src not in shop_src:
+                continue
+        res = str(r.get("result") or "").upper()
+        if res in ("HIT", "LEARN_HIT"):
+            outcome = "HIT"
+        elif res in ("MISS", "LEARN_MISS"):
+            outcome = "MISS"
+        else:
+            continue
+        rr = dict(r)
+        rr["source"] = src
+        rr["result"] = outcome
+        graded.append(rr)
 
     def rate(subset):
         h = sum(1 for r in subset if r["result"] == "HIT")
