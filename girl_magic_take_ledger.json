@@ -895,6 +895,31 @@
       "best_book": "hardrockbet",
       "time": "07:50 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Tyler Stephenson",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "HardRock 00",
+        "DK FD-style",
+        "B365 way over MGM",
+        "FD+MGM classic",
+        "Rivers short vs pack",
+        "Fanatics Drift",
+        "MGM 25",
+        "Match 25",
+        "B365 over MGM",
+        "Fanatics over pack",
+        "FD Pattern",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanatics",
+      "time": "07:50 AM",
+      "sport": "MLB"
     }
   ]
 }
