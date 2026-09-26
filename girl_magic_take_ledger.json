@@ -1247,6 +1247,28 @@
       "best_book": "fanatics",
       "time": "02:56 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Nolan Gorman",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "FD Pattern",
+        "HardRock 50",
+        "MGM 25",
+        "Multi-book method",
+        "Stayed in the group",
+        "DK 10",
+        "Match 25",
+        "Last one left",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 710,
+      "best_book": "draftkings",
+      "time": "02:56 PM",
+      "sport": "MLB"
     }
   ]
 }
