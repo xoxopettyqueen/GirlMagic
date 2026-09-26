@@ -963,6 +963,26 @@
       "best_book": "hardrockbet",
       "time": "07:50 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jake Bauers",
+      "source": "take_it",
+      "score": 60,
+      "methods": [
+        "FD+MGM classic",
+        "FD a little long",
+        "MGM 25",
+        "Match 25",
+        "Multi-book method",
+        "FD Pattern",
+        "Stayed in the group",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 475,
+      "best_book": "fanatics",
+      "time": "07:50 AM",
+      "sport": "MLB"
     }
   ]
 }
