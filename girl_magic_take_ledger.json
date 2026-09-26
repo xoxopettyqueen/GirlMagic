@@ -1269,6 +1269,28 @@
       "best_book": "draftkings",
       "time": "02:56 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Bryan De La Cruz",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Fanatics Drift",
+        "MGM 25",
+        "Fanatics over pack",
+        "Multi-book method",
+        "Match 25",
+        "DK 10",
+        "Stayed in the group",
+        "Last one left",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "02:56 PM",
+      "sport": "MLB"
     }
   ]
 }
