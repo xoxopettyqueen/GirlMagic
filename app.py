@@ -13968,8 +13968,9 @@ def main():
 
         # Best book = where the logged best_price lived
         st.markdown("#### By best book we took")
-        st.caption("Which sportsbook held the best price on the graded row - separate from the signal tag.")
-        chips = chips_from_stats(book_stats, compare_baseline=False)
+        st.caption("Best price on the graded row. BetRivers shows even when n is thin — they are rarely the best number. Rivers vs pack lives under signal methods.")
+        book_stats.setdefault("BetRivers", {"hit": 0, "miss": 0})
+        chips = chips_from_stats(book_stats, min_n=3, compare_baseline=False)
         st.markdown(
             "".join(chips) if chips else f"_(Need n >= {TRACKER_MIN_N})_",
             unsafe_allow_html=True,
