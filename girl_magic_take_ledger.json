@@ -1731,6 +1731,29 @@
       "best_book": "fanatics",
       "time": "10:16 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Edmundo Sosa",
+      "source": "take_it",
+      "score": 88,
+      "methods": [
+        "FD Pattern",
+        "HardRock 50",
+        "MGM 25",
+        "DK FD-style",
+        "Multi-book method",
+        "Match 25",
+        "Stayed in the group",
+        "Last one left",
+        "Multi-book Shorten",
+        "FD+MGM classic",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 760,
+      "best_book": "draftkings",
+      "time": "10:30 AM",
+      "sport": "MLB"
     }
   ]
 }
