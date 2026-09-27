@@ -196706,7 +196706,7 @@
   {
     "id": "2026-09-26_Bo Bichette_watch_37",
     "date": "2026-09-26",
-    "time": "08:53 PM",
+    "time": "09:00 PM",
     "player": "Bo Bichette",
     "score": 37,
     "edge": 54,
@@ -196737,12 +196737,13 @@
       "FD Pattern",
       "Multi-book method",
       "DK 10",
-      "FD a little long"
+      "FD a little long",
+      "HardRock 50"
     ],
     "core": 2,
     "result": "LEARN_MISS",
     "source": "watch",
-    "logged_at": "2026-09-27T03:53:23.652559+00:00",
+    "logged_at": "2026-09-27T04:00:17.024286+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "NEW YORK METS",
@@ -196752,7 +196753,7 @@
     "benford_cluster": 0.6,
     "call_type": "WATCH",
     "status": "MISS",
-    "updated_at": "2026-09-27T03:53:28.563650+00:00",
+    "updated_at": "2026-09-27T04:00:17.024301+00:00",
     "player_name": "Bo Bichette",
     "stamps": [
       "MGM Exact",
@@ -197590,7 +197591,7 @@
   {
     "id": "2026-09-26_Cal Raleigh_watch_35",
     "date": "2026-09-26",
-    "time": "07:50 AM",
+    "time": "09:00 PM",
     "player": "Cal Raleigh",
     "score": 35,
     "edge": 31,
@@ -197617,12 +197618,15 @@
       "Multi-book Shorten",
       "MGM 40",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "Rivers short vs pack",
+      "Fanatics over pack",
+      "HardRock 00"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-26T14:50:15.121265+00:00",
+    "logged_at": "2026-09-27T04:00:17.063980+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SEATTLE MARINERS",
@@ -197632,7 +197636,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-26T14:50:15.121275+00:00",
+    "updated_at": "2026-09-27T04:00:17.063990+00:00",
     "player_name": "Cal Raleigh",
     "stamps": [
       "B365 over HardRock",
@@ -198079,7 +198083,7 @@
   {
     "id": "2026-09-26_Christian Moore_watch_62",
     "date": "2026-09-26",
-    "time": "06:04 PM",
+    "time": "09:00 PM",
     "player": "Christian Moore",
     "score": 62,
     "edge": 106,
@@ -198116,12 +198120,15 @@
       "DK FD-style",
       "Stayed in the group",
       "Rivers a bit over pack",
-      "Match 00"
+      "Match 00",
+      "Fanatics over pack",
+      "EV Caution",
+      "Kelly Caution"
     ],
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-27T01:04:34.543701+00:00",
+    "logged_at": "2026-09-27T04:00:16.885292+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "LOS ANGELES ANGELS",
@@ -198131,7 +198138,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T01:04:39.763452+00:00",
+    "updated_at": "2026-09-27T04:00:16.885303+00:00",
     "player_name": "Christian Moore",
     "stamps": [
       "HardRock 00",
@@ -198215,7 +198222,7 @@
   {
     "id": "2026-09-26_Cole Young_watch_63",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Cole Young",
     "score": 63,
     "edge": 127,
@@ -198255,7 +198262,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-27T01:12:15.533146+00:00",
+    "logged_at": "2026-09-27T04:00:17.045188+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SEATTLE MARINERS",
@@ -198265,7 +198272,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T01:12:15.533157+00:00",
+    "updated_at": "2026-09-27T04:00:17.045199+00:00",
     "player_name": "Cole Young",
     "stamps": [
       "DK FD-style",
@@ -198537,7 +198544,7 @@
   {
     "id": "2026-09-26_Denzer Guzman_watch_23",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Denzer Guzman",
     "score": 23,
     "edge": 30,
@@ -198572,12 +198579,14 @@
       "DK FD-style",
       "Fanatics over pack",
       "HardRock 00",
-      "EV Premium"
+      "EV Premium",
+      "EV Caution",
+      "Kelly Caution"
     ],
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-27T01:04:34.584536+00:00",
+    "logged_at": "2026-09-27T04:00:16.923682+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "LOS ANGELES ANGELS",
@@ -198603,7 +198612,7 @@
     "price": 750,
     "book": "bet365",
     "created_at": "2026-09-26T14:50:10.349622+00:00",
-    "updated_at": "2026-09-27T01:12:20.641017+00:00"
+    "updated_at": "2026-09-27T04:00:16.923695+00:00"
   },
   {
     "id": "2026-09-26_Dillon Dingler_watch_20",
@@ -198819,7 +198828,7 @@
   {
     "id": "2026-09-26_Dylan Crews_watch_31",
     "date": "2026-09-26",
-    "time": "10:19 AM",
+    "time": "09:00 PM",
     "player": "Dylan Crews",
     "score": 31,
     "edge": 24,
@@ -198858,12 +198867,13 @@
       "Fanatics over pack",
       "EV Premium",
       "Multi-book Shorten",
-      "FD 600"
+      "FD 600",
+      "Books tight"
     ],
     "core": 1,
     "result": "LEARN_MISS",
     "source": "watch",
-    "logged_at": "2026-09-26T16:25:53.515712+00:00",
+    "logged_at": "2026-09-27T04:00:16.944341+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "WASHINGTON NATIONALS",
@@ -198889,7 +198899,7 @@
     "price": 700,
     "book": "fanatics",
     "created_at": "2026-09-26T14:50:10.447186+00:00",
-    "updated_at": "2026-09-26T17:19:24.478172+00:00",
+    "updated_at": "2026-09-27T04:00:16.944351+00:00",
     "graded_by": "mlb_auto_study"
   },
   {
@@ -201457,7 +201467,7 @@
   {
     "id": "2026-09-26_Jose Siri_watch_22",
     "date": "2026-09-26",
-    "time": "06:04 PM",
+    "time": "09:00 PM",
     "player": "Jose Siri",
     "score": 22,
     "edge": -6,
@@ -201493,12 +201503,14 @@
       "Kelly Caution",
       "HardRock 50",
       "EV Support",
-      "Kelly Support"
+      "Kelly Support",
+      "Fanatics Drift",
+      "Fanatics over pack"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-27T01:04:33.731801+00:00",
+    "logged_at": "2026-09-27T04:00:16.964551+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "LOS ANGELES ANGELS",
@@ -201508,7 +201520,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T01:04:33.731813+00:00",
+    "updated_at": "2026-09-27T04:00:16.964561+00:00",
     "player_name": "Jose Siri",
     "stamps": [
       "B365 way over MGM",
@@ -203355,7 +203367,7 @@
   {
     "id": "2026-09-26_Munetaka Murakami_watch_14",
     "date": "2026-09-26",
-    "time": "08:53 PM",
+    "time": "09:00 PM",
     "player": "Munetaka Murakami",
     "score": 14,
     "edge": 0,
@@ -203390,7 +203402,7 @@
     "core": 1,
     "result": "LEARN_MISS",
     "source": "watch",
-    "logged_at": "2026-09-27T03:53:23.633310+00:00",
+    "logged_at": "2026-09-27T04:00:16.983759+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -203410,7 +203422,7 @@
     "price": 360,
     "book": "betmgm",
     "created_at": "2026-09-26T14:50:11.894503+00:00",
-    "updated_at": "2026-09-27T03:53:23.633325+00:00",
+    "updated_at": "2026-09-27T04:00:16.983768+00:00",
     "graded_by": "mlb_auto_study"
   },
   {
@@ -206103,7 +206115,7 @@
   {
     "id": "2026-09-26_Zach Neto_watch_51",
     "date": "2026-09-26",
-    "time": "07:50 AM",
+    "time": "09:00 PM",
     "player": "Zach Neto",
     "score": 51,
     "edge": 74,
@@ -206129,12 +206141,13 @@
       "B365 over HardRock",
       "HardRock 00",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "Rivers short vs pack"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-26T14:50:14.598428+00:00",
+    "logged_at": "2026-09-27T04:00:17.084642+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "LOS ANGELES ANGELS",
@@ -206144,7 +206157,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-26T14:50:14.598445+00:00",
+    "updated_at": "2026-09-27T04:00:17.084652+00:00",
     "player_name": "Zach Neto",
     "stamps": [
       "Multi-book Shorten",
@@ -209551,7 +209564,7 @@
   {
     "id": "2026-09-26_Andr\u00e9s Gim\u00e9nez_watch_53",
     "date": "2026-09-26",
-    "time": "08:53 PM",
+    "time": "09:00 PM",
     "player": "Andr\u00e9s Gim\u00e9nez",
     "score": 53,
     "edge": 69,
@@ -209592,7 +209605,7 @@
     "core": 2,
     "result": "LEARN_MISS",
     "source": "watch",
-    "logged_at": "2026-09-27T03:53:23.588788+00:00",
+    "logged_at": "2026-09-27T04:00:16.827430+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "TORONTO BLUE JAYS",
@@ -209602,7 +209615,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "MISS",
-    "updated_at": "2026-09-27T03:53:23.588799+00:00",
+    "updated_at": "2026-09-27T04:00:16.827445+00:00",
     "player_name": "Andr\u00e9s Gim\u00e9nez",
     "stamps": [
       "HardRock 00",
