@@ -1615,6 +1615,25 @@
       "best_book": "fanatics",
       "time": "09:46 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Corbin Carroll",
+      "source": "take_it",
+      "score": 53,
+      "methods": [
+        "FD Pattern",
+        "DK FD-style",
+        "MGM 60",
+        "Multi-book method",
+        "MGM Exact",
+        "FD a little long",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 425,
+      "best_book": "hardrockbet",
+      "time": "09:46 AM",
+      "sport": "MLB"
     }
   ]
 }
