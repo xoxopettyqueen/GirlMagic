@@ -1199,6 +1199,27 @@
       "best_book": "fanatics",
       "time": "08:44 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tyson Bagent",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "B365 Exact",
+        "Rivers short vs pack",
+        "B365 way over MGM",
+        "B365 over HardRock",
+        "Multi-book method",
+        "B365 over MGM",
+        "MGM Exact",
+        "FD 50",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 650,
+      "best_book": "draftkings",
+      "time": "08:44 AM",
+      "sport": "NFL"
     }
   ]
 }
