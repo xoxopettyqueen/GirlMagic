@@ -1604,6 +1604,23 @@
       "best_book": "fanatics",
       "time": "08:52 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tetairoa McMillan",
+      "source": "take_it",
+      "score": 57,
+      "methods": [
+        "Multi-book method",
+        "Books tight",
+        "DK FD-style",
+        "FD 90",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 190,
+      "best_book": "draftkings",
+      "time": "08:52 PM",
+      "sport": "NFL"
     }
   ]
 }
