@@ -1334,6 +1334,23 @@
       "best_book": "draftkings",
       "time": "08:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Denzel Boston",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "Multi-book method",
+        "Books tight",
+        "DK FD-style",
+        "MGM 40",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 230,
+      "best_book": "draftkings",
+      "time": "08:51 AM",
+      "sport": "NFL"
     }
   ]
 }
