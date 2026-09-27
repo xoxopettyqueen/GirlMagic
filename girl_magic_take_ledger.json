@@ -1368,6 +1368,23 @@
       "best_book": "fanduel",
       "time": "08:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Darnell Washington",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "HardRock 00",
+        "Multi-book Shorten",
+        "B365 over MGM",
+        "MGM Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 800,
+      "best_book": "draftkings",
+      "time": "08:51 AM",
+      "sport": "NFL"
     }
   ]
 }
