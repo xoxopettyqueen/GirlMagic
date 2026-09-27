@@ -1775,6 +1775,22 @@
       "best_book": "fanduel",
       "time": "10:33 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Parker Washington",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "Multi-book method",
+        "DK FD-style",
+        "MGM Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 190,
+      "best_book": "draftkings",
+      "time": "10:33 AM",
+      "sport": "NFL"
     }
   ]
 }
