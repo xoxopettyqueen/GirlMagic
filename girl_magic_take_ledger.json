@@ -1517,6 +1517,24 @@
       "best_book": "draftkings",
       "time": "06:04 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Saquon Barkley",
+      "source": "take_it",
+      "score": 64,
+      "methods": [
+        "HardRock 50",
+        "B365 50",
+        "MGM 25",
+        "Caesars Classic",
+        "Match 25",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 500,
+      "best_book": "fanduel",
+      "time": "06:04 PM",
+      "sport": "NFL"
     }
   ]
 }
