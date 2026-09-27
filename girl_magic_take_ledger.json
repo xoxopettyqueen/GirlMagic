@@ -1404,6 +1404,25 @@
       "best_book": "fanduel",
       "time": "08:59 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tony Pollard",
+      "source": "take_it",
+      "score": 67,
+      "methods": [
+        "Rivers short vs pack",
+        "HardRock 50",
+        "B365 over HardRock",
+        "Multi-book method",
+        "MGM Exact",
+        "FD 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanduel",
+      "time": "08:59 AM",
+      "sport": "NFL"
     }
   ]
 }
