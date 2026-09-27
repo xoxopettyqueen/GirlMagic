@@ -215780,7 +215780,7 @@
   {
     "id": "2026-09-26_Aaron Jones Sr._watch_70",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Aaron Jones Sr.",
     "score": 70,
     "edge": 43,
@@ -215823,7 +215823,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T01:12:43.757539+00:00",
+    "updated_at": "2026-09-27T04:00:54.416867+00:00",
     "player_name": "Aaron Jones Sr.",
     "stamps": [
       "Match 75",
@@ -217624,7 +217624,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T04:00:46.636830+00:00",
+    "updated_at": "2026-09-27T04:00:54.279468+00:00",
     "player_name": "Drew Sample",
     "stamps": [
       "Match 75",
@@ -217757,7 +217757,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T04:00:46.119519+00:00",
+    "updated_at": "2026-09-27T04:00:53.967852+00:00",
     "player_name": "Eli Raridon",
     "stamps": [
       "Match 75",
@@ -219482,7 +219482,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T04:00:48.633875+00:00",
+    "updated_at": "2026-09-27T04:00:54.051518+00:00",
     "player_name": "Kyle Williams",
     "stamps": [
       "B365 way over MGM",
@@ -220548,7 +220548,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T04:00:46.610397+00:00",
+    "updated_at": "2026-09-27T04:00:54.336146+00:00",
     "player_name": "Rhamondre Stevenson",
     "stamps": [
       "Match 75",
@@ -221731,7 +221731,7 @@
   {
     "id": "2026-09-26_Zay Flowers_shop_lean_332",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Zay Flowers",
     "score": 0,
     "edge": 332,
@@ -221765,7 +221765,7 @@
     "price": 750,
     "book": "bet365",
     "created_at": "2026-09-27T01:05:01.993717+00:00",
-    "updated_at": "2026-09-27T01:12:43.136571+00:00"
+    "updated_at": "2026-09-27T04:00:53.894943+00:00"
   },
   {
     "id": "2026-09-26_Eli Raridon_shop_take_158",
@@ -221856,7 +221856,7 @@
     "price": 950,
     "book": "bet365",
     "created_at": "2026-09-27T01:05:02.044377+00:00",
-    "updated_at": "2026-09-27T04:00:47.703318+00:00"
+    "updated_at": "2026-09-27T04:00:53.918440+00:00"
   },
   {
     "id": "2026-09-26_Tez Johnson_shop_take_101",
@@ -221908,12 +221908,12 @@
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-09-27T01:05:02.093298+00:00",
-    "updated_at": "2026-09-27T04:00:46.512623+00:00"
+    "updated_at": "2026-09-27T04:00:53.991311+00:00"
   },
   {
     "id": "2026-09-26_Kameron Johnson_shop_lean_84",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Kameron Johnson",
     "score": 0,
     "edge": 84,
@@ -221950,12 +221950,12 @@
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-09-27T01:05:02.116978+00:00",
-    "updated_at": "2026-09-27T01:12:43.307169+00:00"
+    "updated_at": "2026-09-27T04:00:54.026488+00:00"
   },
   {
     "id": "2026-09-26_Alvin Kamara_shop_lean_81",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Alvin Kamara",
     "score": 0,
     "edge": 81,
@@ -221993,7 +221993,7 @@
     "price": 950,
     "book": "bet365",
     "created_at": "2026-09-27T01:05:02.143853+00:00",
-    "updated_at": "2026-09-27T01:12:43.342324+00:00"
+    "updated_at": "2026-09-27T04:00:54.229299+00:00"
   },
   {
     "id": "2026-09-26_Dyami Brown_shop_lean_78",
@@ -222041,7 +222041,7 @@
   {
     "id": "2026-09-26_Jadarian Price_shop_lean_68",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Jadarian Price",
     "score": 0,
     "edge": 68,
@@ -222079,7 +222079,7 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-09-27T01:05:02.206074+00:00",
-    "updated_at": "2026-09-27T01:12:43.399258+00:00"
+    "updated_at": "2026-09-27T04:00:54.201759+00:00"
   },
   {
     "id": "2026-09-26_Elijah Sarratt_shop_lean_63",
@@ -222314,12 +222314,12 @@
     "price": 900,
     "book": "bet365",
     "created_at": "2026-09-27T01:05:02.393001+00:00",
-    "updated_at": "2026-09-27T04:00:45.722970+00:00"
+    "updated_at": "2026-09-27T04:00:54.395415+00:00"
   },
   {
     "id": "2026-09-26_Tyler Badie_shop_lean_45",
     "date": "2026-09-26",
-    "time": "06:12 PM",
+    "time": "09:00 PM",
     "player": "Tyler Badie",
     "score": 0,
     "edge": 45,
@@ -222354,7 +222354,7 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-09-27T01:05:02.441986+00:00",
-    "updated_at": "2026-09-27T01:12:43.720504+00:00"
+    "updated_at": "2026-09-27T04:00:54.081064+00:00"
   },
   {
     "id": "2026-09-26_Tee Higgins_shop_lean_42",
@@ -225284,7 +225284,7 @@
   {
     "id": "2026-09-26_Eli Heidenreich_watch_70",
     "date": "2026-09-26",
-    "time": "08:52 PM",
+    "time": "09:00 PM",
     "player": "Eli Heidenreich",
     "score": 70,
     "edge": 52,
@@ -225327,7 +225327,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-27T03:52:45.400766+00:00",
+    "updated_at": "2026-09-27T04:00:54.371060+00:00",
     "player_name": "Eli Heidenreich",
     "stamps": [
       "Rivers way over pack",
@@ -226965,7 +226965,7 @@
   {
     "id": "2026-09-26_Durham Smythe_shop_take_82",
     "date": "2026-09-26",
-    "time": "08:52 PM",
+    "time": "09:00 PM",
     "player": "Durham Smythe",
     "score": 0,
     "edge": 82,
@@ -227003,12 +227003,12 @@
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-09-27T03:52:45.186306+00:00",
-    "updated_at": "2026-09-27T03:52:45.186306+00:00"
+    "updated_at": "2026-09-27T04:00:54.114902+00:00"
   },
   {
     "id": "2026-09-26_Elijah Sarratt_shop_take_82",
     "date": "2026-09-26",
-    "time": "08:52 PM",
+    "time": "09:00 PM",
     "player": "Elijah Sarratt",
     "score": 0,
     "edge": 82,
@@ -227045,12 +227045,12 @@
     "price": 750,
     "book": "bet365",
     "created_at": "2026-09-27T03:52:45.209669+00:00",
-    "updated_at": "2026-09-27T03:52:45.209669+00:00"
+    "updated_at": "2026-09-27T04:00:54.150830+00:00"
   },
   {
     "id": "2026-09-26_DeeJay Dallas_shop_lean_78",
     "date": "2026-09-26",
-    "time": "08:52 PM",
+    "time": "09:00 PM",
     "player": "DeeJay Dallas",
     "score": 0,
     "edge": 78,
@@ -227088,12 +227088,12 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-09-27T03:52:45.262959+00:00",
-    "updated_at": "2026-09-27T03:52:45.262959+00:00"
+    "updated_at": "2026-09-27T04:00:54.176412+00:00"
   },
   {
     "id": "2026-09-26_Jeremy Ruckert_shop_lean_68",
     "date": "2026-09-26",
-    "time": "08:52 PM",
+    "time": "09:00 PM",
     "player": "Jeremy Ruckert",
     "score": 0,
     "edge": 68,
@@ -227131,12 +227131,12 @@
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-09-27T03:52:45.309496+00:00",
-    "updated_at": "2026-09-27T03:52:45.309496+00:00"
+    "updated_at": "2026-09-27T04:00:54.255713+00:00"
   },
   {
     "id": "2026-09-26_Emari Demercado_shop_lean_66",
     "date": "2026-09-26",
-    "time": "08:52 PM",
+    "time": "09:00 PM",
     "player": "Emari Demercado",
     "score": 0,
     "edge": 66,
@@ -227174,7 +227174,7 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-09-27T03:52:45.356333+00:00",
-    "updated_at": "2026-09-27T03:52:45.356333+00:00"
+    "updated_at": "2026-09-27T04:00:54.308901+00:00"
   },
   {
     "id": "2026-09-26_Austin Wells_shop_take_135",
