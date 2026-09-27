@@ -1661,6 +1661,28 @@
       "best_book": "fanatics",
       "time": "10:00 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Mookie Betts",
+      "source": "take_it",
+      "score": 92,
+      "methods": [
+        "MGM 25",
+        "DK FD-style",
+        "Multi-book method",
+        "Match 25",
+        "Stayed in the group",
+        "FD 600",
+        "FD+MGM classic",
+        "FD a little long",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 720,
+      "best_book": "draftkings",
+      "time": "10:00 AM",
+      "sport": "MLB"
     }
   ]
 }
