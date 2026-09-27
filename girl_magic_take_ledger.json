@@ -1826,6 +1826,26 @@
       "best_book": "hardrockbet",
       "time": "10:38 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Andres Chaparro",
+      "source": "take_it",
+      "score": 50,
+      "methods": [
+        "FD Pattern",
+        "Match 50",
+        "Stayed in the group",
+        "Last one left",
+        "MGM 50",
+        "FD+MGM classic",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 475,
+      "best_book": "fanatics",
+      "time": "10:38 AM",
+      "sport": "MLB"
     }
   ]
 }
