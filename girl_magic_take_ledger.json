@@ -1316,6 +1316,24 @@
       "best_book": "fanduel",
       "time": "08:51 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jared Wayne",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "HardRock 50",
+        "Multi-book method",
+        "MGM Exact",
+        "FD 50",
+        "Rivers way over pack",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 750,
+      "best_book": "draftkings",
+      "time": "08:51 AM",
+      "sport": "NFL"
     }
   ]
 }
