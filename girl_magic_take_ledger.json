@@ -962,6 +962,28 @@
       "best_book": "fanatics",
       "time": "08:42 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Rafael Flores Jr.",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Fanatics Drift",
+        "FD Pattern",
+        "MGM 25",
+        "DK FD-style",
+        "Multi-book method",
+        "Match 25",
+        "FD 90",
+        "FD+MGM classic",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "08:42 AM",
+      "sport": "MLB"
     }
   ]
 }
