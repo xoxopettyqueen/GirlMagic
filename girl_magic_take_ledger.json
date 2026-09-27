@@ -1791,6 +1791,21 @@
       "best_book": "draftkings",
       "time": "10:33 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Garrett Wilson",
+      "source": "take_it",
+      "score": 46,
+      "methods": [
+        "Books tight",
+        "DK 10",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 210,
+      "best_book": "draftkings",
+      "time": "10:33 AM",
+      "sport": "NFL"
     }
   ]
 }
