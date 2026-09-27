@@ -1754,6 +1754,27 @@
       "best_book": "draftkings",
       "time": "10:30 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "DeVonta Smith",
+      "source": "take_it",
+      "score": 77,
+      "methods": [
+        "HardRock 50",
+        "MGM 25",
+        "B365 over HardRock",
+        "Multi-book method",
+        "Match 25",
+        "B365 over MGM",
+        "MGM Exact",
+        "FD 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 950,
+      "best_book": "fanduel",
+      "time": "10:33 AM",
+      "sport": "NFL"
     }
   ]
 }
