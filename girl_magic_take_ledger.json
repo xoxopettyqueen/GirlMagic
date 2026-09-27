@@ -1432,6 +1432,30 @@
       "best_book": "fanatics",
       "time": "06:04 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jacob Cowing",
+      "source": "take_it",
+      "score": 51,
+      "methods": [
+        "Fanatics Drift",
+        "B365 Exact",
+        "B365 a bit over FD",
+        "Fanatics over pack",
+        "B365 over HardRock",
+        "Multi-book method",
+        "Fanatics Loud",
+        "B365 25",
+        "MGM Exact",
+        "FD 600",
+        "Rivers way over pack",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 650,
+      "best_book": "draftkings",
+      "time": "06:04 PM",
+      "sport": "NFL"
     }
   ]
 }
