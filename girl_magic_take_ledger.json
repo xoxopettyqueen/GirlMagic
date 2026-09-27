@@ -1477,6 +1477,28 @@
       "best_book": "fanduel",
       "time": "08:59 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Victor Mesa Jr.",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "MGM 00",
+        "Fanatics over pack",
+        "Multi-book method",
+        "Stayed in the group",
+        "DK 10",
+        "Multi-book Shorten",
+        "FD 600",
+        "HardRock 00",
+        "Match 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 810,
+      "best_book": "draftkings",
+      "time": "09:21 AM",
+      "sport": "MLB"
     }
   ]
 }
