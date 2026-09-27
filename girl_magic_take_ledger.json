@@ -984,6 +984,28 @@
       "best_book": "fanatics",
       "time": "08:42 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Jackson Merrill",
+      "source": "take_it",
+      "score": 80,
+      "methods": [
+        "FD Pattern",
+        "MGM 25",
+        "Multi-book method",
+        "Match 25",
+        "FD 90",
+        "MGM Exact",
+        "FD+MGM classic",
+        "FD a little long",
+        "HardRock 00",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "08:42 AM",
+      "sport": "MLB"
     }
   ]
 }
