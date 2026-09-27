@@ -940,6 +940,28 @@
       "best_book": "fanatics",
       "time": "08:42 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Manny Machado",
+      "source": "take_it",
+      "score": 93,
+      "methods": [
+        "Fanatics Drift",
+        "FD Pattern",
+        "MGM 25",
+        "Multi-book method",
+        "Match 25",
+        "FD 90",
+        "MGM Exact",
+        "FD+MGM classic",
+        "FD a little long",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "08:42 AM",
+      "sport": "MLB"
     }
   ]
 }
