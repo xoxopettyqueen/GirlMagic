@@ -1890,6 +1890,23 @@
       "best_book": "fanduel",
       "time": "10:41 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "AJ Dillon",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "Multi-book method",
+        "Rivers short vs pack",
+        "FD 50",
+        "MGM Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 950,
+      "best_book": "fanduel",
+      "time": "10:41 AM",
+      "sport": "NFL"
     }
   ]
 }
