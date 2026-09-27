@@ -1460,6 +1460,23 @@
       "best_book": "draftkings",
       "time": "08:59 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "John Metchie III",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "Rivers short vs pack",
+        "HardRock 50",
+        "Multi-book Shorten",
+        "MGM Exact",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 800,
+      "best_book": "fanduel",
+      "time": "08:59 AM",
+      "sport": "NFL"
     }
   ]
 }
