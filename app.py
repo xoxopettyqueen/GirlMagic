@@ -6160,7 +6160,17 @@ def auto_grade_pending():
                     row["graded_by"] = tag
                     misses += 1
                 else:
-                    skipped += 1
+                    age = 0
+                    try:
+                        age = (datetime.strptime(today_az(), "%Y-%m-%d") - datetime.strptime(d[:10], "%Y-%m-%d")).days
+                    except Exception:
+                        age = 0
+                    if age >= 2 and (hit_set or miss_pool):
+                        row["result"] = "LEARN_MISS" if study else "MISS"
+                        row["graded_by"] = tag + "_stale"
+                        misses += 1
+                    else:
+                        skipped += 1
         save_results(rows)
         return hits, misses, skipped, " · ".join(msgs[:4]) + f" · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
 
