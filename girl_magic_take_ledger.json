@@ -1583,6 +1583,27 @@
       "best_book": "fanduel",
       "time": "08:52 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jack Bech",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "Rivers short vs pack",
+        "Match 50",
+        "Fanatics over pack",
+        "Stayed in the group",
+        "Multi-book Shorten",
+        "Fanatics Loud",
+        "MGM 50",
+        "HardRock 00",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 750,
+      "best_book": "fanatics",
+      "time": "08:52 PM",
+      "sport": "NFL"
     }
   ]
 }
