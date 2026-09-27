@@ -1131,6 +1131,28 @@
       "best_book": "hardrockbet",
       "time": "08:43 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Cedric Mullins",
+      "source": "take_it",
+      "score": 86,
+      "methods": [
+        "FD Pattern",
+        "MGM 25",
+        "DK FD-style",
+        "Multi-book method",
+        "Stayed in the group",
+        "Match 25",
+        "MGM Exact",
+        "HardRock 00",
+        "FD+MGM classic",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 900,
+      "best_book": "hardrockbet",
+      "time": "08:43 AM",
+      "sport": "MLB"
     }
   ]
 }
