@@ -1211,6 +1211,33 @@
       "best_book": "hardrockbet",
       "time": "09:38 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Trevor Story",
+      "source": "take_it",
+      "score": 92,
+      "methods": [
+        "FD Pattern",
+        "MGM Exact",
+        "MGM 25",
+        "DK FD-style",
+        "Stayed in the group",
+        "B365 way over MGM",
+        "Fanatics Drift",
+        "Fanatics over pack",
+        "Multi-book method",
+        "HardRock 00",
+        "B365 over MGM",
+        "Match 25",
+        "FD+MGM classic",
+        "Last one left",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 1160,
+      "best_book": "draftkings",
+      "time": "11:20 AM",
+      "sport": "MLB"
     }
   ]
 }
