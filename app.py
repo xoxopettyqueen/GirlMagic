@@ -1282,15 +1282,27 @@ CLASSIC_TRICK_STAMPS = {
     "Multi-book Shorten",
 }
 # Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
+NFL_DEAD_STAMPS = {
+    "MGM Exact", "Match 50", "Match 75", "MGM 50", "MGM 75", "MGM 60",
+    "FD 600", "HardRock 50", "HardRock Heater",
+    "B365 a bit over FD", "Rivers a bit over pack",
+}
+NFL_RHYTHM_STAMPS = {
+    "Books tight", "Multi-book Shorten", "DK 10",
+    "MGM 00", "Match 00", "FD a little long", "DK FD-style",
+    "EV Support",
+}
 NFL_STAMP_METHODS = {
     "Books tight", "Multi-book method", "Multi-book Shorten",
-    "MGM 25", "Match 25", "MGM 75", "Match 75",
-    "MGM Exact",
+    "MGM 25", "Match 25",
     "DK 10",
     "Fanatics Rogue",
     "Stayed in the group",
     "FD a little long",
-}
+    "MGM 00", "Match 00",
+    "DK FD-style",
+    "EV Support",
+} - NFL_DEAD_STAMPS
 
 PRIORITY_METHODS = {
     "MGM 25", "Match 25", "MGM Exact",
@@ -1538,6 +1550,10 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     end = last_two(best_price)
     hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
     if active_sport() == "NFL":
+        if ms & NFL_DEAD_STAMPS and not (ms & NFL_RHYTHM_STAMPS):
+            return False
+        if not (ms & NFL_RHYTHM_STAMPS) and not (ms & (CLASSIC_TRICK_STAMPS - NFL_DEAD_STAMPS)):
+            return False
         if not nfl_price_ok(best_price):
             return False
         try:
@@ -2686,6 +2702,24 @@ def build_shop_board(df):
             action, why, cls = "LEAN", why + " · 00 ending is volume not edge", "shop-lean"
         if action == "TAKE" and book_label(best_book) == "Fanatics" and edge < 80:
             action, why, cls = "LEAN", why + " · Fanatics best is usually the long tax", "shop-lean"
+        if action == "TAKE" and active_sport() == "NFL":
+            partner = False
+            if book_label(best_book) == "FD":
+                partner = True
+            dk = book_px.get("draftkings")
+            mgm = book_px.get("betmgm")
+            if dk is not None and last_two(dk) == 10:
+                partner = True
+            if mgm is not None and last_two(mgm) == 0:
+                partner = True
+            try:
+                focus = [book_px[b] for b in ("draftkings", "fanduel", "betmgm", "bet365") if b in book_px]
+                if len(focus) >= 3 and (max(focus) - min(focus)) <= BOOK_CLUSTER_GAP:
+                    partner = True
+            except Exception:
+                pass
+            if not partner:
+                action, why, cls = "LEAN", why + " · NFL Shop TAKE needs Books tight / DK 10 / MGM 00 / FD best", "shop-lean"
         rows.append({
             "player": player, "event": event or "", "books": book_px,
             "best": best, "best_book": best_book, "median": med, "fair": fair,
@@ -7715,15 +7749,17 @@ def tighten_board(ev_board):
     passes = [x for x in ev_board if not x.get("is_bet")]
     ranked = sorted(takes, key=lambda x: (-x["method_count"], -x["score"], -x["edge"]))
     per_team, per_game, out_takes = defaultdict(int), defaultdict(int), []
-    # NFL props often have no team — don't dump every green into UNK and cap at 3.
     max_team = 8 if nfl_loose_mode() else BOARD_MAX_PER_TEAM
     max_game = 8 if nfl_loose_mode() else BOARD_MAX_PER_GAME
+    nfl_cap = 18 if active_sport() == "NFL" else 999
     for item in ranked:
         team = (item.get("team") or "").strip()
         game = item.get("event") or (item.get("events") or ["UNK"])[0]
         if team and per_team[team] >= max_team:
             continue
         if per_game[game] >= max_game:
+            continue
+        if len(out_takes) >= nfl_cap:
             continue
         out_takes.append(item)
         if team:
