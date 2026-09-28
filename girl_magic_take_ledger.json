@@ -1166,6 +1166,28 @@
       "best_book": "draftkings",
       "time": "09:33 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Roman Anthony",
+      "source": "take_it",
+      "score": 95,
+      "methods": [
+        "DK FD-style",
+        "MGM 25",
+        "Stayed in the group",
+        "FD Pattern",
+        "Fanatics Drift",
+        "HardRock 00",
+        "Match 25",
+        "FD+MGM classic",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 700,
+      "best_book": "fanatics",
+      "time": "09:38 AM",
+      "sport": "MLB"
     }
   ]
 }
