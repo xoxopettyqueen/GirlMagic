@@ -1,394 +1,6 @@
 {
-  "saved_at": "2026-09-28T18:20:15.182990+00:00",
+  "saved_at": "2026-09-28T18:43:08.704457+00:00",
   "price_history": [
-    {
-      "Aaron Judge||caesars": 305,
-      "Aaron Judge||draftkings": 333,
-      "Aaron Judge||fanatics": 325,
-      "Aaron Judge||fanduel": 300,
-      "Adley Rutschman||bet365": 700,
-      "Adley Rutschman||betmgm": 600,
-      "Adley Rutschman||betrivers": 900,
-      "Adley Rutschman||caesars": 850,
-      "Adley Rutschman||draftkings": 840,
-      "Adley Rutschman||fanatics": 950,
-      "Adley Rutschman||fanduel": 830,
-      "Adley Rutschman||hardrockbet": 900,
-      "Alec Bohm||bet365": 850,
-      "Alec Bohm||betmgm": 725,
-      "Alec Bohm||betrivers": 1100,
-      "Alec Bohm||caesars": 850,
-      "Alec Bohm||draftkings": 820,
-      "Alec Bohm||fanatics": 950,
-      "Alec Bohm||fanduel": 820,
-      "Alec Bohm||hardrockbet": 800,
-      "Amed Rosario||bet365": 750,
-      "Amed Rosario||caesars": 850,
-      "Amed Rosario||draftkings": 900,
-      "Amed Rosario||fanduel": 800,
-      "Andrew Benintendi||bet365": 900,
-      "Andrew Benintendi||betmgm": 775,
-      "Andrew Benintendi||caesars": 625,
-      "Andrew Benintendi||draftkings": 577,
-      "Andrew Benintendi||fanduel": 600,
-      "Anthony Volpe||bet365": 950,
-      "Anthony Volpe||caesars": 950,
-      "Anthony Volpe||draftkings": 990,
-      "Anthony Volpe||fanatics": 950,
-      "Anthony Volpe||fanduel": 900,
-      "Austin Riley||bet365": 525,
-      "Austin Riley||betmgm": 600,
-      "Austin Riley||betrivers": 550,
-      "Austin Riley||caesars": 575,
-      "Austin Riley||draftkings": 539,
-      "Austin Riley||fanatics": 600,
-      "Austin Riley||fanduel": 540,
-      "Austin Riley||hardrockbet": 575,
-      "Austin Wells||bet365": 700,
-      "Austin Wells||betmgm": 550,
-      "Austin Wells||betrivers": 650,
-      "Austin Wells||caesars": 625,
-      "Austin Wells||draftkings": 599,
-      "Austin Wells||fanatics": 650,
-      "Austin Wells||fanduel": 630,
-      "Austin Wells||hardrockbet": 750,
-      "Ben Rice||bet365": 475,
-      "Ben Rice||betmgm": 310,
-      "Ben Rice||betrivers": 480,
-      "Ben Rice||caesars": 475,
-      "Ben Rice||draftkings": 477,
-      "Ben Rice||fanatics": 420,
-      "Ben Rice||fanduel": 430,
-      "Ben Rice||hardrockbet": 500,
-      "Braden Montgomery||bet365": 950,
-      "Braden Montgomery||betmgm": 850,
-      "Braden Montgomery||betrivers": 1000,
-      "Braden Montgomery||caesars": 1100,
-      "Braden Montgomery||draftkings": 1060,
-      "Braden Montgomery||fanatics": 950,
-      "Braden Montgomery||fanduel": 900,
-      "Bryan De La Cruz||bet365": 950,
-      "Bryan De La Cruz||betmgm": 800,
-      "Bryan De La Cruz||betrivers": 1000,
-      "Bryan De La Cruz||caesars": 1300,
-      "Bryan De La Cruz||draftkings": 1120,
-      "Bryan De La Cruz||fanduel": 1200,
-      "Bryan De La Cruz||hardrockbet": 1400,
-      "Bryce Harper||bet365": 700,
-      "Bryce Harper||betmgm": 725,
-      "Bryce Harper||betrivers": 525,
-      "Bryce Harper||caesars": 575,
-      "Bryce Harper||draftkings": 579,
-      "Bryce Harper||fanatics": 600,
-      "Bryce Harper||fanduel": 590,
-      "Bryce Harper||hardrockbet": 600,
-      "Bryson Stott||bet365": 1300,
-      "Bryson Stott||betmgm": 1200,
-      "Bryson Stott||betrivers": 1150,
-      "Bryson Stott||caesars": 1300,
-      "Bryson Stott||draftkings": 1140,
-      "Bryson Stott||fanatics": 1500,
-      "Bryson Stott||fanduel": 1260,
-      "Bryson Stott||hardrockbet": 1400,
-      "Caleb Durbin||bet365": 1400,
-      "Caleb Durbin||betmgm": 875,
-      "Caleb Durbin||betrivers": 1300,
-      "Caleb Durbin||caesars": 1100,
-      "Caleb Durbin||draftkings": 1320,
-      "Caleb Durbin||fanatics": 1500,
-      "Caleb Durbin||fanduel": 1300,
-      "Caleb Durbin||hardrockbet": 1400,
-      "Cam Smith||bet365": 700,
-      "Cam Smith||betmgm": 550,
-      "Cam Smith||betrivers": 650,
-      "Cam Smith||caesars": 625,
-      "Cam Smith||draftkings": 670,
-      "Cam Smith||fanatics": 650,
-      "Cam Smith||fanduel": 600,
-      "Ceddanne Rafaela||bet365": 1000,
-      "Ceddanne Rafaela||betmgm": 600,
-      "Ceddanne Rafaela||betrivers": 1100,
-      "Ceddanne Rafaela||caesars": 1100,
-      "Ceddanne Rafaela||draftkings": 1100,
-      "Ceddanne Rafaela||fanatics": 1200,
-      "Ceddanne Rafaela||fanduel": 1000,
-      "Ceddanne Rafaela||hardrockbet": 1100,
-      "Chase Meidroth||bet365": 1200,
-      "Chase Meidroth||betmgm": 900,
-      "Chase Meidroth||caesars": 1300,
-      "Chase Meidroth||draftkings": 1200,
-      "Chase Meidroth||fanduel": 1100,
-      "Christian Walker||bet365": 525,
-      "Christian Walker||betmgm": 425,
-      "Christian Walker||betrivers": 525,
-      "Christian Walker||caesars": 500,
-      "Christian Walker||draftkings": 514,
-      "Christian Walker||fanatics": 550,
-      "Christian Walker||fanduel": 470,
-      "Cody Bellinger||bet365": 600,
-      "Cody Bellinger||betmgm": 475,
-      "Cody Bellinger||betrivers": 650,
-      "Cody Bellinger||caesars": 525,
-      "Cody Bellinger||draftkings": 596,
-      "Cody Bellinger||fanatics": 600,
-      "Cody Bellinger||fanduel": 570,
-      "Cody Bellinger||hardrockbet": 600,
-      "Colson Montgomery||bet365": 500,
-      "Colson Montgomery||betmgm": 450,
-      "Colson Montgomery||betrivers": 440,
-      "Colson Montgomery||caesars": 400,
-      "Colson Montgomery||draftkings": 417,
-      "Colson Montgomery||fanatics": 420,
-      "Colson Montgomery||fanduel": 420,
-      "Derek Hill||bet365": 1100,
-      "Derek Hill||betmgm": 1050,
-      "Derek Hill||betrivers": 1150,
-      "Derek Hill||caesars": 1300,
-      "Derek Hill||draftkings": 1100,
-      "Derek Hill||fanduel": 1200,
-      "Derek Hill||hardrockbet": 1400,
-      "Drake Baldwin||bet365": 550,
-      "Drake Baldwin||betmgm": 525,
-      "Drake Baldwin||betrivers": 550,
-      "Drake Baldwin||caesars": 500,
-      "Drake Baldwin||draftkings": 519,
-      "Drake Baldwin||fanatics": 525,
-      "Drake Baldwin||fanduel": 490,
-      "Drake Baldwin||hardrockbet": 575,
-      "Edmundo Sosa||bet365": 900,
-      "Edmundo Sosa||betmgm": 775,
-      "Edmundo Sosa||betrivers": 850,
-      "Edmundo Sosa||caesars": 950,
-      "Edmundo Sosa||draftkings": 940,
-      "Edmundo Sosa||fanatics": 1050,
-      "Edmundo Sosa||fanduel": 980,
-      "Edmundo Sosa||hardrockbet": 900,
-      "Ha-Seong Kim||bet365": 1400,
-      "Ha-Seong Kim||betrivers": 1050,
-      "Ha-Seong Kim||caesars": 1100,
-      "Ha-Seong Kim||draftkings": 930,
-      "Ha-Seong Kim||fanatics": 950,
-      "Ha-Seong Kim||hardrockbet": 1000,
-      "Heliot Ramos||bet365": 500,
-      "Heliot Ramos||betmgm": 475,
-      "Heliot Ramos||betrivers": 650,
-      "Heliot Ramos||caesars": 575,
-      "Heliot Ramos||draftkings": 650,
-      "Heliot Ramos||fanatics": 700,
-      "Heliot Ramos||fanduel": 630,
-      "Heliot Ramos||hardrockbet": 575,
-      "Isaac Paredes||bet365": 525,
-      "Isaac Paredes||betmgm": 450,
-      "Isaac Paredes||betrivers": 600,
-      "Isaac Paredes||caesars": 525,
-      "Isaac Paredes||draftkings": 586,
-      "Isaac Paredes||fanatics": 600,
-      "Isaac Paredes||fanduel": 540,
-      "J.T. Realmuto||bet365": 800,
-      "J.T. Realmuto||betmgm": 900,
-      "J.T. Realmuto||betrivers": 850,
-      "J.T. Realmuto||caesars": 1100,
-      "J.T. Realmuto||draftkings": 940,
-      "J.T. Realmuto||fanatics": 1200,
-      "J.T. Realmuto||fanduel": 980,
-      "J.T. Realmuto||hardrockbet": 1200,
-      "Jarren Duran||bet365": 800,
-      "Jarren Duran||betmgm": 725,
-      "Jarren Duran||betrivers": 750,
-      "Jarren Duran||caesars": 750,
-      "Jarren Duran||draftkings": 810,
-      "Jarren Duran||fanatics": 800,
-      "Jarren Duran||fanduel": 760,
-      "Jarren Duran||hardrockbet": 800,
-      "Jazz Chisholm Jr.||betmgm": 475,
-      "Jeremy Pe\u00f1a||bet365": 500,
-      "Jeremy Pe\u00f1a||betmgm": 450,
-      "Jeremy Pe\u00f1a||betrivers": 500,
-      "Jeremy Pe\u00f1a||caesars": 425,
-      "Jeremy Pe\u00f1a||draftkings": 463,
-      "Jeremy Pe\u00f1a||fanatics": 475,
-      "Jeremy Pe\u00f1a||fanduel": 440,
-      "Jose Altuve||bet365": 750,
-      "Jose Altuve||betmgm": 600,
-      "Jose Altuve||betrivers": 700,
-      "Jose Altuve||caesars": 625,
-      "Jose Altuve||draftkings": 650,
-      "Jose Altuve||fanatics": 700,
-      "Jose Altuve||fanduel": 680,
-      "Kyle Schwarber||bet365": 390,
-      "Kyle Schwarber||betmgm": 400,
-      "Kyle Schwarber||betrivers": 340,
-      "Kyle Schwarber||caesars": 350,
-      "Kyle Schwarber||draftkings": 352,
-      "Kyle Schwarber||fanatics": 325,
-      "Kyle Schwarber||fanduel": 320,
-      "Kyle Schwarber||hardrockbet": 350,
-      "Kyle Teel||bet365": 850,
-      "Kyle Teel||betmgm": 800,
-      "Kyle Teel||caesars": 700,
-      "Kyle Teel||draftkings": 640,
-      "Kyle Teel||fanduel": 560,
-      "Lucas Spence||bet365": 800,
-      "Lucas Spence||betmgm": 775,
-      "Lucas Spence||betrivers": 700,
-      "Lucas Spence||caesars": 700,
-      "Lucas Spence||draftkings": 690,
-      "Lucas Spence||fanatics": 750,
-      "Lucas Spence||fanduel": 630,
-      "Luis Garc\u00eda Jr.||betmgm": 425,
-      "Matt Olson||bet365": 400,
-      "Matt Olson||betmgm": 360,
-      "Matt Olson||betrivers": 370,
-      "Matt Olson||caesars": 350,
-      "Matt Olson||draftkings": 347,
-      "Matt Olson||fanatics": 340,
-      "Matt Olson||fanduel": 360,
-      "Matt Olson||hardrockbet": 350,
-      "Mauricio Dub\u00f3n||bet365": 1000,
-      "Mauricio Dub\u00f3n||betmgm": 1000,
-      "Mauricio Dub\u00f3n||betrivers": 1300,
-      "Mauricio Dub\u00f3n||caesars": 1300,
-      "Mauricio Dub\u00f3n||draftkings": 1140,
-      "Mauricio Dub\u00f3n||fanatics": 1300,
-      "Mauricio Dub\u00f3n||fanduel": 1260,
-      "Mauricio Dub\u00f3n||hardrockbet": 1400,
-      "Michael Harris II||bet365": 700,
-      "Michael Harris II||betmgm": 525,
-      "Michael Harris II||betrivers": 480,
-      "Michael Harris II||caesars": 475,
-      "Michael Harris II||draftkings": 460,
-      "Michael Harris II||fanatics": 475,
-      "Michael Harris II||fanduel": 470,
-      "Michael Harris II||hardrockbet": 500,
-      "Miguel Vargas||bet365": 450,
-      "Miguel Vargas||betmgm": 450,
-      "Miguel Vargas||caesars": 400,
-      "Miguel Vargas||draftkings": 398,
-      "Miguel Vargas||fanduel": 400,
-      "Mike Yastrzemski||betmgm": 900,
-      "Mike Yastrzemski||caesars": 700,
-      "Mike Yastrzemski||fanduel": 680,
-      "Munetaka Murakami||bet365": 375,
-      "Munetaka Murakami||betmgm": 360,
-      "Munetaka Murakami||betrivers": 390,
-      "Munetaka Murakami||caesars": 370,
-      "Munetaka Murakami||draftkings": 393,
-      "Munetaka Murakami||fanatics": 370,
-      "Munetaka Murakami||fanduel": 360,
-      "Nick Sogard||bet365": 1500,
-      "Nick Sogard||betmgm": 1200,
-      "Nick Sogard||betrivers": 1200,
-      "Nick Sogard||caesars": 1300,
-      "Nick Sogard||draftkings": 1460,
-      "Nick Sogard||fanatics": 1800,
-      "Nick Sogard||fanduel": 1400,
-      "Nick Sogard||hardrockbet": 1400,
-      "Ozzie Albies||bet365": 700,
-      "Ozzie Albies||betmgm": 600,
-      "Ozzie Albies||betrivers": 750,
-      "Ozzie Albies||caesars": 700,
-      "Ozzie Albies||draftkings": 710,
-      "Ozzie Albies||fanatics": 800,
-      "Ozzie Albies||fanduel": 730,
-      "Ozzie Albies||hardrockbet": 700,
-      "Paul Goldschmidt||bet365": 550,
-      "Paul Goldschmidt||caesars": 700,
-      "Paul Goldschmidt||draftkings": 690,
-      "Paul Goldschmidt||fanatics": 700,
-      "Paul Goldschmidt||fanduel": 680,
-      "Roman Anthony||bet365": 550,
-      "Roman Anthony||betmgm": 650,
-      "Roman Anthony||betrivers": 650,
-      "Roman Anthony||caesars": 625,
-      "Roman Anthony||draftkings": 660,
-      "Roman Anthony||fanatics": 700,
-      "Roman Anthony||fanduel": 630,
-      "Roman Anthony||hardrockbet": 600,
-      "Ronald Acu\u00f1a Jr.||bet365": 400,
-      "Ronald Acu\u00f1a Jr.||betmgm": 400,
-      "Ronald Acu\u00f1a Jr.||betrivers": 480,
-      "Ronald Acu\u00f1a Jr.||caesars": 425,
-      "Ronald Acu\u00f1a Jr.||draftkings": 459,
-      "Ronald Acu\u00f1a Jr.||fanatics": 475,
-      "Ronald Acu\u00f1a Jr.||fanduel": 470,
-      "Ronald Acu\u00f1a Jr.||hardrockbet": 450,
-      "Ryan McMahon||betmgm": 725,
-      "Sam Antonacci||bet365": 1100,
-      "Sam Antonacci||betmgm": 1050,
-      "Sam Antonacci||betrivers": 1200,
-      "Sam Antonacci||caesars": 1100,
-      "Sam Antonacci||draftkings": 1140,
-      "Sam Antonacci||fanatics": 1200,
-      "Sam Antonacci||fanduel": 900,
-      "Sean Murphy||bet365": 800,
-      "Sean Murphy||betmgm": 725,
-      "Sean Murphy||betrivers": 700,
-      "Sean Murphy||caesars": 750,
-      "Sean Murphy||draftkings": 790,
-      "Sean Murphy||fanatics": 950,
-      "Sean Murphy||fanduel": 760,
-      "Sean Murphy||hardrockbet": 800,
-      "Spencer Jones||bet365": 600,
-      "Spencer Jones||betmgm": 500,
-      "Taylor Trammell||bet365": 850,
-      "Taylor Trammell||betmgm": 725,
-      "Taylor Trammell||betrivers": 800,
-      "Taylor Trammell||caesars": 700,
-      "Taylor Trammell||draftkings": 780,
-      "Taylor Trammell||fanatics": 750,
-      "Taylor Trammell||fanduel": 630,
-      "Trea Turner||bet365": 800,
-      "Trea Turner||betmgm": 775,
-      "Trea Turner||betrivers": 800,
-      "Trea Turner||caesars": 850,
-      "Trea Turner||draftkings": 820,
-      "Trea Turner||fanatics": 800,
-      "Trea Turner||fanduel": 820,
-      "Trea Turner||hardrockbet": 900,
-      "Trevor Story||bet365": 850,
-      "Trevor Story||betmgm": 675,
-      "Trevor Story||betrivers": 1050,
-      "Trevor Story||caesars": 1100,
-      "Trevor Story||draftkings": 1180,
-      "Trevor Story||fanatics": 1300,
-      "Trevor Story||fanduel": 1060,
-      "Trevor Story||hardrockbet": 1100,
-      "Tristan Peters||bet365": 900,
-      "Tristan Peters||betmgm": 900,
-      "Tristan Peters||caesars": 950,
-      "Tristan Peters||draftkings": 840,
-      "Tristan Peters||fanduel": 800,
-      "Willson Contreras||bet365": 575,
-      "Willson Contreras||betmgm": 425,
-      "Willson Contreras||betrivers": 500,
-      "Willson Contreras||caesars": 500,
-      "Willson Contreras||draftkings": 513,
-      "Willson Contreras||fanatics": 525,
-      "Willson Contreras||fanduel": 520,
-      "Willson Contreras||hardrockbet": 550,
-      "Wilyer Abreu||bet365": 550,
-      "Wilyer Abreu||betmgm": 475,
-      "Wilyer Abreu||betrivers": 600,
-      "Wilyer Abreu||caesars": 500,
-      "Wilyer Abreu||draftkings": 548,
-      "Wilyer Abreu||fanatics": 550,
-      "Wilyer Abreu||fanduel": 540,
-      "Wilyer Abreu||hardrockbet": 575,
-      "Yainer Diaz||bet365": 600,
-      "Yainer Diaz||betmgm": 525,
-      "Yainer Diaz||betrivers": 575,
-      "Yainer Diaz||caesars": 525,
-      "Yainer Diaz||draftkings": 549,
-      "Yainer Diaz||fanatics": 600,
-      "Yainer Diaz||fanduel": 560,
-      "Yordan Alvarez||bet365": 300,
-      "Yordan Alvarez||betmgm": 325,
-      "Yordan Alvarez||betrivers": 300,
-      "Yordan Alvarez||caesars": 265,
-      "Yordan Alvarez||draftkings": 283,
-      "Yordan Alvarez||fanatics": 280,
-      "Yordan Alvarez||fanduel": 265
-    },
     {
       "Aaron Jones Sr.||draftkings": -125,
       "Aaron Rodgers||bet365": 1100,
@@ -2929,1511 +2541,394 @@
       "Yordan Alvarez||draftkings": 283,
       "Yordan Alvarez||fanatics": 280,
       "Yordan Alvarez||fanduel": 265
+    },
+    {
+      "Aaron Judge||caesars": 305,
+      "Aaron Judge||draftkings": 317,
+      "Aaron Judge||fanatics": 280,
+      "Aaron Judge||fanduel": 285,
+      "Adley Rutschman||bet365": 700,
+      "Adley Rutschman||betmgm": 600,
+      "Adley Rutschman||betrivers": 900,
+      "Adley Rutschman||caesars": 850,
+      "Adley Rutschman||draftkings": 860,
+      "Adley Rutschman||fanatics": 950,
+      "Adley Rutschman||fanduel": 820,
+      "Adley Rutschman||hardrockbet": 900,
+      "Alec Bohm||bet365": 850,
+      "Alec Bohm||betmgm": 725,
+      "Alec Bohm||betrivers": 1100,
+      "Alec Bohm||caesars": 850,
+      "Alec Bohm||draftkings": 830,
+      "Alec Bohm||fanatics": 800,
+      "Alec Bohm||fanduel": 820,
+      "Alec Bohm||hardrockbet": 800,
+      "Amed Rosario||bet365": 750,
+      "Amed Rosario||caesars": 950,
+      "Amed Rosario||draftkings": 850,
+      "Amed Rosario||fanduel": 820,
+      "Andrew Benintendi||bet365": 900,
+      "Andrew Benintendi||betmgm": 775,
+      "Andrew Benintendi||caesars": 625,
+      "Andrew Benintendi||draftkings": 577,
+      "Andrew Benintendi||fanduel": 600,
+      "Anthony Volpe||bet365": 950,
+      "Anthony Volpe||caesars": 1100,
+      "Anthony Volpe||draftkings": 1060,
+      "Anthony Volpe||fanatics": 1050,
+      "Anthony Volpe||fanduel": 980,
+      "Austin Riley||bet365": 525,
+      "Austin Riley||betmgm": 525,
+      "Austin Riley||betrivers": 550,
+      "Austin Riley||caesars": 525,
+      "Austin Riley||draftkings": 545,
+      "Austin Riley||fanatics": 550,
+      "Austin Riley||fanduel": 540,
+      "Austin Riley||hardrockbet": 575,
+      "Austin Wells||bet365": 700,
+      "Austin Wells||betmgm": 600,
+      "Austin Wells||betrivers": 650,
+      "Austin Wells||caesars": 700,
+      "Austin Wells||draftkings": 720,
+      "Austin Wells||fanatics": 700,
+      "Austin Wells||fanduel": 680,
+      "Austin Wells||hardrockbet": 750,
+      "Ben Rice||bet365": 475,
+      "Ben Rice||betmgm": 333,
+      "Ben Rice||betrivers": 480,
+      "Ben Rice||caesars": 475,
+      "Ben Rice||draftkings": 493,
+      "Ben Rice||fanatics": 450,
+      "Ben Rice||fanduel": 440,
+      "Ben Rice||hardrockbet": 475,
+      "Braden Montgomery||bet365": 950,
+      "Braden Montgomery||betmgm": 875,
+      "Braden Montgomery||betrivers": 950,
+      "Braden Montgomery||caesars": 1100,
+      "Braden Montgomery||draftkings": 1060,
+      "Braden Montgomery||fanatics": 1050,
+      "Braden Montgomery||fanduel": 900,
+      "Bryan De La Cruz||bet365": 950,
+      "Bryan De La Cruz||betmgm": 800,
+      "Bryan De La Cruz||betrivers": 1000,
+      "Bryan De La Cruz||caesars": 1300,
+      "Bryan De La Cruz||draftkings": 1160,
+      "Bryan De La Cruz||fanatics": 1400,
+      "Bryan De La Cruz||fanduel": 1260,
+      "Bryan De La Cruz||hardrockbet": 1300,
+      "Bryce Harper||bet365": 700,
+      "Bryce Harper||betmgm": 675,
+      "Bryce Harper||betrivers": 525,
+      "Bryce Harper||caesars": 575,
+      "Bryce Harper||draftkings": 574,
+      "Bryce Harper||fanatics": 650,
+      "Bryce Harper||fanduel": 610,
+      "Bryce Harper||hardrockbet": 575,
+      "Bryson Stott||bet365": 1300,
+      "Bryson Stott||betmgm": 1200,
+      "Bryson Stott||betrivers": 1150,
+      "Bryson Stott||caesars": 1500,
+      "Bryson Stott||draftkings": 1160,
+      "Bryson Stott||fanatics": 1500,
+      "Bryson Stott||fanduel": 1260,
+      "Bryson Stott||hardrockbet": 1400,
+      "Caleb Durbin||bet365": 1400,
+      "Caleb Durbin||betmgm": 900,
+      "Caleb Durbin||betrivers": 1200,
+      "Caleb Durbin||caesars": 1300,
+      "Caleb Durbin||draftkings": 1420,
+      "Caleb Durbin||fanatics": 1800,
+      "Caleb Durbin||fanduel": 1500,
+      "Caleb Durbin||hardrockbet": 1400,
+      "Cam Smith||bet365": 700,
+      "Cam Smith||betmgm": 550,
+      "Cam Smith||betrivers": 650,
+      "Cam Smith||caesars": 625,
+      "Cam Smith||draftkings": 670,
+      "Cam Smith||fanatics": 700,
+      "Cam Smith||fanduel": 600,
+      "Ceddanne Rafaela||bet365": 1000,
+      "Ceddanne Rafaela||betmgm": 625,
+      "Ceddanne Rafaela||betrivers": 1050,
+      "Ceddanne Rafaela||caesars": 1100,
+      "Ceddanne Rafaela||draftkings": 1120,
+      "Ceddanne Rafaela||fanatics": 1500,
+      "Ceddanne Rafaela||fanduel": 1120,
+      "Ceddanne Rafaela||hardrockbet": 1100,
+      "Chase Meidroth||bet365": 1200,
+      "Chase Meidroth||betmgm": 900,
+      "Chase Meidroth||caesars": 1300,
+      "Chase Meidroth||draftkings": 1200,
+      "Chase Meidroth||fanduel": 1100,
+      "Christian Walker||bet365": 525,
+      "Christian Walker||betmgm": 425,
+      "Christian Walker||betrivers": 525,
+      "Christian Walker||caesars": 500,
+      "Christian Walker||draftkings": 514,
+      "Christian Walker||fanatics": 525,
+      "Christian Walker||fanduel": 470,
+      "Cody Bellinger||bet365": 600,
+      "Cody Bellinger||betmgm": 450,
+      "Cody Bellinger||betrivers": 650,
+      "Cody Bellinger||caesars": 525,
+      "Cody Bellinger||draftkings": 650,
+      "Cody Bellinger||fanatics": 700,
+      "Cody Bellinger||fanduel": 570,
+      "Cody Bellinger||hardrockbet": 600,
+      "Colson Montgomery||bet365": 500,
+      "Colson Montgomery||betmgm": 475,
+      "Colson Montgomery||betrivers": 430,
+      "Colson Montgomery||caesars": 400,
+      "Colson Montgomery||draftkings": 402,
+      "Colson Montgomery||fanatics": 420,
+      "Colson Montgomery||fanduel": 420,
+      "Derek Hill||bet365": 1100,
+      "Derek Hill||betmgm": 1000,
+      "Derek Hill||betrivers": 1150,
+      "Derek Hill||caesars": 1300,
+      "Derek Hill||draftkings": 1100,
+      "Derek Hill||fanduel": 1120,
+      "Derek Hill||hardrockbet": 1300,
+      "Drake Baldwin||bet365": 550,
+      "Drake Baldwin||betmgm": 525,
+      "Drake Baldwin||betrivers": 550,
+      "Drake Baldwin||caesars": 525,
+      "Drake Baldwin||draftkings": 527,
+      "Drake Baldwin||fanatics": 650,
+      "Drake Baldwin||fanduel": 590,
+      "Drake Baldwin||hardrockbet": 575,
+      "Edmundo Sosa||bet365": 900,
+      "Edmundo Sosa||betmgm": 700,
+      "Edmundo Sosa||betrivers": 850,
+      "Edmundo Sosa||caesars": 950,
+      "Edmundo Sosa||draftkings": 950,
+      "Edmundo Sosa||fanatics": 1050,
+      "Edmundo Sosa||fanduel": 920,
+      "Edmundo Sosa||hardrockbet": 900,
+      "Ha-Seong Kim||bet365": 1400,
+      "Ha-Seong Kim||betrivers": 1050,
+      "Ha-Seong Kim||caesars": 1100,
+      "Ha-Seong Kim||draftkings": 900,
+      "Ha-Seong Kim||fanatics": 950,
+      "Ha-Seong Kim||hardrockbet": 1000,
+      "Heliot Ramos||bet365": 500,
+      "Heliot Ramos||betmgm": 450,
+      "Heliot Ramos||betrivers": 650,
+      "Heliot Ramos||caesars": 525,
+      "Heliot Ramos||draftkings": 660,
+      "Heliot Ramos||fanatics": 650,
+      "Heliot Ramos||fanduel": 540,
+      "Heliot Ramos||hardrockbet": 575,
+      "Isaac Paredes||bet365": 525,
+      "Isaac Paredes||betmgm": 425,
+      "Isaac Paredes||betrivers": 600,
+      "Isaac Paredes||caesars": 575,
+      "Isaac Paredes||draftkings": 586,
+      "Isaac Paredes||fanatics": 600,
+      "Isaac Paredes||fanduel": 540,
+      "J.T. Realmuto||bet365": 800,
+      "J.T. Realmuto||betmgm": 900,
+      "J.T. Realmuto||betrivers": 850,
+      "J.T. Realmuto||caesars": 1100,
+      "J.T. Realmuto||draftkings": 930,
+      "J.T. Realmuto||fanatics": 1050,
+      "J.T. Realmuto||fanduel": 980,
+      "J.T. Realmuto||hardrockbet": 1100,
+      "Jarren Duran||bet365": 800,
+      "Jarren Duran||betmgm": 725,
+      "Jarren Duran||betrivers": 800,
+      "Jarren Duran||caesars": 850,
+      "Jarren Duran||draftkings": 830,
+      "Jarren Duran||fanatics": 950,
+      "Jarren Duran||fanduel": 880,
+      "Jarren Duran||hardrockbet": 800,
+      "Jeremy Pe\u00f1a||bet365": 500,
+      "Jeremy Pe\u00f1a||betmgm": 450,
+      "Jeremy Pe\u00f1a||betrivers": 500,
+      "Jeremy Pe\u00f1a||caesars": 425,
+      "Jeremy Pe\u00f1a||draftkings": 463,
+      "Jeremy Pe\u00f1a||fanatics": 475,
+      "Jeremy Pe\u00f1a||fanduel": 440,
+      "Jose Altuve||bet365": 750,
+      "Jose Altuve||betmgm": 600,
+      "Jose Altuve||betrivers": 700,
+      "Jose Altuve||caesars": 625,
+      "Jose Altuve||draftkings": 650,
+      "Jose Altuve||fanatics": 700,
+      "Jose Altuve||fanduel": 680,
+      "Kyle Schwarber||bet365": 390,
+      "Kyle Schwarber||betmgm": 400,
+      "Kyle Schwarber||betrivers": 350,
+      "Kyle Schwarber||caesars": 350,
+      "Kyle Schwarber||draftkings": 354,
+      "Kyle Schwarber||fanatics": 370,
+      "Kyle Schwarber||fanduel": 330,
+      "Kyle Schwarber||hardrockbet": 350,
+      "Kyle Teel||bet365": 850,
+      "Kyle Teel||betmgm": 800,
+      "Kyle Teel||caesars": 700,
+      "Kyle Teel||draftkings": 640,
+      "Kyle Teel||fanduel": 560,
+      "Lucas Spence||bet365": 800,
+      "Lucas Spence||betmgm": 775,
+      "Lucas Spence||betrivers": 700,
+      "Lucas Spence||caesars": 700,
+      "Lucas Spence||draftkings": 690,
+      "Lucas Spence||fanatics": 700,
+      "Lucas Spence||fanduel": 630,
+      "Matt Olson||bet365": 400,
+      "Matt Olson||betmgm": 375,
+      "Matt Olson||betrivers": 370,
+      "Matt Olson||caesars": 370,
+      "Matt Olson||draftkings": 375,
+      "Matt Olson||fanatics": 390,
+      "Matt Olson||fanduel": 390,
+      "Matt Olson||hardrockbet": 350,
+      "Mauricio Dub\u00f3n||bet365": 1000,
+      "Mauricio Dub\u00f3n||betmgm": 1000,
+      "Mauricio Dub\u00f3n||betrivers": 1300,
+      "Mauricio Dub\u00f3n||caesars": 1300,
+      "Mauricio Dub\u00f3n||draftkings": 1220,
+      "Mauricio Dub\u00f3n||fanatics": 1500,
+      "Mauricio Dub\u00f3n||fanduel": 1260,
+      "Mauricio Dub\u00f3n||hardrockbet": 1400,
+      "Michael Harris II||bet365": 700,
+      "Michael Harris II||betmgm": 525,
+      "Michael Harris II||betrivers": 480,
+      "Michael Harris II||caesars": 500,
+      "Michael Harris II||draftkings": 495,
+      "Michael Harris II||fanatics": 550,
+      "Michael Harris II||fanduel": 520,
+      "Michael Harris II||hardrockbet": 500,
+      "Miguel Vargas||bet365": 450,
+      "Miguel Vargas||betmgm": 425,
+      "Miguel Vargas||caesars": 400,
+      "Miguel Vargas||draftkings": 398,
+      "Miguel Vargas||fanduel": 400,
+      "Mike Yastrzemski||betmgm": 775,
+      "Mike Yastrzemski||fanduel": 790,
+      "Munetaka Murakami||bet365": 375,
+      "Munetaka Murakami||betmgm": 360,
+      "Munetaka Murakami||betrivers": 400,
+      "Munetaka Murakami||caesars": 370,
+      "Munetaka Murakami||draftkings": 365,
+      "Munetaka Murakami||fanatics": 370,
+      "Munetaka Murakami||fanduel": 360,
+      "Nick Sogard||bet365": 1500,
+      "Nick Sogard||betmgm": 1250,
+      "Nick Sogard||betrivers": 1200,
+      "Nick Sogard||caesars": 1300,
+      "Nick Sogard||draftkings": 1460,
+      "Nick Sogard||fanatics": 1500,
+      "Nick Sogard||fanduel": 1300,
+      "Nick Sogard||hardrockbet": 1400,
+      "Ozzie Albies||bet365": 700,
+      "Ozzie Albies||betmgm": 600,
+      "Ozzie Albies||betrivers": 750,
+      "Ozzie Albies||caesars": 700,
+      "Ozzie Albies||draftkings": 740,
+      "Ozzie Albies||fanatics": 950,
+      "Ozzie Albies||fanduel": 760,
+      "Ozzie Albies||hardrockbet": 750,
+      "Paul Goldschmidt||bet365": 550,
+      "Paul Goldschmidt||caesars": 575,
+      "Paul Goldschmidt||draftkings": 489,
+      "Paul Goldschmidt||fanatics": 650,
+      "Paul Goldschmidt||fanduel": 680,
+      "Roman Anthony||bet365": 550,
+      "Roman Anthony||betmgm": 650,
+      "Roman Anthony||betrivers": 650,
+      "Roman Anthony||caesars": 625,
+      "Roman Anthony||draftkings": 660,
+      "Roman Anthony||fanatics": 700,
+      "Roman Anthony||fanduel": 680,
+      "Roman Anthony||hardrockbet": 600,
+      "Ronald Acu\u00f1a Jr.||bet365": 400,
+      "Ronald Acu\u00f1a Jr.||betmgm": 400,
+      "Ronald Acu\u00f1a Jr.||betrivers": 480,
+      "Ronald Acu\u00f1a Jr.||caesars": 400,
+      "Ronald Acu\u00f1a Jr.||draftkings": 419,
+      "Ronald Acu\u00f1a Jr.||fanatics": 450,
+      "Ronald Acu\u00f1a Jr.||fanduel": 440,
+      "Ronald Acu\u00f1a Jr.||hardrockbet": 450,
+      "Sam Antonacci||bet365": 1100,
+      "Sam Antonacci||betmgm": 1000,
+      "Sam Antonacci||betrivers": 1150,
+      "Sam Antonacci||caesars": 1100,
+      "Sam Antonacci||draftkings": 1160,
+      "Sam Antonacci||fanatics": 1050,
+      "Sam Antonacci||fanduel": 900,
+      "Sean Murphy||bet365": 800,
+      "Sean Murphy||betmgm": 650,
+      "Sean Murphy||betrivers": 700,
+      "Sean Murphy||caesars": 750,
+      "Sean Murphy||draftkings": 770,
+      "Sean Murphy||fanatics": 950,
+      "Sean Murphy||fanduel": 790,
+      "Sean Murphy||hardrockbet": 800,
+      "Spencer Jones||bet365": 600,
+      "Spencer Jones||betmgm": 500,
+      "Taylor Trammell||bet365": 850,
+      "Taylor Trammell||betmgm": 800,
+      "Taylor Trammell||betrivers": 800,
+      "Taylor Trammell||caesars": 700,
+      "Taylor Trammell||draftkings": 780,
+      "Taylor Trammell||fanatics": 700,
+      "Taylor Trammell||fanduel": 630,
+      "Trea Turner||bet365": 800,
+      "Trea Turner||betmgm": 775,
+      "Trea Turner||betrivers": 800,
+      "Trea Turner||caesars": 850,
+      "Trea Turner||draftkings": 790,
+      "Trea Turner||fanatics": 950,
+      "Trea Turner||fanduel": 820,
+      "Trea Turner||hardrockbet": 900,
+      "Trevor Story||bet365": 850,
+      "Trevor Story||betmgm": 725,
+      "Trevor Story||betrivers": 1050,
+      "Trevor Story||caesars": 1100,
+      "Trevor Story||draftkings": 1160,
+      "Trevor Story||fanatics": 1400,
+      "Trevor Story||fanduel": 1120,
+      "Trevor Story||hardrockbet": 1100,
+      "Tristan Peters||bet365": 900,
+      "Tristan Peters||betmgm": 900,
+      "Tristan Peters||caesars": 950,
+      "Tristan Peters||draftkings": 840,
+      "Tristan Peters||fanduel": 800,
+      "Willson Contreras||bet365": 575,
+      "Willson Contreras||betmgm": 425,
+      "Willson Contreras||betrivers": 500,
+      "Willson Contreras||caesars": 525,
+      "Willson Contreras||draftkings": 532,
+      "Willson Contreras||fanatics": 600,
+      "Willson Contreras||fanduel": 520,
+      "Willson Contreras||hardrockbet": 550,
+      "Wilyer Abreu||bet365": 550,
+      "Wilyer Abreu||betmgm": 500,
+      "Wilyer Abreu||betrivers": 600,
+      "Wilyer Abreu||caesars": 525,
+      "Wilyer Abreu||draftkings": 571,
+      "Wilyer Abreu||fanatics": 525,
+      "Wilyer Abreu||fanduel": 520,
+      "Wilyer Abreu||hardrockbet": 550,
+      "Yainer Diaz||bet365": 600,
+      "Yainer Diaz||betmgm": 525,
+      "Yainer Diaz||betrivers": 575,
+      "Yainer Diaz||caesars": 525,
+      "Yainer Diaz||draftkings": 549,
+      "Yainer Diaz||fanatics": 600,
+      "Yainer Diaz||fanduel": 560,
+      "Yordan Alvarez||bet365": 300,
+      "Yordan Alvarez||betmgm": 310,
+      "Yordan Alvarez||betrivers": 300,
+      "Yordan Alvarez||caesars": 280,
+      "Yordan Alvarez||draftkings": 283,
+      "Yordan Alvarez||fanatics": 265,
+      "Yordan Alvarez||fanduel": 265
     }
   ],
   "presence_history": [
-    [
-      [
-        "Jaylen Warren",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Johnny Mundt",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Nate Adkins",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kolbe Katsis",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Dontayvion Wicks",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "DeVonta Smith",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Pat Freiermuth",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Matthew Stafford",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jordan Whittington",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyren Williams",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "DeVonta Smith",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tyler Badie",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyren Williams",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyle Monangai",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Luther Burden III",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Makai Lemon",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "D'Andre Swift",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Kyle Monangai",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Britain Covey",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Rome Odunze",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Kalif Raymond",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Evan Engram",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Konata Mumpfield",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Will Shipley",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Matthew Stafford",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Eli Heidenreich",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "J.K. Dobbins",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Xavier Smith",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "D'Andre Swift",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Makai Lemon",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tank Bigsby",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Elijah Moore",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jaylen Waddle",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Cole Kmet",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Davis Allen",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Matthew Stafford",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyren Williams",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Davante Adams",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Bo Nix",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Deshaun Watson",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Konata Mumpfield",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Johnny Mundt",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Hayden Large",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Dean Connors",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Adam Prentice",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jaylen Waddle",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "RJ Harvey",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Troy Franklin",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyren Williams",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Aaron Rodgers",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Tyson Bagent",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Davante Adams",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyle Monangai",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "DeVonta Smith",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Makai Lemon",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tyler Higbee",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Rome Odunze",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Troy Franklin",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Xavier Smith",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Elijah Moore",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Saquon Barkley",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Luther Burden III",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jordan Whittington",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Xavier Smith",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Tank Bigsby",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Adam Prentice",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "D'Andre Swift",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "DeVonta Smith",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Harold Fannin Jr.",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Rome Odunze",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jahdae Walker",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Lil'Jordan Humphrey",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Pat Bryant",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Konata Mumpfield",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Adam Trautman",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Cole Kmet",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Davis Allen",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Darius Cooper",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Troy Franklin",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Courtland Sutton",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Johnny Mundt",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jaylen Waddle",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jalen Hurts",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Evan Engram",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Troy Franklin",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Rome Odunze",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jalen Hurts",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Luther Burden III",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Davante Adams",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "D'Andre Swift",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Bo Nix",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Makai Lemon",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Courtland Sutton",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Rome Odunze",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tyler Badie",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Max Klare",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Johnny Mundt",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tutu Atwell",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kalif Raymond",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "DK Metcalf",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Bo Nix",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Nate Adkins",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kolbe Katsis",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jordan Whittington",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "DeVonta Smith",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Luther Burden III",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jaylen Waddle",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Tylan Wallace",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Colston Loveland",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Roschon Johnson",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Kyle Monangai",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Kalif Raymond",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Luther Burden III",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Darnell Washington",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Dean Connors",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Will Shipley",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "J.K. Dobbins",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Adam Trautman",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kalif Raymond",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "J.K. Dobbins",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Malachi Corley",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Tyler Higbee",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Tyler Badie",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Blake Whiteheart",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Davis Allen",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyren Williams",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Ronnie Rivers",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Roschon Johnson",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Raheim Sanders",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Johnny Mundt",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Davante Adams",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Dallen Bentley",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyle Monangai",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jahdae Walker",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Pat Bryant",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Colston Loveland",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Britain Covey",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Makai Lemon",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Terrance Ferguson",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "RJ Harvey",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Davante Adams",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jaylen Waddle",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Xavier Smith",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Elijah Moore",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Saquon Barkley",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tyler Higbee",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Marvin Mims Jr.",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Adam Prentice",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Roman Wilson",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Kaden Wetjen",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Rico Dowdle",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "E.J. Jenkins",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jahdae Walker",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Pat Bryant",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Terrance Ferguson",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Blake Corum",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Konata Mumpfield",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Darius Cooper",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Courtland Sutton",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jahdae Walker",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tank Bigsby",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "E.J. Jenkins",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Pat Bryant",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Saquon Barkley",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Case Keenum",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Blake Corum",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Adam Trautman",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Troy Franklin",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Quinshon Judkins",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Tyler Higbee",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Evan Engram",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Troy Franklin",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Colby Parkinson",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Case Keenum",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Hollywood Brown",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Adam Trautman",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Isaiah Bond",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Colston Loveland",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Colby Parkinson",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Roschon Johnson",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Britain Covey",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Rome Odunze",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Blake Corum",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Michael Pittman Jr.",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Jahdae Walker",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Pat Bryant",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "RJ Harvey",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Evan Engram",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Britain Covey",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "E.J. Jenkins",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Colby Parkinson",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Case Keenum",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Dallas Goedert",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Blake Corum",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Cole Kmet",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Colston Loveland",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "D'Andre Swift",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Darius Cooper",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tyler Badie",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Will Shipley",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Colby Parkinson",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Case Keenum",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Bo Nix",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Luther Burden III",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Dontayvion Wicks",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Bo Nix",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Dontayvion Wicks",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Denzel Boston",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Will Shipley",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Case Keenum",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Elijah Moore",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Kalif Raymond",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Robert Tonyan",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Tyler Badie",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Courtland Sutton",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Ben Skowronek",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Britain Covey",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "J.K. Dobbins",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "RJ Harvey",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kyle Monangai",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Roschon Johnson",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "J.K. Dobbins",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Matthew Stafford",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Colston Loveland",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Xavier Smith",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jaleel McLaughlin",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Terrance Ferguson",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Cole Kmet",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Colston Loveland",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "RJ Harvey",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Darius Cooper",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Xavier Smith",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jordan Whittington",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Davante Adams",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Konata Mumpfield",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Saquon Barkley",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Will Shipley",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tyler Higbee",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Cole Kmet",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Colby Parkinson",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "RJ Harvey",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Dontayvion Wicks",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "E.J. Jenkins",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Puka Nacua",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Terrance Ferguson",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Darius Cooper",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Elijah Moore",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jalen Hurts",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Davis Allen",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Davis Allen",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Dean Connors",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Dontayvion Wicks",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Johnny Mundt",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jahdae Walker",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tank Bigsby",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jalen Hurts",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Dontayvion Wicks",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Nate Adkins",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Pat Bryant",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Saquon Barkley",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Adam Prentice",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Courtland Sutton",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Kolbe Katsis",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "DeVonta Smith",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Evan Engram",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Makai Lemon",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Cole Kmet",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Will Shipley",
-        "betrivers",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Nate Adkins",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Courtland Sutton",
-        "fanatics",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Darius Cooper",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Kalif Raymond",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jalen Hurts",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Tank Bigsby",
-        "bet365",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Max Klare",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jordan Whittington",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "E.J. Jenkins",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Bo Nix",
-        "betrivers",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Max Klare",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Terrance Ferguson",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jerry Jeudy",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Blake Corum",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Evan Engram",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Jalen Hurts",
-        "fanatics",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "E.J. Jenkins",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Adam Trautman",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Konata Mumpfield",
-        "fanduel",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Nate Adkins",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Blake Corum",
-        "draftkings",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Adam Trautman",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Tank Bigsby",
-        "betmgm",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Saquon Barkley",
-        "fanduel",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "D'Andre Swift",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ],
-      [
-        "Jordan Whittington",
-        "betmgm",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Germie Bernard",
-        "fanatics",
-        "Pittsburgh Steelers @ Cleveland Browns"
-      ],
-      [
-        "Kyren Williams",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Tyler Badie",
-        "bet365",
-        "Los Angeles Rams @ Denver Broncos"
-      ],
-      [
-        "Case Keenum",
-        "draftkings",
-        "Philadelphia Eagles @ Chicago Bears"
-      ]
-    ],
     [
       [
         "Jaylen Warren",
@@ -18850,107 +17345,1506 @@
         "bet365",
         "Chicago White Sox @ Houston Astros"
       ]
+    ],
+    [
+      [
+        "Cody Bellinger",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jeremy Pe\u00f1a",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Alec Bohm",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Colson Montgomery",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Cody Bellinger",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Miguel Vargas",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Roman Anthony",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jeremy Pe\u00f1a",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Trevor Story",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Isaac Paredes",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Jose Altuve",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Kyle Teel",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ben Rice",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ozzie Albies",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Roman Anthony",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Aaron Judge",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Chase Meidroth",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Roman Anthony",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Yainer Diaz",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Anthony Volpe",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Adley Rutschman",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Cody Bellinger",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Sam Antonacci",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Jeremy Pe\u00f1a",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Austin Riley",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Taylor Trammell",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Caleb Durbin",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Colson Montgomery",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Wilyer Abreu",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Cam Smith",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ben Rice",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jeremy Pe\u00f1a",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Edmundo Sosa",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Cam Smith",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Sam Antonacci",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Miguel Vargas",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Amed Rosario",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryan De La Cruz",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Drake Baldwin",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sam Antonacci",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ben Rice",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Christian Walker",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Michael Harris II",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Nick Sogard",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ha-Seong Kim",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Yainer Diaz",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Isaac Paredes",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Michael Harris II",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Roman Anthony",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Miguel Vargas",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ozzie Albies",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Chase Meidroth",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ozzie Albies",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Willson Contreras",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Mike Yastrzemski",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ha-Seong Kim",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Caleb Durbin",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryan De La Cruz",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Wells",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Lucas Spence",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ozzie Albies",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Heliot Ramos",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Caleb Durbin",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryson Stott",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Yordan Alvarez",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ben Rice",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Trevor Story",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Amed Rosario",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ceddanne Rafaela",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Matt Olson",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Yordan Alvarez",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "J.T. Realmuto",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Nick Sogard",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ceddanne Rafaela",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Andrew Benintendi",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Lucas Spence",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Munetaka Murakami",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Trea Turner",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ceddanne Rafaela",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Kyle Schwarber",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Caleb Durbin",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Yainer Diaz",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Paul Goldschmidt",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Lucas Spence",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Sam Antonacci",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Nick Sogard",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Alec Bohm",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Jarren Duran",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Caleb Durbin",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Anthony Volpe",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "J.T. Realmuto",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ozzie Albies",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ben Rice",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Taylor Trammell",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Nick Sogard",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Derek Hill",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Jarren Duran",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryce Harper",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ozzie Albies",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Derek Hill",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Heliot Ramos",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jarren Duran",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jose Altuve",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Mike Yastrzemski",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryan De La Cruz",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryson Stott",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Cody Bellinger",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Kyle Schwarber",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Yordan Alvarez",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Lucas Spence",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Jeremy Pe\u00f1a",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Braden Montgomery",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Wilyer Abreu",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Tristan Peters",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Adley Rutschman",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Braden Montgomery",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Cam Smith",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Munetaka Murakami",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Jeremy Pe\u00f1a",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Roman Anthony",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Colson Montgomery",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Yordan Alvarez",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Adley Rutschman",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryan De La Cruz",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Yordan Alvarez",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Paul Goldschmidt",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Edmundo Sosa",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Munetaka Murakami",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Austin Riley",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Colson Montgomery",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Braden Montgomery",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ha-Seong Kim",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sam Antonacci",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Christian Walker",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Kyle Teel",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Bryan De La Cruz",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Aaron Judge",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Braden Montgomery",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Anthony Volpe",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Chase Meidroth",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Bryce Harper",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Heliot Ramos",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryson Stott",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Jarren Duran",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Munetaka Murakami",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Matt Olson",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Spencer Jones",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Wilyer Abreu",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Christian Walker",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Jose Altuve",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Nick Sogard",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jarren Duran",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Adley Rutschman",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryce Harper",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Munetaka Murakami",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Tristan Peters",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Bryson Stott",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Drake Baldwin",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Miguel Vargas",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Paul Goldschmidt",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Braden Montgomery",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Bryce Harper",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Matt Olson",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Yordan Alvarez",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Bryson Stott",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Isaac Paredes",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Kyle Teel",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Trea Turner",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Edmundo Sosa",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ceddanne Rafaela",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Matt Olson",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Spencer Jones",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Taylor Trammell",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Chase Meidroth",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Heliot Ramos",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jose Altuve",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Trea Turner",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Yainer Diaz",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Lucas Spence",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Austin Riley",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Wilyer Abreu",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Caleb Durbin",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Derek Hill",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Willson Contreras",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Nick Sogard",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Christian Walker",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Derek Hill",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Heliot Ramos",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jarren Duran",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Jose Altuve",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Matt Olson",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Cam Smith",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Drake Baldwin",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Wilyer Abreu",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Austin Wells",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Edmundo Sosa",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Jose Altuve",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Andrew Benintendi",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Isaac Paredes",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ben Rice",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Cam Smith",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Drake Baldwin",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Aaron Judge",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Roman Anthony",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Anthony Volpe",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryce Harper",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Isaac Paredes",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Edmundo Sosa",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Taylor Trammell",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Taylor Trammell",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Wilyer Abreu",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Christian Walker",
+        "betrivers",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Colson Montgomery",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Michael Harris II",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Cam Smith",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Drake Baldwin",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryan De La Cruz",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Derek Hill",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Edmundo Sosa",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Willson Contreras",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Willson Contreras",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Braden Montgomery",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Heliot Ramos",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Adley Rutschman",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Austin Wells",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Cody Bellinger",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Drake Baldwin",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Wells",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Christian Walker",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Colson Montgomery",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ha-Seong Kim",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Isaac Paredes",
+        "fanatics",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Willson Contreras",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Tristan Peters",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Andrew Benintendi",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trevor Story",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Alec Bohm",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Munetaka Murakami",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Trevor Story",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Sean Murphy",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Willson Contreras",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Austin Wells",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ceddanne Rafaela",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Paul Goldschmidt",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryce Harper",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Andrew Benintendi",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Yainer Diaz",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Austin Wells",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Bryson Stott",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Teel",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "betmgm",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Amed Rosario",
+        "draftkings",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Ceddanne Rafaela",
+        "betrivers",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Trevor Story",
+        "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Matt Olson",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sam Antonacci",
+        "fanduel",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trevor Story",
+        "fanatics",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Taylor Trammell",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Cody Bellinger",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Yainer Diaz",
+        "betmgm",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "J.T. Realmuto",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Adley Rutschman",
+        "fanduel",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Tristan Peters",
+        "draftkings",
+        "Chicago White Sox @ Houston Astros"
+      ],
+      [
+        "Lucas Spence",
+        "bet365",
+        "Chicago White Sox @ Houston Astros"
+      ]
     ]
   ],
   "mgm_history": [
-    [
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 0,
-        "team": "BOSTON RED SOX",
-        "players": [
-          "Ceddanne Rafaela",
-          "Adley Rutschman",
-          "Nick Sogard"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 75,
-        "team": "BOSTON RED SOX",
-        "players": [
-          "Trevor Story",
-          "Caleb Durbin",
-          "Wilyer Abreu"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 25,
-        "team": "BOSTON RED SOX",
-        "players": [
-          "Jarren Duran",
-          "Willson Contreras"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 75,
-        "team": "NEW YORK YANKEES",
-        "players": [
-          "Heliot Ramos",
-          "Jazz Chisholm Jr.",
-          "Cody Bellinger"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 25,
-        "team": "NEW YORK YANKEES",
-        "players": [
-          "Ryan McMahon",
-          "Luis Garc\u00eda Jr."
-        ]
-      },
-      {
-        "event": "Chicago White Sox @ Houston Astros",
-        "ending": 0,
-        "team": "CHICAGO WHITE SOX",
-        "players": [
-          "Chase Meidroth",
-          "Kyle Teel",
-          "Tristan Peters"
-        ]
-      },
-      {
-        "event": "Chicago White Sox @ Houston Astros",
-        "ending": 50,
-        "team": "HOUSTON ASTROS",
-        "players": [
-          "Jeremy Pe\u00f1a",
-          "Cam Smith",
-          "Isaac Paredes"
-        ]
-      },
-      {
-        "event": "Philadelphia Phillies @ Atlanta Braves",
-        "ending": 25,
-        "team": "ATLANTA BRAVES",
-        "players": [
-          "Sean Murphy",
-          "Drake Baldwin",
-          "Michael Harris II"
-        ]
-      },
-      {
-        "event": "Philadelphia Phillies @ Atlanta Braves",
-        "ending": 25,
-        "team": "PHILADELPHIA PHILLIES",
-        "players": [
-          "Alec Bohm",
-          "Bryce Harper"
-        ]
-      },
-      {
-        "event": "Philadelphia Phillies @ Atlanta Braves",
-        "ending": 75,
-        "team": "PHILADELPHIA PHILLIES",
-        "players": [
-          "Trea Turner",
-          "Edmundo Sosa"
-        ]
-      }
-    ],
     [
       {
         "event": "Philadelphia Eagles @ Chicago Bears",
@@ -19294,105 +19188,212 @@
           "Bryce Harper"
         ]
       }
+    ],
+    [
+      {
+        "event": "Boston Red Sox @ New York Yankees",
+        "ending": 0,
+        "team": "BOSTON RED SOX",
+        "players": [
+          "Adley Rutschman",
+          "Caleb Durbin",
+          "Wilyer Abreu"
+        ]
+      },
+      {
+        "event": "Boston Red Sox @ New York Yankees",
+        "ending": 50,
+        "team": "BOSTON RED SOX",
+        "players": [
+          "Roman Anthony",
+          "Nick Sogard"
+        ]
+      },
+      {
+        "event": "Boston Red Sox @ New York Yankees",
+        "ending": 0,
+        "team": "NEW YORK YANKEES",
+        "players": [
+          "Austin Wells",
+          "Spencer Jones"
+        ]
+      },
+      {
+        "event": "Boston Red Sox @ New York Yankees",
+        "ending": 50,
+        "team": "NEW YORK YANKEES",
+        "players": [
+          "Heliot Ramos",
+          "Cody Bellinger"
+        ]
+      },
+      {
+        "event": "Chicago White Sox @ Houston Astros",
+        "ending": 75,
+        "team": "CHICAGO WHITE SOX",
+        "players": [
+          "Braden Montgomery",
+          "Andrew Benintendi",
+          "Colson Montgomery"
+        ]
+      },
+      {
+        "event": "Chicago White Sox @ Houston Astros",
+        "ending": 50,
+        "team": "HOUSTON ASTROS",
+        "players": [
+          "Jeremy Pe\u00f1a",
+          "Cam Smith"
+        ]
+      },
+      {
+        "event": "Chicago White Sox @ Houston Astros",
+        "ending": 25,
+        "team": "HOUSTON ASTROS",
+        "players": [
+          "Christian Walker",
+          "Isaac Paredes",
+          "Yainer Diaz"
+        ]
+      },
+      {
+        "event": "Chicago White Sox @ Houston Astros",
+        "ending": 0,
+        "team": "HOUSTON ASTROS",
+        "players": [
+          "Jose Altuve",
+          "Taylor Trammell"
+        ]
+      },
+      {
+        "event": "Philadelphia Phillies @ Atlanta Braves",
+        "ending": 25,
+        "team": "ATLANTA BRAVES",
+        "players": [
+          "Michael Harris II",
+          "Austin Riley",
+          "Drake Baldwin"
+        ]
+      },
+      {
+        "event": "Philadelphia Phillies @ Atlanta Braves",
+        "ending": 75,
+        "team": "ATLANTA BRAVES",
+        "players": [
+          "Matt Olson",
+          "Mike Yastrzemski"
+        ]
+      },
+      {
+        "event": "Philadelphia Phillies @ Atlanta Braves",
+        "ending": 0,
+        "team": "ATLANTA BRAVES",
+        "players": [
+          "Ronald Acu\u00f1a Jr.",
+          "Ozzie Albies",
+          "Mauricio Dub\u00f3n"
+        ]
+      },
+      {
+        "event": "Philadelphia Phillies @ Atlanta Braves",
+        "ending": 75,
+        "team": "PHILADELPHIA PHILLIES",
+        "players": [
+          "Trea Turner",
+          "Bryce Harper"
+        ]
+      }
     ]
   ],
   "prev_ev": {
     "Drake Baldwin": {
       "methods": [
+        "FD Pattern",
+        "FD 90",
         "MGM Exact",
-        "MGM 25",
+        "Fanatics Drift",
         "Stayed in the group",
+        "FD a little long",
         "Fanatics over pack",
+        "Multi-book method",
         "Multi-book Shorten",
         "Match 25",
-        "Last one left",
+        "FD+MGM classic",
+        "MGM 25",
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 116,
+      "edge": 85,
       "is_bet": true,
-      "method_count": 5,
-      "score": 93,
+      "method_count": 9,
+      "score": 96,
       "events": [
         "Philadelphia Phillies @ Atlanta Braves"
       ]
     },
-    "Trevor Story": {
+    "Austin Riley": {
       "methods": [
-        "FD Pattern",
+        "HardRock Heater",
         "MGM Exact",
-        "MGM 25",
-        "DK FD-style",
         "Stayed in the group",
-        "B365 way over MGM",
-        "Fanatics Drift",
-        "Fanatics over pack",
-        "Multi-book method",
-        "HardRock 00",
-        "B365 over MGM",
+        "FD 40",
         "Match 25",
-        "FD+MGM classic",
-        "Last one left",
+        "MGM 25",
         "EV Support",
         "Kelly Support"
       ],
-      "edge": 46,
+      "edge": 20,
       "is_bet": true,
-      "method_count": 5,
-      "score": 92,
+      "method_count": 4,
+      "score": 50,
       "events": [
-        "Boston Red Sox @ New York Yankees"
+        "Philadelphia Phillies @ Atlanta Braves"
       ]
     },
-    "Willson Contreras": {
+    "Yainer Diaz": {
       "methods": [
         "B365 a bit over FD",
         "FD Pattern",
-        "MGM 25",
         "Stayed in the group",
         "Match 25",
         "B365 way over MGM",
+        "FD a little long",
         "Multi-book method",
-        "HardRock 50",
         "B365 over MGM",
-        "B365 over HardRock",
         "FD+MGM classic",
-        "Last one left",
+        "MGM 25",
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 59,
-      "is_bet": true,
-      "method_count": 5,
-      "score": 89,
+      "edge": 44,
+      "is_bet": false,
+      "method_count": 6,
+      "score": 79,
       "events": [
-        "Boston Red Sox @ New York Yankees"
+        "Chicago White Sox @ Houston Astros"
       ]
     },
     "Michael Harris II": {
       "methods": [
         "FD Pattern",
-        "FD 90",
         "MGM Exact",
-        "MGM 25",
         "Stayed in the group",
         "B365 over HardRock",
         "B365 way over MGM",
+        "FD a little long",
         "Multi-book method",
-        "Rivers short vs pack",
-        "Multi-book Shorten",
         "HardRock 00",
         "B365 over MGM",
         "Match 25",
         "FD+MGM classic",
-        "Last one left",
-        "EV Premium",
+        "MGM 25",
+        "EV Support",
         "Kelly Support"
       ],
-      "edge": 177,
+      "edge": 30,
       "is_bet": false,
-      "method_count": 8,
-      "score": 100,
+      "method_count": 6,
+      "score": 71,
       "events": [
         "Philadelphia Phillies @ Atlanta Braves"
       ]
@@ -19402,7 +19403,6 @@
         "B365 a bit over FD",
         "FD Pattern",
         "MGM Exact",
-        "MGM 25",
         "Stayed in the group",
         "B365 way over MGM",
         "FD a little long",
@@ -19410,61 +19410,43 @@
         "B365 over MGM",
         "Match 25",
         "FD+MGM classic",
-        "Last one left",
-        "EV Premium",
+        "MGM 25",
+        "EV Support",
         "Kelly Support"
       ],
-      "edge": 30,
+      "edge": 20,
       "is_bet": false,
-      "method_count": 7,
-      "score": 82,
+      "method_count": 6,
+      "score": 69,
       "events": [
         "Chicago White Sox @ Houston Astros"
       ]
     },
-    "Yainer Diaz": {
+    "Cody Bellinger": {
       "methods": [
         "B365 a bit over FD",
         "FD Pattern",
-        "MGM 25",
+        "MGM Exact",
+        "Match 50",
+        "Rivers a bit over pack",
         "Stayed in the group",
         "B365 way over MGM",
-        "FD a little long",
+        "Fanatics Drift",
+        "Fanatics over pack",
+        "MGM 50",
         "Multi-book method",
+        "HardRock 00",
         "B365 over MGM",
-        "Match 25",
         "FD+MGM classic",
-        "Last one left",
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 44,
+      "edge": 111,
       "is_bet": false,
-      "method_count": 6,
-      "score": 85,
+      "method_count": 4,
+      "score": 76,
       "events": [
-        "Chicago White Sox @ Houston Astros"
-      ]
-    },
-    "Mike Yastrzemski": {
-      "methods": [
-        "MGM 25",
-        "Stayed in the group",
-        "Match 25",
-        "Multi-book method",
-        "Multi-book Shorten",
-        "FD Pattern",
-        "FD+MGM classic",
-        "Last one left",
-        "EV Caution",
-        "Kelly Caution"
-      ],
-      "edge": -15,
-      "is_bet": false,
-      "method_count": 5,
-      "score": 66,
-      "events": [
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Boston Red Sox @ New York Yankees"
       ]
     },
     "Cam Smith": {
@@ -19478,109 +19460,75 @@
         "FD 600",
         "B365 over MGM",
         "FD+MGM classic",
-        "Last one left",
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 61,
+      "edge": 59,
       "is_bet": false,
       "method_count": 4,
-      "score": 81,
+      "score": 75,
       "events": [
         "Chicago White Sox @ Houston Astros"
       ]
     },
-    "Jarren Duran": {
-      "methods": [
-        "MGM Exact",
-        "MGM 25",
-        "Fanatics Drift",
-        "DK FD-style",
-        "Stayed in the group",
-        "B365 way over MGM",
-        "Fanatics over pack",
-        "B365 over MGM",
-        "Match 25",
-        "HardRock 00",
-        "Last one left",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 103,
-      "is_bet": false,
-      "method_count": 4,
-      "score": 76,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Cody Bellinger": {
-      "methods": [
-        "B365 a bit over FD",
-        "FD Pattern",
-        "MGM Exact",
-        "Match 50",
-        "Rivers a bit over pack",
-        "Stayed in the group",
-        "B365 way over MGM",
-        "MGM 50",
-        "Multi-book method",
-        "HardRock 00",
-        "B365 over MGM",
-        "FD+MGM classic",
-        "Last one left",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 64,
-      "is_bet": false,
-      "method_count": 4,
-      "score": 72,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
     "Bryce Harper": {
       "methods": [
-        "B365 a bit over FD",
         "FD Pattern",
-        "Match 50",
         "Stayed in the group",
         "FD a little long",
-        "MGM 50",
-        "Rivers short vs pack",
-        "B365 over MGM",
-        "B365 over HardRock",
         "FD+MGM classic",
+        "Match 75",
+        "Rivers short vs pack",
+        "B365 over HardRock",
+        "MGM 75",
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 98,
+      "edge": 102,
       "is_bet": false,
       "method_count": 3,
-      "score": 59,
+      "score": 60,
       "events": [
         "Philadelphia Phillies @ Atlanta Braves"
+      ]
+    },
+    "Colson Montgomery": {
+      "methods": [
+        "B365 a bit over FD",
+        "Stayed in the group",
+        "FD a little long",
+        "FD+MGM classic",
+        "Match 75",
+        "FD Pattern",
+        "MGM 75",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 77,
+      "is_bet": false,
+      "method_count": 3,
+      "score": 55,
+      "events": [
+        "Chicago White Sox @ Houston Astros"
       ]
     },
     "Isaac Paredes": {
       "methods": [
         "MGM Exact",
-        "MGM 25",
         "Rivers a bit over pack",
         "Stayed in the group",
         "B365 way over MGM",
         "FD 40",
         "B365 over MGM",
         "Match 25",
-        "Last one left",
+        "MGM 25",
         "EV Support",
         "Kelly Support"
       ],
-      "edge": 15,
+      "edge": 27,
       "is_bet": false,
       "method_count": 3,
-      "score": 37,
+      "score": 34,
       "events": [
         "Chicago White Sox @ Houston Astros"
       ]
@@ -19606,27 +19554,24 @@
         "Chicago White Sox @ Houston Astros"
       ]
     },
-    "Bryson Stott": {
+    "Trea Turner": {
       "methods": [
-        "B365 a bit over FD",
         "FD Pattern",
-        "Match 50",
+        "Fanatics Drift",
         "DK FD-style",
         "Stayed in the group",
-        "B365 way over MGM",
         "Fanatics over pack",
-        "MGM 50",
-        "Rivers short vs pack",
+        "Match 75",
         "HardRock 00",
-        "B365 over MGM",
+        "MGM 75",
         "FD+MGM classic",
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 136,
+      "edge": 94,
       "is_bet": false,
       "method_count": 2,
-      "score": 70,
+      "score": 60,
       "events": [
         "Philadelphia Phillies @ Atlanta Braves"
       ]
@@ -19641,23 +19586,20 @@
         "MGM 50",
         "FD 40",
         "B365 over MGM",
-        "Last one left",
         "EV Premium",
         "Kelly Support"
       ],
       "edge": 86,
       "is_bet": false,
       "method_count": 2,
-      "score": 60,
+      "score": 54,
       "events": [
         "Boston Red Sox @ New York Yankees"
       ]
     },
-    "Adley Rutschman": {
+    "Jarren Duran": {
       "methods": [
-        "FD Pattern",
         "MGM Exact",
-        "Rivers a bit over pack",
         "Fanatics Drift",
         "DK FD-style",
         "B365 way over MGM",
@@ -19667,65 +19609,47 @@
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 88,
+      "edge": 103,
       "is_bet": false,
       "method_count": 2,
-      "score": 56,
+      "score": 47,
       "events": [
         "Boston Red Sox @ New York Yankees"
       ]
     },
-    "Colson Montgomery": {
+    "J.T. Realmuto": {
       "methods": [
-        "B365 a bit over FD",
+        "DK FD-style",
+        "Fanatics over pack",
+        "Rivers short vs pack",
+        "Multi-book Shorten",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "edge": 60,
+      "is_bet": false,
+      "method_count": 2,
+      "score": 42,
+      "events": [
+        "Philadelphia Phillies @ Atlanta Braves"
+      ]
+    },
+    "Mike Yastrzemski": {
+      "methods": [
+        "FD 90",
         "Stayed in the group",
         "FD+MGM classic",
         "Match 75",
         "FD Pattern",
         "MGM 75",
-        "EV Premium",
-        "Kelly Support"
+        "EV Caution",
+        "Kelly Caution"
       ],
-      "edge": 73,
+      "edge": -15,
       "is_bet": false,
       "method_count": 2,
-      "score": 44,
-      "events": [
-        "Chicago White Sox @ Houston Astros"
-      ]
-    },
-    "Matt Olson": {
-      "methods": [
-        "Multi-book Shorten",
-        "B365 over HardRock",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 64,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 43,
-      "events": [
-        "Philadelphia Phillies @ Atlanta Braves"
-      ]
-    },
-    "Austin Riley": {
-      "methods": [
-        "HardRock Heater",
-        "Rivers a bit over pack",
-        "Match 50",
-        "Stayed in the group",
-        "MGM 50",
-        "FD Pattern",
-        "FD+MGM classic",
-        "Last one left",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 29,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 43,
+      "score": 26,
       "events": [
         "Philadelphia Phillies @ Atlanta Braves"
       ]
