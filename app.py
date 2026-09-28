@@ -7401,7 +7401,7 @@ def flatten_oddsapi(data):
             # accept standard + alternate HR markets; still force 0.5 only
             mkey = (market.get("key") or "").lower()
             is_hr = ("home_run" in mkey) or ("homer" in mkey)
-            is_td = ("anytime_td" in mkey) or ("touchdown" in mkey)
+            is_td = mkey in ("player_anytime_td", "player_tds") or mkey.endswith("anytime_td")
             need_map = {
                 "player_rush_yds": "Rush Yards",
                 "player_rush_yards": "Rush Yards",
@@ -7501,15 +7501,13 @@ def fetch_sgo_hr_props(sgo_key):
                     is_hr = "batting_homeruns" in oid or "home_run" in oid
                     is_td = any(x in oid for x in (
                         "anytimetouchdown", "anytime_td", "anytime-touchdown",
-                        "anytime_touchdown", "player_anytime_td", "atd",
-                        "firsttouchdown", "lasttouchdown",
+                        "anytime_touchdown", "player_anytime_td",
                     ))
-                    # SGO often uses "touchdowns" / "scoringTouchdown" without "anytime"
-                    if not is_td and "touchdown" in oid and "yard" not in oid and "pass" not in oid:
-                        is_td = "rush" not in oid or "rushingtouchdown" in oid or "receivingtouchdown" in oid
-                    if is_td or "touchdown" in oid or ("anytime" in oid and "yard" not in oid):
-                        if is_td:
-                            prop_type = None
+                    if any(x in oid for x in ("firsttouchdown", "lasttouchdown", "first_td", "last_td")):
+                        is_td = False
+                        continue
+                    if is_td:
+                        prop_type = None
                     elif "rushing_yards" in oid and "touchdown" not in oid:
                         prop_type = "Rush Yards"
                     elif "receiving_yards" in oid and "touchdown" not in oid:
