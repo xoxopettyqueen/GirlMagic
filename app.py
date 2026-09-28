@@ -6472,11 +6472,23 @@ def build_whats_going_today(rows):
     pair_list = sorted(pair_ending.items(), key=lambda x: (-x[1], x[0]))
     hr_status = []
     for hr in sorted(hr_names):
-        tagged = "TAKE" if any(names_match(hr, r.get("player") or "") for r in our_list if r.get("source") in ("take_it", "shop_take")) else (
-            "SHOP LEAN" if any(names_match(hr, r.get("player") or "") for r in our_list if r.get("source") == "shop_lean") else (
-            "WATCH" if any(names_match(hr, r.get("player") or "") for r in our_list if r.get("source") == "watch") else (
-            "BOARD" if any(names_match(hr, n) for n in extra_names) else "NOT ON LIST"
-        )))
+        def _pulse_tag(hr):
+            for r in our_list:
+                if not names_match(hr, r.get("player") or ""):
+                    continue
+                src = str(r.get("source") or "")
+                call = str(r.get("call_type") or "")
+                meths = " ".join(str(m) for m in (r.get("methods") or []))
+                if src in ("take_it", "shop_take", "bet_this", "take") or call == "TAKE":
+                    return "TAKE"
+                if src == "shop_lean" or call == "LEAN" or "Shop LEAN" in meths:
+                    return "SHOP LEAN"
+                if src in ("watch", "coverage") or call == "WATCH":
+                    return "WATCH"
+            if any(names_match(hr, n) for n in extra_names):
+                return "BOARD"
+            return "NOT ON LIST"
+        tagged = _pulse_tag(hr)
         hr_status.append((hr, tagged))
     return len(hr_names), len(graded), dict(by_book), on_our_list, pair_list, hr_status
 
@@ -6774,7 +6786,7 @@ def render_whats_going_today():
                             best_p, best_bl = p, lab
                     bl = best_bl
                     break
-        by_names[bl or "Fanatics"].append((n, call, cls, emo))
+        by_names[bl or "Unbooked"].append((n, call, cls, emo))
 
     pills = []
     for bl in FOCUS:
@@ -6783,7 +6795,21 @@ def render_whats_going_today():
         if not items and not people:
             continue
         top = items[0] if items else None
-        if top:
+        n_take = sum(1 for _n, call, _c, _e in people if call == "TAKE")
+        n_lean = sum(1 for _n, call, _c, _e in people if call == "LEAN")
+        n_watch = sum(1 for _n, call, _c, _e in people if call == "WATCH")
+        if sport == "NFL":
+            bits = []
+            if n_take:
+                bits.append("%s TAKE" % n_take)
+            if n_lean:
+                bits.append("%s LEAN" % n_lean)
+            if n_watch:
+                bits.append("%s WATCH" % n_watch)
+            if not bits and top:
+                bits.append("%s box TDs" % top[1])
+            label = "%s · %s" % (bl, " · ".join(bits) if bits else "no list TDs")
+        elif top:
             label = "%s · %s cashed +x%02d" % (bl, top[1], top[0])
         else:
             label = "%s · cashed" % bl
@@ -6812,7 +6838,7 @@ def render_whats_going_today():
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">HRs / TDs = official box scores today. TAKE / LEAN / WATCH = which of those were actually on our list. Everyone else cashed off the card.</div>'
+        '<div class="wg-sub">Official box today. TAKE / LEAN / WATCH = on our list only. Off-list cashes are just the scoreboard.</div>'
         '</div><div class="wg-switch">'
         '<span class="wg-pill %s">MLB</span>'
         '<span class="wg-pill %s">NFL</span>'
