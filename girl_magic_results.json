@@ -266048,7 +266048,7 @@
   {
     "id": "2026-09-28_Alec Bohm_take_it_100",
     "date": "2026-09-28",
-    "time": "09:22 AM",
+    "time": "09:38 AM",
     "player": "Alec Bohm",
     "score": 100,
     "edge": 107,
@@ -266102,7 +266102,7 @@
     "benford_cluster": 0.62,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:22:39.684334+00:00",
+    "updated_at": "2026-09-28T16:38:24.820334+00:00",
     "player_name": "Alec Bohm",
     "stamps": [
       "DK FD-style",
@@ -266181,7 +266181,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:19.907361+00:00",
+    "updated_at": "2026-09-28T16:38:25.070724+00:00",
     "player_name": "Adley Rutschman",
     "stamps": [
       "Match 00",
@@ -266311,7 +266311,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:19.874456+00:00",
+    "updated_at": "2026-09-28T16:38:24.920306+00:00",
     "player_name": "Bryce Harper",
     "stamps": [
       "MGM 25",
@@ -266382,7 +266382,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:19.737371+00:00",
+    "updated_at": "2026-09-28T16:38:25.185252+00:00",
     "player_name": "Cam Smith",
     "stamps": [
       "Match 50",
@@ -266584,7 +266584,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:19.774177+00:00",
+    "updated_at": "2026-09-28T16:38:25.126451+00:00",
     "player_name": "Cody Bellinger",
     "stamps": [
       "Rivers a bit over pack",
@@ -266650,7 +266650,7 @@
     "benford_cluster": 0.86,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:20.027207+00:00",
+    "updated_at": "2026-09-28T16:38:25.099737+00:00",
     "player_name": "Colson Montgomery",
     "stamps": [
       "FD Pattern",
@@ -266785,7 +266785,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:19.846879+00:00",
+    "updated_at": "2026-09-28T16:38:25.401177+00:00",
     "player_name": "Heliot Ramos",
     "stamps": [
       "Stayed in the group",
@@ -267048,7 +267048,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:20.069654+00:00",
+    "updated_at": "2026-09-28T16:38:25.248862+00:00",
     "player_name": "Jeremy Pe\u00f1a",
     "stamps": [
       "Rivers a bit over pack",
@@ -267291,7 +267291,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:19.981530+00:00",
+    "updated_at": "2026-09-28T16:38:25.040293+00:00",
     "player_name": "Ozzie Albies",
     "stamps": [
       "Rivers a bit over pack",
@@ -267490,7 +267490,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-28T16:38:19.938848+00:00",
+    "updated_at": "2026-09-28T16:38:24.952504+00:00",
     "player_name": "Trea Turner",
     "stamps": [
       "DK FD-style",
@@ -267710,7 +267710,7 @@
   {
     "id": "2026-09-28_Taylor Trammell_shop_take_132",
     "date": "2026-09-28",
-    "time": "09:22 AM",
+    "time": "09:38 AM",
     "player": "Taylor Trammell",
     "score": 0,
     "edge": 132,
@@ -267747,12 +267747,12 @@
     "price": 850,
     "book": "bet365",
     "created_at": "2026-09-28T16:22:39.659102+00:00",
-    "updated_at": "2026-09-28T16:22:39.659102+00:00"
+    "updated_at": "2026-09-28T16:38:24.791898+00:00"
   },
   {
     "id": "2026-09-28_Lucas Spence_shop_lean_103",
     "date": "2026-09-28",
-    "time": "09:22 AM",
+    "time": "09:38 AM",
     "player": "Lucas Spence",
     "score": 0,
     "edge": 103,
@@ -267789,12 +267789,12 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-09-28T16:22:39.709304+00:00",
-    "updated_at": "2026-09-28T16:22:39.709304+00:00"
+    "updated_at": "2026-09-28T16:38:24.856849+00:00"
   },
   {
     "id": "2026-09-28_Jose Altuve_shop_take_87",
     "date": "2026-09-28",
-    "time": "09:22 AM",
+    "time": "09:38 AM",
     "player": "Jose Altuve",
     "score": 0,
     "edge": 87,
@@ -267831,7 +267831,7 @@
     "price": 750,
     "book": "bet365",
     "created_at": "2026-09-28T16:22:39.816006+00:00",
-    "updated_at": "2026-09-28T16:22:39.816006+00:00"
+    "updated_at": "2026-09-28T16:38:25.013040+00:00"
   },
   {
     "id": "2026-09-28_Austin Wells_shop_take_85",
@@ -267886,7 +267886,7 @@
     "price": 750,
     "book": "hardrockbet",
     "created_at": "2026-09-28T16:22:39.842557+00:00",
-    "updated_at": "2026-09-28T16:38:19.041945+00:00"
+    "updated_at": "2026-09-28T16:38:24.980990+00:00"
   },
   {
     "id": "2026-09-28_Roman Anthony_shop_lean_64",
@@ -267940,12 +267940,12 @@
     "price": 700,
     "book": "fanatics",
     "created_at": "2026-09-28T16:22:39.942261+00:00",
-    "updated_at": "2026-09-28T16:38:19.542083+00:00"
+    "updated_at": "2026-09-28T16:38:25.157467+00:00"
   },
   {
     "id": "2026-09-28_Amed Rosario_shop_lean_57",
     "date": "2026-09-28",
-    "time": "09:22 AM",
+    "time": "09:38 AM",
     "player": "Amed Rosario",
     "score": 0,
     "edge": 57,
@@ -267979,7 +267979,7 @@
     "price": 900,
     "book": "draftkings",
     "created_at": "2026-09-28T16:22:40.013465+00:00",
-    "updated_at": "2026-09-28T16:22:40.013465+00:00"
+    "updated_at": "2026-09-28T16:38:25.212476+00:00"
   },
   {
     "id": "2026-09-28_Christian Walker_shop_lean_44",
@@ -268026,7 +268026,7 @@
   {
     "id": "2026-09-28_Yainer Diaz_shop_lean_44",
     "date": "2026-09-28",
-    "time": "09:22 AM",
+    "time": "09:38 AM",
     "player": "Yainer Diaz",
     "score": 0,
     "edge": 44,
@@ -268063,12 +268063,12 @@
     "price": 600,
     "book": "bet365",
     "created_at": "2026-09-28T16:22:40.213037+00:00",
-    "updated_at": "2026-09-28T16:22:40.213037+00:00"
+    "updated_at": "2026-09-28T16:38:25.286003+00:00"
   },
   {
     "id": "2026-09-28_Drake Baldwin_shop_lean_42",
     "date": "2026-09-28",
-    "time": "09:22 AM",
+    "time": "09:38 AM",
     "player": "Drake Baldwin",
     "score": 0,
     "edge": 42,
@@ -268106,12 +268106,12 @@
     "price": 575,
     "book": "hardrockbet",
     "created_at": "2026-09-28T16:22:40.241104+00:00",
-    "updated_at": "2026-09-28T16:22:40.241104+00:00"
+    "updated_at": "2026-09-28T16:38:25.365291+00:00"
   },
   {
     "id": "2026-09-28_Willson Contreras_shop_lean_69",
     "date": "2026-09-28",
-    "time": "09:30 AM",
+    "time": "09:38 AM",
     "player": "Willson Contreras",
     "score": 0,
     "edge": 69,
@@ -268149,7 +268149,7 @@
     "price": 600,
     "book": "fanatics",
     "created_at": "2026-09-28T16:30:24.330951+00:00",
-    "updated_at": "2026-09-28T16:30:24.330951+00:00"
+    "updated_at": "2026-09-28T16:38:25.327855+00:00"
   },
   {
     "id": "2026-09-28_Wilyer Abreu_shop_lean_50",
@@ -269239,5 +269239,45 @@
     "book": "fanatics",
     "created_at": "2026-09-28T16:38:16.341169+00:00",
     "updated_at": "2026-09-28T16:38:16.341169+00:00"
+  },
+  {
+    "id": "2026-09-28_Paul Goldschmidt_shop_lean_101",
+    "date": "2026-09-28",
+    "time": "09:38 AM",
+    "player": "Paul Goldschmidt",
+    "score": 0,
+    "edge": 101,
+    "best_price": 800,
+    "best_book": "fanatics",
+    "median": 690,
+    "book_prices": {
+      "bet365": 550,
+      "caesars": 700,
+      "draftkings": 690,
+      "fanatics": 800,
+      "fanduel": 680
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-28T16:38:24.889093+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Paul Goldschmidt",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 800,
+    "book": "fanatics",
+    "created_at": "2026-09-28T16:38:24.889093+00:00",
+    "updated_at": "2026-09-28T16:38:24.889093+00:00"
   }
 ]
