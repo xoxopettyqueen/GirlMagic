@@ -1147,6 +1147,25 @@
       "best_book": "fanatics",
       "time": "09:30 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Saquon Barkley",
+      "source": "take_it",
+      "score": 54,
+      "methods": [
+        "Books tight",
+        "Match 00",
+        "Stayed in the group",
+        "MGM 00",
+        "HardRock 50",
+        "B365 over HardRock",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 500,
+      "best_book": "draftkings",
+      "time": "09:33 AM",
+      "sport": "NFL"
     }
   ]
 }
