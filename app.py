@@ -1284,13 +1284,13 @@ CLASSIC_TRICK_STAMPS = {
 # Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
 NFL_DEAD_STAMPS = {
     "MGM Exact", "Match 50", "Match 75", "MGM 50", "MGM 75", "MGM 60",
-    "FD 600", "HardRock 50", "HardRock Heater",
+    "FD 600", "HardRock Heater", "Caesars 90",
     "B365 a bit over FD", "Rivers a bit over pack",
 }
 NFL_RHYTHM_STAMPS = {
     "Books tight", "Multi-book Shorten", "DK 10",
     "MGM 00", "Match 00", "FD a little long", "DK FD-style",
-    "EV Support",
+    "EV Support", "HardRock 50",
 }
 NFL_STAMP_METHODS = {
     "Books tight", "Multi-book method", "Multi-book Shorten",
@@ -1302,6 +1302,7 @@ NFL_STAMP_METHODS = {
     "MGM 00", "Match 00",
     "DK FD-style",
     "EV Support",
+    "HardRock 50",
 } - NFL_DEAD_STAMPS
 
 PRIORITY_METHODS = {
@@ -1562,6 +1563,8 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
             px = 0
         if px >= 1000:
             return False
+        if end in (40, 50, 75) and stamps >= 2:
+            return True
         if end in (75,) and stamps < 3:
             return False
         if bk == "fanatics":
