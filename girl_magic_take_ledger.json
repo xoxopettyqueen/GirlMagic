@@ -1257,6 +1257,30 @@
       "best_book": "hardrockbet",
       "time": "11:43 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Michael Harris II",
+      "source": "take_it",
+      "score": 60,
+      "methods": [
+        "FD Pattern",
+        "MGM Exact",
+        "Stayed in the group",
+        "B365 over HardRock",
+        "B365 way over MGM",
+        "FD a little long",
+        "Multi-book method",
+        "B365 over MGM",
+        "Match 25",
+        "FD+MGM classic",
+        "MGM 25",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "01:23 PM",
+      "sport": "MLB"
     }
   ]
 }
