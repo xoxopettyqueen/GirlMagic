@@ -691,6 +691,21 @@
       "best_book": "fanatics",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Rashee Rice",
+      "source": "take_it",
+      "score": 41,
+      "methods": [
+        "Books tight",
+        "FD 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 175,
+      "best_book": "draftkings",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
