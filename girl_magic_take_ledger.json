@@ -572,6 +572,24 @@
       "best_book": "fanatics",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Terry McLaurin",
+      "source": "take_it",
+      "score": 54,
+      "methods": [
+        "FD 50",
+        "Multi-book method",
+        "DK FD-style",
+        "B365 Exact",
+        "Books tight",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 250,
+      "best_book": "fanatics",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
