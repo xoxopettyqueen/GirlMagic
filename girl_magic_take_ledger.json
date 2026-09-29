@@ -658,6 +658,23 @@
       "best_book": "draftkings",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "DK Metcalf",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "MGM 40",
+        "Multi-book method",
+        "Books tight",
+        "FD 40",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 240,
+      "best_book": "fanatics",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
