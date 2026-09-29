@@ -812,6 +812,28 @@
       "best_book": "fanatics",
       "time": "01:48 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "DJ Moore",
+      "source": "take_it",
+      "score": 68,
+      "methods": [
+        "FD 50",
+        "Stayed in the group",
+        "Multi-book method",
+        "DK FD-style",
+        "Match 75",
+        "MGM 75",
+        "B365 Exact",
+        "Books tight",
+        "MGM Exact",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 170,
+      "best_book": "draftkings",
+      "time": "01:49 PM",
+      "sport": "NFL"
     }
   ]
 }
