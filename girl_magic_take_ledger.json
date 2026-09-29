@@ -590,6 +590,23 @@
       "best_book": "fanatics",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Denzel Boston",
+      "source": "take_it",
+      "score": 63,
+      "methods": [
+        "MGM 40",
+        "Multi-book method",
+        "DK FD-style",
+        "Books tight",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 340,
+      "best_book": "fanatics",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
