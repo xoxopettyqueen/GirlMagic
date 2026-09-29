@@ -721,6 +721,21 @@
       "best_book": "draftkings",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "J.K. Dobbins",
+      "source": "take_it",
+      "score": 40,
+      "methods": [
+        "Books tight",
+        "DK 10",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 125,
+      "best_book": "fanduel",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
