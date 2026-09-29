@@ -925,6 +925,21 @@
       "best_book": "draftkings",
       "time": "01:57 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Khalil Shakir",
+      "source": "take_it",
+      "score": 40,
+      "methods": [
+        "Books tight",
+        "B365 over HardRock",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 230,
+      "best_book": "fanduel",
+      "time": "01:57 PM",
+      "sport": "NFL"
     }
   ]
 }
