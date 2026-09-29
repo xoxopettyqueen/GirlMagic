@@ -607,6 +607,23 @@
       "best_book": "fanatics",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Dontayvion Wicks",
+      "source": "take_it",
+      "score": 56,
+      "methods": [
+        "MGM 10",
+        "Multi-book method",
+        "DK FD-style",
+        "Books tight",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 360,
+      "best_book": "fanduel",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
