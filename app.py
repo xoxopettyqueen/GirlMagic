@@ -7572,7 +7572,13 @@ def flatten_oddsapi(data):
             mkey = (market.get("key") or "").lower()
             is_hr = ("home_run" in mkey) or ("homer" in mkey)
             is_td = mkey in ("player_anytime_td", "player_tds") or mkey.endswith("anytime_td")
-            is_goal = mkey in ("player_goal_scorer_anytime", "player_anytime_goal") or "goal_scorer_anytime" in mkey
+            is_goal = (
+                mkey in ("player_goal_scorer_anytime", "player_anytime_goal", "player_goals")
+                or "goal_scorer_anytime" in mkey
+            )
+            if "goal_scorer_first" in mkey or "goal_scorer_last" in mkey:
+                is_goal = False
+                continue
             need_map = {
                 "player_rush_yds": "Rush Yards",
                 "player_rush_yards": "Rush Yards",
@@ -7593,20 +7599,31 @@ def flatten_oddsapi(data):
             for o in market.get("outcomes", []):
                 oname = str(o.get("name") or "").lower()
                 pt = o.get("point")
-                if is_td or is_goal:
-                    # Anytime TD Yes == Over 0.5 TD
+                if is_td:
                     if oname not in ("yes", "over"):
                         continue
                     if oname == "over" and pt is not None and abs(float(pt) - 0.5) > 0.01:
                         continue
+                    player = o.get("description") or o.get("name")
+                elif is_goal:
+                    if oname in ("no", "under"):
+                        continue
+                    if oname == "over" and pt is not None and abs(float(pt) - 0.5) > 0.01:
+                        continue
+                    if oname in ("yes", "over"):
+                        player = o.get("description") or ""
+                    else:
+                        player = o.get("description") or o.get("name")
                 else:
                     if oname != "over":
                         continue
                     if pt is None or abs(float(pt) - 0.5) > 0.01:
                         continue
-                player = o.get("description")
+                    player = o.get("description")
                 price = o.get("price")
                 if not player or price is None: continue
+                if str(player).lower() in ("yes", "no", "over", "under"):
+                    continue
                 try:
                     price = int(price)
                 except Exception:
@@ -7858,6 +7875,12 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
                 rows2, found2 = flatten_oddsapi(data2)
                 if rows2:
                     rows, found = rows2, found2
+        if not rows and active_sport() == "NHL":
+            data3 = fetch_odds_oddsapi(odds_key, eid, market="player_goals", restrict_books=False)
+            if data3:
+                rows3, found3 = flatten_oddsapi(data3)
+                if rows3:
+                    rows, found = rows3, found3
         all_rows.extend(rows)
         all_found_raw.update(found)
         ev_name = ""
@@ -12582,7 +12605,7 @@ def main():
     ev_n = len(st.session_state.get("events") or [])
     with st.sidebar:
         st.markdown("**Slate**")
-        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft} · movement until first pitch")
+        st.caption(f"{ev_n} games · lock {lock_n} · {last_ft} · movement until {sport_cfg().get('when') or 'lock'}")
         if not st.session_state.get("events"):
             st.session_state["_autoload_events"] = True
         if st.button("Load games", type="primary", use_container_width=True) or st.session_state.pop("_autoload_events", False):
@@ -12621,12 +12644,18 @@ def main():
                 st.caption(f"{missing_lock} lineup names have no lock price yet")
         else:
             auto_lineups = False
-            if st.button("Auto-grade TDs", type="primary", use_container_width=True):
-                with st.spinner("ESPN NFL box scores..."):
+            hit_word = sport_cfg().get("hits") or "results"
+            if st.button(f"Auto-grade {hit_word}", type="primary", use_container_width=True):
+                with st.spinner(f"Grading {active_sport()}..."):
                     h, m, s, msg = auto_grade_pending()
                 st.success(f"{h} HIT · {m} MISS · {s} still open - {msg}")
                 st.rerun()
-            st.caption("NFL grades itself from finished games. No RotoWire. No MLB lineups.")
+            if active_sport() == "NHL":
+                st.caption("NHL grades from NHL.com scoreboard goals. Fetch Anytime Goal before puck drop.")
+            elif active_sport() == "NFL":
+                st.caption("NFL grades itself from finished games. No RotoWire. No MLB lineups.")
+            else:
+                st.caption(f"{active_sport()} grades finished games on this lane.")
         events = st.session_state.get("events", [])
         if not events:
             st.info(f"Click **Load games** for {active_sport()}. Then select games and Fetch.")
