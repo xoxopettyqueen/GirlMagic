@@ -853,6 +853,24 @@
       "best_book": "draftkings",
       "time": "01:49 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Kyle Williams",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "MGM 50",
+        "Match 50",
+        "Multi-book Shorten",
+        "Stayed in the group",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "fanduel",
+      "time": "01:49 PM",
+      "sport": "NFL"
     }
   ]
 }
