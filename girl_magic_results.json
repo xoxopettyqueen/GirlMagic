@@ -270393,7 +270393,7 @@
   {
     "id": "2026-09-29_Drake Baldwin_take_it_95",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Drake Baldwin",
     "score": 95,
     "edge": 66,
@@ -270434,7 +270434,7 @@
     "core": 5,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-29T16:39:56.483955+00:00",
+    "logged_at": "2026-09-29T16:47:51.478891+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "ATLANTA BRAVES",
@@ -270444,7 +270444,7 @@
     "benford_cluster": 0.62,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.483968+00:00",
+    "updated_at": "2026-09-29T16:47:51.478906+00:00",
     "player_name": "Drake Baldwin",
     "stamps": [
       "FD Pattern",
@@ -270465,7 +270465,7 @@
   {
     "id": "2026-09-29_Lucas Spence_take_it_88",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Lucas Spence",
     "score": 88,
     "edge": 196,
@@ -270507,7 +270507,7 @@
     "core": 4,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-29T16:39:57.022744+00:00",
+    "logged_at": "2026-09-29T16:47:51.942757+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "HOUSTON ASTROS",
@@ -270517,7 +270517,7 @@
     "benford_cluster": 0.38,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:40:02.106660+00:00",
+    "updated_at": "2026-09-29T16:47:51.942766+00:00",
     "player_name": "Lucas Spence",
     "stamps": [
       "MGM Exact",
@@ -270611,7 +270611,7 @@
   {
     "id": "2026-09-29_Alex Bregman_watch_26",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Alex Bregman",
     "score": 26,
     "edge": 22,
@@ -270648,7 +270648,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:55.337461+00:00",
+    "logged_at": "2026-09-29T16:47:50.331412+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO CUBS",
@@ -270674,12 +270674,12 @@
     "price": 760,
     "book": "draftkings",
     "created_at": "2026-09-29T15:32:56.212561+00:00",
-    "updated_at": "2026-09-29T16:39:55.337470+00:00"
+    "updated_at": "2026-09-29T16:47:50.331425+00:00"
   },
   {
     "id": "2026-09-29_Andrew Benintendi_watch_51",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Andrew Benintendi",
     "score": 51,
     "edge": 81,
@@ -270716,7 +270716,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:55.365200+00:00",
+    "logged_at": "2026-09-29T16:47:50.361690+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -270726,7 +270726,7 @@
     "benford_cluster": 0.57,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:55.365208+00:00",
+    "updated_at": "2026-09-29T16:47:50.361710+00:00",
     "player_name": "Andrew Benintendi",
     "stamps": [
       "Stayed in the group",
@@ -270747,7 +270747,7 @@
   {
     "id": "2026-09-29_Austin Hays_watch_100",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Austin Hays",
     "score": 100,
     "edge": 128,
@@ -270786,7 +270786,7 @@
     "core": 5,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.558467+00:00",
+    "logged_at": "2026-09-29T16:47:51.753435+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -270796,7 +270796,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.558484+00:00",
+    "updated_at": "2026-09-29T16:47:51.753443+00:00",
     "player_name": "Austin Hays",
     "stamps": [
       "FD Pattern",
@@ -270894,7 +270894,7 @@
   {
     "id": "2026-09-29_Braden Montgomery_watch_42",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Braden Montgomery",
     "score": 42,
     "edge": 59,
@@ -270933,7 +270933,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:57.129756+00:00",
+    "logged_at": "2026-09-29T16:47:52.038256+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -270943,7 +270943,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:57.129764+00:00",
+    "updated_at": "2026-09-29T16:47:52.038268+00:00",
     "player_name": "Braden Montgomery",
     "stamps": [
       "MGM 00",
@@ -271028,7 +271028,7 @@
   {
     "id": "2026-09-29_Bryce Harper_watch_63",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Bryce Harper",
     "score": 63,
     "edge": 106,
@@ -271070,7 +271070,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.902670+00:00",
+    "logged_at": "2026-09-29T16:47:51.918204+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "PHILADELPHIA PHILLIES",
@@ -271080,7 +271080,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:40:02.616325+00:00",
+    "updated_at": "2026-09-29T16:47:51.918213+00:00",
     "player_name": "Bryce Harper",
     "stamps": [
       "B365 a bit over FD",
@@ -271178,7 +271178,7 @@
   {
     "id": "2026-09-29_Christian Walker_watch_39",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Christian Walker",
     "score": 39,
     "edge": 73,
@@ -271218,7 +271218,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:57.053441+00:00",
+    "logged_at": "2026-09-29T16:47:52.010140+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "HOUSTON ASTROS",
@@ -271228,7 +271228,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:40:02.470864+00:00",
+    "updated_at": "2026-09-29T16:47:52.010151+00:00",
     "player_name": "Christian Walker",
     "stamps": [
       "MGM Exact",
@@ -271324,7 +271324,7 @@
   {
     "id": "2026-09-29_Dansby Swanson_watch_49",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Dansby Swanson",
     "score": 49,
     "edge": 108,
@@ -271364,7 +271364,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-29T16:39:55.661918+00:00",
+    "logged_at": "2026-09-29T16:47:50.661442+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO CUBS",
@@ -271374,7 +271374,7 @@
     "benford_cluster": 0.5,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:55.661931+00:00",
+    "updated_at": "2026-09-29T16:47:50.661453+00:00",
     "player_name": "Dansby Swanson",
     "stamps": [
       "Fanatics Drift",
@@ -271460,7 +271460,7 @@
   {
     "id": "2026-09-29_Fernando Tatis Jr._watch_44",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Fernando Tatis Jr.",
     "score": 44,
     "edge": 87,
@@ -271494,7 +271494,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:57.080285+00:00",
+    "logged_at": "2026-09-29T16:47:51.972934+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -271504,7 +271504,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:57.080294+00:00",
+    "updated_at": "2026-09-29T16:47:51.972944+00:00",
     "player_name": "Fernando Tatis Jr.",
     "stamps": [
       "MGM Exact",
@@ -271523,7 +271523,7 @@
   {
     "id": "2026-09-29_Heliot Ramos_watch_28",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Heliot Ramos",
     "score": 28,
     "edge": 24,
@@ -271566,7 +271566,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.448292+00:00",
+    "logged_at": "2026-09-29T16:47:51.449935+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "NEW YORK YANKEES",
@@ -271576,7 +271576,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.448302+00:00",
+    "updated_at": "2026-09-29T16:47:51.449945+00:00",
     "player_name": "Heliot Ramos",
     "stamps": [
       "B365 a bit over FD",
@@ -271675,7 +271675,7 @@
   {
     "id": "2026-09-29_Jake Cronenworth_watch_64",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Jake Cronenworth",
     "score": 64,
     "edge": 176,
@@ -271710,7 +271710,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.834445+00:00",
+    "logged_at": "2026-09-29T16:47:51.867155+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -271720,7 +271720,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.834453+00:00",
+    "updated_at": "2026-09-29T16:47:51.867167+00:00",
     "player_name": "Jake Cronenworth",
     "stamps": [
       "MGM Exact",
@@ -271740,7 +271740,7 @@
   {
     "id": "2026-09-29_Jarren Duran_watch_25",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Jarren Duran",
     "score": 25,
     "edge": 16,
@@ -271780,12 +271780,13 @@
       "Match 75",
       "MGM 75",
       "Multi-book Shorten",
-      "Shop TAKE"
+      "Shop TAKE",
+      "Stayed in the group"
     ],
     "core": 1,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-29T16:39:55.860804+00:00",
+    "logged_at": "2026-09-29T16:47:50.836540+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "BOSTON RED SOX",
@@ -271810,13 +271811,13 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-09-29T15:32:56.713896+00:00",
-    "updated_at": "2026-09-29T16:39:55.860815+00:00",
+    "updated_at": "2026-09-29T16:47:50.836555+00:00",
     "upgraded_from": "watch"
   },
   {
     "id": "2026-09-29_Kyle Teel_watch_10",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Kyle Teel",
     "score": 10,
     "edge": 2,
@@ -271859,7 +271860,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:57.206000+00:00",
+    "logged_at": "2026-09-29T16:47:50.915789+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -271883,12 +271884,12 @@
     "price": 850,
     "book": "bet365",
     "created_at": "2026-09-29T15:32:56.753511+00:00",
-    "updated_at": "2026-09-29T16:39:57.206010+00:00"
+    "updated_at": "2026-09-29T16:47:50.915803+00:00"
   },
   {
     "id": "2026-09-29_Luis Campusano_watch_55",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Luis Campusano",
     "score": 55,
     "edge": 137,
@@ -271929,7 +271930,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.869410+00:00",
+    "logged_at": "2026-09-29T16:47:51.892829+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -271939,7 +271940,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.869424+00:00",
+    "updated_at": "2026-09-29T16:47:51.892842+00:00",
     "player_name": "Luis Campusano",
     "stamps": [
       "MGM Exact",
@@ -271960,7 +271961,7 @@
   {
     "id": "2026-09-29_Manny Machado_watch_37",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Manny Machado",
     "score": 37,
     "edge": -12,
@@ -271999,7 +272000,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.592154+00:00",
+    "logged_at": "2026-09-29T16:47:51.524715+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -272009,7 +272010,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.592165+00:00",
+    "updated_at": "2026-09-29T16:47:51.524729+00:00",
     "player_name": "Manny Machado",
     "stamps": [
       "FD 90",
@@ -272031,7 +272032,7 @@
   {
     "id": "2026-09-29_Matt Olson_watch_42",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Matt Olson",
     "score": 42,
     "edge": 38,
@@ -272063,12 +272064,13 @@
       "EV Premium",
       "Kelly Support",
       "FD a little long",
-      "Last one left"
+      "Last one left",
+      "EV Support"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.719345+00:00",
+    "logged_at": "2026-09-29T16:47:52.098130+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "ATLANTA BRAVES",
@@ -272078,7 +272080,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:40:02.935214+00:00",
+    "updated_at": "2026-09-29T16:47:52.098142+00:00",
     "player_name": "Matt Olson",
     "stamps": [
       "FD Pattern",
@@ -272237,7 +272239,7 @@
   {
     "id": "2026-09-29_Ronald Acu\u00f1a Jr._watch_44",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Ronald Acu\u00f1a Jr.",
     "score": 44,
     "edge": 29,
@@ -272277,7 +272279,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-29T16:39:56.182208+00:00",
+    "logged_at": "2026-09-29T16:47:51.417287+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "ATLANTA BRAVES",
@@ -272287,7 +272289,7 @@
     "benford_cluster": 0.88,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.182219+00:00",
+    "updated_at": "2026-09-29T16:47:51.417298+00:00",
     "player_name": "Ronald Acu\u00f1a Jr.",
     "stamps": [
       "Stayed in the group",
@@ -272304,7 +272306,7 @@
   {
     "id": "2026-09-29_Samad Taylor_watch_25",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Samad Taylor",
     "score": 25,
     "edge": 15,
@@ -272336,7 +272338,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.227397+00:00",
+    "logged_at": "2026-09-29T16:47:51.198416+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -272360,7 +272362,7 @@
     "price": 1500,
     "book": "fanatics",
     "created_at": "2026-09-29T15:32:57.036801+00:00",
-    "updated_at": "2026-09-29T16:39:56.227410+00:00"
+    "updated_at": "2026-09-29T16:47:51.198428+00:00"
   },
   {
     "id": "2026-09-29_Seiya Suzuki_watch_32",
@@ -272498,7 +272500,7 @@
   {
     "id": "2026-09-29_Trevor Story_watch_59",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Trevor Story",
     "score": 59,
     "edge": 99,
@@ -272534,12 +272536,13 @@
       "FD+MGM classic",
       "Match 75",
       "MGM 75",
-      "Multi-book Shorten"
+      "Multi-book Shorten",
+      "Stayed in the group"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-29T16:39:56.321098+00:00",
+    "logged_at": "2026-09-29T16:47:51.574058+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "BOSTON RED SOX",
@@ -272549,7 +272552,7 @@
     "benford_cluster": 0.62,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.321108+00:00",
+    "updated_at": "2026-09-29T16:47:51.574070+00:00",
     "player_name": "Trevor Story",
     "stamps": [
       "FD Pattern",
@@ -272569,7 +272572,7 @@
   {
     "id": "2026-09-29_Tristan Peters_watch_78",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Tristan Peters",
     "score": 78,
     "edge": 66,
@@ -272609,7 +272612,7 @@
     "core": 4,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.618888+00:00",
+    "logged_at": "2026-09-29T16:47:51.617028+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -272619,7 +272622,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:40:02.643640+00:00",
+    "updated_at": "2026-09-29T16:47:51.617041+00:00",
     "player_name": "Tristan Peters",
     "stamps": [
       "MGM 00",
@@ -273292,7 +273295,7 @@
   {
     "id": "2026-09-29_Willson Contreras_shop_lean_77",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Willson Contreras",
     "score": 0,
     "edge": 77,
@@ -273326,7 +273329,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-29T16:39:56.686711+00:00",
+    "logged_at": "2026-09-29T16:47:51.727865+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -273339,7 +273342,7 @@
     "price": 600,
     "book": "fanatics",
     "created_at": "2026-09-29T15:33:03.102117+00:00",
-    "updated_at": "2026-09-29T16:39:56.686721+00:00"
+    "updated_at": "2026-09-29T16:47:51.727874+00:00"
   },
   {
     "id": "2026-09-29_Drake Baldwin_shop_lean_66",
@@ -273387,7 +273390,7 @@
   {
     "id": "2026-09-29_Carson Kelly_shop_lean_62",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Carson Kelly",
     "score": 0,
     "edge": 62,
@@ -273425,7 +273428,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-29T16:39:55.548168+00:00",
+    "logged_at": "2026-09-29T16:47:50.532055+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -273438,7 +273441,7 @@
     "price": 950,
     "book": "bet365",
     "created_at": "2026-09-29T15:33:03.231921+00:00",
-    "updated_at": "2026-09-29T16:39:55.548178+00:00"
+    "updated_at": "2026-09-29T16:47:50.532065+00:00"
   },
   {
     "id": "2026-09-29_Michael Harris II_shop_lean_57",
@@ -273486,7 +273489,7 @@
   {
     "id": "2026-09-29_Jeremy Pe\u00f1a_shop_lean_52",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Jeremy Pe\u00f1a",
     "score": 0,
     "edge": 52,
@@ -273523,7 +273526,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-29T16:39:57.153219+00:00",
+    "logged_at": "2026-09-29T16:47:52.071172+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -273536,7 +273539,7 @@
     "price": 500,
     "book": "bet365",
     "created_at": "2026-09-29T15:33:03.364436+00:00",
-    "updated_at": "2026-09-29T16:40:02.884414+00:00"
+    "updated_at": "2026-09-29T16:47:52.071187+00:00"
   },
   {
     "id": "2026-09-29_Michael Conforto_shop_lean_52",
@@ -273637,7 +273640,7 @@
   {
     "id": "2026-09-29_Spencer Jones_shop_lean_44",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Spencer Jones",
     "score": 0,
     "edge": 44,
@@ -273678,7 +273681,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-29T16:39:56.272746+00:00",
+    "logged_at": "2026-09-29T16:47:51.244808+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -273691,12 +273694,12 @@
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-09-29T15:33:03.533148+00:00",
-    "updated_at": "2026-09-29T16:39:56.272761+00:00"
+    "updated_at": "2026-09-29T16:47:51.244822+00:00"
   },
   {
     "id": "2026-09-29_Chase Meidroth_watch_18",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Chase Meidroth",
     "score": 18,
     "edge": 37,
@@ -273732,7 +273735,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.648935+00:00",
+    "logged_at": "2026-09-29T16:47:51.841680+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -273757,7 +273760,7 @@
     "price": 1500,
     "book": "fanatics",
     "created_at": "2026-09-29T16:12:23.719109+00:00",
-    "updated_at": "2026-09-29T16:39:56.648950+00:00"
+    "updated_at": "2026-09-29T16:47:51.841692+00:00"
   },
   {
     "id": "2026-09-29_Edmundo Sosa_watch_75",
@@ -274555,7 +274558,7 @@
   {
     "id": "2026-09-29_Adley Rutschman_shop_take_126",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Adley Rutschman",
     "score": 0,
     "edge": 126,
@@ -274588,12 +274591,13 @@
       "B365 over MGM",
       "DK FD-style",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "EV Support"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-09-29T16:39:56.521183+00:00",
+    "logged_at": "2026-09-29T16:47:51.698385+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -274606,7 +274610,7 @@
     "price": 950,
     "book": "fanatics",
     "created_at": "2026-09-29T16:32:08.905390+00:00",
-    "updated_at": "2026-09-29T16:40:01.969552+00:00"
+    "updated_at": "2026-09-29T16:47:51.698398+00:00"
   },
   {
     "id": "2026-09-29_Ian Happ_shop_lean_125",
@@ -274748,7 +274752,7 @@
   {
     "id": "2026-09-29_Wilyer Abreu_shop_lean_72",
     "date": "2026-09-29",
-    "time": "09:40 AM",
+    "time": "09:47 AM",
     "player": "Wilyer Abreu",
     "score": 0,
     "edge": 72,
@@ -274780,12 +274784,13 @@
       "B365 over MGM",
       "HardRock 00",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "Stayed in the group"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-29T16:39:56.754192+00:00",
+    "logged_at": "2026-09-29T16:47:51.785321+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -274798,7 +274803,7 @@
     "price": 600,
     "book": "fanatics",
     "created_at": "2026-09-29T16:32:09.415011+00:00",
-    "updated_at": "2026-09-29T16:40:02.539653+00:00"
+    "updated_at": "2026-09-29T16:47:51.785333+00:00"
   },
   {
     "id": "2026-09-29_Ronald Acu\u00f1a Jr._shop_lean_53",
@@ -274889,7 +274894,7 @@
   {
     "id": "2026-09-29_Spencer Jones_take_it_95",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Spencer Jones",
     "score": 95,
     "edge": 39,
@@ -274929,7 +274934,7 @@
     "core": 6,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-09-29T16:39:49.992787+00:00",
+    "logged_at": "2026-09-29T16:47:49.611737+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "NEW YORK YANKEES",
@@ -274960,12 +274965,12 @@
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-09-29T16:39:49.992787+00:00",
-    "updated_at": "2026-09-29T16:39:49.992787+00:00"
+    "updated_at": "2026-09-29T16:47:49.611746+00:00"
   },
   {
     "id": "2026-09-29_Ceddanne Rafaela_watch_77",
     "date": "2026-09-29",
-    "time": "09:39 AM",
+    "time": "09:47 AM",
     "player": "Ceddanne Rafaela",
     "score": 77,
     "edge": 270,
@@ -275001,7 +275006,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T16:39:56.783814+00:00",
+    "logged_at": "2026-09-29T16:47:51.811502+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "BOSTON RED SOX",
@@ -275011,7 +275016,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T16:39:56.783825+00:00",
+    "updated_at": "2026-09-29T16:47:51.811513+00:00",
     "player_name": "Ceddanne Rafaela",
     "stamps": [
       "B365 way over MGM",
@@ -275157,5 +275162,82 @@
     "book": "hardrockbet",
     "created_at": "2026-09-29T16:40:02.833503+00:00",
     "updated_at": "2026-09-29T16:40:02.833503+00:00"
+  },
+  {
+    "id": "2026-09-29_Bryson Stott_watch_80",
+    "date": "2026-09-29",
+    "time": "09:47 AM",
+    "player": "Bryson Stott",
+    "score": 80,
+    "edge": 145,
+    "best_price": 1500,
+    "best_book": "bet365",
+    "median": 1350.0,
+    "book_prices": {
+      "bet365": 1500,
+      "betmgm": 1150,
+      "betrivers": 1100,
+      "caesars": 1300,
+      "draftkings": 1480,
+      "fanatics": 1500,
+      "fanduel": 1260,
+      "hardrockbet": 1400
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 1150,
+    "mgm_ending": 50,
+    "methods": [
+      "B365 way over MGM",
+      "B365 over HardRock",
+      "Fanatics over pack",
+      "Match 50",
+      "Last one left",
+      "Stayed in the group",
+      "FD+MGM classic",
+      "Rivers short vs pack",
+      "FD Pattern",
+      "B365 over MGM",
+      "Multi-book Shorten",
+      "MGM 50",
+      "HardRock 00",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 3,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-29T16:47:51.650592+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "PHILADELPHIA PHILLIES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "updated_at": "2026-09-29T16:47:51.650603+00:00",
+    "player_name": "Bryson Stott",
+    "stamps": [
+      "B365 way over MGM",
+      "B365 over HardRock",
+      "Fanatics over pack",
+      "Match 50",
+      "Last one left",
+      "Stayed in the group",
+      "FD+MGM classic",
+      "Rivers short vs pack",
+      "FD Pattern",
+      "B365 over MGM",
+      "Multi-book Shorten",
+      "MGM 50",
+      "HardRock 00",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "price": 1500,
+    "book": "bet365",
+    "created_at": "2026-09-29T16:47:51.650592+00:00"
   }
 ]
