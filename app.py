@@ -7333,10 +7333,8 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
     if market == "batter_home_runs":
         markets = "batter_home_runs,batter_home_runs_alternate"
     if market == "player_anytime_td":
-        markets = (
-            "player_anytime_td,"
-            "player_rush_yds,player_reception_yds,player_receptions"
-        )
+        # One market per call. Bundling yards with ATD 422s the whole NFL slate.
+        markets = "player_anytime_td"
     url = f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds"
     us_books = ",".join([
         "fanduel", "draftkings", "betmgm", "fanatics",
