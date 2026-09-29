@@ -871,6 +871,23 @@
       "best_book": "fanduel",
       "time": "01:49 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Blake Corum",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "Books tight",
+        "DK FD-style",
+        "Multi-book method",
+        "MGM 40",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 290,
+      "best_book": "draftkings",
+      "time": "01:49 PM",
+      "sport": "NFL"
     }
   ]
 }
