@@ -7542,9 +7542,12 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
             dbg[str(region)] = {"status": "exc", "keys": [], "err": str(e)[:180]}
             return None
 
-    pin = us_books if restrict_books and sport_key != "icehockey_nhl" else None
+    pin_ok = restrict_books and sport_key not in ("icehockey_nhl", "americanfootball_nfl")
+    pin = us_books if pin_ok else None
     us = _one("us", pin)
-    if sport_key == "icehockey_nhl":
+    if sport_key in ("icehockey_nhl", "americanfootball_nfl"):
+        if not us or not (us.get("bookmakers") or []):
+            us = _one("us", None)
         if not us or not (us.get("bookmakers") or []):
             us = _one("us2", None)
         uk = _one("au", "bet365_au")
@@ -7665,13 +7668,13 @@ def fetch_sgo_hr_props(sgo_key):
     try:
         cursor = None
         pages = 0
-        while pages < 8:
+        while pages < 12:
             pages += 1
             params = {
                 "apiKey": sgo_key,
                 "leagueID": league,
                 "oddsAvailable": "true",
-                "limit": 20,
+                "limit": 50,
             }
             if cursor:
                 params["cursor"] = cursor
@@ -7696,19 +7699,28 @@ def fetch_sgo_hr_props(sgo_key):
                         continue
                     prop_type = None
                     is_hr = "batting_homeruns" in oid or "home_run" in oid
-                    is_td = any(x in oid for x in (
-                        "anytimetouchdown", "anytime_td", "anytime-touchdown",
-                        "anytime_touchdown", "player_anytime_td",
-                    ))
+                    is_td = (
+                        any(x in oid for x in (
+                            "anytimetouchdown", "anytime_td", "anytime-touchdown",
+                            "anytime_touchdown", "player_anytime_td",
+                        ))
+                        or ("touchdowns-" in oid and "yn-yes" in oid and "-game-" in oid)
+                    )
                     if any(x in oid for x in ("firsttouchdown", "lasttouchdown", "first_td", "last_td")):
                         is_td = False
                         continue
-                    is_goal = any(x in oid for x in (
-                        "anytimegoal", "anytime_goal", "goalscoreranytime",
-                        "goal_scorer_anytime", "player_goal_scorer_anytime",
-                    ))
-                    if any(x in oid for x in ("firstgoal", "lastgoal", "first_goal", "last_goal")):
+                    is_goal = (
+                        any(x in oid for x in (
+                            "anytimegoal", "anytime_goal", "goalscoreranytime",
+                            "goal_scorer_anytime", "player_goal_scorer_anytime",
+                        ))
+                        or (league == "NHL" and oid.startswith("points-") and "yn-yes" in oid and "-game-" in oid)
+                        or ("goals-" in oid and "yn-yes" in oid and "-game-" in oid)
+                    )
+                    if any(x in oid for x in ("firstgoal", "lastgoal", "first_goal", "last_goal", "firsttoscore", "lasttoscore")):
                         is_goal = False
+                        if league == "NHL":
+                            continue
                     if is_td:
                         prop_type = None
                     elif is_goal:
@@ -7728,7 +7740,7 @@ def fetch_sgo_hr_props(sgo_key):
                     if league == "NHL" and not is_goal:
                         continue
                     ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
-                    if is_td:
+                    if is_td or is_goal:
                         pass
                     else:
                         if ou is None:
@@ -7743,6 +7755,8 @@ def fetch_sgo_hr_props(sgo_key):
                         continue
                     pdata = players_map[pid]
                     pname = pdata.get("name")
+                    if isinstance(pname, dict):
+                        pname = pname.get("long") or pname.get("default") or pname.get("medium") or ""
                     if not pname:
                         continue
                     team = clean_team(pdata.get("teamID") or "")
@@ -7933,8 +7947,11 @@ def do_fetch(odds_key, sgo_key, chosen_labels, options):
         before = len(df)
         mask = df["event"].apply(lambda e: event_matches_chosen(e, chosen_labels))
         filtered = df[mask].copy()
+        api_dead = http_ok == 0 and before > 0
         # if label mismatch would wipe a good feed, keep unfiltered (still preferred books only)
         if filtered.empty and before > 0:
+            st.session_state["fetch_debug"]["event_filter_wiped"] = before
+        elif api_dead and filtered.empty:
             st.session_state["fetch_debug"]["event_filter_wiped"] = before
         else:
             df = filtered
