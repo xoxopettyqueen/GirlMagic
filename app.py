@@ -1015,7 +1015,7 @@ SPORT_CFG = {
         "hit": "Goal",
         "hits": "Goals",
         "sgo": True,
-        "days": 2,
+        "days": 1,
         "when": "Puck drop",
         "lock_caption": "Goals matched to the number we locked before puck drop.",
         "lock_count": "NHL Goal",
@@ -7423,7 +7423,9 @@ def _fetch_events_oddsapi_cached(api_key, sport_key, t_from, t_to):
     r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params=params, timeout=15)
     r.raise_for_status()
     data = r.json() or []
-    if len(data) < 8:
+    # NFL week slates can be thin in the window. Do NOT pad NHL/NBA with the whole
+    # upcoming season — that is how 5 tonight becomes 8.
+    if sport_key == "americanfootball_nfl" and len(data) < 8:
         try:
             r2 = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
             if r2.status_code == 200:
@@ -7444,10 +7446,24 @@ def fetch_events_oddsapi(api_key, sport_key=None):
     sport_key = sport_key or sport_cfg()["key"]
     t_from, t_to = _slate_commence_window()
     try:
-        return _fetch_events_oddsapi_cached(api_key, sport_key, t_from, t_to)
+        data = _fetch_events_oddsapi_cached(api_key, sport_key, t_from, t_to)
     except Exception as e:
         st.error(f"Odds API events error: {e}")
         return []
+    if (sport_key or "") == "icehockey_nhl":
+        az = timezone(timedelta(hours=-7))
+        today = today_az()
+        kept = []
+        for ev in data or []:
+            raw = ev.get("commence_time") or ""
+            try:
+                dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00")).astimezone(az)
+                if dt.strftime("%Y-%m-%d") == today:
+                    kept.append(ev)
+            except Exception:
+                kept.append(ev)
+        return kept
+    return data
 
 def _merge_oddsapi_events(a, b):
     """Union bookmakers from US + UK payloads. Never drop either side."""
