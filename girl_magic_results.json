@@ -276260,7 +276260,7 @@
     "price": 360,
     "book": "draftkings",
     "created_at": "2026-09-29T20:36:44.716934+00:00",
-    "updated_at": "2026-09-29T21:56:06.826058+00:00"
+    "updated_at": "2026-09-29T21:56:13.624605+00:00"
   },
   {
     "id": "2026-09-29_Jack Roslovic_watch_68",
@@ -276308,7 +276308,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T21:56:07.192699+00:00",
+    "updated_at": "2026-09-29T21:56:13.667662+00:00",
     "player_name": "Jack Roslovic",
     "stamps": [
       "B365 over MGM",
@@ -276399,7 +276399,7 @@
   {
     "id": "2026-09-29_Marco Rossi_watch_35",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Marco Rossi",
     "score": 35,
     "edge": 46,
@@ -276440,7 +276440,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T20:56:52.598623+00:00",
+    "updated_at": "2026-09-29T21:56:13.350662+00:00",
     "player_name": "Marco Rossi",
     "stamps": [
       "MGM Exact",
@@ -276621,7 +276621,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T21:56:07.284531+00:00",
+    "updated_at": "2026-09-29T21:56:13.799073+00:00",
     "player_name": "Shea Theodore",
     "stamps": [
       "Rivers a bit over pack",
@@ -276757,7 +276757,7 @@
   {
     "id": "2026-09-29_Brendan Gallagher_shop_lean_171",
     "date": "2026-09-29",
-    "time": "01:36 PM",
+    "time": "02:56 PM",
     "player": "Brendan Gallagher",
     "score": 0,
     "edge": 171,
@@ -276795,7 +276795,7 @@
     "price": 900,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:49.880451+00:00",
-    "updated_at": "2026-09-29T20:36:49.880451+00:00"
+    "updated_at": "2026-09-29T21:56:12.324327+00:00"
   },
   {
     "id": "2026-09-29_Mathieu Joseph_shop_lean_171",
@@ -276843,7 +276843,7 @@
   {
     "id": "2026-09-29_Nic Dowd_shop_take_169",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Nic Dowd",
     "score": 0,
     "edge": 169,
@@ -276881,12 +276881,12 @@
     "price": 850,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:49.938436+00:00",
-    "updated_at": "2026-09-29T20:56:51.582877+00:00"
+    "updated_at": "2026-09-29T21:56:12.218991+00:00"
   },
   {
     "id": "2026-09-29_Tye Kartye_shop_lean_169",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Tye Kartye",
     "score": 0,
     "edge": 169,
@@ -276924,7 +276924,7 @@
     "price": 900,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:49.969105+00:00",
-    "updated_at": "2026-09-29T20:56:51.523757+00:00"
+    "updated_at": "2026-09-29T21:56:12.263024+00:00"
   },
   {
     "id": "2026-09-29_Mattias Ekholm_shop_take_162",
@@ -277015,7 +277015,7 @@
   {
     "id": "2026-09-29_Colton Sissons_shop_lean_140",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Colton Sissons",
     "score": 0,
     "edge": 140,
@@ -277053,12 +277053,12 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.057172+00:00",
-    "updated_at": "2026-09-29T20:56:51.735737+00:00"
+    "updated_at": "2026-09-29T21:56:12.384995+00:00"
   },
   {
     "id": "2026-09-29_Zack MacEwen_shop_take_134",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Zack MacEwen",
     "score": 0,
     "edge": 134,
@@ -277095,12 +277095,12 @@
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-09-29T20:36:50.088789+00:00",
-    "updated_at": "2026-09-29T20:56:51.678650+00:00"
+    "updated_at": "2026-09-29T21:56:12.349406+00:00"
   },
   {
     "id": "2026-09-29_Colton Dach_shop_take_126",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Colton Dach",
     "score": 0,
     "edge": 126,
@@ -277138,12 +277138,12 @@
     "price": 850,
     "book": "fanatics",
     "created_at": "2026-09-29T20:36:50.117560+00:00",
-    "updated_at": "2026-09-29T20:56:51.613236+00:00"
+    "updated_at": "2026-09-29T21:56:12.133610+00:00"
   },
   {
     "id": "2026-09-29_Trent Frederic_shop_take_113",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Trent Frederic",
     "score": 0,
     "edge": 113,
@@ -277181,12 +277181,12 @@
     "price": 625,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.146357+00:00",
-    "updated_at": "2026-09-29T20:56:51.707991+00:00"
+    "updated_at": "2026-09-29T21:56:12.411800+00:00"
   },
   {
     "id": "2026-09-29_Hampus Lindholm_shop_lean_112",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Hampus Lindholm",
     "score": 0,
     "edge": 112,
@@ -277224,12 +277224,12 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:50.180062+00:00",
-    "updated_at": "2026-09-29T20:56:51.765510+00:00"
+    "updated_at": "2026-09-29T21:56:12.441130+00:00"
   },
   {
     "id": "2026-09-29_Josh Anderson_shop_take_111",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Josh Anderson",
     "score": 0,
     "edge": 111,
@@ -277267,7 +277267,7 @@
     "price": 650,
     "book": "hardrockbet",
     "created_at": "2026-09-29T20:36:50.208509+00:00",
-    "updated_at": "2026-09-29T20:56:51.803068+00:00"
+    "updated_at": "2026-09-29T21:56:12.477321+00:00"
   },
   {
     "id": "2026-09-29_Mark Jankowski_shop_take_106",
@@ -277371,7 +277371,7 @@
   {
     "id": "2026-09-29_Marc Gatcomb_shop_take_104",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Marc Gatcomb",
     "score": 0,
     "edge": 104,
@@ -277409,12 +277409,12 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.292516+00:00",
-    "updated_at": "2026-09-29T20:56:51.908875+00:00"
+    "updated_at": "2026-09-29T21:56:12.511340+00:00"
   },
   {
     "id": "2026-09-29_Ryan Greene_shop_take_102",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Ryan Greene",
     "score": 0,
     "edge": 102,
@@ -277452,12 +277452,12 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.319988+00:00",
-    "updated_at": "2026-09-29T20:56:51.875017+00:00"
+    "updated_at": "2026-09-29T21:56:12.542095+00:00"
   },
   {
     "id": "2026-09-29_Marat Khusnutdinov_shop_lean_96",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Marat Khusnutdinov",
     "score": 0,
     "edge": 96,
@@ -277495,12 +277495,12 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.346852+00:00",
-    "updated_at": "2026-09-29T20:56:51.944098+00:00"
+    "updated_at": "2026-09-29T21:56:12.631936+00:00"
   },
   {
     "id": "2026-09-29_Tanner Jeannot_shop_lean_92",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Tanner Jeannot",
     "score": 0,
     "edge": 92,
@@ -277538,12 +277538,12 @@
     "price": 900,
     "book": "draftkings",
     "created_at": "2026-09-29T20:36:50.381041+00:00",
-    "updated_at": "2026-09-29T20:56:52.024561+00:00"
+    "updated_at": "2026-09-29T21:56:12.658462+00:00"
   },
   {
     "id": "2026-09-29_Drew O'Connor_shop_take_89",
     "date": "2026-09-29",
-    "time": "01:36 PM",
+    "time": "02:56 PM",
     "player": "Drew O'Connor",
     "score": 0,
     "edge": 89,
@@ -277581,12 +277581,12 @@
     "price": 575,
     "book": "fanatics",
     "created_at": "2026-09-29T20:36:50.408812+00:00",
-    "updated_at": "2026-09-29T20:36:50.408812+00:00"
+    "updated_at": "2026-09-29T21:56:13.034622+00:00"
   },
   {
     "id": "2026-09-29_Rasmus Andersson_shop_lean_87",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Rasmus Andersson",
     "score": 0,
     "edge": 87,
@@ -277624,12 +277624,12 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-09-29T20:36:50.442357+00:00",
-    "updated_at": "2026-09-29T20:56:52.132574+00:00"
+    "updated_at": "2026-09-29T21:56:12.605656+00:00"
   },
   {
     "id": "2026-09-29_Noah Laba_shop_take_77",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Noah Laba",
     "score": 0,
     "edge": 77,
@@ -277667,12 +277667,12 @@
     "price": 750,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:50.475286+00:00",
-    "updated_at": "2026-09-29T20:56:52.275072+00:00"
+    "updated_at": "2026-09-29T21:56:12.981352+00:00"
   },
   {
     "id": "2026-09-29_Phillip Danault_shop_lean_77",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Phillip Danault",
     "score": 0,
     "edge": 77,
@@ -277710,7 +277710,7 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.508944+00:00",
-    "updated_at": "2026-09-29T20:56:52.231980+00:00"
+    "updated_at": "2026-09-29T21:56:12.922094+00:00"
   },
   {
     "id": "2026-09-29_Zachary Bolduc_shop_lean_77",
@@ -277757,7 +277757,7 @@
   {
     "id": "2026-09-29_Teddy Blueger_shop_lean_76",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Teddy Blueger",
     "score": 0,
     "edge": 76,
@@ -277795,7 +277795,7 @@
     "price": 800,
     "book": "fanatics",
     "created_at": "2026-09-29T20:36:50.565821+00:00",
-    "updated_at": "2026-09-29T20:56:52.309655+00:00"
+    "updated_at": "2026-09-29T21:56:12.696961+00:00"
   },
   {
     "id": "2026-09-29_Filip Hronek_shop_take_74",
@@ -277843,7 +277843,7 @@
   {
     "id": "2026-09-29_Shayne Gostisbehere_shop_lean_72",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Shayne Gostisbehere",
     "score": 0,
     "edge": 72,
@@ -277881,12 +277881,12 @@
     "price": 600,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.626147+00:00",
-    "updated_at": "2026-09-29T20:56:52.200494+00:00"
+    "updated_at": "2026-09-29T21:56:12.734822+00:00"
   },
   {
     "id": "2026-09-29_Jake Walman_shop_lean_68",
     "date": "2026-09-29",
-    "time": "01:36 PM",
+    "time": "02:56 PM",
     "player": "Jake Walman",
     "score": 0,
     "edge": 68,
@@ -277924,12 +277924,12 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:50.654527+00:00",
-    "updated_at": "2026-09-29T20:36:50.654527+00:00"
+    "updated_at": "2026-09-29T21:56:13.146882+00:00"
   },
   {
     "id": "2026-09-29_Kirby Dach_shop_lean_67",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Kirby Dach",
     "score": 0,
     "edge": 67,
@@ -277967,7 +277967,7 @@
     "price": 575,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:50.690957+00:00",
-    "updated_at": "2026-09-29T20:56:52.161381+00:00"
+    "updated_at": "2026-09-29T21:56:12.852037+00:00"
   },
   {
     "id": "2026-09-29_Bowen Byram_shop_lean_64",
@@ -278015,7 +278015,7 @@
   {
     "id": "2026-09-29_Jake Evans_shop_lean_62",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Jake Evans",
     "score": 0,
     "edge": 62,
@@ -278053,7 +278053,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.753375+00:00",
-    "updated_at": "2026-09-29T20:56:52.427919+00:00"
+    "updated_at": "2026-09-29T21:56:13.199105+00:00"
   },
   {
     "id": "2026-09-29_Sean Walker_shop_lean_62",
@@ -278101,7 +278101,7 @@
   {
     "id": "2026-09-29_Noah Dobson_shop_lean_60",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Noah Dobson",
     "score": 0,
     "edge": 60,
@@ -278139,7 +278139,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.817051+00:00",
-    "updated_at": "2026-09-29T20:56:51.993995+00:00"
+    "updated_at": "2026-09-29T21:56:13.756866+00:00"
   },
   {
     "id": "2026-09-29_Alexandre Texier_shop_lean_56",
@@ -278187,7 +278187,7 @@
   {
     "id": "2026-09-29_Will Cuylle_shop_lean_56",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Will Cuylle",
     "score": 0,
     "edge": 56,
@@ -278225,12 +278225,12 @@
     "price": 400,
     "book": "hardrockbet",
     "created_at": "2026-09-29T20:36:50.882924+00:00",
-    "updated_at": "2026-09-29T20:56:52.524605+00:00"
+    "updated_at": "2026-09-29T21:56:13.270474+00:00"
   },
   {
     "id": "2026-09-29_Trevor Connelly_shop_lean_53",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Trevor Connelly",
     "score": 0,
     "edge": 53,
@@ -278268,12 +278268,12 @@
     "price": 525,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:50.943550+00:00",
-    "updated_at": "2026-09-29T20:56:52.634074+00:00"
+    "updated_at": "2026-09-29T21:56:13.576555+00:00"
   },
   {
     "id": "2026-09-29_Jonathan Lekkerim\u00e4ki_shop_lean_52",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Jonathan Lekkerim\u00e4ki",
     "score": 0,
     "edge": 52,
@@ -278311,7 +278311,7 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:50.979070+00:00",
-    "updated_at": "2026-09-29T20:56:52.791989+00:00"
+    "updated_at": "2026-09-29T21:56:13.521465+00:00"
   },
   {
     "id": "2026-09-29_Connor McDavid_shop_lean_50",
@@ -278359,7 +278359,7 @@
   {
     "id": "2026-09-29_Mark Kastelic_shop_lean_50",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Mark Kastelic",
     "score": 0,
     "edge": 50,
@@ -278397,7 +278397,7 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:51.071419+00:00",
-    "updated_at": "2026-09-29T20:56:52.664796+00:00"
+    "updated_at": "2026-09-29T21:56:13.927738+00:00"
   },
   {
     "id": "2026-09-29_K'Andre Miller_shop_lean_49",
@@ -278456,7 +278456,7 @@
   {
     "id": "2026-09-29_Andrew Mangiapane_shop_lean_45",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Andrew Mangiapane",
     "score": 0,
     "edge": 45,
@@ -278494,7 +278494,7 @@
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:51.269155+00:00",
-    "updated_at": "2026-09-29T20:56:52.886125+00:00"
+    "updated_at": "2026-09-29T21:56:12.788757+00:00"
   },
   {
     "id": "2026-09-29_Jordan Martinook_shop_lean_45",
@@ -278632,12 +278632,12 @@
     "price": 600,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:51.459367+00:00",
-    "updated_at": "2026-09-29T21:56:07.127516+00:00"
+    "updated_at": "2026-09-29T21:56:13.711158+00:00"
   },
   {
     "id": "2026-09-29_Lane Hutson_shop_lean_42",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Lane Hutson",
     "score": 0,
     "edge": 42,
@@ -278675,7 +278675,7 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:51.499056+00:00",
-    "updated_at": "2026-09-29T20:56:53.013775+00:00"
+    "updated_at": "2026-09-29T21:56:13.884844+00:00"
   },
   {
     "id": "2026-09-29_Anton Frondell_shop_lean_40",
@@ -288295,7 +288295,7 @@
   {
     "id": "2026-09-29_Anton Lundell_watch_23",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Anton Lundell",
     "score": 23,
     "edge": 37,
@@ -288343,7 +288343,7 @@
     "price": 400,
     "book": "fanduel",
     "created_at": "2026-09-29T20:47:03.699345+00:00",
-    "updated_at": "2026-09-29T20:56:45.259620+00:00"
+    "updated_at": "2026-09-29T21:56:13.842765+00:00"
   },
   {
     "id": "2026-09-29_Arber Xhekaj_watch_85",
@@ -288843,7 +288843,7 @@
   {
     "id": "2026-09-29_Mattias Ekholm_shop_lean_208",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Mattias Ekholm",
     "score": 0,
     "edge": 208,
@@ -288881,7 +288881,7 @@
     "price": 900,
     "book": "fanduel",
     "created_at": "2026-09-29T20:47:09.509303+00:00",
-    "updated_at": "2026-09-29T20:56:51.463972+00:00"
+    "updated_at": "2026-09-29T21:56:12.170048+00:00"
   },
   {
     "id": "2026-09-29_Brendan Gallagher_shop_take_108",
@@ -288972,7 +288972,7 @@
   {
     "id": "2026-09-29_Connor McDavid_shop_take_94",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Connor McDavid",
     "score": 0,
     "edge": 94,
@@ -289010,7 +289010,7 @@
     "price": 105,
     "book": "bet365",
     "created_at": "2026-09-29T20:47:09.989489+00:00",
-    "updated_at": "2026-09-29T20:56:52.070939+00:00"
+    "updated_at": "2026-09-29T21:56:12.579141+00:00"
   },
   {
     "id": "2026-09-29_Lars Eller_shop_lean_65",
@@ -289778,7 +289778,7 @@
   {
     "id": "2026-09-29_Zachary Bolduc_shop_take_70",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "02:56 PM",
     "player": "Zachary Bolduc",
     "score": 0,
     "edge": 70,
@@ -289815,7 +289815,7 @@
     "price": 575,
     "book": "hardrockbet",
     "created_at": "2026-09-29T20:56:52.340665+00:00",
-    "updated_at": "2026-09-29T20:56:52.340665+00:00"
+    "updated_at": "2026-09-29T21:56:13.097109+00:00"
   },
   {
     "id": "2026-09-29_Eetu Luostarinen_shop_lean_44",
@@ -290123,5 +290123,91 @@
     "book": "betrivers",
     "created_at": "2026-09-29T21:56:07.052073+00:00",
     "updated_at": "2026-09-29T21:56:07.052073+00:00"
+  },
+  {
+    "id": "2026-09-29_Morgan Rielly_shop_lean_143",
+    "date": "2026-09-29",
+    "time": "02:56 PM",
+    "player": "Morgan Rielly",
+    "score": 0,
+    "edge": 143,
+    "best_price": 900,
+    "best_book": "hardrockbet",
+    "median": 700,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 675,
+      "betrivers": 700,
+      "caesars": 650,
+      "draftkings": 650,
+      "fanatics": 700,
+      "fanduel": 800,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-29T21:56:12.299416+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Morgan Rielly",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 900,
+    "book": "hardrockbet",
+    "created_at": "2026-09-29T21:56:12.299416+00:00",
+    "updated_at": "2026-09-29T21:56:12.299416+00:00"
+  },
+  {
+    "id": "2026-09-29_Vasily Podkolzin_shop_take_55",
+    "date": "2026-09-29",
+    "time": "02:56 PM",
+    "player": "Vasily Podkolzin",
+    "score": 0,
+    "edge": 55,
+    "best_price": 260,
+    "best_book": "bet365",
+    "median": 197,
+    "book_prices": {
+      "bet365": 260,
+      "betmgm": 225,
+      "betrivers": 230,
+      "caesars": 199,
+      "draftkings": 180,
+      "fanatics": 170,
+      "fanduel": 195,
+      "hardrockbet": 190
+    },
+    "price_bucket": "under +400",
+    "ending": 60,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-29T21:56:13.443150+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Vasily Podkolzin",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 260,
+    "book": "bet365",
+    "created_at": "2026-09-29T21:56:13.443150+00:00",
+    "updated_at": "2026-09-29T21:56:13.443150+00:00"
   }
 ]
