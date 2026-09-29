@@ -736,6 +736,20 @@
       "best_book": "fanduel",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "TreVeyon Henderson",
+      "source": "take_it",
+      "score": 32,
+      "methods": [
+        "Books tight",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 210,
+      "best_book": "fanduel",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
