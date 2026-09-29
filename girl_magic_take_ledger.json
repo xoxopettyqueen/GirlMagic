@@ -706,6 +706,21 @@
       "best_book": "draftkings",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "RJ Harvey",
+      "source": "take_it",
+      "score": 40,
+      "methods": [
+        "Books tight",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 220,
+      "best_book": "draftkings",
+      "time": "01:37 PM",
+      "sport": "NFL"
     }
   ]
 }
