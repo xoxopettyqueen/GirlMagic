@@ -1008,6 +1008,19 @@ SPORT_CFG = {
         "lock_count": "NBA props",
         "shop_empty": "Fetch NBA player points first. Other markets ride the same slate.",
     },
+    "NHL": {
+        "key": "icehockey_nhl",
+        "market": "player_goal_scorer_anytime",
+        "label": "Anytime Goal Yes",
+        "hit": "Goal",
+        "hits": "Goals",
+        "sgo": True,
+        "days": 2,
+        "when": "Puck drop",
+        "lock_caption": "Goals matched to the number we locked before puck drop.",
+        "lock_count": "NHL Goal",
+        "shop_empty": "Fetch Anytime Goal — Shop fills when the slate breathes.",
+    },
 }
 
 def active_sport():
@@ -1023,11 +1036,13 @@ def row_sport(r):
     if not isinstance(r, dict):
         return "MLB"
     s = str(r.get("sport") or "").strip().upper()
-    if s in ("NFL", "MLB", "NBA"):
+    if s in ("NFL", "MLB", "NBA", "NHL"):
         return s
     blob = " ".join(
         str(r.get(k) or "") for k in ("market", "source", "methods")
     ).lower()
+    if any(x in blob for x in ("anytime_goal", "goal_scorer", "nhl", "puck")):
+        return "NHL"
     if any(x in blob for x in ("p15", "3m3", "a3c", "nba", "player_points", "player_rebounds")):
         return "NBA"
     if any(x in blob for x in ("anytime_td", "anytime td", "nfl", "touchdown")):
@@ -1304,6 +1319,11 @@ NFL_STAMP_METHODS = {
     "EV Support",
     "HardRock 50",
 } - NFL_DEAD_STAMPS
+NHL_STAMP_METHODS = {
+    "Books tight", "Multi-book Shorten", "PP1", "L1",
+    "HotShots", "HotGoals", "MatchupSoft", "GoalieWeak",
+    "FD a little long", "DK FD-style",
+}
 
 PRIORITY_METHODS = {
     "MGM 25", "Match 25", "MGM Exact",
@@ -1492,7 +1512,11 @@ def nfl_price_ok(best_price):
     return p >= 115
 
 def stamp_set():
-    return NFL_STAMP_METHODS if active_sport() == "NFL" else TAKE_STAMP_METHODS
+    if active_sport() == "NFL":
+        return NFL_STAMP_METHODS
+    if active_sport() == "NHL":
+        return NHL_STAMP_METHODS
+    return TAKE_STAMP_METHODS
 
 def stamp_count(methods):
     ms = {normalize_method_name(m) for m in (methods or [])}
@@ -1534,6 +1558,9 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     if active_sport() == "NFL":
         if bk and bk not in {"draftkings", "fanduel", "hardrockbet", "fanatics"}:
             return False
+    elif active_sport() == "NHL":
+        if bk and bk not in {"draftkings", "fanduel"}:
+            return False
     else:
         if bk == "fanduel":
             return False
@@ -1572,6 +1599,20 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
                 return False
             if not fn.get("allow_take") and not fn.get("way_over_mgm"):
                 return False
+        return True
+    if active_sport() == "NHL":
+        try:
+            px = abs(int(best_price or 0))
+        except Exception:
+            px = 0
+        if px < 300:
+            return False
+        if px >= 700 and stamps < 3:
+            return False
+        if stamps < 2:
+            return False
+        if bk and bk not in {"draftkings", "fanduel"}:
+            return False
         return True
     if not pri and sc < SCORE_SOFT_TAKE:
         return False
@@ -1918,7 +1959,8 @@ GLOSSARY_V2 = {
         ("Run It", "The Board. Who cleared. Number next to the name = Board score."),
         ("Money Talks", "Shop. Which book and whether the number is mispriced. Board can be green and Shop can still say DON'T."),
         ("Confidence Score", "0–100. Always (0.4 × Data Score) + (0.35 × Odds Score) + (0.25 × Context Score). Rounded. Not Board score. Not a credit score."),
-        ("Need One", "0.5 rush / catch / reception, plus money. Separate from HR and Anytime TD."),
+        ("Need One", "0.5 rush / catch / reception, plus money. Separate from HR, Anytime TD, and Anytime Goal."),
+        ("Anytime Goal", "NHL market. Yes to score a goal. Not first goal, not last goal."),
         ("Receipts", "Spoke / Locks / Tracker / Time Machine. Grade HIT or MISS. Undo exists."),
         ("Tickets vs Research", "Tickets = TAKE + Shop TAKE. Research = WATCH + LEAN. TAKE must beat Research or we raise the floor."),
         ("One log", "One TAKE and one WATCH per player per day. Fetch again updates that row. Hit rate = HIT / (HIT+MISS) only."),
@@ -1949,6 +1991,19 @@ GLOSSARY_V2 = {
         ("Weekly adjust", "Receipts + Tracker by tag. Cold stamps get demoted. Hot support can get watched harder. Never blindly keep a dead tell."),
         ("Tickets vs Research", "Recap pills: Tickets = TAKE / Shop TAKE. Research = WATCH / LEAN. Grade both. TAKE must beat Research or the floor goes up."),
         ("Caesars 90 / HardRock 50 / 00", "Other-book endings we now stamp and track. Support until n ≥ 25 and they beat baseline."),
+    ],
+    "🏒 NHL": [
+        ("Anytime Goal", "Yes they score at least once. Odds API player_goal_scorer_anytime. First/last goal is off the board."),
+        ("Lane A–D", "A +300–399 · B +400–499 · C +500–699 · D +700+. Under +300 is too short for this board. D needs 3 stamps."),
+        ("PP1 / L1", "Power-play unit 1 / top even-strength line. Dead without one of these or Books tight."),
+        ("HotShots / HotGoals", "4+ shots last 3 / 2+ goals last 3. Rhythm, not a ticket alone."),
+        ("MatchupSoft / GoalieWeak", "Opp GA/g > 3.2 or SV% under .900. Context tag."),
+        ("Goal Lab", "Lock Lab for hockey. Open / Now / Close + ending + PP1 + shots heat."),
+        ("NHL TAKE", "2+ rhythm tags, FD or DK best, lane A–D, cap 15. 365/Fanatics study only."),
+        ("NHL Shop TAKE", "Books tight + FD/DK best + PP1 or L1 + HotShots or HotGoals."),
+        ("Dead NHL", "Bottom-6, no PP, D without PP1, goalies, rookies under 10 TOI."),
+        ("Price endings NHL", "00 hot · 25 neutral · 50 mid · 75 chaos. Tracked in Goal Lab."),
+        ("NHL Confidence", "(0.35×shots trend)+(0.25×PP)+(0.20×TOI)+(0.20×matchup). Does not green alone."),
     ],
     "📊 Data": [
         ("⚡ Exit Velocity (EV)", "How hard the ball leaves the bat. 95+ mph = bomb potential."),
@@ -5567,7 +5622,10 @@ def log_bet_this(ev_board, watch_board=None):
             "price_source": "pregame_lock" if lock_books else "live_fetch",
             "sport": active_sport(),
             "team": item.get("team") or "",
-            "market": "anytime_td" if active_sport() == "NFL" else "batter_home_runs",
+            "market": (
+                "anytime_td" if active_sport() == "NFL"
+                else ("anytime_goal" if active_sport() == "NHL" else "batter_home_runs")
+            ),
             "benford_tag": (item.get("benford") or {}).get("tag"),
             "benford_note": (item.get("benford") or {}).get("note"),
             "benford_cluster": (item.get("benford") or {}).get("cluster"),
@@ -5651,7 +5709,10 @@ def log_shop_calls(df):
             "result": "PENDING", "source": src, "logged_at": now_utc_iso(),
             "price_source": "shop",
             "sport": active_sport(),
-            "market": "anytime_td" if active_sport() == "NFL" else "batter_home_runs",
+            "market": (
+                "anytime_td" if active_sport() == "NFL"
+                else ("anytime_goal" if active_sport() == "NHL" else "batter_home_runs")
+            ),
         })
         added += 1
     if added or touched:
@@ -6008,7 +6069,7 @@ def fetch_sport_desk(sport="MLB"):
     games, injuries = [], []
     key = get_sdio_key()
     if key:
-        slug = {"MLB": "mlb", "NFL": "nfl", "NBA": "nba"}.get(sport, "mlb")
+        slug = {"MLB": "mlb", "NFL": "nfl", "NBA": "nba", "NHL": "nhl"}.get(sport, "mlb")
         url = f"https://api.sportsdata.io/v3/{slug}/scores/json/GamesByDate/{iso}"
         try:
             r = requests.get(url, headers={"Ocp-Apim-Subscription-Key": key}, timeout=15)
@@ -6091,6 +6152,27 @@ def fetch_sport_desk(sport="MLB"):
             return {"games": games, "injuries": [], "msg": f"NBA Stats · {len(games)} games"}
         except Exception:
             return {"games": [], "injuries": [], "msg": "NBA Stats miss — offseason or blocked"}
+    if sport == "NHL":
+        try:
+            r = requests.get(f"https://api-web.nhle.com/v1/schedule/{iso}", timeout=15)
+            js = r.json() if r.ok else {}
+            for day in js.get("gameWeek") or js.get("games") or []:
+                glist = day.get("games") if isinstance(day, dict) and "games" in day else ([day] if isinstance(day, dict) and day.get("id") else [])
+                if isinstance(day, dict) and day.get("date") and not glist:
+                    glist = day.get("games") or []
+                for g in glist or []:
+                    away = ((g.get("awayTeam") or {}).get("abbrev")) or "?"
+                    home = ((g.get("homeTeam") or {}).get("abbrev")) or "?"
+                    games.append({"label": f"{away}@{home}", "status": g.get("gameState") or ""})
+            if not games:
+                sc = requests.get(f"https://api-web.nhle.com/v1/score/{iso}", timeout=12).json()
+                for g in sc.get("games") or []:
+                    away = ((g.get("awayTeam") or {}).get("abbrev")) or "?"
+                    home = ((g.get("homeTeam") or {}).get("abbrev")) or "?"
+                    games.append({"label": f"{away}@{home}", "status": g.get("gameState") or ""})
+            return {"games": games, "injuries": [], "msg": f"NHL Web API · {len(games)} games"}
+        except Exception:
+            return {"games": [], "injuries": [], "msg": "NHL Web API miss"}
     return {"games": [], "injuries": [], "msg": f"{sport} desk: free feed only"}
 
 
@@ -6138,10 +6220,84 @@ def _official_hr_for_date(date_str):
     return set(hr_names or []), set(final_players or []), msg
 
 
+def fetch_nhl_goal_scorers(date_str=None):
+    """Official NHL.com scoreboard — anytime goal scorers for that date."""
+    day = date_str or today_az()
+    names, done = set(), set()
+    try:
+        js = requests.get(f"https://api-web.nhle.com/v1/score/{day}", timeout=15).json()
+    except Exception as e:
+        return [], [], f"NHL score miss {e}"
+    finals = 0
+    for g in js.get("games") or []:
+        state = str(g.get("gameState") or "").upper()
+        if state in ("OFF", "FINAL"):
+            finals += 1
+        for goal in g.get("goals") or []:
+            nm = (goal.get("name") or {})
+            full = nm.get("default") or goal.get("playerName") or ""
+            if isinstance(full, dict):
+                full = full.get("default") or ""
+            if full:
+                names.add(full)
+                done.add(full)
+        for side in ("awayTeam", "homeTeam"):
+            for p in ((g.get(side) or {}).get("skaters") or []):
+                nm = ((p.get("name") or {}).get("default")) or ""
+                if nm:
+                    done.add(nm)
+    return sorted(names), sorted(done), f"NHL {finals} final · {len(names)} goal names"
+
+
 def auto_grade_pending():
     rows = load_results()
     hits = misses = skipped = 0
     pending_n = sum(1 for r in rows if r.get("result") == "PENDING")
+    if active_sport() == "NHL":
+        by_date = defaultdict(list)
+        for row in rows:
+            if row.get("result") != "PENDING":
+                continue
+            if row_sport(row) != "NHL":
+                skipped += 1
+                continue
+            src = str(row.get("source") or "")
+            if src not in GRADE_SOURCES and src not in STUDY_SOURCES:
+                continue
+            d = str(row.get("date") or "")[:10]
+            if d:
+                by_date[d].append(row)
+        msgs = []
+        tag = "nhl_auto"
+        for d, batch in by_date.items():
+            scorers, done_players, msg = fetch_nhl_goal_scorers(d)
+            msgs.append(f"{d} {msg}")
+            hit_set, miss_pool = set(scorers or []), set(done_players or [])
+            for row in batch:
+                study = str(row.get("source") or "") in STUDY_SOURCES
+                player = row.get("player") or ""
+                if any(names_match_grade(player, h) for h in hit_set):
+                    row["result"] = "LEARN_HIT" if study else "HIT"
+                    row["graded_by"] = tag
+                    hits += 1
+                elif miss_pool and any(names_match_grade(player, f) for f in miss_pool):
+                    row["result"] = "LEARN_MISS" if study else "MISS"
+                    row["graded_by"] = tag
+                    misses += 1
+                else:
+                    age = 0
+                    try:
+                        age = (datetime.strptime(today_az(), "%Y-%m-%d") - datetime.strptime(d[:10], "%Y-%m-%d")).days
+                    except Exception:
+                        age = 0
+                    if age >= 2 and (hit_set or miss_pool):
+                        row["result"] = "LEARN_MISS" if study else "MISS"
+                        row["graded_by"] = tag + "_stale"
+                        misses += 1
+                    else:
+                        skipped += 1
+        save_results(rows)
+        return hits, misses, skipped, " · ".join(msgs[:4]) + f" · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
     if active_sport() == "NFL":
         by_date = defaultdict(list)
         for row in rows:
@@ -7400,6 +7556,7 @@ def flatten_oddsapi(data):
             mkey = (market.get("key") or "").lower()
             is_hr = ("home_run" in mkey) or ("homer" in mkey)
             is_td = mkey in ("player_anytime_td", "player_tds") or mkey.endswith("anytime_td")
+            is_goal = mkey in ("player_goal_scorer_anytime", "player_anytime_goal") or "goal_scorer_anytime" in mkey
             need_map = {
                 "player_rush_yds": "Rush Yards",
                 "player_rush_yards": "Rush Yards",
@@ -7415,12 +7572,12 @@ def flatten_oddsapi(data):
             if prop_type and not is_full_game_prop(mkey):
                 prop_type = None
                 continue
-            if mkey and not is_hr and not is_td and not prop_type:
+            if mkey and not is_hr and not is_td and not is_goal and not prop_type:
                 continue
             for o in market.get("outcomes", []):
                 oname = str(o.get("name") or "").lower()
                 pt = o.get("point")
-                if is_td:
+                if is_td or is_goal:
                     # Anytime TD Yes == Over 0.5 TD
                     if oname not in ("yes", "over"):
                         continue
@@ -7450,7 +7607,7 @@ def flatten_oddsapi(data):
                 rows.append({
                     "event": event, "book": bk, "player": player, "price": price,
                     "point": 0.5, "team": "", "source": "oddsapi",
-                    "sport": "NFL" if (is_td or prop_type) else "MLB",
+                    "sport": "NFL" if is_td else ("NHL" if is_goal else ("NBA" if prop_type else "MLB")),
                     "prop_type": prop_type,
                     "commence_time": data.get("commence_time") or "",
                 })
@@ -7462,7 +7619,7 @@ def fetch_sgo_hr_props(sgo_key):
     raw_keys = set()
     if not sgo_key:
         return rows, found
-    league = "NFL" if active_sport() == "NFL" else "MLB"
+    league = active_sport() if active_sport() in ("NFL", "MLB", "NHL", "NBA") else "MLB"
     try:
         cursor = None
         pages = 0
@@ -7504,7 +7661,15 @@ def fetch_sgo_hr_props(sgo_key):
                     if any(x in oid for x in ("firsttouchdown", "lasttouchdown", "first_td", "last_td")):
                         is_td = False
                         continue
+                    is_goal = any(x in oid for x in (
+                        "anytimegoal", "anytime_goal", "goalscoreranytime",
+                        "goal_scorer_anytime", "player_goal_scorer_anytime",
+                    ))
+                    if any(x in oid for x in ("firstgoal", "lastgoal", "first_goal", "last_goal")):
+                        is_goal = False
                     if is_td:
+                        prop_type = None
+                    elif is_goal:
                         prop_type = None
                     elif "rushing_yards" in oid and "touchdown" not in oid:
                         prop_type = "Rush Yards"
@@ -7517,6 +7682,8 @@ def fetch_sgo_hr_props(sgo_key):
                     if league == "MLB" and not is_hr:
                         continue
                     if league == "NFL" and not (is_td or prop_type):
+                        continue
+                    if league == "NHL" and not is_goal:
                         continue
                     ou = odd_data.get("bookOverUnder") or odd_data.get("fairOverUnder")
                     if is_td:
@@ -7750,7 +7917,7 @@ def tighten_board(ev_board):
     per_team, per_game, out_takes = defaultdict(int), defaultdict(int), []
     max_team = 8 if nfl_loose_mode() else BOARD_MAX_PER_TEAM
     max_game = 8 if nfl_loose_mode() else BOARD_MAX_PER_GAME
-    nfl_cap = 18 if active_sport() == "NFL" else 999
+    nfl_cap = 18 if active_sport() == "NFL" else (15 if active_sport() == "NHL" else 999)
     for item in ranked:
         team = (item.get("team") or "").strip()
         game = item.get("event") or (item.get("events") or ["UNK"])[0]
@@ -12307,16 +12474,16 @@ def main():
     try:
         sport_pick = st.segmented_control(
             "Pick your lane",
-            options=["MLB", "NFL", "NBA"],
-            default=sport if sport in ("MLB", "NFL", "NBA") else "MLB",
+            options=["MLB", "NFL", "NBA", "NHL"],
+            default=sport if sport in ("MLB", "NFL", "NBA", "NHL") else "MLB",
             key="sport_pick",
-            help="MLB = 0.5 HR. NFL = Anytime TD. NBA = P15 / 3s / boards (OPS).",
+            help="MLB = 0.5 HR. NFL = Anytime TD. NBA = longshots. NHL = Anytime Goal.",
         )
     except Exception:
         sport_pick = st.radio(
             "Pick your lane",
-            ["MLB", "NFL", "NBA"],
-            index=["MLB", "NFL", "NBA"].index(sport) if sport in ("MLB", "NFL", "NBA") else 0,
+            ["MLB", "NFL", "NBA", "NHL"],
+            index=["MLB", "NFL", "NBA", "NHL"].index(sport) if sport in ("MLB", "NFL", "NBA", "NHL") else 0,
             horizontal=True,
             key="sport_pick",
         )
