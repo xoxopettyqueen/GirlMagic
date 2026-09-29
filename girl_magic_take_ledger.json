@@ -764,6 +764,29 @@
       "best_book": "draftkings",
       "time": "01:37 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Ben Rice",
+      "source": "take_it",
+      "score": 87,
+      "methods": [
+        "B365 over MGM",
+        "Match 25",
+        "FD Pattern",
+        "Stayed in the group",
+        "Last one left",
+        "B365 way over MGM",
+        "B365 a bit over FD",
+        "Multi-book method",
+        "MGM 25",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 500,
+      "best_book": "fanatics",
+      "time": "01:48 PM",
+      "sport": "MLB"
     }
   ]
 }
