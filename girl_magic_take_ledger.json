@@ -888,6 +888,25 @@
       "best_book": "draftkings",
       "time": "01:49 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Ty Johnson",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "Match 00",
+        "Multi-book Shorten",
+        "Stayed in the group",
+        "MGM 00",
+        "HardRock 00",
+        "Fanatics Rogue",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "01:57 PM",
+      "sport": "NFL"
     }
   ]
 }
