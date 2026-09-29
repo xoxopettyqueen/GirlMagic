@@ -7542,7 +7542,16 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
             dbg[str(region)] = {"status": "exc", "keys": [], "err": str(e)[:180]}
             return None
 
-    us = _one("us", us_books if restrict_books else None)
+    pin = us_books if restrict_books and sport_key != "icehockey_nhl" else None
+    us = _one("us", pin)
+    if sport_key == "icehockey_nhl":
+        if not us or not (us.get("bookmakers") or []):
+            us = _one("us2", None)
+        uk = _one("au", "bet365_au")
+        if not uk or not (uk.get("bookmakers") or []):
+            uk = _one("uk", None)
+        merged = _merge_oddsapi_events(us, uk)
+        return merged if merged is not None else {"bookmakers": []}
     # AU: Bet365 AU only — The Odds API has no UK bet365 key. Do not send FanDuel keys on this call.
     uk = _one("au", "bet365_au")
     if not uk or not (uk.get("bookmakers") or []):
@@ -12764,10 +12773,12 @@ def main():
                     f"No preferred-book {sport_cfg()['label']} props after fetch. "
                     "This is not always 'games live' - check debug below."
                 )
+                reg = (dbg.get("regions") or {}).get("us") or (st.session_state.get("oddsapi_region_debug") or {}).get("us") or {}
                 st.caption(
                     f"API games OK: {dbg.get('http_ok', 0)} · fail: {dbg.get('http_fail', 0)} · "
                     f"rows before filter: {dbg.get('row_count_pre_filter', 0)} · SGO: {dbg.get('sgo_rows', 0)} · "
-                    f"raw books: {raw} · kept: {kept}"
+                    f"raw books: {raw} · kept: {kept} · "
+                    f"US HTTP {reg.get('status', '?')} {str(reg.get('err') or '')[:80]}"
                 )
         if st.session_state.get("last_fetch_time"):
             st.caption(f"Last fetch: {st.session_state['last_fetch_time']} AZ")
