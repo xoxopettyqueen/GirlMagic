@@ -285,6 +285,31 @@
       "best_book": "draftkings",
       "time": "08:32 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Lucas Spence",
+      "source": "take_it",
+      "score": 88,
+      "methods": [
+        "MGM Exact",
+        "Fanatics Drift",
+        "DK FD-style",
+        "Stayed in the group",
+        "B365 over HardRock",
+        "B365 way over MGM",
+        "Fanatics over pack",
+        "Rivers short vs pack",
+        "HardRock 50",
+        "B365 over MGM",
+        "Match 25",
+        "MGM 25",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 1050,
+      "best_book": "fanatics",
+      "time": "08:32 AM",
+      "sport": "MLB"
     }
   ]
 }
