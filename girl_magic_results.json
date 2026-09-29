@@ -275964,7 +275964,7 @@
   {
     "id": "2026-09-29_Casey Mittelstadt_watch_45",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Casey Mittelstadt",
     "score": 45,
     "edge": 38,
@@ -275997,7 +275997,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.398915+00:00",
+    "logged_at": "2026-09-29T22:12:01.807139+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "BOSTON BRUINS NHL",
@@ -276007,7 +276007,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T22:04:03.398938+00:00",
+    "updated_at": "2026-09-29T22:12:01.807151+00:00",
     "player_name": "Casey Mittelstadt",
     "stamps": [
       "B365 over MGM",
@@ -276086,7 +276086,7 @@
   {
     "id": "2026-09-29_Frank Nazar_watch_42",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Frank Nazar",
     "score": 42,
     "edge": 45,
@@ -276118,7 +276118,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.496653+00:00",
+    "logged_at": "2026-09-29T22:12:01.874699+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "CHICAGO BLACKHAWKS NHL",
@@ -276128,7 +276128,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T22:04:03.496665+00:00",
+    "updated_at": "2026-09-29T22:12:01.874715+00:00",
     "player_name": "Frank Nazar",
     "stamps": [
       "DK FD-style",
@@ -276145,7 +276145,7 @@
   {
     "id": "2026-09-29_Fraser Minten_watch_18",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Fraser Minten",
     "score": 18,
     "edge": 39,
@@ -276179,7 +276179,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:02.772591+00:00",
+    "logged_at": "2026-09-29T22:12:01.354994+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "BOSTON BRUINS NHL",
@@ -276203,12 +276203,12 @@
     "price": 400,
     "book": "hardrockbet",
     "created_at": "2026-09-29T20:36:44.690116+00:00",
-    "updated_at": "2026-09-29T22:04:02.772607+00:00"
+    "updated_at": "2026-09-29T22:12:01.355005+00:00"
   },
   {
     "id": "2026-09-29_Isaac Howard_watch_22",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Isaac Howard",
     "score": 22,
     "edge": 33,
@@ -276239,7 +276239,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:02.840335+00:00",
+    "logged_at": "2026-09-29T22:12:01.391855+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "EDMONTON OILERS NHL",
@@ -276260,12 +276260,12 @@
     "price": 360,
     "book": "draftkings",
     "created_at": "2026-09-29T20:36:44.716934+00:00",
-    "updated_at": "2026-09-29T22:04:09.264684+00:00"
+    "updated_at": "2026-09-29T22:12:01.391870+00:00"
   },
   {
     "id": "2026-09-29_Jack Roslovic_watch_68",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Jack Roslovic",
     "score": 68,
     "edge": 50,
@@ -276298,7 +276298,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.352950+00:00",
+    "logged_at": "2026-09-29T22:12:01.777683+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "TORONTO MAPLE LEAFS NHL",
@@ -276308,7 +276308,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T22:04:09.296979+00:00",
+    "updated_at": "2026-09-29T22:12:01.777905+00:00",
     "player_name": "Jack Roslovic",
     "stamps": [
       "B365 over MGM",
@@ -276326,7 +276326,7 @@
   {
     "id": "2026-09-29_Linus Karlsson_watch_88",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Linus Karlsson",
     "score": 88,
     "edge": 43,
@@ -276367,7 +276367,7 @@
     "core": 6,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.308713+00:00",
+    "logged_at": "2026-09-29T22:12:01.745879+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "VANCOUVER CANUCKS NHL",
@@ -276377,7 +276377,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T22:04:03.308730+00:00",
+    "updated_at": "2026-09-29T22:12:01.745891+00:00",
     "player_name": "Linus Karlsson",
     "stamps": [
       "FD a little long",
@@ -276399,7 +276399,7 @@
   {
     "id": "2026-09-29_Marco Rossi_watch_35",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Marco Rossi",
     "score": 35,
     "edge": 46,
@@ -276430,7 +276430,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.446649+00:00",
+    "logged_at": "2026-09-29T22:12:01.838470+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "VANCOUVER CANUCKS NHL",
@@ -276440,7 +276440,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T22:04:09.041005+00:00",
+    "updated_at": "2026-09-29T22:12:01.838488+00:00",
     "player_name": "Marco Rossi",
     "stamps": [
       "MGM Exact",
@@ -276579,7 +276579,7 @@
   {
     "id": "2026-09-29_Shea Theodore_watch_35",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Shea Theodore",
     "score": 35,
     "edge": 48,
@@ -276611,7 +276611,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.550133+00:00",
+    "logged_at": "2026-09-29T22:12:01.908902+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "VEGAS GOLDEN KNIGHTS NHL",
@@ -276621,7 +276621,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T22:04:09.447218+00:00",
+    "updated_at": "2026-09-29T22:12:01.908914+00:00",
     "player_name": "Shea Theodore",
     "stamps": [
       "Rivers a bit over pack",
@@ -278607,7 +278607,7 @@
   {
     "id": "2026-09-29_Max Sasson_shop_lean_43",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Max Sasson",
     "score": 0,
     "edge": 43,
@@ -278641,7 +278641,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-29T22:04:03.252269+00:00",
+    "logged_at": "2026-09-29T22:12:01.718930+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -278654,7 +278654,7 @@
     "price": 600,
     "book": "bet365",
     "created_at": "2026-09-29T20:36:51.459367+00:00",
-    "updated_at": "2026-09-29T22:04:09.329358+00:00"
+    "updated_at": "2026-09-29T22:12:01.718944+00:00"
   },
   {
     "id": "2026-09-29_Lane Hutson_shop_lean_42",
@@ -287823,7 +287823,7 @@
   {
     "id": "2026-09-29_Nick Paul_watch_26",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Nick Paul",
     "score": 26,
     "edge": 25,
@@ -287852,7 +287852,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.032257+00:00",
+    "logged_at": "2026-09-29T22:12:01.599026+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "TORONTO MAPLE LEAFS NHL",
@@ -287873,7 +287873,7 @@
     "price": 450,
     "book": "betrivers",
     "created_at": "2026-09-29T20:40:48.344939+00:00",
-    "updated_at": "2026-09-29T22:04:03.032279+00:00"
+    "updated_at": "2026-09-29T22:12:01.599037+00:00"
   },
   {
     "id": "2026-09-29_Oliver Ekman-Larsson_watch_69",
@@ -290039,7 +290039,7 @@
   {
     "id": "2026-09-29_Jordan Staal_watch_13",
     "date": "2026-09-29",
-    "time": "02:56 PM",
+    "time": "03:12 PM",
     "player": "Jordan Staal",
     "score": 13,
     "edge": -5,
@@ -290060,12 +290060,16 @@
       "DK FD-style",
       "FD 90",
       "EV Caution",
-      "Kelly Caution"
+      "Kelly Caution",
+      "FD Pattern",
+      "FD a little long",
+      "EV Support",
+      "Kelly Support"
     ],
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T21:56:06.899789+00:00",
+    "logged_at": "2026-09-29T22:12:01.485635+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "CAROLINA HURRICANES NHL",
@@ -290085,12 +290089,12 @@
     "price": 390,
     "book": "draftkings",
     "created_at": "2026-09-29T21:56:06.899789+00:00",
-    "updated_at": "2026-09-29T21:56:06.899789+00:00"
+    "updated_at": "2026-09-29T22:12:01.485647+00:00"
   },
   {
     "id": "2026-09-29_Patrick Kane_watch_14",
     "date": "2026-09-29",
-    "time": "03:04 PM",
+    "time": "03:12 PM",
     "player": "Patrick Kane",
     "score": 14,
     "edge": 21,
@@ -290122,7 +290126,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-29T22:04:03.112795+00:00",
+    "logged_at": "2026-09-29T22:12:01.628298+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "CHICAGO BLACKHAWKS NHL",
@@ -290144,7 +290148,7 @@
     "price": 350,
     "book": "betrivers",
     "created_at": "2026-09-29T21:56:07.052073+00:00",
-    "updated_at": "2026-09-29T22:04:03.112814+00:00"
+    "updated_at": "2026-09-29T22:12:01.628308+00:00"
   },
   {
     "id": "2026-09-29_Morgan Rielly_shop_lean_143",
@@ -290316,5 +290320,104 @@
     "book": "bet365",
     "created_at": "2026-09-29T22:04:09.361391+00:00",
     "updated_at": "2026-09-29T22:04:09.361391+00:00"
+  },
+  {
+    "id": "2026-09-29_Bokondji Imama_watch_9",
+    "date": "2026-09-29",
+    "time": "03:12 PM",
+    "player": "Bokondji Imama",
+    "score": 9,
+    "edge": -15,
+    "best_price": 1700,
+    "best_book": "draftkings",
+    "median": 1700,
+    "book_prices": {
+      "bet365": 1400,
+      "draftkings": 1700,
+      "fanduel": 1700
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "Multi-book Shorten",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-29T22:12:01.266060+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NHL",
+    "team": "FLORIDA PANTHERS NHL",
+    "market": "anytime_goal",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "player_name": "Bokondji Imama",
+    "stamps": [
+      "Multi-book Shorten",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "price": 1700,
+    "book": "draftkings",
+    "created_at": "2026-09-29T22:12:01.266060+00:00",
+    "updated_at": "2026-09-29T22:12:01.266060+00:00"
+  },
+  {
+    "id": "2026-09-29_Sam Reinhart_watch_13",
+    "date": "2026-09-29",
+    "time": "03:12 PM",
+    "player": "Sam Reinhart",
+    "score": 13,
+    "edge": -3,
+    "best_price": 290,
+    "best_book": "fanduel",
+    "median": 272.5,
+    "book_prices": {
+      "bet365": 200,
+      "draftkings": 270,
+      "fanatics": 275,
+      "fanduel": 290
+    },
+    "price_bucket": "under +400",
+    "ending": 90,
+    "mgm_locked": null,
+    "mgm_ending": null,
+    "methods": [
+      "DK FD-style",
+      "FD 90",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-09-29T22:12:01.657548+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NHL",
+    "team": "FLORIDA PANTHERS NHL",
+    "market": "anytime_goal",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 1.0,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "player_name": "Sam Reinhart",
+    "stamps": [
+      "DK FD-style",
+      "FD 90",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "price": 290,
+    "book": "fanduel",
+    "created_at": "2026-09-29T22:12:01.657548+00:00",
+    "updated_at": "2026-09-29T22:12:01.657548+00:00"
   }
 ]
