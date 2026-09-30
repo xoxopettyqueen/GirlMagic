@@ -294612,7 +294612,7 @@
   {
     "id": "2026-09-30_Christian Dvorak_watch_61",
     "date": "2026-09-30",
-    "time": "12:23 PM",
+    "time": "12:31 PM",
     "player": "Christian Dvorak",
     "score": 61,
     "edge": 57,
@@ -294649,7 +294649,7 @@
     "core": 4,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-30T19:23:55.903734+00:00",
+    "logged_at": "2026-09-30T19:31:54.244170+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "PHILADELPHIA FLYERS NHL",
@@ -294659,7 +294659,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T19:23:55.903746+00:00",
+    "updated_at": "2026-09-30T19:31:54.244180+00:00",
     "player_name": "Christian Dvorak",
     "stamps": [
       "FD a little long",
@@ -295025,7 +295025,7 @@
   {
     "id": "2026-09-30_Tommy Novak_watch_24",
     "date": "2026-09-30",
-    "time": "12:24 PM",
+    "time": "12:31 PM",
     "player": "Tommy Novak",
     "score": 24,
     "edge": 43,
@@ -295052,12 +295052,13 @@
       "DK FD-style",
       "EV Premium",
       "Kelly Support",
-      "Stayed in the group"
+      "Stayed in the group",
+      "Last one left"
     ],
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-30T19:23:55.825214+00:00",
+    "logged_at": "2026-09-30T19:31:54.194245+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "PITTSBURGH PENGUINS NHL",
@@ -295079,7 +295080,7 @@
     "price": 400,
     "book": "fanduel",
     "created_at": "2026-09-30T16:27:58.699736+00:00",
-    "updated_at": "2026-09-30T19:24:02.112280+00:00"
+    "updated_at": "2026-09-30T19:31:54.194256+00:00"
   },
   {
     "id": "2026-09-30_Trevor Zegras_watch_19",
@@ -295594,7 +295595,7 @@
   {
     "id": "2026-09-30_Morgan Rielly_shop_lean_109",
     "date": "2026-09-30",
-    "time": "09:36 AM",
+    "time": "12:31 PM",
     "player": "Morgan Rielly",
     "score": 0,
     "edge": 109,
@@ -295614,12 +295615,22 @@
     "price_bucket": "+800-999",
     "ending": 0,
     "methods": [
-      "Shop LEAN"
+      "Shop LEAN",
+      "B365 over MGM",
+      "B365 a bit over FD",
+      "HardRock 50",
+      "MGM Exact",
+      "Rivers short vs pack",
+      "B365 way over MGM",
+      "Multi-book Shorten",
+      "B365 over HardRock",
+      "EV Premium",
+      "Kelly Support"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-30T16:28:03.893233+00:00",
+    "logged_at": "2026-09-30T19:31:54.269009+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -295632,7 +295643,7 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-09-30T16:28:03.893233+00:00",
-    "updated_at": "2026-09-30T16:36:08.076101+00:00"
+    "updated_at": "2026-09-30T19:31:54.269019+00:00"
   },
   {
     "id": "2026-09-30_Casey Cizikas_shop_take_107",
@@ -296367,7 +296378,7 @@
   {
     "id": "2026-09-30_Jaden Schwartz_shop_lean_50",
     "date": "2026-09-30",
-    "time": "12:24 PM",
+    "time": "12:31 PM",
     "player": "Jaden Schwartz",
     "score": 0,
     "edge": 50,
@@ -296392,12 +296403,13 @@
       "FD 40",
       "MGM 60",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "HardRock 00"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-30T19:23:55.748790+00:00",
+    "logged_at": "2026-09-30T19:31:54.118023+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -296410,7 +296422,7 @@
     "price": 425,
     "book": "hardrockbet",
     "created_at": "2026-09-30T16:28:04.512340+00:00",
-    "updated_at": "2026-09-30T19:24:02.087355+00:00"
+    "updated_at": "2026-09-30T19:31:54.118031+00:00"
   },
   {
     "id": "2026-09-30_Nicolas Roy_shop_lean_49",
@@ -297188,7 +297200,7 @@
   {
     "id": "2026-09-30_Ville Koivunen_shop_lean_57",
     "date": "2026-09-30",
-    "time": "12:23 PM",
+    "time": "12:31 PM",
     "player": "Ville Koivunen",
     "score": 0,
     "edge": 57,
@@ -297220,7 +297232,7 @@
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-09-30T19:23:55.852218+00:00",
+    "logged_at": "2026-09-30T19:31:54.219887+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -297233,7 +297245,7 @@
     "price": 500,
     "book": "hardrockbet",
     "created_at": "2026-09-30T16:36:08.610700+00:00",
-    "updated_at": "2026-09-30T19:23:55.852229+00:00"
+    "updated_at": "2026-09-30T19:31:54.219897+00:00"
   },
   {
     "id": "2026-09-30_Easton Cowan_shop_lean_50",
@@ -297536,7 +297548,7 @@
   {
     "id": "2026-09-30_Alex Laferriere_watch_22",
     "date": "2026-09-30",
-    "time": "12:23 PM",
+    "time": "12:31 PM",
     "player": "Alex Laferriere",
     "score": 22,
     "edge": 35,
@@ -297567,7 +297579,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-30T19:23:55.641820+00:00",
+    "logged_at": "2026-09-30T19:31:54.041781+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "LOS ANGELES KINGS NHL",
@@ -297588,7 +297600,7 @@
     "price": 350,
     "book": "bet365",
     "created_at": "2026-09-30T18:59:06.420439+00:00",
-    "updated_at": "2026-09-30T19:23:55.641832+00:00"
+    "updated_at": "2026-09-30T19:31:54.041792+00:00"
   },
   {
     "id": "2026-09-30_Alex Turcotte_watch_81",
@@ -297656,7 +297668,7 @@
   {
     "id": "2026-09-30_Artemi Panarin_watch_27",
     "date": "2026-09-30",
-    "time": "12:23 PM",
+    "time": "12:31 PM",
     "player": "Artemi Panarin",
     "score": 27,
     "edge": 25,
@@ -297689,7 +297701,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-30T19:23:55.697189+00:00",
+    "logged_at": "2026-09-30T19:31:54.067767+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "LOS ANGELES KINGS NHL",
@@ -297712,7 +297724,7 @@
     "price": 245,
     "book": "betrivers",
     "created_at": "2026-09-30T18:59:06.483835+00:00",
-    "updated_at": "2026-09-30T19:23:55.697202+00:00"
+    "updated_at": "2026-09-30T19:31:54.067777+00:00"
   },
   {
     "id": "2026-09-30_Cale Makar_watch_19",
@@ -297774,7 +297786,7 @@
   {
     "id": "2026-09-30_Mats Zuccarello_watch_21",
     "date": "2026-09-30",
-    "time": "12:23 PM",
+    "time": "12:31 PM",
     "player": "Mats Zuccarello",
     "score": 21,
     "edge": 31,
@@ -297804,7 +297816,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-09-30T19:23:55.774964+00:00",
+    "logged_at": "2026-09-30T19:31:54.143389+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "LOS ANGELES KINGS NHL",
@@ -297823,7 +297835,7 @@
     "price": 390,
     "book": "betrivers",
     "created_at": "2026-09-30T18:59:06.613601+00:00",
-    "updated_at": "2026-09-30T19:23:55.774975+00:00"
+    "updated_at": "2026-09-30T19:31:54.143398+00:00"
   },
   {
     "id": "2026-09-30_Nazem Kadri_watch_11",
