@@ -723,6 +723,25 @@
       "best_book": "fanatics",
       "time": "08:45 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Austin Riley",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "B365 over HardRock",
+        "Match 25",
+        "FD 50",
+        "Multi-book method",
+        "MGM 25",
+        "Fanatics over pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 800,
+      "best_book": "draftkings",
+      "time": "08:45 AM",
+      "sport": "MLB"
     }
   ]
 }
