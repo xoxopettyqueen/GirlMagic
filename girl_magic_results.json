@@ -292510,7 +292510,7 @@
   {
     "id": "2026-09-30_Jahmai Jones_watch_49",
     "date": "2026-09-30",
-    "time": "12:17 PM",
+    "time": "12:18 PM",
     "player": "Jahmai Jones",
     "score": 49,
     "edge": 109,
@@ -292562,7 +292562,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T19:17:57.729686+00:00",
+    "updated_at": "2026-09-30T19:18:03.292737+00:00",
     "player_name": "Jahmai Jones",
     "stamps": [
       "B365 over MGM",
@@ -292720,7 +292720,7 @@
   {
     "id": "2026-09-30_Jazz Chisholm Jr._watch_29",
     "date": "2026-09-30",
-    "time": "12:17 PM",
+    "time": "12:18 PM",
     "player": "Jazz Chisholm Jr.",
     "score": 29,
     "edge": 1,
@@ -292776,7 +292776,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T19:17:57.840182+00:00",
+    "updated_at": "2026-09-30T19:18:03.237410+00:00",
     "player_name": "Jazz Chisholm Jr.",
     "stamps": [
       "Match 00",
@@ -293538,7 +293538,7 @@
   {
     "id": "2026-09-30_Austin Riley_shop_lean_138",
     "date": "2026-09-30",
-    "time": "09:35 AM",
+    "time": "12:18 PM",
     "player": "Austin Riley",
     "score": 0,
     "edge": 138,
@@ -293576,7 +293576,7 @@
     "price": 800,
     "book": "draftkings",
     "created_at": "2026-09-30T15:46:00.465935+00:00",
-    "updated_at": "2026-09-30T16:35:46.601079+00:00"
+    "updated_at": "2026-09-30T19:18:03.372812+00:00"
   },
   {
     "id": "2026-09-30_Michael Harris II_shop_take_124",
@@ -293766,7 +293766,7 @@
   {
     "id": "2026-09-30_Cody Bellinger_shop_take_103",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Cody Bellinger",
     "score": 0,
     "edge": 103,
@@ -293804,12 +293804,12 @@
     "price": 625,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.733906+00:00",
-    "updated_at": "2026-09-30T19:06:50.640890+00:00"
+    "updated_at": "2026-09-30T19:18:03.347138+00:00"
   },
   {
     "id": "2026-09-30_Spencer Jones_shop_take_98",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Spencer Jones",
     "score": 0,
     "edge": 98,
@@ -293847,12 +293847,12 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.785802+00:00",
-    "updated_at": "2026-09-30T19:06:50.727132+00:00"
+    "updated_at": "2026-09-30T19:18:03.426859+00:00"
   },
   {
     "id": "2026-09-30_Luis Garc\u00eda Jr._shop_take_77",
     "date": "2026-09-30",
-    "time": "11:58 AM",
+    "time": "12:18 PM",
     "player": "Luis Garc\u00eda Jr.",
     "score": 0,
     "edge": 77,
@@ -293890,12 +293890,12 @@
     "price": 575,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.859863+00:00",
-    "updated_at": "2026-09-30T18:58:48.352511+00:00"
+    "updated_at": "2026-09-30T19:18:03.399214+00:00"
   },
   {
     "id": "2026-09-30_Willson Contreras_shop_lean_74",
     "date": "2026-09-30",
-    "time": "09:35 AM",
+    "time": "12:18 PM",
     "player": "Willson Contreras",
     "score": 0,
     "edge": 74,
@@ -293933,7 +293933,7 @@
     "price": 600,
     "book": "fanatics",
     "created_at": "2026-09-30T15:46:00.896842+00:00",
-    "updated_at": "2026-09-30T16:35:46.967883+00:00"
+    "updated_at": "2026-09-30T19:18:03.667534+00:00"
   },
   {
     "id": "2026-09-30_Ozzie Albies_shop_lean_68",
@@ -293981,7 +293981,7 @@
   {
     "id": "2026-09-30_Christian Walker_shop_take_67",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Christian Walker",
     "score": 0,
     "edge": 67,
@@ -294019,7 +294019,7 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.988855+00:00",
-    "updated_at": "2026-09-30T19:06:50.918378+00:00"
+    "updated_at": "2026-09-30T19:18:03.452183+00:00"
   },
   {
     "id": "2026-09-30_Bryce Harper_shop_take_64",
@@ -294110,7 +294110,7 @@
   {
     "id": "2026-09-30_Alex Bregman_shop_lean_58",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Alex Bregman",
     "score": 0,
     "edge": 58,
@@ -294147,7 +294147,7 @@
     "price": 630,
     "book": "draftkings",
     "created_at": "2026-09-30T15:46:01.090988+00:00",
-    "updated_at": "2026-09-30T19:06:50.972951+00:00"
+    "updated_at": "2026-09-30T19:18:03.535003+00:00"
   },
   {
     "id": "2026-09-30_Matt Olson_shop_lean_58",
@@ -294195,7 +294195,7 @@
   {
     "id": "2026-09-30_Trent Grisham_shop_lean_55",
     "date": "2026-09-30",
-    "time": "12:17 PM",
+    "time": "12:18 PM",
     "player": "Trent Grisham",
     "score": 0,
     "edge": 55,
@@ -294248,12 +294248,12 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:01.183568+00:00",
-    "updated_at": "2026-09-30T19:17:57.806602+00:00"
+    "updated_at": "2026-09-30T19:18:03.505510+00:00"
   },
   {
     "id": "2026-09-30_Carson Kelly_shop_lean_54",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Carson Kelly",
     "score": 0,
     "edge": 54,
@@ -294289,7 +294289,7 @@
     "price": 800,
     "book": "fanatics",
     "created_at": "2026-09-30T15:46:01.212182+00:00",
-    "updated_at": "2026-09-30T19:06:50.480005+00:00"
+    "updated_at": "2026-09-30T19:18:03.265647+00:00"
   },
   {
     "id": "2026-09-30_Wilyer Abreu_shop_lean_49",
@@ -294390,7 +294390,7 @@
   {
     "id": "2026-09-30_Ronald Acu\u00f1a Jr._shop_lean_66",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Ronald Acu\u00f1a Jr.",
     "score": 0,
     "edge": 66,
@@ -294428,7 +294428,7 @@
     "price": 600,
     "book": "fanatics",
     "created_at": "2026-09-30T15:54:29.925957+00:00",
-    "updated_at": "2026-09-30T19:06:50.815302+00:00"
+    "updated_at": "2026-09-30T19:18:03.631014+00:00"
   },
   {
     "id": "2026-09-30_Brayden Schenn_watch_25",
@@ -297247,7 +297247,7 @@
   {
     "id": "2026-09-30_Munetaka Murakami_shop_lean_52",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Munetaka Murakami",
     "score": 0,
     "edge": 52,
@@ -297285,12 +297285,12 @@
     "price": 500,
     "book": "fanatics",
     "created_at": "2026-09-30T18:58:48.669656+00:00",
-    "updated_at": "2026-09-30T19:06:51.010253+00:00"
+    "updated_at": "2026-09-30T19:18:03.479791+00:00"
   },
   {
     "id": "2026-09-30_Seiya Suzuki_shop_lean_50",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Seiya Suzuki",
     "score": 0,
     "edge": 50,
@@ -297328,12 +297328,12 @@
     "price": 500,
     "book": "bet365",
     "created_at": "2026-09-30T18:58:48.862025+00:00",
-    "updated_at": "2026-09-30T19:06:51.142931+00:00"
+    "updated_at": "2026-09-30T19:18:03.595339+00:00"
   },
   {
     "id": "2026-09-30_Bryce Harper_shop_lean_48",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Bryce Harper",
     "score": 0,
     "edge": 48,
@@ -297370,12 +297370,12 @@
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-09-30T18:58:49.087091+00:00",
-    "updated_at": "2026-09-30T19:06:50.584000+00:00"
+    "updated_at": "2026-09-30T19:18:03.320652+00:00"
   },
   {
     "id": "2026-09-30_Taylor Trammell_shop_lean_47",
     "date": "2026-09-30",
-    "time": "12:06 PM",
+    "time": "12:18 PM",
     "player": "Taylor Trammell",
     "score": 0,
     "edge": 47,
@@ -297413,7 +297413,7 @@
     "price": 790,
     "book": "fanduel",
     "created_at": "2026-09-30T18:58:49.198379+00:00",
-    "updated_at": "2026-09-30T19:06:51.103845+00:00"
+    "updated_at": "2026-09-30T19:18:03.564016+00:00"
   },
   {
     "id": "2026-09-30_Alex Laferriere_watch_22",
