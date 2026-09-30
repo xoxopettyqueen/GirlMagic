@@ -788,6 +788,27 @@
       "best_book": "draftkings",
       "time": "09:35 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Colson Montgomery",
+      "source": "take_it",
+      "score": 85,
+      "methods": [
+        "Match 25",
+        "FD Pattern",
+        "Stayed in the group",
+        "FD 90",
+        "Multi-book method",
+        "MGM 25",
+        "HardRock 00",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "11:58 AM",
+      "sport": "MLB"
     }
   ]
 }
