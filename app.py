@@ -5122,7 +5122,11 @@ def _gh_load_json(filename, sha_key):
         data = r.json()
         st.session_state[sha_key] = data.get("sha")
         content = base64.b64decode(data["content"]).decode("utf-8")
+        if not str(content or "").strip():
+            return [], "ok"
         parsed = json.loads(content)
+        if parsed is None:
+            return [], "ok"
         return parsed, "ok"
     except Exception as e:
         st.session_state["_gh_last_err"] = f"GET {filename}: {e}"
@@ -5220,6 +5224,8 @@ def _normalize_ledger_row(row):
     r["sport"] = inferred
     if inferred == "NFL" and not r.get("market"):
         r["market"] = "anytime_td"
+    if inferred == "NHL" and not r.get("market"):
+        r["market"] = "anytime_goal"
     return r
 
 
@@ -6231,8 +6237,9 @@ def fetch_nhl_goal_scorers(date_str=None):
     finals = 0
     for g in js.get("games") or []:
         state = str(g.get("gameState") or "").upper()
-        if state in ("OFF", "FINAL"):
-            finals += 1
+        if state not in ("OFF", "FINAL"):
+            continue
+        finals += 1
         for goal in g.get("goals") or []:
             nm = (goal.get("name") or {})
             full = nm.get("default") or goal.get("playerName") or ""
@@ -6256,11 +6263,16 @@ def auto_grade_pending():
     if active_sport() == "NHL":
         by_date = defaultdict(list)
         for row in rows:
-            if row.get("result") != "PENDING":
+            stt = str(row.get("result") or row.get("status") or "").upper()
+            if stt not in ("PENDING", "STILL_UP", "STILL UP"):
                 continue
-            if row_sport(row) != "NHL":
+            blob = " ".join(str(row.get(k) or "") for k in ("sport", "market")).lower()
+            is_nhl = row_sport(row) == "NHL" or "anytime_goal" in blob or "nhl" in blob
+            if not is_nhl:
                 skipped += 1
                 continue
+            row["sport"] = "NHL"
+            row["market"] = row.get("market") or "anytime_goal"
             src = str(row.get("source") or "")
             if src not in GRADE_SOURCES and src not in STUDY_SOURCES:
                 continue
@@ -6532,15 +6544,17 @@ def build_whats_going_today(rows):
     """
     today = today_az()
     todays = [r for r in rows if r.get("date") in ledger_dates()]
-    if active_sport() == "NFL":
-        def _is_nfl_row(r):
-            m = str(r.get("market") or r.get("sport") or "").lower()
-            return "td" in m or "nfl" in m or m == "anytime_td"
-        hits_logged = [r for r in todays if r.get("result") == "HIT" and _is_nfl_row(r)]
-        graded = [r for r in todays if r.get("result") in ("HIT", "MISS") and _is_nfl_row(r)]
+    sport = active_sport()
+
+    def _row_ok(r):
+        return row_sport(r) == sport
+
+    if sport in ("NFL", "NHL", "NBA"):
+        hits_logged = [r for r in todays if r.get("result") == "HIT" and _row_ok(r)]
+        graded = [r for r in todays if r.get("result") in ("HIT", "MISS") and _row_ok(r)]
         our_list = [
             r for r in todays
-            if r.get("source") in ("take_it", "watch", "shop_take", "shop_lean") and _is_nfl_row(r)
+            if r.get("source") in ("take_it", "watch", "shop_take", "shop_lean") and _row_ok(r)
         ]
     else:
         hits_logged = [r for r in todays if r.get("result") == "HIT"]
@@ -6553,8 +6567,12 @@ def build_whats_going_today(rows):
     seen_hr = set()
     official = []
     try:
-        if active_sport() == "NFL":
+        if sport == "NFL":
             official, _fin, _m = fetch_nfl_td_scorers()
+        elif sport == "NHL":
+            official, _fin, _m = fetch_nhl_goal_scorers(today)
+        elif sport == "NBA":
+            official = []
         else:
             official, _fin, _m = fetch_mlb_hr_hitters()
     except Exception:
@@ -6991,7 +7009,7 @@ def render_whats_going_today():
         n_take = sum(1 for _n, call, _c, _e in people if call == "TAKE")
         n_lean = sum(1 for _n, call, _c, _e in people if call == "LEAN")
         n_watch = sum(1 for _n, call, _c, _e in people if call == "WATCH")
-        if sport == "NFL":
+        if sport in ("NFL", "NHL"):
             bits = []
             if n_take:
                 bits.append("%s TAKE" % n_take)
@@ -7000,8 +7018,8 @@ def render_whats_going_today():
             if n_watch:
                 bits.append("%s WATCH" % n_watch)
             if not bits and top:
-                bits.append("%s box TDs" % top[1])
-            label = "%s · %s" % (bl, " · ".join(bits) if bits else "no list TDs")
+                bits.append("%s box" % top[1])
+            label = "%s · %s" % (bl, " · ".join(bits) if bits else "no list yet")
         elif top:
             label = "%s · %s cashed +x%02d" % (bl, top[1], top[0])
         else:
@@ -7021,6 +7039,8 @@ def render_whats_going_today():
 
     if sport == "NFL":
         queen = "Queen says: these TDs already cashed." if mlb_hr else "Queen says: Pulse waits on graded TDs."
+    elif sport == "NHL":
+        queen = "Queen says: these goals already cashed." if mlb_hr else "Queen says: no puck drop yet — Pulse stays at zero."
     else:
         queen = "Queen says: these bombs already cashed." if mlb_hr else "Queen says: Pulse waits on graded homers."
 
@@ -14323,9 +14343,10 @@ def main():
         st.markdown('<div class="queen-banner">📊 Results — two books</div>', unsafe_allow_html=True)
         st.caption("Tickets = names we told people to play. Research = methods / watches we grade so the tricks can move.")
         if st.button("⚡ Run auto-grade now", type="primary"):
-            with st.spinner("MLB..."):
+            lane = active_sport()
+            with st.spinner(f"Grading {lane}..."):
                 h, m, s, msg = auto_grade_pending()
-            st.success(f"{h} HIT · {m} MISS · {s} open - {msg}")
+            st.success(f"{lane} · {h} HIT · {m} MISS · {s} open - {msg}")
             st.rerun()
         rows = compact_player_logs(results_for_sport())
         n_all = len(rows)
@@ -14357,6 +14378,11 @@ def main():
             st.info(
                 f"This tab is NFL only. {n_today} unique NFL tickets today stay PENDING until ESPN finals. "
                 f"MLB grades ({mlb_n} rows) are on the MLB lane — flip the sport toggle."
+            )
+        elif active_sport() == "NHL":
+            st.info(
+                f"This tab is NHL only. Auto-grade reads NHL.com FINAL games, not MLB boxes. "
+                f"{n_today} unique hockey tickets today stay PENDING until the scoreboard is OFF/FINAL."
             )
         if not _gh_configured():
             st.warning(
