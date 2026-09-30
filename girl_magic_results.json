@@ -291580,7 +291580,7 @@
   {
     "id": "2026-09-30_Austin Wells_watch_77",
     "date": "2026-09-30",
-    "time": "09:35 AM",
+    "time": "04:20 PM",
     "player": "Austin Wells",
     "score": 77,
     "edge": 72,
@@ -291631,7 +291631,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T16:35:47.126186+00:00",
+    "updated_at": "2026-09-30T23:20:55.030397+00:00",
     "player_name": "Austin Wells",
     "stamps": [
       "B365 over MGM",
@@ -291996,7 +291996,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T23:20:50.797364+00:00",
+    "updated_at": "2026-09-30T23:20:54.805676+00:00",
     "player_name": "Cody Bellinger",
     "stamps": [
       "FD a little long",
@@ -292134,7 +292134,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T23:20:50.829900+00:00",
+    "updated_at": "2026-09-30T23:20:54.915352+00:00",
     "player_name": "Dansby Swanson",
     "stamps": [
       "FD a little long",
@@ -292442,7 +292442,7 @@
   {
     "id": "2026-09-30_Ian Happ_watch_72",
     "date": "2026-09-30",
-    "time": "01:06 PM",
+    "time": "04:20 PM",
     "player": "Ian Happ",
     "score": 72,
     "edge": 50,
@@ -292487,7 +292487,7 @@
     "benford_cluster": 0.57,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T20:06:59.029550+00:00",
+    "updated_at": "2026-09-30T23:20:54.944447+00:00",
     "player_name": "Ian Happ",
     "stamps": [
       "MGM 50",
@@ -292695,7 +292695,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T23:20:50.625202+00:00",
+    "updated_at": "2026-09-30T23:20:54.779462+00:00",
     "player_name": "Jahmai Jones",
     "stamps": [
       "B365 over MGM",
@@ -292853,7 +292853,7 @@
   {
     "id": "2026-09-30_Jazz Chisholm Jr._watch_29",
     "date": "2026-09-30",
-    "time": "01:06 PM",
+    "time": "04:20 PM",
     "player": "Jazz Chisholm Jr.",
     "score": 29,
     "edge": 1,
@@ -292909,7 +292909,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T20:06:58.655270+00:00",
+    "updated_at": "2026-09-30T23:20:54.721748+00:00",
     "player_name": "Jazz Chisholm Jr.",
     "stamps": [
       "Match 00",
@@ -293957,7 +293957,7 @@
   {
     "id": "2026-09-30_Spencer Jones_shop_take_98",
     "date": "2026-09-30",
-    "time": "01:06 PM",
+    "time": "04:20 PM",
     "player": "Spencer Jones",
     "score": 0,
     "edge": 98,
@@ -293995,12 +293995,12 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.785802+00:00",
-    "updated_at": "2026-09-30T20:06:58.788688+00:00"
+    "updated_at": "2026-09-30T23:20:54.860867+00:00"
   },
   {
     "id": "2026-09-30_Luis Garc\u00eda Jr._shop_take_77",
     "date": "2026-09-30",
-    "time": "01:06 PM",
+    "time": "04:20 PM",
     "player": "Luis Garc\u00eda Jr.",
     "score": 0,
     "edge": 77,
@@ -294038,7 +294038,7 @@
     "price": 575,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.859863+00:00",
-    "updated_at": "2026-09-30T20:06:58.857521+00:00"
+    "updated_at": "2026-09-30T23:20:54.832879+00:00"
   },
   {
     "id": "2026-09-30_Willson Contreras_shop_lean_74",
@@ -294370,7 +294370,7 @@
   {
     "id": "2026-09-30_Trent Grisham_shop_lean_55",
     "date": "2026-09-30",
-    "time": "12:34 PM",
+    "time": "04:20 PM",
     "player": "Trent Grisham",
     "score": 0,
     "edge": 55,
@@ -294423,7 +294423,7 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:01.183568+00:00",
-    "updated_at": "2026-09-30T19:34:12.847928+00:00"
+    "updated_at": "2026-09-30T23:20:54.887891+00:00"
   },
   {
     "id": "2026-09-30_Carson Kelly_shop_lean_54",
@@ -294478,7 +294478,7 @@
     "price": 800,
     "book": "fanatics",
     "created_at": "2026-09-30T15:46:01.212182+00:00",
-    "updated_at": "2026-09-30T23:20:50.467278+00:00"
+    "updated_at": "2026-09-30T23:20:54.749852+00:00"
   },
   {
     "id": "2026-09-30_Wilyer Abreu_shop_lean_49",
@@ -297558,7 +297558,7 @@
     "price": 500,
     "book": "bet365",
     "created_at": "2026-09-30T18:58:48.862025+00:00",
-    "updated_at": "2026-09-30T23:20:50.862489+00:00"
+    "updated_at": "2026-09-30T23:20:55.073769+00:00"
   },
   {
     "id": "2026-09-30_Bryce Harper_shop_lean_48",
@@ -298955,7 +298955,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T23:20:50.259560+00:00",
+    "updated_at": "2026-09-30T23:20:54.975493+00:00",
     "player_name": "Ryan McMahon",
     "stamps": [
       "B365 over MGM",
@@ -299735,7 +299735,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T23:20:50.687466+00:00",
+    "updated_at": "2026-09-30T23:20:55.004190+00:00",
     "player_name": "Manny Machado",
     "stamps": [
       "FD Pattern",
