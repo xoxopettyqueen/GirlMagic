@@ -292437,7 +292437,7 @@
   {
     "id": "2026-09-30_Ian Happ_watch_72",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Ian Happ",
     "score": 72,
     "edge": 50,
@@ -292482,7 +292482,7 @@
     "benford_cluster": 0.57,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T19:58:59.184335+00:00",
+    "updated_at": "2026-09-30T20:04:17.150890+00:00",
     "player_name": "Ian Happ",
     "stamps": [
       "MGM 50",
@@ -292689,7 +292689,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T20:04:12.631647+00:00",
+    "updated_at": "2026-09-30T20:04:16.885033+00:00",
     "player_name": "Jahmai Jones",
     "stamps": [
       "B365 over MGM",
@@ -292847,7 +292847,7 @@
   {
     "id": "2026-09-30_Jazz Chisholm Jr._watch_29",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Jazz Chisholm Jr.",
     "score": 29,
     "edge": 1,
@@ -292903,7 +292903,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T19:58:58.852522+00:00",
+    "updated_at": "2026-09-30T20:04:16.823894+00:00",
     "player_name": "Jazz Chisholm Jr.",
     "stamps": [
       "Match 00",
@@ -293138,7 +293138,7 @@
   {
     "id": "2026-09-30_Miguel Vargas_watch_67",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Miguel Vargas",
     "score": 67,
     "edge": 58,
@@ -293189,7 +293189,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T19:58:59.098551+00:00",
+    "updated_at": "2026-09-30T20:04:17.073321+00:00",
     "player_name": "Miguel Vargas",
     "stamps": [
       "MGM 50",
@@ -293902,7 +293902,7 @@
   {
     "id": "2026-09-30_Cody Bellinger_shop_take_103",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Cody Bellinger",
     "score": 0,
     "edge": 103,
@@ -293940,12 +293940,12 @@
     "price": 625,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.733906+00:00",
-    "updated_at": "2026-09-30T19:58:58.940750+00:00"
+    "updated_at": "2026-09-30T20:04:16.913514+00:00"
   },
   {
     "id": "2026-09-30_Spencer Jones_shop_take_98",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Spencer Jones",
     "score": 0,
     "edge": 98,
@@ -293983,12 +293983,12 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.785802+00:00",
-    "updated_at": "2026-09-30T19:58:58.966481+00:00"
+    "updated_at": "2026-09-30T20:04:16.941281+00:00"
   },
   {
     "id": "2026-09-30_Luis Garc\u00eda Jr._shop_take_77",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Luis Garc\u00eda Jr.",
     "score": 0,
     "edge": 77,
@@ -294026,7 +294026,7 @@
     "price": 575,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.859863+00:00",
-    "updated_at": "2026-09-30T19:58:59.018451+00:00"
+    "updated_at": "2026-09-30T20:04:16.995623+00:00"
   },
   {
     "id": "2026-09-30_Willson Contreras_shop_lean_74",
@@ -294122,7 +294122,7 @@
   {
     "id": "2026-09-30_Christian Walker_shop_take_67",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Christian Walker",
     "score": 0,
     "edge": 67,
@@ -294160,7 +294160,7 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-09-30T15:46:00.988855+00:00",
-    "updated_at": "2026-09-30T19:58:59.044448+00:00"
+    "updated_at": "2026-09-30T20:04:17.021835+00:00"
   },
   {
     "id": "2026-09-30_Bryce Harper_shop_take_64",
@@ -294409,7 +294409,7 @@
   {
     "id": "2026-09-30_Carson Kelly_shop_lean_54",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Carson Kelly",
     "score": 0,
     "edge": 54,
@@ -294453,7 +294453,7 @@
     "price": 800,
     "book": "fanatics",
     "created_at": "2026-09-30T15:46:01.212182+00:00",
-    "updated_at": "2026-09-30T19:58:58.889240+00:00"
+    "updated_at": "2026-09-30T20:04:16.855394+00:00"
   },
   {
     "id": "2026-09-30_Wilyer Abreu_shop_lean_49",
@@ -297388,7 +297388,7 @@
   {
     "id": "2026-09-30_Alex Bregman_shop_take_84",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Alex Bregman",
     "score": 0,
     "edge": 84,
@@ -297426,7 +297426,7 @@
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-09-30T18:58:48.302675+00:00",
-    "updated_at": "2026-09-30T19:58:58.992857+00:00"
+    "updated_at": "2026-09-30T20:04:16.968745+00:00"
   },
   {
     "id": "2026-09-30_Munetaka Murakami_shop_lean_52",
@@ -297474,7 +297474,7 @@
   {
     "id": "2026-09-30_Seiya Suzuki_shop_lean_50",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Seiya Suzuki",
     "score": 0,
     "edge": 50,
@@ -297512,7 +297512,7 @@
     "price": 500,
     "book": "bet365",
     "created_at": "2026-09-30T18:58:48.862025+00:00",
-    "updated_at": "2026-09-30T19:58:59.157488+00:00"
+    "updated_at": "2026-09-30T20:04:17.125494+00:00"
   },
   {
     "id": "2026-09-30_Bryce Harper_shop_lean_48",
@@ -297559,7 +297559,7 @@
   {
     "id": "2026-09-30_Taylor Trammell_shop_lean_47",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Taylor Trammell",
     "score": 0,
     "edge": 47,
@@ -297597,7 +297597,7 @@
     "price": 790,
     "book": "fanduel",
     "created_at": "2026-09-30T18:58:49.198379+00:00",
-    "updated_at": "2026-09-30T19:58:59.130122+00:00"
+    "updated_at": "2026-09-30T20:04:17.099117+00:00"
   },
   {
     "id": "2026-09-30_Alex Laferriere_watch_22",
@@ -299056,7 +299056,7 @@
   {
     "id": "2026-09-30_Kyle Schwarber_shop_lean_43",
     "date": "2026-09-30",
-    "time": "12:58 PM",
+    "time": "01:04 PM",
     "player": "Kyle Schwarber",
     "score": 0,
     "edge": 43,
@@ -299099,7 +299099,7 @@
     "price": 490,
     "book": "fanduel",
     "created_at": "2026-09-30T19:26:02.340316+00:00",
-    "updated_at": "2026-09-30T19:58:59.071270+00:00"
+    "updated_at": "2026-09-30T20:04:17.047857+00:00"
   },
   {
     "id": "2026-09-30_Ondrej Palat_shop_lean_68",
