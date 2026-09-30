@@ -276622,7 +276622,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-30T02:42:06.584605+00:00",
+    "updated_at": "2026-09-30T02:42:11.818888+00:00",
     "player_name": "Shea Theodore",
     "stamps": [
       "Rivers a bit over pack",
@@ -276639,7 +276639,7 @@
   {
     "id": "2026-09-29_Tyler Bertuzzi_watch_20",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "07:42 PM",
     "player": "Tyler Bertuzzi",
     "score": 20,
     "edge": 13,
@@ -276691,7 +276691,7 @@
     "price": 320,
     "book": "betrivers",
     "created_at": "2026-09-29T20:36:44.920670+00:00",
-    "updated_at": "2026-09-29T20:56:45.770733+00:00"
+    "updated_at": "2026-09-30T02:42:11.769006+00:00"
   },
   {
     "id": "2026-09-29_Vasily Podkolzin_watch_63",
@@ -276844,7 +276844,7 @@
   {
     "id": "2026-09-29_Nic Dowd_shop_take_169",
     "date": "2026-09-29",
-    "time": "03:12 PM",
+    "time": "07:42 PM",
     "player": "Nic Dowd",
     "score": 0,
     "edge": 169,
@@ -276882,7 +276882,7 @@
     "price": 850,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:49.938436+00:00",
-    "updated_at": "2026-09-29T22:12:07.087379+00:00"
+    "updated_at": "2026-09-30T02:42:11.322385+00:00"
   },
   {
     "id": "2026-09-29_Tye Kartye_shop_lean_169",
@@ -277437,7 +277437,7 @@
   {
     "id": "2026-09-29_Ryan Greene_shop_take_102",
     "date": "2026-09-29",
-    "time": "03:12 PM",
+    "time": "07:42 PM",
     "player": "Ryan Greene",
     "score": 0,
     "edge": 102,
@@ -277475,7 +277475,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.319988+00:00",
-    "updated_at": "2026-09-29T22:12:07.437371+00:00"
+    "updated_at": "2026-09-30T02:42:11.384616+00:00"
   },
   {
     "id": "2026-09-29_Marat Khusnutdinov_shop_lean_96",
@@ -277995,7 +277995,7 @@
   {
     "id": "2026-09-29_Bowen Byram_shop_lean_64",
     "date": "2026-09-29",
-    "time": "01:56 PM",
+    "time": "07:42 PM",
     "player": "Bowen Byram",
     "score": 0,
     "edge": 64,
@@ -278033,7 +278033,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:50.723773+00:00",
-    "updated_at": "2026-09-29T20:56:52.373026+00:00"
+    "updated_at": "2026-09-30T02:42:11.705649+00:00"
   },
   {
     "id": "2026-09-29_Jake Evans_shop_lean_62",
@@ -278479,7 +278479,7 @@
   {
     "id": "2026-09-29_Andrew Mangiapane_shop_lean_45",
     "date": "2026-09-29",
-    "time": "03:12 PM",
+    "time": "07:42 PM",
     "player": "Andrew Mangiapane",
     "score": 0,
     "edge": 45,
@@ -278517,7 +278517,7 @@
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-09-29T20:36:51.269155+00:00",
-    "updated_at": "2026-09-29T22:12:07.663045+00:00"
+    "updated_at": "2026-09-30T02:42:11.603086+00:00"
   },
   {
     "id": "2026-09-29_Jordan Martinook_shop_lean_45",
@@ -290689,5 +290689,415 @@
     "price": 425,
     "book": "bet365",
     "created_at": "2026-09-30T02:42:06.620739+00:00"
+  },
+  {
+    "id": "2026-09-29_Rasmus Andersson_shop_take_188",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Rasmus Andersson",
+    "score": 0,
+    "edge": 188,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 675,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 575,
+      "caesars": 675,
+      "draftkings": 650,
+      "fanatics": 700,
+      "fanduel": 750,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-30T02:42:11.352437+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Rasmus Andersson",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 850,
+    "book": "bet365",
+    "created_at": "2026-09-30T02:42:11.352437+00:00",
+    "updated_at": "2026-09-30T02:42:11.352437+00:00"
+  },
+  {
+    "id": "2026-09-29_Trevor Connelly_shop_take_91",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Trevor Connelly",
+    "score": 0,
+    "edge": 91,
+    "best_price": 575,
+    "best_book": "bet365",
+    "median": 475,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 550,
+      "caesars": 475,
+      "draftkings": 500,
+      "fanatics": 450,
+      "fanduel": 460,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-30T02:42:11.414160+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Trevor Connelly",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 575,
+    "book": "bet365",
+    "created_at": "2026-09-30T02:42:11.414160+00:00",
+    "updated_at": "2026-09-30T02:42:11.414160+00:00"
+  },
+  {
+    "id": "2026-09-29_Colton Dach_shop_lean_85",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Colton Dach",
+    "score": 0,
+    "edge": 85,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 875,
+    "book_prices": {
+      "bet365": 900,
+      "draftkings": 750,
+      "fanatics": 850,
+      "fanduel": 950
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-30T02:42:11.446645+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Colton Dach",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 950,
+    "book": "fanduel",
+    "created_at": "2026-09-30T02:42:11.446645+00:00",
+    "updated_at": "2026-09-30T02:42:11.446645+00:00"
+  },
+  {
+    "id": "2026-09-29_Braeden Bowman_shop_take_72",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Braeden Bowman",
+    "score": 0,
+    "edge": 72,
+    "best_price": 525,
+    "best_book": "bet365",
+    "median": 450,
+    "book_prices": {
+      "bet365": 525,
+      "betmgm": 425,
+      "caesars": 400,
+      "draftkings": 425,
+      "fanatics": 450,
+      "fanduel": 500,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-30T02:42:11.482629+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Braeden Bowman",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 525,
+    "book": "bet365",
+    "created_at": "2026-09-30T02:42:11.482629+00:00",
+    "updated_at": "2026-09-30T02:42:11.482629+00:00"
+  },
+  {
+    "id": "2026-09-29_Zeev Buium_shop_lean_68",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Zeev Buium",
+    "score": 0,
+    "edge": 68,
+    "best_price": 950,
+    "best_book": "fanduel",
+    "median": 825,
+    "book_prices": {
+      "bet365": 800,
+      "draftkings": 800,
+      "fanatics": 850,
+      "fanduel": 950
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-30T02:42:11.511780+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Zeev Buium",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 950,
+    "book": "fanduel",
+    "created_at": "2026-09-30T02:42:11.511780+00:00",
+    "updated_at": "2026-09-30T02:42:11.511780+00:00"
+  },
+  {
+    "id": "2026-09-29_Anton Frondell_shop_take_64",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Anton Frondell",
+    "score": 0,
+    "edge": 64,
+    "best_price": 375,
+    "best_book": "bet365",
+    "median": 310,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 333,
+      "caesars": 295,
+      "draftkings": 310,
+      "fanatics": 310,
+      "fanduel": 350,
+      "hardrockbet": 250
+    },
+    "price_bucket": "under +400",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-30T02:42:11.540789+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Anton Frondell",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 375,
+    "book": "bet365",
+    "created_at": "2026-09-30T02:42:11.540789+00:00",
+    "updated_at": "2026-09-30T02:42:11.540789+00:00"
+  },
+  {
+    "id": "2026-09-29_Victor Olofsson_shop_take_56",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Victor Olofsson",
+    "score": 0,
+    "edge": 56,
+    "best_price": 425,
+    "best_book": "bet365",
+    "median": 365,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 375,
+      "caesars": 360,
+      "draftkings": 370,
+      "fanduel": 340,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-30T02:42:11.574349+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Victor Olofsson",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 425,
+    "book": "bet365",
+    "created_at": "2026-09-30T02:42:11.574349+00:00",
+    "updated_at": "2026-09-30T02:42:11.574349+00:00"
+  },
+  {
+    "id": "2026-09-29_Trent Frederic_shop_lean_52",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Trent Frederic",
+    "score": 0,
+    "edge": 52,
+    "best_price": 850,
+    "best_book": "fanduel",
+    "median": 750,
+    "book_prices": {
+      "bet365": 525,
+      "draftkings": 700,
+      "fanatics": 800,
+      "fanduel": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-30T02:42:11.635840+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Trent Frederic",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 850,
+    "book": "fanduel",
+    "created_at": "2026-09-30T02:42:11.635840+00:00",
+    "updated_at": "2026-09-30T02:42:11.635840+00:00"
+  },
+  {
+    "id": "2026-09-29_Marc Gatcomb_shop_lean_50",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Marc Gatcomb",
+    "score": 0,
+    "edge": 50,
+    "best_price": 700,
+    "best_book": "draftkings",
+    "median": 700,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 650,
+      "caesars": 675,
+      "draftkings": 700,
+      "fanatics": 700,
+      "fanduel": 700,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-30T02:42:11.671844+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Marc Gatcomb",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 700,
+    "book": "draftkings",
+    "created_at": "2026-09-30T02:42:11.671844+00:00",
+    "updated_at": "2026-09-30T02:42:11.671844+00:00"
+  },
+  {
+    "id": "2026-09-29_Oliver Moore_shop_lean_47",
+    "date": "2026-09-29",
+    "time": "07:42 PM",
+    "player": "Oliver Moore",
+    "score": 0,
+    "edge": 47,
+    "best_price": 550,
+    "best_book": "bet365",
+    "median": 500,
+    "book_prices": {
+      "bet365": 550,
+      "betmgm": 650,
+      "caesars": 475,
+      "draftkings": 550,
+      "fanatics": 475,
+      "fanduel": 500,
+      "hardrockbet": 450
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-09-30T02:42:11.736140+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Oliver Moore",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 550,
+    "book": "bet365",
+    "created_at": "2026-09-30T02:42:11.736140+00:00",
+    "updated_at": "2026-09-30T02:42:11.736140+00:00"
   }
 ]
