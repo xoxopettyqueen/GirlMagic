@@ -271925,7 +271925,7 @@
   {
     "id": "2026-09-29_Luis Campusano_watch_55",
     "date": "2026-09-29",
-    "time": "01:49 PM",
+    "time": "07:40 PM",
     "player": "Luis Campusano",
     "score": 55,
     "edge": 137,
@@ -271978,7 +271978,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-09-29T20:49:04.329302+00:00",
+    "updated_at": "2026-09-30T02:40:48.408534+00:00",
     "player_name": "Luis Campusano",
     "stamps": [
       "MGM Exact",
@@ -273121,7 +273121,7 @@
   {
     "id": "2026-09-29_Xander Bogaerts_shop_take_96",
     "date": "2026-09-29",
-    "time": "09:47 AM",
+    "time": "07:40 PM",
     "player": "Xander Bogaerts",
     "score": 0,
     "edge": 96,
@@ -273159,7 +273159,7 @@
     "price": 850,
     "book": "bet365",
     "created_at": "2026-09-29T15:33:02.809917+00:00",
-    "updated_at": "2026-09-29T16:47:56.939207+00:00"
+    "updated_at": "2026-09-30T02:40:48.225261+00:00"
   },
   {
     "id": "2026-09-29_Fernando Tatis Jr._shop_take_87",
@@ -273354,7 +273354,7 @@
   {
     "id": "2026-09-29_Ty France_shop_lean_77",
     "date": "2026-09-29",
-    "time": "01:49 PM",
+    "time": "07:40 PM",
     "player": "Ty France",
     "score": 0,
     "edge": 77,
@@ -273397,7 +273397,7 @@
     "price": 700,
     "book": "bet365",
     "created_at": "2026-09-29T15:33:03.075118+00:00",
-    "updated_at": "2026-09-29T20:49:04.415856+00:00"
+    "updated_at": "2026-09-30T02:40:48.261617+00:00"
   },
   {
     "id": "2026-09-29_Willson Contreras_shop_lean_77",
@@ -273729,7 +273729,7 @@
   {
     "id": "2026-09-29_Jackson Merrill_shop_lean_50",
     "date": "2026-09-29",
-    "time": "01:49 PM",
+    "time": "07:40 PM",
     "player": "Jackson Merrill",
     "score": 0,
     "edge": 50,
@@ -273778,7 +273778,7 @@
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-09-29T15:33:03.464003+00:00",
-    "updated_at": "2026-09-29T20:49:04.635378+00:00"
+    "updated_at": "2026-09-30T02:40:48.378915+00:00"
   },
   {
     "id": "2026-09-29_Spencer Jones_shop_lean_44",
@@ -275663,7 +275663,7 @@
   {
     "id": "2026-09-29_Pete Crow-Armstrong_shop_lean_40",
     "date": "2026-09-29",
-    "time": "12:37 PM",
+    "time": "07:40 PM",
     "player": "Pete Crow-Armstrong",
     "score": 0,
     "edge": 40,
@@ -275701,7 +275701,7 @@
     "price": 390,
     "book": "fanatics",
     "created_at": "2026-09-29T19:28:58.816005+00:00",
-    "updated_at": "2026-09-29T19:37:00.164774+00:00"
+    "updated_at": "2026-09-30T02:40:48.343785+00:00"
   },
   {
     "id": "2026-09-29_Jeremy Pe\u00f1a_take_it_96",
@@ -290419,5 +290419,47 @@
     "book": "fanduel",
     "created_at": "2026-09-29T22:12:01.657548+00:00",
     "updated_at": "2026-09-29T22:12:01.657548+00:00"
+  },
+  {
+    "id": "2026-09-29_Seiya Suzuki_shop_take_138",
+    "date": "2026-09-29",
+    "time": "07:40 PM",
+    "player": "Seiya Suzuki",
+    "score": 0,
+    "edge": 138,
+    "best_price": 950,
+    "best_book": "fanatics",
+    "median": 850,
+    "book_prices": {
+      "bet365": 600,
+      "betrivers": 850,
+      "caesars": 850,
+      "draftkings": 900,
+      "fanatics": 950,
+      "fanduel": 850,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-09-30T02:40:48.311598+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Seiya Suzuki",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 950,
+    "book": "fanatics",
+    "created_at": "2026-09-30T02:40:48.311598+00:00",
+    "updated_at": "2026-09-30T02:40:48.311598+00:00"
   }
 ]
