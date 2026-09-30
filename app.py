@@ -6235,8 +6235,13 @@ def fetch_nhl_goal_scorers(date_str=None):
     except Exception as e:
         return [], [], f"NHL score miss {e}"
     finals = 0
+    live = 0
+    games_n = 0
     for g in js.get("games") or []:
+        games_n += 1
         state = str(g.get("gameState") or "").upper()
+        if state in ("LIVE", "CRIT", "OFFCLOCK"):
+            live += 1
         if state not in ("OFF", "FINAL"):
             continue
         finals += 1
@@ -6245,6 +6250,12 @@ def fetch_nhl_goal_scorers(date_str=None):
             full = nm.get("default") or goal.get("playerName") or ""
             if isinstance(full, dict):
                 full = full.get("default") or ""
+            first = goal.get("firstName") or {}
+            last = goal.get("lastName") or {}
+            if not full:
+                fn = first.get("default") if isinstance(first, dict) else first
+                ln = last.get("default") if isinstance(last, dict) else last
+                full = f"{fn or ''} {ln or ''}".strip()
             if full:
                 names.add(full)
                 done.add(full)
@@ -6253,7 +6264,9 @@ def fetch_nhl_goal_scorers(date_str=None):
                 nm = ((p.get("name") or {}).get("default")) or ""
                 if nm:
                     done.add(nm)
-    return sorted(names), sorted(done), f"NHL {finals} final · {len(names)} goal names"
+    all_final = games_n > 0 and live == 0 and finals == games_n
+    msg = f"NHL {finals}/{games_n} final · live {live} · {len(names)} goal names"
+    return sorted(names), sorted(done), msg, {"all_final": all_final, "finals": finals, "live": live, "games": games_n}
 
 
 def auto_grade_pending():
@@ -6274,7 +6287,7 @@ def auto_grade_pending():
             row["sport"] = "NHL"
             row["market"] = row.get("market") or "anytime_goal"
             src = str(row.get("source") or "")
-            if src not in GRADE_SOURCES and src not in STUDY_SOURCES:
+            if src.startswith("need_one"):
                 continue
             d = str(row.get("date") or "")[:10]
             if d:
@@ -6282,34 +6295,42 @@ def auto_grade_pending():
         msgs = []
         tag = "nhl_auto"
         for d, batch in by_date.items():
-            scorers, done_players, msg = fetch_nhl_goal_scorers(d)
-            msgs.append(f"{d} {msg}")
+            pack = fetch_nhl_goal_scorers(d)
+            scorers, done_players, msg = pack[0], pack[1], pack[2]
+            meta = pack[3] if len(pack) > 3 else {}
+            msgs.append(f"{d} {msg} · tickets {len(batch)}")
             hit_set, miss_pool = set(scorers or []), set(done_players or [])
+            age = 0
+            try:
+                age = (datetime.strptime(today_az(), "%Y-%m-%d") - datetime.strptime(d[:10], "%Y-%m-%d")).days
+            except Exception:
+                age = 0
+            slate_closed = bool(meta.get("all_final")) or (age >= 1 and int(meta.get("finals") or 0) > 0 and int(meta.get("live") or 0) == 0)
             for row in batch:
                 study = str(row.get("source") or "") in STUDY_SOURCES
                 player = row.get("player") or ""
-                if any(names_match_grade(player, h) for h in hit_set):
+                if hit_set and any(names_match_grade(player, h) for h in hit_set):
                     row["result"] = "LEARN_HIT" if study else "HIT"
+                    row["status"] = row["result"]
                     row["graded_by"] = tag
                     hits += 1
-                elif miss_pool and any(names_match_grade(player, f) for f in miss_pool):
-                    row["result"] = "LEARN_MISS" if study else "MISS"
-                    row["graded_by"] = tag
-                    misses += 1
-                else:
-                    age = 0
-                    try:
-                        age = (datetime.strptime(today_az(), "%Y-%m-%d") - datetime.strptime(d[:10], "%Y-%m-%d")).days
-                    except Exception:
-                        age = 0
-                    if age >= 2 and (hit_set or miss_pool):
+                elif slate_closed or (miss_pool and any(names_match_grade(player, f) for f in miss_pool)):
+                    if slate_closed or miss_pool:
                         row["result"] = "LEARN_MISS" if study else "MISS"
-                        row["graded_by"] = tag + "_stale"
+                        row["status"] = row["result"]
+                        row["graded_by"] = tag + ("_closed" if slate_closed else "")
                         misses += 1
                     else:
                         skipped += 1
+                elif age >= 1 and int(meta.get("games") or 0) == 0:
+                    row["result"] = "LEARN_MISS" if study else "MISS"
+                    row["status"] = row["result"]
+                    row["graded_by"] = tag + "_nogames"
+                    misses += 1
+                else:
+                    skipped += 1
         save_results(rows)
-        return hits, misses, skipped, " · ".join(msgs[:4]) + f" · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
+        return hits, misses, skipped, " · ".join(msgs[:6]) + f" · NHL tickets {sum(len(v) for v in by_date.values())} · {hits} HIT / {misses} MISS / {skipped} still open"
     if active_sport() == "NFL":
         by_date = defaultdict(list)
         for row in rows:
