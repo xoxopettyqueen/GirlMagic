@@ -1,269 +1,4 @@
 {
-  "2026-09-28": [
-    {
-      "player": "Drake Baldwin",
-      "source": "take_it",
-      "score": 84,
-      "methods": [
-        "Rivers a bit over pack",
-        "MGM 25",
-        "FD Pattern",
-        "FD 90",
-        "Match 25",
-        "FD+MGM classic",
-        "MGM Exact",
-        "HardRock Heater",
-        "B365 a bit over FD",
-        "Multi-book method",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "best_price": 575,
-      "best_book": "hardrockbet",
-      "time": "09:22 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Alec Bohm",
-      "source": "take_it",
-      "score": 100,
-      "methods": [
-        "DK FD-style",
-        "Last one left",
-        "B365 over HardRock",
-        "Match 25",
-        "FD+MGM classic",
-        "B365 a bit over FD",
-        "B365 way over MGM",
-        "B365 over MGM",
-        "Stayed in the group",
-        "MGM Exact",
-        "MGM 25",
-        "FD Pattern",
-        "Fanatics Drift",
-        "HardRock 00",
-        "Fanatics over pack",
-        "Multi-book method",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "best_price": 950,
-      "best_book": "fanatics",
-      "time": "09:22 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Jarren Duran",
-      "source": "take_it",
-      "score": 100,
-      "methods": [
-        "MGM 25",
-        "Stayed in the group",
-        "FD+MGM classic",
-        "FD Pattern",
-        "Fanatics Drift",
-        "Multi-book method",
-        "HardRock 00",
-        "Match 25",
-        "Fanatics over pack",
-        "B365 a bit over FD",
-        "B365 way over MGM",
-        "B365 over MGM",
-        "DK 10",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "best_price": 950,
-      "best_book": "fanatics",
-      "time": "09:30 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Willson Contreras",
-      "source": "take_it",
-      "score": 85,
-      "methods": [
-        "MGM 25",
-        "Stayed in the group",
-        "FD Pattern",
-        "Multi-book method",
-        "HardRock 50",
-        "B365 over HardRock",
-        "Match 25",
-        "FD+MGM classic",
-        "B365 a bit over FD",
-        "B365 way over MGM",
-        "B365 over MGM",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "best_price": 600,
-      "best_book": "fanatics",
-      "time": "09:30 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Saquon Barkley",
-      "source": "take_it",
-      "score": 54,
-      "methods": [
-        "Books tight",
-        "Match 00",
-        "Stayed in the group",
-        "MGM 00",
-        "HardRock 50",
-        "B365 over HardRock",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "best_price": 500,
-      "best_book": "draftkings",
-      "time": "09:33 AM",
-      "sport": "NFL"
-    },
-    {
-      "player": "Roman Anthony",
-      "source": "take_it",
-      "score": 95,
-      "methods": [
-        "DK FD-style",
-        "MGM 25",
-        "Stayed in the group",
-        "FD Pattern",
-        "Fanatics Drift",
-        "HardRock 00",
-        "Match 25",
-        "FD+MGM classic",
-        "Multi-book method",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "best_price": 700,
-      "best_book": "fanatics",
-      "time": "09:38 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Austin Wells",
-      "source": "take_it",
-      "score": 88,
-      "methods": [
-        "MGM 25",
-        "Stayed in the group",
-        "FD Pattern",
-        "Multi-book method",
-        "HardRock 50",
-        "Match 25",
-        "FD+MGM classic",
-        "B365 a bit over FD",
-        "B365 way over MGM",
-        "B365 over MGM",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "best_price": 750,
-      "best_book": "hardrockbet",
-      "time": "09:38 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Trevor Story",
-      "source": "take_it",
-      "score": 92,
-      "methods": [
-        "FD Pattern",
-        "MGM Exact",
-        "MGM 25",
-        "DK FD-style",
-        "Stayed in the group",
-        "B365 way over MGM",
-        "Fanatics Drift",
-        "Fanatics over pack",
-        "Multi-book method",
-        "HardRock 00",
-        "B365 over MGM",
-        "Match 25",
-        "FD+MGM classic",
-        "Last one left",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "best_price": 1160,
-      "best_book": "draftkings",
-      "time": "11:20 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Austin Riley",
-      "source": "take_it",
-      "score": 50,
-      "methods": [
-        "HardRock Heater",
-        "MGM Exact",
-        "Stayed in the group",
-        "FD 40",
-        "Match 25",
-        "MGM 25",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "best_price": 575,
-      "best_book": "hardrockbet",
-      "time": "11:43 AM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Michael Harris II",
-      "source": "take_it",
-      "score": 60,
-      "methods": [
-        "FD Pattern",
-        "MGM Exact",
-        "Stayed in the group",
-        "B365 over HardRock",
-        "B365 way over MGM",
-        "FD a little long",
-        "Multi-book method",
-        "B365 over MGM",
-        "Match 25",
-        "FD+MGM classic",
-        "MGM 25",
-        "EV Caution",
-        "Kelly Caution"
-      ],
-      "best_price": 525,
-      "best_book": "fanatics",
-      "time": "01:23 PM",
-      "sport": "MLB"
-    },
-    {
-      "player": "Cody Bellinger",
-      "source": "take_it",
-      "score": 96,
-      "methods": [
-        "FD Pattern",
-        "FD 90",
-        "MGM Exact",
-        "Match 50",
-        "Rivers a bit over pack",
-        "DK FD-style",
-        "Stayed in the group",
-        "B365 way over MGM",
-        "Fanatics over pack",
-        "MGM 50",
-        "Multi-book method",
-        "HardRock 00",
-        "B365 over MGM",
-        "FD+MGM classic",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "best_price": 700,
-      "best_book": "fanatics",
-      "time": "01:23 PM",
-      "sport": "MLB"
-    }
-  ],
   "2026-09-29": [
     {
       "player": "Drake Baldwin",
@@ -940,6 +675,30 @@
       "best_book": "fanduel",
       "time": "01:57 PM",
       "sport": "NFL"
+    }
+  ],
+  "2026-09-30": [
+    {
+      "player": "Jeremy Pe\u00f1a",
+      "source": "take_it",
+      "score": 88,
+      "methods": [
+        "FD a little long",
+        "B365 over MGM",
+        "Match 25",
+        "FD Pattern",
+        "FD 90",
+        "Multi-book method",
+        "Fanatics Drift",
+        "MGM 25",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 550,
+      "best_book": "fanatics",
+      "time": "08:45 AM",
+      "sport": "MLB"
     }
   ]
 }
