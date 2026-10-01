@@ -378,6 +378,23 @@
       "best_book": "draftkings",
       "time": "12:21 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Pat Freiermuth",
+      "source": "take_it",
+      "score": 53,
+      "methods": [
+        "Books tight",
+        "B365 Exact",
+        "DK FD-style",
+        "B365 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 390,
+      "best_book": "draftkings",
+      "time": "12:29 PM",
+      "sport": "NFL"
     }
   ]
 }
