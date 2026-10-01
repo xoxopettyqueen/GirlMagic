@@ -1,536 +1,6 @@
 {
-  "saved_at": "2026-09-30T23:20:47.444876+00:00",
+  "saved_at": "2026-10-01T07:40:47.789327+00:00",
   "price_history": [
-    {
-      "Adley Rutschman||bet365": 800,
-      "Adley Rutschman||betmgm": 600,
-      "Adley Rutschman||betrivers": 1000,
-      "Adley Rutschman||caesars": 850,
-      "Adley Rutschman||draftkings": 900,
-      "Adley Rutschman||fanatics": 800,
-      "Adley Rutschman||fanduel": 810,
-      "Adley Rutschman||hardrockbet": 900,
-      "Alec Bohm||bet365": 900,
-      "Alec Bohm||betrivers": 1400,
-      "Alec Bohm||caesars": 1300,
-      "Alec Bohm||draftkings": 1400,
-      "Alec Bohm||fanatics": 1200,
-      "Alec Bohm||fanduel": 1600,
-      "Alec Bohm||hardrockbet": 1400,
-      "Alex Bregman||bet365": 500,
-      "Alex Bregman||betmgm": 390,
-      "Alex Bregman||betrivers": 600,
-      "Alex Bregman||caesars": 525,
-      "Alex Bregman||draftkings": 620,
-      "Alex Bregman||fanatics": 650,
-      "Alex Bregman||fanduel": 610,
-      "Alex Bregman||hardrockbet": 550,
-      "Andrew Benintendi||bet365": 800,
-      "Andrew Benintendi||betmgm": 725,
-      "Andrew Benintendi||betrivers": 950,
-      "Andrew Benintendi||caesars": 850,
-      "Andrew Benintendi||draftkings": 1000,
-      "Andrew Benintendi||fanatics": 900,
-      "Andrew Benintendi||fanduel": 920,
-      "Andrew Benintendi||hardrockbet": 1000,
-      "Austin Riley||bet365": 650,
-      "Austin Riley||betrivers": 1000,
-      "Austin Riley||caesars": 850,
-      "Austin Riley||draftkings": 900,
-      "Austin Riley||fanatics": 1000,
-      "Austin Riley||fanduel": 950,
-      "Austin Riley||hardrockbet": 850,
-      "Austin Wells||bet365": 700,
-      "Austin Wells||betmgm": 550,
-      "Austin Wells||betrivers": 800,
-      "Austin Wells||caesars": 700,
-      "Austin Wells||draftkings": 730,
-      "Austin Wells||fanatics": 750,
-      "Austin Wells||fanduel": 750,
-      "Austin Wells||hardrockbet": 650,
-      "Ben Rice||bet365": 350,
-      "Ben Rice||betmgm": 300,
-      "Ben Rice||betrivers": 340,
-      "Ben Rice||caesars": 320,
-      "Ben Rice||draftkings": 320,
-      "Ben Rice||fanatics": 320,
-      "Ben Rice||fanduel": 330,
-      "Ben Rice||hardrockbet": 275,
-      "Braden Montgomery||bet365": 1000,
-      "Braden Montgomery||betmgm": 900,
-      "Braden Montgomery||betrivers": 1100,
-      "Braden Montgomery||caesars": 1100,
-      "Braden Montgomery||draftkings": 1220,
-      "Braden Montgomery||fanatics": 1100,
-      "Braden Montgomery||fanduel": 1120,
-      "Braden Montgomery||hardrockbet": 1200,
-      "Brandon Marsh||bet365": 950,
-      "Brandon Marsh||betrivers": 1300,
-      "Brandon Marsh||caesars": 1300,
-      "Brandon Marsh||draftkings": 1600,
-      "Brandon Marsh||fanatics": 1600,
-      "Brandon Marsh||fanduel": 1400,
-      "Bryce Harper||bet365": 475,
-      "Bryce Harper||betrivers": 600,
-      "Bryce Harper||caesars": 625,
-      "Bryce Harper||draftkings": 700,
-      "Bryce Harper||fanatics": 700,
-      "Bryce Harper||fanduel": 800,
-      "Bryce Harper||hardrockbet": 650,
-      "Bryson Stott||bet365": 850,
-      "Bryson Stott||caesars": 1300,
-      "Bryson Stott||draftkings": 1500,
-      "Bryson Stott||fanatics": 1400,
-      "Bryson Stott||fanduel": 1700,
-      "Bryson Stott||hardrockbet": 1500,
-      "Caleb Durbin||bet365": 1250,
-      "Caleb Durbin||betmgm": 800,
-      "Caleb Durbin||betrivers": 1200,
-      "Caleb Durbin||caesars": 1100,
-      "Caleb Durbin||draftkings": 1280,
-      "Caleb Durbin||fanatics": 1500,
-      "Caleb Durbin||fanduel": 1500,
-      "Caleb Durbin||hardrockbet": 1300,
-      "Cam Smith||bet365": 575,
-      "Cam Smith||betmgm": 525,
-      "Cam Smith||betrivers": 550,
-      "Cam Smith||caesars": 575,
-      "Cam Smith||draftkings": 590,
-      "Cam Smith||fanatics": 575,
-      "Cam Smith||fanduel": 570,
-      "Cam Smith||hardrockbet": 600,
-      "Carson Kelly||bet365": 900,
-      "Carson Kelly||betrivers": 700,
-      "Carson Kelly||caesars": 750,
-      "Carson Kelly||draftkings": 790,
-      "Carson Kelly||fanatics": 750,
-      "Carson Kelly||fanduel": 730,
-      "Carson Kelly||hardrockbet": 700,
-      "Ceddanne Rafaela||bet365": 900,
-      "Ceddanne Rafaela||betmgm": 650,
-      "Ceddanne Rafaela||betrivers": 750,
-      "Ceddanne Rafaela||caesars": 950,
-      "Ceddanne Rafaela||draftkings": 1080,
-      "Ceddanne Rafaela||fanatics": 1000,
-      "Ceddanne Rafaela||fanduel": 1100,
-      "Ceddanne Rafaela||hardrockbet": 1000,
-      "Chase Meidroth||bet365": 1250,
-      "Chase Meidroth||betmgm": 900,
-      "Chase Meidroth||betrivers": 1150,
-      "Chase Meidroth||caesars": 1300,
-      "Chase Meidroth||draftkings": 1440,
-      "Chase Meidroth||fanatics": 1500,
-      "Chase Meidroth||fanduel": 1500,
-      "Chase Meidroth||hardrockbet": 1400,
-      "Christian Walker||bet365": 475,
-      "Christian Walker||betmgm": 400,
-      "Christian Walker||betrivers": 400,
-      "Christian Walker||caesars": 390,
-      "Christian Walker||draftkings": 398,
-      "Christian Walker||fanatics": 390,
-      "Christian Walker||fanduel": 410,
-      "Christian Walker||hardrockbet": 400,
-      "Cody Bellinger||bet365": 625,
-      "Cody Bellinger||betmgm": 450,
-      "Cody Bellinger||betrivers": 650,
-      "Cody Bellinger||caesars": 500,
-      "Cody Bellinger||draftkings": 523,
-      "Cody Bellinger||fanatics": 550,
-      "Cody Bellinger||fanduel": 560,
-      "Cody Bellinger||hardrockbet": 475,
-      "Colson Montgomery||bet365": 500,
-      "Colson Montgomery||betmgm": 525,
-      "Colson Montgomery||betrivers": 500,
-      "Colson Montgomery||caesars": 500,
-      "Colson Montgomery||draftkings": 544,
-      "Colson Montgomery||fanatics": 500,
-      "Colson Montgomery||fanduel": 470,
-      "Colson Montgomery||hardrockbet": 500,
-      "Dansby Swanson||bet365": 625,
-      "Dansby Swanson||betmgm": 600,
-      "Dansby Swanson||betrivers": 750,
-      "Dansby Swanson||caesars": 625,
-      "Dansby Swanson||draftkings": 660,
-      "Dansby Swanson||fanatics": 650,
-      "Dansby Swanson||fanduel": 660,
-      "Dansby Swanson||hardrockbet": 600,
-      "Drake Baldwin||bet365": 750,
-      "Drake Baldwin||betrivers": 1300,
-      "Drake Baldwin||caesars": 1100,
-      "Drake Baldwin||draftkings": 1300,
-      "Drake Baldwin||fanatics": 1200,
-      "Drake Baldwin||fanduel": 1300,
-      "Drake Baldwin||hardrockbet": 1100,
-      "Dustin Harris||bet365": 950,
-      "Dustin Harris||betmgm": 875,
-      "Dustin Harris||betrivers": 1050,
-      "Dustin Harris||caesars": 950,
-      "Dustin Harris||draftkings": 990,
-      "Dustin Harris||fanatics": 1100,
-      "Dustin Harris||fanduel": 1200,
-      "Dustin Harris||hardrockbet": 1100,
-      "Edmundo Sosa||bet365": 900,
-      "Edmundo Sosa||betrivers": 1600,
-      "Edmundo Sosa||caesars": 1300,
-      "Edmundo Sosa||draftkings": 1600,
-      "Edmundo Sosa||fanatics": 1400,
-      "Edmundo Sosa||fanduel": 1500,
-      "Edmundo Sosa||hardrockbet": 1400,
-      "Fernando Tatis Jr.||bet365": 375,
-      "Fernando Tatis Jr.||betmgm": 340,
-      "Fernando Tatis Jr.||betrivers": 325,
-      "Fernando Tatis Jr.||caesars": 330,
-      "Fernando Tatis Jr.||draftkings": 334,
-      "Fernando Tatis Jr.||fanatics": 360,
-      "Fernando Tatis Jr.||fanduel": 360,
-      "Fernando Tatis Jr.||hardrockbet": 350,
-      "Gavin Sheets||bet365": 850,
-      "Gavin Sheets||betmgm": 575,
-      "Gavin Sheets||betrivers": 650,
-      "Gavin Sheets||caesars": 700,
-      "Gavin Sheets||draftkings": 680,
-      "Gavin Sheets||fanatics": 700,
-      "Gavin Sheets||fanduel": 700,
-      "Gavin Sheets||hardrockbet": 700,
-      "Ha-Seong Kim||bet365": 1500,
-      "Ha-Seong Kim||betrivers": 1700,
-      "Ha-Seong Kim||caesars": 2000,
-      "Ha-Seong Kim||draftkings": 2000,
-      "Ha-Seong Kim||fanatics": 1800,
-      "Ha-Seong Kim||fanduel": 2200,
-      "Ha-Seong Kim||hardrockbet": 1750,
-      "Ian Happ||bet365": 650,
-      "Ian Happ||betmgm": 550,
-      "Ian Happ||betrivers": 650,
-      "Ian Happ||caesars": 625,
-      "Ian Happ||draftkings": 700,
-      "Ian Happ||fanatics": 700,
-      "Ian Happ||fanduel": 660,
-      "Ian Happ||hardrockbet": 650,
-      "Isaac Paredes||bet365": 500,
-      "Isaac Paredes||betmgm": 400,
-      "Isaac Paredes||betrivers": 510,
-      "Isaac Paredes||caesars": 525,
-      "Isaac Paredes||draftkings": 571,
-      "Isaac Paredes||fanatics": 550,
-      "Isaac Paredes||fanduel": 570,
-      "Isaac Paredes||hardrockbet": 550,
-      "J.T. Realmuto||bet365": 750,
-      "J.T. Realmuto||betrivers": 1600,
-      "J.T. Realmuto||caesars": 1500,
-      "J.T. Realmuto||draftkings": 2000,
-      "J.T. Realmuto||fanatics": 1600,
-      "J.T. Realmuto||fanduel": 1900,
-      "J.T. Realmuto||hardrockbet": 1500,
-      "Jackson Merrill||bet365": 475,
-      "Jackson Merrill||betmgm": 400,
-      "Jackson Merrill||betrivers": 525,
-      "Jackson Merrill||caesars": 475,
-      "Jackson Merrill||draftkings": 466,
-      "Jackson Merrill||fanatics": 440,
-      "Jackson Merrill||fanduel": 460,
-      "Jackson Merrill||hardrockbet": 500,
-      "Jahmai Jones||bet365": 700,
-      "Jahmai Jones||betmgm": 575,
-      "Jahmai Jones||betrivers": 700,
-      "Jahmai Jones||caesars": 575,
-      "Jahmai Jones||draftkings": 610,
-      "Jahmai Jones||fanatics": 550,
-      "Jahmai Jones||fanduel": 570,
-      "Jahmai Jones||hardrockbet": 550,
-      "Jake Cronenworth||betmgm": 875,
-      "Jake Cronenworth||betrivers": 1100,
-      "Jake Cronenworth||caesars": 1100,
-      "Jake Cronenworth||draftkings": 1120,
-      "Jake Cronenworth||fanatics": 1100,
-      "Jake Cronenworth||fanduel": 1200,
-      "Jake Cronenworth||hardrockbet": 1100,
-      "Jarren Duran||betmgm": 775,
-      "Jarren Duran||caesars": 850,
-      "Jarren Duran||draftkings": 960,
-      "Jarren Duran||fanatics": 900,
-      "Jarren Duran||fanduel": 870,
-      "Jarren Duran||hardrockbet": 1000,
-      "Jazz Chisholm Jr.||bet365": 700,
-      "Jazz Chisholm Jr.||betmgm": 475,
-      "Jazz Chisholm Jr.||betrivers": 700,
-      "Jazz Chisholm Jr.||caesars": 525,
-      "Jazz Chisholm Jr.||draftkings": 535,
-      "Jazz Chisholm Jr.||fanatics": 575,
-      "Jazz Chisholm Jr.||fanduel": 540,
-      "Jazz Chisholm Jr.||hardrockbet": 500,
-      "Jeremy Pe\u00f1a||bet365": 475,
-      "Jeremy Pe\u00f1a||betmgm": 400,
-      "Jeremy Pe\u00f1a||betrivers": 430,
-      "Jeremy Pe\u00f1a||caesars": 475,
-      "Jeremy Pe\u00f1a||draftkings": 485,
-      "Jeremy Pe\u00f1a||fanatics": 500,
-      "Jeremy Pe\u00f1a||fanduel": 470,
-      "Jeremy Pe\u00f1a||hardrockbet": 450,
-      "Jose Altuve||bet365": 650,
-      "Jose Altuve||betmgm": 550,
-      "Jose Altuve||betrivers": 650,
-      "Jose Altuve||caesars": 625,
-      "Jose Altuve||draftkings": 670,
-      "Jose Altuve||fanatics": 650,
-      "Jose Altuve||fanduel": 630,
-      "Jose Altuve||hardrockbet": 650,
-      "Justin Crawford||bet365": 1600,
-      "Justin Crawford||betrivers": 2400,
-      "Justin Crawford||caesars": 2000,
-      "Justin Crawford||draftkings": 2500,
-      "Justin Crawford||hardrockbet": 2500,
-      "Kyle Schwarber||bet365": 275,
-      "Kyle Schwarber||betrivers": 410,
-      "Kyle Schwarber||caesars": 400,
-      "Kyle Schwarber||draftkings": 450,
-      "Kyle Schwarber||fanatics": 475,
-      "Kyle Schwarber||fanduel": 490,
-      "Kyle Schwarber||hardrockbet": 450,
-      "Kyle Teel||bet365": 850,
-      "Kyle Teel||betmgm": 850,
-      "Kyle Teel||betrivers": 800,
-      "Kyle Teel||caesars": 850,
-      "Kyle Teel||draftkings": 840,
-      "Kyle Teel||fanatics": 750,
-      "Kyle Teel||fanduel": 820,
-      "Kyle Teel||hardrockbet": 800,
-      "Lucas Spence||bet365": 800,
-      "Lucas Spence||betmgm": 725,
-      "Lucas Spence||betrivers": 950,
-      "Lucas Spence||caesars": 850,
-      "Lucas Spence||draftkings": 880,
-      "Lucas Spence||fanatics": 900,
-      "Lucas Spence||fanduel": 880,
-      "Lucas Spence||hardrockbet": 850,
-      "Luis Garc\u00eda Jr.||bet365": 575,
-      "Luis Garc\u00eda Jr.||betmgm": 400,
-      "Luis Garc\u00eda Jr.||betrivers": 600,
-      "Luis Garc\u00eda Jr.||caesars": 475,
-      "Luis Garc\u00eda Jr.||draftkings": 487,
-      "Luis Garc\u00eda Jr.||fanatics": 500,
-      "Luis Garc\u00eda Jr.||fanduel": 490,
-      "Luis Garc\u00eda Jr.||hardrockbet": 475,
-      "Manny Machado||bet365": 450,
-      "Manny Machado||betmgm": 360,
-      "Manny Machado||betrivers": 360,
-      "Manny Machado||caesars": 390,
-      "Manny Machado||draftkings": 415,
-      "Manny Machado||fanatics": 410,
-      "Manny Machado||fanduel": 410,
-      "Manny Machado||hardrockbet": 425,
-      "Matt Olson||bet365": 525,
-      "Matt Olson||betrivers": 850,
-      "Matt Olson||draftkings": 900,
-      "Matt Olson||fanduel": 750,
-      "Mauricio Dub\u00f3n||bet365": 1250,
-      "Mauricio Dub\u00f3n||betrivers": 1600,
-      "Mauricio Dub\u00f3n||caesars": 1500,
-      "Mauricio Dub\u00f3n||fanatics": 1700,
-      "Mauricio Dub\u00f3n||fanduel": 2200,
-      "Michael Busch||bet365": 575,
-      "Michael Busch||betmgm": 525,
-      "Michael Busch||betrivers": 650,
-      "Michael Busch||caesars": 625,
-      "Michael Busch||draftkings": 700,
-      "Michael Busch||fanatics": 650,
-      "Michael Busch||fanduel": 660,
-      "Michael Busch||hardrockbet": 700,
-      "Michael Harris II||bet365": 950,
-      "Michael Harris II||betrivers": 900,
-      "Michael Harris II||caesars": 950,
-      "Michael Harris II||draftkings": 1100,
-      "Michael Harris II||fanatics": 850,
-      "Michael Harris II||fanduel": 900,
-      "Michael Harris II||hardrockbet": 1000,
-      "Miguel Amaya||betmgm": 775,
-      "Miguel Vargas||bet365": 575,
-      "Miguel Vargas||betmgm": 450,
-      "Miguel Vargas||betrivers": 550,
-      "Miguel Vargas||caesars": 525,
-      "Miguel Vargas||draftkings": 585,
-      "Miguel Vargas||fanatics": 550,
-      "Miguel Vargas||fanduel": 570,
-      "Miguel Vargas||hardrockbet": 525,
-      "Munetaka Murakami||bet365": 390,
-      "Munetaka Murakami||betmgm": 390,
-      "Munetaka Murakami||betrivers": 460,
-      "Munetaka Murakami||caesars": 425,
-      "Munetaka Murakami||draftkings": 488,
-      "Munetaka Murakami||fanatics": 440,
-      "Munetaka Murakami||fanduel": 440,
-      "Munetaka Murakami||hardrockbet": 400,
-      "Nate Eaton||bet365": 1400,
-      "Nick Sogard||bet365": 1100,
-      "Nick Sogard||betmgm": 1150,
-      "Nick Sogard||betrivers": 1200,
-      "Nick Sogard||caesars": 1300,
-      "Nick Sogard||draftkings": 1260,
-      "Nick Sogard||fanatics": 1300,
-      "Nick Sogard||fanduel": 1400,
-      "Nick Sogard||hardrockbet": 1300,
-      "Nico Hoerner||bet365": 1200,
-      "Nico Hoerner||betmgm": 1200,
-      "Nico Hoerner||betrivers": 1200,
-      "Nico Hoerner||caesars": 1300,
-      "Nico Hoerner||draftkings": 1280,
-      "Nico Hoerner||fanatics": 1300,
-      "Nico Hoerner||fanduel": 1400,
-      "Nico Hoerner||hardrockbet": 1300,
-      "Ozzie Albies||bet365": 850,
-      "Ozzie Albies||betrivers": 1600,
-      "Ozzie Albies||caesars": 1100,
-      "Ozzie Albies||draftkings": 1400,
-      "Ozzie Albies||fanatics": 1200,
-      "Ozzie Albies||fanduel": 1400,
-      "Ozzie Albies||hardrockbet": 1300,
-      "Pedro Ramirez||bet365": 850,
-      "Pedro Ramirez||betmgm": 800,
-      "Pedro Ramirez||caesars": 950,
-      "Pedro Ramirez||draftkings": 1040,
-      "Pedro Ramirez||fanatics": 1000,
-      "Pedro Ramirez||fanduel": 1100,
-      "Pete Crow-Armstrong||bet365": 320,
-      "Pete Crow-Armstrong||betmgm": 270,
-      "Pete Crow-Armstrong||betrivers": 325,
-      "Pete Crow-Armstrong||caesars": 290,
-      "Pete Crow-Armstrong||draftkings": 302,
-      "Pete Crow-Armstrong||fanatics": 310,
-      "Pete Crow-Armstrong||fanduel": 300,
-      "Pete Crow-Armstrong||hardrockbet": 325,
-      "Ronald Acu\u00f1a Jr.||bet365": 600,
-      "Ronald Acu\u00f1a Jr.||betrivers": 900,
-      "Ronald Acu\u00f1a Jr.||caesars": 850,
-      "Ronald Acu\u00f1a Jr.||draftkings": 950,
-      "Ronald Acu\u00f1a Jr.||fanatics": 850,
-      "Ronald Acu\u00f1a Jr.||fanduel": 850,
-      "Ronald Acu\u00f1a Jr.||hardrockbet": 900,
-      "Ryan McMahon||bet365": 900,
-      "Ryan McMahon||betmgm": 725,
-      "Ryan McMahon||betrivers": 900,
-      "Ryan McMahon||caesars": 850,
-      "Ryan McMahon||draftkings": 920,
-      "Ryan McMahon||fanatics": 800,
-      "Ryan McMahon||fanduel": 900,
-      "Ryan McMahon||hardrockbet": 900,
-      "Sam Antonacci||bet365": 1100,
-      "Sam Antonacci||betmgm": 1050,
-      "Sam Antonacci||betrivers": 1200,
-      "Sam Antonacci||caesars": 1300,
-      "Sam Antonacci||draftkings": 1400,
-      "Sam Antonacci||fanatics": 1300,
-      "Sam Antonacci||fanduel": 1260,
-      "Sam Antonacci||hardrockbet": 1200,
-      "Sean Murphy||bet365": 850,
-      "Sean Murphy||betrivers": 1400,
-      "Sean Murphy||caesars": 1100,
-      "Sean Murphy||draftkings": 1200,
-      "Sean Murphy||fanatics": 1100,
-      "Sean Murphy||fanduel": 1200,
-      "Sean Murphy||hardrockbet": 1100,
-      "Seiya Suzuki||bet365": 500,
-      "Seiya Suzuki||betmgm": 500,
-      "Seiya Suzuki||betrivers": 500,
-      "Seiya Suzuki||caesars": 425,
-      "Seiya Suzuki||draftkings": 451,
-      "Seiya Suzuki||fanatics": 440,
-      "Seiya Suzuki||fanduel": 440,
-      "Seiya Suzuki||hardrockbet": 450,
-      "Spencer Jones||bet365": 550,
-      "Spencer Jones||betmgm": 475,
-      "Spencer Jones||betrivers": 600,
-      "Spencer Jones||caesars": 475,
-      "Spencer Jones||draftkings": 448,
-      "Spencer Jones||fanatics": 440,
-      "Spencer Jones||fanduel": 430,
-      "Spencer Jones||hardrockbet": 475,
-      "Taylor Trammell||bet365": 750,
-      "Taylor Trammell||betmgm": 775,
-      "Taylor Trammell||betrivers": 750,
-      "Taylor Trammell||caesars": 750,
-      "Taylor Trammell||draftkings": 740,
-      "Taylor Trammell||fanatics": 750,
-      "Taylor Trammell||fanduel": 790,
-      "Taylor Trammell||hardrockbet": 650,
-      "Trea Turner||bet365": 700,
-      "Trea Turner||betrivers": 1300,
-      "Trea Turner||caesars": 1300,
-      "Trea Turner||draftkings": 1400,
-      "Trea Turner||fanatics": 1200,
-      "Trea Turner||fanduel": 1400,
-      "Trea Turner||hardrockbet": 1100,
-      "Trent Grisham||bet365": 550,
-      "Trent Grisham||betmgm": 425,
-      "Trent Grisham||betrivers": 650,
-      "Trent Grisham||caesars": 475,
-      "Trent Grisham||draftkings": 475,
-      "Trent Grisham||fanatics": 500,
-      "Trent Grisham||fanduel": 500,
-      "Trevor Story||bet365": 750,
-      "Trevor Story||betmgm": 650,
-      "Trevor Story||betrivers": 900,
-      "Trevor Story||caesars": 950,
-      "Trevor Story||draftkings": 990,
-      "Trevor Story||fanatics": 1000,
-      "Trevor Story||fanduel": 1040,
-      "Trevor Story||hardrockbet": 900,
-      "Tristan Peters||bet365": 850,
-      "Tristan Peters||betmgm": 900,
-      "Tristan Peters||betrivers": 900,
-      "Tristan Peters||caesars": 950,
-      "Tristan Peters||draftkings": 1100,
-      "Tristan Peters||fanatics": 1000,
-      "Tristan Peters||fanduel": 980,
-      "Tristan Peters||hardrockbet": 1000,
-      "Ty France||bet365": 500,
-      "Ty France||betmgm": 525,
-      "Ty France||betrivers": 475,
-      "Ty France||caesars": 525,
-      "Ty France||draftkings": 536,
-      "Ty France||fanatics": 525,
-      "Ty France||fanduel": 530,
-      "Ty France||hardrockbet": 550,
-      "Willson Contreras||bet365": 500,
-      "Willson Contreras||betmgm": 390,
-      "Willson Contreras||betrivers": 480,
-      "Willson Contreras||caesars": 525,
-      "Willson Contreras||draftkings": 536,
-      "Willson Contreras||fanatics": 575,
-      "Willson Contreras||fanduel": 560,
-      "Willson Contreras||hardrockbet": 500,
-      "Wilyer Abreu||bet365": 525,
-      "Wilyer Abreu||betmgm": 525,
-      "Wilyer Abreu||betrivers": 650,
-      "Wilyer Abreu||caesars": 525,
-      "Wilyer Abreu||draftkings": 523,
-      "Wilyer Abreu||fanatics": 575,
-      "Wilyer Abreu||fanduel": 540,
-      "Wilyer Abreu||hardrockbet": 550,
-      "Xander Bogaerts||bet365": 625,
-      "Xander Bogaerts||betmgm": 800,
-      "Xander Bogaerts||betrivers": 700,
-      "Xander Bogaerts||caesars": 750,
-      "Xander Bogaerts||draftkings": 700,
-      "Xander Bogaerts||fanatics": 700,
-      "Xander Bogaerts||fanduel": 730,
-      "Xander Bogaerts||hardrockbet": 700,
-      "Yainer Diaz||bet365": 525,
-      "Yainer Diaz||betmgm": 500,
-      "Yainer Diaz||betrivers": 650,
-      "Yainer Diaz||caesars": 575,
-      "Yainer Diaz||draftkings": 620,
-      "Yainer Diaz||fanatics": 575,
-      "Yainer Diaz||fanduel": 590,
-      "Yainer Diaz||hardrockbet": 650,
-      "Yordan Alvarez||bet365": 325,
-      "Yordan Alvarez||betmgm": 300,
-      "Yordan Alvarez||betrivers": 320,
-      "Yordan Alvarez||caesars": 305,
-      "Yordan Alvarez||draftkings": 308,
-      "Yordan Alvarez||fanatics": 310,
-      "Yordan Alvarez||fanduel": 310,
-      "Yordan Alvarez||hardrockbet": 300
-    },
     {
       "Adley Rutschman||bet365": 800,
       "Adley Rutschman||betmgm": 600,
@@ -3959,6 +3429,123 @@
       "Yordan Alvarez||fanatics": 800,
       "Yordan Alvarez||fanduel": 1000,
       "Yordan Alvarez||hardrockbet": 900
+    },
+    {
+      "Alec Bohm||bet365": 750,
+      "Alec Bohm||betrivers": 800,
+      "Alec Bohm||caesars": 750,
+      "Alec Bohm||draftkings": 800,
+      "Alec Bohm||fanatics": 750,
+      "Alec Bohm||fanduel": 820,
+      "Austin Riley||bet365": 625,
+      "Austin Riley||betrivers": 900,
+      "Austin Riley||caesars": 700,
+      "Austin Riley||draftkings": 790,
+      "Austin Riley||fanatics": 650,
+      "Austin Riley||fanduel": 680,
+      "Austin Riley||hardrockbet": 750,
+      "Brandon Marsh||bet365": 900,
+      "Brandon Marsh||betrivers": 750,
+      "Brandon Marsh||caesars": 700,
+      "Brandon Marsh||draftkings": 730,
+      "Brandon Marsh||fanatics": 750,
+      "Brandon Marsh||fanduel": 790,
+      "Bryan De La Cruz||bet365": 750,
+      "Bryan De La Cruz||draftkings": 980,
+      "Bryce Harper||bet365": 525,
+      "Bryce Harper||betrivers": 430,
+      "Bryce Harper||caesars": 425,
+      "Bryce Harper||draftkings": 489,
+      "Bryce Harper||fanatics": 460,
+      "Bryce Harper||fanduel": 420,
+      "Bryce Harper||hardrockbet": 425,
+      "Bryson Stott||bet365": 950,
+      "Bryson Stott||betrivers": 800,
+      "Bryson Stott||caesars": 700,
+      "Bryson Stott||draftkings": 800,
+      "Bryson Stott||fanatics": 750,
+      "Bryson Stott||fanduel": 710,
+      "Derek Hill||fanatics": 900,
+      "Derek Hill||fanduel": 980,
+      "Drake Baldwin||bet365": 475,
+      "Drake Baldwin||betrivers": 700,
+      "Drake Baldwin||caesars": 700,
+      "Drake Baldwin||draftkings": 690,
+      "Drake Baldwin||fanatics": 650,
+      "Drake Baldwin||fanduel": 680,
+      "Drake Baldwin||hardrockbet": 700,
+      "Ha-Seong Kim||betrivers": 1400,
+      "Ha-Seong Kim||draftkings": 1360,
+      "J.T. Realmuto||bet365": 650,
+      "J.T. Realmuto||betrivers": 750,
+      "J.T. Realmuto||caesars": 700,
+      "J.T. Realmuto||draftkings": 760,
+      "J.T. Realmuto||fanatics": 800,
+      "J.T. Realmuto||fanduel": 760,
+      "Justin Crawford||bet365": 1600,
+      "Justin Crawford||betrivers": 1400,
+      "Justin Crawford||caesars": 1300,
+      "Justin Crawford||draftkings": 1440,
+      "Justin Crawford||fanatics": 1300,
+      "Justin Crawford||fanduel": 1300,
+      "Kyle Schwarber||bet365": 290,
+      "Kyle Schwarber||betrivers": 255,
+      "Kyle Schwarber||caesars": 265,
+      "Kyle Schwarber||draftkings": 249,
+      "Kyle Schwarber||fanatics": 280,
+      "Kyle Schwarber||fanduel": 285,
+      "Kyle Schwarber||hardrockbet": 275,
+      "Matt Olson||bet365": 400,
+      "Matt Olson||betrivers": 480,
+      "Matt Olson||caesars": 500,
+      "Matt Olson||draftkings": 494,
+      "Matt Olson||fanatics": 500,
+      "Matt Olson||fanduel": 490,
+      "Matt Olson||hardrockbet": 500,
+      "Mauricio Dub\u00f3n||bet365": 1300,
+      "Mauricio Dub\u00f3n||betrivers": 1500,
+      "Mauricio Dub\u00f3n||caesars": 1300,
+      "Mauricio Dub\u00f3n||draftkings": 1500,
+      "Mauricio Dub\u00f3n||fanatics": 1700,
+      "Mauricio Dub\u00f3n||fanduel": 1500,
+      "Michael Harris II||bet365": 575,
+      "Michael Harris II||betrivers": 850,
+      "Michael Harris II||caesars": 750,
+      "Michael Harris II||draftkings": 800,
+      "Michael Harris II||fanatics": 700,
+      "Michael Harris II||fanduel": 760,
+      "Michael Harris II||hardrockbet": 750,
+      "Mike Yastrzemski||bet365": 750,
+      "Mike Yastrzemski||betrivers": 800,
+      "Mike Yastrzemski||caesars": 750,
+      "Mike Yastrzemski||draftkings": 850,
+      "Mike Yastrzemski||fanatics": 800,
+      "Mike Yastrzemski||fanduel": 880,
+      "Ozzie Albies||bet365": 800,
+      "Ozzie Albies||betrivers": 900,
+      "Ozzie Albies||caesars": 750,
+      "Ozzie Albies||draftkings": 890,
+      "Ozzie Albies||fanatics": 800,
+      "Ozzie Albies||fanduel": 820,
+      "Ronald Acu\u00f1a Jr.||bet365": 475,
+      "Ronald Acu\u00f1a Jr.||betrivers": 550,
+      "Ronald Acu\u00f1a Jr.||caesars": 575,
+      "Ronald Acu\u00f1a Jr.||draftkings": 600,
+      "Ronald Acu\u00f1a Jr.||fanatics": 550,
+      "Ronald Acu\u00f1a Jr.||fanduel": 570,
+      "Ronald Acu\u00f1a Jr.||hardrockbet": 550,
+      "Sean Murphy||bet365": 850,
+      "Sean Murphy||caesars": 850,
+      "Sean Murphy||draftkings": 990,
+      "Sean Murphy||fanatics": 1000,
+      "Sean Murphy||fanduel": 980,
+      "Trea Turner||bet365": 700,
+      "Trea Turner||betrivers": 700,
+      "Trea Turner||caesars": 625,
+      "Trea Turner||draftkings": 730,
+      "Trea Turner||fanatics": 650,
+      "Trea Turner||fanduel": 680,
+      "Trea Turner||hardrockbet": 700
     }
   ],
   "presence_history": [
@@ -3974,14 +3561,14 @@
         "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
-        "Artemi Panarin",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
         "Morgan Rielly",
         "fanduel",
         "New York Islanders @ Toronto Maple Leafs"
+      ],
+      [
+        "Artemi Panarin",
+        "betmgm",
+        "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
         "Ondrej Palat",
@@ -4724,13 +4311,13 @@
         "Pittsburgh Penguins @ Philadelphia Flyers"
       ],
       [
-        "Emil Heineman",
-        "draftkings",
+        "Brandon Duhaime",
+        "bet365",
         "New York Islanders @ Toronto Maple Leafs"
       ],
       [
-        "Brandon Duhaime",
-        "bet365",
+        "Emil Heineman",
+        "draftkings",
         "New York Islanders @ Toronto Maple Leafs"
       ],
       [
@@ -5924,6 +5511,11 @@
         "New York Islanders @ Toronto Maple Leafs"
       ],
       [
+        "Matvei Michkov",
+        "bet365",
+        "Pittsburgh Penguins @ Philadelphia Flyers"
+      ],
+      [
         "Declan Carlile",
         "fanatics",
         "Pittsburgh Penguins @ Philadelphia Flyers"
@@ -6364,11 +5956,6 @@
         "Pittsburgh Penguins @ Philadelphia Flyers"
       ],
       [
-        "Erik Karlsson",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
         "Sidney Crosby",
         "betrivers",
         "Pittsburgh Penguins @ Philadelphia Flyers"
@@ -6391,11 +5978,6 @@
       [
         "Brian Dumoulin",
         "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Helenius",
-        "fanduel",
         "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
@@ -6641,6 +6223,11 @@
       [
         "Trevor Moore",
         "bet365",
+        "Los Angeles Kings @ Colorado Avalanche"
+      ],
+      [
+        "Artturi Lehkonen",
+        "draftkings",
         "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
@@ -6909,14 +6496,14 @@
         "Pittsburgh Penguins @ Philadelphia Flyers"
       ],
       [
-        "Artturi Lehkonen",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
+        "Erik Karlsson",
+        "fanduel",
+        "Pittsburgh Penguins @ Philadelphia Flyers"
       ],
       [
-        "Matvei Michkov",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
+        "Samuel Helenius",
+        "fanduel",
+        "Los Angeles Kings @ Colorado Avalanche"
       ]
     ],
     [
@@ -6931,14 +6518,14 @@
         "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
-        "Artemi Panarin",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
         "Morgan Rielly",
         "fanduel",
         "New York Islanders @ Toronto Maple Leafs"
+      ],
+      [
+        "Artemi Panarin",
+        "betmgm",
+        "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
         "Ondrej Palat",
@@ -7681,13 +7268,13 @@
         "Pittsburgh Penguins @ Philadelphia Flyers"
       ],
       [
-        "Emil Heineman",
-        "draftkings",
+        "Brandon Duhaime",
+        "bet365",
         "New York Islanders @ Toronto Maple Leafs"
       ],
       [
-        "Brandon Duhaime",
-        "bet365",
+        "Emil Heineman",
+        "draftkings",
         "New York Islanders @ Toronto Maple Leafs"
       ],
       [
@@ -8881,2961 +8468,9 @@
         "New York Islanders @ Toronto Maple Leafs"
       ],
       [
-        "Declan Carlile",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nazem Kadri",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Rickard Rakell",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Tyson Foerster",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Evgeni Malkin",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jake McCabe",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Cale Makar",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Kyle Palmieri",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jamie Drysdale",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Egor Chinakhov",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Ryan Pulock",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Oliver Ekman-Larsson",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Ondrej Palat",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Fedor Svechkov",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Simon Holmstrom",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brian Dumoulin",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alex Bump",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Casey Cizikas",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Elmer Soderblom",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cam York",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Kris Letang",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Kaedan Korczak",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Darren Raddysh",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Connor Dewar",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Ville Koivunen",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Bo Horvat",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Rickard Rakell",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Travis Konecny",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Drew Doughty",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brock Nelson",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Gabriel Landeskog",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Anthony Duclair",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Trevor van Riemsdyk",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jaden Schwartz",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Quinton Byfield",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Emil Heineman",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Cody Ceci",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brayden Schenn",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Matthew Schaefer",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Troy Stecher",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jamie Drysdale",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Matias Maccelli",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brandt Clarke",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matvei Michkov",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Easton Cowan",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Turcotte",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Noah Cates",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Kyle Palmieri",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Simon Benoit",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Noel Acciari",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Noel Acciari",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Blake Lizotte",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nicolas Roy",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Gabriel Landeskog",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Colton Sissons",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Anthony Duclair",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Martin Necas",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Oliver Ekman-Larsson",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Teddy Blueger",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Calum Ritchie",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Cody Ceci",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Nick Paul",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "William Nylander",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kris Letang",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brent Burns",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Travis Sanheim",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Samuel Helenius",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matias Maccelli",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Simon Benoit",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Noah Juulsen",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Girard",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Fedor Svechkov",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Carl Grundstrom",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Matvei Michkov",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Tyson Foerster",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Evgeni Malkin",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Matthew Schaefer",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Colton Sissons",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Darren Raddysh",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Egor Chinakhov",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Teddy Blueger",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Calum Ritchie",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Cam York",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Alex Turcotte",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Trevor Moore",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Ryan Pulock",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kris Letang",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Ville Koivunen",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Erik Karlsson",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Sidney Crosby",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Bo Horvat",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Auston Matthews",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Erik Karlsson",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brian Dumoulin",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Helenius",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "William Nylander",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brett Kulak",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Sam Malinski",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Christian Dvorak",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nathan MacKinnon",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brandon Duhaime",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nazem Kadri",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Erik Karlsson",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Erik Haula",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Helenius",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brayden Schenn",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brock Nelson",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alex Laferriere",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Jack Roslovic",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Morgan Rielly",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "John Tavares",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Declan Carlile",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Samuel Girard",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Alex Turcotte",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Tommy Novak",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Mikey Anderson",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Adrian Kempe",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Mats Zuccarello",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matthew Schaefer",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jake McCabe",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kyle Palmieri",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Connor Dewar",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Rasmus Ristolainen",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brock Nelson",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brian Dumoulin",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Nick Paul",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Elmer Soderblom",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Travis Sanheim",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Scott Laughton",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "John Tavares",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Sean Couturier",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Declan Carlile",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Emil Heineman",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jaden Schwartz",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Adrian Kempe",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Morgan Rielly",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Cale Makar",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Jake McCabe",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Hendrix Lapierre",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Easton Cowan",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noah Cates",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Artturi Lehkonen",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Joel Armia",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Trevor Moore",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Porter Martone",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Ryan Pulock",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brandt Clarke",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Travis Konecny",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jean-Gabriel Pageau",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Sam Malinski",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Devon Toews",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Elmer Soderblom",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Alexander Romanov",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Sidney Crosby",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Noel Acciari",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Rasmus Ristolainen",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Zack MacEwen",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Trevor van Riemsdyk",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Zack MacEwen",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Trevor Zegras",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Scott Laughton",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Nathan MacKinnon",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Owen Tippett",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nick Seeler",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Erik Haula",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Carl Grundstrom",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Rickard Rakell",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Drew Doughty",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Artemi Panarin",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Simon Holmstrom",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Bump",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Mikey Anderson",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Adam Pelech",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Mats Zuccarello",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Parker Kelly",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Tyson Foerster",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Matias Maccelli",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kaedan Korczak",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Porter Martone",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Evgeni Malkin",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Ondrej Palat",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Auston Matthews",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Matvei Michkov",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Samuel Girard",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Casey Cizikas",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Drew Doughty",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Trevor Zegras",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Quinton Byfield",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brian Dumoulin",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "William Nylander",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jack Roslovic",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Erik Gustafsson",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Adrian Kempe",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Troy Stecher",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Tony DeAngelo",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Matias Maccelli",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Hendrix Lapierre",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Artturi Lehkonen",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
         "Matvei Michkov",
         "bet365",
         "Pittsburgh Penguins @ Philadelphia Flyers"
-      ]
-    ],
-    [
-      [
-        "Nick Robertson",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Alex Laferriere",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Artemi Panarin",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Morgan Rielly",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Ondrej Palat",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noel Acciari",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jean-Gabriel Pageau",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Devon Toews",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Casey Cizikas",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nicolas Roy",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alexander Romanov",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Adam Pelech",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brett Kulak",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matthew Schaefer",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kyle Palmieri",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Oliver Ekman-Larsson",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Rickard Rakell",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Drew Doughty",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Sam Malinski",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Simon Benoit",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nick Seeler",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Kris Letang",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brent Burns",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Quinton Byfield",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Artemi Panarin",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Helenius",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Colton Sissons",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Scott Laughton",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Egor Chinakhov",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Simon Holmstrom",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Troy Stecher",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noah Juulsen",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Carl Grundstrom",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Adam Pelech",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Calum Ritchie",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kaedan Korczak",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Josh Manson",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Artemi Panarin",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matthew Schaefer",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Darren Raddysh",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Tommy Novak",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Trevor van Riemsdyk",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nicolas Roy",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Cam York",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Alex Turcotte",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Gabriel Landeskog",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Porter Martone",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Christian Dvorak",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Martin Necas",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Adam Pelech",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Anthony Duclair",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Ville Koivunen",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Bo Horvat",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Auston Matthews",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Emil Heineman",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Cody Ceci",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Bo Groulx",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Owen Tippett",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Rasmus Ristolainen",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nazem Kadri",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brent Burns",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Erik Karlsson",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nazem Kadri",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Parker Kelly",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brayden Schenn",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Trevor Moore",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "William Nylander",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nick Paul",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brock Nelson",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Trevor Zegras",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Morgan Rielly",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Bump",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Noah Juulsen",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Fedor Svechkov",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Easton Cowan",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Carl Grundstrom",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Blake Lizotte",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Tommy Novak",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Oliver Ekman-Larsson",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brandt Clarke",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Teddy Blueger",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Samuel Girard",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cam York",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Connor Dewar",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Kris Letang",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Josh Manson",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Sean Couturier",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Ondrej Palat",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Ville Koivunen",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Bo Horvat",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Travis Konecny",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Casey Cizikas",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nick Paul",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brock Nelson",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Erik Gustafsson",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Sean Couturier",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Simon Benoit",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Scott Laughton",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Rickard Rakell",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Drew Doughty",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Joel Armia",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brian Dumoulin",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Colton Sissons",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Tony DeAngelo",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brayden Schenn",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Egor Chinakhov",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Noah Cates",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Easton Cowan",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Turcotte",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Noah Cates",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Josh Manson",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Porter Martone",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brett Kulak",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Gabriel Landeskog",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Christian Dvorak",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Martin Necas",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Connor Dewar",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Sidney Crosby",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Josh Manson",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Cody Ceci",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Zack MacEwen",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nick Paul",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Travis Sanheim",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nicolas Roy",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Trevor Zegras",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nathan MacKinnon",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "John Tavares",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Erik Haula",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Declan Carlile",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Rasmus Ristolainen",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Tyson Foerster",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Bo Groulx",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Evgeni Malkin",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Fedor Svechkov",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brent Burns",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Jake McCabe",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Blake Lizotte",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Trevor van Riemsdyk",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Mikey Anderson",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Joel Armia",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Mats Zuccarello",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Parker Kelly",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Ryan Pulock",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Darren Raddysh",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Carl Grundstrom",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Casey Cizikas",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Calum Ritchie",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Anthony Duclair",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Elmer Soderblom",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Artemi Panarin",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Nick Robertson",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Sidney Crosby",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Emil Heineman",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brandon Duhaime",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Adam Pelech",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kris Letang",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jaden Schwartz",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Nathan MacKinnon",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Joel Armia",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Erik Haula",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Quinton Byfield",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Jack Roslovic",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Erik Gustafsson",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alex Laferriere",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Adrian Kempe",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Troy Stecher",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brandt Clarke",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Hendrix Lapierre",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nazem Kadri",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Artturi Lehkonen",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Mikey Anderson",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Joel Armia",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Mats Zuccarello",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Parker Kelly",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alex Laferriere",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Tyson Foerster",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Teddy Blueger",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noel Acciari",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jean-Gabriel Pageau",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Turcotte",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Devon Toews",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Nicolas Roy",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Oliver Ekman-Larsson",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alexander Romanov",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Sean Couturier",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Adam Pelech",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Ondrej Palat",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Erik Karlsson",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Travis Sanheim",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cam York",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Owen Tippett",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Connor Dewar",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Ville Koivunen",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "John Tavares",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nick Seeler",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Bo Horvat",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Cale Makar",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Declan Carlile",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brent Burns",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brock Nelson",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Tyson Foerster",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jack Roslovic",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Evgeni Malkin",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Erik Gustafsson",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Adrian Kempe",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Simon Holmstrom",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Matias Maccelli",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Bump",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jake McCabe",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Hendrix Lapierre",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Matvei Michkov",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Artturi Lehkonen",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brayden Schenn",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Trevor Moore",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Ryan Pulock",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kaedan Korczak",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brandt Clarke",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Easton Cowan",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noah Cates",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Trevor van Riemsdyk",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Devon Toews",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Elmer Soderblom",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cam York",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Alexander Romanov",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Artemi Panarin",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Bo Horvat",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "William Nylander",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jamie Drysdale",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jaden Schwartz",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Owen Tippett",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nick Seeler",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nazem Kadri",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Helenius",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brayden Schenn",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nathan MacKinnon",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Morgan Rielly",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Simon Holmstrom",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Bump",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Erik Haula",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Girard",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cale Makar",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Easton Cowan",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kyle Palmieri",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kaedan Korczak",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Tony DeAngelo",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Auston Matthews",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noah Juulsen",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Carl Grundstrom",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Trevor van Riemsdyk",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Parker Kelly",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Connor Dewar",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Josh Manson",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Travis Konecny",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Simon Benoit",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Sidney Crosby",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cale Makar",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Ville Koivunen",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Auston Matthews",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Colton Sissons",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Tony DeAngelo",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jamie Drysdale",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Egor Chinakhov",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Matias Maccelli",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Tony DeAngelo",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noah Cates",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cale Makar",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Tommy Novak",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Jack Roslovic",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Noel Acciari",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Mikey Anderson",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Joel Armia",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Sam Malinski",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Mats Zuccarello",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Nick Robertson",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Gabriel Landeskog",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brett Kulak",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Christian Dvorak",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Martin Necas",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brett Kulak",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Anthony Duclair",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Blake Lizotte",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Sidney Crosby",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Rasmus Ristolainen",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cody Ceci",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "William Nylander",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jamie Drysdale",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Zack MacEwen",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Logan O'Connor",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Scott Laughton",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Simon Benoit",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Trevor Zegras",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Quinton Byfield",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Colton Sissons",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jamie Drysdale",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Egor Chinakhov",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nick Seeler",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Fedor Svechkov",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matvei Michkov",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Samuel Girard",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Blake Lizotte",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Calum Ritchie",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Mats Zuccarello",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matthew Schaefer",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Porter Martone",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Darren Raddysh",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Simon Holmstrom",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brandon Duhaime",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Hendrix Lapierre",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Artturi Lehkonen",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Teddy Blueger",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Calum Ritchie",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Casey Cizikas",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Alex Laferriere",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Gabriel Landeskog",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Christian Dvorak",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Martin Necas",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Oliver Ekman-Larsson",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Sean Couturier",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Anthony Duclair",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Emil Heineman",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Brian Dumoulin",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Jean-Gabriel Pageau",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Devon Toews",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Emil Heineman",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Rickard Rakell",
-        "betrivers",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Cody Ceci",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alexander Romanov",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Sam Malinski",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Erik Karlsson",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Samuel Helenius",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Kyle Palmieri",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jack Roslovic",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Owen Tippett",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Morgan Rielly",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nathan MacKinnon",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Fedor Svechkov",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Hendrix Lapierre",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Artturi Lehkonen",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Blake Lizotte",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Erik Haula",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alex Laferriere",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alex Bump",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Darren Raddysh",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Ondrej Palat",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Teddy Blueger",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Sam Malinski",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Jean-Gabriel Pageau",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Kaedan Korczak",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Mikey Anderson",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Parker Kelly",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Sean Couturier",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Auston Matthews",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Rasmus Ristolainen",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brandon Duhaime",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Drew Doughty",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Travis Sanheim",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Scott Laughton",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Owen Tippett",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "John Tavares",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Nick Seeler",
-        "bet365",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Declan Carlile",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Travis Konecny",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Quinton Byfield",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brent Burns",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Trevor Moore",
-        "fanatics",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Evgeni Malkin",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Troy Stecher",
-        "betrivers",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jake McCabe",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jaden Schwartz",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Noah Juulsen",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Tommy Novak",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Trevor Moore",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Ryan Pulock",
-        "betmgm",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Tony DeAngelo",
-        "fanduel",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Porter Martone",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Erik Gustafsson",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brandon Duhaime",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Adrian Kempe",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brandt Clarke",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Elmer Soderblom",
-        "betmgm",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Nicolas Roy",
-        "betrivers",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Brandon Duhaime",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Zack MacEwen",
-        "draftkings",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Travis Sanheim",
-        "fanatics",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Brett Kulak",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Trevor Zegras",
-        "draftkings",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Devon Toews",
-        "bet365",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Christian Dvorak",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
-        "Martin Necas",
-        "fanduel",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Alexander Romanov",
-        "bet365",
-        "New York Islanders @ Toronto Maple Leafs"
-      ],
-      [
-        "Jaden Schwartz",
-        "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "John Tavares",
-        "fanatics",
-        "New York Islanders @ Toronto Maple Leafs"
       ],
       [
         "Declan Carlile",
@@ -12278,11 +8913,6 @@
         "Pittsburgh Penguins @ Philadelphia Flyers"
       ],
       [
-        "Erik Karlsson",
-        "fanduel",
-        "Pittsburgh Penguins @ Philadelphia Flyers"
-      ],
-      [
         "Sidney Crosby",
         "betrivers",
         "Pittsburgh Penguins @ Philadelphia Flyers"
@@ -12305,11 +8935,6 @@
       [
         "Brian Dumoulin",
         "betmgm",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Samuel Helenius",
-        "fanduel",
         "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
@@ -12555,6 +9180,11 @@
       [
         "Trevor Moore",
         "bet365",
+        "Los Angeles Kings @ Colorado Avalanche"
+      ],
+      [
+        "Artturi Lehkonen",
+        "draftkings",
         "Los Angeles Kings @ Colorado Avalanche"
       ],
       [
@@ -12823,14 +9453,14 @@
         "Pittsburgh Penguins @ Philadelphia Flyers"
       ],
       [
-        "Artturi Lehkonen",
-        "draftkings",
-        "Los Angeles Kings @ Colorado Avalanche"
-      ],
-      [
-        "Matvei Michkov",
-        "bet365",
+        "Erik Karlsson",
+        "fanduel",
         "Pittsburgh Penguins @ Philadelphia Flyers"
+      ],
+      [
+        "Samuel Helenius",
+        "fanduel",
+        "Los Angeles Kings @ Colorado Avalanche"
       ]
     ],
     [
@@ -13755,9 +10385,9 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Sean Murphy",
-        "draftkings",
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Jackson Merrill",
+        "betmgm",
+        "Chicago Cubs @ San Diego Padres"
       ],
       [
         "Gavin Sheets",
@@ -13765,9 +10395,9 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
-        "Chicago Cubs @ San Diego Padres"
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
       ],
       [
         "Nick Sogard",
@@ -15722,9 +12352,9 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Sean Murphy",
-        "draftkings",
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Jackson Merrill",
+        "betmgm",
+        "Chicago Cubs @ San Diego Padres"
       ],
       [
         "Gavin Sheets",
@@ -15732,9 +12362,9 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
-        "Chicago Cubs @ San Diego Padres"
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
       ],
       [
         "Nick Sogard",
@@ -17689,9 +14319,9 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Sean Murphy",
-        "draftkings",
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Jackson Merrill",
+        "betmgm",
+        "Chicago Cubs @ San Diego Padres"
       ],
       [
         "Gavin Sheets",
@@ -17699,9 +14329,9 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
-        "Chicago Cubs @ San Diego Padres"
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
       ],
       [
         "Nick Sogard",
@@ -19606,13 +16236,13 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Gavin Sheets",
-        "draftkings",
+        "Jackson Merrill",
+        "betmgm",
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
+        "Gavin Sheets",
+        "draftkings",
         "Chicago Cubs @ San Diego Padres"
       ],
       [
@@ -21538,9 +18168,9 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Sean Murphy",
-        "draftkings",
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Jackson Merrill",
+        "betmgm",
+        "Chicago Cubs @ San Diego Padres"
       ],
       [
         "Gavin Sheets",
@@ -21548,9 +18178,9 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
-        "Chicago Cubs @ San Diego Padres"
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
       ],
       [
         "Nick Sogard",
@@ -23470,9 +20100,9 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Sean Murphy",
-        "draftkings",
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Jackson Merrill",
+        "betmgm",
+        "Chicago Cubs @ San Diego Padres"
       ],
       [
         "Gavin Sheets",
@@ -23480,9 +20110,9 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
-        "Chicago Cubs @ San Diego Padres"
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
       ],
       [
         "Nick Sogard",
@@ -25387,9 +22017,9 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Sean Murphy",
-        "draftkings",
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Jackson Merrill",
+        "betmgm",
+        "Chicago Cubs @ San Diego Padres"
       ],
       [
         "Gavin Sheets",
@@ -25397,9 +22027,9 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
-        "Chicago Cubs @ San Diego Padres"
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
       ],
       [
         "Nick Sogard",
@@ -27304,9 +23934,9 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
-        "Sean Murphy",
-        "draftkings",
-        "Philadelphia Phillies @ Atlanta Braves"
+        "Jackson Merrill",
+        "betmgm",
+        "Chicago Cubs @ San Diego Padres"
       ],
       [
         "Gavin Sheets",
@@ -27314,9 +23944,9 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Jackson Merrill",
-        "betmgm",
-        "Chicago Cubs @ San Diego Padres"
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
       ],
       [
         "Nick Sogard",
@@ -28353,17 +24983,17 @@
       [
         "Ben Rice",
         "betmgm",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
+        "Spencer Jones",
+        "betrivers",
         "Boston Red Sox @ New York Yankees"
       ],
       [
         "Austin Hays",
         "betmgm",
         "Chicago Cubs @ San Diego Padres"
-      ],
-      [
-        "Spencer Jones",
-        "betrivers",
-        "Boston Red Sox @ New York Yankees"
       ],
       [
         "Kyle Teel",
@@ -28651,11 +25281,6 @@
         "Chicago Cubs @ San Diego Padres"
       ],
       [
-        "Trevor Story",
-        "bet365",
-        "Boston Red Sox @ New York Yankees"
-      ],
-      [
         "Jahmai Jones",
         "fanduel",
         "Boston Red Sox @ New York Yankees"
@@ -29391,6 +26016,11 @@
         "Boston Red Sox @ New York Yankees"
       ],
       [
+        "Trevor Story",
+        "bet365",
+        "Boston Red Sox @ New York Yankees"
+      ],
+      [
         "Manny Machado",
         "fanatics",
         "Chicago Cubs @ San Diego Padres"
@@ -29585,132 +26215,461 @@
         "betmgm",
         "Chicago Cubs @ San Diego Padres"
       ]
+    ],
+    [
+      [
+        "Ozzie Albies",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryce Harper",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Matt Olson",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ha-Seong Kim",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Matt Olson",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Drake Baldwin",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryson Stott",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Justin Crawford",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Justin Crawford",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Brandon Marsh",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mike Yastrzemski",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Drake Baldwin",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ozzie Albies",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Brandon Marsh",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryson Stott",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Drake Baldwin",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mike Yastrzemski",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Derek Hill",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Derek Hill",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ozzie Albies",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Justin Crawford",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ha-Seong Kim",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Brandon Marsh",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryan De La Cruz",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Drake Baldwin",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryan De La Cruz",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryson Stott",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Brandon Marsh",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryson Stott",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Drake Baldwin",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Justin Crawford",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryce Harper",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mike Yastrzemski",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Matt Olson",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ronald Acu\u00f1a Jr.",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Justin Crawford",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mike Yastrzemski",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ozzie Albies",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryce Harper",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Alec Bohm",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Brandon Marsh",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryce Harper",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryce Harper",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Matt Olson",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Matt Olson",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mauricio Dub\u00f3n",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Trea Turner",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "J.T. Realmuto",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Bryson Stott",
+        "fanatics",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Michael Harris II",
+        "fanduel",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Kyle Schwarber",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Austin Riley",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Ozzie Albies",
+        "bet365",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Mike Yastrzemski",
+        "betrivers",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ],
+      [
+        "Sean Murphy",
+        "draftkings",
+        "Philadelphia Phillies @ Atlanta Braves"
+      ]
     ]
   ],
   "mgm_history": [
-    [
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 0,
-        "team": "BOSTON RED SOX",
-        "players": [
-          "Adley Rutschman",
-          "Caleb Durbin"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 50,
-        "team": "BOSTON RED SOX",
-        "players": [
-          "Nick Sogard",
-          "Ceddanne Rafaela",
-          "Trevor Story"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 75,
-        "team": "BOSTON RED SOX",
-        "players": [
-          "Jahmai Jones",
-          "Jarren Duran"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 50,
-        "team": "NEW YORK YANKEES",
-        "players": [
-          "Cody Bellinger",
-          "Austin Wells"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 0,
-        "team": "NEW YORK YANKEES",
-        "players": [
-          "Luis Garc\u00eda Jr.",
-          "Ben Rice"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 75,
-        "team": "NEW YORK YANKEES",
-        "players": [
-          "Jazz Chisholm Jr.",
-          "Spencer Jones"
-        ]
-      },
-      {
-        "event": "Boston Red Sox @ New York Yankees",
-        "ending": 25,
-        "team": "NEW YORK YANKEES",
-        "players": [
-          "Ryan McMahon",
-          "Trent Grisham"
-        ]
-      },
-      {
-        "event": "Chicago Cubs @ San Diego Padres",
-        "ending": 75,
-        "team": "SAN DIEGO PADRES",
-        "players": [
-          "Dustin Harris",
-          "Jake Cronenworth",
-          "Gavin Sheets"
-        ]
-      },
-      {
-        "event": "Chicago Cubs @ San Diego Padres",
-        "ending": 0,
-        "team": "SAN DIEGO PADRES",
-        "players": [
-          "Xander Bogaerts",
-          "Jackson Merrill"
-        ]
-      },
-      {
-        "event": "Chicago White Sox @ Houston Astros",
-        "ending": 25,
-        "team": "CHICAGO WHITE SOX",
-        "players": [
-          "Andrew Benintendi",
-          "Colson Montgomery"
-        ]
-      },
-      {
-        "event": "Chicago White Sox @ Houston Astros",
-        "ending": 0,
-        "team": "CHICAGO WHITE SOX",
-        "players": [
-          "Tristan Peters",
-          "Braden Montgomery",
-          "Chase Meidroth"
-        ]
-      },
-      {
-        "event": "Chicago White Sox @ Houston Astros",
-        "ending": 50,
-        "team": "CHICAGO WHITE SOX",
-        "players": [
-          "Sam Antonacci",
-          "Miguel Vargas",
-          "Kyle Teel"
-        ]
-      },
-      {
-        "event": "Chicago White Sox @ Houston Astros",
-        "ending": 25,
-        "team": "HOUSTON ASTROS",
-        "players": [
-          "Cam Smith",
-          "Lucas Spence"
-        ]
-      }
-    ],
     [
       {
         "event": "Boston Red Sox @ New York Yankees",
@@ -30339,402 +27298,24 @@
           "Manny Machado"
         ]
       }
-    ]
+    ],
+    []
   ],
   "prev_ev": {
-    "Carson Kelly": {
-      "methods": [
-        "B365 way over MGM",
-        "HardRock 00",
-        "B365 over MGM",
-        "MGM 25",
-        "Multi-book method",
-        "Match 25",
-        "B365 over HardRock",
-        "FD 50",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 151,
-      "is_bet": false,
-      "method_count": 5,
-      "score": 92,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Michael Busch": {
+    "Brandon Marsh": {
       "methods": [
         "FD Pattern",
-        "HardRock 00",
-        "FD+MGM classic",
-        "B365 over MGM",
-        "MGM 25",
-        "Multi-book method",
         "DK FD-style",
-        "Match 25",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 35,
-      "is_bet": false,
-      "method_count": 4,
-      "score": 71,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Caleb Durbin": {
-      "methods": [
-        "B365 way over MGM",
-        "HardRock 00",
-        "Stayed in the group",
-        "B365 over MGM",
-        "MGM 25",
-        "Match 25",
-        "Rivers short vs pack",
-        "Multi-book Shorten",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 71,
-      "is_bet": false,
-      "method_count": 4,
-      "score": 67,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Ty France": {
-      "methods": [
-        "FD Pattern",
-        "HardRock 50",
-        "FD+MGM classic",
-        "Stayed in the group",
-        "MGM 25",
-        "Multi-book method",
-        "Match 25",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 23,
-      "is_bet": false,
-      "method_count": 4,
-      "score": 60,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Trevor Story": {
-      "methods": [
-        "MGM 50",
-        "B365 way over MGM",
-        "HardRock 00",
-        "MGM Exact",
-        "Stayed in the group",
-        "Last one left",
-        "B365 over MGM",
-        "Fanatics over pack",
-        "DK FD-style",
-        "Multi-book Shorten",
-        "Match 50",
-        "Rivers short vs pack",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 152,
-      "is_bet": false,
-      "method_count": 3,
-      "score": 81,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Jahmai Jones": {
-      "methods": [
-        "Rivers a bit over pack",
-        "FD Pattern",
-        "B365 way over MGM",
-        "HardRock 50",
-        "MGM Exact",
-        "B365 over MGM",
-        "Multi-book Shorten",
-        "B365 over HardRock",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 113,
-      "is_bet": false,
-      "method_count": 3,
-      "score": 64,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Manny Machado": {
-      "methods": [
-        "FD Pattern",
-        "Match 75",
-        "B365 way over MGM",
-        "B365 a bit over FD",
-        "FD a little long",
-        "FD+MGM classic",
-        "MGM 75",
-        "Last one left",
-        "Stayed in the group",
-        "B365 over MGM",
-        "B365 over HardRock",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 44,
-      "is_bet": false,
-      "method_count": 3,
-      "score": 53,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Jazz Chisholm Jr.": {
-      "methods": [
-        "B365 way over MGM",
-        "B365 over MGM",
-        "B365 over HardRock",
         "FD 90",
         "EV Premium",
         "Kelly Support"
       ],
-      "edge": 170,
+      "edge": 147,
       "is_bet": false,
       "method_count": 2,
-      "score": 70,
+      "score": 65,
       "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Ceddanne Rafaela": {
-      "methods": [
-        "MGM 50",
-        "B365 way over MGM",
-        "HardRock 00",
-        "MGM Exact",
-        "Stayed in the group",
-        "Last one left",
-        "B365 over MGM",
-        "Fanatics over pack",
-        "Fanatics Drift",
-        "FD 40",
-        "Rivers short vs pack",
-        "Match 50",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 107,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 52,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Cody Bellinger": {
-      "methods": [
-        "B365 way over MGM",
-        "B365 a bit over FD",
-        "HardRock 50",
-        "B365 over MGM",
-        "Multi-book Shorten",
-        "B365 over HardRock",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 94,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 49,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Luis Garc\u00eda Jr.": {
-      "methods": [
-        "FD Pattern",
-        "B365 way over MGM",
-        "Match 00",
-        "Stayed in the group",
-        "B365 over MGM",
-        "MGM 00",
-        "B365 over HardRock",
-        "FD 90",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 84,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 49,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Dansby Swanson": {
-      "methods": [
-        "Rivers a bit over pack",
-        "FD Pattern",
-        "Match 00",
-        "HardRock 00",
-        "FD a little long",
-        "DK FD-style",
-        "MGM 00",
-        "B365 over HardRock",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 67,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 46,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Seiya Suzuki": {
-      "methods": [
-        "Rivers a bit over pack",
-        "FD Pattern",
-        "Match 75",
-        "B365 a bit over FD",
-        "HardRock 50",
-        "FD+MGM classic",
-        "MGM 75",
-        "DK FD-style",
-        "B365 over HardRock",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 40,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 45,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Xander Bogaerts": {
-      "methods": [
-        "Rivers a bit over pack",
-        "FD Pattern",
-        "Match 75",
-        "HardRock 00",
-        "FD+MGM classic",
-        "MGM 75",
-        "Last one left",
-        "Stayed in the group",
-        "DK FD-style",
-        "Multi-book Shorten",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 5,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 45,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Fernando Tatis Jr.": {
-      "methods": [
-        "B365 a bit over FD",
-        "B365 over HardRock",
-        "FD 50",
-        "EV Premium",
-        "Kelly Support"
-      ],
-      "edge": 28,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 31,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Austin Hays": {
-      "methods": [
-        "Rivers a bit over pack",
-        "HardRock 50",
-        "Stayed in the group",
-        "MGM 25",
-        "DK FD-style",
-        "Match 25",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 22,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 27,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
-      ]
-    },
-    "Adley Rutschman": {
-      "methods": [
-        "FD Pattern",
-        "B365 way over MGM",
-        "B365 a bit over FD",
-        "MGM Exact",
-        "HardRock 50",
-        "B365 over MGM",
-        "Multi-book Shorten",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 16,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 27,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Wilyer Abreu": {
-      "methods": [
-        "B365 a bit over FD",
-        "Stayed in the group",
-        "B365 over MGM",
-        "MGM 25",
-        "FD 40",
-        "Match 25",
-        "B365 over HardRock",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 29,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 24,
-      "events": [
-        "Boston Red Sox @ New York Yankees"
-      ]
-    },
-    "Jackson Merrill": {
-      "methods": [
-        "Rivers a bit over pack",
-        "HardRock 00",
-        "Stayed in the group",
-        "B365 over MGM",
-        "MGM 25",
-        "Match 25",
-        "EV Support",
-        "Kelly Support"
-      ],
-      "edge": 8,
-      "is_bet": false,
-      "method_count": 2,
-      "score": 24,
-      "events": [
-        "Chicago Cubs @ San Diego Padres"
+        "Philadelphia Phillies @ Atlanta Braves"
       ]
     }
   }
