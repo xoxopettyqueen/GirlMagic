@@ -225,6 +225,29 @@
       "best_book": "fanduel",
       "time": "12:42 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Xavier Legette",
+      "source": "take_it",
+      "score": 69,
+      "methods": [
+        "Match 75",
+        "Books tight",
+        "B365 Exact",
+        "MGM Exact",
+        "MGM 75",
+        "B365 over MGM",
+        "Fanatics Loud",
+        "B365 25",
+        "Rivers short vs pack",
+        "Fanatics Rogue",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 575,
+      "best_book": "fanatics",
+      "time": "12:42 AM",
+      "sport": "NFL"
     }
   ]
 }
