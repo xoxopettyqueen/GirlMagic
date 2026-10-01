@@ -359,6 +359,25 @@
       "best_book": "fanduel",
       "time": "12:21 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Michael Pittman Jr.",
+      "source": "take_it",
+      "score": 51,
+      "methods": [
+        "Rivers a bit over pack",
+        "Books tight",
+        "B365 Exact",
+        "DK FD-style",
+        "B365 50",
+        "B365 over HardRock",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 370,
+      "best_book": "draftkings",
+      "time": "12:21 PM",
+      "sport": "NFL"
     }
   ]
 }
