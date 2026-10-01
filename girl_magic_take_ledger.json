@@ -339,6 +339,26 @@
       "best_book": "draftkings",
       "time": "12:21 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Darnell Washington",
+      "source": "take_it",
+      "score": 57,
+      "methods": [
+        "Match 00",
+        "HardRock 50",
+        "FD a little long",
+        "FD 600",
+        "Multi-book method",
+        "B365 25",
+        "MGM 00",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanduel",
+      "time": "12:21 PM",
+      "sport": "NFL"
     }
   ]
 }
