@@ -248,6 +248,28 @@
       "best_book": "fanatics",
       "time": "12:42 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Ty Johnson",
+      "source": "take_it",
+      "score": 74,
+      "methods": [
+        "Rivers a bit over pack",
+        "FD Pattern",
+        "HardRock 50",
+        "FD a little long",
+        "FD+MGM classic",
+        "MGM 25",
+        "Multi-book method",
+        "Match 25",
+        "FD 90",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 490,
+      "best_book": "fanduel",
+      "time": "12:42 AM",
+      "sport": "NFL"
     }
   ]
 }
