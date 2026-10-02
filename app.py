@@ -1299,26 +1299,23 @@ CLASSIC_TRICK_STAMPS = {
 # Week 1 NFL: agreement + MGM 25/75. FD Pattern almost absent. Last one left 0/7.
 NFL_DEAD_STAMPS = {
     "MGM Exact", "Match 50", "Match 75", "MGM 50", "MGM 75", "MGM 60",
-    "FD 600", "HardRock Heater", "Caesars 90",
-    "B365 a bit over FD", "Rivers a bit over pack",
+    "MGM 25", "Match 25", "MGM 40", "MGM 10",
+    "FD 600", "HardRock Heater", "Caesars 90", "Caesars Classic",
+    "B365 a bit over FD", "B365 over MGM", "B365 way over MGM", "B365 over HardRock",
+    "Rivers a bit over pack", "Rivers way over pack", "Rivers short vs pack",
+    "Fanatics Loud", "HardRock 00",
 }
 NFL_RHYTHM_STAMPS = {
     "Books tight", "Multi-book Shorten", "DK 10",
-    "MGM 00", "Match 00", "FD a little long", "DK FD-style",
-    "EV Support", "HardRock 50",
+    "MGM 00", "Match 00", "DK FD-style", "Fanatics Drift",
 }
 NFL_STAMP_METHODS = {
-    "Books tight", "Multi-book method", "Multi-book Shorten",
-    "MGM 25", "Match 25",
+    "Books tight", "Multi-book Shorten",
     "DK 10",
-    "Fanatics Rogue",
-    "Stayed in the group",
-    "FD a little long",
     "MGM 00", "Match 00",
     "DK FD-style",
-    "EV Support",
-    "HardRock 50",
-} - NFL_DEAD_STAMPS
+    "Fanatics Drift",
+}
 NHL_STAMP_METHODS = {
     "Books tight", "Multi-book Shorten", "PP1", "L1",
     "HotShots", "HotGoals", "MatchupSoft", "GoalieWeak",
@@ -1569,7 +1566,9 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     if bk == "caesars":
         return False
     if active_sport() == "NFL":
-        if bk and bk not in {"draftkings", "fanduel", "hardrockbet", "fanatics"}:
+        if bk and bk not in {"fanduel", "hardrockbet", "betrivers"}:
+            return False
+        if bk == "fanatics" and end != 75:
             return False
     elif active_sport() == "NHL":
         if bk and bk not in {"draftkings", "fanduel"}:
@@ -1591,9 +1590,13 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     end = last_two(best_price)
     hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
     if active_sport() == "NFL":
+        if 70 <= sc <= 84:
+            return False
         if ms & NFL_DEAD_STAMPS and not (ms & NFL_RHYTHM_STAMPS):
             return False
-        if not (ms & NFL_RHYTHM_STAMPS) and not (ms & (CLASSIC_TRICK_STAMPS - NFL_DEAD_STAMPS)):
+        if not (ms & NFL_RHYTHM_STAMPS):
+            return False
+        if stamps < 2:
             return False
         if not nfl_price_ok(best_price):
             return False
@@ -1601,18 +1604,15 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
             px = abs(int(best_price or 0))
         except Exception:
             px = 0
-        if px >= 1000:
+        if px >= 800:
             return False
-        if end in (40, 50, 75) and stamps >= 2:
+        if end in (25, 50, 10):
+            return False
+        if end in (60, 70, 75, 20, 0) and stamps >= 2:
             return True
-        if end in (75,) and stamps < 3:
+        if bk == "fanatics" and end != 75:
             return False
-        if bk == "fanatics":
-            if end == 0:
-                return False
-            if not fn.get("allow_take") and not fn.get("way_over_mgm"):
-                return False
-        return True
+        return stamps >= 2 and end in (0, 20, 60, 70, 75)
     if active_sport() == "NHL":
         try:
             px = abs(int(best_price or 0))
@@ -6399,7 +6399,7 @@ def auto_grade_pending():
             except Exception:
                 age = 0
             fetch_ok = "miss" not in str(msg).lower() and "error" not in str(msg).lower()
-            slate_closed = age >= 2 and fetch_ok
+            slate_closed = age >= 2 and fetch_ok and bool(hit_set or miss_pool)
             for row in batch:
                 study = str(row.get("source") or "") in STUDY_SOURCES
                 player = row.get("player") or ""
