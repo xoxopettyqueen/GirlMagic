@@ -659,6 +659,24 @@
       "best_book": "fanduel",
       "time": "09:16 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Parker Washington",
+      "source": "take_it",
+      "score": 54,
+      "methods": [
+        "B365 over HardRock",
+        "Match 25",
+        "Books tight",
+        "Stayed in the group",
+        "MGM 25",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 150,
+      "best_book": "fanatics",
+      "time": "09:16 AM",
+      "sport": "NFL"
     }
   ]
 }
