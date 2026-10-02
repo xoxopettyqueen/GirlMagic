@@ -338822,6 +338822,47 @@
     "updated_at": "2026-10-02T17:13:41.636475+00:00"
   },
   {
+    "id": "2026-10-02_Cam Fowler_shop_lean_52",
+    "date": "2026-10-02",
+    "time": "10:13 AM",
+    "player": "Cam Fowler",
+    "score": 0,
+    "edge": 52,
+    "best_price": 900,
+    "best_book": "fanatics",
+    "median": 837,
+    "book_prices": {
+      "betmgm": 775,
+      "betrivers": 750,
+      "caesars": 675,
+      "draftkings": 1100,
+      "fanatics": 900,
+      "fanduel": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-02T17:13:41.837914+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Cam Fowler",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 900,
+    "book": "fanatics",
+    "created_at": "2026-10-02T17:13:41.837914+00:00",
+    "updated_at": "2026-10-02T17:13:41.837914+00:00"
+  },
+  {
     "id": "2026-10-02_Chris Moore_take_it_83",
     "date": "2026-10-02",
     "time": "10:10 AM",
@@ -338954,46 +338995,5 @@
     "book": "fanduel",
     "created_at": "2026-10-02T17:10:18.729683+00:00",
     "updated_at": "2026-10-02T17:10:18.729683+00:00"
-  },
-  {
-    "id": "2026-10-02_Cam Fowler_shop_lean_52",
-    "date": "2026-10-02",
-    "time": "10:13 AM",
-    "player": "Cam Fowler",
-    "score": 0,
-    "edge": 52,
-    "best_price": 900,
-    "best_book": "fanatics",
-    "median": 837,
-    "book_prices": {
-      "betmgm": 775,
-      "betrivers": 750,
-      "caesars": 675,
-      "draftkings": 1100,
-      "fanatics": 900,
-      "fanduel": 900
-    },
-    "price_bucket": "+800-999",
-    "ending": 0,
-    "methods": [
-      "Shop LEAN"
-    ],
-    "core": 0,
-    "result": "PENDING",
-    "source": "shop_lean",
-    "logged_at": "2026-10-02T17:13:41.837914+00:00",
-    "price_source": "shop",
-    "sport": "NHL",
-    "market": "anytime_goal",
-    "player_name": "Cam Fowler",
-    "call_type": "WATCH",
-    "status": "PENDING",
-    "stamps": [
-      "Shop LEAN"
-    ],
-    "price": 900,
-    "book": "fanatics",
-    "created_at": "2026-10-02T17:13:41.837914+00:00",
-    "updated_at": "2026-10-02T17:13:41.837914+00:00"
   }
 ]
