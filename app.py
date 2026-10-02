@@ -12645,6 +12645,22 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                     unsafe_allow_html=True,
                 )
                 continue
+            if sport == "NHL":
+                show = int(data.get("data_score") or align or 0)
+                line = data.get("summary") or "No shot line yet"
+                st.markdown(
+                    f'<div class="{klass}">'
+                    f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏒 Anytime Goal</span></div>'
+                    f'{_petty_meter(show, data.get("data_tier"))}'
+                    f'<details class="al-fold" open><summary>📊 Shots / goals / PP</summary>'
+                    f'<div class="al-pack">{line}</div></details>'
+                    f'<div class="al-pack">💸 {price} {book_label(item.get("best_book"))}</div>'
+                    f'<div class="al-tags">{"".join(pills)}</div>'
+                    f'<div class="card-foot">Confidence {show} · shots, goals, PP. Board still tickets.</div>'
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+                continue
             ev = data.get("ev")
             hh = data.get("hh")
             brl = data.get("barrel")
