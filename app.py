@@ -11080,7 +11080,10 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             bits.append(f"{int(ppp)} PPP")
         if form.get("sh_pct") not in (None, ""):
             try:
-                bits.append(f"SH% {float(form.get('sh_pct')):.1f}")
+                sh = float(form.get("sh_pct"))
+                if sh <= 1:
+                    sh *= 100
+                bits.append(f"shoots {sh:.0f}%")
             except Exception:
                 pass
         if form.get("toi"):
@@ -11096,8 +11099,18 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
                 continue
             if own and tk == own:
                 continue
-            pos = form.get("pos") or "F"
-            dvp = f"DVP vs {rec.get('team')} · {rec.get('ga')} GA/g · {rec.get('sa')} SA/g · PK {rec.get('pk') or '—'} · {rec.get('tone')} (rank {rec.get('rank')}) · vs {pos}"
+            pos = {"D": "defenseman", "C": "center", "L": "left wing", "R": "right wing"}.get(form.get("pos") or "", "skater")
+            pk = rec.get("pk")
+            try:
+                pk_n = float(pk)
+                pk_txt = f"{pk_n*100:.0f}%" if pk_n <= 1 else f"{pk_n:.0f}%"
+            except Exception:
+                pk_txt = "—"
+            vibe = "Soft — they leak." if rec.get("tone") == "soft" else "Stingy — hard to score on." if rec.get("tone") == "stingy" else "Middle of the pack."
+            dvp = (
+                f"{rec.get('team')} gives up {rec.get('ga')} goals a game and {rec.get('sa')} shots a game. "
+                f"They kill penalties {pk_txt} of the time. {vibe} Rank {rec.get('rank')} of 32. He is a {pos}."
+            )
             if rec.get("tone") == "soft":
                 score += 8
             break
@@ -12740,23 +12753,23 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 continue
             if sport == "NHL":
                 show = int(data.get("data_score") or align or 0)
-                line = data.get("summary") or "No shot line yet"
-                sog = int(float(data.get("shots") or 0))
+                pos = {"D": "defenseman", "C": "center", "L": "left wing", "R": "right wing"}.get(form.get("pos") or "", "skater")
+                show = int(data.get("data_score") or align or 0)
                 st.markdown(
                     f'<div class="{klass}">'
                     f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏒 Anytime Goal</span></div>'
                     f'{_petty_meter(show, data.get("data_tier"))}'
-                    f'<details class="al-fold" open><summary>📊 SOG · assists · PP · TOI</summary>'
-                    f'<div class="al-pack">{line}<br>'
-                    f'SOG {sog} · {data.get("shots_pg") or 0} /gm · '
-                    f'G {int(float(data.get("goals") or 0))} · A {int(float(data.get("assists") or 0))} · '
-                    f'P {int(float(data.get("points") or 0))}<br>'
-                    f'PPG {int(float(data.get("pp_goals") or 0))} · PPP {int(float(data.get("pp_points") or 0))} · '
-                    f'TOI {data.get("toi") or "—"}<br>'
-                    f'🛡️ {data.get("dvp_line") or "DVP waits on the opponent name"}</div></details>'
-                    f'<div class="al-pack">💸 {price} {book_label(item.get("best_book"))}</div>'
-                    f'<div class="al-tags">{"".join(pills)}</div>'
-                    f'<div class="card-foot">Confidence {show} · shots, assists, PP, ice time. Board still tickets.</div>'
+                    f'<details class="al-fold" open><summary>What he does</summary>'
+                    f'<div class="al-pack">'
+                    f'{int(float(data.get("shots") or 0))} shots · {data.get("shots_pg") or 0} a game. Shots are chances.<br>'
+                    f'{int(float(data.get("goals") or 0))} goals · {int(float(data.get("assists") or 0))} assists · {int(float(data.get("points") or 0))} points.<br>'
+                    f'{int(float(data.get("pp_goals") or 0))} power-play goals · {int(float(data.get("pp_points") or 0))} power-play points. That is the extra-man unit.<br>'
+                    f'Ice time {data.get("toi") or "—"} a game. More minutes, more chances.'
+                    f'</div></details>'
+                    f'<details class="al-fold" open><summary>Who they play</summary>'
+                    f'<div class="al-pack">{data.get("dvp_line") or "Opponent line shows after Fetch."}</div></details>'
+                    f'<div class="al-pack">Price {price} at {book_label(item.get("best_book"))}. Confidence does not buy the ticket.</div>'
+                    f'<div class="card-foot">Confidence {show} · shots, helpers, power play, ice time.</div>'
                     f"</div>",
                     unsafe_allow_html=True,
                 )
@@ -15750,4 +15763,3 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
