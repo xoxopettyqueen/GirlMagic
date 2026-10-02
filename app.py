@@ -1157,7 +1157,12 @@ def methods_min():
 
 
 def tracker_min_n():
-    return 8 if active_sport() == "NFL" else TRACKER_MIN_N
+    sport = active_sport()
+    if sport == "NFL":
+        return 8
+    if sport == "NHL":
+        return 3
+    return TRACKER_MIN_N
 
 
 def nfl_loose_mode():
@@ -7154,7 +7159,7 @@ def render_daily_desk():
 
 def build_tracker_stats(rows):
     """Signal methods (tags) vs best book taken vs ending on best price - kept separate."""
-    done = [r for r in rows if r.get("result") in ("HIT", "MISS") and r.get("source") != "manual_hr"]
+    done = [r for r in rows if str(r.get("result") or "").upper() in ("HIT", "MISS", "LEARN_HIT", "LEARN_MISS") and r.get("source") != "manual_hr"]
     method_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     book_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     ending_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
@@ -7163,21 +7168,26 @@ def build_tracker_stats(rows):
     book_end_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     score_stats = defaultdict(lambda: {"hit": 0, "miss": 0})
     for r in done:
-        is_hit = r["result"] == "HIT"
+        is_hit = str(r.get("result") or "").upper() in ("HIT", "LEARN_HIT")
+        sport = row_sport(r)
         methods_to_count = set()
         for m in r.get("methods") or []:
             nm = normalize_method_name(m)
-            if nm in TRACKER_BLOCKLIST or nm in NOISE_METHODS: continue
-            if is_core_method(nm) or nm in PERSONAL_STRONG:
+            if sport == "NHL" and nm not in NHL_LEARN_METHODS:
+                continue
+            if sport == "NFL" and nm in NHL_HIDE_ON_BOARD:
+                continue
+            if nm in TRACKER_BLOCKLIST or nm in NOISE_METHODS:
+                continue
+            if sport == "NHL" or is_core_method(nm) or nm in PERSONAL_STRONG or nm in TRACKER_ALWAYS:
                 methods_to_count.add(nm)
-                break
-        for m in r.get("methods") or []:
-            nm = normalize_method_name(m)
-            if nm in TRACKER_ALWAYS: methods_to_count.add(nm)
         for nm in methods_to_count:
-            if nm in TRACKER_BLOCKLIST: continue
-            if is_hit: method_stats[nm]["hit"] += 1
-            else: method_stats[nm]["miss"] += 1
+            if nm in TRACKER_BLOCKLIST:
+                continue
+            if is_hit:
+                method_stats[nm]["hit"] += 1
+            else:
+                method_stats[nm]["miss"] += 1
         # Best book we took (price source) - not the signal method
         bb = book_label(r.get("best_book"))
         if bb != "Untagged":
@@ -14216,7 +14226,7 @@ def main():
             "If TAKE % sits on top of WATCH %, the green list is too fat — raise the floor next week.",
         )
         st.markdown('<div class="queen-banner">📡 Tracker</div>', unsafe_allow_html=True)
-        render_daily_desk()
+        render_daily_desk() if active_sport() != "NHL" else None
         st.markdown(
             '<div class="info-box"><b>How to read this.</b> '
             "Board green = Run it, baddie (source take_it). Shop TAKE/LEAN = the number we would buy. "
@@ -14225,7 +14235,8 @@ def main():
             unsafe_allow_html=True,
         )
         sport_rows = results_for_sport()
-        n_sport = len([r for r in sport_rows if r.get("result") in ("HIT", "MISS")])
+        n_sport = len([r for r in sport_rows if str(r.get("result") or "").upper() in ("HIT", "MISS", "LEARN_HIT", "LEARN_MISS")])
+        n_hits = len([r for r in sport_rows if str(r.get("result") or "").upper() in ("HIT", "LEARN_HIT")])
         n_all = len([r for r in load_results() if r.get("result") in ("HIT", "MISS")])
         n_pend = len([r for r in sport_rows if r.get("result") == "PENDING" and r.get("date") in (today_az(), today_mlb_date())])
         n_take_pend = len([r for r in sport_rows if r.get("result") == "PENDING" and r.get("source") == "take_it" and r.get("date") in (today_az(), today_mlb_date())])
@@ -14274,14 +14285,20 @@ def main():
             for line in bits:
                 st.markdown(f'<div class="info-box">{line}</div>', unsafe_allow_html=True)
         else:
-            st.info(
-                f"No {active_sport()} HITs graded yet. "
-                f"{n_pend} PENDING rows are already saved for today "
-                f"({n_take_pend} Run It / take_it). "
-                "Open Grade → Results and tap Auto-grade, or HIT/MISS. "
-                "Tracker stays empty until those flip off PENDING. "
-                "MLB and NFL never share a Tracker."
-            )
+            if n_sport and not n_hits:
+                st.info(
+                    f"{active_sport()} has {n_sport} graded rows and 0 hits in this window. "
+                    "That is the grade, not an empty page. "
+                    f"{n_pend} today are still PENDING until the box is final."
+                )
+            else:
+                st.info(
+                    f"No {active_sport()} HITs graded yet. "
+                    f"{n_pend} PENDING rows are already saved for today "
+                    f"({n_take_pend} Run It / take_it). "
+                    "Open Grade → Results and tap Auto-grade. "
+                    "Tracker stays on this sport only."
+                )
         baseline, baseline_n = take_it_baseline_rate(sport_rows)
         if baseline is not None:
             st.markdown(
@@ -14344,8 +14361,10 @@ def main():
         st.markdown("#### By signal method")
         st.caption("How the tagged names actually graded - not which window you clicked.")
         chips = chips_from_stats(method_stats, compare_baseline=True)
+        if active_sport() == "NHL" and not chips:
+            st.caption("NHL stamps only (PP1, L1, HotShots, lanes, books). Baseball tricks are hidden on this sport.")
         st.markdown(
-            "".join(chips) if chips else f"_(Need graded plays with n >= {TRACKER_MIN_N})_",
+            "".join(chips) if chips else f"_(Need graded {active_sport()} plays with n >= {tracker_min_n()})_",
             unsafe_allow_html=True,
         )
 
