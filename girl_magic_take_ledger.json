@@ -790,6 +790,27 @@
       "best_book": "draftkings",
       "time": "10:10 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Seth McGowan",
+      "source": "take_it",
+      "score": 80,
+      "methods": [
+        "FD 50",
+        "Rivers short vs pack",
+        "Multi-book method",
+        "Match 00",
+        "Multi-book Shorten",
+        "MGM 00",
+        "Stayed in the group",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 850,
+      "best_book": "fanduel",
+      "time": "10:10 AM",
+      "sport": "NFL"
     }
   ]
 }
