@@ -11092,6 +11092,7 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
         if not form:
             bits.append("NHL stats miss — name did not match the skater list")
         dvp = ""
+        pos = {"D": "defenseman", "C": "center", "L": "left wing", "R": "right wing"}.get(form.get("pos") or "", "skater")
         evn = " ".join(str(x) for x in (item.get("events") or [item.get("event") or ""])).lower()
         own = _fold_player(form.get("team") or "")
         for tk, rec in (live.get("teams") or {}).items():
@@ -11099,7 +11100,6 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
                 continue
             if own and tk == own:
                 continue
-            pos = {"D": "defenseman", "C": "center", "L": "left wing", "R": "right wing"}.get(form.get("pos") or "", "skater")
             pk = rec.get("pk")
             try:
                 pk_n = float(pk)
@@ -11125,6 +11125,7 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
             "pp_points": ppp,
             "toi": form.get("toi") or "",
             "dvp_line": dvp,
+            "pos_name": pos,
             "data_score": min(100, score),
             "attack": "shots",
         }
@@ -12753,7 +12754,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 continue
             if sport == "NHL":
                 show = int(data.get("data_score") or align or 0)
-                pos = {"D": "defenseman", "C": "center", "L": "left wing", "R": "right wing"}.get(form.get("pos") or "", "skater")
+                pos = data.get("pos_name") or "skater"
                 show = int(data.get("data_score") or align or 0)
                 st.markdown(
                     f'<div class="{klass}">'
