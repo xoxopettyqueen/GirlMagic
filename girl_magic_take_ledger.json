@@ -415,6 +415,26 @@
       "best_book": "draftkings",
       "time": "06:28 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Harold Fannin Jr.",
+      "source": "take_it",
+      "score": 59,
+      "methods": [
+        "FD Pattern",
+        "Match 75",
+        "HardRock 50",
+        "FD+MGM classic",
+        "MGM 75",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 460,
+      "best_book": "fanduel",
+      "time": "06:35 PM",
+      "sport": "NFL"
     }
   ]
 }
