@@ -10937,6 +10937,43 @@ def _is_nfl_rookie(form):
     return dy == season or rs == season
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def load_live_nhl_data():
+    """NHL skater shots, goals, PP, TOI. This season, last season if the sample is tiny."""
+    out = {}
+    for season in ("20252026", "20242025"):
+        try:
+            r = requests.get(
+                "https://api.nhle.com/stats/rest/en/skater/summary",
+                params={"cayenneExp": f"seasonId={season} and gameTypeId=2", "limit": 800},
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=20,
+            )
+            rows = (r.json() or {}).get("data") or []
+        except Exception:
+            rows = []
+        if len(rows) < 40:
+            continue
+        for row in rows:
+            name = row.get("skaterFullName") or row.get("lastName") or ""
+            key = _fold_player(name)
+            if not key:
+                continue
+            out[key] = {
+                "name": name,
+                "season": season,
+                "gp": row.get("gamesPlayed") or 0,
+                "goals": row.get("goals") or 0,
+                "shots": row.get("shots") or 0,
+                "pp_goals": row.get("ppGoals") or 0,
+                "toi": row.get("timeOnIcePerGame") or 0,
+                "pp_toi": row.get("ppTimeOnIcePerGame") or row.get("ppTimeOnIce") or 0,
+            }
+        if out:
+            break
+    return out
+
+
 def _petty_upside_from_item(item, sport="MLB", live=None):
     """Petty Upside from LIVE Savant + Stats API. Longshots never dropped."""
     try:
@@ -10949,6 +10986,42 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
     is_star = any(s in name.lower() for s in stars)
     longshot = (p >= 550 and not is_star) or p >= 750
     live = live or {}
+    if sport == "NHL":
+        form = (live or {}).get(key) or {}
+        gp = float(form.get("gp") or 0)
+        shots = float(form.get("shots") or 0)
+        goals = float(form.get("goals") or 0)
+        ppg = float(form.get("pp_goals") or 0)
+        spg = (shots / gp) if gp else 0
+        bits = []
+        score = 18
+        if form.get("season"):
+            bits.append(f"season {form.get('season')}")
+        if gp:
+            bits.append(f"{int(gp)} GP")
+        if spg:
+            bits.append(f"{spg:.1f} shots/gm")
+            score += 22 if spg >= 3.2 else (14 if spg >= 2.4 else 6)
+        if goals:
+            bits.append(f"{int(goals)} goals")
+            score += min(18, int(goals) * 2)
+        if ppg:
+            bits.append(f"{int(ppg)} PP goals")
+            score += min(16, int(ppg) * 4)
+        toi = form.get("toi")
+        if toi:
+            bits.append(f"TOI {toi}")
+            score += 8
+        if not form:
+            bits.append("NHL stats miss — still listed")
+        return {
+            "summary": " · ".join(bits),
+            "shots_pg": round(spg, 2),
+            "goals": goals,
+            "pp_goals": ppg,
+            "data_score": min(100, score),
+            "attack": "shots",
+        }
     if sport == "NFL":
         form = (live.get("form") or {}).get(key) or {}
         used_pre = False
@@ -11710,6 +11783,9 @@ def _data_block_30(data, sport="MLB"):
             keep.append(pl)
         line = " · ".join(keep[:5]) if keep else "No volume line yet"
         return f'<div class="al-pack">{line}</div>'
+    elif sport == "NHL":
+        line = str(data.get("summary") or "Anytime goal · lane + book")
+        return f'<div class="al-pack">🏒 {line}</div>'
     elif sport == "NBA":
         usg = data.get("usage")
         hero = f'<div class="db3-hero db3-nba">🏀 Usage {usg if usg is not None else "—"}</div>'
@@ -11767,7 +11843,7 @@ def _data_block_30(data, sport="MLB"):
 def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     """Data + odds overlay. Reads Board/Watch AND the raw +400 slate."""
     raw_rows = list(ev_board or []) + list(watch_board or []) + list(coverage_board or [])
-    raw_rows.extend(_confidence_rows_from_odds(400))
+    raw_rows.extend(_confidence_rows_from_odds(250 if active_sport() == "NHL" else 400))
     seen_p = {}
     for it in raw_rows:
         k = _fold_player(it.get("player"))
@@ -11784,7 +11860,7 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         if better or (it.get("is_bet") and not prev.get("is_bet")):
             seen_p[k] = it
     rows = list(seen_p.values())
-    if active_sport() != "NFL":
+    if active_sport() == "MLB":
         try:
             prefetch_mlb_splits([r.get("player") for r in rows[:120]])
         except Exception:
@@ -11895,18 +11971,18 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
     )
     pass
     if not rows:
-        st.info("Hit Fetch first. Confidence scores the +400 slate, then Active only keeps the pile.")
+        floor = "+250 anytime goal" if active_sport() == "NHL" else "+400 slate"
+        st.info(f"Hit Fetch first. Confidence scores the {floor}, then Active only keeps the pile.")
         return
     sport = active_sport()
     st.session_state["_align_enrich"] = 0
     live = {}
-    if sport != "NFL":
+    if sport == "MLB":
         with st.spinner("Pulling Savant EV / HH / Barrel + last 7–14 day HRs…"):
             live = load_live_mlb_data()
-    else:
-        with st.spinner("Pulling nflverse last-5-week usage…"):
-            live = load_live_nfl_data()
-        pass
+    elif sport == "NHL":
+        with st.spinner("Pulling NHL shots, goals, PP…"):
+            live = load_live_nhl_data()
     cards = []
     hidden = 0
     for item in rows:
@@ -12018,6 +12094,8 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
         # Data-first. Odds stay on the card. A stamp is a bonus, not a ticket in.
         if sport == "NFL":
             keep = signed_px >= 100
+        elif sport == "NHL":
+            keep = signed_px >= 250
         else:
             keep = px >= 400
         if not keep:
@@ -12105,6 +12183,26 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             else:
                 vibe = "📚 Homework"
             cards.append((align, item, data, notes, vibe))
+            continue
+        if sport == "NHL":
+            spg = float(data.get("shots_pg") or 0)
+            goals = float(data.get("goals") or 0)
+            ppg = float(data.get("pp_goals") or 0)
+            dscore = int(data.get("data_score") or 18)
+            if books_n >= 4:
+                dscore += 8
+            data["data_score"] = min(100, dscore)
+            data["data_tier"] = "hot" if dscore >= 70 else "mid" if dscore >= 50 else "cold"
+            data["summary"] = data.get("summary") or "no shot line"
+            data["park_line"] = ""
+            data["vs_line"] = ""
+            notes = [data["summary"]]
+            if spg >= 3:
+                notes.append("Shot volume")
+            if ppg:
+                notes.append("PP goals")
+            vibe = "🔒 Locked" if dscore >= 85 else "💬 Spoke" if dscore >= 70 else "🫧 Whisper" if dscore >= 50 else "📚 Homework"
+            cards.append((dscore, item, data, notes, vibe))
             continue
         park_f = _park_hr_factor(data.get("matchup") or "")
         if not park_f or park_f == 100:
