@@ -322597,7 +322597,7 @@
   {
     "id": "2026-10-02_Adam Trautman_watch_74",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Adam Trautman",
     "score": 74,
     "edge": 66,
@@ -322645,7 +322645,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.051602+00:00",
+    "updated_at": "2026-10-02T21:37:49.301825+00:00",
     "player_name": "Adam Trautman",
     "stamps": [
       "B365 Exact",
@@ -323249,7 +323249,7 @@
   {
     "id": "2026-10-02_Ben Sinnott_watch_79",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Ben Sinnott",
     "score": 79,
     "edge": 84,
@@ -323296,7 +323296,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.173366+00:00",
+    "updated_at": "2026-10-02T21:37:47.789926+00:00",
     "player_name": "Ben Sinnott",
     "stamps": [
       "FD 50",
@@ -323360,7 +323360,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:33.519546+00:00",
+    "updated_at": "2026-10-02T21:37:48.362079+00:00",
     "player_name": "Bhayshul Tuten",
     "stamps": [
       "All books same",
@@ -323938,7 +323938,7 @@
   {
     "id": "2026-10-02_Bryce Lance_watch_69",
     "date": "2026-10-02",
-    "time": "08:57 AM",
+    "time": "02:37 PM",
     "player": "Bryce Lance",
     "score": 69,
     "edge": 24,
@@ -323988,7 +323988,7 @@
     "price": 525,
     "book": "betmgm",
     "created_at": "2026-10-02T15:57:59.778931+00:00",
-    "updated_at": "2026-10-02T15:57:59.778931+00:00"
+    "updated_at": "2026-10-02T21:37:48.219043+00:00"
   },
   {
     "id": "2026-10-02_Brycen Tremayne_watch_87",
@@ -324172,7 +324172,7 @@
     "benford_cluster": 0.25,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:31.106515+00:00",
+    "updated_at": "2026-10-02T21:37:48.255693+00:00",
     "player_name": "CJ Donaldson",
     "stamps": [
       "B365 Exact",
@@ -324456,7 +324456,7 @@
   {
     "id": "2026-10-02_Cam Ward_watch_40",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Cam Ward",
     "score": 40,
     "edge": 1,
@@ -324496,7 +324496,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:21.344530+00:00",
+    "updated_at": "2026-10-02T21:37:49.229143+00:00",
     "player_name": "Cam Ward",
     "stamps": [
       "B365 over HardRock",
@@ -324612,7 +324612,7 @@
     "benford_cluster": 0.67,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:40.117738+00:00",
+    "updated_at": "2026-10-02T21:37:48.541958+00:00",
     "player_name": "Carolina Panthers D/ST",
     "stamps": [
       "Match 00",
@@ -325262,7 +325262,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:31.656990+00:00",
+    "updated_at": "2026-10-02T21:37:49.500789+00:00",
     "player_name": "Cole Kmet",
     "stamps": [
       "B365 over HardRock",
@@ -325946,7 +325946,7 @@
   {
     "id": "2026-10-02_Darius Cooper_watch_74",
     "date": "2026-10-02",
-    "time": "11:10 AM",
+    "time": "02:37 PM",
     "player": "Darius Cooper",
     "score": 74,
     "edge": 42,
@@ -325992,7 +325992,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:10:23.975296+00:00",
+    "updated_at": "2026-10-02T21:37:47.606407+00:00",
     "player_name": "Darius Cooper",
     "stamps": [
       "MGM 50",
@@ -326313,7 +326313,7 @@
   {
     "id": "2026-10-02_DeeJay Dallas_watch_61",
     "date": "2026-10-02",
-    "time": "11:10 AM",
+    "time": "02:37 PM",
     "player": "DeeJay Dallas",
     "score": 61,
     "edge": 34,
@@ -326360,7 +326360,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:10:25.132579+00:00",
+    "updated_at": "2026-10-02T21:37:48.184986+00:00",
     "player_name": "DeeJay Dallas",
     "stamps": [
       "MGM 50",
@@ -326678,7 +326678,7 @@
   {
     "id": "2026-10-02_Devontez Walker_watch_100",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Devontez Walker",
     "score": 100,
     "edge": 244,
@@ -326729,7 +326729,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:09.033957+00:00",
+    "updated_at": "2026-10-02T21:37:47.282116+00:00",
     "player_name": "Devontez Walker",
     "stamps": [
       "B365 Exact",
@@ -326924,7 +326924,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:34.306964+00:00",
+    "updated_at": "2026-10-02T21:37:48.472411+00:00",
     "player_name": "Drew Sample",
     "stamps": [
       "B365 over HardRock",
@@ -327054,7 +327054,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:32.036096+00:00",
+    "updated_at": "2026-10-02T21:37:47.820665+00:00",
     "player_name": "Dyami Brown",
     "stamps": [
       "MGM 50",
@@ -327673,12 +327673,12 @@
     "price": 500,
     "book": "betmgm",
     "created_at": "2026-10-02T15:58:01.846181+00:00",
-    "updated_at": "2026-10-02T21:37:36.515932+00:00"
+    "updated_at": "2026-10-02T21:37:49.534437+00:00"
   },
   {
     "id": "2026-10-02_Foster Moreau_watch_66",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Foster Moreau",
     "score": 66,
     "edge": 49,
@@ -327724,7 +327724,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:21.045056+00:00",
+    "updated_at": "2026-10-02T21:37:48.909514+00:00",
     "player_name": "Foster Moreau",
     "stamps": [
       "B365 over HardRock",
@@ -327926,7 +327926,7 @@
   {
     "id": "2026-10-02_Green Bay Packers D/ST_watch_39",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Green Bay Packers D/ST",
     "score": 39,
     "edge": 17,
@@ -327969,7 +327969,7 @@
     "price": 500,
     "book": "betmgm",
     "created_at": "2026-10-02T15:58:02.045006+00:00",
-    "updated_at": "2026-10-02T18:57:21.621869+00:00"
+    "updated_at": "2026-10-02T21:37:49.573855+00:00"
   },
   {
     "id": "2026-10-02_Greg Dortch_watch_90",
@@ -328207,7 +328207,7 @@
   {
     "id": "2026-10-02_Indianapolis Colts D/ST_watch_52",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Indianapolis Colts D/ST",
     "score": 52,
     "edge": 30,
@@ -328244,7 +328244,7 @@
     "benford_cluster": 0.67,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:11.952439+00:00",
+    "updated_at": "2026-10-02T21:37:49.607342+00:00",
     "player_name": "Indianapolis Colts D/ST",
     "stamps": [
       "Match 00",
@@ -329190,7 +329190,7 @@
   {
     "id": "2026-10-02_Jalen Nailor_watch_70",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Jalen Nailor",
     "score": 70,
     "edge": 49,
@@ -329236,7 +329236,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.394394+00:00",
+    "updated_at": "2026-10-02T21:37:48.323963+00:00",
     "player_name": "Jalen Nailor",
     "stamps": [
       "B365 Exact",
@@ -329615,7 +329615,7 @@
   {
     "id": "2026-10-02_Jaylin Noel_watch_73",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Jaylin Noel",
     "score": 73,
     "edge": 58,
@@ -329656,7 +329656,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:21.074192+00:00",
+    "updated_at": "2026-10-02T21:37:48.875133+00:00",
     "player_name": "Jaylin Noel",
     "stamps": [
       "FD 50",
@@ -329777,7 +329777,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:31.004573+00:00",
+    "updated_at": "2026-10-02T21:37:47.751371+00:00",
     "player_name": "Jeremy Ruckert",
     "stamps": [
       "FD 50",
@@ -329797,7 +329797,7 @@
   {
     "id": "2026-10-02_John Bates_watch_82",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "John Bates",
     "score": 82,
     "edge": 97,
@@ -329838,7 +329838,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:19.658694+00:00",
+    "updated_at": "2026-10-02T21:37:47.315335+00:00",
     "player_name": "John Bates",
     "stamps": [
       "FD 50",
@@ -330240,7 +330240,7 @@
   {
     "id": "2026-10-02_Josh Cameron_watch_81",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Josh Cameron",
     "score": 81,
     "edge": 74,
@@ -330280,7 +330280,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.332299+00:00",
+    "updated_at": "2026-10-02T21:37:48.292426+00:00",
     "player_name": "Josh Cameron",
     "stamps": [
       "FD 50",
@@ -330890,7 +330890,7 @@
     "benford_cluster": 0.67,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:39.423668+00:00",
+    "updated_at": "2026-10-02T21:37:49.153437+00:00",
     "player_name": "Kansas City Chiefs D/ST",
     "stamps": [
       "Books tight",
@@ -330950,7 +330950,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:35.216680+00:00",
+    "updated_at": "2026-10-02T21:37:48.996446+00:00",
     "player_name": "Kayshon Boutte",
     "stamps": [
       "B365 Exact",
@@ -331032,7 +331032,7 @@
   {
     "id": "2026-10-02_Keaton Mitchell_watch_77",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Keaton Mitchell",
     "score": 77,
     "edge": 54,
@@ -331078,7 +331078,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:21.375482+00:00",
+    "updated_at": "2026-10-02T21:37:48.435279+00:00",
     "player_name": "Keaton Mitchell",
     "stamps": [
       "B365 Exact",
@@ -331153,7 +331153,7 @@
   {
     "id": "2026-10-02_Kendrick Bourne_watch_68",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Kendrick Bourne",
     "score": 68,
     "edge": 35,
@@ -331196,7 +331196,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:21.405663+00:00",
+    "updated_at": "2026-10-02T21:37:49.372347+00:00",
     "player_name": "Kendrick Bourne",
     "stamps": [
       "Rivers short vs pack",
@@ -331698,7 +331698,7 @@
   {
     "id": "2026-10-02_Kyle Juszczyk_watch_64",
     "date": "2026-10-02",
-    "time": "08:58 AM",
+    "time": "02:37 PM",
     "player": "Kyle Juszczyk",
     "score": 64,
     "edge": 18,
@@ -331741,7 +331741,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T15:58:09.464750+00:00",
+    "updated_at": "2026-10-02T21:37:48.685725+00:00",
     "player_name": "Kyle Juszczyk",
     "stamps": [
       "MGM 50",
@@ -331875,7 +331875,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:34.989166+00:00",
+    "updated_at": "2026-10-02T21:37:47.460166+00:00",
     "player_name": "Kyren Williams",
     "stamps": [
       "B365 over HardRock",
@@ -331940,7 +331940,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:31.602703+00:00",
+    "updated_at": "2026-10-02T21:37:48.626276+00:00",
     "player_name": "LeQuint Allen Jr.",
     "stamps": [
       "B365 850",
@@ -332546,7 +332546,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:32.903842+00:00",
+    "updated_at": "2026-10-02T21:37:48.092097+00:00",
     "player_name": "Malik Washington",
     "stamps": [
       "B365 over MGM",
@@ -333108,7 +333108,7 @@
   {
     "id": "2026-10-02_Mike Evans_watch_62",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Mike Evans",
     "score": 62,
     "edge": 14,
@@ -333153,7 +333153,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.657770+00:00",
+    "updated_at": "2026-10-02T21:37:47.497978+00:00",
     "player_name": "Mike Evans",
     "stamps": [
       "MGM 60",
@@ -333602,7 +333602,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:39.606170+00:00",
+    "updated_at": "2026-10-02T21:37:48.956753+00:00",
     "player_name": "New York Giants D/ST",
     "stamps": [
       "Books tight",
@@ -333661,7 +333661,7 @@
     "benford_cluster": 0.67,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:35.171552+00:00",
+    "updated_at": "2026-10-02T21:37:47.422203+00:00",
     "player_name": "Nicholas Singleton",
     "stamps": [
       "B365 over HardRock",
@@ -333848,7 +333848,7 @@
   {
     "id": "2026-10-02_Olamide Zaccheaus_watch_70",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Olamide Zaccheaus",
     "score": 70,
     "edge": 43,
@@ -333890,7 +333890,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:21.316274+00:00",
+    "updated_at": "2026-10-02T21:37:49.270380+00:00",
     "player_name": "Olamide Zaccheaus",
     "stamps": [
       "FD 50",
@@ -333974,7 +333974,7 @@
   {
     "id": "2026-10-02_Oronde Gadsden II_watch_61",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Oronde Gadsden II",
     "score": 61,
     "edge": 35,
@@ -334021,7 +334021,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.785673+00:00",
+    "updated_at": "2026-10-02T21:37:48.590110+00:00",
     "player_name": "Oronde Gadsden II",
     "stamps": [
       "B365 Exact",
@@ -334407,7 +334407,7 @@
   {
     "id": "2026-10-02_Quentin Johnston_watch_100",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Quentin Johnston",
     "score": 100,
     "edge": 68,
@@ -334454,7 +334454,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.082899+00:00",
+    "updated_at": "2026-10-02T21:37:48.127565+00:00",
     "player_name": "Quentin Johnston",
     "stamps": [
       "B365 Exact",
@@ -335900,7 +335900,7 @@
   {
     "id": "2026-10-02_Tank Bigsby_watch_81",
     "date": "2026-10-02",
-    "time": "08:58 AM",
+    "time": "02:37 PM",
     "player": "Tank Bigsby",
     "score": 81,
     "edge": 76,
@@ -335944,7 +335944,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T15:58:08.851030+00:00",
+    "updated_at": "2026-10-02T21:37:47.858792+00:00",
     "player_name": "Tank Bigsby",
     "stamps": [
       "MGM 50",
@@ -336355,7 +336355,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:34.507480+00:00",
+    "updated_at": "2026-10-02T21:37:49.078048+00:00",
     "player_name": "Tez Johnson",
     "stamps": [
       "FD 50",
@@ -336497,7 +336497,7 @@
   {
     "id": "2026-10-02_Tory Horton_watch_94",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Tory Horton",
     "score": 94,
     "edge": 150,
@@ -336542,7 +336542,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:19.595742+00:00",
+    "updated_at": "2026-10-02T21:37:47.186655+00:00",
     "player_name": "Tory Horton",
     "stamps": [
       "MGM 50",
@@ -336658,7 +336658,7 @@
     "benford_cluster": 0.67,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:39.645936+00:00",
+    "updated_at": "2026-10-02T21:37:47.391150+00:00",
     "player_name": "Tre Harris",
     "stamps": [
       "Fanatics Loud",
@@ -337317,7 +337317,7 @@
   {
     "id": "2026-10-02_Tyquan Thornton_watch_35",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Tyquan Thornton",
     "score": 35,
     "edge": 25,
@@ -337356,7 +337356,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:21.195531+00:00",
+    "updated_at": "2026-10-02T21:37:49.114989+00:00",
     "player_name": "Tyquan Thornton",
     "stamps": [
       "HardRock 50",
@@ -337414,7 +337414,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T21:37:33.583379+00:00",
+    "updated_at": "2026-10-02T21:37:49.334441+00:00",
     "player_name": "Tyson Bagent",
     "stamps": [
       "HardRock 50",
@@ -337889,7 +337889,7 @@
   {
     "id": "2026-10-02_Brashard Smith_shop_lean_118",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Brashard Smith",
     "score": 0,
     "edge": 118,
@@ -337926,7 +337926,7 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:20.481839+00:00",
-    "updated_at": "2026-10-02T18:57:19.722522+00:00"
+    "updated_at": "2026-10-02T21:37:47.349949+00:00"
   },
   {
     "id": "2026-10-02_Kyle Williams_shop_take_108",
@@ -337974,7 +337974,7 @@
   {
     "id": "2026-10-02_Darnell Mooney_shop_take_92",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Darnell Mooney",
     "score": 0,
     "edge": 92,
@@ -338012,7 +338012,7 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:20.635125+00:00",
-    "updated_at": "2026-10-02T18:57:19.924526+00:00"
+    "updated_at": "2026-10-02T21:37:47.640948+00:00"
   },
   {
     "id": "2026-10-02_Ben Sinnott_shop_take_84",
@@ -338111,7 +338111,7 @@
   {
     "id": "2026-10-02_Seth McGowan_shop_lean_80",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Seth McGowan",
     "score": 0,
     "edge": 80,
@@ -338158,12 +338158,12 @@
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:20.756476+00:00",
-    "updated_at": "2026-10-02T18:57:20.364756+00:00"
+    "updated_at": "2026-10-02T21:37:47.572675+00:00"
   },
   {
     "id": "2026-10-02_Chris Bell_shop_lean_78",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Chris Bell",
     "score": 0,
     "edge": 78,
@@ -338199,12 +338199,12 @@
     "price": 800,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:20.816635+00:00",
-    "updated_at": "2026-10-02T18:57:19.890707+00:00"
+    "updated_at": "2026-10-02T21:37:47.684610+00:00"
   },
   {
     "id": "2026-10-02_Davis Allen_shop_lean_77",
     "date": "2026-10-02",
-    "time": "11:10 AM",
+    "time": "02:37 PM",
     "player": "Davis Allen",
     "score": 0,
     "edge": 77,
@@ -338242,7 +338242,7 @@
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-02T15:58:20.847173+00:00",
-    "updated_at": "2026-10-02T18:10:23.698865+00:00"
+    "updated_at": "2026-10-02T21:37:48.509987+00:00"
   },
   {
     "id": "2026-10-02_Tank Bigsby_shop_take_76",
@@ -338331,7 +338331,7 @@
   {
     "id": "2026-10-02_Justice Hill_shop_lean_73",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Justice Hill",
     "score": 0,
     "edge": 73,
@@ -338369,12 +338369,12 @@
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:20.939326+00:00",
-    "updated_at": "2026-10-02T18:57:19.856715+00:00"
+    "updated_at": "2026-10-02T21:37:48.401591+00:00"
   },
   {
     "id": "2026-10-02_Sione Vaki_shop_lean_71",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Sione Vaki",
     "score": 0,
     "edge": 71,
@@ -338412,12 +338412,12 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-02T15:58:20.971188+00:00",
-    "updated_at": "2026-10-02T18:57:20.268992+00:00"
+    "updated_at": "2026-10-02T21:37:48.012158+00:00"
   },
   {
     "id": "2026-10-02_Jacob Cowing_shop_lean_70",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Jacob Cowing",
     "score": 0,
     "edge": 70,
@@ -338454,7 +338454,7 @@
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-02T15:58:21.003134+00:00",
-    "updated_at": "2026-10-02T18:57:20.205198+00:00"
+    "updated_at": "2026-10-02T21:37:47.975458+00:00"
   },
   {
     "id": "2026-10-02_Quentin Johnston_shop_take_68",
@@ -338545,7 +338545,7 @@
   {
     "id": "2026-10-02_Chris Moore_shop_lean_58",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Chris Moore",
     "score": 0,
     "edge": 58,
@@ -338583,12 +338583,12 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:21.187087+00:00",
-    "updated_at": "2026-10-02T18:57:19.957787+00:00"
+    "updated_at": "2026-10-02T21:37:49.196354+00:00"
   },
   {
     "id": "2026-10-02_Gunnar Helm_shop_lean_52",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Gunnar Helm",
     "score": 0,
     "edge": 52,
@@ -338626,12 +338626,12 @@
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:21.397648+00:00",
-    "updated_at": "2026-10-02T18:57:20.885266+00:00"
+    "updated_at": "2026-10-02T21:37:48.782662+00:00"
   },
   {
     "id": "2026-10-02_Austin Hooper_shop_lean_50",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Austin Hooper",
     "score": 0,
     "edge": 50,
@@ -338669,12 +338669,12 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:21.486665+00:00",
-    "updated_at": "2026-10-02T18:57:20.918049+00:00"
+    "updated_at": "2026-10-02T21:37:47.231876+00:00"
   },
   {
     "id": "2026-10-02_Dawson Knox_shop_lean_45",
     "date": "2026-10-02",
-    "time": "08:58 AM",
+    "time": "02:37 PM",
     "player": "Dawson Knox",
     "score": 0,
     "edge": 45,
@@ -338712,7 +338712,7 @@
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:21.728556+00:00",
-    "updated_at": "2026-10-02T15:58:21.728556+00:00"
+    "updated_at": "2026-10-02T21:37:49.034349+00:00"
   },
   {
     "id": "2026-10-02_Elic Ayomanor_shop_lean_42",
@@ -338760,7 +338760,7 @@
   {
     "id": "2026-10-02_Laquon Treadwell_shop_lean_42",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Laquon Treadwell",
     "score": 0,
     "edge": 42,
@@ -338798,7 +338798,7 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-02T15:58:21.884595+00:00",
-    "updated_at": "2026-10-02T18:57:21.437316+00:00"
+    "updated_at": "2026-10-02T21:37:49.416484+00:00"
   },
   {
     "id": "2026-10-02_Noah Fant_shop_lean_41",
@@ -341476,7 +341476,7 @@
   {
     "id": "2026-10-02_Eli Raridon_watch_77",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Eli Raridon",
     "score": 77,
     "edge": 58,
@@ -341520,7 +341520,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.237353+00:00",
+    "updated_at": "2026-10-02T21:37:47.898205+00:00",
     "player_name": "Eli Raridon",
     "stamps": [
       "FD 50",
@@ -341874,7 +341874,7 @@
   {
     "id": "2026-10-02_Seattle Seahawks D/ST_watch_49",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Seattle Seahawks D/ST",
     "score": 49,
     "edge": 40,
@@ -341908,7 +341908,7 @@
     "benford_cluster": 0.33,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-02T18:57:20.691228+00:00",
+    "updated_at": "2026-10-02T21:37:48.833354+00:00",
     "player_name": "Seattle Seahawks D/ST",
     "stamps": [
       "Books tight",
@@ -342133,7 +342133,7 @@
   {
     "id": "2026-10-02_Greg Dulcich_shop_lean_65",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Greg Dulcich",
     "score": 0,
     "edge": 65,
@@ -342171,12 +342171,12 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-10-02T17:32:34.778879+00:00",
-    "updated_at": "2026-10-02T18:57:20.851568+00:00"
+    "updated_at": "2026-10-02T21:37:47.531514+00:00"
   },
   {
     "id": "2026-10-02_John Metchie III_shop_lean_59",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "John Metchie III",
     "score": 0,
     "edge": 59,
@@ -342214,12 +342214,12 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-10-02T17:32:34.989613+00:00",
-    "updated_at": "2026-10-02T18:57:20.504656+00:00"
+    "updated_at": "2026-10-02T21:37:47.718349+00:00"
   },
   {
     "id": "2026-10-02_AJ Dillon_shop_lean_51",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "AJ Dillon",
     "score": 0,
     "edge": 51,
@@ -342257,7 +342257,7 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-10-02T17:32:35.367882+00:00",
-    "updated_at": "2026-10-02T18:57:20.818606+00:00"
+    "updated_at": "2026-10-02T21:37:48.732404+00:00"
   },
   {
     "id": "2026-10-02_Wan'Dale Robinson_shop_lean_40",
@@ -342312,7 +342312,7 @@
     "price": 500,
     "book": "draftkings",
     "created_at": "2026-10-02T17:32:36.105845+00:00",
-    "updated_at": "2026-10-02T21:37:31.299507+00:00"
+    "updated_at": "2026-10-02T21:37:49.466214+00:00"
   },
   {
     "id": "2026-10-02_Andrew Copp_watch_38",
@@ -343773,7 +343773,7 @@
   {
     "id": "2026-10-02_Chris Brooks_shop_lean_49",
     "date": "2026-10-02",
-    "time": "11:57 AM",
+    "time": "02:37 PM",
     "player": "Chris Brooks",
     "score": 0,
     "edge": 49,
@@ -343811,7 +343811,7 @@
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-10-02T18:57:20.983038+00:00",
-    "updated_at": "2026-10-02T18:57:20.983038+00:00"
+    "updated_at": "2026-10-02T21:37:48.050853+00:00"
   },
   {
     "id": "2026-10-02_Jackson LaCombe_take_it_89",
@@ -345439,5 +345439,91 @@
     "price": 1300,
     "book": "fanatics",
     "created_at": "2026-10-02T21:37:31.741380+00:00"
+  },
+  {
+    "id": "2026-10-02_Tai Felton_shop_take_162",
+    "date": "2026-10-02",
+    "time": "02:37 PM",
+    "player": "Tai Felton",
+    "score": 0,
+    "edge": 162,
+    "best_price": 750,
+    "best_book": "fanduel",
+    "median": 575,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 600,
+      "betrivers": 650,
+      "caesars": 525,
+      "draftkings": 500,
+      "fanatics": 650,
+      "fanduel": 750,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-02T21:37:47.123803+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Tai Felton",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 750,
+    "book": "fanduel",
+    "created_at": "2026-10-02T21:37:47.123803+00:00",
+    "updated_at": "2026-10-02T21:37:47.123803+00:00"
+  },
+  {
+    "id": "2026-10-02_Treylon Burks_shop_take_74",
+    "date": "2026-10-02",
+    "time": "02:37 PM",
+    "player": "Treylon Burks",
+    "score": 0,
+    "edge": 74,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 687,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 700,
+      "betrivers": 800,
+      "caesars": 675,
+      "draftkings": 750,
+      "fanatics": 650,
+      "fanduel": 650,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-02T21:37:47.932079+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Treylon Burks",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 750,
+    "book": "draftkings",
+    "created_at": "2026-10-02T21:37:47.932079+00:00",
+    "updated_at": "2026-10-02T21:37:47.932079+00:00"
   }
 ]
