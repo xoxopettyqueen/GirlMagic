@@ -313,6 +313,27 @@
       "best_book": "fanatics",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Greg Dulcich",
+      "source": "take_it",
+      "score": 65,
+      "methods": [
+        "FD 50",
+        "Match 25",
+        "Multi-book method",
+        "B365 over MGM",
+        "B365 75",
+        "B365 way over MGM",
+        "Fanatics Loud",
+        "MGM 25",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "draftkings",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
