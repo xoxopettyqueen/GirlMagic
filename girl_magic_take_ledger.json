@@ -454,6 +454,25 @@
       "best_book": "draftkings",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Noah Fant",
+      "source": "take_it",
+      "score": 72,
+      "methods": [
+        "B365 Exact",
+        "Rivers short vs pack",
+        "Books tight",
+        "B365 50",
+        "FD 90",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 525,
+      "best_book": "fanatics",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
