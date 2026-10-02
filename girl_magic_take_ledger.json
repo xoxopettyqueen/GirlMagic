@@ -549,6 +549,24 @@
       "best_book": "draftkings",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jakobi Meyers",
+      "source": "take_it",
+      "score": 59,
+      "methods": [
+        "B365 Exact",
+        "MGM 60",
+        "Multi-book method",
+        "Books tight",
+        "FD 40",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 275,
+      "best_book": "fanatics",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
