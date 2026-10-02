@@ -567,6 +567,24 @@
       "best_book": "fanatics",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Blake Corum",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "MGM 50",
+        "Match 50",
+        "Multi-book method",
+        "Books tight",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 300,
+      "best_book": "hardrockbet",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
