@@ -640,6 +640,25 @@
       "best_book": "fanatics",
       "time": "09:16 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jahan Dotson",
+      "source": "take_it",
+      "score": 51,
+      "methods": [
+        "Books tight",
+        "Match 00",
+        "B365 50",
+        "MGM 00",
+        "Stayed in the group",
+        "HardRock 50",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 480,
+      "best_book": "fanduel",
+      "time": "09:16 AM",
+      "sport": "NFL"
     }
   ]
 }
