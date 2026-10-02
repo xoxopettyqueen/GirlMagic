@@ -530,6 +530,25 @@
       "best_book": "draftkings",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Garrett Wilson",
+      "source": "take_it",
+      "score": 49,
+      "methods": [
+        "FD 50",
+        "B365 over HardRock",
+        "Multi-book method",
+        "Books tight",
+        "B365 50",
+        "DK FD-style",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 160,
+      "best_book": "draftkings",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
