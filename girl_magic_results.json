@@ -277380,7 +277380,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-29T20:36:50.208509+00:00",
     "price_source": "shop",
@@ -277388,7 +277388,7 @@
     "market": "anytime_goal",
     "player_name": "Josh Anderson",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -277396,7 +277396,7 @@
     "book": "hardrockbet",
     "created_at": "2026-09-29T20:36:50.208509+00:00",
     "updated_at": "2026-09-29T22:12:07.362003+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-29_Mark Jankowski_shop_take_106",
@@ -290015,7 +290015,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-29T20:56:52.340665+00:00",
     "price_source": "shop",
@@ -290023,7 +290023,7 @@
     "market": "anytime_goal",
     "player_name": "Zachary Bolduc",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -290031,7 +290031,7 @@
     "book": "hardrockbet",
     "created_at": "2026-09-29T20:56:52.340665+00:00",
     "updated_at": "2026-09-29T21:56:13.097109+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-29_Eetu Luostarinen_shop_lean_44",
@@ -290419,7 +290419,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-29T21:56:13.443150+00:00",
     "price_source": "shop",
@@ -290427,7 +290427,7 @@
     "market": "anytime_goal",
     "player_name": "Vasily Podkolzin",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -290435,7 +290435,7 @@
     "book": "bet365",
     "created_at": "2026-09-29T21:56:13.443150+00:00",
     "updated_at": "2026-09-29T21:56:13.443150+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-29_Nicolas Deslauriers_watch_21",
@@ -290967,7 +290967,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-30T02:42:11.414160+00:00",
     "price_source": "shop",
@@ -290975,7 +290975,7 @@
     "market": "anytime_goal",
     "player_name": "Trevor Connelly",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -290983,7 +290983,7 @@
     "book": "bet365",
     "created_at": "2026-09-30T02:42:11.414160+00:00",
     "updated_at": "2026-09-30T02:42:11.414160+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-29_Colton Dach_shop_lean_85",
@@ -291175,7 +291175,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-30T02:42:11.574349+00:00",
     "price_source": "shop",
@@ -291183,7 +291183,7 @@
     "market": "anytime_goal",
     "player_name": "Victor Olofsson",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -291191,7 +291191,7 @@
     "book": "bet365",
     "created_at": "2026-09-30T02:42:11.574349+00:00",
     "updated_at": "2026-09-30T02:42:11.574349+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-29_Trent Frederic_shop_lean_52",
@@ -296576,7 +296576,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-30T16:28:04.407219+00:00",
     "price_source": "shop",
@@ -296584,7 +296584,7 @@
     "market": "anytime_goal",
     "player_name": "Easton Cowan",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -296592,7 +296592,7 @@
     "book": "bet365",
     "created_at": "2026-09-30T16:28:04.407219+00:00",
     "updated_at": "2026-09-30T20:01:27.835656+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-30_Nathan MacKinnon_shop_lean_54",
@@ -298317,7 +298317,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-30T18:59:15.416648+00:00",
     "price_source": "shop",
@@ -298325,7 +298325,7 @@
     "market": "anytime_goal",
     "player_name": "Parker Kelly",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -298333,7 +298333,7 @@
     "book": "bet365",
     "created_at": "2026-09-30T18:59:15.416648+00:00",
     "updated_at": "2026-09-30T20:01:26.983992+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-30_Sam Malinski_shop_take_185",
@@ -298405,7 +298405,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-30T18:59:15.743324+00:00",
     "price_source": "shop",
@@ -298413,7 +298413,7 @@
     "market": "anytime_goal",
     "player_name": "Joel Armia",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -298421,7 +298421,7 @@
     "book": "fanduel",
     "created_at": "2026-09-30T18:59:15.743324+00:00",
     "updated_at": "2026-09-30T20:01:27.314306+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-30_Morgan Rielly_shop_take_119",
@@ -298669,7 +298669,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-30T18:59:16.354025+00:00",
     "price_source": "shop",
@@ -298677,7 +298677,7 @@
     "market": "anytime_goal",
     "player_name": "Nathan MacKinnon",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -298685,7 +298685,7 @@
     "book": "bet365",
     "created_at": "2026-09-30T18:59:16.354025+00:00",
     "updated_at": "2026-09-30T20:01:27.918615+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-30_Nick Robertson_shop_take_55",
@@ -298708,7 +298708,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-09-30T18:59:16.390399+00:00",
     "price_source": "shop",
@@ -298716,7 +298716,7 @@
     "market": "anytime_goal",
     "player_name": "Nick Robertson",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -298724,7 +298724,7 @@
     "book": "bet365",
     "created_at": "2026-09-30T18:59:16.390399+00:00",
     "updated_at": "2026-09-30T20:01:27.669894+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-09-30_Noah Cates_shop_lean_44",
@@ -301914,7 +301914,7 @@
       "Kelly Support"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T19:21:28.583660+00:00",
     "price_source": "shop",
@@ -301922,7 +301922,7 @@
     "market": "anytime_goal",
     "player_name": "Frederick Gaudreau",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -301930,7 +301930,7 @@
     "book": "fanduel",
     "created_at": "2026-10-01T07:41:29.450184+00:00",
     "updated_at": "2026-10-01T19:21:28.583670+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Ryan Winterton_shop_lean_218",
@@ -303092,7 +303092,7 @@
       "Kelly Support"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T19:21:28.998104+00:00",
     "price_source": "shop",
@@ -303100,7 +303100,7 @@
     "market": "anytime_goal",
     "player_name": "Luca Cagnoni",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -303108,7 +303108,7 @@
     "book": "bet365",
     "created_at": "2026-10-01T07:41:30.354204+00:00",
     "updated_at": "2026-10-02T01:36:00.133921+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Marcus Foligno_shop_lean_120",
@@ -303230,7 +303230,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T07:41:30.519203+00:00",
     "price_source": "shop",
@@ -303238,7 +303238,7 @@
     "market": "anytime_goal",
     "player_name": "Evan Bouchard",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -303246,7 +303246,7 @@
     "book": "bet365",
     "created_at": "2026-10-01T07:41:30.519203+00:00",
     "updated_at": "2026-10-01T19:21:43.228409+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Sandis Vilmanis_shop_take_118",
@@ -303369,7 +303369,7 @@
       "Kelly Support"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T07:57:15.627660+00:00",
     "price_source": "shop",
@@ -303377,7 +303377,7 @@
     "market": "anytime_goal",
     "player_name": "Cole Sillinger",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -303385,7 +303385,7 @@
     "book": "draftkings",
     "created_at": "2026-10-01T07:41:30.700153+00:00",
     "updated_at": "2026-10-01T07:57:23.244448+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Carl Grundstrom_shop_lean_113",
@@ -303967,7 +303967,7 @@
       "Kelly Support"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T07:57:15.572561+00:00",
     "price_source": "shop",
@@ -303975,7 +303975,7 @@
     "market": "anytime_goal",
     "player_name": "Roman Josi",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -303983,7 +303983,7 @@
     "book": "draftkings",
     "created_at": "2026-10-01T07:41:31.151538+00:00",
     "updated_at": "2026-10-01T07:57:15.572574+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Seth Jones_shop_take_97",
@@ -304476,7 +304476,7 @@
       "Kelly Support"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T19:21:24.604627+00:00",
     "price_source": "shop",
@@ -304484,7 +304484,7 @@
     "market": "anytime_goal",
     "player_name": "Luke Hughes",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -304492,7 +304492,7 @@
     "book": "bet365",
     "created_at": "2026-10-01T07:41:31.579547+00:00",
     "updated_at": "2026-10-01T19:21:24.604644+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Kiefer Sherwood_shop_lean_74",
@@ -305170,7 +305170,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T07:41:32.057010+00:00",
     "price_source": "shop",
@@ -305178,7 +305178,7 @@
     "market": "anytime_goal",
     "player_name": "Kaapo Kakko",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -305186,7 +305186,7 @@
     "book": "bet365",
     "created_at": "2026-10-01T07:41:32.057010+00:00",
     "updated_at": "2026-10-01T07:57:22.908376+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Oliver Moore_shop_lean_64",
@@ -305299,7 +305299,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T07:41:32.149940+00:00",
     "price_source": "shop",
@@ -305307,7 +305307,7 @@
     "market": "anytime_goal",
     "player_name": "Mathieu Olivier",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -305315,7 +305315,7 @@
     "book": "bet365",
     "created_at": "2026-10-01T07:41:32.149940+00:00",
     "updated_at": "2026-10-01T19:21:43.642755+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Michael Misa_shop_take_61",
@@ -311760,7 +311760,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-01T19:21:42.087380+00:00",
     "price_source": "shop",
@@ -311768,7 +311768,7 @@
     "market": "anytime_goal",
     "player_name": "Trent Frederic",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -311776,7 +311776,7 @@
     "book": "bet365",
     "created_at": "2026-10-01T19:21:42.087380+00:00",
     "updated_at": "2026-10-02T01:36:00.699518+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Jake Walman_shop_take_126",
@@ -314787,7 +314787,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-02T01:28:07.801325+00:00",
     "price_source": "shop",
@@ -314795,7 +314795,7 @@
     "market": "anytime_goal",
     "player_name": "Ryan Shea",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -314803,7 +314803,7 @@
     "book": "bet365",
     "created_at": "2026-10-02T01:28:07.801325+00:00",
     "updated_at": "2026-10-02T01:36:00.278859+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Sandis Vilmanis_shop_lean_122",
@@ -316016,7 +316016,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-02T01:36:01.519815+00:00",
     "price_source": "shop",
@@ -316024,7 +316024,7 @@
     "market": "anytime_goal",
     "player_name": "Ryan Strome",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
@@ -316032,7 +316032,7 @@
     "book": "fanduel",
     "created_at": "2026-10-02T01:36:01.519815+00:00",
     "updated_at": "2026-10-02T01:36:01.519815+00:00",
-    "graded_by": "nhl_auto"
+    "graded_by": "mlb_repair"
   },
   {
     "id": "2026-10-01_Michael Misa_shop_lean_40",
