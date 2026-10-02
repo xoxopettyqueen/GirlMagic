@@ -603,6 +603,24 @@
       "best_book": "draftkings",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Omarion Hampton",
+      "source": "take_it",
+      "score": 50,
+      "methods": [
+        "B365 over HardRock",
+        "DK 10",
+        "B365 over MGM",
+        "B365 way over MGM",
+        "Fanatics Loud",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 115,
+      "best_book": "fanatics",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
