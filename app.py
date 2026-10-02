@@ -15733,8 +15733,9 @@ def main():
 
     st.markdown(
         '<div class="footer"><div class="footer-ticker">✨ Girl Magic Odds — fluent in chaos, powered by precision · '
-        "💥 Hot Porch = bombs fly · 🔥 Live Air = ball carries · 🌬️ Neutral = average · 🧊 Cold Porch = balls die · "
-        "Board picks the name · Shop picks the number · Grade keeps us honest ✨</div></div>",
+        "⚾ homer · 🏈 anytime TD · 🏒 anytime goal · "
+        "FD / DK are the buy · 365 and Rivers are tells · "
+        "Confidence scouts · Run It tickets · Receipts grades ✨</div></div>",
         unsafe_allow_html=True,
     )
 
