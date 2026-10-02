@@ -435,6 +435,26 @@
       "best_book": "fanduel",
       "time": "06:35 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Denzel Boston",
+      "source": "take_it",
+      "score": 57,
+      "methods": [
+        "FD Pattern",
+        "Match 75",
+        "FD a little long",
+        "FD+MGM classic",
+        "MGM 75",
+        "Multi-book method",
+        "Multi-book Shorten",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 425,
+      "best_book": "hardrockbet",
+      "time": "06:35 PM",
+      "sport": "NFL"
     }
   ]
 }
