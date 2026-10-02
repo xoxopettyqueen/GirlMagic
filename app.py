@@ -6364,9 +6364,10 @@ def auto_grade_pending():
     if active_sport() == "NFL":
         by_date = defaultdict(list)
         for row in rows:
-            if row.get("result") != "PENDING":
+            stt = str(row.get("result") or row.get("status") or "").upper()
+            if stt not in ("PENDING", "STILL_UP", "STILL UP"):
                 continue
-            if row_sport(row) != "NFL":
+            if row_sport(row) != "NFL" and "anytime_td" not in str(row.get("market") or "").lower():
                 skipped += 1
                 continue
             src = str(row.get("source") or "")
@@ -6391,19 +6392,28 @@ def auto_grade_pending():
         for d, batch in by_date.items():
             td_names, done_players, msg = fetch_nfl_td_scorers([d])
             msgs.append(f"{d} {msg}")
-            hit_set, miss_pool = td_names, done_players
+            hit_set, miss_pool = set(td_names or []), set(done_players or [])
+            age = 0
+            try:
+                age = (datetime.strptime(today_az(), "%Y-%m-%d") - datetime.strptime(d[:10], "%Y-%m-%d")).days
+            except Exception:
+                age = 0
+            fetch_ok = "miss" not in str(msg).lower() and "error" not in str(msg).lower()
+            slate_closed = age >= 2 and fetch_ok
             for row in batch:
                 study = str(row.get("source") or "") in STUDY_SOURCES
                 player = row.get("player") or ""
                 rushed = st.session_state.get("nfl_rush_td") or set()
-                if is_nfl_qb(player) and miss_pool and not any(names_match_grade(player, x) for x in rushed):
-                    if any(names_match_grade(player, f) for f in miss_pool):
+                if is_nfl_qb(player) and miss_pool and not any(names_match(player, x) or names_match_grade(player, x) for x in rushed):
+                    if any(names_match_grade(player, f) or names_match(player, f) for f in miss_pool) or slate_closed:
                         row["result"] = "LEARN_MISS" if study else "MISS"
+                        row["status"] = row["result"]
                         row["graded_by"] = tag + "_qb_not_rush"
                         misses += 1
                         continue
-                if any(names_match_grade(player, h) for h in hit_set):
+                if any(names_match_grade(player, h) or names_match(player, h) for h in hit_set):
                     row["result"] = "LEARN_HIT" if study else "HIT"
+                    row["status"] = row["result"]
                     row["graded_by"] = tag
                     row["hit_why"] = list(row.get("methods") or [])
                     row["hit_when"] = d
@@ -6411,24 +6421,15 @@ def auto_grade_pending():
                         row["ending"] = last_two(row["best_price"])
                     hits += 1
                     continue
-                if miss_pool and any(names_match_grade(player, f) for f in miss_pool):
+                if (miss_pool and any(names_match_grade(player, f) or names_match(player, f) for f in miss_pool)) or slate_closed:
                     row["result"] = "LEARN_MISS" if study else "MISS"
-                    row["graded_by"] = tag
+                    row["status"] = row["result"]
+                    row["graded_by"] = tag + ("_closed" if slate_closed else "")
                     misses += 1
                 else:
-                    age = 0
-                    try:
-                        age = (datetime.strptime(today_az(), "%Y-%m-%d") - datetime.strptime(d[:10], "%Y-%m-%d")).days
-                    except Exception:
-                        age = 0
-                    if age >= 2 and (hit_set or miss_pool):
-                        row["result"] = "LEARN_MISS" if study else "MISS"
-                        row["graded_by"] = tag + "_stale"
-                        misses += 1
-                    else:
-                        skipped += 1
+                    skipped += 1
         save_results(rows)
-        return hits, misses, skipped, " · ".join(msgs[:4]) + f" · PENDING {pending_n} · matched {hits} HIT / {misses} MISS"
+        return hits, misses, skipped, " · ".join(msgs[:4]) + f" · NFL tickets in batch {sum(len(v) for v in by_date.values())} · {hits} HIT / {misses} MISS / {skipped} still open"
 
     # MLB: grade against THAT row's game date, not today's whole homer list.
     by_date = defaultdict(list)
