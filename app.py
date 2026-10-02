@@ -6498,8 +6498,8 @@ def auto_grade_pending():
 
 
 def repair_mlb_hits(rows=None):
-    """Un-HIT rows that did not actually go yard on their logged date."""
-    if active_sport() == "NFL":
+    """Un-HIT rows that did not actually go yard on their logged date. MLB only."""
+    if active_sport() != "MLB":
         return 0
     own = rows is None
     rows = rows if rows is not None else load_results()
@@ -14873,11 +14873,8 @@ def main():
             week = [r for r in week if r.get("source") == "shop_take"]
             prevw = [r for r in prevw if r.get("source") == "shop_take"]
 
-        hit_ok = ("LEARN_HIT", "HIT") if focus_src.startswith("Study") else ("HIT",)
-        miss_ok = ("LEARN_MISS", "MISS") if focus_src.startswith("Study") else ("MISS",)
-        if focus_src.startswith("All"):
-            hit_ok = ("HIT", "LEARN_HIT")
-            miss_ok = ("MISS", "LEARN_MISS")
+        hit_ok = ("LEARN_HIT", "HIT")
+        miss_ok = ("LEARN_MISS", "MISS")
         hits = [r for r in week if r.get("result") in hit_ok]
         graded = [r for r in week if r.get("result") in hit_ok + miss_ok]
         def _is_ticket(r):
@@ -14890,10 +14887,10 @@ def main():
             return sum(1 for m in meths if is_core_method(normalize_method_name(m))) >= 2
         ticket_graded = [r for r in graded if _is_ticket(r)]
         ticket_hits = [r for r in hits if _is_ticket(r)]
-        prev_hits = [r for r in prevw if r.get("result") == "HIT"]
-        prev_graded = [r for r in prevw if r.get("result") in ("HIT", "MISS")]
-        bomb = "TD" if active_sport() == "NFL" else "HR"
-        bombs = "TDs" if active_sport() == "NFL" else "HRs"
+        prev_hits = [r for r in prevw if r.get("result") in hit_ok]
+        prev_graded = [r for r in prevw if r.get("result") in hit_ok + miss_ok]
+        bomb = sport_cfg().get("hit") or "hit"
+        bombs = sport_cfg().get("hits") or "hits"
 
         def _unique_hits(hit_rows):
             seen, out = set(), []
@@ -15093,7 +15090,7 @@ def main():
             f'<div class="pa-sub"><b>Hotter / colder</b> = more or fewer hits than last week.</div>'
             f'<div class="pa-sub"><b>Book</b> = who had the number we logged when it hit.</div>'
             f'<div class="pa-sub"><b>Ending</b> = last two digits of that price. +450 ends in 50.</div>'
-            f'<div class="pa-sub"><b>All-log hit rate</b> is every HIT and MISS we marked — Watch, Shop lean, coverage, the pile. That number will sit near 8–15% because a +500 homer is already a long shot.</div>'
+            f'<div class="pa-sub"><b>All-log hit rate</b> is every HIT and MISS we marked — Watch, Shop lean, coverage, the pile. Longshot base rate sits near 8–15%. Do not compare a goal to a homer.</div>'
             f'<div class="pa-sub"><b>Ticket hit rate</b> is only TAKE IT / Shop take. Use that one to judge the model.</div>'
             f'<div class="pa-sub"><b>Study layer</b> is Watch / lean — same box score, separate grade (LEARN HIT/MISS) so we can loosen or tighten stamps without wrecking the ticket rate.</div>'
             f'</div>',
@@ -15128,7 +15125,7 @@ def main():
         # streaks: consecutive HIT dates
         by_player_days = defaultdict(set)
         for r in rows:
-            if r.get("result") != "HIT" or not r.get("player"):
+            if r.get("result") not in ("HIT", "LEARN_HIT") or not r.get("player"):
                 continue
             dd = _row_day(r)
             if dd:
