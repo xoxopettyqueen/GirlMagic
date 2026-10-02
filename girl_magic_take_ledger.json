@@ -1013,6 +1013,21 @@
       "best_book": "fanduel",
       "time": "02:37 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Darren Waller",
+      "source": "take_it",
+      "score": 35,
+      "methods": [
+        "Books tight",
+        "DK FD-style",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 270,
+      "best_book": "fanduel",
+      "time": "02:37 PM",
+      "sport": "NFL"
     }
   ]
 }
