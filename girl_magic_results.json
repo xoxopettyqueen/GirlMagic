@@ -314417,5 +314417,48 @@
     "price": 2500,
     "book": "fanatics",
     "created_at": "2026-10-02T01:28:10.520778+00:00"
+  },
+  {
+    "id": "2026-10-01_Pat Freiermuth_shop_lean_51",
+    "date": "2026-10-01",
+    "time": "06:28 PM",
+    "player": "Pat Freiermuth",
+    "score": 0,
+    "edge": 51,
+    "best_price": 550,
+    "best_book": "draftkings",
+    "median": 477,
+    "book_prices": {
+      "bet365": 350,
+      "betmgm": 525,
+      "betrivers": 375,
+      "caesars": 475,
+      "draftkings": 550,
+      "fanatics": 475,
+      "fanduel": 480,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-02T01:28:16.044717+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Pat Freiermuth",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 550,
+    "book": "draftkings",
+    "created_at": "2026-10-02T01:28:16.044717+00:00",
+    "updated_at": "2026-10-02T01:28:16.044717+00:00"
   }
 ]
