@@ -2017,7 +2017,8 @@ GLOSSARY_V2 = {
     "🏒 NHL": [
         ("Anytime Goal", "Yes they score at least once. Not first goal. Not last goal. Market is player_goal_scorer_anytime."),
         ("Lane A–D", "A +300–399 · B +400–499 · C +500–699 · D +700+. Under +250 stays off Confidence. D needs 3 stamps."),
-        ("NHL Confidence", "Stat page. Shots per game, goals, PP goals, TOI. Falls back to last season if this season is tiny. Does not green."),
+        ("NHL Confidence", "Stat page. SOG, assists, points, PP goals, TOI. Does not green."),
+        ("NHL DVP", "What that defense gives up. GA/g, SA/g, PK, rank. Soft is 22–32. Stingy is top 10. Position tag rides with the player."),
         ("NHL TAKE", "FD or DK is the buy. +300 to +699. Two of: lane, FD Best, DK Best, Books tight, Multi-book Shorten. Cap 15. 365 and Fanatics stay study."),
         ("NHL Tracker", "Hockey stamps only. Baseball FD/MGM tricks are hidden. 0% means the grade, not a wiped page."),
         ("NHL grade", "NHL.com final scoreboard. A date only closes if games actually finished. Empty days do not become misses."),
@@ -10942,6 +10943,7 @@ def _is_nfl_rookie(form):
 def load_live_nhl_data():
     """NHL skater shots, goals, PP, TOI. This season, last season if the sample is tiny."""
     out = {}
+    teams = {}
     for season in ("20252026", "20242025"):
         try:
             r = requests.get(
@@ -10960,19 +10962,60 @@ def load_live_nhl_data():
             key = _fold_player(name)
             if not key:
                 continue
-            out[key] = {
+            toi_s = row.get("timeOnIcePerGame") or 0
+            try:
+                toi_m = int(float(toi_s) // 60)
+                toi_r = int(float(toi_s) % 60)
+                toi = f"{toi_m}:{toi_r:02d}"
+            except Exception:
+                toi = ""
+            pack = {
                 "name": name,
                 "season": season,
+                "team": row.get("teamAbbrevs") or "",
+                "pos": row.get("positionCode") or "",
                 "gp": row.get("gamesPlayed") or 0,
                 "goals": row.get("goals") or 0,
+                "assists": row.get("assists") or 0,
+                "points": row.get("points") or 0,
                 "shots": row.get("shots") or 0,
                 "pp_goals": row.get("ppGoals") or 0,
-                "toi": row.get("timeOnIcePerGame") or 0,
-                "pp_toi": row.get("ppTimeOnIcePerGame") or row.get("ppTimeOnIce") or 0,
+                "pp_points": row.get("ppPoints") or 0,
+                "sh_pct": row.get("shootingPct"),
+                "toi": toi,
             }
+            out[key] = pack
+            last = _fold_player(row.get("lastName") or "")
+            if last:
+                out.setdefault(last, pack)
         if out:
             break
-    return out
+    try:
+        tr = requests.get(
+            "https://api.nhle.com/stats/rest/en/team/summary",
+            params={"cayenneExp": "seasonId=20252026 and gameTypeId=2", "limit": 40},
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=20,
+        )
+        trows = (tr.json() or {}).get("data") or []
+    except Exception:
+        trows = []
+    ga = sorted(float(t.get("goalsAgainstPerGame") or 99) for t in trows)
+    for t in trows:
+        name = t.get("teamFullName") or ""
+        gag = float(t.get("goalsAgainstPerGame") or 0)
+        sag = float(t.get("shotsAgainstPerGame") or 0)
+        rank = 1 + sum(1 for x in ga if x < gag)
+        tone = "soft" if rank >= 22 else "stingy" if rank <= 10 else "mid"
+        teams[_fold_player(name)] = {
+            "team": name,
+            "ga": round(gag, 2),
+            "sa": round(sag, 1),
+            "pk": t.get("penaltyKillPct"),
+            "rank": rank,
+            "tone": tone,
+        }
+    return {"skaters": out, "teams": teams}
 
 
 def _petty_upside_from_item(item, sport="MLB", live=None):
@@ -10988,38 +11031,78 @@ def _petty_upside_from_item(item, sport="MLB", live=None):
     longshot = (p >= 550 and not is_star) or p >= 750
     live = live or {}
     if sport == "NHL":
-        form = (live or {}).get(key) or {}
+        form = (live.get("skaters") or live or {}).get(key) or {}
+        if not form and key:
+            last = key.split()[-1]
+            form = (live.get("skaters") or {}).get(last) or {}
         gp = float(form.get("gp") or 0)
         shots = float(form.get("shots") or 0)
         goals = float(form.get("goals") or 0)
+        assists = float(form.get("assists") or 0)
+        points = float(form.get("points") or 0)
         ppg = float(form.get("pp_goals") or 0)
+        ppp = float(form.get("pp_points") or 0)
         spg = (shots / gp) if gp else 0
         bits = []
         score = 18
+        if form.get("team") or form.get("pos"):
+            bits.append(f"{form.get('team') or ''} {form.get('pos') or ''}".strip())
         if form.get("season"):
-            bits.append(f"season {form.get('season')}")
+            bits.append(f"{form.get('season')}")
         if gp:
             bits.append(f"{int(gp)} GP")
+        if shots:
+            bits.append(f"{int(shots)} SOG")
         if spg:
-            bits.append(f"{spg:.1f} shots/gm")
+            bits.append(f"{spg:.1f} SOG/gm")
             score += 22 if spg >= 3.2 else (14 if spg >= 2.4 else 6)
         if goals:
-            bits.append(f"{int(goals)} goals")
-            score += min(18, int(goals) * 2)
+            bits.append(f"{int(goals)} G")
+            score += min(16, int(goals))
+        if assists:
+            bits.append(f"{int(assists)} A")
+            score += min(10, int(assists) // 3)
+        if points:
+            bits.append(f"{int(points)} P")
         if ppg:
-            bits.append(f"{int(ppg)} PP goals")
+            bits.append(f"{int(ppg)} PPG")
             score += min(16, int(ppg) * 4)
-        toi = form.get("toi")
-        if toi:
-            bits.append(f"TOI {toi}")
+        if ppp:
+            bits.append(f"{int(ppp)} PPP")
+        if form.get("sh_pct") not in (None, ""):
+            try:
+                bits.append(f"SH% {float(form.get('sh_pct')):.1f}")
+            except Exception:
+                pass
+        if form.get("toi"):
+            bits.append(f"TOI {form.get('toi')}")
             score += 8
         if not form:
-            bits.append("NHL stats miss — still listed")
+            bits.append("NHL stats miss — name did not match the skater list")
+        dvp = ""
+        evn = " ".join(str(x) for x in (item.get("events") or [item.get("event") or ""])).lower()
+        own = _fold_player(form.get("team") or "")
+        for tk, rec in (live.get("teams") or {}).items():
+            if not tk or tk not in evn:
+                continue
+            if own and tk == own:
+                continue
+            pos = form.get("pos") or "F"
+            dvp = f"DVP vs {rec.get('team')} · {rec.get('ga')} GA/g · {rec.get('sa')} SA/g · PK {rec.get('pk') or '—'} · {rec.get('tone')} (rank {rec.get('rank')}) · vs {pos}"
+            if rec.get("tone") == "soft":
+                score += 8
+            break
         return {
             "summary": " · ".join(bits),
+            "shots": shots,
             "shots_pg": round(spg, 2),
             "goals": goals,
+            "assists": assists,
+            "points": points,
             "pp_goals": ppg,
+            "pp_points": ppp,
+            "toi": form.get("toi") or "",
+            "dvp_line": dvp,
             "data_score": min(100, score),
             "attack": "shots",
         }
@@ -12649,15 +12732,22 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
             if sport == "NHL":
                 show = int(data.get("data_score") or align or 0)
                 line = data.get("summary") or "No shot line yet"
+                sog = int(float(data.get("shots") or 0))
                 st.markdown(
                     f'<div class="{klass}">'
                     f'<div class="card-name">{item.get("player")} <span class="card-kicker">🏒 Anytime Goal</span></div>'
                     f'{_petty_meter(show, data.get("data_tier"))}'
-                    f'<details class="al-fold" open><summary>📊 Shots / goals / PP</summary>'
-                    f'<div class="al-pack">{line}</div></details>'
+                    f'<details class="al-fold" open><summary>📊 SOG · assists · PP · TOI</summary>'
+                    f'<div class="al-pack">{line}<br>'
+                    f'SOG {sog} · {data.get("shots_pg") or 0} /gm · '
+                    f'G {int(float(data.get("goals") or 0))} · A {int(float(data.get("assists") or 0))} · '
+                    f'P {int(float(data.get("points") or 0))}<br>'
+                    f'PPG {int(float(data.get("pp_goals") or 0))} · PPP {int(float(data.get("pp_points") or 0))} · '
+                    f'TOI {data.get("toi") or "—"}<br>'
+                    f'🛡️ {data.get("dvp_line") or "DVP waits on the opponent name"}</div></details>'
                     f'<div class="al-pack">💸 {price} {book_label(item.get("best_book"))}</div>'
                     f'<div class="al-tags">{"".join(pills)}</div>'
-                    f'<div class="card-foot">Confidence {show} · shots, goals, PP. Board still tickets.</div>'
+                    f'<div class="card-foot">Confidence {show} · shots, assists, PP, ice time. Board still tickets.</div>'
                     f"</div>",
                     unsafe_allow_html=True,
                 )
