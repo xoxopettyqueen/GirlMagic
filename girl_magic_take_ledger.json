@@ -394,6 +394,26 @@
       "best_book": "fanatics",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Tyler Higbee",
+      "source": "take_it",
+      "score": 56,
+      "methods": [
+        "B365 Exact",
+        "B365 over HardRock",
+        "Multi-book method",
+        "Books tight",
+        "Rivers a bit over pack",
+        "MGM 10",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 330,
+      "best_book": "draftkings",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
