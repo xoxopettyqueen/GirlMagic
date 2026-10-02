@@ -964,6 +964,31 @@
       "best_book": "fanduel",
       "time": "02:37 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Braeden Bowman",
+      "source": "take_it",
+      "score": 57,
+      "methods": [
+        "Stayed in the group",
+        "Match 50",
+        "Last one left",
+        "MGM 50",
+        "FD a little long",
+        "MGM Exact",
+        "Multi-book method",
+        "FD+MGM classic",
+        "FD Pattern",
+        "HardRock 50",
+        "EV Support",
+        "Kelly Support",
+        "Lane B",
+        "DK Best"
+      ],
+      "best_price": 475,
+      "best_book": "draftkings",
+      "time": "02:37 PM",
+      "sport": "NHL"
     }
   ]
 }
