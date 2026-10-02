@@ -10945,16 +10945,25 @@ def load_live_nhl_data():
     out = {}
     teams = {}
     for season in ("20252026", "20242025"):
-        try:
-            r = requests.get(
-                "https://api.nhle.com/stats/rest/en/skater/summary",
-                params={"cayenneExp": f"seasonId={season} and gameTypeId=2", "limit": 800},
-                headers={"User-Agent": "Mozilla/5.0"},
-                timeout=20,
-            )
-            rows = (r.json() or {}).get("data") or []
-        except Exception:
-            rows = []
+        rows = []
+        start = 0
+        while start < 1200:
+            try:
+                r = requests.get(
+                    "https://api.nhle.com/stats/rest/en/skater/summary",
+                    params={"cayenneExp": f"seasonId={season} and gameTypeId=2", "limit": 100, "start": start},
+                    headers={"User-Agent": "Mozilla/5.0"},
+                    timeout=20,
+                )
+                batch = (r.json() or {}).get("data") or []
+            except Exception:
+                batch = []
+            if not batch:
+                break
+            rows.extend(batch)
+            if len(batch) < 100:
+                break
+            start += 100
         if len(rows) < 40:
             continue
         for row in rows:
