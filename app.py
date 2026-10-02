@@ -1324,7 +1324,7 @@ NFL_STAMP_METHODS = {
 NHL_STAMP_METHODS = {
     "Books tight", "Multi-book Shorten", "PP1", "L1",
     "HotShots", "HotGoals", "MatchupSoft", "GoalieWeak",
-    "FD a little long", "DK FD-style",
+    "FD Best", "DK Best", "Lane A", "Lane B", "Lane C",
 }
 NHL_LEARN_METHODS = {
     "PP1", "L1", "L2", "PP2", "HotShots", "HotGoals", "ColdShots", "ColdGoals",
@@ -1628,6 +1628,10 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
         if px >= 700 and stamps < 3:
             return False
         if stamps < 2:
+            return False
+        rhythm = ms & {"Books tight", "Multi-book Shorten", "PP1", "L1", "HotShots", "HotGoals"}
+        priced = ms & {"FD Best", "DK Best", "Lane A", "Lane B", "Lane C"}
+        if not rhythm and len(priced) < 2:
             return False
         if bk and bk not in {"draftkings", "fanduel"}:
             return False
@@ -8871,6 +8875,24 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
         # PASS / TAKE IT pool: MLB needs 2 premium. NFL week 1 needs 1.
         if core_count < methods_min():
             continue
+        if active_sport() == "NHL":
+            try:
+                px = int(best)
+            except Exception:
+                px = 0
+            if 300 <= px <= 399 and "Lane A" not in display_meths:
+                display_meths.append("Lane A")
+            elif 400 <= px <= 499 and "Lane B" not in display_meths:
+                display_meths.append("Lane B")
+            elif 500 <= px <= 699 and "Lane C" not in display_meths:
+                display_meths.append("Lane C")
+            elif px >= 700 and "Lane D" not in display_meths:
+                display_meths.append("Lane D")
+            bk_lab = book_label(best_book)
+            if bk_lab == "FD" and "FD Best" not in display_meths:
+                display_meths.append("FD Best")
+            elif bk_lab == "DK" and "DK Best" not in display_meths:
+                display_meths.append("DK Best")
         is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px, best_book, score)
         has_pri = has_priority_method(display_meths)
         score_override = bool(is_bet and int(score or 0) >= SCORE_SOFT_TAKE)
