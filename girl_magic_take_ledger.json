@@ -354,6 +354,26 @@
       "best_book": "draftkings",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Chris Brooks",
+      "source": "take_it",
+      "score": 73,
+      "methods": [
+        "FD 50",
+        "Match 25",
+        "Multi-book method",
+        "B365 over MGM",
+        "B365 75",
+        "Rivers way over pack",
+        "MGM 25",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanduel",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
