@@ -292,6 +292,27 @@
       "best_book": "draftkings",
       "time": "08:57 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Michael Mayer",
+      "source": "take_it",
+      "score": 62,
+      "methods": [
+        "B365 Exact",
+        "FD Pattern",
+        "Multi-book method",
+        "FD a little long",
+        "Match 00",
+        "MGM 00",
+        "B365 75",
+        "HardRock 00",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 450,
+      "best_book": "fanatics",
+      "time": "08:57 AM",
+      "sport": "NFL"
     }
   ]
 }
