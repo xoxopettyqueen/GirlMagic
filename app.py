@@ -1324,6 +1324,19 @@ NHL_STAMP_METHODS = {
     "HotShots", "HotGoals", "MatchupSoft", "GoalieWeak",
     "FD a little long", "DK FD-style",
 }
+NHL_LEARN_METHODS = {
+    "PP1", "L1", "L2", "PP2", "HotShots", "HotGoals", "ColdShots", "ColdGoals",
+    "MatchupSoft", "GoalieWeak", "Books tight", "Multi-book Shorten",
+    "FD Best", "DK Best", "HardRock Best", "Bet365 Best", "Fanatics Best",
+    "Lane A", "Lane B", "Lane C", "Lane D",
+}
+NHL_HIDE_ON_BOARD = {
+    "FD Pattern", "FD 600", "MGM Exact", "MGM 50", "MGM 75", "MGM 40", "MGM 60",
+    "FD 90", "FD 40", "FD 50", "HardRock 00", "HardRock 50", "HardRock Heater",
+    "B365 over HardRock", "B365 over MGM", "B365 way over MGM", "B365 a bit over FD",
+    "DK FD-style", "Rivers a bit over pack", "Rivers short vs pack",
+    "Fanatics over pack", "Stayed in the group", "Multi-book method",
+}
 
 PRIORITY_METHODS = {
     "MGM 25", "Match 25", "MGM Exact",
@@ -6160,7 +6173,7 @@ def fetch_sport_desk(sport="MLB"):
             return {"games": [], "injuries": [], "msg": "NBA Stats miss — offseason or blocked"}
     if sport == "NHL":
         try:
-            r = requests.get(f"https://api-web.nhle.com/v1/schedule/{iso}", timeout=15)
+            r = _nhl_get(f"https://api-web.nhle.com/v1/schedule/{iso}")
             js = r.json() if r.ok else {}
             for day in js.get("gameWeek") or js.get("games") or []:
                 glist = day.get("games") if isinstance(day, dict) and "games" in day else ([day] if isinstance(day, dict) and day.get("id") else [])
@@ -6171,7 +6184,7 @@ def fetch_sport_desk(sport="MLB"):
                     home = ((g.get("homeTeam") or {}).get("abbrev")) or "?"
                     games.append({"label": f"{away}@{home}", "status": g.get("gameState") or ""})
             if not games:
-                sc = requests.get(f"https://api-web.nhle.com/v1/score/{iso}", timeout=12).json()
+                sc = _nhl_get(f"https://api-web.nhle.com/v1/score/{iso}").json()
                 for g in sc.get("games") or []:
                     away = ((g.get("awayTeam") or {}).get("abbrev")) or "?"
                     home = ((g.get("homeTeam") or {}).get("abbrev")) or "?"
@@ -6226,14 +6239,32 @@ def _official_hr_for_date(date_str):
     return set(hr_names or []), set(final_players or []), msg
 
 
+def _nhl_get(url, timeout=15):
+    """NHL.com returns 403 to a bare Python User-Agent."""
+    return requests.get(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "Accept": "application/json",
+            "Origin": "https://www.nhl.com",
+            "Referer": "https://www.nhl.com/",
+        },
+        timeout=timeout,
+    )
+
+
 def fetch_nhl_goal_scorers(date_str=None):
     """Official NHL.com scoreboard — anytime goal scorers for that date."""
     day = date_str or today_az()
     names, done = set(), set()
+    empty_meta = {"all_final": False, "finals": 0, "live": 0, "games": 0}
     try:
-        js = requests.get(f"https://api-web.nhle.com/v1/score/{day}", timeout=15).json()
+        r = _nhl_get(f"https://api-web.nhle.com/v1/score/{day}")
+        if r.status_code != 200:
+            return [], [], f"NHL score HTTP {r.status_code}", empty_meta
+        js = r.json() if r.content else {}
     except Exception as e:
-        return [], [], f"NHL score miss {e}"
+        return [], [], f"NHL score miss {e}", empty_meta
     finals = 0
     live = 0
     games_n = 0
@@ -6277,7 +6308,8 @@ def auto_grade_pending():
         by_date = defaultdict(list)
         for row in rows:
             stt = str(row.get("result") or row.get("status") or "").upper()
-            if stt not in ("PENDING", "STILL_UP", "STILL UP"):
+            reopen = str(row.get("graded_by") or "").startswith("nhl_auto") and stt in ("MISS", "LEARN_MISS")
+            if stt not in ("PENDING", "STILL_UP", "STILL UP") and not reopen:
                 continue
             blob = " ".join(str(row.get(k) or "") for k in ("sport", "market")).lower()
             is_nhl = row_sport(row) == "NHL" or "anytime_goal" in blob or "nhl" in blob
@@ -6309,20 +6341,18 @@ def auto_grade_pending():
             for row in batch:
                 study = str(row.get("source") or "") in STUDY_SOURCES
                 player = row.get("player") or ""
-                if hit_set and any(names_match_grade(player, h) for h in hit_set):
+                scored = hit_set and any(names_match_grade(player, h) or names_match(player, h) for h in hit_set)
+                if scored:
                     row["result"] = "LEARN_HIT" if study else "HIT"
                     row["status"] = row["result"]
                     row["graded_by"] = tag
                     hits += 1
-                elif slate_closed or (miss_pool and any(names_match_grade(player, f) for f in miss_pool)):
-                    if slate_closed or miss_pool:
-                        row["result"] = "LEARN_MISS" if study else "MISS"
-                        row["status"] = row["result"]
-                        row["graded_by"] = tag + ("_closed" if slate_closed else "")
-                        misses += 1
-                    else:
-                        skipped += 1
-                elif age >= 1 and int(meta.get("games") or 0) == 0:
+                elif slate_closed and str(row.get("result") or "").upper() not in ("MISS", "LEARN_MISS", "HIT", "LEARN_HIT"):
+                    row["result"] = "LEARN_MISS" if study else "MISS"
+                    row["status"] = row["result"]
+                    row["graded_by"] = tag + "_closed"
+                    misses += 1
+                elif age >= 1 and int(meta.get("games") or 0) == 0 and str(row.get("result") or "").upper() not in ("MISS", "LEARN_MISS", "HIT", "LEARN_HIT"):
                     row["result"] = "LEARN_MISS" if study else "MISS"
                     row["status"] = row["result"]
                     row["graded_by"] = tag + "_nogames"
@@ -9098,7 +9128,7 @@ def build_backtest_stats(rows, days=14):
             nm = normalize_method_name(m)
             if nm in TRACKER_BLOCKLIST or nm in NOISE_METHODS:
                 continue
-            if not (is_core_method(nm) or nm in TRACKER_ALWAYS or nm in PERSONAL_STRONG):
+            if not (is_core_method(nm) or nm in TRACKER_ALWAYS or nm in PERSONAL_STRONG or nm in NHL_LEARN_METHODS or nm in NHL_STAMP_METHODS):
                 continue
             if nm in counted:
                 continue
@@ -14529,10 +14559,14 @@ def main():
                 )
 
         st.markdown("#### Methods on TAKE IT (graded)")
+        sport_now = active_sport()
+        hit_word = sport_cfg().get("hits") or "hits"
         chips_ti = []
         for name, s in sorted(method_by_src["take_it"].items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+            if sport_now == "NHL" and name in NHL_HIDE_ON_BOARD:
+                continue
             t = s["hit"] + s["miss"]
-            if t < 5:
+            if t < (3 if sport_now == "NHL" else 5):
                 continue
             pct = 100 * s["hit"] / t
             chips_ti.append(
@@ -14544,13 +14578,18 @@ def main():
 
         st.markdown("#### Methods on WATCH (graded)")
         st.caption(
+            "NHL learns PP1, L1, HotShots, books, lanes — not MLB FD/MGM stamps. "
+            "Baseball tricks stay on the MLB toggle."
+            if sport_now == "NHL" else
             "Old weeks logged almost nobody as WATCH — that 0% is leftover, not today’s box. "
             "EV / Kelly chips alone are not a Watch method."
         )
         chips_wa = []
         for name, s in sorted(method_by_src["watch"].items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
             t = s["hit"] + s["miss"]
-            if t < 5:
+            if t < (3 if sport_now == "NHL" else 5):
+                continue
+            if sport_now == "NHL" and name in NHL_HIDE_ON_BOARD:
                 continue
             if name in ("EV Support", "Kelly Support", "EV Premium", "Kelly Premium", "EV Caution", "Kelly Caution"):
                 continue
@@ -14561,8 +14600,41 @@ def main():
                 f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
             )
         st.markdown("".join(chips_wa) if chips_wa else "_(Need more graded WATCH)_", unsafe_allow_html=True)
+        if sport_now == "NHL":
+            book_s, end_s = defaultdict(lambda: {"hit": 0, "miss": 0}), defaultdict(lambda: {"hit": 0, "miss": 0})
+            for r in rows_bt:
+                res = str(r.get("result") or "").upper()
+                if res not in ("HIT", "MISS", "LEARN_HIT", "LEARN_MISS"):
+                    continue
+                hit = res in ("HIT", "LEARN_HIT")
+                bl = book_label(r.get("best_book") or "")
+                if bl and bl != "Untagged":
+                    book_s[bl]["hit" if hit else "miss"] += 1
+                try:
+                    end_s[f"+x{int(r.get('ending') if r.get('ending') is not None else last_two(r.get('best_price'))):02d}"]["hit" if hit else "miss"] += 1
+                except Exception:
+                    pass
+            def _chips(stats):
+                out = []
+                for name, s in sorted(stats.items(), key=lambda x: -(x[1]["hit"] / max(1, x[1]["hit"] + x[1]["miss"]))):
+                    t = s["hit"] + s["miss"]
+                    if t < 3:
+                        continue
+                    out.append(
+                        f'<div class="rate-chip"><div class="rate-pct">{100*s["hit"]/t:.0f}%</div>'
+                        f'<div class="rate-name">{name}</div>'
+                        f'<div class="rate-n">{s["hit"]}H · {s["miss"]}M · n={t}</div></div>'
+                    )
+                return "".join(out)
+            st.markdown("#### NHL book we bought")
+            st.markdown(_chips(book_s) or "_(no graded books yet)_", unsafe_allow_html=True)
+            st.markdown("#### NHL price ending")
+            st.markdown(_chips(end_s) or "_(no graded endings yet)_", unsafe_allow_html=True)
 
-        st.caption("Coverage = share of MLB HRs that were on WATCH/TAKE that day (see banner). Aim: TAKE IT hit rate > WATCH > random.")
+        st.caption(
+            f"Coverage = share of official {hit_word} that were on WATCH/TAKE that day. "
+            f"Aim: TAKE IT hit rate > WATCH. Tricks do not cross sports."
+        )
 
 
     if page == "Grade:Shop":
