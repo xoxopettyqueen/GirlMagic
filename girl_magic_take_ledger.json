@@ -811,6 +811,25 @@
       "best_book": "fanduel",
       "time": "10:10 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Jordan Martinook",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "MGM Exact",
+        "B365 over HardRock",
+        "FD 50",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support",
+        "Lane C",
+        "FD Best"
+      ],
+      "best_price": 550,
+      "best_book": "fanduel",
+      "time": "10:31 AM",
+      "sport": "NHL"
     }
   ]
 }
