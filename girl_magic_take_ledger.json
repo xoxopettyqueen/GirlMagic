@@ -854,6 +854,22 @@
       "best_book": "fanduel",
       "time": "10:31 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Michael Wilson",
+      "source": "take_it",
+      "score": 50,
+      "methods": [
+        "DK 10",
+        "Books tight",
+        "B365 Exact",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 220,
+      "best_book": "fanduel",
+      "time": "11:10 AM",
+      "sport": "NFL"
     }
   ]
 }
