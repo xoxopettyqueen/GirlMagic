@@ -1090,6 +1090,25 @@
       "best_book": "fanduel",
       "time": "09:58 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Trevor Moore",
+      "source": "take_it",
+      "score": 57,
+      "methods": [
+        "FD 90",
+        "MGM Exact",
+        "DK FD-style",
+        "Multi-book method",
+        "EV Support",
+        "Kelly Support",
+        "Lane A",
+        "DK Best"
+      ],
+      "best_price": 390,
+      "best_book": "draftkings",
+      "time": "09:58 AM",
+      "sport": "NHL"
     }
   ]
 }
