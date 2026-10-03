@@ -941,6 +941,27 @@
       "best_book": "fanduel",
       "time": "09:57 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Shayne Gostisbehere",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "HardRock 00",
+        "FD 600",
+        "FD a little long",
+        "MGM Exact",
+        "Multi-book method",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support",
+        "Lane C",
+        "DK Best"
+      ],
+      "best_price": 600,
+      "best_book": "draftkings",
+      "time": "09:57 AM",
+      "sport": "NHL"
     }
   ]
 }
