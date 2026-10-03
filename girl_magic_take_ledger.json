@@ -962,6 +962,26 @@
       "best_book": "draftkings",
       "time": "09:57 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Sean Monahan",
+      "source": "take_it",
+      "score": 72,
+      "methods": [
+        "FD 50",
+        "B365 over HardRock",
+        "MGM Exact",
+        "DK FD-style",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support",
+        "Lane A",
+        "DK Best"
+      ],
+      "best_price": 390,
+      "best_book": "draftkings",
+      "time": "09:57 AM",
+      "sport": "NHL"
     }
   ]
 }
