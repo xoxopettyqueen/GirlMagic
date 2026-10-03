@@ -314383,7 +314383,7 @@
       "Multi-book Shorten"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-02T01:35:56.520134+00:00",
     "price_source": "pregame_lock",
@@ -314394,7 +314394,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-02T01:35:56.520146+00:00",
     "player_name": "Blake Whiteheart",
     "stamps": [
@@ -314406,7 +314406,8 @@
     ],
     "price": 1300,
     "book": "betmgm",
-    "created_at": "2026-10-01T19:21:58.399015+00:00"
+    "created_at": "2026-10-01T19:21:58.399015+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-01_Cleveland Browns D/ST_watch_48",
@@ -314437,7 +314438,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-02T01:28:11.049985+00:00",
     "price_source": "pregame_lock",
@@ -314448,7 +314449,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-02T01:28:11.050002+00:00",
     "player_name": "Cleveland Browns D/ST",
     "stamps": [
@@ -314459,7 +314460,8 @@
     ],
     "price": 575,
     "book": "betmgm",
-    "created_at": "2026-10-01T19:21:58.607390+00:00"
+    "created_at": "2026-10-01T19:21:58.607390+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-01_DK Metcalf_watch_49",
@@ -314619,7 +314621,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-01T19:29:32.024634+00:00",
     "price_source": "pregame_lock",
@@ -314630,7 +314632,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-01T19:29:32.024646+00:00",
     "player_name": "Eli Heidenreich",
     "stamps": [
@@ -314640,7 +314642,8 @@
     ],
     "price": 2500,
     "book": "fanatics",
-    "created_at": "2026-10-01T19:21:58.674393+00:00"
+    "created_at": "2026-10-01T19:21:58.674393+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-01_Germie Bernard_watch_78",
@@ -315264,7 +315267,7 @@
       "Stayed in the group"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-02T01:28:11.373548+00:00",
     "price_source": "pregame_lock",
@@ -315275,7 +315278,7 @@
     "benford_note": "",
     "benford_cluster": 0.33,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-02T01:28:11.373558+00:00",
     "player_name": "Pittsburgh Steelers D/ST",
     "stamps": [
@@ -315287,7 +315290,8 @@
     ],
     "price": 500,
     "book": "draftkings",
-    "created_at": "2026-10-01T19:21:58.496936+00:00"
+    "created_at": "2026-10-01T19:21:58.496936+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-01_Quinshon Judkins_watch_35",
@@ -316851,7 +316855,7 @@
       "Kelly Caution"
     ],
     "core": 10,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-02T01:28:10.520778+00:00",
     "price_source": "pregame_lock",
@@ -316862,7 +316866,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-02T01:28:10.520793+00:00",
     "player_name": "Lew Nichols III",
     "stamps": [
@@ -316879,7 +316883,8 @@
     ],
     "price": 2500,
     "book": "fanatics",
-    "created_at": "2026-10-02T01:28:10.520778+00:00"
+    "created_at": "2026-10-02T01:28:10.520778+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-01_Pat Freiermuth_shop_lean_51",
