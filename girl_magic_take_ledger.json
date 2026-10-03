@@ -1413,6 +1413,22 @@
       "best_book": "fanduel",
       "time": "03:14 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Christian Watson",
+      "source": "take_it",
+      "score": 45,
+      "methods": [
+        "Books tight",
+        "B365 over HardRock",
+        "DK FD-style",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 175,
+      "best_book": "fanduel",
+      "time": "03:14 PM",
+      "sport": "NFL"
     }
   ]
 }
