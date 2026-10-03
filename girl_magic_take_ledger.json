@@ -1048,6 +1048,28 @@
       "best_book": "draftkings",
       "time": "09:57 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Michael Misa",
+      "source": "take_it",
+      "score": 54,
+      "methods": [
+        "FD 50",
+        "B365 over MGM",
+        "MGM 10",
+        "B365 over HardRock",
+        "MGM Exact",
+        "Multi-book method",
+        "B365 a bit over FD",
+        "EV Premium",
+        "Kelly Support",
+        "Lane A",
+        "DK Best"
+      ],
+      "best_price": 380,
+      "best_book": "draftkings",
+      "time": "09:57 AM",
+      "sport": "NHL"
     }
   ]
 }
