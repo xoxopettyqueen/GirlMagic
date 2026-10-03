@@ -1070,6 +1070,26 @@
       "best_book": "draftkings",
       "time": "09:57 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Matthew Schaefer",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "FD 90",
+        "MGM Exact",
+        "DK FD-style",
+        "MGM 60",
+        "Multi-book method",
+        "EV Support",
+        "Kelly Support",
+        "Lane A",
+        "FD Best"
+      ],
+      "best_price": 390,
+      "best_book": "fanduel",
+      "time": "09:58 AM",
+      "sport": "NHL"
     }
   ]
 }
