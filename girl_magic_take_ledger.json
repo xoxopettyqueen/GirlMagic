@@ -1255,6 +1255,26 @@
       "best_book": "draftkings",
       "time": "11:55 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Rasmus Dahlin",
+      "source": "take_it",
+      "score": 56,
+      "methods": [
+        "DK 10",
+        "FD 90",
+        "Multi-book method",
+        "Match 00",
+        "MGM 00",
+        "EV Support",
+        "Kelly Support",
+        "Lane A",
+        "DK Best"
+      ],
+      "best_price": 310,
+      "best_book": "draftkings",
+      "time": "11:55 AM",
+      "sport": "NHL"
     }
   ]
 }
