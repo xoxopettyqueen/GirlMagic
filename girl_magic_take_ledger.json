@@ -1371,6 +1371,27 @@
       "best_book": "draftkings",
       "time": "03:13 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Samuel Honzek",
+      "source": "take_it",
+      "score": 55,
+      "methods": [
+        "B365 over MGM",
+        "FD a little long",
+        "B365 over HardRock",
+        "MGM Exact",
+        "Multi-book method",
+        "FD Pattern",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "FD Best"
+      ],
+      "best_price": 460,
+      "best_book": "fanduel",
+      "time": "03:14 PM",
+      "sport": "NHL"
     }
   ]
 }
