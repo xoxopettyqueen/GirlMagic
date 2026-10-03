@@ -1392,6 +1392,27 @@
       "best_book": "fanduel",
       "time": "03:14 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Tyson Bagent",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "Stayed in the group",
+        "Last one left",
+        "FD a little long",
+        "Multi-book method",
+        "Match 00",
+        "MGM 00",
+        "FD Pattern",
+        "Rivers a bit over pack",
+        "EV Premium",
+        "Kelly Premium"
+      ],
+      "best_price": 470,
+      "best_book": "fanduel",
+      "time": "03:14 PM",
+      "sport": "NFL"
     }
   ]
 }
