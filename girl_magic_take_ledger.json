@@ -1429,6 +1429,21 @@
       "best_book": "fanduel",
       "time": "03:14 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Ladd McConkey",
+      "source": "take_it",
+      "score": 35,
+      "methods": [
+        "Books tight",
+        "DK FD-style",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 300,
+      "best_book": "fanduel",
+      "time": "03:14 PM",
+      "sport": "NFL"
     }
   ]
 }
