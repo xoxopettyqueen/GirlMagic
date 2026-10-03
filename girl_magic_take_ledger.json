@@ -1235,6 +1235,26 @@
       "best_book": "fanduel",
       "time": "11:55 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Alex Turcotte",
+      "source": "take_it",
+      "score": 62,
+      "methods": [
+        "FD a little long",
+        "MGM Exact",
+        "Multi-book method",
+        "FD Pattern",
+        "HardRock 50",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "DK Best"
+      ],
+      "best_price": 450,
+      "best_book": "draftkings",
+      "time": "11:55 AM",
+      "sport": "NHL"
     }
   ]
 }
