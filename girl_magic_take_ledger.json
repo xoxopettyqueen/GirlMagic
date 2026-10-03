@@ -780,6 +780,26 @@
       "best_book": "fanduel",
       "time": "01:08 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Blake Corum",
+      "source": "take_it",
+      "score": 64,
+      "methods": [
+        "Stayed in the group",
+        "Match 50",
+        "Last one left",
+        "MGM 50",
+        "Books tight",
+        "Multi-book method",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 300,
+      "best_book": "hardrockbet",
+      "time": "01:08 AM",
+      "sport": "NFL"
     }
   ]
 }
