@@ -836,6 +836,29 @@
       "best_book": "fanduel",
       "time": "10:35 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Barrett Hayton",
+      "source": "take_it",
+      "score": 62,
+      "methods": [
+        "Match 75",
+        "Stayed in the group",
+        "MGM 75",
+        "FD 50",
+        "HardRock 50",
+        "MGM Exact",
+        "Multi-book method",
+        "Rivers a bit over pack",
+        "EV Premium",
+        "Kelly Support",
+        "Lane C",
+        "FD Best"
+      ],
+      "best_price": 550,
+      "best_book": "fanduel",
+      "time": "10:42 AM",
+      "sport": "NHL"
     }
   ]
 }
