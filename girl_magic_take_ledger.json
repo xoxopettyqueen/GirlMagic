@@ -795,6 +795,27 @@
       "best_book": "hardrockbet",
       "time": "10:34 AM",
       "sport": "MLB"
+    },
+    {
+      "player": "Zach Ertz",
+      "source": "take_it",
+      "score": 61,
+      "methods": [
+        "Stayed in the group",
+        "FD 600",
+        "FD a little long",
+        "Books tight",
+        "Multi-book method",
+        "Match 00",
+        "MGM 00",
+        "Rivers short vs pack",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 600,
+      "best_book": "fanduel",
+      "time": "10:35 AM",
+      "sport": "NFL"
     }
   ]
 }
