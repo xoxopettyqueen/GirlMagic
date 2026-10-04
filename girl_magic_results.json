@@ -364810,7 +364810,7 @@
   {
     "id": "2026-10-03_Fernando Tatis Jr._watch_27",
     "date": "2026-10-03",
-    "time": "05:32 PM",
+    "time": "06:18 PM",
     "player": "Fernando Tatis Jr.",
     "score": 27,
     "edge": 11,
@@ -364849,12 +364849,16 @@
       "FD+MGM classic",
       "EV Premium",
       "DK 10",
-      "HardRock 50"
+      "HardRock 50",
+      "HardRock 00",
+      "FD 50",
+      "Match 00",
+      "MGM 00"
     ],
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-04T00:32:00.264505+00:00",
+    "logged_at": "2026-10-04T01:18:08.887027+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -364864,7 +364868,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T00:32:00.264520+00:00",
+    "updated_at": "2026-10-04T01:18:08.887043+00:00",
     "player_name": "Fernando Tatis Jr.",
     "stamps": [
       "Match 25",
@@ -365470,7 +365474,7 @@
   {
     "id": "2026-10-03_Manny Machado_watch_100",
     "date": "2026-10-03",
-    "time": "05:32 PM",
+    "time": "06:18 PM",
     "player": "Manny Machado",
     "score": 100,
     "edge": 127,
@@ -365510,12 +365514,16 @@
       "Stayed in the group",
       "B365 a bit over FD",
       "FD 40",
-      "Rivers short vs pack"
+      "Rivers short vs pack",
+      "FD 50",
+      "Match 00",
+      "MGM 00",
+      "EV Support"
     ],
     "core": 8,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-04T00:32:00.331465+00:00",
+    "logged_at": "2026-10-04T01:18:08.838516+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -365525,7 +365533,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T00:32:05.370639+00:00",
+    "updated_at": "2026-10-04T01:18:08.838526+00:00",
     "player_name": "Manny Machado",
     "stamps": [
       "Rivers a bit over pack",
