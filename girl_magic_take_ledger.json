@@ -914,6 +914,25 @@
       "best_book": "fanatics",
       "time": "03:00 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Lars Eller",
+      "source": "take_it",
+      "score": 75,
+      "methods": [
+        "B365 over MGM",
+        "B365 way over MGM",
+        "B365 over HardRock",
+        "Multi-book Shorten",
+        "EV Premium",
+        "Kelly Premium",
+        "Lane C",
+        "FD Best"
+      ],
+      "best_price": 500,
+      "best_book": "fanduel",
+      "time": "03:00 PM",
+      "sport": "NHL"
     }
   ]
 }
