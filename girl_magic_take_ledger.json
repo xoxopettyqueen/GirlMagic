@@ -1471,6 +1471,26 @@
       "best_book": "draftkings",
       "time": "03:21 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Brendan Gallagher",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "B365 over MGM",
+        "B365 over HardRock",
+        "MGM Exact",
+        "B365 way over MGM",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support",
+        "Lane C",
+        "FD Best"
+      ],
+      "best_price": 625,
+      "best_book": "fanduel",
+      "time": "06:18 PM",
+      "sport": "NHL"
     }
   ]
 }
