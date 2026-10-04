@@ -878,6 +878,21 @@
       "best_book": "draftkings",
       "time": "10:42 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "CeeDee Lamb",
+      "source": "take_it",
+      "score": 42,
+      "methods": [
+        "Books tight",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 170,
+      "best_book": "fanduel",
+      "time": "10:42 AM",
+      "sport": "NFL"
     }
   ]
 }
