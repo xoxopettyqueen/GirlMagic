@@ -364888,7 +364888,7 @@
   {
     "id": "2026-10-03_Fernando Tatis Jr._watch_27",
     "date": "2026-10-03",
-    "time": "06:18 PM",
+    "time": "06:26 PM",
     "player": "Fernando Tatis Jr.",
     "score": 27,
     "edge": 11,
@@ -364931,12 +364931,14 @@
       "HardRock 00",
       "FD 50",
       "Match 00",
-      "MGM 00"
+      "MGM 00",
+      "EV Caution",
+      "Kelly Caution"
     ],
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-04T01:18:08.887027+00:00",
+    "logged_at": "2026-10-04T01:26:06.491771+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -364946,7 +364948,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T01:18:08.887043+00:00",
+    "updated_at": "2026-10-04T01:26:06.491783+00:00",
     "player_name": "Fernando Tatis Jr.",
     "stamps": [
       "Match 25",
@@ -365552,7 +365554,7 @@
   {
     "id": "2026-10-03_Manny Machado_watch_100",
     "date": "2026-10-03",
-    "time": "06:18 PM",
+    "time": "06:26 PM",
     "player": "Manny Machado",
     "score": 100,
     "edge": 127,
@@ -365601,7 +365603,7 @@
     "core": 8,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-04T01:18:08.838516+00:00",
+    "logged_at": "2026-10-04T01:26:06.527536+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -365611,7 +365613,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T01:18:08.838526+00:00",
+    "updated_at": "2026-10-04T01:26:06.527546+00:00",
     "player_name": "Manny Machado",
     "stamps": [
       "Rivers a bit over pack",
@@ -366584,7 +366586,7 @@
   {
     "id": "2026-10-03_Jonathan Aranda_shop_take_87",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "06:26 PM",
     "player": "Jonathan Aranda",
     "score": 0,
     "edge": 87,
@@ -366623,12 +366625,13 @@
       "EV Support",
       "FD a little long",
       "FD 90",
-      "B365 a bit over FD"
+      "B365 a bit over FD",
+      "DK 10"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-10-03T22:29:49.067360+00:00",
+    "logged_at": "2026-10-04T01:26:06.437610+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -366641,7 +366644,7 @@
     "price": 750,
     "book": "hardrockbet",
     "created_at": "2026-10-03T08:09:27.740874+00:00",
-    "updated_at": "2026-10-03T22:29:49.067371+00:00"
+    "updated_at": "2026-10-04T01:26:06.437621+00:00"
   },
   {
     "id": "2026-10-03_Tommy Pham_shop_lean_78",
@@ -366905,7 +366908,7 @@
   {
     "id": "2026-10-03_Jackson Merrill_shop_lean_51",
     "date": "2026-10-03",
-    "time": "06:18 PM",
+    "time": "06:26 PM",
     "player": "Jackson Merrill",
     "score": 0,
     "edge": 51,
@@ -366925,12 +366928,22 @@
     "price_bucket": "+600s",
     "ending": 50,
     "methods": [
-      "Shop LEAN"
+      "Shop LEAN",
+      "Match 75",
+      "Stayed in the group",
+      "MGM 75",
+      "FD 50",
+      "Multi-book Shorten",
+      "B365 over MGM",
+      "B365 way over MGM",
+      "HardRock 50",
+      "EV Caution",
+      "Kelly Caution"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-03T08:09:28.192580+00:00",
+    "logged_at": "2026-10-04T01:26:06.573093+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -366943,7 +366956,7 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T08:09:28.192580+00:00",
-    "updated_at": "2026-10-04T01:18:14.686282+00:00"
+    "updated_at": "2026-10-04T01:26:06.573105+00:00"
   },
   {
     "id": "2026-10-03_Angel Mart\u00ednez_shop_lean_48",
