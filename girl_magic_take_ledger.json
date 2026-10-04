@@ -893,6 +893,27 @@
       "best_book": "fanduel",
       "time": "10:42 AM",
       "sport": "NFL"
+    },
+    {
+      "player": "Drake Baldwin",
+      "source": "take_it",
+      "score": 89,
+      "methods": [
+        "HardRock 00",
+        "FD a little long",
+        "FD 90",
+        "MGM Exact",
+        "DK FD-style",
+        "Multi-book method",
+        "FD Pattern",
+        "Rivers a bit over pack",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "03:00 PM",
+      "sport": "MLB"
     }
   ]
 }
