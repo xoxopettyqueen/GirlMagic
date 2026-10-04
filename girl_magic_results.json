@@ -364958,7 +364958,7 @@
   {
     "id": "2026-10-03_Jackson Chourio_watch_74",
     "date": "2026-10-03",
-    "time": "05:32 PM",
+    "time": "06:18 PM",
     "player": "Jackson Chourio",
     "score": 74,
     "edge": 18,
@@ -365013,7 +365013,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T00:32:05.605644+00:00",
+    "updated_at": "2026-10-04T01:18:14.595763+00:00",
     "player_name": "Jackson Chourio",
     "stamps": [
       "Rivers a bit over pack",
@@ -365037,7 +365037,7 @@
   {
     "id": "2026-10-03_Jake Bauers_watch_94",
     "date": "2026-10-03",
-    "time": "05:32 PM",
+    "time": "06:18 PM",
     "player": "Jake Bauers",
     "score": 94,
     "edge": 125,
@@ -365090,7 +365090,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T00:32:00.404165+00:00",
+    "updated_at": "2026-10-04T01:18:14.543779+00:00",
     "player_name": "Jake Bauers",
     "stamps": [
       "Match 25",
@@ -365989,7 +365989,7 @@
   {
     "id": "2026-10-03_Ty France_watch_17",
     "date": "2026-10-03",
-    "time": "05:32 PM",
+    "time": "06:18 PM",
     "player": "Ty France",
     "score": 17,
     "edge": 33,
@@ -366061,7 +366061,7 @@
     "price": 900,
     "book": "bet365",
     "created_at": "2026-10-03T08:09:20.869424+00:00",
-    "updated_at": "2026-10-04T00:32:00.198157+00:00"
+    "updated_at": "2026-10-04T01:18:14.392882+00:00"
   },
   {
     "id": "2026-10-03_Will Smith_watch_43",
@@ -366827,7 +366827,7 @@
   {
     "id": "2026-10-03_Jackson Merrill_shop_lean_51",
     "date": "2026-10-03",
-    "time": "05:32 PM",
+    "time": "06:18 PM",
     "player": "Jackson Merrill",
     "score": 0,
     "edge": 51,
@@ -366865,7 +366865,7 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T08:09:28.192580+00:00",
-    "updated_at": "2026-10-04T00:32:05.639706+00:00"
+    "updated_at": "2026-10-04T01:18:14.686282+00:00"
   },
   {
     "id": "2026-10-03_Angel Mart\u00ednez_shop_lean_48",
@@ -390368,5 +390368,90 @@
     "price": 2300,
     "book": "caesars",
     "created_at": "2026-10-04T00:32:51.971798+00:00"
+  },
+  {
+    "id": "2026-10-03_Christian Yelich_shop_take_119",
+    "date": "2026-10-03",
+    "time": "06:18 PM",
+    "player": "Christian Yelich",
+    "score": 0,
+    "edge": 119,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 900,
+    "book_prices": {
+      "bet365": 850,
+      "betrivers": 900,
+      "caesars": 750,
+      "draftkings": 950,
+      "fanatics": 900,
+      "fanduel": 950,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-04T01:18:14.452388+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Christian Yelich",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 950,
+    "book": "draftkings",
+    "created_at": "2026-10-04T01:18:14.452388+00:00",
+    "updated_at": "2026-10-04T01:18:14.452388+00:00"
+  },
+  {
+    "id": "2026-10-03_William Contreras_shop_take_74",
+    "date": "2026-10-03",
+    "time": "06:18 PM",
+    "player": "William Contreras",
+    "score": 0,
+    "edge": 74,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 675,
+    "book_prices": {
+      "bet365": 550,
+      "betmgm": 550,
+      "betrivers": 750,
+      "caesars": 625,
+      "draftkings": 750,
+      "fanatics": 700,
+      "fanduel": 700,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-04T01:18:14.505087+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "William Contreras",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 750,
+    "book": "draftkings",
+    "created_at": "2026-10-04T01:18:14.505087+00:00",
+    "updated_at": "2026-10-04T01:18:14.505087+00:00"
   }
 ]
