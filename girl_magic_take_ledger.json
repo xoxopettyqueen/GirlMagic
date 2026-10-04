@@ -859,6 +859,25 @@
       "best_book": "fanduel",
       "time": "10:42 AM",
       "sport": "NHL"
+    },
+    {
+      "player": "Mikael Backlund",
+      "source": "take_it",
+      "score": 52,
+      "methods": [
+        "Stayed in the group",
+        "Match 25",
+        "B365 over HardRock",
+        "MGM 25",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "DK Best"
+      ],
+      "best_price": 425,
+      "best_book": "draftkings",
+      "time": "10:42 AM",
+      "sport": "NHL"
     }
   ]
 }
