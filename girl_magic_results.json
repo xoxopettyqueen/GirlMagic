@@ -395248,5 +395248,335 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-04T09:38:53.890628+00:00"
+  },
+  {
+    "id": "2026-10-04_Garrett Mitchell_shop_lean_68",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Garrett Mitchell",
+    "score": 0,
+    "edge": 68,
+    "best_price": 700,
+    "best_book": "fanatics",
+    "median": 635,
+    "book_prices": {
+      "betrivers": 600,
+      "caesars": 575,
+      "draftkings": 640,
+      "fanatics": 700,
+      "fanduel": 630,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.106984+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Garrett Mitchell",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 700,
+    "book": "fanatics",
+    "created_at": "2026-10-04T09:38:56.106984+00:00",
+    "updated_at": "2026-10-04T09:38:56.106984+00:00"
+  },
+  {
+    "id": "2026-10-04_Lane Thomas_shop_lean_66",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Lane Thomas",
+    "score": 0,
+    "edge": 66,
+    "best_price": 850,
+    "best_book": "bet365",
+    "median": 800,
+    "book_prices": {
+      "bet365": 850,
+      "betrivers": 850,
+      "caesars": 750,
+      "draftkings": 820,
+      "fanatics": 700,
+      "fanduel": 730,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.146258+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Lane Thomas",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 850,
+    "book": "bet365",
+    "created_at": "2026-10-04T09:38:56.146258+00:00",
+    "updated_at": "2026-10-04T09:38:56.146258+00:00"
+  },
+  {
+    "id": "2026-10-04_Jake Cronenworth_shop_lean_63",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Jake Cronenworth",
+    "score": 0,
+    "edge": 63,
+    "best_price": 900,
+    "best_book": "hardrockbet",
+    "median": 845,
+    "book_prices": {
+      "betrivers": 900,
+      "caesars": 750,
+      "draftkings": 870,
+      "fanatics": 750,
+      "fanduel": 820,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.190939+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Jake Cronenworth",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 900,
+    "book": "hardrockbet",
+    "created_at": "2026-10-04T09:38:56.190939+00:00",
+    "updated_at": "2026-10-04T09:38:56.190939+00:00"
+  },
+  {
+    "id": "2026-10-04_Freddie Freeman_shop_lean_59",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Freddie Freeman",
+    "score": 0,
+    "edge": 59,
+    "best_price": 650,
+    "best_book": "bet365",
+    "median": 575,
+    "book_prices": {
+      "bet365": 650,
+      "betrivers": 600,
+      "caesars": 575,
+      "draftkings": 600,
+      "fanatics": 575,
+      "fanduel": 570,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.229544+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Freddie Freeman",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 650,
+    "book": "bet365",
+    "created_at": "2026-10-04T09:38:56.229544+00:00",
+    "updated_at": "2026-10-04T09:38:56.229544+00:00"
+  },
+  {
+    "id": "2026-10-04_Tommy Edman_shop_lean_50",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Tommy Edman",
+    "score": 0,
+    "edge": 50,
+    "best_price": 760,
+    "best_book": "draftkings",
+    "median": 700,
+    "book_prices": {
+      "bet365": 600,
+      "betrivers": 650,
+      "caesars": 700,
+      "draftkings": 760,
+      "fanatics": 700,
+      "fanduel": 680,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+700s",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.282437+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Tommy Edman",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 760,
+    "book": "draftkings",
+    "created_at": "2026-10-04T09:38:56.282437+00:00",
+    "updated_at": "2026-10-04T09:38:56.282437+00:00"
+  },
+  {
+    "id": "2026-10-04_Ethan Salas_shop_lean_48",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Ethan Salas",
+    "score": 0,
+    "edge": 48,
+    "best_price": 900,
+    "best_book": "hardrockbet",
+    "median": 850,
+    "book_prices": {
+      "betrivers": 700,
+      "caesars": 850,
+      "draftkings": 850,
+      "fanduel": 820,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.325697+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Ethan Salas",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 900,
+    "book": "hardrockbet",
+    "created_at": "2026-10-04T09:38:56.325697+00:00",
+    "updated_at": "2026-10-04T09:38:56.325697+00:00"
+  },
+  {
+    "id": "2026-10-04_Dustin Harris_shop_lean_42",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Dustin Harris",
+    "score": 0,
+    "edge": 42,
+    "best_price": 930,
+    "best_book": "draftkings",
+    "median": 890,
+    "book_prices": {
+      "betrivers": 900,
+      "caesars": 850,
+      "draftkings": 930,
+      "fanatics": 750,
+      "fanduel": 880,
+      "hardrockbet": 900
+    },
+    "price_bucket": "+800-999",
+    "ending": 30,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.369160+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Dustin Harris",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 930,
+    "book": "draftkings",
+    "created_at": "2026-10-04T09:38:56.369160+00:00",
+    "updated_at": "2026-10-04T09:38:56.369160+00:00"
+  },
+  {
+    "id": "2026-10-04_Xander Bogaerts_shop_lean_41",
+    "date": "2026-10-04",
+    "time": "02:38 AM",
+    "player": "Xander Bogaerts",
+    "score": 0,
+    "edge": 41,
+    "best_price": 840,
+    "best_book": "draftkings",
+    "median": 800,
+    "book_prices": {
+      "betrivers": 800,
+      "caesars": 750,
+      "draftkings": 840,
+      "fanatics": 800,
+      "fanduel": 790,
+      "hardrockbet": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 40,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T09:38:56.413992+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Xander Bogaerts",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 840,
+    "book": "draftkings",
+    "created_at": "2026-10-04T09:38:56.413992+00:00",
+    "updated_at": "2026-10-04T09:38:56.413992+00:00"
   }
 ]
