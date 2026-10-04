@@ -364675,7 +364675,7 @@
   {
     "id": "2026-10-03_Fernando Tatis Jr._watch_27",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Fernando Tatis Jr.",
     "score": 27,
     "edge": 11,
@@ -364718,7 +364718,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T22:29:49.105966+00:00",
+    "logged_at": "2026-10-04T00:24:06.226426+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -364728,7 +364728,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-03T22:29:49.105977+00:00",
+    "updated_at": "2026-10-04T00:24:06.226437+00:00",
     "player_name": "Fernando Tatis Jr.",
     "stamps": [
       "Match 25",
@@ -364897,7 +364897,7 @@
   {
     "id": "2026-10-03_Jake Bauers_watch_94",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Jake Bauers",
     "score": 94,
     "edge": 125,
@@ -364939,7 +364939,7 @@
     "core": 5,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T22:29:49.279390+00:00",
+    "logged_at": "2026-10-04T00:24:06.314569+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MILWAUKEE BREWERS",
@@ -364949,7 +364949,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-03T22:29:49.279405+00:00",
+    "updated_at": "2026-10-04T00:24:06.314581+00:00",
     "player_name": "Jake Bauers",
     "stamps": [
       "Match 25",
@@ -365333,7 +365333,7 @@
   {
     "id": "2026-10-03_Manny Machado_watch_100",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Manny Machado",
     "score": 100,
     "edge": 127,
@@ -365372,12 +365372,13 @@
       "Kelly Support",
       "Stayed in the group",
       "B365 a bit over FD",
-      "FD 40"
+      "FD 40",
+      "Rivers short vs pack"
     ],
     "core": 8,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T22:29:49.316572+00:00",
+    "logged_at": "2026-10-04T00:24:06.272154+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -365387,7 +365388,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-03T22:29:55.018473+00:00",
+    "updated_at": "2026-10-04T00:24:06.272166+00:00",
     "player_name": "Manny Machado",
     "stamps": [
       "Rivers a bit over pack",
@@ -365843,7 +365844,7 @@
   {
     "id": "2026-10-03_Ty France_watch_17",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Ty France",
     "score": 17,
     "edge": 33,
@@ -365888,7 +365889,7 @@
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T22:29:49.193726+00:00",
+    "logged_at": "2026-10-04T00:24:06.132990+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -365915,7 +365916,7 @@
     "price": 900,
     "book": "bet365",
     "created_at": "2026-10-03T08:09:20.869424+00:00",
-    "updated_at": "2026-10-03T22:29:49.193735+00:00"
+    "updated_at": "2026-10-04T00:24:06.133003+00:00"
   },
   {
     "id": "2026-10-03_Will Smith_watch_43",
@@ -365989,7 +365990,7 @@
   {
     "id": "2026-10-03_Xander Bogaerts_watch_100",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Xander Bogaerts",
     "score": 100,
     "edge": 106,
@@ -366027,7 +366028,7 @@
     "core": 5,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T17:09:34.569084+00:00",
+    "logged_at": "2026-10-04T00:24:06.456005+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -366037,7 +366038,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-03T22:29:54.983146+00:00",
+    "updated_at": "2026-10-04T00:24:06.456020+00:00",
     "player_name": "Xander Bogaerts",
     "stamps": [
       "DK 10",
@@ -367311,7 +367312,7 @@
   {
     "id": "2026-10-03_Dustin Harris_watch_46",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Dustin Harris",
     "score": 46,
     "edge": 100,
@@ -367345,12 +367346,14 @@
       "EV Premium",
       "Kelly Support",
       "MGM Exact",
-      "DK FD-style"
+      "DK FD-style",
+      "FD Pattern",
+      "B365 a bit over FD"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T22:29:49.482785+00:00",
+    "logged_at": "2026-10-04T00:24:06.358082+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -367360,7 +367363,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-03T22:29:49.482798+00:00",
+    "updated_at": "2026-10-04T00:24:06.358096+00:00",
     "player_name": "Dustin Harris",
     "stamps": [
       "HardRock 00",
@@ -367430,7 +367433,7 @@
   {
     "id": "2026-10-03_Jake Cronenworth_watch_93",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Jake Cronenworth",
     "score": 93,
     "edge": 228,
@@ -367471,7 +367474,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T22:29:49.359126+00:00",
+    "logged_at": "2026-10-04T00:24:06.407644+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -367481,7 +367484,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-03T22:29:49.359141+00:00",
+    "updated_at": "2026-10-04T00:24:06.407655+00:00",
     "player_name": "Jake Cronenworth",
     "stamps": [
       "Stayed in the group",
@@ -383740,7 +383743,7 @@
   {
     "id": "2026-10-03_Christian Yelich_watch_35",
     "date": "2026-10-03",
-    "time": "03:29 PM",
+    "time": "05:24 PM",
     "player": "Christian Yelich",
     "score": 35,
     "edge": 46,
@@ -383774,12 +383777,15 @@
       "Rivers a bit over pack",
       "EV Support",
       "Kelly Support",
-      "Last one left"
+      "Last one left",
+      "HardRock 00",
+      "Multi-book Shorten",
+      "B365 over HardRock"
     ],
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-03T22:29:47.926715+00:00",
+    "logged_at": "2026-10-04T00:24:05.858095+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MILWAUKEE BREWERS",
@@ -383807,7 +383813,7 @@
     "price": 950,
     "book": "betrivers",
     "created_at": "2026-10-03T22:13:53.090195+00:00",
-    "updated_at": "2026-10-03T22:29:55.410481+00:00"
+    "updated_at": "2026-10-04T00:24:05.858110+00:00"
   },
   {
     "id": "2026-10-03_Jonny DeLuca_watch_64",
