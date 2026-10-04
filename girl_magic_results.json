@@ -348795,7 +348795,7 @@
   {
     "id": "2026-10-03_Zeev Buium_watch_43",
     "date": "2026-10-03",
-    "time": "09:58 AM",
+    "time": "08:37 PM",
     "player": "Zeev Buium",
     "score": 43,
     "edge": 57,
@@ -348841,7 +348841,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-03T16:58:45.832675+00:00",
+    "updated_at": "2026-10-04T03:37:12.474894+00:00",
     "player_name": "Zeev Buium",
     "stamps": [
       "FD 50",
@@ -386995,7 +386995,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T03:37:06.782747+00:00",
+    "updated_at": "2026-10-04T03:37:12.524877+00:00",
     "player_name": "Marco Rossi",
     "stamps": [
       "FD 50",
@@ -391265,7 +391265,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-04T03:37:06.582761+00:00",
+    "updated_at": "2026-10-04T03:37:12.295172+00:00",
     "player_name": "Nathan MacKinnon",
     "stamps": [
       "B365 over MGM",
@@ -393044,7 +393044,7 @@
   {
     "id": "2026-10-03_Alexander Wennberg_shop_lean_52",
     "date": "2026-10-03",
-    "time": "08:29 PM",
+    "time": "08:37 PM",
     "player": "Alexander Wennberg",
     "score": 0,
     "edge": 52,
@@ -393078,7 +393078,7 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-04T03:29:15.647272+00:00",
-    "updated_at": "2026-10-04T03:29:15.647272+00:00"
+    "updated_at": "2026-10-04T03:37:12.572010+00:00"
   },
   {
     "id": "2026-10-03_Maxim Tsyplakov_shop_lean_52",
@@ -393808,5 +393808,160 @@
     "price": 330,
     "book": "draftkings",
     "created_at": "2026-10-04T03:37:06.632126+00:00"
+  },
+  {
+    "id": "2026-10-03_Linus Karlsson_shop_take_77",
+    "date": "2026-10-03",
+    "time": "08:37 PM",
+    "player": "Linus Karlsson",
+    "score": 0,
+    "edge": 77,
+    "best_price": 650,
+    "best_book": "fanduel",
+    "median": 512,
+    "book_prices": {
+      "bet365": 325,
+      "draftkings": 500,
+      "fanatics": 525,
+      "fanduel": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-04T03:37:12.338354+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Linus Karlsson",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 650,
+    "book": "fanduel",
+    "created_at": "2026-10-04T03:37:12.338354+00:00",
+    "updated_at": "2026-10-04T03:37:12.338354+00:00"
+  },
+  {
+    "id": "2026-10-03_Yegor Sharangovich_shop_take_77",
+    "date": "2026-10-03",
+    "time": "08:37 PM",
+    "player": "Yegor Sharangovich",
+    "score": 0,
+    "edge": 77,
+    "best_price": 650,
+    "best_book": "fanduel",
+    "median": 512,
+    "book_prices": {
+      "bet365": 300,
+      "draftkings": 500,
+      "fanatics": 525,
+      "fanduel": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-04T03:37:12.392502+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Yegor Sharangovich",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 650,
+    "book": "fanduel",
+    "created_at": "2026-10-04T03:37:12.392502+00:00",
+    "updated_at": "2026-10-04T03:37:12.392502+00:00"
+  },
+  {
+    "id": "2026-10-03_Elias Pettersson_shop_take_72",
+    "date": "2026-10-03",
+    "time": "08:37 PM",
+    "player": "Elias Pettersson",
+    "score": 0,
+    "edge": 72,
+    "best_price": 550,
+    "best_book": "fanduel",
+    "median": 500,
+    "book_prices": {
+      "bet365": 1800,
+      "draftkings": 390,
+      "fanatics": 450,
+      "fanduel": 550
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-04T03:37:12.437307+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Elias Pettersson",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 550,
+    "book": "fanduel",
+    "created_at": "2026-10-04T03:37:12.437307+00:00",
+    "updated_at": "2026-10-04T03:37:12.437307+00:00"
+  },
+  {
+    "id": "2026-10-03_Ivar Stenberg_shop_lean_52",
+    "date": "2026-10-03",
+    "time": "08:37 PM",
+    "player": "Ivar Stenberg",
+    "score": 0,
+    "edge": 52,
+    "best_price": 800,
+    "best_book": "fanduel",
+    "median": 700,
+    "book_prices": {
+      "draftkings": 700,
+      "fanatics": 700,
+      "fanduel": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-04T03:37:12.621417+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Ivar Stenberg",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 800,
+    "book": "fanduel",
+    "created_at": "2026-10-04T03:37:12.621417+00:00",
+    "updated_at": "2026-10-04T03:37:12.621417+00:00"
   }
 ]
