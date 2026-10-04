@@ -7020,8 +7020,8 @@ def render_whats_going_today():
     take_n = sum(1 for _n, t in listed if t == "TAKE")
     lean_n = sum(1 for _n, t in listed if t in ("SHOP LEAN", "LEAN"))
     watch_n = sum(1 for _n, t in listed if t in ("WATCH", "BOARD"))
-    hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "HRs")
-    prop_word = "TD prop" if sport == "NFL" else "HR prop"
+    hit_word = cfg.get("hits") or ("TDs" if sport == "NFL" else "Goals" if sport == "NHL" else "HRs")
+    prop_word = "TD" if sport == "NFL" else "goal" if sport == "NHL" else "HR"
 
     def _norm_tag(tag):
         if tag == "TAKE":
@@ -7107,29 +7107,54 @@ def render_whats_going_today():
     else:
         queen = "Queen says: these bombs already cashed." if mlb_hr else "Queen says: Pulse waits on graded homers."
 
-    books_block = "".join(pills) if pills else '<span class="pulse-pill">No cashed HRs yet.</span>'
-    mlb_on = "on" if sport == "MLB" else ""
-    nfl_on = "on" if sport == "NFL" else ""
+    if sport == "NHL":
+        empty = "No goals cashed yet — waiting on final games."
+    elif sport == "NFL":
+        empty = "No TDs cashed yet — waiting on final games."
+    elif sport == "NBA":
+        empty = "No cashes yet — waiting on final games."
+    else:
+        empty = "No HRs cashed yet — waiting on final games."
+    books_block = "".join(pills) if pills else '<span class="pulse-pill">%s</span>' % empty
+    switch = "".join(
+        '<span class="wg-pill %s">%s</span>' % ("on" if sport == name else "", name)
+        for name in ("MLB", "NFL", "NBA", "NHL")
+    )
+    sub = {
+        "NHL": "Anytime goals today. TAKE / LEAN / WATCH = on our list only. A goal only counts after the game is final.",
+        "NFL": "Anytime TDs today. TAKE / LEAN / WATCH = on our list only. Off-list scores are just the scoreboard.",
+        "NBA": "Longshots today. TAKE / LEAN / WATCH = on our list only. Cashes count after the game is final.",
+    }.get(sport, "Official box today. TAKE / LEAN / WATCH = on our list only. Off-list cashes are just the scoreboard.")
     html = (
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
         '<div class="wg-title">Today’s Run It Pulse · %s</div>'
-        '<div class="wg-sub">Official box today. TAKE / LEAN / WATCH = on our list only. Off-list cashes are just the scoreboard.</div>'
-        '</div><div class="wg-switch">'
-        '<span class="wg-pill %s">MLB</span>'
-        '<span class="wg-pill %s">NFL</span>'
-        '</div></div>'
+        '<div class="wg-sub">%s</div>'
+        '</div><div class="wg-switch">%s</div></div>'
         '<div class="wg-counts">💚 TAKE <b>%s</b> · 💖 LEAN <b>%s</b> · 💜 WATCH <b>%s</b> · %s <b>%s</b></div>'
         '<div class="wg-books">%s</div>'
         '<div class="wg-queen">%s</div>'
         '</div>'
     ) % (
         sport,
-        mlb_on, nfl_on,
+        sub,
+        switch,
         take_n, lean_n, watch_n, hit_word, mlb_hr,
         books_block, queen,
     )
     st.markdown(html, unsafe_allow_html=True)
+    b1, b2, b3, b4 = st.columns(4)
+    for col, name in ((b1, "MLB"), (b2, "NFL"), (b3, "NBA"), (b4, "NHL")):
+        with col:
+            if st.button(name, key="pulse_sport_" + name, use_container_width=True, type="primary" if sport == name else "secondary"):
+                st.session_state["sport"] = name
+                st.session_state.pop("_lineup_filter_ok", None)
+                st.session_state.pop("_lineup_filter_note", None)
+                try:
+                    st.query_params["sport"] = name
+                except Exception:
+                    pass
+                st.rerun()
 
 
 def render_daily_desk():
@@ -8781,7 +8806,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
     for (player, _), g in df.groupby(["player", "point"], dropna=False):
         if is_blocked_player(player): continue
         # MLB lineups only. Skip the filter if RotoWire barely matches the slate.
-        if active_sport() != "NFL" and lineup_names and len(lineup_names) >= 40:
+        if active_sport() == "MLB" and lineup_names and len(lineup_names) >= 40:
             if st.session_state.get("_lineup_filter_ok") is None:
                 uniq = []
                 try:
@@ -13335,8 +13360,11 @@ def main():
             have.add(name)
         watch_n = len(watch_only)
     pick_n = len(team_picks)
-    if st.session_state.get("_lineup_filter_note"):
+    if active_sport() == "MLB" and st.session_state.get("_lineup_filter_note"):
         st.caption(st.session_state.get("_lineup_filter_note"))
+    elif active_sport() != "MLB":
+        st.session_state.pop("_lineup_filter_note", None)
+        st.session_state.pop("_lineup_filter_ok", None)
     dk_n = len(aggregate_by_player([r for r in results if r.get("type") == "dk"]))
     fd_n = len(aggregate_by_player([r for r in results if r.get("type") == "fd"]))
     mgm_n = len(aggregate_by_player([r for r in results if r.get("type") == "mgm"]))
