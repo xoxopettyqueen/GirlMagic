@@ -245,6 +245,27 @@
       "best_book": "draftkings",
       "time": "03:12 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Ivar Stenberg",
+      "source": "take_it",
+      "score": 53,
+      "methods": [
+        "FD 50",
+        "Stayed in the group",
+        "Multi-book method",
+        "MGM Exact",
+        "Match 00",
+        "MGM 00",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "DK Best"
+      ],
+      "best_price": 450,
+      "best_book": "draftkings",
+      "time": "03:12 PM",
+      "sport": "NHL"
     }
   ]
 }
