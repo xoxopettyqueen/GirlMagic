@@ -203,6 +203,29 @@
       "best_book": "draftkings",
       "time": "12:24 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Noah Cates",
+      "source": "take_it",
+      "score": 88,
+      "methods": [
+        "MGM 25",
+        "B365 over MGM",
+        "FD 50",
+        "B365 over HardRock",
+        "Multi-book method",
+        "HardRock 00",
+        "B365 way over MGM",
+        "Match 25",
+        "EV Premium",
+        "Kelly Support",
+        "Lane C",
+        "FD Best"
+      ],
+      "best_price": 650,
+      "best_book": "fanduel",
+      "time": "03:12 PM",
+      "sport": "NHL"
     }
   ]
 }
