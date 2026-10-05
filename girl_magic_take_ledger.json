@@ -226,6 +226,25 @@
       "best_book": "fanduel",
       "time": "03:12 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Michael Misa",
+      "source": "take_it",
+      "score": 71,
+      "methods": [
+        "FD Pattern",
+        "FD a little long",
+        "MGM Exact",
+        "Multi-book method",
+        "EV Premium",
+        "Kelly Support",
+        "Lane C",
+        "DK Best"
+      ],
+      "best_price": 500,
+      "best_book": "draftkings",
+      "time": "03:12 PM",
+      "sport": "NHL"
     }
   ]
 }
