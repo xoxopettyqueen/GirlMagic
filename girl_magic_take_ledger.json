@@ -266,6 +266,28 @@
       "best_book": "draftkings",
       "time": "03:12 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Connor Dewar",
+      "source": "take_it",
+      "score": 68,
+      "methods": [
+        "MGM 75",
+        "FD+MGM classic",
+        "B365 over HardRock",
+        "Stayed in the group",
+        "Match 75",
+        "FD 600",
+        "Rivers short vs pack",
+        "EV Premium",
+        "Kelly Support",
+        "Lane C",
+        "FD Best"
+      ],
+      "best_price": 600,
+      "best_book": "fanduel",
+      "time": "03:12 PM",
+      "sport": "NHL"
     }
   ]
 }
