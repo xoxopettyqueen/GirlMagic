@@ -288,6 +288,31 @@
       "best_book": "fanduel",
       "time": "03:12 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Trent Grisham",
+      "source": "take_it",
+      "score": 95,
+      "methods": [
+        "MGM 25",
+        "B365 over MGM",
+        "FD+MGM classic",
+        "FD Pattern",
+        "Last one left",
+        "Stayed in the group",
+        "B365 over HardRock",
+        "Multi-book method",
+        "MGM Exact",
+        "HardRock 00",
+        "Match 25",
+        "FD 90",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 578,
+      "best_book": "draftkings",
+      "time": "03:12 PM",
+      "sport": "MLB"
     }
   ]
 }
