@@ -436843,7 +436843,7 @@
   {
     "id": "2026-10-06_Brice Turang_watch_34",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "Brice Turang",
     "score": 34,
     "edge": 26,
@@ -436877,12 +436877,17 @@
       "Last one left",
       "Stayed in the group",
       "FD Pattern",
-      "DK FD-style"
+      "DK FD-style",
+      "MGM 25",
+      "FD+MGM classic",
+      "Match 25",
+      "FD 90",
+      "EV Premium"
     ],
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-06T23:16:15.458513+00:00",
+    "logged_at": "2026-10-06T23:23:55.062350+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MILWAUKEE BREWERS",
@@ -436892,7 +436897,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:21.535996+00:00",
+    "updated_at": "2026-10-06T23:23:55.062361+00:00",
     "player_name": "Brice Turang",
     "stamps": [
       "Match 00",
@@ -437248,7 +437253,7 @@
   {
     "id": "2026-10-06_Manny Machado_watch_84",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "Manny Machado",
     "score": 84,
     "edge": 12,
@@ -437285,12 +437290,13 @@
       "B365 over MGM",
       "EV Support",
       "Kelly Support",
-      "Stayed in the group"
+      "Stayed in the group",
+      "B365 way over MGM"
     ],
     "core": 7,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-06T23:16:15.933828+00:00",
+    "logged_at": "2026-10-06T23:23:55.143286+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "SAN DIEGO PADRES",
@@ -437300,7 +437306,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:15.933839+00:00",
+    "updated_at": "2026-10-06T23:23:55.143296+00:00",
     "player_name": "Manny Machado",
     "stamps": [
       "MGM 25",
@@ -437326,7 +437332,7 @@
   {
     "id": "2026-10-06_William Contreras_watch_96",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "William Contreras",
     "score": 96,
     "edge": 77,
@@ -437370,7 +437376,7 @@
     "core": 5,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-06T23:16:15.851411+00:00",
+    "logged_at": "2026-10-06T23:23:55.020754+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MILWAUKEE BREWERS",
@@ -437380,7 +437386,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:21.288042+00:00",
+    "updated_at": "2026-10-06T23:23:55.020836+00:00",
     "player_name": "William Contreras",
     "stamps": [
       "MGM 25",
@@ -437547,7 +437553,7 @@
   {
     "id": "2026-10-06_Ronald Acu\u00f1a Jr._shop_take_92",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "Ronald Acu\u00f1a Jr.",
     "score": 0,
     "edge": 92,
@@ -437576,12 +437582,13 @@
       "HardRock 50",
       "MGM 00",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "HardRock 00"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-10-06T23:07:58.118625+00:00",
+    "logged_at": "2026-10-06T23:23:55.265090+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -437594,7 +437601,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.018082+00:00",
-    "updated_at": "2026-10-06T23:16:21.328113+00:00"
+    "updated_at": "2026-10-06T23:23:55.265101+00:00"
   },
   {
     "id": "2026-10-06_Drake Baldwin_shop_take_84",
@@ -437782,7 +437789,7 @@
   {
     "id": "2026-10-06_Will Smith_shop_lean_68",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "Will Smith",
     "score": 0,
     "edge": 68,
@@ -437805,12 +437812,13 @@
       "Multi-book Shorten",
       "HardRock 00",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "HardRock 50"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-06T23:15:56.057253+00:00",
+    "logged_at": "2026-10-06T23:23:55.353068+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -437823,7 +437831,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.496111+00:00",
-    "updated_at": "2026-10-06T23:16:21.135507+00:00"
+    "updated_at": "2026-10-06T23:23:55.353078+00:00"
   },
   {
     "id": "2026-10-06_Matt Olson_shop_lean_66",
@@ -437914,7 +437922,7 @@
   {
     "id": "2026-10-06_Fernando Tatis Jr._shop_lean_45",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "Fernando Tatis Jr.",
     "score": 0,
     "edge": 45,
@@ -437940,12 +437948,16 @@
       "B365 way over MGM",
       "B365 over MGM",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "FD Pattern",
+      "MGM Exact",
+      "Multi-book method",
+      "FD a little long"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-06T23:07:58.201213+00:00",
+    "logged_at": "2026-10-06T23:23:55.103610+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -437958,12 +437970,12 @@
     "price": 500,
     "book": "fanatics",
     "created_at": "2026-10-06T23:00:04.681091+00:00",
-    "updated_at": "2026-10-06T23:16:21.453277+00:00"
+    "updated_at": "2026-10-06T23:23:55.103620+00:00"
   },
   {
     "id": "2026-10-06_Cooper Pratt_watch_61",
     "date": "2026-10-06",
-    "time": "04:07 PM",
+    "time": "04:23 PM",
     "player": "Cooper Pratt",
     "score": 61,
     "edge": 128,
@@ -437996,12 +438008,14 @@
       "MGM 00",
       "B365 over MGM",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "MGM Exact",
+      "EV Support"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-06T23:07:57.955221+00:00",
+    "logged_at": "2026-10-06T23:23:54.523260+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MILWAUKEE BREWERS",
@@ -438011,7 +438025,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:07:57.955232+00:00",
+    "updated_at": "2026-10-06T23:23:54.523272+00:00",
     "player_name": "Cooper Pratt",
     "stamps": [
       "Last one left",
@@ -438150,7 +438164,7 @@
   {
     "id": "2026-10-06_Freddie Freeman_watch_54",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "Freddie Freeman",
     "score": 54,
     "edge": 114,
@@ -438182,12 +438196,13 @@
       "Match 50",
       "HardRock 50",
       "EV Caution",
-      "Kelly Caution"
+      "Kelly Caution",
+      "Rivers a bit over pack"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-06T23:16:15.535481+00:00",
+    "logged_at": "2026-10-06T23:23:55.311471+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "LOS ANGELES DODGERS",
@@ -438197,7 +438212,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:15.535492+00:00",
+    "updated_at": "2026-10-06T23:23:55.311482+00:00",
     "player_name": "Freddie Freeman",
     "stamps": [
       "Multi-book Shorten",
@@ -438329,7 +438344,7 @@
   {
     "id": "2026-10-06_Sal Frelick_watch_33",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:23 PM",
     "player": "Sal Frelick",
     "score": 33,
     "edge": -80,
@@ -438363,12 +438378,15 @@
       "Match 50",
       "B365 over MGM",
       "EV Caution",
-      "Kelly Caution"
+      "Kelly Caution",
+      "MGM Exact",
+      "EV Support",
+      "Kelly Support"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-06T23:16:15.767761+00:00",
+    "logged_at": "2026-10-06T23:23:54.867150+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "MILWAUKEE BREWERS",
@@ -438378,7 +438396,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:15.767797+00:00",
+    "updated_at": "2026-10-06T23:23:54.867167+00:00",
     "player_name": "Sal Frelick",
     "stamps": [
       "Rivers short vs pack",
@@ -438650,7 +438668,7 @@
   {
     "id": "2026-10-06_Miguel Rojas_watch_66",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:23 PM",
     "player": "Miguel Rojas",
     "score": 66,
     "edge": 126,
@@ -438685,7 +438703,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-06T23:15:55.890407+00:00",
+    "logged_at": "2026-10-06T23:23:55.182881+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "LOS ANGELES DODGERS",
@@ -438695,7 +438713,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:15:55.890418+00:00",
+    "updated_at": "2026-10-06T23:23:55.182891+00:00",
     "player_name": "Miguel Rojas",
     "stamps": [
       "Last one left",
@@ -438796,5 +438814,117 @@
     "book": "draftkings",
     "created_at": "2026-10-06T23:16:20.980561+00:00",
     "updated_at": "2026-10-06T23:16:20.980561+00:00"
+  },
+  {
+    "id": "2026-10-06_Dustin Harris_watch_9",
+    "date": "2026-10-06",
+    "time": "04:23 PM",
+    "player": "Dustin Harris",
+    "score": 9,
+    "edge": -116,
+    "best_price": 1300,
+    "best_book": "caesars",
+    "median": 1150.0,
+    "book_prices": {
+      "bet365": 950,
+      "betmgm": 1200,
+      "caesars": 1300,
+      "fanatics": 1100,
+      "fanduel": 1260,
+      "hardrockbet": 1100
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 1200,
+    "mgm_ending": 0,
+    "methods": [
+      "Multi-book Shorten",
+      "HardRock 00",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-10-06T23:23:54.561918+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "SAN DIEGO PADRES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.83,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "player_name": "Dustin Harris",
+    "stamps": [
+      "Multi-book Shorten",
+      "HardRock 00",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "price": 1300,
+    "book": "caesars",
+    "created_at": "2026-10-06T23:23:54.561918+00:00",
+    "updated_at": "2026-10-06T23:23:54.561918+00:00"
+  },
+  {
+    "id": "2026-10-06_Mauricio Dub\u00f3n_watch_69",
+    "date": "2026-10-06",
+    "time": "04:23 PM",
+    "player": "Mauricio Dub\u00f3n",
+    "score": 69,
+    "edge": 236,
+    "best_price": 2500,
+    "best_book": "fanduel",
+    "median": 1550.0,
+    "book_prices": {
+      "betmgm": 1450,
+      "betrivers": 1800,
+      "caesars": 1500,
+      "draftkings": 2000,
+      "fanatics": 1600,
+      "fanduel": 2500,
+      "hardrockbet": 1400,
+      "bet365": 1300
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 1450,
+    "mgm_ending": 50,
+    "methods": [
+      "Rivers short vs pack",
+      "HardRock 00",
+      "Multi-book Shorten",
+      "Fanatics over pack",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-10-06T23:23:55.225408+00:00",
+    "price_source": "pregame_lock",
+    "sport": "MLB",
+    "team": "ATLANTA BRAVES",
+    "market": "batter_home_runs",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.75,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "updated_at": "2026-10-06T23:23:55.225419+00:00",
+    "player_name": "Mauricio Dub\u00f3n",
+    "stamps": [
+      "Rivers short vs pack",
+      "HardRock 00",
+      "Multi-book Shorten",
+      "Fanatics over pack",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "price": 2500,
+    "book": "fanduel",
+    "created_at": "2026-10-06T23:23:55.225408+00:00"
   }
 ]
