@@ -436843,7 +436843,7 @@
   {
     "id": "2026-10-06_Brice Turang_watch_34",
     "date": "2026-10-06",
-    "time": "04:23 PM",
+    "time": "04:24 PM",
     "player": "Brice Turang",
     "score": 34,
     "edge": 26,
@@ -436897,7 +436897,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:23:55.062361+00:00",
+    "updated_at": "2026-10-06T23:24:01.802852+00:00",
     "player_name": "Brice Turang",
     "stamps": [
       "Match 00",
@@ -436988,7 +436988,7 @@
   {
     "id": "2026-10-06_Garrett Mitchell_watch_49",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:24 PM",
     "player": "Garrett Mitchell",
     "score": 49,
     "edge": 67,
@@ -437034,7 +437034,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:21.057953+00:00",
+    "updated_at": "2026-10-06T23:24:01.637468+00:00",
     "player_name": "Garrett Mitchell",
     "stamps": [
       "MGM 25",
@@ -437053,7 +437053,7 @@
   {
     "id": "2026-10-06_Jackson Merrill_watch_52",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:24 PM",
     "player": "Jackson Merrill",
     "score": 52,
     "edge": 35,
@@ -437104,7 +437104,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:21.495712+00:00",
+    "updated_at": "2026-10-06T23:24:01.679296+00:00",
     "player_name": "Jackson Merrill",
     "stamps": [
       "MGM 25",
@@ -437332,7 +437332,7 @@
   {
     "id": "2026-10-06_William Contreras_watch_96",
     "date": "2026-10-06",
-    "time": "04:23 PM",
+    "time": "04:24 PM",
     "player": "William Contreras",
     "score": 96,
     "edge": 77,
@@ -437386,7 +437386,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:23:55.020836+00:00",
+    "updated_at": "2026-10-06T23:24:01.555225+00:00",
     "player_name": "William Contreras",
     "stamps": [
       "MGM 25",
@@ -437510,7 +437510,7 @@
   {
     "id": "2026-10-06_Jackson Chourio_shop_take_92",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:24 PM",
     "player": "Jackson Chourio",
     "score": 0,
     "edge": 92,
@@ -437548,12 +437548,12 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-06T23:00:03.953428+00:00",
-    "updated_at": "2026-10-06T23:16:21.097183+00:00"
+    "updated_at": "2026-10-06T23:24:01.385232+00:00"
   },
   {
     "id": "2026-10-06_Ronald Acu\u00f1a Jr._shop_take_92",
     "date": "2026-10-06",
-    "time": "04:23 PM",
+    "time": "04:24 PM",
     "player": "Ronald Acu\u00f1a Jr.",
     "score": 0,
     "edge": 92,
@@ -437601,7 +437601,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.018082+00:00",
-    "updated_at": "2026-10-06T23:23:55.265101+00:00"
+    "updated_at": "2026-10-06T23:24:01.428074+00:00"
   },
   {
     "id": "2026-10-06_Drake Baldwin_shop_take_84",
@@ -437648,7 +437648,7 @@
   {
     "id": "2026-10-06_Jake Bauers_shop_take_84",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:24 PM",
     "player": "Jake Bauers",
     "score": 0,
     "edge": 84,
@@ -437686,12 +437686,12 @@
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-06T23:00:04.223244+00:00",
-    "updated_at": "2026-10-06T23:16:21.019645+00:00"
+    "updated_at": "2026-10-06T23:24:01.343889+00:00"
   },
   {
     "id": "2026-10-06_Austin Riley_shop_lean_73",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:24 PM",
     "player": "Austin Riley",
     "score": 0,
     "edge": 73,
@@ -437735,7 +437735,7 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-10-06T23:00:04.348789+00:00",
-    "updated_at": "2026-10-06T23:16:15.402021+00:00"
+    "updated_at": "2026-10-06T23:24:01.762215+00:00"
   },
   {
     "id": "2026-10-06_Shohei Ohtani_shop_lean_68",
@@ -437789,7 +437789,7 @@
   {
     "id": "2026-10-06_Will Smith_shop_lean_68",
     "date": "2026-10-06",
-    "time": "04:23 PM",
+    "time": "04:24 PM",
     "player": "Will Smith",
     "score": 0,
     "edge": 68,
@@ -437831,7 +437831,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.496111+00:00",
-    "updated_at": "2026-10-06T23:23:55.353078+00:00"
+    "updated_at": "2026-10-06T23:24:01.847336+00:00"
   },
   {
     "id": "2026-10-06_Matt Olson_shop_lean_66",
@@ -437922,7 +437922,7 @@
   {
     "id": "2026-10-06_Fernando Tatis Jr._shop_lean_45",
     "date": "2026-10-06",
-    "time": "04:23 PM",
+    "time": "04:24 PM",
     "player": "Fernando Tatis Jr.",
     "score": 0,
     "edge": 45,
@@ -437970,7 +437970,7 @@
     "price": 500,
     "book": "fanatics",
     "created_at": "2026-10-06T23:00:04.681091+00:00",
-    "updated_at": "2026-10-06T23:23:55.103620+00:00"
+    "updated_at": "2026-10-06T23:24:01.596542+00:00"
   },
   {
     "id": "2026-10-06_Cooper Pratt_watch_61",
@@ -438733,7 +438733,7 @@
   {
     "id": "2026-10-06_Matt Olson_shop_take_84",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:24 PM",
     "player": "Matt Olson",
     "score": 0,
     "edge": 84,
@@ -438771,12 +438771,12 @@
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-06T23:16:02.182389+00:00",
-    "updated_at": "2026-10-06T23:16:21.213147+00:00"
+    "updated_at": "2026-10-06T23:24:01.468719+00:00"
   },
   {
     "id": "2026-10-06_Andy Pages_shop_lean_148",
     "date": "2026-10-06",
-    "time": "04:16 PM",
+    "time": "04:24 PM",
     "player": "Andy Pages",
     "score": 0,
     "edge": 148,
@@ -438813,7 +438813,7 @@
     "price": 900,
     "book": "draftkings",
     "created_at": "2026-10-06T23:16:20.980561+00:00",
-    "updated_at": "2026-10-06T23:16:20.980561+00:00"
+    "updated_at": "2026-10-06T23:24:01.721799+00:00"
   },
   {
     "id": "2026-10-06_Dustin Harris_watch_9",
@@ -438926,5 +438926,91 @@
     "price": 2500,
     "book": "fanduel",
     "created_at": "2026-10-06T23:23:55.225408+00:00"
+  },
+  {
+    "id": "2026-10-06_Shohei Ohtani_shop_take_110",
+    "date": "2026-10-06",
+    "time": "04:24 PM",
+    "player": "Shohei Ohtani",
+    "score": 0,
+    "edge": 110,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 600,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 650,
+      "betrivers": 550,
+      "caesars": 625,
+      "draftkings": 750,
+      "fanatics": 575,
+      "fanduel": 650,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-06T23:24:01.294516+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Shohei Ohtani",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 750,
+    "book": "draftkings",
+    "created_at": "2026-10-06T23:24:01.294516+00:00",
+    "updated_at": "2026-10-06T23:24:01.294516+00:00"
+  },
+  {
+    "id": "2026-10-06_Christian Yelich_shop_take_83",
+    "date": "2026-10-06",
+    "time": "04:24 PM",
+    "player": "Christian Yelich",
+    "score": 0,
+    "edge": 83,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 600,
+      "betrivers": 750,
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 750,
+      "fanduel": 790,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-06T23:24:01.511970+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Christian Yelich",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 850,
+    "book": "draftkings",
+    "created_at": "2026-10-06T23:24:01.511970+00:00",
+    "updated_at": "2026-10-06T23:24:01.511970+00:00"
   }
 ]
