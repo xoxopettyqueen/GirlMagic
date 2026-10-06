@@ -500,27 +500,33 @@ def nfl_take_ok(
 
 
 def nfl_petty_alerts(ev_board, flag_rows=None, limit=8):
-    """Replace MLB FD-under-100 spam with NFL-lane alerts."""
+    """NFL strip. Touchdowns and ticket books only. No baseball MGM Exact."""
     alerts = []
+    try:
+        scorers, _fin, _m = fetch_nfl_td_scorers()
+    except Exception:
+        scorers = []
+    for n in (scorers or [])[:6]:
+        alerts.append(f"Scored a touchdown · {n}")
     for item in ev_board or []:
         books = item.get("book_prices") or {}
-        ok, gap, fd, mgm = nfl_fd_under_mgm(books)
+        try:
+            ok, gap, fd, mgm = nfl_fd_under_mgm(books)
+        except Exception:
+            ok = False
         if ok:
-            alerts.append(f"FD under MGM by {gap} · {item.get('player')}")
-        ms = set(item.get("methods") or [])
-        if "MGM Exact" in ms:
-            alerts.append(f"MGM Exact · {item.get('player')}")
+            alerts.append(f"FanDuel shorter than MGM by {gap} · {item.get('player')}")
+        ms = set(str(m) for m in (item.get("methods") or []))
         if "DK 10" in ms and ("FD Pattern" in ms or "FD 600" in ms):
-            alerts.append(f"DK 10 + FD · {item.get('player')}")
-    for r in flag_rows or []:
-        meths = r.get("methods") or []
-        if "MGM Exact" in meths:
-            alerts.append(f"MGM Exact · {r.get('label')}")
+            alerts.append(f"DK and FanDuel agree · {item.get('player')}")
     seen, out = set(), []
     for a in alerts:
-        if a not in seen:
-            seen.add(a)
-            out.append(a)
+        if "MGM Exact" in a or a in seen:
+            continue
+        seen.add(a)
+        out.append(a)
+    if not out:
+        out.append("No touchdown scorers on the strip yet. MGM pair stamps stay on baseball.")
     return out[:limit]
 
 
@@ -813,7 +819,7 @@ div[data-testid="stExpander"] summary{color:#fce7f3!important}
 .wg-title{font-size:.88rem;font-weight:800;color:#fce7f3;letter-spacing:.3px}
 .wg-sub{font-size:.68rem;color:#e9d5ff;margin:0}
 .wg-switch{display:flex;gap:4px}
-.wg-pill{border-radius:999px;padding:2px 8px;font-size:.62rem;font-weight:800;border:1px solid #4c1d95;color:#c4b5d6}
+.wg-pill{border-radius:999px;padding:2px 8px;font-size:.62rem;font-weight:800;border:1px solid #4c1d95;color:#c4b5d6;text-decoration:none;display:inline-block}
 .wg-pill.on{border-color:#f9a8d4;color:#fff;background:linear-gradient(90deg,#6d28d9,#db2777);box-shadow:0 0 8px rgba(244,114,182,.4)}
 .wg-counts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:2px 0 6px;font-size:.78rem;color:#e9d5ff}
 .wg-counts b{color:#f9a8d4}
@@ -2401,6 +2407,9 @@ def collect_petty_alerts(ev_board, results):
     if HAS_NFL_MATH and active_sport() == "NFL":
         extra = nfl_petty_alerts(ev_board, results, limit=8)
         return extra
+    # Baseball book-gap tells (365 over MGM, FD pattern) do not belong on hockey or basketball.
+    if active_sport() in ("NHL", "NBA"):
+        return []
     raw = []
 
     def _trend_pts(item):
@@ -6773,7 +6782,7 @@ def render_run_it_recap():
     rows = results_for_sport()
     today = today_az()
     sport = active_sport()
-    prop = "TD prop" if sport == "NFL" else "HR prop"
+    prop = "TD prop" if sport == "NFL" else ("goal prop" if sport == "NHL" else ("longshot" if sport == "NBA" else "HR prop"))
     extra_day = today
     try:
         extra_day = today_mlb_date()
@@ -7073,16 +7082,19 @@ def render_whats_going_today():
         n_lean = sum(1 for _n, call, _c, _e in people if call == "LEAN")
         n_watch = sum(1 for _n, call, _c, _e in people if call == "WATCH")
         if sport in ("NFL", "NHL"):
-            bits = []
-            if n_take:
-                bits.append("%s TAKE" % n_take)
-            if n_lean:
-                bits.append("%s LEAN" % n_lean)
-            if n_watch:
-                bits.append("%s WATCH" % n_watch)
-            if not bits and top:
-                bits.append("%s box" % top[1])
-            label = "%s · %s" % (bl, " · ".join(bits) if bits else "no list yet")
+            names = [n for n, call, _c, _e in people[:3]]
+            who = ", ".join(names) if names else ""
+            if who:
+                label = "%s · %s scored" % (bl, who)
+            else:
+                bits = []
+                if n_take:
+                    bits.append("%s TAKE" % n_take)
+                if n_lean:
+                    bits.append("%s LEAN" % n_lean)
+                if n_watch:
+                    bits.append("%s WATCH" % n_watch)
+                label = "%s · %s" % (bl, " · ".join(bits) if bits else "no list yet")
         elif top:
             label = "%s · %s cashed +x%02d" % (bl, top[1], top[0])
         else:
@@ -7101,30 +7113,33 @@ def render_whats_going_today():
         )
 
     if sport == "NFL":
-        queen = "Queen says: these TDs already cashed." if mlb_hr else "Queen says: Pulse waits on graded TDs."
+        scored = ", ".join(n for n, _t in (listed or [])[:4])
+        queen = ("Queen says: touchdowns already in — %s." % scored) if scored else "Queen says: no touchdowns yet. A zero is the scoreboard, not a miss. Passing scores do not count — only the guy who ran it in or caught it."
     elif sport == "NHL":
         queen = "Queen says: these goals already cashed." if mlb_hr else "Queen says: no puck drop yet — Pulse stays at zero."
+    elif sport == "NBA":
+        queen = "Queen says: these longshots already cashed." if mlb_hr else "Queen says: waiting on tip. Pulse stays at zero until a game is final."
     else:
         queen = "Queen says: these bombs already cashed." if mlb_hr else "Queen says: Pulse waits on graded homers."
 
     if sport == "NHL":
         empty = "No goals cashed yet — waiting on final games."
     elif sport == "NFL":
-        empty = "No TDs cashed yet — waiting on final games."
+        empty = "No touchdowns yet — waiting on a final game."
     elif sport == "NBA":
         empty = "No cashes yet — waiting on final games."
     else:
-        empty = "No HRs cashed yet — waiting on final games."
+        empty = "No homers yet — waiting on final games."
     books_block = "".join(pills) if pills else '<span class="pulse-pill">%s</span>' % empty
     switch = "".join(
-        '<span class="wg-pill %s">%s</span>' % ("on" if sport == name else "", name)
+        '<a class="wg-pill %s" href="?sport=%s">%s</a>' % ("on" if sport == name else "", name, name)
         for name in ("MLB", "NFL", "NBA", "NHL")
     )
     sub = {
-        "NHL": "Anytime goals today. TAKE / LEAN / WATCH = on our list only. A goal only counts after the game is final.",
-        "NFL": "Anytime TDs today. TAKE / LEAN / WATCH = on our list only. Off-list scores are just the scoreboard.",
-        "NBA": "Longshots today. TAKE / LEAN / WATCH = on our list only. Cashes count after the game is final.",
-    }.get(sport, "Official box today. TAKE / LEAN / WATCH = on our list only. Off-list cashes are just the scoreboard.")
+        "NHL": "Anytime goals today. TAKE / LEAN / WATCH means he was on our list. A goal only counts after the game is final.",
+        "NFL": "Anytime touchdowns today. TAKE / LEAN / WATCH means he was on our list. Only the player who scored counts, and only after the game is final.",
+        "NBA": "Longshots today. TAKE / LEAN / WATCH means he was on our list. Cashes count after the game is final.",
+    }.get(sport, "Home runs today. TAKE / LEAN / WATCH means he was on our list. Off-list homers are just the scoreboard.")
     html = (
         '<div class="wg-wrap">'
         '<div class="wg-top"><div>'
@@ -7143,18 +7158,6 @@ def render_whats_going_today():
         books_block, queen,
     )
     st.markdown(html, unsafe_allow_html=True)
-    b1, b2, b3, b4 = st.columns(4)
-    for col, name in ((b1, "MLB"), (b2, "NFL"), (b3, "NBA"), (b4, "NHL")):
-        with col:
-            if st.button(name, key="pulse_sport_" + name, use_container_width=True, type="primary" if sport == name else "secondary"):
-                st.session_state["sport"] = name
-                st.session_state.pop("_lineup_filter_ok", None)
-                st.session_state.pop("_lineup_filter_note", None)
-                try:
-                    st.query_params["sport"] = name
-                except Exception:
-                    pass
-                st.rerun()
 
 
 def render_daily_desk():
@@ -8435,8 +8438,9 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 names = sorted(pg["player"].unique())
                 if len(names) not in (2, 3): continue
                 tnote = f" · {team}" if team else ""
-                results.append({"type": "mgm", "label": " + ".join(names), "reason": f"MGM Exact {format_odds(price)} ({len(names)}){tnote}", "event": event, "methods": ["MGM Exact"]})
-                for n in names: methods_map[n].append("MGM Exact")
+                if active_sport() == "MLB":
+                    results.append({"type": "mgm", "label": " + ".join(names), "reason": f"MGM Exact {format_odds(price)} ({len(names)}){tnote}", "event": event, "methods": ["MGM Exact"]})
+                    for n in names: methods_map[n].append("MGM Exact")
 
     # Bet365 methods: 850, same-team 25/50/75 pairs, exact, higher than HardRock
     b365 = df[df["book"].map(lambda x: normalize_book(x) == "bet365")].copy() if not df.empty else df
@@ -8511,7 +8515,7 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
             b3, mg = by_book.get("bet365"), by_book.get("betmgm")
             if b3 is not None and mg is not None and int(b3) > int(mg):
                 ok2, gap2 = True, int(b3) - int(mg)
-        if ok2:
+        if ok2 and active_sport() == "MLB":
             way, _ = b365_way_over_mgm(by_book)
             tag = "B365 way over MGM" if way else "B365 over MGM"
             results.append({
@@ -12752,18 +12756,35 @@ def render_alignment_tab(ev_board, watch_board=None, coverage_board=None):
                 else:
                     atk_txt = "Attack — anytime touchdown."
                 dvp = (data.get("dvp_line") or "No DVP tag yet.").replace(" · ", "<br>")
+                tgt = data.get("tgt_share")
+                try:
+                    tgt_txt = f"{float(tgt)*100:.0f}% of his team's throws go to him. " if tgt not in (None, "") else ""
+                except Exception:
+                    tgt_txt = ""
+                rec_td = data.get("rec_td")
+                rush_td = data.get("rush_td")
+                td_bits = []
+                try:
+                    if rec_td not in (None, ""):
+                        td_bits.append(f"{int(float(rec_td))} receiving")
+                    if rush_td not in (None, ""):
+                        td_bits.append(f"{int(float(rush_td))} rushing")
+                except Exception:
+                    pass
+                td_txt = ("Touchdowns on the year: " + " and ".join(td_bits) + ". ") if td_bits else ""
+                dvp_plain = data.get("dvp_line") or "Opponent note shows after Fetch."
                 pulse_html = (
-                    f'<details class="al-fold" open><summary title="Season volume only. Story is Pulse + Matchup.">📊 Usage</summary>'
-                    f'{_data_block_30(data, "NFL")}</details>'
-                    f'<details class="al-fold" open><summary title="How they are being used right now">🧠 Player Pulse</summary>'
+                    f'<details class="al-fold" open><summary>What he does</summary>'
                     f'<div class="al-pack">{heat_txt}<br>'
-                    f'👑 <span title="WR1 = top pass catcher">{role}</span> — how they use him.{rook}<br>'
-                    f'🎯 {atk_txt}<br>'
-                    f'📈 <span title="Targets = throws his way">{vol}</span></div></details>'
-                    f'<details class="al-fold" open><summary title="DVP last 10 games per game + his home/road/primetime totals">⚔️ Matchup Vibe</summary>'
-                    f'<div class="al-pack">🛡️ <span title="Last 10 games, per game">{dvp}</span><br>'
-                    f'🏠 {data.get("nfl_ha") or ""}<br>🌙 {data.get("nfl_pt") or ""}</div></details>'
-                    f'<div class="al-pack" style="font-style:italic" title="Books tight = they agree">💸 {price} {book_label(item.get("best_book"))} · {stamps}</div>'
+                    f'Role: {role}. That is how often they throw or hand it to him.{rook}<br>'
+                    f'{tgt_txt}{td_txt}{atk_txt}<br>'
+                    f'{vol or "Volume line fills after the stats pull."}</div></details>'
+                    f'<details class="al-fold" open><summary>Who they play</summary>'
+                    f'<div class="al-pack">Defense note: {dvp_plain}<br>'
+                    f'That is how many scores this defense has been giving up to his position.<br>'
+                    f'Home / road: {data.get("nfl_ha") or "no split yet"}<br>'
+                    f'Primetime: {data.get("nfl_pt") or "no primetime sample"}</div></details>'
+                    f'<div class="al-pack" style="font-style:italic">Price {price} at {book_label(item.get("best_book"))}. Book stamps: {stamps}</div>'
                 )
                 st.markdown(
                     f'<div class="{klass}">'
