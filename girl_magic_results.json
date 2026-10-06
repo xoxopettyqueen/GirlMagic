@@ -436912,7 +436912,7 @@
   {
     "id": "2026-10-06_Christian Yelich_watch_51",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:16 PM",
     "player": "Christian Yelich",
     "score": 51,
     "edge": 88,
@@ -436961,7 +436961,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:15:55.935762+00:00",
+    "updated_at": "2026-10-06T23:16:02.387948+00:00",
     "player_name": "Christian Yelich",
     "stamps": [
       "Match 00",
@@ -436983,7 +436983,7 @@
   {
     "id": "2026-10-06_Garrett Mitchell_watch_49",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:16 PM",
     "player": "Garrett Mitchell",
     "score": 49,
     "edge": 67,
@@ -437029,7 +437029,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:15:55.848241+00:00",
+    "updated_at": "2026-10-06T23:16:02.141496+00:00",
     "player_name": "Garrett Mitchell",
     "stamps": [
       "MGM 25",
@@ -437326,7 +437326,7 @@
   {
     "id": "2026-10-06_William Contreras_watch_96",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:16 PM",
     "player": "William Contreras",
     "score": 96,
     "edge": 77,
@@ -437380,7 +437380,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:15:55.678540+00:00",
+    "updated_at": "2026-10-06T23:16:02.223977+00:00",
     "player_name": "William Contreras",
     "stamps": [
       "MGM 25",
@@ -437456,7 +437456,7 @@
   {
     "id": "2026-10-06_Andy Pages_shop_take_112",
     "date": "2026-10-06",
-    "time": "04:08 PM",
+    "time": "04:16 PM",
     "player": "Andy Pages",
     "score": 0,
     "edge": 112,
@@ -437499,12 +437499,12 @@
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-06T23:00:03.892867+00:00",
-    "updated_at": "2026-10-06T23:08:03.276408+00:00"
+    "updated_at": "2026-10-06T23:16:02.015150+00:00"
   },
   {
     "id": "2026-10-06_Jackson Chourio_shop_take_92",
     "date": "2026-10-06",
-    "time": "04:08 PM",
+    "time": "04:16 PM",
     "player": "Jackson Chourio",
     "score": 0,
     "edge": 92,
@@ -437542,12 +437542,12 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-06T23:00:03.953428+00:00",
-    "updated_at": "2026-10-06T23:08:03.518389+00:00"
+    "updated_at": "2026-10-06T23:16:02.100001+00:00"
   },
   {
     "id": "2026-10-06_Ronald Acu\u00f1a Jr._shop_take_92",
     "date": "2026-10-06",
-    "time": "04:07 PM",
+    "time": "04:16 PM",
     "player": "Ronald Acu\u00f1a Jr.",
     "score": 0,
     "edge": 92,
@@ -437594,7 +437594,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.018082+00:00",
-    "updated_at": "2026-10-06T23:07:58.118635+00:00"
+    "updated_at": "2026-10-06T23:16:02.265201+00:00"
   },
   {
     "id": "2026-10-06_Drake Baldwin_shop_take_84",
@@ -437641,7 +437641,7 @@
   {
     "id": "2026-10-06_Jake Bauers_shop_take_84",
     "date": "2026-10-06",
-    "time": "04:08 PM",
+    "time": "04:16 PM",
     "player": "Jake Bauers",
     "score": 0,
     "edge": 84,
@@ -437679,7 +437679,7 @@
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-06T23:00:04.223244+00:00",
-    "updated_at": "2026-10-06T23:08:03.480341+00:00"
+    "updated_at": "2026-10-06T23:16:02.056728+00:00"
   },
   {
     "id": "2026-10-06_Austin Riley_shop_lean_73",
@@ -437780,7 +437780,7 @@
   {
     "id": "2026-10-06_Will Smith_shop_lean_68",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:16 PM",
     "player": "Will Smith",
     "score": 0,
     "edge": 68,
@@ -437821,7 +437821,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.496111+00:00",
-    "updated_at": "2026-10-06T23:15:56.057265+00:00"
+    "updated_at": "2026-10-06T23:16:02.346487+00:00"
   },
   {
     "id": "2026-10-06_Matt Olson_shop_lean_66",
@@ -437869,7 +437869,7 @@
   {
     "id": "2026-10-06_Ty France_shop_lean_51",
     "date": "2026-10-06",
-    "time": "04:08 PM",
+    "time": "04:16 PM",
     "player": "Ty France",
     "score": 0,
     "edge": 51,
@@ -437907,12 +437907,12 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.631425+00:00",
-    "updated_at": "2026-10-06T23:08:03.946804+00:00"
+    "updated_at": "2026-10-06T23:16:02.512167+00:00"
   },
   {
     "id": "2026-10-06_Fernando Tatis Jr._shop_lean_45",
     "date": "2026-10-06",
-    "time": "04:08 PM",
+    "time": "04:16 PM",
     "player": "Fernando Tatis Jr.",
     "score": 0,
     "edge": 45,
@@ -437956,7 +437956,7 @@
     "price": 500,
     "book": "fanatics",
     "created_at": "2026-10-06T23:00:04.681091+00:00",
-    "updated_at": "2026-10-06T23:08:03.861387+00:00"
+    "updated_at": "2026-10-06T23:16:02.469272+00:00"
   },
   {
     "id": "2026-10-06_Cooper Pratt_watch_61",
@@ -438393,7 +438393,7 @@
   {
     "id": "2026-10-06_Xander Bogaerts_watch_43",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:16 PM",
     "player": "Xander Bogaerts",
     "score": 43,
     "edge": 66,
@@ -438436,7 +438436,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:15:56.098247+00:00",
+    "updated_at": "2026-10-06T23:16:02.429687+00:00",
     "player_name": "Xander Bogaerts",
     "stamps": [
       "Rivers short vs pack",
@@ -438585,7 +438585,7 @@
   {
     "id": "2026-10-06_Kyle Tucker_watch_46",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:16 PM",
     "player": "Kyle Tucker",
     "score": 46,
     "edge": 78,
@@ -438625,7 +438625,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:15:56.016810+00:00",
+    "updated_at": "2026-10-06T23:16:02.306492+00:00",
     "player_name": "Kyle Tucker",
     "stamps": [
       "Multi-book Shorten",
@@ -438702,5 +438702,48 @@
     "price": 2000,
     "book": "fanduel",
     "created_at": "2026-10-06T23:15:55.890407+00:00"
+  },
+  {
+    "id": "2026-10-06_Matt Olson_shop_take_84",
+    "date": "2026-10-06",
+    "time": "04:16 PM",
+    "player": "Matt Olson",
+    "score": 0,
+    "edge": 84,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 537,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 525,
+      "betrivers": 475,
+      "caesars": 500,
+      "draftkings": 650,
+      "fanatics": 600,
+      "fanduel": 600,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-06T23:16:02.182389+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Matt Olson",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 650,
+    "book": "draftkings",
+    "created_at": "2026-10-06T23:16:02.182389+00:00",
+    "updated_at": "2026-10-06T23:16:02.182389+00:00"
   }
 ]
