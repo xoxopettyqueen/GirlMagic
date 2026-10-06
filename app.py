@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Girl Magic Odds ✨
@@ -506,7 +507,8 @@ def nfl_petty_alerts(ev_board, flag_rows=None, limit=8):
         scorers, _fin, _m = fetch_nfl_td_scorers()
     except Exception:
         scorers = []
-    for n in (scorers or [])[:6]:
+    # fetch returns a set. Sets cannot be sliced.
+    for n in list(scorers or [])[:6]:
         alerts.append(f"Scored a touchdown · {n}")
     for item in ev_board or []:
         books = item.get("book_prices") or {}
@@ -6293,23 +6295,30 @@ def fetch_nhl_goal_scorers(date_str=None):
         state = str(g.get("gameState") or "").upper()
         if state in ("LIVE", "CRIT", "OFFCLOCK"):
             live += 1
-        if state not in ("OFF", "FINAL"):
+        # Pulse is the scoreboard. Count goals already scored, including live games.
+        # Only skip games that have not started.
+        if state in ("FUT", "PRE", "PREVIEW", ""):
             continue
-        finals += 1
+        if state in ("OFF", "FINAL"):
+            finals += 1
         for goal in g.get("goals") or []:
-            nm = (goal.get("name") or {})
-            full = nm.get("default") or goal.get("playerName") or ""
-            if isinstance(full, dict):
-                full = full.get("default") or ""
             first = goal.get("firstName") or {}
             last = goal.get("lastName") or {}
+            fn = first.get("default") if isinstance(first, dict) else first
+            ln = last.get("default") if isinstance(last, dict) else last
+            full = f"{fn or ''} {ln or ''}".strip()
+            nm = goal.get("name") or {}
+            short = nm.get("default") if isinstance(nm, dict) else (nm or "")
             if not full:
-                fn = first.get("default") if isinstance(first, dict) else first
-                ln = last.get("default") if isinstance(last, dict) else last
-                full = f"{fn or ''} {ln or ''}".strip()
+                full = short or goal.get("playerName") or ""
+                if isinstance(full, dict):
+                    full = full.get("default") or ""
             if full:
-                names.add(full)
-                done.add(full)
+                names.add(str(full).strip())
+                done.add(str(full).strip())
+            elif short:
+                names.add(str(short).strip())
+                done.add(str(short).strip())
         for side in ("awayTeam", "homeTeam"):
             for p in ((g.get(side) or {}).get("skaters") or []):
                 nm = ((p.get("name") or {}).get("default")) or ""
@@ -7116,14 +7125,15 @@ def render_whats_going_today():
         scored = ", ".join(n for n, _t in (listed or [])[:4])
         queen = ("Queen says: touchdowns already in — %s." % scored) if scored else "Queen says: no touchdowns yet. A zero is the scoreboard, not a miss. Passing scores do not count — only the guy who ran it in or caught it."
     elif sport == "NHL":
-        queen = "Queen says: these goals already cashed." if mlb_hr else "Queen says: no puck drop yet — Pulse stays at zero."
+        scored = ", ".join(n for n, _t in (hr_status or [])[:5])
+        queen = ("Queen says: goals already in — %s." % scored) if mlb_hr else "Queen says: no goals on the scoreboard yet."
     elif sport == "NBA":
         queen = "Queen says: these longshots already cashed." if mlb_hr else "Queen says: waiting on tip. Pulse stays at zero until a game is final."
     else:
         queen = "Queen says: these bombs already cashed." if mlb_hr else "Queen says: Pulse waits on graded homers."
 
     if sport == "NHL":
-        empty = "No goals cashed yet — waiting on final games."
+        empty = "No goals on the scoreboard yet."
     elif sport == "NFL":
         empty = "No touchdowns yet — waiting on a final game."
     elif sport == "NBA":
