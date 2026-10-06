@@ -430961,7 +430961,7 @@
   {
     "id": "2026-10-05_Atlanta Falcons D/ST_watch_52",
     "date": "2026-10-05",
-    "time": "03:28 PM",
+    "time": "06:14 PM",
     "player": "Atlanta Falcons D/ST",
     "score": 52,
     "edge": 10,
@@ -431000,7 +431000,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-05T22:28:10.837706+00:00",
+    "updated_at": "2026-10-06T01:14:55.945863+00:00",
     "player_name": "Atlanta Falcons D/ST",
     "stamps": [
       "MGM 25",
@@ -431017,7 +431017,7 @@
   {
     "id": "2026-10-05_Bijan Robinson_watch_40",
     "date": "2026-10-05",
-    "time": "03:28 PM",
+    "time": "06:14 PM",
     "player": "Bijan Robinson",
     "score": 40,
     "edge": 2,
@@ -431057,7 +431057,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "HIT",
-    "updated_at": "2026-10-05T22:28:11.243213+00:00",
+    "updated_at": "2026-10-06T01:14:55.077548+00:00",
     "player_name": "Bijan Robinson",
     "stamps": [
       "Books tight",
@@ -431191,7 +431191,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T01:14:43.945723+00:00",
+    "updated_at": "2026-10-06T01:14:54.614953+00:00",
     "player_name": "Chris Olave",
     "stamps": [
       "Books tight",
@@ -431207,7 +431207,7 @@
   {
     "id": "2026-10-05_Devaughn Vele_watch_45",
     "date": "2026-10-05",
-    "time": "03:28 PM",
+    "time": "06:14 PM",
     "player": "Devaughn Vele",
     "score": 45,
     "edge": -2,
@@ -431252,7 +431252,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-05T22:28:10.923918+00:00",
+    "updated_at": "2026-10-06T01:14:56.581540+00:00",
     "player_name": "Devaughn Vele",
     "stamps": [
       "MGM 40",
@@ -431328,7 +431328,7 @@
   {
     "id": "2026-10-05_Jahan Dotson_watch_52",
     "date": "2026-10-05",
-    "time": "03:12 PM",
+    "time": "06:14 PM",
     "player": "Jahan Dotson",
     "score": 52,
     "edge": 15,
@@ -431372,7 +431372,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-05T22:12:48.686199+00:00",
+    "updated_at": "2026-10-06T01:14:54.680845+00:00",
     "player_name": "Jahan Dotson",
     "stamps": [
       "FD Pattern",
@@ -431439,7 +431439,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T01:14:44.156701+00:00",
+    "updated_at": "2026-10-06T01:14:55.014377+00:00",
     "player_name": "Juwan Johnson",
     "stamps": [
       "B365 a bit over FD",
@@ -431458,7 +431458,7 @@
   {
     "id": "2026-10-05_Kendre Miller_watch_33",
     "date": "2026-10-05",
-    "time": "03:28 PM",
+    "time": "06:14 PM",
     "player": "Kendre Miller",
     "score": 33,
     "edge": 15,
@@ -431498,7 +431498,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-05T22:28:11.362948+00:00",
+    "updated_at": "2026-10-06T01:14:55.681870+00:00",
     "player_name": "Kendre Miller",
     "stamps": [
       "Books tight",
@@ -431512,7 +431512,7 @@
   {
     "id": "2026-10-05_Kyle Pitts Sr._watch_41",
     "date": "2026-10-05",
-    "time": "03:28 PM",
+    "time": "06:14 PM",
     "player": "Kyle Pitts Sr.",
     "score": 41,
     "edge": 6,
@@ -431554,7 +431554,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-05T22:28:11.430408+00:00",
+    "updated_at": "2026-10-06T01:14:55.437863+00:00",
     "player_name": "Kyle Pitts Sr.",
     "stamps": [
       "DK FD-style",
@@ -431728,7 +431728,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T01:14:44.109230+00:00",
+    "updated_at": "2026-10-06T01:14:54.833221+00:00",
     "player_name": "Tyler Shough",
     "stamps": [
       "DK 10",
@@ -431853,7 +431853,7 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-05T22:12:56.660880+00:00",
-    "updated_at": "2026-10-06T01:14:44.066958+00:00"
+    "updated_at": "2026-10-06T01:14:54.760956+00:00"
   },
   {
     "id": "2026-10-05_Austin Hooper_shop_lean_78",
@@ -432761,7 +432761,7 @@
     "benford_cluster": 0.8,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T01:14:44.017715+00:00",
+    "updated_at": "2026-10-06T01:14:54.564908+00:00",
     "player_name": "Cooper Kupp",
     "stamps": [
       "FD 40",
@@ -434546,7 +434546,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T01:14:43.484101+00:00",
+    "updated_at": "2026-10-06T01:14:54.903253+00:00",
     "player_name": "Oscar Delp",
     "stamps": [
       "Multi-book Shorten",
@@ -435655,7 +435655,7 @@
   {
     "id": "2026-10-05_Tyler Toffoli_watch_46",
     "date": "2026-10-05",
-    "time": "06:14 PM",
+    "time": "06:15 PM",
     "player": "Tyler Toffoli",
     "score": 46,
     "edge": 68,
@@ -435692,7 +435692,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T01:14:56.662387+00:00",
+    "updated_at": "2026-10-06T01:15:07.850782+00:00",
     "player_name": "Tyler Toffoli",
     "stamps": [
       "FD 50",
@@ -435757,5 +435757,447 @@
     "price": 350,
     "book": "fanduel",
     "created_at": "2026-10-06T01:14:56.737432+00:00"
+  },
+  {
+    "id": "2026-10-05_Quinshon Judkins_shop_take_63",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "Quinshon Judkins",
+    "score": 0,
+    "edge": 63,
+    "best_price": 110,
+    "best_book": "draftkings",
+    "median": 100,
+    "book_prices": {
+      "draftkings": 110,
+      "fanatics": -115,
+      "hardrockbet": 100
+    },
+    "price_bucket": "under +400",
+    "ending": 10,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-06T01:14:55.351543+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Quinshon Judkins",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 110,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:14:55.351543+00:00",
+    "updated_at": "2026-10-06T01:14:55.351543+00:00"
+  },
+  {
+    "id": "2026-10-05_Tez Johnson_shop_lean_60",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "Tez Johnson",
+    "score": 0,
+    "edge": 60,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 700,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 700,
+      "betrivers": 540,
+      "caesars": 700,
+      "draftkings": 750,
+      "fanatics": 750,
+      "fanduel": 700,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:14:55.506230+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "updated_at": "2026-10-06T01:14:56.359080+00:00",
+    "player_name": "Tez Johnson",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 750,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:14:55.506230+00:00"
+  },
+  {
+    "id": "2026-10-05_Elijah Arroyo_shop_lean_55",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "Elijah Arroyo",
+    "score": 0,
+    "edge": 55,
+    "best_price": 850,
+    "best_book": "fanatics",
+    "median": 800,
+    "book_prices": {
+      "betrivers": 800,
+      "caesars": 800,
+      "fanatics": 850,
+      "fanduel": 850,
+      "hardrockbet": 700
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:14:55.567044+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Elijah Arroyo",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 850,
+    "book": "fanatics",
+    "created_at": "2026-10-06T01:14:55.567044+00:00",
+    "updated_at": "2026-10-06T01:14:55.567044+00:00"
+  },
+  {
+    "id": "2026-10-05_KaVontae Turpin_shop_lean_50",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "KaVontae Turpin",
+    "score": 0,
+    "edge": 50,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 675,
+    "book_prices": {
+      "bet365": 650,
+      "betmgm": 650,
+      "betrivers": 650,
+      "caesars": 700,
+      "draftkings": 750,
+      "fanatics": 750,
+      "fanduel": 750,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:14:55.824444+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "KaVontae Turpin",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 750,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:14:55.824444+00:00",
+    "updated_at": "2026-10-06T01:14:55.824444+00:00"
+  },
+  {
+    "id": "2026-10-05_Cade Otton_shop_lean_47",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "Cade Otton",
+    "score": 0,
+    "edge": 47,
+    "best_price": 550,
+    "best_book": "fanduel",
+    "median": 490,
+    "book_prices": {
+      "bet365": 500,
+      "betmgm": 400,
+      "betrivers": 480,
+      "caesars": 475,
+      "draftkings": 500,
+      "fanatics": 500,
+      "fanduel": 550,
+      "hardrockbet": 475
+    },
+    "price_bucket": "+500s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:14:56.102391+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Cade Otton",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 550,
+    "book": "fanduel",
+    "created_at": "2026-10-06T01:14:56.102391+00:00",
+    "updated_at": "2026-10-06T01:14:56.102391+00:00"
+  },
+  {
+    "id": "2026-10-05_Davis Allen_shop_lean_46",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "Davis Allen",
+    "score": 0,
+    "edge": 46,
+    "best_price": 600,
+    "best_book": "draftkings",
+    "median": 550,
+    "book_prices": {
+      "caesars": 550,
+      "draftkings": 600,
+      "fanduel": 550,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:14:56.236440+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Davis Allen",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 600,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:14:56.236440+00:00",
+    "updated_at": "2026-10-06T01:14:56.236440+00:00"
+  },
+  {
+    "id": "2026-10-05_Darius Cooper_shop_lean_41",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "Darius Cooper",
+    "score": 0,
+    "edge": 41,
+    "best_price": 475,
+    "best_book": "draftkings",
+    "median": 425,
+    "book_prices": {
+      "caesars": 425,
+      "draftkings": 475,
+      "fanatics": 450,
+      "fanduel": 400,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:14:56.519593+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Darius Cooper",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 475,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:14:56.519593+00:00",
+    "updated_at": "2026-10-06T01:14:56.519593+00:00"
+  },
+  {
+    "id": "2026-10-05_Joshua Palmer_shop_lean_41",
+    "date": "2026-10-05",
+    "time": "06:14 PM",
+    "player": "Joshua Palmer",
+    "score": 0,
+    "edge": 41,
+    "best_price": 500,
+    "best_book": "draftkings",
+    "median": 445,
+    "book_prices": {
+      "caesars": 450,
+      "draftkings": 500,
+      "fanduel": 440,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:14:56.647431+00:00",
+    "price_source": "shop",
+    "sport": "NFL",
+    "market": "anytime_td",
+    "player_name": "Joshua Palmer",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 500,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:14:56.647431+00:00",
+    "updated_at": "2026-10-06T01:14:56.647431+00:00"
+  },
+  {
+    "id": "2026-10-05_Anthony Cirelli_shop_take_85",
+    "date": "2026-10-05",
+    "time": "06:15 PM",
+    "player": "Anthony Cirelli",
+    "score": 0,
+    "edge": 85,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 700,
+    "book_prices": {
+      "bet365": 280,
+      "draftkings": 850,
+      "fanatics": 650,
+      "fanduel": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-06T01:15:07.749933+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Anthony Cirelli",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 850,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:15:07.749933+00:00",
+    "updated_at": "2026-10-06T01:15:07.749933+00:00"
+  },
+  {
+    "id": "2026-10-05_Shane Pinto_shop_lean_68",
+    "date": "2026-10-05",
+    "time": "06:15 PM",
+    "player": "Shane Pinto",
+    "score": 0,
+    "edge": 68,
+    "best_price": 800,
+    "best_book": "fanduel",
+    "median": 675,
+    "book_prices": {
+      "bet365": 280,
+      "draftkings": 700,
+      "fanatics": 650,
+      "fanduel": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:15:07.800880+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Shane Pinto",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 800,
+    "book": "fanduel",
+    "created_at": "2026-10-06T01:15:07.800880+00:00",
+    "updated_at": "2026-10-06T01:15:07.800880+00:00"
+  },
+  {
+    "id": "2026-10-05_Nikita Kucherov_shop_lean_55",
+    "date": "2026-10-05",
+    "time": "06:15 PM",
+    "player": "Nikita Kucherov",
+    "score": 0,
+    "edge": 55,
+    "best_price": 500,
+    "best_book": "draftkings",
+    "median": 395,
+    "book_prices": {
+      "bet365": 135,
+      "draftkings": 500,
+      "fanatics": 390,
+      "fanduel": 400
+    },
+    "price_bucket": "+500s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T01:15:07.899218+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Nikita Kucherov",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 500,
+    "book": "draftkings",
+    "created_at": "2026-10-06T01:15:07.899218+00:00",
+    "updated_at": "2026-10-06T01:15:07.899218+00:00"
   }
 ]
