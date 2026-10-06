@@ -346385,7 +346385,7 @@
       "FD Pattern"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:20.056893+00:00",
     "price_source": "pregame_lock",
@@ -346396,7 +346396,7 @@
     "benford_note": "",
     "benford_cluster": 0.71,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "player_name": "Chandler Stephenson",
     "stamps": [
       "Books tight",
@@ -346409,7 +346409,8 @@
     "book": "fanduel",
     "created_at": "2026-10-03T08:07:59.040105+00:00",
     "updated_at": "2026-10-03T22:14:20.056909+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Claude Giroux_watch_40",
@@ -346451,7 +346452,7 @@
       "FD+MGM classic"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:20.141891+00:00",
     "price_source": "pregame_lock",
@@ -346462,7 +346463,7 @@
     "benford_note": "",
     "benford_cluster": 0.71,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:14:20.141902+00:00",
     "player_name": "Claude Giroux",
     "stamps": [
@@ -346479,7 +346480,8 @@
     "price": 440,
     "book": "betrivers",
     "created_at": "2026-10-03T08:08:01.873108+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Colton Dach_watch_60",
@@ -346889,7 +346891,7 @@
       "FD 50"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:27.095665+00:00",
     "price_source": "pregame_lock",
@@ -346900,7 +346902,7 @@
     "benford_note": "",
     "benford_cluster": 0.86,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T01:26:27.095674+00:00",
     "player_name": "Dylan Holloway",
     "stamps": [
@@ -346915,7 +346917,8 @@
     "price": 320,
     "book": "bet365",
     "created_at": "2026-10-03T08:08:03.434465+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Dylan Strome_watch_33",
@@ -347339,7 +347342,7 @@
       "Shop TAKE"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:21.522919+00:00",
     "price_source": "pregame_lock",
@@ -347350,7 +347353,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:14:21.522934+00:00",
     "player_name": "Ilya Mikheyev",
     "stamps": [
@@ -347364,7 +347367,8 @@
     "price": 375,
     "book": "bet365",
     "created_at": "2026-10-03T08:08:04.535053+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Isaac Howard_watch_60",
@@ -347896,7 +347900,7 @@
       "FD Best"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:23.236540+00:00",
     "price_source": "pregame_lock",
@@ -347907,7 +347911,7 @@
     "benford_note": "",
     "benford_cluster": 0.83,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:14:23.236551+00:00",
     "player_name": "Matthew Schaefer",
     "stamps": [
@@ -347919,7 +347923,8 @@
     "price": 410,
     "book": "fanatics",
     "created_at": "2026-10-03T08:08:03.906460+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Mattias Ekholm_watch_59",
@@ -348590,7 +348595,7 @@
       "DK Best"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:29.766707+00:00",
     "price_source": "pregame_lock",
@@ -348601,7 +348606,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T01:26:29.766722+00:00",
     "player_name": "Scott Laughton",
     "stamps": [
@@ -348615,7 +348620,8 @@
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-10-03T08:08:03.370613+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Shane Wright_watch_44",
@@ -364518,7 +364524,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T17:09:34.107331+00:00",
     "price_source": "pregame_lock",
@@ -364529,7 +364535,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T17:09:40.088042+00:00",
     "player_name": "Jo Adell",
     "stamps": [
@@ -364547,7 +364553,8 @@
     ],
     "price": 625,
     "book": "bet365",
-    "created_at": "2026-10-03T08:09:20.180621+00:00"
+    "created_at": "2026-10-03T08:09:20.180621+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Austin Riley_watch_66",
@@ -364672,7 +364679,7 @@
       "Last one left"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:29:49.144946+00:00",
     "price_source": "pregame_lock",
@@ -364683,7 +364690,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "player_name": "Austin Wells",
     "stamps": [
       "B365 over MGM",
@@ -364700,7 +364707,8 @@
     "book": "fanduel",
     "created_at": "2026-10-03T08:09:19.697522+00:00",
     "updated_at": "2026-10-03T22:29:54.932309+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Brayan Rocchio_watch_11",
@@ -365345,7 +365353,7 @@
       "Last one left"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:29:48.222400+00:00",
     "price_source": "pregame_lock",
@@ -365356,7 +365364,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "player_name": "Jazz Chisholm Jr.",
     "stamps": [
       "B365 over MGM",
@@ -365372,7 +365380,8 @@
     "book": "draftkings",
     "created_at": "2026-10-03T08:09:20.109173+00:00",
     "updated_at": "2026-10-03T22:29:48.222411+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Joey Ortiz_watch_38",
@@ -366151,7 +366160,7 @@
       "Last one left"
     ],
     "core": 1,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:29:48.758096+00:00",
     "price_source": "pregame_lock",
@@ -366162,7 +366171,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "player_name": "Trent Grisham",
     "stamps": [
       "HardRock 00",
@@ -366176,7 +366185,8 @@
     "book": "betrivers",
     "created_at": "2026-10-03T08:09:20.825790+00:00",
     "updated_at": "2026-10-03T22:29:48.758108+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Ty France_watch_17",
@@ -366458,7 +366468,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T08:09:27.536928+00:00",
     "price_source": "shop",
@@ -366466,14 +366476,15 @@
     "market": "batter_home_runs",
     "player_name": "Jake Bauers",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-03T08:09:27.536928+00:00",
-    "updated_at": "2026-10-04T00:32:05.288346+00:00"
+    "updated_at": "2026-10-04T00:32:05.288346+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Luis Garc\u00eda Jr._shop_lean_119",
@@ -366576,7 +366587,7 @@
       "FD+MGM classic"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T18:46:58.106594+00:00",
     "price_source": "shop",
@@ -366584,14 +366595,15 @@
     "market": "batter_home_runs",
     "player_name": "Ryan McMahon",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-03T08:09:27.627433+00:00",
-    "updated_at": "2026-10-03T22:29:54.508845+00:00"
+    "updated_at": "2026-10-03T22:29:54.508845+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Xander Bogaerts_shop_take_106",
@@ -366619,7 +366631,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T08:09:27.670627+00:00",
     "price_source": "shop",
@@ -366627,14 +366639,15 @@
     "market": "batter_home_runs",
     "player_name": "Xander Bogaerts",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-03T08:09:27.670627+00:00",
-    "updated_at": "2026-10-03T08:09:27.670627+00:00"
+    "updated_at": "2026-10-03T08:09:27.670627+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Victor Mesa Jr._shop_lean_101",
@@ -366741,7 +366754,7 @@
       "DK 10"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:06.437610+00:00",
     "price_source": "shop",
@@ -366749,14 +366762,40 @@
     "market": "batter_home_runs",
     "player_name": "Jonathan Aranda",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "HIT",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "hardrockbet",
     "created_at": "2026-10-03T08:09:27.740874+00:00",
-    "updated_at": "2026-10-04T01:26:06.437621+00:00"
+    "updated_at": "2026-10-04T01:26:06.437621+00:00",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-10-03",
+    "hit_why": [
+      "Shop TAKE",
+      "Stayed in the group",
+      "Fanatics Drift",
+      "HardRock 00",
+      "Match 25",
+      "B365 over MGM",
+      "Fanatics over pack",
+      "FD Pattern",
+      "MGM Exact",
+      "Multi-book method",
+      "FD+MGM classic",
+      "B365 way over MGM",
+      "MGM 25",
+      "EV Premium",
+      "Kelly Support",
+      "DK FD-style",
+      "EV Support",
+      "FD a little long",
+      "FD 90",
+      "B365 a bit over FD",
+      "DK 10"
+    ],
+    "hit_when": "2026-10-03"
   },
   {
     "id": "2026-10-03_Tommy Pham_shop_lean_78",
@@ -367222,7 +367261,7 @@
       "FD 90"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:29:46.620364+00:00",
     "price_source": "pregame_lock",
@@ -367233,7 +367272,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "player_name": "Victor Mesa Jr.",
     "stamps": [
       "Stayed in the group",
@@ -367251,7 +367290,8 @@
     "price": 650,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:57:22.867286+00:00",
-    "updated_at": "2026-10-03T22:29:46.620377+00:00"
+    "updated_at": "2026-10-03T22:29:46.620377+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Travis Bazzana_take_it_98",
@@ -367293,7 +367333,7 @@
       "EV Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T17:09:33.370244+00:00",
     "price_source": "pregame_lock",
@@ -367304,7 +367344,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T17:09:33.370261+00:00",
     "player_name": "Travis Bazzana",
     "stamps": [
@@ -367323,7 +367363,8 @@
     ],
     "price": 1160,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:57:27.015288+00:00"
+    "created_at": "2026-10-03T16:57:27.015288+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Braden Montgomery_watch_65",
@@ -368203,7 +368244,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:57:35.495536+00:00",
     "price_source": "shop",
@@ -368211,14 +368252,15 @@
     "market": "batter_home_runs",
     "player_name": "Fernando Tatis Jr.",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 625,
     "book": "bet365",
     "created_at": "2026-10-03T16:57:35.495536+00:00",
-    "updated_at": "2026-10-04T00:32:05.227515+00:00"
+    "updated_at": "2026-10-04T00:32:05.227515+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Miguel Vargas_shop_take_134",
@@ -368251,7 +368293,7 @@
       "Kelly Support"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T18:54:49.828178+00:00",
     "price_source": "shop",
@@ -368259,14 +368301,15 @@
     "market": "batter_home_runs",
     "player_name": "Miguel Vargas",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T16:57:35.568518+00:00",
-    "updated_at": "2026-10-03T18:54:49.828186+00:00"
+    "updated_at": "2026-10-03T18:54:49.828186+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Randal Grichuk_shop_lean_97",
@@ -368342,7 +368385,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:57:35.855453+00:00",
     "price_source": "shop",
@@ -368350,14 +368393,15 @@
     "market": "batter_home_runs",
     "player_name": "Spencer Jones",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-10-03T16:57:35.855453+00:00",
-    "updated_at": "2026-10-03T17:09:40.335075+00:00"
+    "updated_at": "2026-10-03T17:09:40.335075+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_George Lombard Jr._shop_lean_74",
@@ -368577,7 +368621,7 @@
       "DK Best"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:20.659783+00:00",
     "price_source": "pregame_lock",
@@ -368588,7 +368632,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:15:02.818558+00:00",
     "player_name": "Dawson Mercer",
     "stamps": [
@@ -368610,7 +368654,8 @@
     ],
     "price": 550,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:08.690592+00:00"
+    "created_at": "2026-10-03T16:58:08.690592+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Daniil But_take_it_63",
@@ -368655,7 +368700,7 @@
       "Lane C"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:20.557849+00:00",
     "price_source": "pregame_lock",
@@ -368666,7 +368711,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:14:20.557857+00:00",
     "player_name": "Daniil But",
     "stamps": [
@@ -368686,7 +368731,8 @@
     ],
     "price": 650,
     "book": "hardrockbet",
-    "created_at": "2026-10-03T16:58:08.458311+00:00"
+    "created_at": "2026-10-03T16:58:08.458311+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Shayne Gostisbehere_take_it_75",
@@ -368729,7 +368775,7 @@
       "B365 a bit over FD"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:37.232413+00:00",
     "price_source": "pregame_lock",
@@ -368740,7 +368786,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:15:04.015003+00:00",
     "player_name": "Shayne Gostisbehere",
     "stamps": [
@@ -368757,7 +368803,8 @@
     ],
     "price": 600,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:16.452500+00:00"
+    "created_at": "2026-10-03T16:58:16.452500+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Sean Monahan_take_it_72",
@@ -368796,7 +368843,7 @@
       "FD 40"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:26.423860+00:00",
     "price_source": "pregame_lock",
@@ -368807,7 +368854,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:14:26.423873+00:00",
     "player_name": "Sean Monahan",
     "stamps": [
@@ -368823,7 +368870,8 @@
     ],
     "price": 390,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:16.304917+00:00"
+    "created_at": "2026-10-03T16:58:16.304917+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Mavrik Bourque_take_it_77",
@@ -368868,7 +368916,7 @@
       "MGM 00"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T00:24:32.396723+00:00",
     "price_source": "pregame_lock",
@@ -368879,7 +368927,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T00:24:32.396735+00:00",
     "player_name": "Mavrik Bourque",
     "stamps": [
@@ -368899,7 +368947,8 @@
     ],
     "price": 500,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:13.914988+00:00"
+    "created_at": "2026-10-03T16:58:13.914988+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Pierre-Luc Dubois_take_it_68",
@@ -368937,7 +368986,7 @@
       "DK Best"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:24.726329+00:00",
     "price_source": "pregame_lock",
@@ -368948,7 +368997,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:15:05.331591+00:00",
     "player_name": "Pierre-Luc Dubois",
     "stamps": [
@@ -368964,7 +369013,8 @@
     ],
     "price": 450,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:15.070485+00:00"
+    "created_at": "2026-10-03T16:58:15.070485+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Michael Misa_take_it_54",
@@ -369005,7 +369055,7 @@
       "DK FD-style"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:29.507005+00:00",
     "price_source": "pregame_lock",
@@ -369016,7 +369066,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T01:26:29.507016+00:00",
     "player_name": "Michael Misa",
     "stamps": [
@@ -369034,7 +369084,8 @@
     ],
     "price": 380,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:14.217382+00:00"
+    "created_at": "2026-10-03T16:58:14.217382+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Trevor Moore_take_it_57",
@@ -369077,7 +369128,7 @@
       "FD Best"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:29.004181+00:00",
     "price_source": "pregame_lock",
@@ -369088,7 +369139,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T01:26:29.004197+00:00",
     "player_name": "Trevor Moore",
     "stamps": [
@@ -369103,7 +369154,8 @@
     ],
     "price": 390,
     "book": "betrivers",
-    "created_at": "2026-10-03T16:58:17.409840+00:00"
+    "created_at": "2026-10-03T16:58:17.409840+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Tyler Toffoli_take_it_51",
@@ -369142,7 +369194,7 @@
       "DK Best"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T16:58:17.585528+00:00",
     "price_source": "pregame_lock",
@@ -369153,7 +369205,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:15:05.703888+00:00",
     "player_name": "Tyler Toffoli",
     "stamps": [
@@ -369170,7 +369222,8 @@
     ],
     "price": 450,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:17.585528+00:00"
+    "created_at": "2026-10-03T16:58:17.585528+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Ross Colton_take_it_56",
@@ -369213,7 +369266,7 @@
       "DK Best"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T16:58:15.612181+00:00",
     "price_source": "pregame_lock",
@@ -369224,7 +369277,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:15:01.525176+00:00",
     "player_name": "Ross Colton",
     "stamps": [
@@ -369245,7 +369298,8 @@
     ],
     "price": 500,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:15.612181+00:00"
+    "created_at": "2026-10-03T16:58:15.612181+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Aatu R\u00e4ty_watch_45",
@@ -370305,7 +370359,7 @@
       "Shop TAKE"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:26.721197+00:00",
     "price_source": "pregame_lock",
@@ -370316,7 +370370,7 @@
     "benford_note": "",
     "benford_cluster": 0.38,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T01:26:26.721206+00:00",
     "player_name": "Brendan Gallagher",
     "stamps": [
@@ -370333,7 +370387,8 @@
     "price": 625,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:25.032498+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Calum Ritchie_watch_57",
@@ -370637,7 +370692,7 @@
       "Shop TAKE"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-03T22:14:20.432598+00:00",
     "price_source": "pregame_lock",
@@ -370648,7 +370703,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-03T22:14:20.432607+00:00",
     "player_name": "Conor Geekie",
     "stamps": [
@@ -370668,7 +370723,8 @@
     "price": 625,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:20.007315+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Corey Perry_watch_44",
@@ -370703,7 +370759,7 @@
       "HardRock 00"
     ],
     "core": 2,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:26.821618+00:00",
     "price_source": "pregame_lock",
@@ -370714,7 +370770,7 @@
     "benford_note": "",
     "benford_cluster": 0.6,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "player_name": "Corey Perry",
     "stamps": [
       "MGM Exact",
@@ -370727,7 +370783,8 @@
     "book": "fanduel",
     "created_at": "2026-10-03T16:58:08.321375+00:00",
     "updated_at": "2026-10-04T01:26:26.821628+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Darnell Nurse_watch_71",
@@ -373906,7 +373963,7 @@
       "HardRock 00"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T01:26:28.844796+00:00",
     "price_source": "pregame_lock",
@@ -373917,7 +373974,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T01:26:28.844811+00:00",
     "player_name": "Samuel Honzek",
     "stamps": [
@@ -373938,7 +373995,8 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:21.903452+00:00",
-    "upgraded_from": "watch"
+    "upgraded_from": "watch",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Sean Couturier_watch_71",
@@ -376383,7 +376441,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:37.054453+00:00",
     "price_source": "shop",
@@ -376391,14 +376449,15 @@
     "market": "anytime_goal",
     "player_name": "Beck Malenstyn",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:37.054453+00:00",
-    "updated_at": "2026-10-03T16:58:37.054453+00:00"
+    "updated_at": "2026-10-03T16:58:37.054453+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jonatan Berggren_shop_take_249",
@@ -376436,7 +376495,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:18:33.634096+00:00",
     "price_source": "shop",
@@ -376445,13 +376504,14 @@
     "updated_at": "2026-10-04T01:18:33.634105+00:00",
     "player_name": "Jonatan Berggren",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "bet365",
-    "created_at": "2026-10-03T16:58:37.102611+00:00"
+    "created_at": "2026-10-03T16:58:37.102611+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Sean Couturier_shop_take_248",
@@ -376479,7 +376539,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:37.137911+00:00",
     "price_source": "shop",
@@ -376487,14 +376547,15 @@
     "market": "anytime_goal",
     "player_name": "Sean Couturier",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:37.137911+00:00",
-    "updated_at": "2026-10-03T16:58:37.137911+00:00"
+    "updated_at": "2026-10-03T16:58:37.137911+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Drew Doughty_shop_lean_226",
@@ -376565,7 +376626,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:37.259953+00:00",
     "price_source": "shop",
@@ -376573,14 +376634,15 @@
     "market": "anytime_goal",
     "player_name": "Noah Dobson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:37.259953+00:00",
-    "updated_at": "2026-10-03T16:58:37.259953+00:00"
+    "updated_at": "2026-10-03T16:58:37.259953+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Pontus Holmberg_shop_take_222",
@@ -376608,7 +376670,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:37.301850+00:00",
     "price_source": "shop",
@@ -376616,14 +376678,15 @@
     "market": "anytime_goal",
     "player_name": "Pontus Holmberg",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:37.301850+00:00",
-    "updated_at": "2026-10-03T22:15:00.794972+00:00"
+    "updated_at": "2026-10-03T22:15:00.794972+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Zachary Bolduc_shop_take_222",
@@ -376655,7 +376718,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T00:24:32.690615+00:00",
     "price_source": "shop",
@@ -376664,13 +376727,14 @@
     "updated_at": "2026-10-04T00:24:32.690627+00:00",
     "player_name": "Zachary Bolduc",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "bet365",
-    "created_at": "2026-10-03T16:58:37.338049+00:00"
+    "created_at": "2026-10-03T16:58:37.338049+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Simon Nemec_shop_lean_221",
@@ -376924,7 +376988,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:37.630319+00:00",
     "price_source": "shop",
@@ -376932,14 +376996,15 @@
     "market": "anytime_goal",
     "player_name": "Arshdeep Bains",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:37.630319+00:00",
-    "updated_at": "2026-10-03T22:15:03.798963+00:00"
+    "updated_at": "2026-10-03T22:15:03.798963+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jared Spurgeon_shop_lean_184",
@@ -377010,7 +377075,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:37.715769+00:00",
     "price_source": "shop",
@@ -377018,14 +377083,15 @@
     "market": "anytime_goal",
     "player_name": "Teuvo Teravainen",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 725,
     "book": "fanduel",
     "created_at": "2026-10-03T16:58:37.715769+00:00",
-    "updated_at": "2026-10-03T16:58:37.715769+00:00"
+    "updated_at": "2026-10-03T16:58:37.715769+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Luke Hughes_shop_lean_176",
@@ -377154,7 +377220,7 @@
       "DK Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:34.139971+00:00",
     "price_source": "shop",
@@ -377162,14 +377228,15 @@
     "market": "anytime_goal",
     "player_name": "Alexandre Texier",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:37.875544+00:00",
-    "updated_at": "2026-10-03T22:14:58.981864+00:00"
+    "updated_at": "2026-10-03T22:14:58.981864+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Nick Foligno_shop_take_169",
@@ -377197,7 +377264,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:37.914603+00:00",
     "price_source": "shop",
@@ -377205,14 +377272,15 @@
     "market": "anytime_goal",
     "player_name": "Nick Foligno",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:37.914603+00:00",
-    "updated_at": "2026-10-03T22:14:59.069423+00:00"
+    "updated_at": "2026-10-03T22:14:59.069423+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Cole Hutson_shop_lean_167",
@@ -377283,7 +377351,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.033889+00:00",
     "price_source": "shop",
@@ -377291,14 +377359,15 @@
     "market": "anytime_goal",
     "player_name": "Boone Jenner",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.033889+00:00",
-    "updated_at": "2026-10-03T22:14:59.653277+00:00"
+    "updated_at": "2026-10-03T22:14:59.653277+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jeffrey Viel_shop_take_160",
@@ -377326,7 +377395,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.082277+00:00",
     "price_source": "shop",
@@ -377334,14 +377403,15 @@
     "market": "anytime_goal",
     "player_name": "Jeffrey Viel",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "fanduel",
     "created_at": "2026-10-03T16:58:38.082277+00:00",
-    "updated_at": "2026-10-03T16:58:38.082277+00:00"
+    "updated_at": "2026-10-03T16:58:38.082277+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Teddy Blueger_shop_take_160",
@@ -377369,7 +377439,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.120541+00:00",
     "price_source": "shop",
@@ -377377,14 +377447,15 @@
     "market": "anytime_goal",
     "player_name": "Teddy Blueger",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "fanduel",
     "created_at": "2026-10-03T16:58:38.120541+00:00",
-    "updated_at": "2026-10-03T16:58:38.120541+00:00"
+    "updated_at": "2026-10-03T16:58:38.120541+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Nick Cousins_shop_lean_157",
@@ -377504,7 +377575,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.289475+00:00",
     "price_source": "shop",
@@ -377512,14 +377583,15 @@
     "market": "anytime_goal",
     "player_name": "Jack McBain",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.289475+00:00",
-    "updated_at": "2026-10-03T22:14:59.483949+00:00"
+    "updated_at": "2026-10-03T22:14:59.483949+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Sam Carrick_shop_take_149",
@@ -377547,7 +377619,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.372097+00:00",
     "price_source": "shop",
@@ -377555,14 +377627,15 @@
     "market": "anytime_goal",
     "player_name": "Sam Carrick",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.372097+00:00",
-    "updated_at": "2026-10-03T22:14:59.949178+00:00"
+    "updated_at": "2026-10-03T22:14:59.949178+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Thomas Harley_shop_take_145",
@@ -377590,7 +377663,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.425615+00:00",
     "price_source": "shop",
@@ -377598,14 +377671,15 @@
     "market": "anytime_goal",
     "player_name": "Thomas Harley",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:38.425615+00:00",
-    "updated_at": "2026-10-03T16:58:38.425615+00:00"
+    "updated_at": "2026-10-03T16:58:38.425615+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Mattias Ekholm_shop_take_143",
@@ -377633,7 +377707,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.518615+00:00",
     "price_source": "shop",
@@ -377641,14 +377715,15 @@
     "market": "anytime_goal",
     "player_name": "Mattias Ekholm",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:38.518615+00:00",
-    "updated_at": "2026-10-03T22:14:59.908639+00:00"
+    "updated_at": "2026-10-03T22:14:59.908639+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Victor Hedman_shop_take_142",
@@ -377676,7 +377751,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.566989+00:00",
     "price_source": "shop",
@@ -377684,14 +377759,15 @@
     "market": "anytime_goal",
     "player_name": "Victor Hedman",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.566989+00:00",
-    "updated_at": "2026-10-03T22:14:59.610753+00:00"
+    "updated_at": "2026-10-03T22:14:59.610753+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Dalibor Dvorsky_shop_lean_141",
@@ -377772,7 +377848,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.651851+00:00",
     "price_source": "shop",
@@ -377780,14 +377856,15 @@
     "market": "anytime_goal",
     "player_name": "Mattias Samuelsson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.651851+00:00",
-    "updated_at": "2026-10-03T22:15:00.661050+00:00"
+    "updated_at": "2026-10-03T22:15:00.661050+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Charle-Edouard D'Astous_shop_take_139",
@@ -377814,7 +377891,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.700194+00:00",
     "price_source": "shop",
@@ -377822,14 +377899,15 @@
     "market": "anytime_goal",
     "player_name": "Charle-Edouard D'Astous",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.700194+00:00",
-    "updated_at": "2026-10-03T22:15:01.405918+00:00"
+    "updated_at": "2026-10-03T22:15:01.405918+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Luca Cagnoni_shop_lean_139",
@@ -377900,7 +377978,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.796026+00:00",
     "price_source": "shop",
@@ -377908,14 +377986,15 @@
     "market": "anytime_goal",
     "player_name": "Zayne Parekh",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.796026+00:00",
-    "updated_at": "2026-10-03T22:15:04.290908+00:00"
+    "updated_at": "2026-10-03T22:15:04.290908+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jacob Trouba_shop_lean_137",
@@ -377987,7 +378066,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:29:10.491818+00:00",
     "price_source": "shop",
@@ -377995,14 +378074,15 @@
     "market": "anytime_goal",
     "player_name": "Drew O'Connor",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.906654+00:00",
-    "updated_at": "2026-10-04T03:29:10.491830+00:00"
+    "updated_at": "2026-10-04T03:29:10.491830+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Arttu Hyry_shop_lean_130",
@@ -378073,7 +378153,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:38.992163+00:00",
     "price_source": "shop",
@@ -378081,14 +378161,15 @@
     "market": "anytime_goal",
     "player_name": "Max Jones",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:38.992163+00:00",
-    "updated_at": "2026-10-03T22:15:00.360456+00:00"
+    "updated_at": "2026-10-03T22:15:00.360456+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Sam Steel_shop_take_130",
@@ -378123,7 +378204,7 @@
       "Lane C"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T00:24:31.611498+00:00",
     "price_source": "shop",
@@ -378131,14 +378212,15 @@
     "market": "anytime_goal",
     "player_name": "Sam Steel",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:39.035670+00:00",
-    "updated_at": "2026-10-04T00:24:31.611509+00:00"
+    "updated_at": "2026-10-04T00:24:31.611509+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Fedor Svechkov_shop_lean_129",
@@ -378205,7 +378287,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:39.125424+00:00",
     "price_source": "shop",
@@ -378214,13 +378296,14 @@
     "updated_at": "2026-10-03T22:15:00.575133+00:00",
     "player_name": "Adam Jiricek",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "draftkings",
-    "created_at": "2026-10-03T16:58:39.125424+00:00"
+    "created_at": "2026-10-03T16:58:39.125424+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Ryan Winterton_shop_take_128",
@@ -378248,7 +378331,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:39.241796+00:00",
     "price_source": "shop",
@@ -378256,14 +378339,15 @@
     "market": "anytime_goal",
     "player_name": "Ryan Winterton",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:39.241796+00:00",
-    "updated_at": "2026-10-03T16:58:39.241796+00:00"
+    "updated_at": "2026-10-03T16:58:39.241796+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Michael McCarron_shop_take_127",
@@ -378291,7 +378375,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:39.372557+00:00",
     "price_source": "shop",
@@ -378299,14 +378383,15 @@
     "market": "anytime_goal",
     "player_name": "Michael McCarron",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:39.372557+00:00",
-    "updated_at": "2026-10-03T22:15:01.060475+00:00"
+    "updated_at": "2026-10-03T22:15:01.060475+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Denton Mateychuk_shop_lean_126",
@@ -378618,7 +378703,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:39.694168+00:00",
     "price_source": "shop",
@@ -378626,14 +378711,15 @@
     "market": "anytime_goal",
     "player_name": "Dougie Hamilton",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:39.694168+00:00",
-    "updated_at": "2026-10-03T16:58:39.694168+00:00"
+    "updated_at": "2026-10-03T16:58:39.694168+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Mark Jankowski_shop_take_123",
@@ -378671,7 +378757,7 @@
       "Lane C"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:31.414138+00:00",
     "price_source": "shop",
@@ -378679,14 +378765,15 @@
     "market": "anytime_goal",
     "player_name": "Mark Jankowski",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:39.734812+00:00",
-    "updated_at": "2026-10-03T22:15:02.312442+00:00"
+    "updated_at": "2026-10-03T22:15:02.312442+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jake Sanderson_shop_take_120",
@@ -378714,7 +378801,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:39.982991+00:00",
     "price_source": "shop",
@@ -378722,14 +378809,15 @@
     "market": "anytime_goal",
     "player_name": "Jake Sanderson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 625,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:39.982991+00:00",
-    "updated_at": "2026-10-03T22:15:00.707540+00:00"
+    "updated_at": "2026-10-03T22:15:00.707540+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Kiefer Sherwood_shop_lean_118",
@@ -378800,7 +378888,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:40.208761+00:00",
     "price_source": "shop",
@@ -378808,14 +378896,15 @@
     "market": "anytime_goal",
     "player_name": "Paul Cotter",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:40.208761+00:00",
-    "updated_at": "2026-10-03T22:15:00.843573+00:00"
+    "updated_at": "2026-10-03T22:15:00.843573+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Reid Schaefer_shop_lean_118",
@@ -378896,7 +378985,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:40.407530+00:00",
     "price_source": "shop",
@@ -378904,14 +378993,15 @@
     "market": "anytime_goal",
     "player_name": "Jake Walman",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:40.407530+00:00",
-    "updated_at": "2026-10-03T22:15:01.193485+00:00"
+    "updated_at": "2026-10-03T22:15:01.193485+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Kris Letang_shop_take_115",
@@ -378948,7 +379038,7 @@
       "DK Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:34.718138+00:00",
     "price_source": "shop",
@@ -378956,14 +379046,15 @@
     "market": "anytime_goal",
     "player_name": "Kris Letang",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:40.477148+00:00",
-    "updated_at": "2026-10-03T22:15:00.517920+00:00"
+    "updated_at": "2026-10-03T22:15:00.517920+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Nicolas Roy_shop_lean_115",
@@ -379048,7 +379139,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:26:30.516935+00:00",
     "price_source": "shop",
@@ -379057,13 +379148,14 @@
     "updated_at": "2026-10-04T01:26:30.516944+00:00",
     "player_name": "Parker Kelly",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "fanduel",
-    "created_at": "2026-10-03T16:58:40.588566+00:00"
+    "created_at": "2026-10-03T16:58:40.588566+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_John Carlson_shop_take_114",
@@ -379091,7 +379183,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:40.712963+00:00",
     "price_source": "shop",
@@ -379099,14 +379191,15 @@
     "market": "anytime_goal",
     "player_name": "John Carlson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:40.712963+00:00",
-    "updated_at": "2026-10-03T16:58:40.712963+00:00"
+    "updated_at": "2026-10-03T16:58:40.712963+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Zemgus Girgensons_shop_take_114",
@@ -379134,7 +379227,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:40.792733+00:00",
     "price_source": "shop",
@@ -379142,14 +379235,15 @@
     "market": "anytime_goal",
     "player_name": "Zemgus Girgensons",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:40.792733+00:00",
-    "updated_at": "2026-10-03T22:15:00.474672+00:00"
+    "updated_at": "2026-10-03T22:15:00.474672+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Adam Klapka_shop_lean_111",
@@ -379232,7 +379326,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:40.934279+00:00",
     "price_source": "shop",
@@ -379240,14 +379334,15 @@
     "market": "anytime_goal",
     "player_name": "Owen Power",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:40.934279+00:00",
-    "updated_at": "2026-10-03T22:14:59.570348+00:00"
+    "updated_at": "2026-10-03T22:14:59.570348+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Connor Dewar_shop_lean_110",
@@ -379327,7 +379422,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:41.154360+00:00",
     "price_source": "shop",
@@ -379335,14 +379430,15 @@
     "market": "anytime_goal",
     "player_name": "Ville Koivunen",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:41.154360+00:00",
-    "updated_at": "2026-10-03T22:15:01.817902+00:00"
+    "updated_at": "2026-10-03T22:15:01.817902+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Oskar B\u00e4ck_shop_lean_107",
@@ -379411,7 +379507,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:41.299674+00:00",
     "price_source": "shop",
@@ -379419,14 +379515,15 @@
     "market": "anytime_goal",
     "player_name": "Andre Lee",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-03T16:58:41.299674+00:00",
-    "updated_at": "2026-10-03T16:58:41.299674+00:00"
+    "updated_at": "2026-10-03T16:58:41.299674+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_K'Andre Miller_shop_take_104",
@@ -379454,7 +379551,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:41.365849+00:00",
     "price_source": "shop",
@@ -379462,14 +379559,15 @@
     "market": "anytime_goal",
     "player_name": "K'Andre Miller",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "fanatics",
     "created_at": "2026-10-03T16:58:41.365849+00:00",
-    "updated_at": "2026-10-03T22:15:01.773765+00:00"
+    "updated_at": "2026-10-03T22:15:01.773765+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Noah Cates_shop_take_104",
@@ -379508,7 +379606,7 @@
       "DK Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:35.380384+00:00",
     "price_source": "shop",
@@ -379516,14 +379614,15 @@
     "market": "anytime_goal",
     "player_name": "Noah Cates",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "fanatics",
     "created_at": "2026-10-03T16:58:41.450620+00:00",
-    "updated_at": "2026-10-03T22:14:35.380400+00:00"
+    "updated_at": "2026-10-03T22:14:35.380400+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Tony DeAngelo_shop_take_104",
@@ -379551,7 +379650,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:41.513175+00:00",
     "price_source": "shop",
@@ -379559,14 +379658,15 @@
     "market": "anytime_goal",
     "player_name": "Tony DeAngelo",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:41.513175+00:00",
-    "updated_at": "2026-10-03T22:14:58.548038+00:00"
+    "updated_at": "2026-10-03T22:14:58.548038+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Mavrik Bourque_shop_lean_102",
@@ -379680,7 +379780,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:41.786288+00:00",
     "price_source": "shop",
@@ -379688,14 +379788,15 @@
     "market": "anytime_goal",
     "player_name": "Michael Amadio",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:41.786288+00:00",
-    "updated_at": "2026-10-03T22:15:04.161731+00:00"
+    "updated_at": "2026-10-03T22:15:04.161731+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Devon Toews_shop_take_96",
@@ -379723,7 +379824,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:41.940450+00:00",
     "price_source": "shop",
@@ -379731,14 +379832,15 @@
     "market": "anytime_goal",
     "player_name": "Devon Toews",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:41.940450+00:00",
-    "updated_at": "2026-10-03T16:58:41.940450+00:00"
+    "updated_at": "2026-10-03T16:58:41.940450+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Filip Hronek_shop_take_96",
@@ -379766,7 +379868,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:41.998665+00:00",
     "price_source": "shop",
@@ -379774,14 +379876,15 @@
     "market": "anytime_goal",
     "player_name": "Filip Hronek",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:41.998665+00:00",
-    "updated_at": "2026-10-03T16:58:41.998665+00:00"
+    "updated_at": "2026-10-03T16:58:41.998665+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Casey Mittelstadt_shop_take_95",
@@ -379815,7 +379918,7 @@
       "Lane C"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T00:24:31.669106+00:00",
     "price_source": "shop",
@@ -379823,14 +379926,15 @@
     "market": "anytime_goal",
     "player_name": "Casey Mittelstadt",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "fanatics",
     "created_at": "2026-10-03T16:58:42.061414+00:00",
-    "updated_at": "2026-10-04T00:24:31.669118+00:00"
+    "updated_at": "2026-10-04T00:24:31.669118+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Max Sasson_shop_take_95",
@@ -379858,7 +379962,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.121524+00:00",
     "price_source": "shop",
@@ -379866,14 +379970,15 @@
     "market": "anytime_goal",
     "player_name": "Max Sasson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:42.121524+00:00",
-    "updated_at": "2026-10-03T22:15:03.602951+00:00"
+    "updated_at": "2026-10-03T22:15:03.602951+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Joel Armia_shop_take_94",
@@ -379900,7 +380005,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.235456+00:00",
     "price_source": "shop",
@@ -379908,14 +380013,15 @@
     "market": "anytime_goal",
     "player_name": "Joel Armia",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:42.235456+00:00",
-    "updated_at": "2026-10-03T16:58:42.235456+00:00"
+    "updated_at": "2026-10-03T16:58:42.235456+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Brandt Clarke_shop_lean_91",
@@ -379995,7 +380101,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.336777+00:00",
     "price_source": "shop",
@@ -380003,14 +380109,15 @@
     "market": "anytime_goal",
     "player_name": "Vince Dunn",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:42.336777+00:00",
-    "updated_at": "2026-10-03T22:15:02.704509+00:00"
+    "updated_at": "2026-10-03T22:15:02.704509+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Eric Robinson_shop_take_90",
@@ -380038,7 +380145,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.394132+00:00",
     "price_source": "shop",
@@ -380046,14 +380153,15 @@
     "market": "anytime_goal",
     "player_name": "Eric Robinson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:42.394132+00:00",
-    "updated_at": "2026-10-03T22:15:02.357138+00:00"
+    "updated_at": "2026-10-03T22:15:02.357138+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Hampus Lindholm_shop_lean_89",
@@ -380129,7 +380237,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.488876+00:00",
     "price_source": "shop",
@@ -380137,14 +380245,15 @@
     "market": "anytime_goal",
     "player_name": "Dalibor Dvorsky",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:42.488876+00:00",
-    "updated_at": "2026-10-03T16:58:42.488876+00:00"
+    "updated_at": "2026-10-03T16:58:42.488876+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Bowen Byram_shop_take_85",
@@ -380167,7 +380276,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.580036+00:00",
     "price_source": "shop",
@@ -380175,14 +380284,15 @@
     "market": "anytime_goal",
     "player_name": "Bowen Byram",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-10-03T16:58:42.580036+00:00",
-    "updated_at": "2026-10-03T16:58:42.580036+00:00"
+    "updated_at": "2026-10-03T16:58:42.580036+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Marat Khusnutdinov_shop_take_85",
@@ -380210,7 +380320,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.623529+00:00",
     "price_source": "shop",
@@ -380218,14 +380328,15 @@
     "market": "anytime_goal",
     "player_name": "Marat Khusnutdinov",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:42.623529+00:00",
-    "updated_at": "2026-10-03T16:58:42.623529+00:00"
+    "updated_at": "2026-10-03T16:58:42.623529+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Michael Carcone_shop_take_85",
@@ -380253,7 +380364,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.676358+00:00",
     "price_source": "shop",
@@ -380261,14 +380372,15 @@
     "market": "anytime_goal",
     "player_name": "Michael Carcone",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:42.676358+00:00",
-    "updated_at": "2026-10-03T22:15:03.652210+00:00"
+    "updated_at": "2026-10-03T22:15:03.652210+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Dmitri Voronkov_shop_take_84",
@@ -380296,7 +380408,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.765694+00:00",
     "price_source": "shop",
@@ -380304,14 +380416,15 @@
     "market": "anytime_goal",
     "player_name": "Dmitri Voronkov",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:42.765694+00:00",
-    "updated_at": "2026-10-03T22:15:02.883066+00:00"
+    "updated_at": "2026-10-03T22:15:02.883066+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Maxim Tsyplakov_shop_take_84",
@@ -380347,7 +380460,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:29:10.536160+00:00",
     "price_source": "shop",
@@ -380355,14 +380468,15 @@
     "market": "anytime_goal",
     "player_name": "Maxim Tsyplakov",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:42.822245+00:00",
-    "updated_at": "2026-10-04T03:29:10.536170+00:00"
+    "updated_at": "2026-10-04T03:29:10.536170+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Lawson Crouse_shop_take_83",
@@ -380390,7 +380504,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.887325+00:00",
     "price_source": "shop",
@@ -380398,14 +380512,15 @@
     "market": "anytime_goal",
     "player_name": "Lawson Crouse",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:42.887325+00:00",
-    "updated_at": "2026-10-03T22:15:03.454635+00:00"
+    "updated_at": "2026-10-03T22:15:03.454635+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Andrei Kuzmenko_shop_take_81",
@@ -380433,7 +380548,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:42.934594+00:00",
     "price_source": "shop",
@@ -380441,14 +380556,15 @@
     "market": "anytime_goal",
     "player_name": "Andrei Kuzmenko",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:42.934594+00:00",
-    "updated_at": "2026-10-03T22:15:04.823031+00:00"
+    "updated_at": "2026-10-03T22:15:04.823031+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_John Marino_shop_lean_81",
@@ -380529,7 +380645,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:29:10.217590+00:00",
     "price_source": "shop",
@@ -380537,14 +380653,15 @@
     "market": "anytime_goal",
     "player_name": "Liam Ohgren",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 425,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:43.027492+00:00",
-    "updated_at": "2026-10-04T03:29:10.217604+00:00"
+    "updated_at": "2026-10-04T03:29:10.217604+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Casey Cizikas_shop_lean_80",
@@ -380622,7 +380739,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T00:24:31.779137+00:00",
     "price_source": "shop",
@@ -380630,14 +380747,15 @@
     "market": "anytime_goal",
     "player_name": "Jamie Benn",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:43.197788+00:00",
-    "updated_at": "2026-10-04T00:24:31.779152+00:00"
+    "updated_at": "2026-10-04T00:24:31.779152+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Trent Frederic_shop_lean_77",
@@ -380803,7 +380921,7 @@
       "Lane D"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:37:06.824581+00:00",
     "price_source": "shop",
@@ -380811,14 +380929,15 @@
     "market": "anytime_goal",
     "player_name": "Alexander Wennberg",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 450,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:43.756179+00:00",
-    "updated_at": "2026-10-04T03:37:06.824591+00:00"
+    "updated_at": "2026-10-04T03:37:06.824591+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Mathieu Olivier_shop_lean_70",
@@ -380990,7 +381109,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:43.992447+00:00",
     "price_source": "shop",
@@ -380998,14 +381117,15 @@
     "market": "anytime_goal",
     "player_name": "Emil Heineman",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 425,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:43.992447+00:00",
-    "updated_at": "2026-10-03T16:58:43.992447+00:00"
+    "updated_at": "2026-10-03T16:58:43.992447+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jamie Drysdale_shop_lean_66",
@@ -381076,7 +381196,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.095827+00:00",
     "price_source": "shop",
@@ -381084,14 +381204,15 @@
     "market": "anytime_goal",
     "player_name": "Jonathan Lekkerim\u00e4ki",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:44.095827+00:00",
-    "updated_at": "2026-10-03T22:15:03.752366+00:00"
+    "updated_at": "2026-10-03T22:15:03.752366+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Ryan McLeod_shop_take_62",
@@ -381119,7 +381240,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.393405+00:00",
     "price_source": "shop",
@@ -381127,14 +381248,15 @@
     "market": "anytime_goal",
     "player_name": "Ryan McLeod",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 425,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:44.393405+00:00",
-    "updated_at": "2026-10-03T16:58:44.393405+00:00"
+    "updated_at": "2026-10-03T16:58:44.393405+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Warren Foegele_shop_take_62",
@@ -381162,7 +381284,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.436295+00:00",
     "price_source": "shop",
@@ -381170,14 +381292,15 @@
     "market": "anytime_goal",
     "player_name": "Warren Foegele",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:44.436295+00:00",
-    "updated_at": "2026-10-03T22:15:04.870516+00:00"
+    "updated_at": "2026-10-03T22:15:04.870516+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Carter Yakemchuk_shop_lean_61",
@@ -381248,7 +381371,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.537192+00:00",
     "price_source": "shop",
@@ -381256,14 +381379,15 @@
     "market": "anytime_goal",
     "player_name": "Conor Garland",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 425,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:44.537192+00:00",
-    "updated_at": "2026-10-03T22:15:04.987711+00:00"
+    "updated_at": "2026-10-03T22:15:04.987711+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Leon Draisaitl_shop_take_59",
@@ -381291,7 +381415,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.672317+00:00",
     "price_source": "shop",
@@ -381299,14 +381423,15 @@
     "market": "anytime_goal",
     "player_name": "Leon Draisaitl",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 105,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:44.672317+00:00",
-    "updated_at": "2026-10-03T22:15:05.610849+00:00"
+    "updated_at": "2026-10-03T22:15:05.610849+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Alexander Kerfoot_shop_take_58",
@@ -381334,7 +381459,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.782081+00:00",
     "price_source": "shop",
@@ -381342,14 +381467,15 @@
     "market": "anytime_goal",
     "player_name": "Alexander Kerfoot",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:44.782081+00:00",
-    "updated_at": "2026-10-03T22:15:05.560460+00:00"
+    "updated_at": "2026-10-03T22:15:05.560460+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Quinn Hughes_shop_take_58",
@@ -381377,7 +381503,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.821379+00:00",
     "price_source": "shop",
@@ -381385,14 +381511,15 @@
     "market": "anytime_goal",
     "player_name": "Quinn Hughes",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:44.821379+00:00",
-    "updated_at": "2026-10-03T16:58:44.821379+00:00"
+    "updated_at": "2026-10-03T16:58:44.821379+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Alex Turcotte_shop_take_57",
@@ -381420,7 +381547,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:44.889466+00:00",
     "price_source": "shop",
@@ -381428,14 +381555,15 @@
     "market": "anytime_goal",
     "player_name": "Alex Turcotte",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:44.889466+00:00",
-    "updated_at": "2026-10-03T16:58:44.889466+00:00"
+    "updated_at": "2026-10-03T16:58:44.889466+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Bo Groulx_shop_lean_57",
@@ -381504,7 +381632,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:45.009716+00:00",
     "price_source": "shop",
@@ -381512,14 +381640,15 @@
     "market": "anytime_goal",
     "player_name": "Elias Lindholm",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 425,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:45.009716+00:00",
-    "updated_at": "2026-10-03T22:15:05.033284+00:00"
+    "updated_at": "2026-10-03T22:15:05.033284+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jiri Kulich_shop_take_57",
@@ -381547,7 +381676,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:45.119363+00:00",
     "price_source": "shop",
@@ -381555,14 +381684,15 @@
     "market": "anytime_goal",
     "player_name": "Jiri Kulich",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:45.119363+00:00",
-    "updated_at": "2026-10-03T16:58:45.119363+00:00"
+    "updated_at": "2026-10-03T16:58:45.119363+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Matt Boldy_shop_take_57",
@@ -381590,7 +381720,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:45.185950+00:00",
     "price_source": "shop",
@@ -381598,14 +381728,15 @@
     "market": "anytime_goal",
     "player_name": "Matt Boldy",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 145,
     "book": "draftkings",
     "created_at": "2026-10-03T16:58:45.185950+00:00",
-    "updated_at": "2026-10-03T22:15:05.813904+00:00"
+    "updated_at": "2026-10-03T22:15:05.813904+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Barrett Hayton_shop_take_56",
@@ -381633,7 +381764,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:45.256970+00:00",
     "price_source": "shop",
@@ -381641,14 +381772,15 @@
     "market": "anytime_goal",
     "player_name": "Barrett Hayton",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:45.256970+00:00",
-    "updated_at": "2026-10-03T16:58:45.256970+00:00"
+    "updated_at": "2026-10-03T16:58:45.256970+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Matias Maccelli_shop_take_56",
@@ -381676,7 +381808,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:45.345783+00:00",
     "price_source": "shop",
@@ -381684,14 +381816,15 @@
     "market": "anytime_goal",
     "player_name": "Matias Maccelli",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "hardrockbet",
     "created_at": "2026-10-03T16:58:45.345783+00:00",
-    "updated_at": "2026-10-03T22:15:05.506333+00:00"
+    "updated_at": "2026-10-03T22:15:05.506333+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Erik Karlsson_shop_take_55",
@@ -381719,7 +381852,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:45.412696+00:00",
     "price_source": "shop",
@@ -381727,14 +381860,15 @@
     "market": "anytime_goal",
     "player_name": "Erik Karlsson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:45.412696+00:00",
-    "updated_at": "2026-10-03T16:58:45.412696+00:00"
+    "updated_at": "2026-10-03T16:58:45.412696+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Roman Josi_shop_take_55",
@@ -381762,7 +381896,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T16:58:45.483697+00:00",
     "price_source": "shop",
@@ -381770,14 +381904,15 @@
     "market": "anytime_goal",
     "player_name": "Roman Josi",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T16:58:45.483697+00:00",
-    "updated_at": "2026-10-03T16:58:45.483697+00:00"
+    "updated_at": "2026-10-03T16:58:45.483697+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Christian Dvorak_shop_lean_53",
@@ -382548,7 +382683,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T17:01:38.394363+00:00",
     "price_source": "shop",
@@ -382556,14 +382691,15 @@
     "market": "batter_home_runs",
     "player_name": "Randal Grichuk",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "fanatics",
     "created_at": "2026-10-03T17:01:38.394363+00:00",
-    "updated_at": "2026-10-03T17:01:38.394363+00:00"
+    "updated_at": "2026-10-03T17:01:38.394363+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Brenen Thompson_watch_63",
@@ -383317,7 +383453,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-10-03T18:47:04.089534+00:00",
     "price_source": "shop",
@@ -383325,14 +383461,20 @@
     "market": "batter_home_runs",
     "player_name": "Teoscar Hern\u00e1ndez",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "HIT",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T18:47:04.089534+00:00",
-    "updated_at": "2026-10-03T18:54:59.565954+00:00"
+    "updated_at": "2026-10-03T18:54:59.565954+00:00",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-10-03",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-10-03"
   },
   {
     "id": "2026-10-03_Shohei Ohtani_shop_take_85",
@@ -383360,7 +383502,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T18:47:04.125572+00:00",
     "price_source": "shop",
@@ -383368,14 +383510,15 @@
     "market": "batter_home_runs",
     "player_name": "Shohei Ohtani",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 350,
     "book": "bet365",
     "created_at": "2026-10-03T18:47:04.125572+00:00",
-    "updated_at": "2026-10-03T18:54:59.629194+00:00"
+    "updated_at": "2026-10-03T18:54:59.629194+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Miguel Vargas_shop_lean_82",
@@ -383445,7 +383588,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-10-03T18:47:04.284825+00:00",
     "price_source": "shop",
@@ -383453,14 +383596,20 @@
     "market": "batter_home_runs",
     "player_name": "Ozzie Albies",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "HIT",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "hardrockbet",
     "created_at": "2026-10-03T18:47:04.284825+00:00",
-    "updated_at": "2026-10-03T18:54:59.688956+00:00"
+    "updated_at": "2026-10-03T18:54:59.688956+00:00",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-10-03",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-10-03"
   },
   {
     "id": "2026-10-03_Andy Pages_shop_take_75",
@@ -383488,7 +383637,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T18:47:04.331261+00:00",
     "price_source": "shop",
@@ -383496,14 +383645,15 @@
     "market": "batter_home_runs",
     "player_name": "Andy Pages",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "hardrockbet",
     "created_at": "2026-10-03T18:47:04.331261+00:00",
-    "updated_at": "2026-10-03T18:54:59.829996+00:00"
+    "updated_at": "2026-10-03T18:54:59.829996+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Junior Caminero_shop_lean_46",
@@ -384464,7 +384614,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:01.782171+00:00",
     "price_source": "shop",
@@ -384472,14 +384622,15 @@
     "market": "batter_home_runs",
     "player_name": "Ben Rice",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-03T22:14:01.782171+00:00",
-    "updated_at": "2026-10-03T22:29:54.552191+00:00"
+    "updated_at": "2026-10-03T22:29:54.552191+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Trent Grisham_shop_lean_109",
@@ -384593,7 +384744,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:02.075393+00:00",
     "price_source": "shop",
@@ -384601,14 +384752,15 @@
     "market": "batter_home_runs",
     "player_name": "Cody Bellinger",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T22:14:02.075393+00:00",
-    "updated_at": "2026-10-03T22:29:54.762816+00:00"
+    "updated_at": "2026-10-03T22:29:54.762816+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Alec Ingold_watch_45",
@@ -387534,7 +387686,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:57.726849+00:00",
     "price_source": "shop",
@@ -387542,14 +387694,15 @@
     "market": "anytime_goal",
     "player_name": "Ondrej Palat",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-03T22:14:57.726849+00:00",
-    "updated_at": "2026-10-03T22:14:57.726849+00:00"
+    "updated_at": "2026-10-03T22:14:57.726849+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Beck Malenstyn_shop_lean_210",
@@ -387620,7 +387773,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:57.964242+00:00",
     "price_source": "shop",
@@ -387628,14 +387781,15 @@
     "market": "anytime_goal",
     "player_name": "Jack Drury",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-10-03T22:14:57.964242+00:00",
-    "updated_at": "2026-10-03T22:14:57.964242+00:00"
+    "updated_at": "2026-10-03T22:14:57.964242+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jonatan Berggren_shop_lean_201",
@@ -387706,7 +387860,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:58.612994+00:00",
     "price_source": "shop",
@@ -387714,14 +387868,15 @@
     "market": "anytime_goal",
     "player_name": "Carl Grundstrom",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-03T22:14:58.612994+00:00",
-    "updated_at": "2026-10-03T22:14:58.612994+00:00"
+    "updated_at": "2026-10-03T22:14:58.612994+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Colton Sissons_shop_take_178",
@@ -387749,7 +387904,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:58.660120+00:00",
     "price_source": "shop",
@@ -387757,14 +387912,15 @@
     "market": "anytime_goal",
     "player_name": "Colton Sissons",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T22:14:58.660120+00:00",
-    "updated_at": "2026-10-03T22:14:58.660120+00:00"
+    "updated_at": "2026-10-03T22:14:58.660120+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Sam Malinski_shop_take_177",
@@ -387790,7 +387946,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:58.750158+00:00",
     "price_source": "shop",
@@ -387798,14 +387954,15 @@
     "market": "anytime_goal",
     "player_name": "Sam Malinski",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "fanduel",
     "created_at": "2026-10-03T22:14:58.750158+00:00",
-    "updated_at": "2026-10-03T22:14:58.750158+00:00"
+    "updated_at": "2026-10-03T22:14:58.750158+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Brent Burns_shop_take_176",
@@ -387831,7 +387988,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:58.799314+00:00",
     "price_source": "shop",
@@ -387840,13 +387997,14 @@
     "updated_at": "2026-10-03T22:14:58.842395+00:00",
     "player_name": "Brent Burns",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "draftkings",
-    "created_at": "2026-10-03T22:14:58.799314+00:00"
+    "created_at": "2026-10-03T22:14:58.799314+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Dmitry Orlov_shop_take_167",
@@ -387874,7 +388032,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:59.023526+00:00",
     "price_source": "shop",
@@ -387882,14 +388040,15 @@
     "market": "anytime_goal",
     "player_name": "Dmitry Orlov",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T22:14:59.023526+00:00",
-    "updated_at": "2026-10-03T22:14:59.023526+00:00"
+    "updated_at": "2026-10-03T22:14:59.023526+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Colin Blackwell_shop_lean_166",
@@ -387955,7 +388114,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:59.270454+00:00",
     "price_source": "shop",
@@ -387963,14 +388122,15 @@
     "market": "anytime_goal",
     "player_name": "Cam Fowler",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-10-03T22:14:59.270454+00:00",
-    "updated_at": "2026-10-03T22:14:59.270454+00:00"
+    "updated_at": "2026-10-03T22:14:59.270454+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Joel Kiviranta_shop_take_159",
@@ -387997,7 +388157,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:59.314724+00:00",
     "price_source": "shop",
@@ -388005,14 +388165,15 @@
     "market": "anytime_goal",
     "player_name": "Joel Kiviranta",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-03T22:14:59.314724+00:00",
-    "updated_at": "2026-10-03T22:14:59.314724+00:00"
+    "updated_at": "2026-10-03T22:14:59.314724+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Zack Bolduc_shop_lean_158",
@@ -388124,7 +388285,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:14:59.998179+00:00",
     "price_source": "shop",
@@ -388132,14 +388293,15 @@
     "market": "anytime_goal",
     "player_name": "Pius Suter",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T22:14:59.998179+00:00",
-    "updated_at": "2026-10-03T22:14:59.998179+00:00"
+    "updated_at": "2026-10-03T22:14:59.998179+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jared Spurgeon_shop_take_141",
@@ -388167,7 +388329,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:00.037717+00:00",
     "price_source": "shop",
@@ -388175,14 +388337,15 @@
     "market": "anytime_goal",
     "player_name": "Jared Spurgeon",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-03T22:15:00.037717+00:00",
-    "updated_at": "2026-10-03T22:15:00.037717+00:00"
+    "updated_at": "2026-10-03T22:15:00.037717+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Noah Cates_shop_lean_118",
@@ -388251,7 +388414,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:01.478124+00:00",
     "price_source": "shop",
@@ -388259,14 +388422,15 @@
     "market": "anytime_goal",
     "player_name": "Ben Meyers",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T22:15:01.478124+00:00",
-    "updated_at": "2026-10-03T22:15:01.478124+00:00"
+    "updated_at": "2026-10-03T22:15:01.478124+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jake Evans_shop_take_112",
@@ -388294,7 +388458,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:01.634916+00:00",
     "price_source": "shop",
@@ -388302,14 +388466,15 @@
     "market": "anytime_goal",
     "player_name": "Jake Evans",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-03T22:15:01.634916+00:00",
-    "updated_at": "2026-10-03T22:15:01.634916+00:00"
+    "updated_at": "2026-10-03T22:15:01.634916+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Cody Glass_shop_take_109",
@@ -388337,7 +388502,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:01.867837+00:00",
     "price_source": "shop",
@@ -388345,14 +388510,15 @@
     "market": "anytime_goal",
     "player_name": "Cody Glass",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-03T22:15:01.867837+00:00",
-    "updated_at": "2026-10-03T22:15:01.867837+00:00"
+    "updated_at": "2026-10-03T22:15:01.867837+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jordan Martinook_shop_take_107",
@@ -388380,7 +388546,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:01.916519+00:00",
     "price_source": "shop",
@@ -388388,14 +388554,15 @@
     "market": "anytime_goal",
     "player_name": "Jordan Martinook",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 625,
     "book": "bet365",
     "created_at": "2026-10-03T22:15:01.916519+00:00",
-    "updated_at": "2026-10-03T22:15:01.916519+00:00"
+    "updated_at": "2026-10-03T22:15:01.916519+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Conor Geekie_shop_lean_104",
@@ -388509,7 +388676,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:02.219704+00:00",
     "price_source": "shop",
@@ -388517,14 +388684,15 @@
     "market": "anytime_goal",
     "player_name": "Erik Haula",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-03T22:15:02.219704+00:00",
-    "updated_at": "2026-10-03T22:15:02.219704+00:00"
+    "updated_at": "2026-10-03T22:15:02.219704+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Isaac Howard_shop_take_98",
@@ -388552,7 +388720,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:02.406790+00:00",
     "price_source": "shop",
@@ -388560,14 +388728,15 @@
     "market": "anytime_goal",
     "player_name": "Isaac Howard",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "hardrockbet",
     "created_at": "2026-10-03T22:15:02.406790+00:00",
-    "updated_at": "2026-10-03T22:15:02.406790+00:00"
+    "updated_at": "2026-10-03T22:15:02.406790+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Adam Klapka_shop_take_95",
@@ -388595,7 +388764,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:02.581335+00:00",
     "price_source": "shop",
@@ -388603,14 +388772,15 @@
     "market": "anytime_goal",
     "player_name": "Adam Klapka",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-03T22:15:02.581335+00:00",
-    "updated_at": "2026-10-03T22:15:02.581335+00:00"
+    "updated_at": "2026-10-03T22:15:02.581335+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Peyton Krebs_shop_take_87",
@@ -388638,7 +388808,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:03.059201+00:00",
     "price_source": "shop",
@@ -388646,14 +388816,15 @@
     "market": "anytime_goal",
     "player_name": "Peyton Krebs",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-03T22:15:03.059201+00:00",
-    "updated_at": "2026-10-03T22:15:03.059201+00:00"
+    "updated_at": "2026-10-03T22:15:03.059201+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Simon Nemec_shop_take_84",
@@ -388681,7 +388852,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:03.105441+00:00",
     "price_source": "shop",
@@ -388689,14 +388860,15 @@
     "market": "anytime_goal",
     "player_name": "Simon Nemec",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-03T22:15:03.105441+00:00",
-    "updated_at": "2026-10-03T22:15:03.105441+00:00"
+    "updated_at": "2026-10-03T22:15:03.105441+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Brandt Clarke_shop_take_80",
@@ -388724,7 +388896,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:03.238517+00:00",
     "price_source": "shop",
@@ -388732,14 +388904,15 @@
     "market": "anytime_goal",
     "player_name": "Brandt Clarke",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-03T22:15:03.238517+00:00",
-    "updated_at": "2026-10-03T22:15:03.238517+00:00"
+    "updated_at": "2026-10-03T22:15:03.238517+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Drew O'Connor_shop_lean_80",
@@ -388809,7 +388982,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:03.345689+00:00",
     "price_source": "shop",
@@ -388817,14 +388990,15 @@
     "market": "anytime_goal",
     "player_name": "Kirby Dach",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-03T22:15:03.345689+00:00",
-    "updated_at": "2026-10-03T22:15:03.345689+00:00"
+    "updated_at": "2026-10-03T22:15:03.345689+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Fedor Svechkov_shop_take_79",
@@ -388850,7 +389024,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:03.403007+00:00",
     "price_source": "shop",
@@ -388858,14 +389032,15 @@
     "market": "anytime_goal",
     "player_name": "Fedor Svechkov",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-10-03T22:15:03.403007+00:00",
-    "updated_at": "2026-10-03T22:15:03.403007+00:00"
+    "updated_at": "2026-10-03T22:15:03.403007+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Phillip Danault_shop_take_76",
@@ -388893,7 +389068,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:03.703990+00:00",
     "price_source": "shop",
@@ -388901,14 +389076,15 @@
     "market": "anytime_goal",
     "player_name": "Phillip Danault",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-03T22:15:03.703990+00:00",
-    "updated_at": "2026-10-03T22:15:03.703990+00:00"
+    "updated_at": "2026-10-03T22:15:03.703990+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Brandon Montour_shop_take_72",
@@ -388936,7 +389112,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:04.063788+00:00",
     "price_source": "shop",
@@ -388944,14 +389120,15 @@
     "market": "anytime_goal",
     "player_name": "Brandon Montour",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-03T22:15:04.063788+00:00",
-    "updated_at": "2026-10-03T22:15:04.063788+00:00"
+    "updated_at": "2026-10-03T22:15:04.063788+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Aatu R\u00e4ty_shop_take_70",
@@ -388979,7 +389156,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:04.333461+00:00",
     "price_source": "shop",
@@ -388987,14 +389164,15 @@
     "market": "anytime_goal",
     "player_name": "Aatu R\u00e4ty",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-03T22:15:04.333461+00:00",
-    "updated_at": "2026-10-03T22:15:04.333461+00:00"
+    "updated_at": "2026-10-03T22:15:04.333461+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jordan Spence_shop_lean_68",
@@ -389065,7 +389243,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:04.924699+00:00",
     "price_source": "shop",
@@ -389073,14 +389251,15 @@
     "market": "anytime_goal",
     "player_name": "Alex Bump",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 470,
     "book": "fanduel",
     "created_at": "2026-10-03T22:15:04.924699+00:00",
-    "updated_at": "2026-10-03T22:15:04.924699+00:00"
+    "updated_at": "2026-10-03T22:15:04.924699+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Nick Lardis_shop_take_62",
@@ -389108,7 +389287,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:15:05.103254+00:00",
     "price_source": "shop",
@@ -389116,14 +389295,15 @@
     "market": "anytime_goal",
     "player_name": "Nick Lardis",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "hardrockbet",
     "created_at": "2026-10-03T22:15:05.103254+00:00",
-    "updated_at": "2026-10-03T22:15:05.103254+00:00"
+    "updated_at": "2026-10-03T22:15:05.103254+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Roman Josi_shop_lean_54",
@@ -389447,7 +389627,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:22:01.928515+00:00",
     "price_source": "shop",
@@ -389455,14 +389635,15 @@
     "market": "batter_home_runs",
     "player_name": "Junior Caminero",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 375,
     "book": "bet365",
     "created_at": "2026-10-03T22:22:01.928515+00:00",
-    "updated_at": "2026-10-03T22:29:55.305643+00:00"
+    "updated_at": "2026-10-03T22:29:55.305643+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Ha-Seong Kim_watch_15",
@@ -389605,7 +389786,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-03T22:29:54.809116+00:00",
     "price_source": "shop",
@@ -389613,14 +389794,15 @@
     "market": "batter_home_runs",
     "player_name": "George Lombard Jr.",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 910,
     "book": "draftkings",
     "created_at": "2026-10-03T22:29:54.809116+00:00",
-    "updated_at": "2026-10-03T22:29:54.809116+00:00"
+    "updated_at": "2026-10-03T22:29:54.809116+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_Anthony Mantha_watch_38",
@@ -390731,7 +390913,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:18:14.452388+00:00",
     "price_source": "shop",
@@ -390739,14 +390921,15 @@
     "market": "batter_home_runs",
     "player_name": "Christian Yelich",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-10-04T01:18:14.452388+00:00",
-    "updated_at": "2026-10-04T01:18:14.452388+00:00"
+    "updated_at": "2026-10-04T01:18:14.452388+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-03_William Contreras_shop_take_74",
@@ -390774,7 +390957,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:18:14.505087+00:00",
     "price_source": "shop",
@@ -390782,14 +390965,20 @@
     "market": "batter_home_runs",
     "player_name": "William Contreras",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "HIT",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-04T01:18:14.505087+00:00",
-    "updated_at": "2026-10-04T01:18:14.505087+00:00"
+    "updated_at": "2026-10-04T01:18:14.505087+00:00",
+    "graded_by": "mlb_auto",
+    "graded_date": "2026-10-03",
+    "hit_why": [
+      "Shop TAKE"
+    ],
+    "hit_when": "2026-10-03"
   },
   {
     "id": "2026-10-03_Jack Hughes_watch_54",
@@ -391650,7 +391839,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:18:44.198727+00:00",
     "price_source": "shop",
@@ -391658,14 +391847,15 @@
     "market": "anytime_goal",
     "player_name": "Martin Pospisil",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-04T01:18:44.198727+00:00",
-    "updated_at": "2026-10-04T01:18:44.198727+00:00"
+    "updated_at": "2026-10-04T01:18:44.198727+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Tom Willander_shop_take_119",
@@ -391693,7 +391883,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:18:44.310950+00:00",
     "price_source": "shop",
@@ -391701,14 +391891,15 @@
     "market": "anytime_goal",
     "player_name": "Tom Willander",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-04T01:18:44.310950+00:00",
-    "updated_at": "2026-10-04T01:18:44.310950+00:00"
+    "updated_at": "2026-10-04T01:18:44.310950+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Erik Gustafsson_shop_lean_118",
@@ -391813,7 +392004,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:18:44.637617+00:00",
     "price_source": "shop",
@@ -391821,14 +392012,15 @@
     "market": "anytime_goal",
     "player_name": "Jack Hughes",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-04T01:18:44.637617+00:00",
-    "updated_at": "2026-10-04T01:18:44.637617+00:00"
+    "updated_at": "2026-10-04T01:18:44.637617+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Jordan Eberle_shop_take_102",
@@ -391852,7 +392044,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T01:18:44.774140+00:00",
     "price_source": "shop",
@@ -391860,14 +392052,15 @@
     "market": "anytime_goal",
     "player_name": "Jordan Eberle",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "fanduel",
     "created_at": "2026-10-04T01:18:44.774140+00:00",
-    "updated_at": "2026-10-04T01:18:44.774140+00:00"
+    "updated_at": "2026-10-04T01:18:44.774140+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Nick Robertson_shop_lean_102",
@@ -392961,7 +393154,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:29:15.345197+00:00",
     "price_source": "shop",
@@ -392969,14 +393162,15 @@
     "market": "anytime_goal",
     "player_name": "Nathan MacKinnon",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 950,
     "book": "fanduel",
     "created_at": "2026-10-04T03:29:15.345197+00:00",
-    "updated_at": "2026-10-04T03:29:15.345197+00:00"
+    "updated_at": "2026-10-04T03:29:15.345197+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Max Sasson_shop_lean_68",
@@ -393847,7 +394041,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:37:12.338354+00:00",
     "price_source": "shop",
@@ -393855,14 +394049,15 @@
     "market": "anytime_goal",
     "player_name": "Linus Karlsson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-10-04T03:37:12.338354+00:00",
-    "updated_at": "2026-10-04T03:37:12.338354+00:00"
+    "updated_at": "2026-10-04T03:37:12.338354+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Yegor Sharangovich_shop_take_77",
@@ -393886,7 +394081,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:37:12.392502+00:00",
     "price_source": "shop",
@@ -393894,14 +394089,15 @@
     "market": "anytime_goal",
     "player_name": "Yegor Sharangovich",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-10-04T03:37:12.392502+00:00",
-    "updated_at": "2026-10-04T03:37:12.392502+00:00"
+    "updated_at": "2026-10-04T03:37:12.392502+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Elias Pettersson_shop_take_72",
@@ -393925,7 +394121,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T03:37:12.437307+00:00",
     "price_source": "shop",
@@ -393933,14 +394129,15 @@
     "market": "anytime_goal",
     "player_name": "Elias Pettersson",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-04T03:37:12.437307+00:00",
-    "updated_at": "2026-10-04T03:37:12.437307+00:00"
+    "updated_at": "2026-10-04T03:37:12.437307+00:00",
+    "graded_by": "mlb_auto_stale"
   },
   {
     "id": "2026-10-03_Ivar Stenberg_shop_lean_52",
@@ -414088,7 +414285,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T17:34:22.010489+00:00",
     "price_source": "pregame_lock",
@@ -414099,7 +414296,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "player_name": "Xander Bogaerts",
     "stamps": [
       "Match 25",
@@ -414117,7 +414314,8 @@
     "price": 840,
     "book": "draftkings",
     "created_at": "2026-10-04T17:34:22.010489+00:00",
-    "updated_at": "2026-10-04T17:34:22.010489+00:00"
+    "updated_at": "2026-10-04T17:34:22.010489+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-04_Andy Pages_watch_79",
@@ -414695,7 +414893,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T17:34:29.732513+00:00",
     "price_source": "shop",
@@ -414703,14 +414901,15 @@
     "market": "batter_home_runs",
     "player_name": "Lane Thomas",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-04T17:34:29.732513+00:00",
-    "updated_at": "2026-10-04T17:34:29.732513+00:00"
+    "updated_at": "2026-10-04T17:34:29.732513+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-04_Fernando Tatis Jr._shop_take_82",
@@ -414738,7 +414937,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T17:34:29.873785+00:00",
     "price_source": "shop",
@@ -414746,14 +414945,15 @@
     "market": "batter_home_runs",
     "player_name": "Fernando Tatis Jr.",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-04T17:34:29.873785+00:00",
-    "updated_at": "2026-10-04T17:34:29.873785+00:00"
+    "updated_at": "2026-10-04T17:34:29.873785+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-04_Christian Yelich_shop_lean_60",
@@ -425272,7 +425472,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-04T22:16:10.287487+00:00",
     "price_source": "pregame_lock",
@@ -425283,7 +425483,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:16:10.287503+00:00",
     "player_name": "Drake Baldwin",
     "stamps": [
@@ -425300,7 +425500,8 @@
     ],
     "price": 700,
     "book": "caesars",
-    "created_at": "2026-10-04T22:00:15.599812+00:00"
+    "created_at": "2026-10-04T22:00:15.599812+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-04_Mauricio Dub\u00f3n_watch_44",
@@ -425455,7 +425656,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T22:00:26.760267+00:00",
     "price_source": "shop",
@@ -425463,14 +425664,15 @@
     "market": "batter_home_runs",
     "player_name": "Teoscar Hern\u00e1ndez",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-04T22:00:26.760267+00:00",
-    "updated_at": "2026-10-04T22:16:17.391373+00:00"
+    "updated_at": "2026-10-04T22:16:17.391373+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-04_Mookie Betts_shop_take_100",
@@ -425498,7 +425700,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "shop_take",
     "logged_at": "2026-10-04T22:00:26.983022+00:00",
     "price_source": "shop",
@@ -425506,14 +425708,15 @@
     "market": "batter_home_runs",
     "player_name": "Mookie Betts",
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-04T22:00:26.983022+00:00",
-    "updated_at": "2026-10-04T22:16:17.464589+00:00"
+    "updated_at": "2026-10-04T22:16:17.464589+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-04_Drake Baldwin_shop_lean_47",
@@ -426095,7 +426298,7 @@
       "Stayed in the group"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "MISS",
     "source": "take_it",
     "logged_at": "2026-10-05T19:32:17.190783+00:00",
     "price_source": "pregame_lock",
@@ -426106,7 +426309,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-05T19:32:17.190795+00:00",
     "player_name": "Munetaka Murakami",
     "stamps": [
@@ -426123,7 +426326,8 @@
     ],
     "price": 500,
     "book": "draftkings",
-    "created_at": "2026-10-05T19:24:16.877449+00:00"
+    "created_at": "2026-10-05T19:24:16.877449+00:00",
+    "graded_by": "mlb_auto"
   },
   {
     "id": "2026-10-05_Angel Mart\u00ednez_watch_98",
