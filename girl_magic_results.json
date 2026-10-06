@@ -436892,7 +436892,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:15.458524+00:00",
+    "updated_at": "2026-10-06T23:16:21.535996+00:00",
     "player_name": "Brice Turang",
     "stamps": [
       "Match 00",
@@ -436961,7 +436961,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:16.094271+00:00",
+    "updated_at": "2026-10-06T23:16:21.250917+00:00",
     "player_name": "Christian Yelich",
     "stamps": [
       "Match 00",
@@ -437029,7 +437029,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:16.013286+00:00",
+    "updated_at": "2026-10-06T23:16:21.057953+00:00",
     "player_name": "Garrett Mitchell",
     "stamps": [
       "MGM 25",
@@ -437099,7 +437099,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:15.889869+00:00",
+    "updated_at": "2026-10-06T23:16:21.495712+00:00",
     "player_name": "Jackson Merrill",
     "stamps": [
       "MGM 25",
@@ -437380,7 +437380,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:15.851422+00:00",
+    "updated_at": "2026-10-06T23:16:21.288042+00:00",
     "player_name": "William Contreras",
     "stamps": [
       "MGM 25",
@@ -437542,7 +437542,7 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-06T23:00:03.953428+00:00",
-    "updated_at": "2026-10-06T23:16:02.100001+00:00"
+    "updated_at": "2026-10-06T23:16:21.097183+00:00"
   },
   {
     "id": "2026-10-06_Ronald Acu\u00f1a Jr._shop_take_92",
@@ -437594,7 +437594,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.018082+00:00",
-    "updated_at": "2026-10-06T23:16:02.265201+00:00"
+    "updated_at": "2026-10-06T23:16:21.328113+00:00"
   },
   {
     "id": "2026-10-06_Drake Baldwin_shop_take_84",
@@ -437679,7 +437679,7 @@
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-06T23:00:04.223244+00:00",
-    "updated_at": "2026-10-06T23:16:02.056728+00:00"
+    "updated_at": "2026-10-06T23:16:21.019645+00:00"
   },
   {
     "id": "2026-10-06_Austin Riley_shop_lean_73",
@@ -437733,7 +437733,7 @@
   {
     "id": "2026-10-06_Shohei Ohtani_shop_lean_68",
     "date": "2026-10-06",
-    "time": "04:15 PM",
+    "time": "04:16 PM",
     "player": "Shohei Ohtani",
     "score": 0,
     "edge": 68,
@@ -437777,7 +437777,7 @@
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-06T23:00:04.425504+00:00",
-    "updated_at": "2026-10-06T23:15:56.175505+00:00"
+    "updated_at": "2026-10-06T23:16:21.413169+00:00"
   },
   {
     "id": "2026-10-06_Will Smith_shop_lean_68",
@@ -437823,7 +437823,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-06T23:00:04.496111+00:00",
-    "updated_at": "2026-10-06T23:16:02.346487+00:00"
+    "updated_at": "2026-10-06T23:16:21.135507+00:00"
   },
   {
     "id": "2026-10-06_Matt Olson_shop_lean_66",
@@ -437958,7 +437958,7 @@
     "price": 500,
     "book": "fanatics",
     "created_at": "2026-10-06T23:00:04.681091+00:00",
-    "updated_at": "2026-10-06T23:16:02.469272+00:00"
+    "updated_at": "2026-10-06T23:16:21.453277+00:00"
   },
   {
     "id": "2026-10-06_Cooper Pratt_watch_61",
@@ -438445,7 +438445,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:02.429687+00:00",
+    "updated_at": "2026-10-06T23:16:21.368174+00:00",
     "player_name": "Xander Bogaerts",
     "stamps": [
       "Rivers short vs pack",
@@ -438634,7 +438634,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-06T23:16:02.306492+00:00",
+    "updated_at": "2026-10-06T23:16:21.175187+00:00",
     "player_name": "Kyle Tucker",
     "stamps": [
       "Multi-book Shorten",
@@ -438753,6 +438753,48 @@
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-06T23:16:02.182389+00:00",
-    "updated_at": "2026-10-06T23:16:02.182389+00:00"
+    "updated_at": "2026-10-06T23:16:21.213147+00:00"
+  },
+  {
+    "id": "2026-10-06_Andy Pages_shop_lean_148",
+    "date": "2026-10-06",
+    "time": "04:16 PM",
+    "player": "Andy Pages",
+    "score": 0,
+    "edge": 148,
+    "best_price": 900,
+    "best_book": "draftkings",
+    "median": 750,
+    "book_prices": {
+      "bet365": 850,
+      "betrivers": 1050,
+      "caesars": 700,
+      "draftkings": 900,
+      "fanatics": 650,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-06T23:16:20.980561+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "Andy Pages",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 900,
+    "book": "draftkings",
+    "created_at": "2026-10-06T23:16:20.980561+00:00",
+    "updated_at": "2026-10-06T23:16:20.980561+00:00"
   }
 ]
