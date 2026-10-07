@@ -442320,7 +442320,7 @@
   {
     "id": "2026-10-07_Dylan Strome_take_it_69",
     "date": "2026-10-07",
-    "time": "11:10 AM",
+    "time": "02:00 PM",
     "player": "Dylan Strome",
     "score": 69,
     "edge": 30,
@@ -442349,12 +442349,13 @@
       "Kelly Support",
       "Lane A",
       "DK Best",
-      "B365 a bit over FD"
+      "B365 a bit over FD",
+      "Rivers a bit over pack"
     ],
     "core": 4,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-10-07T18:10:51.205841+00:00",
+    "logged_at": "2026-10-07T21:00:46.735244+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "WASHINGTON CAPITALS NHL",
@@ -442364,7 +442365,7 @@
     "benford_cluster": 0.57,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-10-07T18:10:51.205852+00:00",
+    "updated_at": "2026-10-07T21:00:46.735253+00:00",
     "player_name": "Dylan Strome",
     "stamps": [
       "FD 90",
@@ -442512,7 +442513,7 @@
   {
     "id": "2026-10-07_Brad Lambert_watch_58",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Brad Lambert",
     "score": 58,
     "edge": 124,
@@ -442547,7 +442548,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T19:26:14.321468+00:00",
+    "logged_at": "2026-10-07T21:00:46.598527+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "WINNIPEG JETS NHL",
@@ -442557,7 +442558,7 @@
     "benford_cluster": 0.29,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:26:14.321480+00:00",
+    "updated_at": "2026-10-07T21:00:46.598543+00:00",
     "player_name": "Brad Lambert",
     "stamps": [
       "HardRock 50",
@@ -442700,7 +442701,7 @@
   {
     "id": "2026-10-07_Isaac Howard_watch_25",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Isaac Howard",
     "score": 25,
     "edge": 23,
@@ -442736,12 +442737,13 @@
       "FD Pattern",
       "FD a little long",
       "Multi-book method",
-      "FD+MGM classic"
+      "FD+MGM classic",
+      "B365 a bit over FD"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-10-07T19:26:13.438296+00:00",
+    "logged_at": "2026-10-07T21:00:45.564848+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "EDMONTON OILERS NHL",
@@ -442751,7 +442753,7 @@
     "benford_cluster": 1.0,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:26:13.438309+00:00",
+    "updated_at": "2026-10-07T21:00:45.564882+00:00",
     "player_name": "Isaac Howard",
     "stamps": [
       "B365 over HardRock",
@@ -442771,7 +442773,7 @@
   {
     "id": "2026-10-07_Isak Rosen_watch_52",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Isak Rosen",
     "score": 52,
     "edge": 95,
@@ -442807,7 +442809,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T19:26:14.412213+00:00",
+    "logged_at": "2026-10-07T21:00:46.819180+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "WINNIPEG JETS NHL",
@@ -442817,7 +442819,7 @@
     "benford_cluster": 0.57,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:26:14.412224+00:00",
+    "updated_at": "2026-10-07T21:00:46.819203+00:00",
     "player_name": "Isak Rosen",
     "stamps": [
       "B365 over HardRock",
@@ -443033,7 +443035,7 @@
   {
     "id": "2026-10-07_Mathieu Joseph_watch_74",
     "date": "2026-10-07",
-    "time": "11:10 AM",
+    "time": "02:00 PM",
     "player": "Mathieu Joseph",
     "score": 74,
     "edge": 152,
@@ -443066,12 +443068,14 @@
       "Stayed in the group",
       "HardRock 00",
       "DK Best",
-      "Multi-book Shorten"
+      "Multi-book Shorten",
+      "Multi-book method",
+      "FD 50"
     ],
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T18:10:50.711953+00:00",
+    "logged_at": "2026-10-07T21:00:46.347355+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "EDMONTON OILERS NHL",
@@ -443081,7 +443085,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T18:10:57.669178+00:00",
+    "updated_at": "2026-10-07T21:00:46.347367+00:00",
     "player_name": "Mathieu Joseph",
     "stamps": [
       "B365 over HardRock",
@@ -443101,7 +443105,7 @@
   {
     "id": "2026-10-07_Nikita Nesterenko_watch_47",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Nikita Nesterenko",
     "score": 47,
     "edge": 98,
@@ -443137,7 +443141,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T19:26:14.174183+00:00",
+    "logged_at": "2026-10-07T21:00:46.504466+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "ANAHEIM DUCKS NHL",
@@ -443147,7 +443151,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:26:20.129980+00:00",
+    "updated_at": "2026-10-07T21:00:46.504478+00:00",
     "player_name": "Nikita Nesterenko",
     "stamps": [
       "Match 00",
@@ -443509,7 +443513,7 @@
   {
     "id": "2026-10-07_Ilya Protas_watch_56",
     "date": "2026-10-07",
-    "time": "10:45 AM",
+    "time": "02:00 PM",
     "player": "Ilya Protas",
     "score": 56,
     "edge": 65,
@@ -443537,12 +443541,13 @@
       "HardRock 00",
       "EV Premium",
       "Kelly Support",
-      "Lane B"
+      "Lane B",
+      "Kelly Premium"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T17:28:55.865265+00:00",
+    "logged_at": "2026-10-07T21:00:46.647277+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "WASHINGTON CAPITALS NHL",
@@ -443552,7 +443557,7 @@
     "benford_cluster": 0.71,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T17:45:02.290839+00:00",
+    "updated_at": "2026-10-07T21:00:46.647289+00:00",
     "player_name": "Ilya Protas",
     "stamps": [
       "FD 90",
@@ -443852,7 +443857,7 @@
   {
     "id": "2026-10-07_Parker Kelly_shop_lean_109",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Parker Kelly",
     "score": 0,
     "edge": 109,
@@ -443877,12 +443882,13 @@
       "HardRock 00",
       "EV Premium",
       "Kelly Support",
-      "Lane C"
+      "Lane C",
+      "FD Best"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-07T19:26:14.368083+00:00",
+    "logged_at": "2026-10-07T21:00:46.688425+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -443895,12 +443901,12 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-07T17:29:01.619491+00:00",
-    "updated_at": "2026-10-07T19:26:14.368094+00:00"
+    "updated_at": "2026-10-07T21:00:46.688436+00:00"
   },
   {
     "id": "2026-10-07_Morgan Barron_shop_lean_106",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Morgan Barron",
     "score": 0,
     "edge": 106,
@@ -443919,12 +443925,19 @@
     "price_bucket": "+800-999",
     "ending": 0,
     "methods": [
-      "Shop LEAN"
+      "Shop LEAN",
+      "B365 over HardRock",
+      "FD 50",
+      "HardRock 50",
+      "EV Premium",
+      "Kelly Support",
+      "Lane D",
+      "FD Best"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-07T17:29:01.664413+00:00",
+    "logged_at": "2026-10-07T21:00:46.403537+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -443937,7 +443950,7 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-10-07T17:29:01.664413+00:00",
-    "updated_at": "2026-10-07T19:26:19.946597+00:00"
+    "updated_at": "2026-10-07T21:00:46.403547+00:00"
   },
   {
     "id": "2026-10-07_Boone Jenner_shop_take_88",
@@ -444111,7 +444124,7 @@
   {
     "id": "2026-10-07_Justin Sourdif_shop_lean_73",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Justin Sourdif",
     "score": 0,
     "edge": 73,
@@ -444130,12 +444143,19 @@
     "price_bucket": "+600s",
     "ending": 0,
     "methods": [
-      "Shop LEAN"
+      "Shop LEAN",
+      "B365 over HardRock",
+      "B365 a bit over FD",
+      "HardRock 50",
+      "FD 50",
+      "EV Premium",
+      "Kelly Support",
+      "Lane C"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-07T17:29:01.897618+00:00",
+    "logged_at": "2026-10-07T21:00:46.777748+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -444148,7 +444168,7 @@
     "price": 600,
     "book": "fanduel",
     "created_at": "2026-10-07T17:29:01.897618+00:00",
-    "updated_at": "2026-10-07T19:26:20.719165+00:00"
+    "updated_at": "2026-10-07T21:00:46.777760+00:00"
   },
   {
     "id": "2026-10-07_Jason Dickinson_shop_lean_72",
@@ -444368,7 +444388,7 @@
   {
     "id": "2026-10-07_Vladislav Namestnikov_shop_lean_49",
     "date": "2026-10-07",
-    "time": "11:10 AM",
+    "time": "02:00 PM",
     "player": "Vladislav Namestnikov",
     "score": 0,
     "edge": 49,
@@ -444387,12 +444407,19 @@
     "price_bucket": "+600s",
     "ending": 0,
     "methods": [
-      "Shop LEAN"
+      "Shop LEAN",
+      "B365 over HardRock",
+      "Rivers a bit over pack",
+      "FD 50",
+      "EV Premium",
+      "Kelly Support",
+      "Lane C",
+      "FD Best"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-07T17:29:02.274916+00:00",
+    "logged_at": "2026-10-07T21:00:46.549611+00:00",
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
@@ -444405,7 +444432,7 @@
     "price": 600,
     "book": "fanduel",
     "created_at": "2026-10-07T17:29:02.274916+00:00",
-    "updated_at": "2026-10-07T18:10:58.738965+00:00"
+    "updated_at": "2026-10-07T21:00:46.549623+00:00"
   },
   {
     "id": "2026-10-07_Max Jones_shop_lean_48",
@@ -444799,7 +444826,7 @@
   {
     "id": "2026-10-07_Jake Walman_watch_45",
     "date": "2026-10-07",
-    "time": "11:10 AM",
+    "time": "02:00 PM",
     "player": "Jake Walman",
     "score": 45,
     "edge": 65,
@@ -444827,12 +444854,13 @@
       "Kelly Support",
       "Lane D",
       "DK Best",
-      "Multi-book Shorten"
+      "Multi-book Shorten",
+      "B365 a bit over FD"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T18:10:50.944288+00:00",
+    "logged_at": "2026-10-07T21:00:46.451349+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "EDMONTON OILERS NHL",
@@ -444842,7 +444870,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T18:10:58.402621+00:00",
+    "updated_at": "2026-10-07T21:00:46.451363+00:00",
     "player_name": "Jake Walman",
     "stamps": [
       "Rivers short vs pack",
@@ -445120,7 +445148,7 @@
   {
     "id": "2026-10-07_Alex Formenton_take_it_61",
     "date": "2026-10-07",
-    "time": "11:10 AM",
+    "time": "02:00 PM",
     "player": "Alex Formenton",
     "score": 61,
     "edge": 76,
@@ -445146,12 +445174,15 @@
       "EV Premium",
       "Kelly Support",
       "Lane C",
-      "FD Best"
+      "FD Best",
+      "Rivers way over pack",
+      "Just Appeared",
+      "Books tight"
     ],
     "core": 3,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-10-07T18:10:49.874744+00:00",
+    "logged_at": "2026-10-07T21:00:45.159972+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "",
@@ -445161,7 +445192,7 @@
     "benford_cluster": 0.67,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-10-07T18:10:58.632794+00:00",
+    "updated_at": "2026-10-07T21:00:45.159985+00:00",
     "player_name": "Alex Formenton",
     "stamps": [
       "FD 50",
@@ -446198,7 +446229,7 @@
   {
     "id": "2026-10-07_Cale Makar_watch_31",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Cale Makar",
     "score": 31,
     "edge": 28,
@@ -446225,12 +446256,13 @@
       "DK 10",
       "EV Premium",
       "Kelly Support",
-      "Lane A"
+      "Lane A",
+      "FD 40"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T19:26:14.644989+00:00",
+    "logged_at": "2026-10-07T21:00:46.916495+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "COLORADO AVALANCHE NHL",
@@ -446240,7 +446272,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:26:14.644998+00:00",
+    "updated_at": "2026-10-07T21:00:46.916506+00:00",
     "player_name": "Cale Makar",
     "stamps": [
       "B365 over HardRock",
@@ -446379,7 +446411,7 @@
   {
     "id": "2026-10-07_Nathan MacKinnon_watch_36",
     "date": "2026-10-07",
-    "time": "12:26 PM",
+    "time": "02:00 PM",
     "player": "Nathan MacKinnon",
     "score": 36,
     "edge": 53,
@@ -446404,12 +446436,13 @@
       "B365 over HardRock",
       "EV Premium",
       "Kelly Premium",
-      "DK Best"
+      "DK Best",
+      "FD Best"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-07T19:26:14.601304+00:00",
+    "logged_at": "2026-10-07T21:00:46.866659+00:00",
     "price_source": "pregame_lock",
     "sport": "NHL",
     "team": "COLORADO AVALANCHE NHL",
@@ -446419,7 +446452,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:26:22.150187+00:00",
+    "updated_at": "2026-10-07T21:00:46.866668+00:00",
     "player_name": "Nathan MacKinnon",
     "stamps": [
       "B365 over HardRock",
@@ -447410,5 +447443,127 @@
     "book": "fanduel",
     "created_at": "2026-10-07T20:58:08.706342+00:00",
     "updated_at": "2026-10-07T20:58:08.706342+00:00"
+  },
+  {
+    "id": "2026-10-07_Aliaksei Protas_watch_47",
+    "date": "2026-10-07",
+    "time": "02:00 PM",
+    "player": "Aliaksei Protas",
+    "score": 47,
+    "edge": 46,
+    "best_price": 410,
+    "best_book": "fanduel",
+    "median": 360.0,
+    "book_prices": {
+      "bet365": 390,
+      "betmgm": 360,
+      "betrivers": 380,
+      "caesars": 330,
+      "draftkings": 360,
+      "fanatics": 360,
+      "fanduel": 410,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+400s",
+    "ending": 10,
+    "mgm_locked": 360,
+    "mgm_ending": 60,
+    "methods": [
+      "FD Pattern",
+      "DK FD-style",
+      "B365 over HardRock",
+      "MGM 60",
+      "FD a little long",
+      "EV Premium",
+      "Kelly Support",
+      "Lane B",
+      "FD Best"
+    ],
+    "core": 2,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-10-07T21:00:46.287762+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NHL",
+    "team": "WASHINGTON CAPITALS NHL",
+    "market": "anytime_goal",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.88,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "updated_at": "2026-10-07T21:00:46.287773+00:00",
+    "player_name": "Aliaksei Protas",
+    "stamps": [
+      "FD Pattern",
+      "DK FD-style",
+      "B365 over HardRock",
+      "MGM 60",
+      "FD a little long",
+      "EV Premium",
+      "Kelly Support",
+      "Lane B",
+      "FD Best"
+    ],
+    "price": 410,
+    "book": "fanduel",
+    "created_at": "2026-10-07T21:00:46.287762+00:00"
+  },
+  {
+    "id": "2026-10-07_Ryan Leonard_watch_25",
+    "date": "2026-10-07",
+    "time": "02:00 PM",
+    "player": "Ryan Leonard",
+    "score": 25,
+    "edge": 21,
+    "best_price": 320,
+    "best_book": "betrivers",
+    "median": 292.5,
+    "book_prices": {
+      "bet365": 300,
+      "betmgm": 280,
+      "betrivers": 320,
+      "caesars": 260,
+      "draftkings": 285,
+      "fanatics": 285,
+      "fanduel": 320,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 20,
+    "mgm_locked": 280,
+    "mgm_ending": 80,
+    "methods": [
+      "B365 Exact",
+      "Just Appeared",
+      "Books tight",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 1,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-10-07T21:00:46.167636+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NHL",
+    "team": "WASHINGTON CAPITALS NHL",
+    "market": "anytime_goal",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.5,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "player_name": "Ryan Leonard",
+    "stamps": [
+      "B365 Exact",
+      "Just Appeared",
+      "Books tight",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "price": 320,
+    "book": "betrivers",
+    "created_at": "2026-10-07T21:00:46.167636+00:00",
+    "updated_at": "2026-10-07T21:00:46.167636+00:00"
   }
 ]
