@@ -174,6 +174,30 @@
       "best_book": "fanatics",
       "time": "02:16 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Kyle Tucker",
+      "source": "take_it",
+      "score": 98,
+      "methods": [
+        "FD Pattern",
+        "DK FD-style",
+        "FD+MGM classic",
+        "HardRock 50",
+        "Match 50",
+        "Stayed in the group",
+        "Multi-book Shorten",
+        "MGM 50",
+        "Multi-book method",
+        "MGM Exact",
+        "Last one left",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 730,
+      "best_book": "draftkings",
+      "time": "02:16 PM",
+      "sport": "MLB"
     }
   ]
 }
