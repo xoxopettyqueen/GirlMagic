@@ -152,6 +152,28 @@
       "best_book": "hardrockbet",
       "time": "12:34 PM",
       "sport": "MLB"
+    },
+    {
+      "player": "Cody Bellinger",
+      "source": "take_it",
+      "score": 100,
+      "methods": [
+        "FD 90",
+        "FD Pattern",
+        "Fanatics Drift",
+        "Match 25",
+        "Fanatics over pack",
+        "Stayed in the group",
+        "Multi-book method",
+        "MGM 25",
+        "FD+MGM classic",
+        "EV Premium",
+        "Kelly Support"
+      ],
+      "best_price": 650,
+      "best_book": "fanatics",
+      "time": "02:16 PM",
+      "sport": "MLB"
     }
   ]
 }
