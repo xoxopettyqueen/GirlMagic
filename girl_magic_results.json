@@ -439137,7 +439137,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:25:14.867709+00:00",
+    "updated_at": "2026-10-07T19:25:21.009182+00:00",
     "player_name": "Andy Pages",
     "stamps": [
       "DK FD-style",
@@ -440137,7 +440137,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:25:14.945618+00:00",
+    "updated_at": "2026-10-07T19:25:21.496204+00:00",
     "player_name": "Kyle Tucker",
     "stamps": [
       "DK FD-style",
@@ -440421,7 +440421,7 @@
   {
     "id": "2026-10-07_Michael Harris II_watch_36",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Michael Harris II",
     "score": 36,
     "edge": 33,
@@ -440469,7 +440469,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:17:51.096242+00:00",
+    "updated_at": "2026-10-07T19:25:20.891080+00:00",
     "player_name": "Michael Harris II",
     "stamps": [
       "Multi-book Shorten",
@@ -440606,7 +440606,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:25:15.067311+00:00",
+    "updated_at": "2026-10-07T19:25:21.366173+00:00",
     "player_name": "Ozzie Albies",
     "stamps": [
       "Multi-book Shorten",
@@ -441065,7 +441065,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:25:14.662524+00:00",
+    "updated_at": "2026-10-07T19:25:20.951684+00:00",
     "player_name": "Teoscar Hern\u00e1ndez",
     "stamps": [
       "B365 over HardRock",
@@ -441196,7 +441196,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:25:15.410235+00:00",
+    "updated_at": "2026-10-07T19:25:21.327481+00:00",
     "player_name": "Trent Grisham",
     "stamps": [
       "FD Pattern",
@@ -441268,7 +441268,7 @@
     "benford_cluster": 0.67,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:25:15.324239+00:00",
+    "updated_at": "2026-10-07T19:25:20.797478+00:00",
     "player_name": "Tristan Peters",
     "stamps": [
       "FD Pattern",
@@ -441337,7 +441337,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-07T19:25:14.829806+00:00",
+    "updated_at": "2026-10-07T19:25:21.411737+00:00",
     "player_name": "Ty France",
     "stamps": [
       "DK FD-style",
@@ -441518,7 +441518,7 @@
   {
     "id": "2026-10-07_Jonathan Aranda_shop_lean_74",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Jonathan Aranda",
     "score": 0,
     "edge": 74,
@@ -441556,7 +441556,7 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-10-07T16:41:05.346341+00:00",
-    "updated_at": "2026-10-07T19:17:57.526438+00:00"
+    "updated_at": "2026-10-07T19:25:21.202200+00:00"
   },
   {
     "id": "2026-10-07_Randal Grichuk_shop_take_70",
@@ -441655,7 +441655,7 @@
   {
     "id": "2026-10-07_Victor Mesa Jr._shop_lean_60",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Victor Mesa Jr.",
     "score": 0,
     "edge": 60,
@@ -441692,12 +441692,12 @@
     "price": 700,
     "book": "bet365",
     "created_at": "2026-10-07T16:41:05.750775+00:00",
-    "updated_at": "2026-10-07T19:17:57.590715+00:00"
+    "updated_at": "2026-10-07T19:25:21.245660+00:00"
   },
   {
     "id": "2026-10-07_Jazz Chisholm Jr._shop_lean_54",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Jazz Chisholm Jr.",
     "score": 0,
     "edge": 54,
@@ -441735,7 +441735,7 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-07T16:41:05.856993+00:00",
-    "updated_at": "2026-10-07T19:17:57.458196+00:00"
+    "updated_at": "2026-10-07T19:25:21.159223+00:00"
   },
   {
     "id": "2026-10-07_Sean Murphy_shop_lean_50",
@@ -441796,7 +441796,7 @@
   {
     "id": "2026-10-07_Colson Montgomery_shop_lean_45",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Colson Montgomery",
     "score": 0,
     "edge": 45,
@@ -441841,7 +441841,7 @@
     "price": 670,
     "book": "draftkings",
     "created_at": "2026-10-07T16:41:06.141973+00:00",
-    "updated_at": "2026-10-07T19:17:57.785439+00:00"
+    "updated_at": "2026-10-07T19:25:21.285658+00:00"
   },
   {
     "id": "2026-10-07_Jo Adell_shop_lean_44",
@@ -441892,7 +441892,7 @@
     "price": 590,
     "book": "fanduel",
     "created_at": "2026-10-07T16:41:06.182109+00:00",
-    "updated_at": "2026-10-07T19:25:15.454297+00:00"
+    "updated_at": "2026-10-07T19:25:21.103504+00:00"
   },
   {
     "id": "2026-10-07_Miguel Vargas_shop_lean_40",
@@ -442167,7 +442167,7 @@
     "price": 850,
     "book": "betrivers",
     "created_at": "2026-10-07T17:04:54.561696+00:00",
-    "updated_at": "2026-10-07T19:25:14.620234+00:00"
+    "updated_at": "2026-10-07T19:25:20.844651+00:00"
   },
   {
     "id": "2026-10-07_Spencer Jones_shop_lean_42",
@@ -442215,7 +442215,7 @@
   {
     "id": "2026-10-07_Jos\u00e9 Ram\u00edrez_shop_lean_69",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Jos\u00e9 Ram\u00edrez",
     "score": 0,
     "edge": 69,
@@ -442253,7 +442253,7 @@
     "price": 660,
     "book": "draftkings",
     "created_at": "2026-10-07T17:19:11.466484+00:00",
-    "updated_at": "2026-10-07T19:17:58.013301+00:00"
+    "updated_at": "2026-10-07T19:25:21.455624+00:00"
   },
   {
     "id": "2026-10-07_Dylan Strome_take_it_69",
@@ -445945,7 +445945,7 @@
   {
     "id": "2026-10-07_Spencer Jones_shop_take_91",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Spencer Jones",
     "score": 0,
     "edge": 91,
@@ -445983,7 +445983,7 @@
     "price": 650,
     "book": "fanatics",
     "created_at": "2026-10-07T19:17:56.942694+00:00",
-    "updated_at": "2026-10-07T19:17:56.942694+00:00"
+    "updated_at": "2026-10-07T19:25:20.713493+00:00"
   },
   {
     "id": "2026-10-07_Michael Harris II_shop_take_82",
@@ -446031,7 +446031,7 @@
   {
     "id": "2026-10-07_Patrick Bailey_shop_lean_59",
     "date": "2026-10-07",
-    "time": "12:17 PM",
+    "time": "12:25 PM",
     "player": "Patrick Bailey",
     "score": 0,
     "edge": 59,
@@ -446069,6 +446069,48 @@
     "price": 960,
     "book": "draftkings",
     "created_at": "2026-10-07T19:17:57.248074+00:00",
-    "updated_at": "2026-10-07T19:17:57.248074+00:00"
+    "updated_at": "2026-10-07T19:25:21.051494+00:00"
+  },
+  {
+    "id": "2026-10-07_George Lombard Jr._shop_take_88",
+    "date": "2026-10-07",
+    "time": "12:25 PM",
+    "player": "George Lombard Jr.",
+    "score": 0,
+    "edge": 88,
+    "best_price": 870,
+    "best_book": "fanduel",
+    "median": 750,
+    "book_prices": {
+      "betmgm": 550,
+      "betrivers": 600,
+      "caesars": 750,
+      "draftkings": 800,
+      "fanatics": 800,
+      "fanduel": 870,
+      "hardrockbet": 750
+    },
+    "price_bucket": "+800-999",
+    "ending": 70,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-07T19:25:20.754614+00:00",
+    "price_source": "shop",
+    "sport": "MLB",
+    "market": "batter_home_runs",
+    "player_name": "George Lombard Jr.",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 870,
+    "book": "fanduel",
+    "created_at": "2026-10-07T19:25:20.754614+00:00",
+    "updated_at": "2026-10-07T19:25:20.754614+00:00"
   }
 ]
