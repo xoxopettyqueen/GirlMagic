@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 Girl Magic Odds ✨
@@ -1330,10 +1329,18 @@ NFL_STAMP_METHODS = {
     "Fanatics Drift",
 }
 NHL_STAMP_METHODS = {
-    "Books tight", "Multi-book Shorten", "PP1", "L1",
+    "Books tight", "Last one left", "PP1", "L1",
     "HotShots", "HotGoals", "MatchupSoft", "GoalieWeak",
-    "FD Best", "DK Best", "Lane A", "Lane B", "Lane C",
+    "Lane A", "Lane B", "Lane C",
+    "FD a little long", "FD+MGM classic",
+    "HardRock Best", "BetRivers Best",
 }
+# Graded NHL anytime goals, Oct 2026. Ticket books are the buy, not the tag.
+# BetRivers 23% n=52, HardRock 16% n=130, MGM 21% n=19 (only with a hot ending).
+# DK 8% n=289 and FD 8% n=244 are fades. 365 14% and Fanatics 12% stay study.
+NHL_TICKET_BOOKS = {"betrivers", "hardrockbet", "betmgm"}
+NHL_HOT_ENDS = {10, 20, 60, 90}          # 16–27% on real n
+NHL_DEAD_ENDS = {30, 40, 55, 70, 95}     # 0% on the grade
 NHL_LEARN_METHODS = {
     "PP1", "L1", "L2", "PP2", "HotShots", "HotGoals", "ColdShots", "ColdGoals",
     "MatchupSoft", "GoalieWeak", "Books tight", "Multi-book Shorten",
@@ -1546,8 +1553,44 @@ def stamp_count(methods):
     return len(ms & stamp_set()), ms
 
 
+
+def nhl_take_ok(methods, best_price, best_book, score=0):
+    """NHL green. Graded books and endings, not the baseball FD/DK buy."""
+    try:
+        px = int(best_price)
+    except Exception:
+        return False
+    if px < 250 or px >= 800:
+        return False
+    end = last_two(px)
+    if end in NHL_DEAD_ENDS:
+        return False
+    bk = normalize_book(best_book) if best_book else ""
+    if bk not in NHL_TICKET_BOOKS:
+        return False
+    ms = {normalize_method_name(m) for m in (methods or [])}
+    hot = end in NHL_HOT_ENDS
+    # MGM sample is thin. Only green it on a hot ending.
+    if bk == "betmgm" and not hot:
+        return False
+    proof = bool(ms & {"Books tight", "Last one left", "FD a little long", "FD+MGM classic", "HotShots", "HotGoals", "PP1", "L1"})
+    if px >= 700:
+        return bool(hot and proof)
+    if px >= 500:
+        return bool(hot or proof)
+    return True
+
 def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=None, best_book=None, score=0):
     """9/13: 2+ stamp methods. Ticket = DK / HardRock / Fanatics-Rogue. FD longest = fade the buy."""
+    if active_sport() == "NHL":
+        bk = normalize_book(best_book) if best_book else None
+        if not bk and book_prices:
+            best_dec = -1
+            for k, px in (book_prices or {}).items():
+                dec = american_to_decimal(px) or -1
+                if dec > best_dec:
+                    best_dec, bk = dec, normalize_book(k)
+        return nhl_take_ok(methods, best_price, bk, score)
     stamps, ms = stamp_count(methods)
     try:
         if best_price is not None and int(best_price) < 115:
@@ -1582,9 +1625,6 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
         if bk and bk not in {"fanduel", "hardrockbet", "betrivers"}:
             return False
         if bk == "fanatics" and end != 75:
-            return False
-    elif active_sport() == "NHL":
-        if bk and bk not in {"draftkings", "fanduel"}:
             return False
     else:
         if bk == "fanduel":
@@ -2027,7 +2067,7 @@ GLOSSARY_V2 = {
         ("Lane A–D", "A +300–399 · B +400–499 · C +500–699 · D +700+. Under +250 stays off Confidence. D needs 3 stamps."),
         ("NHL Confidence", "Stat page. SOG, assists, points, PP goals, TOI. Does not green."),
         ("NHL DVP", "What that defense gives up. GA/g, SA/g, PK, rank. Soft is 22–32. Stingy is top 10. Position tag rides with the player."),
-        ("NHL TAKE", "FD or DK is the buy. +300 to +699. Two of: lane, FD Best, DK Best, Books tight, Multi-book Shorten. Cap 15. 365 and Fanatics stay study."),
+        ("NHL TAKE", "Buy BetRivers or HardRock. MGM only if the price ends 10, 20, 60, or 90. DK and FD are 8% — not the ticket. +250 to +499 is the lane. +500 needs a hot ending or Books tight. +700 needs both. Dead endings 30/40/70 never green. Cap 15."),
         ("NHL Tracker", "Hockey stamps only. Baseball FD/MGM tricks are hidden. 0% means the grade, not a wiped page."),
         ("NHL grade", "NHL.com final scoreboard. A date only closes if games actually finished. Empty days do not become misses."),
         ("PP1 / L1", "Power-play 1 / top line. Not on the feed yet. When it lands, it is a rhythm stamp, not a ticket alone."),
@@ -2188,7 +2228,7 @@ WALKTHROUGH_V2 = [
     ("🎟️ Books we use",
      "Tickets: FD and DK on every sport. HardRock and BetRivers on NFL. Fanatics only on an NFL 75. MGM, Bet365, and Caesars are tells. Other books compare only."),
     ("💋 House rules",
-     "MLB is 0.5 HR only. NFL is anytime TD, two stamps, no 365 green. NHL is anytime goal, FD or DK, cap 15. Confidence never greens. Secrets stay on the cards."),
+     "MLB is 0.5 HR only. NFL is anytime TD, two stamps, no 365 green. NHL is anytime goal, BetRivers or HardRock, cap 15. Confidence never greens. Secrets stay on the cards."),
 ]
 
 
@@ -2795,6 +2835,8 @@ def build_shop_board(df):
             action, why, cls = "LEAN", why + " · 00 ending is volume not edge", "shop-lean"
         if action == "TAKE" and book_label(best_book) == "Fanatics" and edge < 80:
             action, why, cls = "LEAN", why + " · Fanatics best is usually the long tax", "shop-lean"
+        if action == "TAKE" and active_sport() == "NHL" and not nhl_take_ok([], best, best_book):
+            action, why, cls = "LEAN", why + " · NHL buy is BetRivers / HardRock, hot ending 10/20/60/90. DK and FD stay off the ticket.", "shop-lean"
         if action == "TAKE" and active_sport() == "NFL":
             partner = False
             if book_label(best_book) == "FD":
@@ -8934,6 +8976,10 @@ def run_flags(df, previous_df=None, record_history=True, selected_events=None):
                 display_meths.append("FD Best")
             elif bk_lab == "DK" and "DK Best" not in display_meths:
                 display_meths.append("DK Best")
+            elif bk_lab == "HardRock" and "HardRock Best" not in display_meths:
+                display_meths.append("HardRock Best")
+            elif bk_lab == "BetRivers" and "BetRivers Best" not in display_meths:
+                display_meths.append("BetRivers Best")
         is_bet = qualifies_take_it(core_count, display_meths, edge, best, book_px, best_book, score)
         has_pri = has_priority_method(display_meths)
         score_override = bool(is_bet and int(score or 0) >= SCORE_SOFT_TAKE)
@@ -14907,7 +14953,7 @@ def main():
 
         st.markdown("#### Methods on WATCH (graded)")
         st.caption(
-            "NHL learns PP1, L1, HotShots, books, lanes — not MLB FD/MGM stamps. "
+            "NHL buy is BetRivers / HardRock. DK and FD are fades. Hot endings 10/20/60/90. "
             "Baseball tricks stay on the MLB toggle."
             if sport_now == "NHL" else
             "Old weeks logged almost nobody as WATCH — that 0% is leftover, not today’s box. "
