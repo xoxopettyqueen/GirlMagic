@@ -340,6 +340,28 @@
       "best_book": "fanduel",
       "time": "12:18 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Mark Jankowski",
+      "source": "take_it",
+      "score": 76,
+      "methods": [
+        "Stayed in the group",
+        "B365 a bit over FD",
+        "FD Pattern",
+        "FD+MGM classic",
+        "Match 25",
+        "Multi-book method",
+        "MGM 25",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "DK Best"
+      ],
+      "best_price": 475,
+      "best_book": "draftkings",
+      "time": "12:19 PM",
+      "sport": "NHL"
     }
   ]
 }
