@@ -289,6 +289,25 @@
       "best_book": "draftkings",
       "time": "12:12 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Tre' Harris",
+      "source": "take_it",
+      "score": 58,
+      "methods": [
+        "B365 25",
+        "MGM 10",
+        "Books tight",
+        "Multi-book method",
+        "B365 Exact",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 360,
+      "best_book": "fanduel",
+      "time": "12:18 PM",
+      "sport": "NFL"
     }
   ]
 }
