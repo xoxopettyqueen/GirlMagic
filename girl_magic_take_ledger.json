@@ -324,6 +324,22 @@
       "best_book": "fanduel",
       "time": "12:18 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Bucky Irving",
+      "source": "take_it",
+      "score": 45,
+      "methods": [
+        "Books tight",
+        "B365 75",
+        "DK FD-style",
+        "EV Caution",
+        "Kelly Caution"
+      ],
+      "best_price": 200,
+      "best_book": "fanduel",
+      "time": "12:18 PM",
+      "sport": "NFL"
     }
   ]
 }
