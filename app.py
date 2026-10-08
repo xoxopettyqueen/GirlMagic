@@ -35,15 +35,15 @@ from collections import Counter
 
 # ── price lanes (Anytime TD Over Yes) ────────────────────────
 NFL_FLOOR = 115          # shorter than this is not a Girl Magic TD ticket
-NFL_SWEET_LO = 150
-NFL_SWEET_HI = 450       # the lane we actually hunt
-NFL_LONG_LO = 500
-NFL_LONG_HI = 1200       # long TDs hit. No 799 cap.
-NFL_FLYER = 1201         # flyer: needs extra proof
+NFL_SWEET_LO = 115
+NFL_SWEET_HI = 599       # under +600 is the graded lane. +700 and longer fades.
+NFL_LONG_LO = 700
+NFL_LONG_HI = 799
+NFL_FLYER = 800          # +800 and longer is a fade on this grade
 
-# Endings that have actually shown up on TDs we like
-NFL_HOT_ENDS = {10, 20, 25, 50, 70, 75, 90, 0}
-NFL_DEAD_ENDS = {15, 35, 40, 45, 55, 65, 80, 85}  # fade-these on long prices
+# Oct 2026 anytime TD grade. 00 and 50 are the volume traps (6% and 7%).
+NFL_HOT_ENDS = {5, 30, 35, 40, 55, 65, 75, 80, 85}
+NFL_DEAD_ENDS = {0, 50}
 NFL_MGM_CLASSIC = {0, 25, 50, 75}                 # MGM group/pair endings
 NFL_DK_10 = {10}
 NFL_FD_PATTERN = {10, 20, 30, 60, 70, 90}
@@ -478,25 +478,27 @@ def nfl_take_ok(
         }
         or any(str(m).startswith("MGM ") or str(m).startswith("Match ") or str(m).startswith("B365") for m in ms)
     )
-    hot = nfl_hot_end(best_price)
-    lane = nfl_lane(best_price)
-    try:
-        sc = int(score or 0)
-    except Exception:
-        sc = 0
-    if lane == "flyer":
-        real = books & {"draftkings", "fanduel", "betmgm"}
-        if not priority or len(real) < 2:
-            return False
-    if bk in ("fanatics", "hardrockbet") and not priority:
+    end = last_two(best_price)
+    if end in NFL_DEAD_ENDS:
         return False
-    if lane in ("long", "flyer") and not (hot and priority):
+    if p >= 800:
         return False
-    if hot or priority:
-        return True
-    if sc >= 70 and priority:
-        return True
-    return False
+    # FD shop was 2%. Rivers and 365 are 6% as the buy. DK is the least-bad ticket.
+    if bk in {"fanduel", "bet365", "caesars", "betrivers", "betmgm"}:
+        return False
+    if bk == "fanatics" and end not in {40, 60, 70, 75, 90}:
+        return False
+    if bk == "hardrockbet" and end not in {20, 40, 60, 85, 95}:
+        return False
+    if bk not in {"draftkings", "fanatics", "hardrockbet"}:
+        return False
+    proof = bool(ms & {"DK 10", "Kelly Premium", "Books tight", "FD a little long", "DK FD-style"})
+    hot = end in NFL_HOT_ENDS
+    if p >= 700:
+        return bool(proof and hot)
+    if p >= 600:
+        return bool(proof)
+    return bool(proof or (hot and bk == "draftkings"))
 
 
 def nfl_petty_alerts(ev_board, flag_rows=None, limit=8):
@@ -1622,10 +1624,7 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     if bk == "caesars":
         return False
     if active_sport() == "NFL":
-        if bk and bk not in {"fanduel", "hardrockbet", "betrivers"}:
-            return False
-        if bk == "fanatics" and end != 75:
-            return False
+        pass
     else:
         if bk == "fanduel":
             return False
@@ -1643,29 +1642,8 @@ def qualifies_take_it(core_count, methods, edge=0, best_price=None, book_prices=
     end = last_two(best_price)
     hot = end in TAKE_HOT_ENDS or end in (0, 20, 30, 60)
     if active_sport() == "NFL":
-        if 70 <= sc <= 84:
-            return False
-        if ms & NFL_DEAD_STAMPS and not (ms & NFL_RHYTHM_STAMPS):
-            return False
-        if not (ms & NFL_RHYTHM_STAMPS):
-            return False
-        if stamps < 2:
-            return False
-        if not nfl_price_ok(best_price):
-            return False
-        try:
-            px = abs(int(best_price or 0))
-        except Exception:
-            px = 0
-        if px >= 800:
-            return False
-        if end in (25, 50, 10):
-            return False
-        if end in (60, 70, 75, 20, 0) and stamps >= 2:
-            return True
-        if bk == "fanatics" and end != 75:
-            return False
-        return stamps >= 2 and end in (0, 20, 60, 70, 75)
+        # Petty 70–100 graded 3–6%. Score does not green a TD.
+        return nfl_take_ok(core_count, methods, best_price, bk, book_prices, score, need_core=1)
     if active_sport() == "NHL":
         try:
             px = abs(int(best_price or 0))
@@ -2171,7 +2149,7 @@ GLOSSARY_V2 = {
     ],
     "🏈 NFL": [
         ("🏈 Anytime TD", "NFL ticket. Plus money. QBs only count on a rushing TD."),
-        ("NFL green", "Two rhythm stamps: Books tight or Shorten, plus DK 10, DK FD-style, or 00. Buy is FD, HardRock, or BetRivers. Fanatics only if it ends 75. Ending 25/50/10 stay WATCH. Under +800. Petty 70–84 cannot green."),
+        ("NFL green", "Buy DK. Fanatics only on 60/75/90. HardRock only on 20/40/60. FD, 365, Rivers, and Caesars do not green. Ending 00 and 50 are volume traps. Hot endings 05/30/35/40/55/65/75/80/85. Proof is DK 10, Kelly Premium, Books tight, or FD a little long. Under +600. +700 needs both. Petty score does not green."),
         ("NFL dead", "365 as the buy, 365 gap tells, DK as the buy, Caesars, MGM 25, Match 25, Rivers vs pack. Study only."),
         ("NFL floor", "After the full grade, baseline is about 12%. A chip has to clear that with real n. Off days with no games are not a slate."),
         ("Plus money", "Price +100 or longer. Negative juice does not belong on Align."),
@@ -2838,23 +2816,18 @@ def build_shop_board(df):
         if action == "TAKE" and active_sport() == "NHL" and not nhl_take_ok([], best, best_book):
             action, why, cls = "LEAN", why + " · NHL buy is BetRivers / HardRock, hot ending 10/20/60/90. DK and FD stay off the ticket.", "shop-lean"
         if action == "TAKE" and active_sport() == "NFL":
-            partner = False
-            if book_label(best_book) == "FD":
-                partner = True
-            dk = book_px.get("draftkings")
-            mgm = book_px.get("betmgm")
-            if dk is not None and last_two(dk) == 10:
-                partner = True
-            if mgm is not None and last_two(mgm) == 0:
-                partner = True
+            shop_ms = []
+            dk_px = book_px.get("draftkings")
+            if dk_px is not None and last_two(dk_px) == 10:
+                shop_ms.append("DK 10")
             try:
-                focus = [book_px[b] for b in ("draftkings", "fanduel", "betmgm", "bet365") if b in book_px]
+                focus = [book_px[b] for b in ("draftkings", "fanduel", "betmgm", "hardrockbet") if b in book_px]
                 if len(focus) >= 3 and (max(focus) - min(focus)) <= BOOK_CLUSTER_GAP:
-                    partner = True
+                    shop_ms.append("Books tight")
             except Exception:
                 pass
-            if not partner:
-                action, why, cls = "LEAN", why + " · NFL Shop TAKE needs Books tight / DK 10 / MGM 00 / FD best", "shop-lean"
+            if not nfl_take_ok(1, shop_ms, best, best_book, book_px, 0, need_core=1):
+                action, why, cls = "LEAN", why + " · NFL buy is DK, or Fanatics/HardRock on a hot ending. FD, 365, 00, and 50 stay off the ticket.", "shop-lean"
         rows.append({
             "player": player, "event": event or "", "books": book_px,
             "best": best, "best_book": best_book, "median": med, "fair": fair,
