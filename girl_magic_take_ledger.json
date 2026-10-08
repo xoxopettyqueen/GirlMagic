@@ -226,5 +226,28 @@
       "time": "03:01 PM",
       "sport": "MLB"
     }
+  ],
+  "2026-10-08": [
+    {
+      "player": "Jamie Benn",
+      "source": "take_it",
+      "score": 86,
+      "methods": [
+        "FD Pattern",
+        "FD+MGM classic",
+        "Match 25",
+        "B365 over HardRock",
+        "Multi-book method",
+        "MGM 25",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "DK Best"
+      ],
+      "best_price": 475,
+      "best_book": "draftkings",
+      "time": "12:12 PM",
+      "sport": "NHL"
+    }
   ]
 }
