@@ -248,6 +248,26 @@
       "best_book": "draftkings",
       "time": "12:12 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Konsta Helenius",
+      "source": "take_it",
+      "score": 80,
+      "methods": [
+        "HardRock 50",
+        "Match 25",
+        "FD 90",
+        "Multi-book method",
+        "MGM 25",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "DK Best"
+      ],
+      "best_price": 450,
+      "best_book": "draftkings",
+      "time": "12:12 PM",
+      "sport": "NHL"
     }
   ]
 }
