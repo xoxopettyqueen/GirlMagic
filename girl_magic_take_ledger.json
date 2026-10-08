@@ -362,6 +362,29 @@
       "best_book": "draftkings",
       "time": "12:19 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Anthony Duclair",
+      "source": "take_it",
+      "score": 59,
+      "methods": [
+        "Stayed in the group",
+        "Match 75",
+        "FD Pattern",
+        "FD+MGM classic",
+        "MGM 75",
+        "B365 over HardRock",
+        "Rivers short vs pack",
+        "DK FD-style",
+        "EV Premium",
+        "Kelly Support",
+        "Lane B",
+        "FD Best"
+      ],
+      "best_price": 460,
+      "best_book": "fanduel",
+      "time": "12:19 PM",
+      "sport": "NHL"
     }
   ]
 }
