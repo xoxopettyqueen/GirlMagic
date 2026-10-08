@@ -385,6 +385,21 @@
       "best_book": "fanduel",
       "time": "12:19 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Matthew Golden",
+      "source": "take_it",
+      "score": 40,
+      "methods": [
+        "Books tight",
+        "DK 10",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 220,
+      "best_book": "fanduel",
+      "time": "12:25 PM",
+      "sport": "NFL"
     }
   ]
 }
