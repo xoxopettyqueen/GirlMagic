@@ -448,6 +448,23 @@
       "best_book": "draftkings",
       "time": "01:28 PM",
       "sport": "NHL"
+    },
+    {
+      "player": "Malik Nabers",
+      "source": "take_it",
+      "score": 54,
+      "methods": [
+        "DK 10",
+        "MGM 10",
+        "Books tight",
+        "Multi-book method",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 220,
+      "best_book": "fanduel",
+      "time": "03:33 PM",
+      "sport": "NFL"
     }
   ]
 }
