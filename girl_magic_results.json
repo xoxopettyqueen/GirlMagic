@@ -449501,7 +449501,7 @@
     "price": 475,
     "book": "draftkings",
     "created_at": "2026-10-08T19:12:03.157973+00:00",
-    "updated_at": "2026-10-08T20:28:27.725638+00:00"
+    "updated_at": "2026-10-08T20:28:53.479560+00:00"
   },
   {
     "id": "2026-10-08_Konsta Helenius_take_it_80",
@@ -449943,7 +449943,7 @@
   {
     "id": "2026-10-08_Bucky Irving_take_it_45",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Bucky Irving",
     "score": 45,
     "edge": 0,
@@ -449974,7 +449974,7 @@
     "core": 5,
     "result": "PENDING",
     "source": "take_it",
-    "logged_at": "2026-10-08T19:33:36.788940+00:00",
+    "logged_at": "2026-10-08T20:28:23.208706+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "TAMPA BAY BUCCANEERS NFL",
@@ -449984,7 +449984,7 @@
     "benford_cluster": 0.75,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.788952+00:00",
+    "updated_at": "2026-10-08T20:28:23.208717+00:00",
     "player_name": "Bucky Irving",
     "stamps": [
       "Books tight",
@@ -451265,7 +451265,7 @@
   {
     "id": "2026-10-08_CeeDee Lamb_watch_50",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "CeeDee Lamb",
     "score": 50,
     "edge": 1,
@@ -451293,12 +451293,14 @@
       "EV Support",
       "Kelly Support",
       "Multi-book method",
-      "DK FD-style"
+      "DK FD-style",
+      "EV Caution",
+      "Kelly Caution"
     ],
     "core": 5,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.509613+00:00",
+    "logged_at": "2026-10-08T20:28:22.915379+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "DALLAS COWBOYS NFL",
@@ -451308,7 +451310,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.509623+00:00",
+    "updated_at": "2026-10-08T20:28:22.915392+00:00",
     "player_name": "CeeDee Lamb",
     "stamps": [
       "B365 over HardRock",
@@ -451383,7 +451385,7 @@
   {
     "id": "2026-10-08_Chase Brown_watch_45",
     "date": "2026-10-08",
-    "time": "12:25 PM",
+    "time": "01:28 PM",
     "player": "Chase Brown",
     "score": 45,
     "edge": -6,
@@ -451411,12 +451413,14 @@
       "Books tight",
       "EV Caution",
       "Kelly Caution",
-      "Stayed in the group"
+      "Stayed in the group",
+      "Multi-book Shorten",
+      "Rivers short vs pack"
     ],
     "core": 6,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:25:56.253448+00:00",
+    "logged_at": "2026-10-08T20:28:23.168413+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "CINCINNATI BENGALS NFL",
@@ -451426,7 +451430,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:25:56.253464+00:00",
+    "updated_at": "2026-10-08T20:28:23.168424+00:00",
     "player_name": "Chase Brown",
     "stamps": [
       "B365 over HardRock",
@@ -451560,7 +451564,7 @@
   {
     "id": "2026-10-08_Chris Godwin Jr._watch_73",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Chris Godwin Jr.",
     "score": 73,
     "edge": 54,
@@ -451603,7 +451607,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:43.509147+00:00",
+    "updated_at": "2026-10-08T20:28:33.786069+00:00",
     "player_name": "Chris Godwin Jr.",
     "stamps": [
       "B365 a bit over FD",
@@ -452129,7 +452133,7 @@
   {
     "id": "2026-10-08_Dallas Cowboys D/ST_watch_49",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Dallas Cowboys D/ST",
     "score": 49,
     "edge": 40,
@@ -452157,7 +452161,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.904368+00:00",
+    "logged_at": "2026-10-08T20:28:23.248536+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "",
@@ -452167,7 +452171,7 @@
     "benford_cluster": 0.33,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:43.795267+00:00",
+    "updated_at": "2026-10-08T20:28:33.948465+00:00",
     "player_name": "Dallas Cowboys D/ST",
     "stamps": [
       "Books tight",
@@ -453263,7 +453267,7 @@
   {
     "id": "2026-10-08_Emeka Egbuka_watch_41",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Emeka Egbuka",
     "score": 41,
     "edge": 5,
@@ -453288,12 +453292,14 @@
       "Books tight",
       "FD 50",
       "EV Support",
-      "Kelly Support"
+      "Kelly Support",
+      "Multi-book method",
+      "DK FD-style"
     ],
     "core": 4,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.692354+00:00",
+    "logged_at": "2026-10-08T20:28:23.039062+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "TAMPA BAY BUCCANEERS NFL",
@@ -453303,7 +453309,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.692367+00:00",
+    "updated_at": "2026-10-08T20:28:23.039072+00:00",
     "player_name": "Emeka Egbuka",
     "stamps": [
       "Books tight",
@@ -453543,7 +453549,7 @@
   {
     "id": "2026-10-08_George Pickens_watch_49",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "George Pickens",
     "score": 49,
     "edge": -1,
@@ -453578,7 +453584,7 @@
     "core": 8,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.413332+00:00",
+    "logged_at": "2026-10-08T20:28:22.656935+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "DALLAS COWBOYS NFL",
@@ -453588,7 +453594,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.413341+00:00",
+    "updated_at": "2026-10-08T20:28:22.656946+00:00",
     "player_name": "George Pickens",
     "stamps": [
       "Match 25",
@@ -454264,7 +454270,7 @@
   {
     "id": "2026-10-08_Jake Ferguson_watch_50",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Jake Ferguson",
     "score": 50,
     "edge": 4,
@@ -454297,7 +454303,7 @@
     "core": 6,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.553639+00:00",
+    "logged_at": "2026-10-08T20:28:22.842603+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "DALLAS COWBOYS NFL",
@@ -454307,7 +454313,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.553656+00:00",
+    "updated_at": "2026-10-08T20:28:22.842617+00:00",
     "player_name": "Jake Ferguson",
     "stamps": [
       "Match 25",
@@ -454622,7 +454628,7 @@
   {
     "id": "2026-10-08_Jameson Williams_watch_35",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Jameson Williams",
     "score": 35,
     "edge": -7,
@@ -454655,7 +454661,7 @@
     "core": 4,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.745154+00:00",
+    "logged_at": "2026-10-08T20:28:23.289281+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "DETROIT LIONS NFL",
@@ -454665,7 +454671,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.745169+00:00",
+    "updated_at": "2026-10-08T20:28:23.289291+00:00",
     "player_name": "Jameson Williams",
     "stamps": [
       "Books tight",
@@ -458050,7 +458056,7 @@
   {
     "id": "2026-10-08_Ryan Flournoy_watch_47",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Ryan Flournoy",
     "score": 47,
     "edge": 7,
@@ -458080,7 +458086,7 @@
     "core": 4,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.646561+00:00",
+    "logged_at": "2026-10-08T20:28:23.083021+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "DALLAS COWBOYS NFL",
@@ -458090,7 +458096,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.646573+00:00",
+    "updated_at": "2026-10-08T20:28:23.083032+00:00",
     "player_name": "Ryan Flournoy",
     "stamps": [
       "Books tight",
@@ -458222,7 +458228,7 @@
   {
     "id": "2026-10-08_Sean Tucker_watch_45",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Sean Tucker",
     "score": 45,
     "edge": -2,
@@ -458248,12 +458254,14 @@
       "Rivers short vs pack",
       "DK FD-style",
       "EV Caution",
-      "Kelly Caution"
+      "Kelly Caution",
+      "EV Support",
+      "Kelly Support"
     ],
     "core": 5,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T19:33:36.600850+00:00",
+    "logged_at": "2026-10-08T20:28:23.127245+00:00",
     "price_source": "pregame_lock",
     "sport": "NFL",
     "team": "TAMPA BAY BUCCANEERS NFL",
@@ -458263,7 +458271,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:36.600865+00:00",
+    "updated_at": "2026-10-08T20:28:23.127256+00:00",
     "player_name": "Sean Tucker",
     "stamps": [
       "Books tight",
@@ -458968,7 +458976,7 @@
   {
     "id": "2026-10-08_Ty Johnson_watch_76",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Ty Johnson",
     "score": 76,
     "edge": 74,
@@ -459015,7 +459023,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:33:43.748173+00:00",
+    "updated_at": "2026-10-08T20:28:34.028936+00:00",
     "player_name": "Ty Johnson",
     "stamps": [
       "FD 50",
@@ -459381,7 +459389,7 @@
   {
     "id": "2026-10-08_KaVontae Turpin_shop_lean_141",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "KaVontae Turpin",
     "score": 0,
     "edge": 141,
@@ -459401,12 +459409,23 @@
     "price_bucket": "+800-999",
     "ending": 50,
     "methods": [
-      "Shop LEAN"
+      "Shop LEAN",
+      "Multi-book Shorten",
+      "Stayed in the group",
+      "B365 a bit over FD",
+      "HardRock 00",
+      "B365 850",
+      "B365 over HardRock",
+      "Match 50",
+      "MGM 50",
+      "Rivers short vs pack",
+      "EV Premium",
+      "Kelly Support"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-08T19:18:41.389896+00:00",
+    "logged_at": "2026-10-08T20:28:22.374730+00:00",
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td",
@@ -459419,7 +459438,7 @@
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:41.389896+00:00",
-    "updated_at": "2026-10-08T19:33:43.466388+00:00"
+    "updated_at": "2026-10-08T20:28:33.632873+00:00"
   },
   {
     "id": "2026-10-08_Sione Vaki_shop_lean_138",
@@ -460408,7 +460427,7 @@
   {
     "id": "2026-10-08_Tyler Goodson_shop_lean_56",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Tyler Goodson",
     "score": 0,
     "edge": 56,
@@ -460446,7 +460465,7 @@
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:42.716327+00:00",
-    "updated_at": "2026-10-08T19:33:43.554395+00:00"
+    "updated_at": "2026-10-08T20:28:34.152109+00:00"
   },
   {
     "id": "2026-10-08_Kendrick Bourne_shop_lean_53",
@@ -460622,7 +460641,7 @@
   {
     "id": "2026-10-08_Luke Schoonmaker_shop_lean_50",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Luke Schoonmaker",
     "score": 0,
     "edge": 50,
@@ -460642,12 +460661,20 @@
     "price_bucket": "+800-999",
     "ending": 50,
     "methods": [
-      "Shop LEAN"
+      "Shop LEAN",
+      "Multi-book Shorten",
+      "B365 a bit over FD",
+      "HardRock 00",
+      "Rivers a bit over pack",
+      "B365 over HardRock",
+      "B365 Exact",
+      "EV Premium",
+      "Kelly Support"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-08T19:18:43.005707+00:00",
+    "logged_at": "2026-10-08T20:28:22.778413+00:00",
     "price_source": "shop",
     "sport": "NFL",
     "market": "anytime_td",
@@ -460660,12 +460687,12 @@
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-08T19:18:43.005707+00:00",
-    "updated_at": "2026-10-08T19:33:43.644999+00:00"
+    "updated_at": "2026-10-08T20:28:33.715090+00:00"
   },
   {
     "id": "2026-10-08_Ted Hurst III_shop_lean_50",
     "date": "2026-10-08",
-    "time": "12:33 PM",
+    "time": "01:28 PM",
     "player": "Ted Hurst III",
     "score": 0,
     "edge": 50,
@@ -460703,7 +460730,7 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:43.052708+00:00",
-    "updated_at": "2026-10-08T19:33:43.599492+00:00"
+    "updated_at": "2026-10-08T20:28:33.858350+00:00"
   },
   {
     "id": "2026-10-08_Tyler Badie_shop_lean_50",
@@ -461076,7 +461103,7 @@
     "benford_cluster": 0.62,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:28:27.043227+00:00",
+    "updated_at": "2026-10-08T20:28:52.814218+00:00",
     "player_name": "Anthony Duclair",
     "stamps": [
       "Stayed in the group",
@@ -461229,7 +461256,7 @@
   {
     "id": "2026-10-08_Aydar Suniev_watch_63",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Aydar Suniev",
     "score": 63,
     "edge": 146,
@@ -461272,7 +461299,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:16.388082+00:00",
+    "updated_at": "2026-10-08T20:28:49.100171+00:00",
     "player_name": "Aydar Suniev",
     "stamps": [
       "Rivers a bit over pack",
@@ -461585,7 +461612,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:28:31.522203+00:00",
+    "updated_at": "2026-10-08T20:28:53.395627+00:00",
     "player_name": "Collin Graf",
     "stamps": [
       "Stayed in the group",
@@ -461606,7 +461633,7 @@
   {
     "id": "2026-10-08_Colton Sissons_watch_68",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Colton Sissons",
     "score": 68,
     "edge": 167,
@@ -461649,7 +461676,7 @@
     "benford_cluster": 0.25,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:15.625700+00:00",
+    "updated_at": "2026-10-08T20:28:48.225362+00:00",
     "player_name": "Colton Sissons",
     "stamps": [
       "FD 50",
@@ -461779,7 +461806,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:28:30.847530+00:00",
+    "updated_at": "2026-10-08T20:28:51.109379+00:00",
     "player_name": "Denver Barkey",
     "stamps": [
       "Stayed in the group",
@@ -461800,7 +461827,7 @@
   {
     "id": "2026-10-08_Dillon Dube_watch_59",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Dillon Dube",
     "score": 59,
     "edge": 129,
@@ -461840,7 +461867,7 @@
     "benford_cluster": 0.33,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:06.121580+00:00",
+    "updated_at": "2026-10-08T20:28:48.776708+00:00",
     "player_name": "Dillon Dube",
     "stamps": [
       "FD 50",
@@ -461916,7 +461943,7 @@
   {
     "id": "2026-10-08_Hampus Lindholm_watch_35",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Hampus Lindholm",
     "score": 35,
     "edge": 27,
@@ -461962,7 +461989,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:07.142884+00:00",
+    "updated_at": "2026-10-08T20:28:51.738276+00:00",
     "player_name": "Hampus Lindholm",
     "stamps": [
       "Stayed in the group",
@@ -462164,7 +462191,7 @@
   {
     "id": "2026-10-08_Jack Roslovic_watch_43",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jack Roslovic",
     "score": 43,
     "edge": 64,
@@ -462210,7 +462237,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:04.974837+00:00",
+    "updated_at": "2026-10-08T20:28:53.937127+00:00",
     "player_name": "Jack Roslovic",
     "stamps": [
       "Stayed in the group",
@@ -462459,7 +462486,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:28:31.828414+00:00",
+    "updated_at": "2026-10-08T20:28:54.563162+00:00",
     "player_name": "Jonathan Marchessault",
     "stamps": [
       "FD 50",
@@ -462726,7 +462753,7 @@
   {
     "id": "2026-10-08_Kiefer Sherwood_watch_36",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Kiefer Sherwood",
     "score": 36,
     "edge": 53,
@@ -462770,7 +462797,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:20.442709+00:00",
+    "updated_at": "2026-10-08T20:28:54.073737+00:00",
     "player_name": "Kiefer Sherwood",
     "stamps": [
       "B365 a bit over FD",
@@ -463032,7 +463059,7 @@
   {
     "id": "2026-10-08_Mark Kastelic_watch_71",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Mark Kastelic",
     "score": 71,
     "edge": 206,
@@ -463076,7 +463103,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:05.457668+00:00",
+    "updated_at": "2026-10-08T20:28:53.204964+00:00",
     "player_name": "Mark Kastelic",
     "stamps": [
       "HardRock 50",
@@ -463151,7 +463178,7 @@
   {
     "id": "2026-10-08_Michael McCarron_watch_67",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Michael McCarron",
     "score": 67,
     "edge": 165,
@@ -463196,7 +463223,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:05.732546+00:00",
+    "updated_at": "2026-10-08T20:28:52.876963+00:00",
     "player_name": "Michael McCarron",
     "stamps": [
       "FD 50",
@@ -463347,7 +463374,7 @@
   {
     "id": "2026-10-08_Noah Hanifin_watch_66",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Noah Hanifin",
     "score": 66,
     "edge": 159,
@@ -463391,7 +463418,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:16.036607+00:00",
+    "updated_at": "2026-10-08T20:28:48.727489+00:00",
     "player_name": "Noah Hanifin",
     "stamps": [
       "FD 50",
@@ -463461,7 +463488,7 @@
     "benford_cluster": 0.5,
     "call_type": "TAKE",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:28:28.718717+00:00",
+    "updated_at": "2026-10-08T20:28:50.525222+00:00",
     "player_name": "Parker Kelly",
     "stamps": [
       "Stayed in the group",
@@ -463692,7 +463719,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:28:31.732476+00:00",
+    "updated_at": "2026-10-08T20:28:53.522772+00:00",
     "player_name": "Ryan McLeod",
     "stamps": [
       "HardRock Heater",
@@ -463953,7 +463980,7 @@
   {
     "id": "2026-10-08_Thomas Harley_watch_58",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Thomas Harley",
     "score": 58,
     "edge": 123,
@@ -463995,7 +464022,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:06.168733+00:00",
+    "updated_at": "2026-10-08T20:28:53.708782+00:00",
     "player_name": "Thomas Harley",
     "stamps": [
       "FD 50",
@@ -464268,7 +464295,7 @@
   {
     "id": "2026-10-08_Warren Foegele_watch_51",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Warren Foegele",
     "score": 51,
     "edge": 56,
@@ -464309,7 +464336,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T19:28:20.535329+00:00",
+    "updated_at": "2026-10-08T20:28:54.606543+00:00",
     "player_name": "Warren Foegele",
     "stamps": [
       "Rivers a bit over pack",
@@ -464368,7 +464395,7 @@
   {
     "id": "2026-10-08_Ryan Greene_shop_lean_241",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Ryan Greene",
     "score": 0,
     "edge": 241,
@@ -464406,12 +464433,12 @@
     "price": 900,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:13.103252+00:00",
-    "updated_at": "2026-10-08T19:28:14.971052+00:00"
+    "updated_at": "2026-10-08T20:28:46.688068+00:00"
   },
   {
     "id": "2026-10-08_Jack Drury_shop_lean_231",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jack Drury",
     "score": 0,
     "edge": 231,
@@ -464449,12 +464476,12 @@
     "price": 900,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:13.147892+00:00",
-    "updated_at": "2026-10-08T19:28:15.015743+00:00"
+    "updated_at": "2026-10-08T20:28:46.732150+00:00"
   },
   {
     "id": "2026-10-08_Matthew Poitras_shop_lean_213",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Matthew Poitras",
     "score": 0,
     "edge": 213,
@@ -464492,7 +464519,7 @@
     "price": 900,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.191982+00:00",
-    "updated_at": "2026-10-08T19:28:15.059301+00:00"
+    "updated_at": "2026-10-08T20:28:46.820388+00:00"
   },
   {
     "id": "2026-10-08_Mark Kastelic_shop_take_206",
@@ -464540,7 +464567,7 @@
   {
     "id": "2026-10-08_Noel Acciari_shop_lean_202",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Noel Acciari",
     "score": 0,
     "edge": 202,
@@ -464578,12 +464605,12 @@
     "price": 900,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.279429+00:00",
-    "updated_at": "2026-10-08T19:28:15.202706+00:00"
+    "updated_at": "2026-10-08T20:28:46.871050+00:00"
   },
   {
     "id": "2026-10-08_Marcus Foligno_shop_take_195",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Marcus Foligno",
     "score": 0,
     "edge": 195,
@@ -464621,12 +464648,12 @@
     "price": 850,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.329826+00:00",
-    "updated_at": "2026-10-08T19:28:15.343534+00:00"
+    "updated_at": "2026-10-08T20:28:47.217122+00:00"
   },
   {
     "id": "2026-10-08_Nicolas Roy_shop_lean_194",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Nicolas Roy",
     "score": 0,
     "edge": 194,
@@ -464673,7 +464700,7 @@
     "price": 800,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:13.372961+00:00",
-    "updated_at": "2026-10-08T19:28:20.278605+00:00"
+    "updated_at": "2026-10-08T20:28:50.745643+00:00"
   },
   {
     "id": "2026-10-08_Yakov Trenin_shop_lean_194",
@@ -464729,7 +464756,7 @@
   {
     "id": "2026-10-08_Martin Pospisil_shop_lean_193",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Martin Pospisil",
     "score": 0,
     "edge": 193,
@@ -464767,12 +464794,12 @@
     "price": 900,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:13.457836+00:00",
-    "updated_at": "2026-10-08T19:28:15.248395+00:00"
+    "updated_at": "2026-10-08T20:28:46.947977+00:00"
   },
   {
     "id": "2026-10-08_Jesperi Kotkaniemi_shop_lean_192",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jesperi Kotkaniemi",
     "score": 0,
     "edge": 192,
@@ -464810,12 +464837,12 @@
     "price": 800,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:13.501741+00:00",
-    "updated_at": "2026-10-08T19:28:15.298341+00:00"
+    "updated_at": "2026-10-08T20:28:47.080048+00:00"
   },
   {
     "id": "2026-10-08_Adam Klapka_shop_lean_188",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Adam Klapka",
     "score": 0,
     "edge": 188,
@@ -464853,12 +464880,12 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.543717+00:00",
-    "updated_at": "2026-10-08T19:28:15.389296+00:00"
+    "updated_at": "2026-10-08T20:28:48.079989+00:00"
   },
   {
     "id": "2026-10-08_Nic Dowd_shop_take_182",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Nic Dowd",
     "score": 0,
     "edge": 182,
@@ -464896,12 +464923,12 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:13.588975+00:00",
-    "updated_at": "2026-10-08T19:28:15.437801+00:00"
+    "updated_at": "2026-10-08T20:28:48.036292+00:00"
   },
   {
     "id": "2026-10-08_Ty Dellandrea_shop_lean_179",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Ty Dellandrea",
     "score": 0,
     "edge": 179,
@@ -464930,7 +464957,7 @@
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
-    "updated_at": "2026-10-08T19:28:15.673066+00:00",
+    "updated_at": "2026-10-08T20:28:47.991927+00:00",
     "player_name": "Ty Dellandrea",
     "call_type": "WATCH",
     "status": "PENDING",
@@ -464999,7 +465026,7 @@
   {
     "id": "2026-10-08_Tony DeAngelo_shop_take_168",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Tony DeAngelo",
     "score": 0,
     "edge": 168,
@@ -465037,12 +465064,12 @@
     "price": 850,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.751722+00:00",
-    "updated_at": "2026-10-08T19:28:15.582656+00:00"
+    "updated_at": "2026-10-08T20:28:48.407947+00:00"
   },
   {
     "id": "2026-10-08_Jordan Spence_shop_lean_166",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jordan Spence",
     "score": 0,
     "edge": 166,
@@ -465080,12 +465107,12 @@
     "price": 900,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:13.833864+00:00",
-    "updated_at": "2026-10-08T19:28:15.716349+00:00"
+    "updated_at": "2026-10-08T20:28:48.364920+00:00"
   },
   {
     "id": "2026-10-08_Max Sasson_shop_lean_166",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Max Sasson",
     "score": 0,
     "edge": 166,
@@ -465123,7 +465150,7 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.876183+00:00",
-    "updated_at": "2026-10-08T19:28:15.856913+00:00"
+    "updated_at": "2026-10-08T20:28:48.271108+00:00"
   },
   {
     "id": "2026-10-08_Michael McCarron_shop_take_165",
@@ -465171,7 +465198,7 @@
   {
     "id": "2026-10-08_Stephen Halliday_shop_take_164",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Stephen Halliday",
     "score": 0,
     "edge": 164,
@@ -465209,7 +465236,7 @@
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:13.969936+00:00",
-    "updated_at": "2026-10-08T19:28:15.801054+00:00"
+    "updated_at": "2026-10-08T20:28:48.128489+00:00"
   },
   {
     "id": "2026-10-08_Peyton Krebs_shop_take_162",
@@ -465298,7 +465325,7 @@
   {
     "id": "2026-10-08_Mikhail Sergachev_shop_take_150",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Mikhail Sergachev",
     "score": 0,
     "edge": 150,
@@ -465336,12 +465363,12 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:14.182642+00:00",
-    "updated_at": "2026-10-08T19:28:16.165549+00:00"
+    "updated_at": "2026-10-08T20:28:48.919134+00:00"
   },
   {
     "id": "2026-10-08_Zack Ostapchuk_shop_lean_150",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Zack Ostapchuk",
     "score": 0,
     "edge": 150,
@@ -465368,7 +465395,7 @@
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
-    "updated_at": "2026-10-08T19:28:19.042356+00:00",
+    "updated_at": "2026-10-08T20:28:51.067088+00:00",
     "player_name": "Zack Ostapchuk",
     "call_type": "WATCH",
     "status": "PENDING",
@@ -465382,7 +465409,7 @@
   {
     "id": "2026-10-08_MacKenzie Weegar_shop_take_149",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "MacKenzie Weegar",
     "score": 0,
     "edge": 149,
@@ -465420,7 +465447,7 @@
     "price": 950,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:14.268777+00:00",
-    "updated_at": "2026-10-08T19:28:16.207177+00:00"
+    "updated_at": "2026-10-08T20:28:48.964298+00:00"
   },
   {
     "id": "2026-10-08_Ondrej Palat_shop_lean_148",
@@ -465472,7 +465499,7 @@
     "price": 800,
     "book": "fanatics",
     "created_at": "2026-10-08T19:20:14.317193+00:00",
-    "updated_at": "2026-10-08T20:28:30.325345+00:00"
+    "updated_at": "2026-10-08T20:28:48.873288+00:00"
   },
   {
     "id": "2026-10-08_Simon Nemec_shop_take_148",
@@ -465520,7 +465547,7 @@
   {
     "id": "2026-10-08_Noah Cates_shop_lean_140",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Noah Cates",
     "score": 0,
     "edge": 140,
@@ -465558,12 +465585,12 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:14.450151+00:00",
-    "updated_at": "2026-10-08T19:28:16.433745+00:00"
+    "updated_at": "2026-10-08T20:28:48.495226+00:00"
   },
   {
     "id": "2026-10-08_Drew O'Connor_shop_take_136",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Drew O'Connor",
     "score": 0,
     "edge": 136,
@@ -465601,7 +465628,7 @@
     "price": 725,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:14.551249+00:00",
-    "updated_at": "2026-10-08T19:28:16.522161+00:00"
+    "updated_at": "2026-10-08T20:28:49.008832+00:00"
   },
   {
     "id": "2026-10-08_Zemgus Girgensons_shop_take_136",
@@ -465649,7 +465676,7 @@
   {
     "id": "2026-10-08_Samuel Honzek_shop_take_134",
     "date": "2026-10-08",
-    "time": "12:21 PM",
+    "time": "01:28 PM",
     "player": "Samuel Honzek",
     "score": 0,
     "edge": 134,
@@ -465687,7 +465714,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:14.639297+00:00",
-    "updated_at": "2026-10-08T19:21:24.315541+00:00"
+    "updated_at": "2026-10-08T20:28:49.057056+00:00"
   },
   {
     "id": "2026-10-08_Arttu Hyry_shop_lean_131",
@@ -465735,7 +465762,7 @@
   {
     "id": "2026-10-08_Jonatan Berggren_shop_lean_131",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jonatan Berggren",
     "score": 0,
     "edge": 131,
@@ -465764,7 +465791,7 @@
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
-    "updated_at": "2026-10-08T19:28:21.113886+00:00",
+    "updated_at": "2026-10-08T20:28:53.611083+00:00",
     "player_name": "Jonatan Berggren",
     "call_type": "WATCH",
     "status": "PENDING",
@@ -465778,7 +465805,7 @@
   {
     "id": "2026-10-08_Liam Ohgren_shop_take_131",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Liam Ohgren",
     "score": 0,
     "edge": 131,
@@ -465816,7 +465843,7 @@
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:14.837527+00:00",
-    "updated_at": "2026-10-08T19:28:16.653760+00:00"
+    "updated_at": "2026-10-08T20:28:49.289083+00:00"
   },
   {
     "id": "2026-10-08_Dillon Dube_shop_take_129",
@@ -465905,7 +465932,7 @@
   {
     "id": "2026-10-08_Jack McBain_shop_lean_125",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jack McBain",
     "score": 0,
     "edge": 125,
@@ -465943,12 +465970,12 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:14.984170+00:00",
-    "updated_at": "2026-10-08T19:28:16.943753+00:00"
+    "updated_at": "2026-10-08T20:28:49.498123+00:00"
   },
   {
     "id": "2026-10-08_Mason Lohrei_shop_take_125",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Mason Lohrei",
     "score": 0,
     "edge": 125,
@@ -465986,12 +466013,12 @@
     "price": 850,
     "book": "hardrockbet",
     "created_at": "2026-10-08T19:20:15.027037+00:00",
-    "updated_at": "2026-10-08T19:28:17.006640+00:00"
+    "updated_at": "2026-10-08T20:28:49.541723+00:00"
   },
   {
     "id": "2026-10-08_Noah Dobson_shop_lean_125",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Noah Dobson",
     "score": 0,
     "edge": 125,
@@ -466029,7 +466056,7 @@
     "price": 700,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.074500+00:00",
-    "updated_at": "2026-10-08T19:28:17.072282+00:00"
+    "updated_at": "2026-10-08T20:28:49.676130+00:00"
   },
   {
     "id": "2026-10-08_Adam Jiricek_shop_take_124",
@@ -466084,12 +466111,12 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.121257+00:00",
-    "updated_at": "2026-10-08T20:28:30.006262+00:00"
+    "updated_at": "2026-10-08T20:28:49.785602+00:00"
   },
   {
     "id": "2026-10-08_Bowen Byram_shop_take_124",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Bowen Byram",
     "score": 0,
     "edge": 124,
@@ -466127,7 +466154,7 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:15.169612+00:00",
-    "updated_at": "2026-10-08T19:28:17.183606+00:00"
+    "updated_at": "2026-10-08T20:28:49.585331+00:00"
   },
   {
     "id": "2026-10-08_Thomas Harley_shop_take_123",
@@ -466175,7 +466202,7 @@
   {
     "id": "2026-10-08_Brendan Gallagher_shop_lean_122",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Brendan Gallagher",
     "score": 0,
     "edge": 122,
@@ -466209,7 +466236,7 @@
     "price": 850,
     "book": "fanatics",
     "created_at": "2026-10-08T19:20:15.333937+00:00",
-    "updated_at": "2026-10-08T19:28:16.252501+00:00"
+    "updated_at": "2026-10-08T20:28:49.192426+00:00"
   },
   {
     "id": "2026-10-08_Rasmus Andersson_shop_lean_121",
@@ -466257,7 +466284,7 @@
   {
     "id": "2026-10-08_Fedor Svechkov_shop_lean_120",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Fedor Svechkov",
     "score": 0,
     "edge": 120,
@@ -466295,12 +466322,12 @@
     "price": 700,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.426403+00:00",
-    "updated_at": "2026-10-08T19:28:17.700461+00:00"
+    "updated_at": "2026-10-08T20:28:50.436033+00:00"
   },
   {
     "id": "2026-10-08_Colin Blackwell_shop_take_117",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Colin Blackwell",
     "score": 0,
     "edge": 117,
@@ -466337,12 +466364,12 @@
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.473089+00:00",
-    "updated_at": "2026-10-08T19:28:17.416920+00:00"
+    "updated_at": "2026-10-08T20:28:49.921222+00:00"
   },
   {
     "id": "2026-10-08_Phillip Danault_shop_lean_115",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Phillip Danault",
     "score": 0,
     "edge": 115,
@@ -466380,7 +466407,7 @@
     "price": 600,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.522645+00:00",
-    "updated_at": "2026-10-08T19:28:17.498095+00:00"
+    "updated_at": "2026-10-08T20:28:50.349528+00:00"
   },
   {
     "id": "2026-10-08_Pius Suter_shop_lean_114",
@@ -466430,12 +466457,12 @@
     "price": 600,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.573048+00:00",
-    "updated_at": "2026-10-08T20:28:30.756608+00:00"
+    "updated_at": "2026-10-08T20:28:52.698180+00:00"
   },
   {
     "id": "2026-10-08_Charle-Edouard D'Astous_shop_lean_112",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Charle-Edouard D'Astous",
     "score": 0,
     "edge": 112,
@@ -466473,12 +466500,12 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:15.618644+00:00",
-    "updated_at": "2026-10-08T19:28:17.615173+00:00"
+    "updated_at": "2026-10-08T20:28:50.392715+00:00"
   },
   {
     "id": "2026-10-08_Jake Evans_shop_lean_111",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jake Evans",
     "score": 0,
     "edge": 111,
@@ -466516,12 +466543,12 @@
     "price": 700,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.662927+00:00",
-    "updated_at": "2026-10-08T19:28:17.657798+00:00"
+    "updated_at": "2026-10-08T20:28:50.125168+00:00"
   },
   {
     "id": "2026-10-08_Trevor Connelly_shop_take_110",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Trevor Connelly",
     "score": 0,
     "edge": 110,
@@ -466559,7 +466586,7 @@
     "price": 425,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.710330+00:00",
-    "updated_at": "2026-10-08T19:28:17.743517+00:00"
+    "updated_at": "2026-10-08T20:28:50.283707+00:00"
   },
   {
     "id": "2026-10-08_Conor Geekie_shop_take_109",
@@ -466657,7 +466684,7 @@
   {
     "id": "2026-10-08_Sean Couturier_shop_take_101",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Sean Couturier",
     "score": 0,
     "edge": 101,
@@ -466695,12 +466722,12 @@
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:15.852703+00:00",
-    "updated_at": "2026-10-08T19:28:17.789053+00:00"
+    "updated_at": "2026-10-08T20:28:49.994050+00:00"
   },
   {
     "id": "2026-10-08_K'Andre Miller_shop_take_99",
     "date": "2026-10-08",
-    "time": "12:21 PM",
+    "time": "01:28 PM",
     "player": "K'Andre Miller",
     "score": 0,
     "edge": 99,
@@ -466738,7 +466765,7 @@
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:15.903521+00:00",
-    "updated_at": "2026-10-08T19:21:26.021938+00:00"
+    "updated_at": "2026-10-08T20:28:50.655368+00:00"
   },
   {
     "id": "2026-10-08_Jeffrey Viel_shop_take_98",
@@ -466796,7 +466823,7 @@
   {
     "id": "2026-10-08_Josh Anderson_shop_lean_98",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Josh Anderson",
     "score": 0,
     "edge": 98,
@@ -466834,7 +466861,7 @@
     "price": 600,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:15.997261+00:00",
-    "updated_at": "2026-10-08T19:28:17.881840+00:00"
+    "updated_at": "2026-10-08T20:28:50.480069+00:00"
   },
   {
     "id": "2026-10-08_Zayne Parekh_shop_take_98",
@@ -466882,7 +466909,7 @@
   {
     "id": "2026-10-08_Ilya Mikheyev_shop_take_96",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Ilya Mikheyev",
     "score": 0,
     "edge": 96,
@@ -466920,7 +466947,7 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.087340+00:00",
-    "updated_at": "2026-10-08T19:28:17.835747+00:00"
+    "updated_at": "2026-10-08T20:28:50.613765+00:00"
   },
   {
     "id": "2026-10-08_Jaden Schwartz_shop_lean_96",
@@ -466968,7 +466995,7 @@
   {
     "id": "2026-10-08_Eric Robinson_shop_take_95",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Eric Robinson",
     "score": 0,
     "edge": 95,
@@ -467006,12 +467033,12 @@
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.177155+00:00",
-    "updated_at": "2026-10-08T19:28:17.975919+00:00"
+    "updated_at": "2026-10-08T20:28:50.838146+00:00"
   },
   {
     "id": "2026-10-08_John Carlson_shop_take_94",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "John Carlson",
     "score": 0,
     "edge": 94,
@@ -467049,7 +467076,7 @@
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.221532+00:00",
-    "updated_at": "2026-10-08T19:28:18.416628+00:00"
+    "updated_at": "2026-10-08T20:28:51.242442+00:00"
   },
   {
     "id": "2026-10-08_Luca Cagnoni_shop_take_94",
@@ -467095,7 +467122,7 @@
   {
     "id": "2026-10-08_Paul Cotter_shop_take_94",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Paul Cotter",
     "score": 0,
     "edge": 94,
@@ -467133,12 +467160,12 @@
     "price": 550,
     "book": "hardrockbet",
     "created_at": "2026-10-08T19:20:16.363306+00:00",
-    "updated_at": "2026-10-08T19:28:18.151540+00:00"
+    "updated_at": "2026-10-08T20:28:50.789785+00:00"
   },
   {
     "id": "2026-10-08_Jean-Gabriel Pageau_shop_take_93",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jean-Gabriel Pageau",
     "score": 0,
     "edge": 93,
@@ -467176,7 +467203,7 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.454064+00:00",
-    "updated_at": "2026-10-08T19:28:18.239675+00:00"
+    "updated_at": "2026-10-08T20:28:50.978688+00:00"
   },
   {
     "id": "2026-10-08_Pontus Holmberg_shop_take_93",
@@ -467231,12 +467258,12 @@
     "price": 625,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.500575+00:00",
-    "updated_at": "2026-10-08T20:28:30.052250+00:00"
+    "updated_at": "2026-10-08T20:28:50.570455+00:00"
   },
   {
     "id": "2026-10-08_Casey Mittelstadt_shop_take_91",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Casey Mittelstadt",
     "score": 0,
     "edge": 91,
@@ -467274,7 +467301,7 @@
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:16.585877+00:00",
-    "updated_at": "2026-10-08T19:28:18.372543+00:00"
+    "updated_at": "2026-10-08T20:28:51.152500+00:00"
   },
   {
     "id": "2026-10-08_Raphael Lavoie_shop_lean_91",
@@ -467405,7 +467432,7 @@
   {
     "id": "2026-10-08_Lane Hutson_shop_take_87",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Lane Hutson",
     "score": 0,
     "edge": 87,
@@ -467443,12 +467470,12 @@
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.768686+00:00",
-    "updated_at": "2026-10-08T19:28:18.721702+00:00"
+    "updated_at": "2026-10-08T20:28:48.588165+00:00"
   },
   {
     "id": "2026-10-08_Kirby Dach_shop_take_86",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Kirby Dach",
     "score": 0,
     "edge": 86,
@@ -467486,7 +467513,7 @@
     "price": 475,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.815461+00:00",
-    "updated_at": "2026-10-08T19:28:18.768023+00:00"
+    "updated_at": "2026-10-08T20:28:51.376678+00:00"
   },
   {
     "id": "2026-10-08_Pius Suter_shop_take_84",
@@ -467532,7 +467559,7 @@
   {
     "id": "2026-10-08_Roman Josi_shop_take_84",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Roman Josi",
     "score": 0,
     "edge": 84,
@@ -467570,12 +467597,12 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:16.954834+00:00",
-    "updated_at": "2026-10-08T19:28:18.813957+00:00"
+    "updated_at": "2026-10-08T20:28:51.200514+00:00"
   },
   {
     "id": "2026-10-08_Quinn Hughes_shop_take_79",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Quinn Hughes",
     "score": 0,
     "edge": 79,
@@ -467613,12 +467640,12 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.998009+00:00",
-    "updated_at": "2026-10-08T19:28:18.906067+00:00"
+    "updated_at": "2026-10-08T20:28:51.512163+00:00"
   },
   {
     "id": "2026-10-08_Collin Graf_shop_take_77",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Collin Graf",
     "score": 0,
     "edge": 77,
@@ -467656,7 +467683,7 @@
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.045304+00:00",
-    "updated_at": "2026-10-08T19:28:18.951727+00:00"
+    "updated_at": "2026-10-08T20:28:51.691777+00:00"
   },
   {
     "id": "2026-10-08_Shea Theodore_shop_take_77",
@@ -467703,12 +467730,12 @@
     "price": 575,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.098304+00:00",
-    "updated_at": "2026-10-08T20:28:30.801530+00:00"
+    "updated_at": "2026-10-08T20:28:51.423867+00:00"
   },
   {
     "id": "2026-10-08_Darren Raddysh_shop_take_76",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Darren Raddysh",
     "score": 0,
     "edge": 76,
@@ -467746,12 +467773,12 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.145551+00:00",
-    "updated_at": "2026-10-08T19:28:19.087394+00:00"
+    "updated_at": "2026-10-08T20:28:51.600892+00:00"
   },
   {
     "id": "2026-10-08_Oliver Moore_shop_take_76",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Oliver Moore",
     "score": 0,
     "edge": 76,
@@ -467789,12 +467816,12 @@
     "price": 525,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.192590+00:00",
-    "updated_at": "2026-10-08T19:28:19.138965+00:00"
+    "updated_at": "2026-10-08T20:28:51.829702+00:00"
   },
   {
     "id": "2026-10-08_Carter Yakemchuk_shop_take_74",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Carter Yakemchuk",
     "score": 0,
     "edge": 74,
@@ -467832,12 +467859,12 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.288221+00:00",
-    "updated_at": "2026-10-08T19:28:19.431287+00:00"
+    "updated_at": "2026-10-08T20:28:51.285302+00:00"
   },
   {
     "id": "2026-10-08_Filip Hronek_shop_lean_74",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Filip Hronek",
     "score": 0,
     "edge": 74,
@@ -467875,12 +467902,12 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.340755+00:00",
-    "updated_at": "2026-10-08T19:28:19.338797+00:00"
+    "updated_at": "2026-10-08T20:28:52.296827+00:00"
   },
   {
     "id": "2026-10-08_Michael Carcone_shop_take_74",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Michael Carcone",
     "score": 0,
     "edge": 74,
@@ -467918,12 +467945,12 @@
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.404663+00:00",
-    "updated_at": "2026-10-08T19:28:19.383564+00:00"
+    "updated_at": "2026-10-08T20:28:52.063445+00:00"
   },
   {
     "id": "2026-10-08_Sean Walker_shop_take_74",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Sean Walker",
     "score": 0,
     "edge": 74,
@@ -467961,12 +467988,12 @@
     "price": 725,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.484901+00:00",
-    "updated_at": "2026-10-08T19:28:19.232208+00:00"
+    "updated_at": "2026-10-08T20:28:51.877531+00:00"
   },
   {
     "id": "2026-10-08_Bobby Brink_shop_take_71",
     "date": "2026-10-08",
-    "time": "12:21 PM",
+    "time": "01:28 PM",
     "player": "Bobby Brink",
     "score": 0,
     "edge": 71,
@@ -468004,12 +468031,12 @@
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.546100+00:00",
-    "updated_at": "2026-10-08T19:21:27.586737+00:00"
+    "updated_at": "2026-10-08T20:28:52.118976+00:00"
   },
   {
     "id": "2026-10-08_Linus Karlsson_shop_take_71",
     "date": "2026-10-08",
-    "time": "12:21 PM",
+    "time": "01:28 PM",
     "player": "Linus Karlsson",
     "score": 0,
     "edge": 71,
@@ -468047,12 +468074,12 @@
     "price": 525,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.592351+00:00",
-    "updated_at": "2026-10-08T19:21:28.776212+00:00"
+    "updated_at": "2026-10-08T20:28:51.782624+00:00"
   },
   {
     "id": "2026-10-08_Adam Jiricek_shop_lean_70",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Adam Jiricek",
     "score": 0,
     "edge": 70,
@@ -468088,12 +468115,12 @@
     "price": 600,
     "book": "fanatics",
     "created_at": "2026-10-08T19:20:17.636123+00:00",
-    "updated_at": "2026-10-08T19:28:21.022373+00:00"
+    "updated_at": "2026-10-08T20:28:52.248254+00:00"
   },
   {
     "id": "2026-10-08_Ryan Strome_shop_lean_69",
     "date": "2026-10-08",
-    "time": "12:21 PM",
+    "time": "01:28 PM",
     "player": "Ryan Strome",
     "score": 0,
     "edge": 69,
@@ -468131,12 +468158,12 @@
     "price": 500,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.680176+00:00",
-    "updated_at": "2026-10-08T19:21:28.821410+00:00"
+    "updated_at": "2026-10-08T20:28:53.065701+00:00"
   },
   {
     "id": "2026-10-08_Daniil But_shop_lean_67",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Daniil But",
     "score": 0,
     "edge": 67,
@@ -468174,12 +468201,12 @@
     "price": 575,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.725125+00:00",
-    "updated_at": "2026-10-08T19:28:19.569063+00:00"
+    "updated_at": "2026-10-08T20:28:52.403770+00:00"
   },
   {
     "id": "2026-10-08_Ryan Donato_shop_lean_67",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Ryan Donato",
     "score": 0,
     "edge": 67,
@@ -468217,7 +468244,7 @@
     "price": 525,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:17.770174+00:00",
-    "updated_at": "2026-10-08T19:28:19.612802+00:00"
+    "updated_at": "2026-10-08T20:28:52.572780+00:00"
   },
   {
     "id": "2026-10-08_Christian Dvorak_shop_lean_66",
@@ -468311,12 +468338,12 @@
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.872104+00:00",
-    "updated_at": "2026-10-08T20:28:30.668126+00:00"
+    "updated_at": "2026-10-08T20:28:52.018643+00:00"
   },
   {
     "id": "2026-10-08_Dalibor Dvorsky_shop_take_64",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Dalibor Dvorsky",
     "score": 0,
     "edge": 64,
@@ -468345,7 +468372,7 @@
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
-    "updated_at": "2026-10-08T19:28:20.118265+00:00",
+    "updated_at": "2026-10-08T20:28:53.439769+00:00",
     "player_name": "Dalibor Dvorsky",
     "call_type": "TAKE",
     "status": "PENDING",
@@ -468402,7 +468429,7 @@
   {
     "id": "2026-10-08_Florian Xhekaj_shop_lean_59",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Florian Xhekaj",
     "score": 0,
     "edge": 59,
@@ -468440,7 +468467,7 @@
     "price": 600,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.120124+00:00",
-    "updated_at": "2026-10-08T19:28:20.025146+00:00"
+    "updated_at": "2026-10-08T20:28:53.159729+00:00"
   },
   {
     "id": "2026-10-08_Claude Giroux_shop_take_56",
@@ -468494,7 +468521,7 @@
   {
     "id": "2026-10-08_Lawson Crouse_shop_take_56",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Lawson Crouse",
     "score": 0,
     "edge": 56,
@@ -468532,12 +468559,12 @@
     "price": 490,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:18.352599+00:00",
-    "updated_at": "2026-10-08T19:28:20.211309+00:00"
+    "updated_at": "2026-10-08T20:28:53.565994+00:00"
   },
   {
     "id": "2026-10-08_Jiri Kulich_shop_lean_54",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jiri Kulich",
     "score": 0,
     "edge": 54,
@@ -468575,7 +468602,7 @@
     "price": 500,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.437669+00:00",
-    "updated_at": "2026-10-08T19:28:20.398213+00:00"
+    "updated_at": "2026-10-08T20:28:52.935666+00:00"
   },
   {
     "id": "2026-10-08_Ridly Greig_shop_lean_54",
@@ -468666,7 +468693,7 @@
   {
     "id": "2026-10-08_Matthew Schaefer_shop_lean_52",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Matthew Schaefer",
     "score": 0,
     "edge": 52,
@@ -468704,12 +468731,12 @@
     "price": 375,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.616380+00:00",
-    "updated_at": "2026-10-08T19:28:20.491429+00:00"
+    "updated_at": "2026-10-08T20:28:53.757275+00:00"
   },
   {
     "id": "2026-10-08_Noah \u00d6stlund_shop_lean_51",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Noah \u00d6stlund",
     "score": 0,
     "edge": 51,
@@ -468747,12 +468774,12 @@
     "price": 425,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.710091+00:00",
-    "updated_at": "2026-10-08T19:28:20.584656+00:00"
+    "updated_at": "2026-10-08T20:28:53.983585+00:00"
   },
   {
     "id": "2026-10-08_Sam Steel_shop_lean_51",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Sam Steel",
     "score": 0,
     "edge": 51,
@@ -468790,12 +468817,12 @@
     "price": 500,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.753852+00:00",
-    "updated_at": "2026-10-08T19:28:20.631044+00:00"
+    "updated_at": "2026-10-08T20:28:54.027820+00:00"
   },
   {
     "id": "2026-10-08_Alexandre Texier_shop_lean_50",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Alexandre Texier",
     "score": 0,
     "edge": 50,
@@ -468833,12 +468860,12 @@
     "price": 460,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:18.797248+00:00",
-    "updated_at": "2026-10-08T19:28:20.676989+00:00"
+    "updated_at": "2026-10-08T20:28:52.642886+00:00"
   },
   {
     "id": "2026-10-08_Gage Goncalves_shop_lean_50",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Gage Goncalves",
     "score": 0,
     "edge": 50,
@@ -468876,7 +468903,7 @@
     "price": 425,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:18.845350+00:00",
-    "updated_at": "2026-10-08T19:28:20.724684+00:00"
+    "updated_at": "2026-10-08T20:28:53.849128+00:00"
   },
   {
     "id": "2026-10-08_Michael Misa_shop_lean_50",
@@ -468927,7 +468954,7 @@
     "price": 375,
     "book": "hardrockbet",
     "created_at": "2026-10-08T19:20:18.890733+00:00",
-    "updated_at": "2026-10-08T20:28:31.031832+00:00"
+    "updated_at": "2026-10-08T20:28:54.286375+00:00"
   },
   {
     "id": "2026-10-08_Victor Olofsson_shop_lean_50",
@@ -468970,7 +468997,7 @@
   {
     "id": "2026-10-08_Emil Heineman_shop_lean_48",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Emil Heineman",
     "score": 0,
     "edge": 48,
@@ -469008,12 +469035,12 @@
     "price": 400,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.983342+00:00",
-    "updated_at": "2026-10-08T19:28:20.925513+00:00"
+    "updated_at": "2026-10-08T20:28:53.804905+00:00"
   },
   {
     "id": "2026-10-08_Mavrik Bourque_shop_lean_48",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Mavrik Bourque",
     "score": 0,
     "edge": 48,
@@ -469051,12 +469078,12 @@
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:19.029114+00:00",
-    "updated_at": "2026-10-08T19:28:20.973955+00:00"
+    "updated_at": "2026-10-08T20:28:54.129949+00:00"
   },
   {
     "id": "2026-10-08_Barrett Hayton_shop_lean_46",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Barrett Hayton",
     "score": 0,
     "edge": 46,
@@ -469094,12 +469121,12 @@
     "price": 500,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:19.077436+00:00",
-    "updated_at": "2026-10-08T19:28:21.068367+00:00"
+    "updated_at": "2026-10-08T20:28:52.200059+00:00"
   },
   {
     "id": "2026-10-08_Simon Holmstrom_shop_lean_46",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Simon Holmstrom",
     "score": 0,
     "edge": 46,
@@ -469137,7 +469164,7 @@
     "price": 440,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:19.168722+00:00",
-    "updated_at": "2026-10-08T19:28:21.161192+00:00"
+    "updated_at": "2026-10-08T20:28:54.333219+00:00"
   },
   {
     "id": "2026-10-08_William Carrier_shop_lean_46",
@@ -469185,7 +469212,7 @@
   {
     "id": "2026-10-08_Mikael Backlund_shop_lean_45",
     "date": "2026-10-08",
-    "time": "12:21 PM",
+    "time": "01:28 PM",
     "player": "Mikael Backlund",
     "score": 0,
     "edge": 45,
@@ -469223,12 +469250,12 @@
     "price": 460,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:19.300654+00:00",
-    "updated_at": "2026-10-08T19:21:30.381675+00:00"
+    "updated_at": "2026-10-08T20:28:54.192660+00:00"
   },
   {
     "id": "2026-10-08_Ross Colton_shop_lean_45",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Ross Colton",
     "score": 0,
     "edge": 45,
@@ -469266,12 +469293,12 @@
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:19.345648+00:00",
-    "updated_at": "2026-10-08T19:28:21.313540+00:00"
+    "updated_at": "2026-10-08T20:28:54.747500+00:00"
   },
   {
     "id": "2026-10-08_Tomas Hertl_shop_lean_45",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Tomas Hertl",
     "score": 0,
     "edge": 45,
@@ -469309,12 +469336,12 @@
     "price": 250,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:19.393511+00:00",
-    "updated_at": "2026-10-08T19:28:21.367786+00:00"
+    "updated_at": "2026-10-08T20:28:54.469116+00:00"
   },
   {
     "id": "2026-10-08_Marat Khusnutdinov_shop_lean_43",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Marat Khusnutdinov",
     "score": 0,
     "edge": 43,
@@ -469352,7 +469379,7 @@
     "price": 575,
     "book": "fanatics",
     "created_at": "2026-10-08T19:20:19.441445+00:00",
-    "updated_at": "2026-10-08T19:28:21.418785+00:00"
+    "updated_at": "2026-10-08T20:28:54.379567+00:00"
   },
   {
     "id": "2026-10-08_Ryan Hartman_shop_lean_43",
@@ -469400,7 +469427,7 @@
   {
     "id": "2026-10-08_Alexander Kerfoot_shop_lean_42",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Alexander Kerfoot",
     "score": 0,
     "edge": 42,
@@ -469438,12 +469465,12 @@
     "price": 500,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:19.533523+00:00",
-    "updated_at": "2026-10-08T19:28:21.469127+00:00"
+    "updated_at": "2026-10-08T20:28:52.350002+00:00"
   },
   {
     "id": "2026-10-08_Zachary Bolduc_shop_lean_42",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Zachary Bolduc",
     "score": 0,
     "edge": 42,
@@ -469471,7 +469498,7 @@
     "price_source": "shop",
     "sport": "NHL",
     "market": "anytime_goal",
-    "updated_at": "2026-10-08T19:28:21.793356+00:00",
+    "updated_at": "2026-10-08T20:28:54.841212+00:00",
     "player_name": "Zachary Bolduc",
     "call_type": "WATCH",
     "status": "PENDING",
@@ -469485,7 +469512,7 @@
   {
     "id": "2026-10-08_Anders Lee_shop_lean_40",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Anders Lee",
     "score": 0,
     "edge": 40,
@@ -469523,7 +469550,7 @@
     "price": 360,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:19.624669+00:00",
-    "updated_at": "2026-10-08T19:28:21.651683+00:00"
+    "updated_at": "2026-10-08T20:28:54.793573+00:00"
   },
   {
     "id": "2026-10-08_Matvei Gridin_shop_lean_40",
@@ -469766,7 +469793,7 @@
   {
     "id": "2026-10-08_Jeffrey Viel_shop_lean_161",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Jeffrey Viel",
     "score": 0,
     "edge": 161,
@@ -469804,12 +469831,12 @@
     "price": 900,
     "book": "draftkings",
     "created_at": "2026-10-08T19:21:23.071388+00:00",
-    "updated_at": "2026-10-08T19:28:15.905502+00:00"
+    "updated_at": "2026-10-08T20:28:48.826253+00:00"
   },
   {
     "id": "2026-10-08_Aatu R\u00e4ty_shop_lean_160",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Aatu R\u00e4ty",
     "score": 0,
     "edge": 160,
@@ -469845,7 +469872,7 @@
     "price": 900,
     "book": "draftkings",
     "created_at": "2026-10-08T19:21:23.165995+00:00",
-    "updated_at": "2026-10-08T19:28:15.995207+00:00"
+    "updated_at": "2026-10-08T20:28:48.538870+00:00"
   },
   {
     "id": "2026-10-08_Alvin Kamara_watch_45",
@@ -470538,7 +470565,7 @@
   {
     "id": "2026-10-08_Conor Geekie_shop_lean_74",
     "date": "2026-10-08",
-    "time": "12:28 PM",
+    "time": "01:28 PM",
     "player": "Conor Geekie",
     "score": 0,
     "edge": 74,
@@ -470576,7 +470603,7 @@
     "price": 600,
     "book": "fanatics",
     "created_at": "2026-10-08T19:28:19.279031+00:00",
-    "updated_at": "2026-10-08T19:28:19.279031+00:00"
+    "updated_at": "2026-10-08T20:28:52.752686+00:00"
   },
   {
     "id": "2026-10-08_Linus Karlsson_shop_lean_71",
@@ -471049,5 +471076,1520 @@
     "price": 360,
     "book": "fanduel",
     "created_at": "2026-10-08T20:28:31.371276+00:00"
+  },
+  {
+    "id": "2026-10-08_Brevyn Spann-Ford_watch_89",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Brevyn Spann-Ford",
+    "score": 89,
+    "edge": 98,
+    "best_price": 900,
+    "best_book": "betrivers",
+    "median": 750.0,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 850,
+      "betrivers": 900,
+      "caesars": 750,
+      "draftkings": 900,
+      "fanatics": 650,
+      "fanduel": 750,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "mgm_locked": 850,
+    "mgm_ending": 50,
+    "methods": [
+      "HardRock 50",
+      "Stayed in the group",
+      "Multi-book Shorten",
+      "FD 50",
+      "B365 over HardRock",
+      "Match 50",
+      "MGM 50",
+      "Multi-book method",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 10,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-10-08T20:28:22.549747+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "DALLAS COWBOYS NFL",
+    "market": "anytime_td",
+    "benford_tag": "Authentic",
+    "benford_note": "",
+    "benford_cluster": 0.38,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "updated_at": "2026-10-08T20:28:33.566008+00:00",
+    "player_name": "Brevyn Spann-Ford",
+    "stamps": [
+      "HardRock 50",
+      "Stayed in the group",
+      "Multi-book Shorten",
+      "FD 50",
+      "B365 over HardRock",
+      "Match 50",
+      "MGM 50",
+      "Multi-book method",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "price": 900,
+    "book": "betrivers",
+    "created_at": "2026-10-08T20:28:22.549747+00:00"
+  },
+  {
+    "id": "2026-10-08_Jonathan Mingo_watch_89",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Jonathan Mingo",
+    "score": 89,
+    "edge": 135,
+    "best_price": 2500,
+    "best_book": "betrivers",
+    "median": 1900.0,
+    "book_prices": {
+      "bet365": 2000,
+      "betmgm": 2200,
+      "caesars": 1700,
+      "draftkings": 1600,
+      "fanatics": 2000,
+      "fanduel": 2200,
+      "hardrockbet": 1750,
+      "betrivers": 2500
+    },
+    "price_bucket": "+1000+",
+    "ending": 0,
+    "mgm_locked": 2200,
+    "mgm_ending": 0,
+    "methods": [
+      "Multi-book Shorten",
+      "HardRock 50",
+      "B365 over HardRock",
+      "Rivers way over pack",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "core": 6,
+    "result": "PENDING",
+    "source": "watch",
+    "logged_at": "2026-10-08T20:28:22.995485+00:00",
+    "price_source": "pregame_lock",
+    "sport": "NFL",
+    "team": "DALLAS COWBOYS NFL",
+    "market": "anytime_td",
+    "benford_tag": "Fake",
+    "benford_note": "",
+    "benford_cluster": 0.5,
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "updated_at": "2026-10-08T20:28:22.995517+00:00",
+    "player_name": "Jonathan Mingo",
+    "stamps": [
+      "Multi-book Shorten",
+      "HardRock 50",
+      "B365 over HardRock",
+      "Rivers way over pack",
+      "EV Premium",
+      "Kelly Support"
+    ],
+    "price": 2500,
+    "book": "betrivers",
+    "created_at": "2026-10-08T20:28:22.995485+00:00"
+  },
+  {
+    "id": "2026-10-08_Yakov Trenin_shop_take_228",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Yakov Trenin",
+    "score": 0,
+    "edge": 228,
+    "best_price": 950,
+    "best_book": "draftkings",
+    "median": 725,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 625,
+      "betrivers": 700,
+      "caesars": 550,
+      "draftkings": 950,
+      "fanatics": 800,
+      "fanduel": 850,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:46.777657+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Yakov Trenin",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 950,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:46.777657+00:00",
+    "updated_at": "2026-10-08T20:28:46.777657+00:00"
+  },
+  {
+    "id": "2026-10-08_Arttu Hyry_shop_take_177",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Arttu Hyry",
+    "score": 0,
+    "edge": 177,
+    "best_price": 850,
+    "best_book": "fanatics",
+    "median": 787,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 775,
+      "betrivers": 800,
+      "caesars": 600,
+      "draftkings": 800,
+      "fanatics": 850,
+      "fanduel": 800,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:48.177147+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Arttu Hyry",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 850,
+    "book": "fanatics",
+    "created_at": "2026-10-08T20:28:48.177147+00:00",
+    "updated_at": "2026-10-08T20:28:48.177147+00:00"
+  },
+  {
+    "id": "2026-10-08_Teddy Blueger_shop_take_173",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Teddy Blueger",
+    "score": 0,
+    "edge": 173,
+    "best_price": 950,
+    "best_book": "bet365",
+    "median": 850,
+    "book_prices": {
+      "bet365": 950,
+      "betmgm": 825,
+      "betrivers": 850,
+      "caesars": 625,
+      "draftkings": 850,
+      "fanatics": 900,
+      "fanduel": 1100,
+      "hardrockbet": 575
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:48.319562+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Teddy Blueger",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 950,
+    "book": "bet365",
+    "created_at": "2026-10-08T20:28:48.319562+00:00",
+    "updated_at": "2026-10-08T20:28:48.319562+00:00"
+  },
+  {
+    "id": "2026-10-08_Devon Toews_shop_lean_164",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Devon Toews",
+    "score": 0,
+    "edge": 164,
+    "best_price": 800,
+    "best_book": "draftkings",
+    "median": 612,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 575,
+      "betrivers": 525,
+      "caesars": 500,
+      "draftkings": 800,
+      "fanatics": 700,
+      "fanduel": 725,
+      "hardrockbet": 600
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:48.451584+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Devon Toews",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 800,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:48.451584+00:00",
+    "updated_at": "2026-10-08T20:28:48.451584+00:00"
+  },
+  {
+    "id": "2026-10-08_Zemgus Girgensons_shop_lean_159",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Zemgus Girgensons",
+    "score": 0,
+    "edge": 159,
+    "best_price": 800,
+    "best_book": "fanduel",
+    "median": 687,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 675,
+      "betrivers": 600,
+      "caesars": 550,
+      "draftkings": 750,
+      "fanatics": 700,
+      "fanduel": 800,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:48.668605+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Zemgus Girgensons",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 800,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:48.668605+00:00",
+    "updated_at": "2026-10-08T20:28:48.668605+00:00"
+  },
+  {
+    "id": "2026-10-08_Luca Cagnoni_shop_lean_134",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Luca Cagnoni",
+    "score": 0,
+    "edge": 134,
+    "best_price": 800,
+    "best_book": "fanduel",
+    "median": 650,
+    "book_prices": {
+      "bet365": 750,
+      "betmgm": 650,
+      "betrivers": 800,
+      "caesars": 550,
+      "draftkings": 650,
+      "fanatics": 650,
+      "fanduel": 800,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:49.239759+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "updated_at": "2026-10-08T20:28:49.356579+00:00",
+    "player_name": "Luca Cagnoni",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 800,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:49.239759+00:00"
+  },
+  {
+    "id": "2026-10-08_Michael Amadio_shop_take_130",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Michael Amadio",
+    "score": 0,
+    "edge": 130,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 587,
+    "book_prices": {
+      "bet365": 575,
+      "betmgm": 525,
+      "betrivers": 600,
+      "caesars": 450,
+      "draftkings": 650,
+      "fanatics": 600,
+      "fanduel": 600,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:49.406037+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Michael Amadio",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 650,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:49.406037+00:00",
+    "updated_at": "2026-10-08T20:28:49.406037+00:00"
+  },
+  {
+    "id": "2026-10-08_Casey Cizikas_shop_take_128",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Casey Cizikas",
+    "score": 0,
+    "edge": 128,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 675,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 625,
+      "betrivers": 650,
+      "caesars": 525,
+      "draftkings": 750,
+      "fanatics": 700,
+      "fanduel": 750,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:49.453856+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Casey Cizikas",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 750,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:49.453856+00:00",
+    "updated_at": "2026-10-08T20:28:49.453856+00:00"
+  },
+  {
+    "id": "2026-10-08_Ty Dellandrea_shop_take_124",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Ty Dellandrea",
+    "score": 0,
+    "edge": 124,
+    "best_price": 850,
+    "best_book": "fanduel",
+    "median": 800,
+    "book_prices": {
+      "betmgm": 700,
+      "betrivers": 950,
+      "caesars": 550,
+      "draftkings": 800,
+      "fanatics": 800,
+      "fanduel": 850
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:49.632209+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Ty Dellandrea",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 850,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:49.632209+00:00",
+    "updated_at": "2026-10-08T20:28:49.632209+00:00"
+  },
+  {
+    "id": "2026-10-08_Peyton Krebs_shop_lean_119",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Peyton Krebs",
+    "score": 0,
+    "edge": 119,
+    "best_price": 700,
+    "best_book": "bet365",
+    "median": 637,
+    "book_prices": {
+      "bet365": 700,
+      "betmgm": 675,
+      "betrivers": 750,
+      "caesars": 525,
+      "draftkings": 700,
+      "fanatics": 600,
+      "fanduel": 575,
+      "hardrockbet": 500
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:49.852913+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Peyton Krebs",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 700,
+    "book": "bet365",
+    "created_at": "2026-10-08T20:28:49.852913+00:00",
+    "updated_at": "2026-10-08T20:28:49.852913+00:00"
+  },
+  {
+    "id": "2026-10-08_Raphael Lavoie_shop_take_113",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Raphael Lavoie",
+    "score": 0,
+    "edge": 113,
+    "best_price": 725,
+    "best_book": "fanduel",
+    "median": 650,
+    "book_prices": {
+      "caesars": 525,
+      "draftkings": 650,
+      "fanatics": 650,
+      "fanduel": 725,
+      "hardrockbet": 550
+    },
+    "price_bucket": "+700s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:50.062335+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Raphael Lavoie",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 725,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:50.062335+00:00",
+    "updated_at": "2026-10-08T20:28:50.062335+00:00"
+  },
+  {
+    "id": "2026-10-08_Marc Gatcomb_shop_lean_111",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Marc Gatcomb",
+    "score": 0,
+    "edge": 111,
+    "best_price": 700,
+    "best_book": "draftkings",
+    "median": 675,
+    "book_prices": {
+      "bet365": 850,
+      "betmgm": 600,
+      "betrivers": 700,
+      "caesars": 525,
+      "draftkings": 700,
+      "fanatics": 650,
+      "fanduel": 700,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:50.205237+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Marc Gatcomb",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 700,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:50.205237+00:00",
+    "updated_at": "2026-10-08T20:28:50.205237+00:00"
+  },
+  {
+    "id": "2026-10-08_Cam Fowler_shop_take_98",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Cam Fowler",
+    "score": 0,
+    "edge": 98,
+    "best_price": 750,
+    "best_book": "draftkings",
+    "median": 650,
+    "book_prices": {
+      "betmgm": 600,
+      "betrivers": 550,
+      "caesars": 525,
+      "draftkings": 750,
+      "fanatics": 700,
+      "fanduel": 750
+    },
+    "price_bucket": "+700s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:50.701768+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "updated_at": "2026-10-08T20:28:50.885714+00:00",
+    "player_name": "Cam Fowler",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 750,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:50.701768+00:00"
+  },
+  {
+    "id": "2026-10-08_Christian Dvorak_shop_take_94",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Christian Dvorak",
+    "score": 0,
+    "edge": 94,
+    "best_price": 525,
+    "best_book": "bet365",
+    "median": 477,
+    "book_prices": {
+      "bet365": 525,
+      "betmgm": 450,
+      "betrivers": 480,
+      "caesars": 400,
+      "draftkings": 475,
+      "fanatics": 500,
+      "fanduel": 500,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+500s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:50.930552+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Christian Dvorak",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 525,
+    "book": "bet365",
+    "created_at": "2026-10-08T20:28:50.930552+00:00",
+    "updated_at": "2026-10-08T20:28:50.930552+00:00"
+  },
+  {
+    "id": "2026-10-08_Nico Sturm_shop_lean_93",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Nico Sturm",
+    "score": 0,
+    "edge": 93,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 800,
+    "book_prices": {
+      "betrivers": 800,
+      "caesars": 750,
+      "draftkings": 850,
+      "fanatics": 850,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:51.023648+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Nico Sturm",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 850,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:51.023648+00:00",
+    "updated_at": "2026-10-08T20:28:51.023648+00:00"
+  },
+  {
+    "id": "2026-10-08_Nick Paul_shop_lean_85",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Nick Paul",
+    "score": 0,
+    "edge": 85,
+    "best_price": 700,
+    "best_book": "draftkings",
+    "median": 582,
+    "book_prices": {
+      "bet365": 625,
+      "betmgm": 525,
+      "betrivers": 540,
+      "draftkings": 700,
+      "fanatics": 700,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+700s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:51.330457+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Nick Paul",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 700,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:51.330457+00:00",
+    "updated_at": "2026-10-08T20:28:51.330457+00:00"
+  },
+  {
+    "id": "2026-10-08_Fabian Zetterlund_shop_take_80",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Fabian Zetterlund",
+    "score": 0,
+    "edge": 80,
+    "best_price": 475,
+    "best_book": "bet365",
+    "median": 400,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 400,
+      "betrivers": 475,
+      "caesars": 375,
+      "draftkings": 400,
+      "fanatics": 390,
+      "fanduel": 440,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:51.469161+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Fabian Zetterlund",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 475,
+    "book": "bet365",
+    "created_at": "2026-10-08T20:28:51.469161+00:00",
+    "updated_at": "2026-10-08T20:28:51.469161+00:00"
+  },
+  {
+    "id": "2026-10-08_Rasmus Andersson_shop_take_78",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Rasmus Andersson",
+    "score": 0,
+    "edge": 78,
+    "best_price": 650,
+    "best_book": "bet365",
+    "median": 625,
+    "book_prices": {
+      "bet365": 650,
+      "betmgm": 475,
+      "betrivers": 650,
+      "caesars": 425,
+      "draftkings": 650,
+      "fanatics": 600,
+      "fanduel": 575,
+      "hardrockbet": 650
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:51.557440+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Rasmus Andersson",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 650,
+    "book": "bet365",
+    "created_at": "2026-10-08T20:28:51.557440+00:00",
+    "updated_at": "2026-10-08T20:28:51.557440+00:00"
+  },
+  {
+    "id": "2026-10-08_Nolan Allan_shop_lean_77",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Nolan Allan",
+    "score": 0,
+    "edge": 77,
+    "best_price": 850,
+    "best_book": "draftkings",
+    "median": 800,
+    "book_prices": {
+      "caesars": 625,
+      "draftkings": 850,
+      "fanatics": 800
+    },
+    "price_bucket": "+800-999",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:51.645030+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Nolan Allan",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 850,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:51.645030+00:00",
+    "updated_at": "2026-10-08T20:28:51.645030+00:00"
+  },
+  {
+    "id": "2026-10-08_Jaden Schwartz_shop_take_74",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Jaden Schwartz",
+    "score": 0,
+    "edge": 74,
+    "best_price": 475,
+    "best_book": "draftkings",
+    "median": 375,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 340,
+      "betrivers": 360,
+      "caesars": 360,
+      "draftkings": 475,
+      "fanatics": 430,
+      "fanduel": 400,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:51.928359+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Jaden Schwartz",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 475,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:51.928359+00:00",
+    "updated_at": "2026-10-08T20:28:51.928359+00:00"
+  },
+  {
+    "id": "2026-10-08_Zayne Parekh_shop_lean_74",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Zayne Parekh",
+    "score": 0,
+    "edge": 74,
+    "best_price": 600,
+    "best_book": "fanduel",
+    "median": 532,
+    "book_prices": {
+      "bet365": 550,
+      "betmgm": 525,
+      "betrivers": 540,
+      "caesars": 450,
+      "draftkings": 500,
+      "fanatics": 575,
+      "fanduel": 600,
+      "hardrockbet": 525
+    },
+    "price_bucket": "+600s",
+    "ending": 0,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:51.975942+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Zayne Parekh",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 600,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:51.975942+00:00",
+    "updated_at": "2026-10-08T20:28:51.975942+00:00"
+  },
+  {
+    "id": "2026-10-08_Fraser Minten_shop_take_66",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Fraser Minten",
+    "score": 0,
+    "edge": 66,
+    "best_price": 490,
+    "best_book": "fanduel",
+    "median": 440,
+    "book_prices": {
+      "bet365": 400,
+      "betmgm": 450,
+      "betrivers": 430,
+      "caesars": 380,
+      "draftkings": 475,
+      "fanatics": 450,
+      "fanduel": 490,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 90,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:52.462568+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Fraser Minten",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 490,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:52.462568+00:00",
+    "updated_at": "2026-10-08T20:28:52.462568+00:00"
+  },
+  {
+    "id": "2026-10-08_Ridly Greig_shop_take_66",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Ridly Greig",
+    "score": 0,
+    "edge": 66,
+    "best_price": 475,
+    "best_book": "draftkings",
+    "median": 415,
+    "book_prices": {
+      "bet365": 450,
+      "betmgm": 400,
+      "betrivers": 300,
+      "caesars": 380,
+      "draftkings": 475,
+      "fanatics": 450,
+      "fanduel": 430,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:52.518381+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Ridly Greig",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 475,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:52.518381+00:00",
+    "updated_at": "2026-10-08T20:28:52.518381+00:00"
+  },
+  {
+    "id": "2026-10-08_Marco Rossi_shop_take_61",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Marco Rossi",
+    "score": 0,
+    "edge": 61,
+    "best_price": 425,
+    "best_book": "draftkings",
+    "median": 350,
+    "book_prices": {
+      "bet365": 350,
+      "betmgm": 350,
+      "betrivers": 235,
+      "caesars": 325,
+      "draftkings": 425,
+      "fanatics": 390,
+      "fanduel": 390,
+      "hardrockbet": 325
+    },
+    "price_bucket": "+400s",
+    "ending": 25,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:53.018059+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Marco Rossi",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 425,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:53.018059+00:00",
+    "updated_at": "2026-10-08T20:28:53.018059+00:00"
+  },
+  {
+    "id": "2026-10-08_Victor Olofsson_shop_take_60",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Victor Olofsson",
+    "score": 0,
+    "edge": 60,
+    "best_price": 375,
+    "best_book": "bet365",
+    "median": 337,
+    "book_prices": {
+      "bet365": 375,
+      "hardrockbet": 300
+    },
+    "price_bucket": "under +400",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:53.114760+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Victor Olofsson",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 375,
+    "book": "bet365",
+    "created_at": "2026-10-08T20:28:53.114760+00:00",
+    "updated_at": "2026-10-08T20:28:53.114760+00:00"
+  },
+  {
+    "id": "2026-10-08_James Hagens_shop_take_58",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "James Hagens",
+    "score": 0,
+    "edge": 58,
+    "best_price": 475,
+    "best_book": "bet365",
+    "median": 425,
+    "book_prices": {
+      "bet365": 475,
+      "betmgm": 400,
+      "betrivers": 425,
+      "caesars": 360,
+      "draftkings": 425,
+      "fanatics": 430,
+      "fanduel": 460,
+      "hardrockbet": 400
+    },
+    "price_bucket": "+400s",
+    "ending": 75,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:53.250054+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "James Hagens",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 475,
+    "book": "bet365",
+    "created_at": "2026-10-08T20:28:53.250054+00:00",
+    "updated_at": "2026-10-08T20:28:53.250054+00:00"
+  },
+  {
+    "id": "2026-10-08_Maxim Shabanov_shop_take_58",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Maxim Shabanov",
+    "score": 0,
+    "edge": 58,
+    "best_price": 450,
+    "best_book": "draftkings",
+    "median": 380,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 400,
+      "betrivers": 410,
+      "caesars": 350,
+      "draftkings": 450,
+      "fanduel": 380,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop TAKE"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_take",
+    "logged_at": "2026-10-08T20:28:53.341057+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Maxim Shabanov",
+    "call_type": "TAKE",
+    "status": "PENDING",
+    "stamps": [
+      "Shop TAKE"
+    ],
+    "price": 450,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:53.341057+00:00",
+    "updated_at": "2026-10-08T20:28:53.341057+00:00"
+  },
+  {
+    "id": "2026-10-08_Justin Hryckowian_shop_lean_53",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Justin Hryckowian",
+    "score": 0,
+    "edge": 53,
+    "best_price": 490,
+    "best_book": "fanduel",
+    "median": 425,
+    "book_prices": {
+      "bet365": 425,
+      "betmgm": 425,
+      "betrivers": 510,
+      "caesars": 380,
+      "draftkings": 425,
+      "fanatics": 430,
+      "fanduel": 490,
+      "hardrockbet": 425
+    },
+    "price_bucket": "+400s",
+    "ending": 90,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:53.661398+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Justin Hryckowian",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 490,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:53.661398+00:00",
+    "updated_at": "2026-10-08T20:28:53.661398+00:00"
+  },
+  {
+    "id": "2026-10-08_Claude Giroux_shop_lean_49",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Claude Giroux",
+    "score": 0,
+    "edge": 49,
+    "best_price": 460,
+    "best_book": "fanduel",
+    "median": 425,
+    "book_prices": {
+      "bet365": 450,
+      "betmgm": 425,
+      "betrivers": 410,
+      "caesars": 380,
+      "draftkings": 425,
+      "fanatics": 450,
+      "fanduel": 460,
+      "hardrockbet": 350
+    },
+    "price_bucket": "+400s",
+    "ending": 60,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:53.894225+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Claude Giroux",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 460,
+    "book": "fanduel",
+    "created_at": "2026-10-08T20:28:53.894225+00:00",
+    "updated_at": "2026-10-08T20:28:53.894225+00:00"
+  },
+  {
+    "id": "2026-10-08_Dalibor Dvorsky_shop_lean_46",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Dalibor Dvorsky",
+    "score": 0,
+    "edge": 46,
+    "best_price": 450,
+    "best_book": "draftkings",
+    "median": 395,
+    "book_prices": {
+      "betmgm": 360,
+      "betrivers": 360,
+      "caesars": 340,
+      "draftkings": 450,
+      "fanatics": 430,
+      "fanduel": 440
+    },
+    "price_bucket": "+400s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:54.241067+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Dalibor Dvorsky",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 450,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:54.241067+00:00",
+    "updated_at": "2026-10-08T20:28:54.241067+00:00"
+  },
+  {
+    "id": "2026-10-08_Barclay Goodrow_shop_lean_43",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Barclay Goodrow",
+    "score": 0,
+    "edge": 43,
+    "best_price": 650,
+    "best_book": "draftkings",
+    "median": 625,
+    "book_prices": {
+      "betrivers": 900,
+      "caesars": 525,
+      "draftkings": 650,
+      "fanatics": 600
+    },
+    "price_bucket": "+600s",
+    "ending": 50,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:54.425155+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Barclay Goodrow",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 650,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:54.425155+00:00",
+    "updated_at": "2026-10-08T20:28:54.425155+00:00"
+  },
+  {
+    "id": "2026-10-08_Yegor Sharangovich_shop_lean_43",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Yegor Sharangovich",
+    "score": 0,
+    "edge": 43,
+    "best_price": 425,
+    "best_book": "draftkings",
+    "median": 375,
+    "book_prices": {
+      "bet365": 375,
+      "betmgm": 333,
+      "betrivers": 370,
+      "caesars": 325,
+      "draftkings": 425,
+      "fanatics": 390,
+      "fanduel": 400,
+      "hardrockbet": 375
+    },
+    "price_bucket": "+400s",
+    "ending": 25,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:54.518794+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Yegor Sharangovich",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 425,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:54.518794+00:00",
+    "updated_at": "2026-10-08T20:28:54.518794+00:00"
+  },
+  {
+    "id": "2026-10-08_Gabriel Landeskog_shop_lean_41",
+    "date": "2026-10-08",
+    "time": "01:28 PM",
+    "player": "Gabriel Landeskog",
+    "score": 0,
+    "edge": 41,
+    "best_price": 330,
+    "best_book": "draftkings",
+    "median": 295,
+    "book_prices": {
+      "bet365": 300,
+      "betmgm": 290,
+      "betrivers": 285,
+      "caesars": 270,
+      "draftkings": 330,
+      "fanatics": 310,
+      "fanduel": 320,
+      "hardrockbet": 220
+    },
+    "price_bucket": "under +400",
+    "ending": 30,
+    "methods": [
+      "Shop LEAN"
+    ],
+    "core": 0,
+    "result": "PENDING",
+    "source": "shop_lean",
+    "logged_at": "2026-10-08T20:28:54.700458+00:00",
+    "price_source": "shop",
+    "sport": "NHL",
+    "market": "anytime_goal",
+    "player_name": "Gabriel Landeskog",
+    "call_type": "WATCH",
+    "status": "PENDING",
+    "stamps": [
+      "Shop LEAN"
+    ],
+    "price": 330,
+    "book": "draftkings",
+    "created_at": "2026-10-08T20:28:54.700458+00:00",
+    "updated_at": "2026-10-08T20:28:54.700458+00:00"
   }
 ]
