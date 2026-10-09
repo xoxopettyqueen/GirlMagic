@@ -465,6 +465,26 @@
       "best_book": "fanduel",
       "time": "03:33 PM",
       "sport": "NFL"
+    },
+    {
+      "player": "Sean Tucker",
+      "source": "take_it",
+      "score": 68,
+      "methods": [
+        "FD 50",
+        "Match 50",
+        "MGM 50",
+        "Books tight",
+        "Multi-book method",
+        "Rivers short vs pack",
+        "DK FD-style",
+        "EV Support",
+        "Kelly Support"
+      ],
+      "best_price": 375,
+      "best_book": "hardrockbet",
+      "time": "05:16 PM",
+      "sport": "NFL"
     }
   ]
 }
