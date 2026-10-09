@@ -399661,7 +399661,7 @@
       "B365 Exact"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.151005+00:00",
     "price_source": "pregame_lock",
@@ -399672,7 +399672,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.151017+00:00",
     "player_name": "Alvin Kamara",
     "stamps": [
@@ -399682,7 +399682,8 @@
     ],
     "price": 135,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:54.628799+00:00"
+    "created_at": "2026-10-04T09:39:54.628799+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Ameer Abdullah_watch_54",
@@ -399843,7 +399844,7 @@
       "Kelly Support"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:31.642460+00:00",
     "price_source": "pregame_lock",
@@ -399854,7 +399855,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:31.642477+00:00",
     "player_name": "Anthony Gould",
     "stamps": [
@@ -399870,7 +399871,8 @@
     ],
     "price": 2250,
     "book": "hardrockbet",
-    "created_at": "2026-10-04T09:39:46.230698+00:00"
+    "created_at": "2026-10-04T09:39:46.230698+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Antonio Williams_watch_60",
@@ -400030,7 +400032,7 @@
       "MGM Exact"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.116880+00:00",
     "price_source": "pregame_lock",
@@ -400041,7 +400043,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.116892+00:00",
     "player_name": "Atlanta Falcons D/ST",
     "stamps": [
@@ -400053,7 +400055,8 @@
     ],
     "price": 600,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:51.149865+00:00"
+    "created_at": "2026-10-04T09:39:51.149865+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Bam Knight_watch_94",
@@ -400092,7 +400095,7 @@
       "Kelly Caution"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:21.759075+00:00",
     "price_source": "pregame_lock",
@@ -400103,7 +400106,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:21.759093+00:00",
     "player_name": "Bam Knight",
     "stamps": [
@@ -400118,7 +400121,8 @@
     ],
     "price": 1800,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:47.222253+00:00"
+    "created_at": "2026-10-04T09:39:47.222253+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Barion Brown_watch_84",
@@ -400150,7 +400154,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:35.043450+00:00",
     "price_source": "pregame_lock",
@@ -400161,7 +400165,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:35.043462+00:00",
     "player_name": "Barion Brown",
     "stamps": [
@@ -400174,7 +400178,8 @@
     ],
     "price": 1200,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:49.686821+00:00"
+    "created_at": "2026-10-04T09:39:49.686821+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Bijan Robinson_watch_31",
@@ -400209,7 +400214,7 @@
       "B365 Exact"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.796549+00:00",
     "price_source": "pregame_lock",
@@ -400220,7 +400225,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.796559+00:00",
     "player_name": "Bijan Robinson",
     "stamps": [
@@ -400233,7 +400238,8 @@
     ],
     "price": -180,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:53.900593+00:00"
+    "created_at": "2026-10-04T09:39:53.900593+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Blake Corum_watch_42",
@@ -400734,7 +400740,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:37.692581+00:00",
     "price_source": "pregame_lock",
@@ -400745,7 +400751,7 @@
     "benford_note": "",
     "benford_cluster": 0.83,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:37.692594+00:00",
     "player_name": "Bryce Lance",
     "stamps": [
@@ -400756,7 +400762,8 @@
     ],
     "price": 550,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:52.242758+00:00"
+    "created_at": "2026-10-04T09:39:52.242758+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Bucky Irving_watch_30",
@@ -400849,7 +400856,7 @@
       "EV Premium"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.341773+00:00",
     "price_source": "pregame_lock",
@@ -400860,7 +400867,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:54.612729+00:00",
     "player_name": "CJ Donaldson",
     "stamps": [
@@ -400874,7 +400881,8 @@
     ],
     "price": 700,
     "book": "bet365",
-    "created_at": "2026-10-04T09:39:49.374479+00:00"
+    "created_at": "2026-10-04T09:39:49.374479+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Cam Skattebo_watch_45",
@@ -401025,7 +401033,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:36.213290+00:00",
     "price_source": "pregame_lock",
@@ -401036,7 +401044,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:36.213306+00:00",
     "player_name": "Carolina Panthers D/ST",
     "stamps": [
@@ -401051,7 +401059,8 @@
     ],
     "price": 600,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:51.928564+00:00"
+    "created_at": "2026-10-04T09:39:51.928564+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_CeeDee Lamb_watch_35",
@@ -401162,7 +401171,7 @@
       "B365 way over MGM"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:17.413851+00:00",
     "price_source": "pregame_lock",
@@ -401173,7 +401182,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:17.413864+00:00",
     "player_name": "Charlie Woerner",
     "stamps": [
@@ -401187,7 +401196,8 @@
     ],
     "price": 2500,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:48.320920+00:00"
+    "created_at": "2026-10-04T09:39:48.320920+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Chase Brown_watch_40",
@@ -401421,7 +401431,7 @@
       "Kelly Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:34.275348+00:00",
     "price_source": "pregame_lock",
@@ -401432,7 +401442,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:49.135477+00:00",
     "player_name": "Chris Moore",
     "stamps": [
@@ -401446,7 +401456,8 @@
     ],
     "price": 700,
     "book": "bet365",
-    "created_at": "2026-10-04T09:39:48.643639+00:00"
+    "created_at": "2026-10-04T09:39:48.643639+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Chris Olave_watch_25",
@@ -401481,7 +401492,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.537012+00:00",
     "price_source": "pregame_lock",
@@ -401492,7 +401503,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.537027+00:00",
     "player_name": "Chris Olave",
     "stamps": [
@@ -401502,7 +401513,8 @@
     ],
     "price": 125,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:54.758994+00:00"
+    "created_at": "2026-10-04T09:39:54.758994+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Christian McCaffrey_watch_25",
@@ -401732,7 +401744,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:36.865534+00:00",
     "price_source": "pregame_lock",
@@ -401743,7 +401755,7 @@
     "benford_note": "",
     "benford_cluster": 0.86,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:36.865550+00:00",
     "player_name": "Colby Parkinson",
     "stamps": [
@@ -401755,7 +401767,8 @@
     ],
     "price": 410,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:51.426504+00:00"
+    "created_at": "2026-10-04T09:39:51.426504+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Cole Kmet_watch_64",
@@ -402069,7 +402082,7 @@
       "Kelly Caution"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.812202+00:00",
     "price_source": "pregame_lock",
@@ -402080,7 +402093,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:45.812233+00:00",
     "player_name": "DJ Herman",
     "stamps": [
@@ -402096,7 +402109,8 @@
     ],
     "price": 2000,
     "book": "bet365",
-    "created_at": "2026-10-04T09:39:46.177425+00:00"
+    "created_at": "2026-10-04T09:39:46.177425+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_DJ Moore_watch_45",
@@ -402459,7 +402473,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:36.606450+00:00",
     "price_source": "pregame_lock",
@@ -402470,7 +402484,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:49.770974+00:00",
     "player_name": "Darius Slayton",
     "stamps": [
@@ -402482,7 +402496,8 @@
     ],
     "price": 700,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:50.967065+00:00"
+    "created_at": "2026-10-04T09:39:50.967065+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Darren Waller_watch_32",
@@ -402942,7 +402957,7 @@
       "Stayed in the group"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:09:45.906137+00:00",
     "price_source": "pregame_lock",
@@ -402953,7 +402968,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:09:45.906148+00:00",
     "player_name": "Detroit Lions D/ST",
     "stamps": [
@@ -402965,7 +402980,8 @@
     ],
     "price": 500,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:52.022777+00:00"
+    "created_at": "2026-10-04T09:39:52.022777+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Devaughn Vele_watch_56",
@@ -403000,7 +403016,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.606554+00:00",
     "price_source": "pregame_lock",
@@ -403011,7 +403027,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.606565+00:00",
     "player_name": "Devaughn Vele",
     "stamps": [
@@ -403024,7 +403040,8 @@
     ],
     "price": 250,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:50.035524+00:00"
+    "created_at": "2026-10-04T09:39:50.035524+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Devin Duvernay_watch_99",
@@ -403262,7 +403279,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.597053+00:00",
     "price_source": "pregame_lock",
@@ -403273,7 +403290,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.597066+00:00",
     "player_name": "Drake London",
     "stamps": [
@@ -403284,7 +403301,8 @@
     ],
     "price": 130,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:53.309689+00:00"
+    "created_at": "2026-10-04T09:39:53.309689+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Durham Smythe_watch_59",
@@ -403325,7 +403343,7 @@
       "MGM Exact"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:10.420455+00:00",
     "price_source": "pregame_lock",
@@ -403336,7 +403354,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:10.420470+00:00",
     "player_name": "Durham Smythe",
     "stamps": [
@@ -403349,7 +403367,8 @@
     ],
     "price": 1200,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:49.952415+00:00"
+    "created_at": "2026-10-04T09:39:49.952415+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_E.J. Jenkins_watch_48",
@@ -403381,7 +403400,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:34.911958+00:00",
     "price_source": "pregame_lock",
@@ -403392,7 +403411,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:34.911970+00:00",
     "player_name": "E.J. Jenkins",
     "stamps": [
@@ -403406,7 +403425,8 @@
     ],
     "price": 2500,
     "book": "bet365",
-    "created_at": "2026-10-04T09:39:49.551393+00:00"
+    "created_at": "2026-10-04T09:39:49.551393+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Elijah Arroyo_watch_89",
@@ -403456,7 +403476,7 @@
       "Kelly Caution"
     ],
     "core": 10,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.202037+00:00",
     "price_source": "pregame_lock",
@@ -403467,7 +403487,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:45.202052+00:00",
     "player_name": "Elijah Arroyo",
     "stamps": [
@@ -403484,7 +403504,8 @@
     ],
     "price": 1100,
     "book": "bet365",
-    "created_at": "2026-10-04T09:39:45.820865+00:00"
+    "created_at": "2026-10-04T09:39:45.820865+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Emanuel Wilson_watch_25",
@@ -403716,7 +403737,7 @@
       "Kelly Caution"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.257917+00:00",
     "price_source": "pregame_lock",
@@ -403727,7 +403748,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.257931+00:00",
     "player_name": "Eric Saubert",
     "stamps": [
@@ -403743,7 +403764,8 @@
     ],
     "price": 1500,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:46.337675+00:00"
+    "created_at": "2026-10-04T09:39:46.337675+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Erick All Jr._watch_71",
@@ -403785,7 +403807,7 @@
       "Multi-book Shorten"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:11.509748+00:00",
     "price_source": "pregame_lock",
@@ -403796,7 +403818,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:11.509760+00:00",
     "player_name": "Erick All Jr.",
     "stamps": [
@@ -403812,7 +403834,8 @@
     ],
     "price": 1300,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:46.535549+00:00"
+    "created_at": "2026-10-04T09:39:46.535549+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Garrett Wilson_watch_52",
@@ -404181,7 +404204,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:35.452478+00:00",
     "price_source": "pregame_lock",
@@ -404192,7 +404215,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:50.032493+00:00",
     "player_name": "Green Bay Packers D/ST",
     "stamps": [
@@ -404205,7 +404228,8 @@
     ],
     "price": 500,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:49.913022+00:00"
+    "created_at": "2026-10-04T09:39:49.913022+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Greg Dortch_watch_54",
@@ -404315,7 +404339,7 @@
       "Fanatics Drift"
     ],
     "core": 15,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:06.157311+00:00",
     "price_source": "pregame_lock",
@@ -404326,7 +404350,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:22.140007+00:00",
     "player_name": "Greg Dulcich",
     "stamps": [
@@ -404348,7 +404372,8 @@
     ],
     "price": 650,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:45.129323+00:00"
+    "created_at": "2026-10-04T09:39:45.129323+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Hunter Henry_watch_49",
@@ -404828,7 +404853,7 @@
       "Last one left"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.436706+00:00",
     "price_source": "pregame_lock",
@@ -404839,7 +404864,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:45.436721+00:00",
     "player_name": "Jackson Meeks",
     "stamps": [
@@ -404854,7 +404879,8 @@
     ],
     "price": 2400,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:48.051816+00:00"
+    "created_at": "2026-10-04T09:39:48.051816+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Jacory Croskey-Merritt_watch_45",
@@ -405033,7 +405059,7 @@
       "Multi-book Shorten"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:09.616615+00:00",
     "price_source": "pregame_lock",
@@ -405044,7 +405070,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:09.616630+00:00",
     "player_name": "Jake Briningstool",
     "stamps": [
@@ -405056,7 +405082,8 @@
     ],
     "price": 2000,
     "book": "caesars",
-    "created_at": "2026-10-04T09:39:51.110060+00:00"
+    "created_at": "2026-10-04T09:39:51.110060+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Jake Ferguson_watch_56",
@@ -405282,7 +405309,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:38.791705+00:00",
     "price_source": "pregame_lock",
@@ -405293,7 +405320,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:38.791718+00:00",
     "player_name": "Jalen Coker",
     "stamps": [
@@ -405304,7 +405331,8 @@
     ],
     "price": 230,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:53.350633+00:00"
+    "created_at": "2026-10-04T09:39:53.350633+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_James Cook III_watch_54",
@@ -405812,7 +405840,7 @@
       "Kelly Caution"
     ],
     "core": 15,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:06.727618+00:00",
     "price_source": "pregame_lock",
@@ -405823,7 +405851,7 @@
     "benford_note": "",
     "benford_cluster": 0.38,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:06.727635+00:00",
     "player_name": "Jeremy Ruckert",
     "stamps": [
@@ -405845,7 +405873,8 @@
     ],
     "price": 1000,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:45.092072+00:00"
+    "created_at": "2026-10-04T09:39:45.092072+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Jonathan Taylor_watch_59",
@@ -406069,7 +406098,7 @@
       "EV Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:12.754975+00:00",
     "price_source": "pregame_lock",
@@ -406080,7 +406109,7 @@
     "benford_note": "",
     "benford_cluster": 0.83,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:12.754988+00:00",
     "player_name": "Josh Cuevas",
     "stamps": [
@@ -406094,7 +406123,8 @@
     ],
     "price": 2000,
     "book": "fanduel",
-    "created_at": "2026-10-04T09:39:48.283140+00:00"
+    "created_at": "2026-10-04T09:39:48.283140+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Josh Downs_watch_54",
@@ -406186,7 +406216,7 @@
       "Multi-book Shorten"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:23.437904+00:00",
     "price_source": "pregame_lock",
@@ -406197,7 +406227,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:23.437916+00:00",
     "player_name": "Josh Whyle",
     "stamps": [
@@ -406208,7 +406238,8 @@
     ],
     "price": 2500,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:53.569455+00:00"
+    "created_at": "2026-10-04T09:39:53.569455+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Joshua Palmer_watch_75",
@@ -406313,7 +406344,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.485189+00:00",
     "price_source": "pregame_lock",
@@ -406324,7 +406355,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.485206+00:00",
     "player_name": "Juwan Johnson",
     "stamps": [
@@ -406335,7 +406366,8 @@
     ],
     "price": 255,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:53.221898+00:00"
+    "created_at": "2026-10-04T09:39:53.221898+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Kaelon Black_watch_55",
@@ -406578,7 +406610,7 @@
       "Last one left"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.211332+00:00",
     "price_source": "pregame_lock",
@@ -406589,7 +406621,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.211343+00:00",
     "player_name": "Kansas City Chiefs D/ST",
     "stamps": [
@@ -406601,7 +406633,8 @@
     ],
     "price": 550,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:51.062583+00:00"
+    "created_at": "2026-10-04T09:39:51.062583+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Kayshon Boutte_watch_50",
@@ -406702,7 +406735,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.862482+00:00",
     "price_source": "pregame_lock",
@@ -406713,7 +406746,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.862499+00:00",
     "player_name": "Kendre Miller",
     "stamps": [
@@ -406724,7 +406757,8 @@
     ],
     "price": 310,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:52.458281+00:00"
+    "created_at": "2026-10-04T09:39:52.458281+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Kenneth Walker III_watch_40",
@@ -407176,7 +407210,7 @@
       "Kelly Caution"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.489029+00:00",
     "price_source": "pregame_lock",
@@ -407187,7 +407221,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:45.489042+00:00",
     "player_name": "Kyle Pitts Sr.",
     "stamps": [
@@ -407203,7 +407237,8 @@
     ],
     "price": 350,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:47.133227+00:00"
+    "created_at": "2026-10-04T09:39:47.133227+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Kyren Williams_watch_35",
@@ -407430,7 +407465,7 @@
       "Last one left"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:09:46.008396+00:00",
     "price_source": "pregame_lock",
@@ -407441,7 +407476,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:09:46.008408+00:00",
     "player_name": "Las Vegas Raiders D/ST",
     "stamps": [
@@ -407451,7 +407486,8 @@
     ],
     "price": 575,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:54.926171+00:00"
+    "created_at": "2026-10-04T09:39:54.926171+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_LeQuint Allen Jr._watch_78",
@@ -407494,7 +407530,7 @@
       "EV Support"
     ],
     "core": 11,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:16.730993+00:00",
     "price_source": "pregame_lock",
@@ -407505,7 +407541,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:16.731007+00:00",
     "player_name": "LeQuint Allen Jr.",
     "stamps": [
@@ -407523,7 +407559,8 @@
     ],
     "price": 1000,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:45.607492+00:00"
+    "created_at": "2026-10-04T09:39:45.607492+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Lil'Jordan Humphrey_watch_45",
@@ -407555,7 +407592,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:35.006619+00:00",
     "price_source": "pregame_lock",
@@ -407566,7 +407603,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:35.006631+00:00",
     "player_name": "Lil'Jordan Humphrey",
     "stamps": [
@@ -407580,7 +407617,8 @@
     ],
     "price": 1300,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:49.638866+00:00"
+    "created_at": "2026-10-04T09:39:49.638866+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Luther Burden III_watch_48",
@@ -408325,7 +408363,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:01:45.796417+00:00",
     "price_source": "pregame_lock",
@@ -408336,7 +408374,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:01:45.796433+00:00",
     "player_name": "Max Bredeson",
     "stamps": [
@@ -408350,7 +408388,8 @@
     ],
     "price": 1700,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:48.411595+00:00"
+    "created_at": "2026-10-04T09:39:48.411595+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Max Klare_watch_93",
@@ -408393,7 +408432,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:16.342977+00:00",
     "price_source": "pregame_lock",
@@ -408404,7 +408443,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:16.342993+00:00",
     "player_name": "Max Klare",
     "stamps": [
@@ -408418,7 +408457,8 @@
     ],
     "price": 2250,
     "book": "hardrockbet",
-    "created_at": "2026-10-04T09:39:48.238001+00:00"
+    "created_at": "2026-10-04T09:39:48.238001+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Miami Dolphins D/ST_watch_60",
@@ -408452,7 +408492,7 @@
       "MGM 25"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.090323+00:00",
     "price_source": "pregame_lock",
@@ -408463,7 +408503,7 @@
     "benford_note": "",
     "benford_cluster": 0.33,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.090338+00:00",
     "player_name": "Miami Dolphins D/ST",
     "stamps": [
@@ -408477,7 +408517,8 @@
     ],
     "price": 700,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:50.240379+00:00"
+    "created_at": "2026-10-04T09:39:50.240379+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Michael Mayer_watch_61",
@@ -408799,7 +408840,7 @@
       "B365 Exact"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:37.005202+00:00",
     "price_source": "pregame_lock",
@@ -408810,7 +408851,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:37.005231+00:00",
     "player_name": "Montorie Foster Jr.",
     "stamps": [
@@ -408821,7 +408862,8 @@
     ],
     "price": 2300,
     "book": "caesars",
-    "created_at": "2026-10-04T09:39:52.686844+00:00"
+    "created_at": "2026-10-04T09:39:52.686844+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Myles Price_watch_69",
@@ -408995,7 +409037,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:13.874696+00:00",
     "price_source": "pregame_lock",
@@ -409006,7 +409048,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:13.874706+00:00",
     "player_name": "New York Giants D/ST",
     "stamps": [
@@ -409016,7 +409058,8 @@
     ],
     "price": 550,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:53.791854+00:00"
+    "created_at": "2026-10-04T09:39:53.791854+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Nicholas Singleton_watch_90",
@@ -409119,7 +409162,7 @@
       "Kelly Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:34.377787+00:00",
     "price_source": "pregame_lock",
@@ -409130,7 +409173,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:34.377803+00:00",
     "player_name": "Nick Westbrook-Ikhine",
     "stamps": [
@@ -409144,7 +409187,8 @@
     ],
     "price": 1100,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:48.892345+00:00"
+    "created_at": "2026-10-04T09:39:48.892345+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Nico Collins_watch_45",
@@ -409306,7 +409350,7 @@
       "Rivers short vs pack"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.154755+00:00",
     "price_source": "pregame_lock",
@@ -409317,7 +409361,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:45.154767+00:00",
     "player_name": "Noah Fant",
     "stamps": [
@@ -409332,7 +409376,8 @@
     ],
     "price": 575,
     "book": "fanatics",
-    "created_at": "2026-10-04T09:39:47.528121+00:00"
+    "created_at": "2026-10-04T09:39:47.528121+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Ollie Gordon II_watch_61",
@@ -409882,7 +409927,7 @@
       "Kelly Caution"
     ],
     "core": 11,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:17.131151+00:00",
     "price_source": "pregame_lock",
@@ -409893,7 +409938,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:17.131162+00:00",
     "player_name": "Quintin Morris",
     "stamps": [
@@ -409911,7 +409956,8 @@
     ],
     "price": 1500,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:45.429635+00:00"
+    "created_at": "2026-10-04T09:39:45.429635+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_RJ Harvey_watch_51",
@@ -410012,7 +410058,7 @@
       "Stayed in the group"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:11.151800+00:00",
     "price_source": "pregame_lock",
@@ -410023,7 +410069,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:11.151815+00:00",
     "player_name": "Rashee Rice",
     "stamps": [
@@ -410034,7 +410080,8 @@
     ],
     "price": 155,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:53.488518+00:00"
+    "created_at": "2026-10-04T09:39:53.488518+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Rasheen Ali_watch_79",
@@ -410069,7 +410116,7 @@
       "EV Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:12.606556+00:00",
     "price_source": "pregame_lock",
@@ -410080,7 +410127,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:12.606572+00:00",
     "player_name": "Rasheen Ali",
     "stamps": [
@@ -410094,7 +410141,8 @@
     ],
     "price": 2000,
     "book": "bet365",
-    "created_at": "2026-10-04T09:39:48.363400+00:00"
+    "created_at": "2026-10-04T09:39:48.363400+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Rashid Shaheed_watch_57",
@@ -410739,7 +410787,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:39.023834+00:00",
     "price_source": "pregame_lock",
@@ -410750,7 +410798,7 @@
     "benford_note": "",
     "benford_cluster": 0.6,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:39.023845+00:00",
     "player_name": "Skyler Bell",
     "stamps": [
@@ -410761,7 +410809,8 @@
     ],
     "price": 1300,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:53.526702+00:00"
+    "created_at": "2026-10-04T09:39:53.526702+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Stefon Diggs_watch_40",
@@ -410919,7 +410968,7 @@
       "EV Support"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:09.505311+00:00",
     "price_source": "pregame_lock",
@@ -410930,7 +410979,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:09.505322+00:00",
     "player_name": "Tahj Brooks",
     "stamps": [
@@ -410946,7 +410995,8 @@
     ],
     "price": 2250,
     "book": "hardrockbet",
-    "created_at": "2026-10-04T09:39:46.288388+00:00"
+    "created_at": "2026-10-04T09:39:46.288388+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Tai Felton_watch_67",
@@ -411049,7 +411099,7 @@
       "Kelly Caution"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:25.092956+00:00",
     "price_source": "pregame_lock",
@@ -411060,7 +411110,7 @@
     "benford_note": "",
     "benford_cluster": 0.33,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:25.092969+00:00",
     "player_name": "Tampa Bay Buccaneers D/ST",
     "stamps": [
@@ -411074,7 +411124,8 @@
     ],
     "price": 600,
     "book": "betmgm",
-    "created_at": "2026-10-04T09:39:50.473675+00:00"
+    "created_at": "2026-10-04T09:39:50.473675+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Ted Hurst III_watch_79",
@@ -412190,7 +412241,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.808888+00:00",
     "price_source": "pregame_lock",
@@ -412201,7 +412252,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.808900+00:00",
     "player_name": "Tyler Shough",
     "stamps": [
@@ -412214,7 +412265,8 @@
     ],
     "price": 290,
     "book": "betrivers",
-    "created_at": "2026-10-04T09:39:50.741263+00:00"
+    "created_at": "2026-10-04T09:39:50.741263+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Tyler Warren_watch_45",
@@ -412456,7 +412508,7 @@
       "Stayed in the group"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T09:47:35.323366+00:00",
     "price_source": "pregame_lock",
@@ -412467,7 +412519,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T09:47:49.636147+00:00",
     "player_name": "Washington Commanders D/ST",
     "stamps": [
@@ -412479,7 +412531,8 @@
     ],
     "price": 650,
     "book": "draftkings",
-    "created_at": "2026-10-04T09:39:51.016286+00:00"
+    "created_at": "2026-10-04T09:39:51.016286+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Will Kacmarek_watch_54",
@@ -413835,7 +413888,7 @@
       "MGM 00"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-04T22:17:46.367110+00:00",
     "price_source": "shop",
@@ -413843,14 +413896,15 @@
     "market": "anytime_td",
     "player_name": "Jordan Watkins",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 750,
     "book": "bet365",
     "created_at": "2026-10-04T09:40:02.333988+00:00",
-    "updated_at": "2026-10-04T22:17:46.367120+00:00"
+    "updated_at": "2026-10-04T22:17:46.367120+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Justice Hill_shop_lean_57",
@@ -413927,7 +413981,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-04T09:40:02.610093+00:00",
     "price_source": "shop",
@@ -413935,14 +413989,15 @@
     "market": "anytime_td",
     "player_name": "Xavier Legette",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 500,
     "book": "bet365",
     "created_at": "2026-10-04T09:40:02.610093+00:00",
-    "updated_at": "2026-10-04T09:47:49.227011+00:00"
+    "updated_at": "2026-10-04T09:47:49.227011+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Tyjae Spears_shop_lean_54",
@@ -414013,7 +414068,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-04T09:40:02.792207+00:00",
     "price_source": "shop",
@@ -414021,14 +414076,15 @@
     "market": "anytime_td",
     "player_name": "Brashard Smith",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-04T09:40:02.792207+00:00",
-    "updated_at": "2026-10-04T09:47:49.325083+00:00"
+    "updated_at": "2026-10-04T09:47:49.325083+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Cam Ward_shop_lean_49",
@@ -414493,7 +414549,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-04T09:40:03.607183+00:00",
     "price_source": "shop",
@@ -414501,14 +414557,15 @@
     "market": "anytime_td",
     "player_name": "Indianapolis Colts D/ST",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 500,
     "book": "draftkings",
     "created_at": "2026-10-04T09:40:03.607183+00:00",
-    "updated_at": "2026-10-04T09:47:50.081641+00:00"
+    "updated_at": "2026-10-04T09:47:50.081641+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Ryan Flournoy_shop_lean_40",
@@ -417798,7 +417855,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:14.548113+00:00",
     "price_source": "pregame_lock",
@@ -417809,7 +417866,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:14.548125+00:00",
     "player_name": "Buffalo Bills D/ST",
     "stamps": [
@@ -417819,7 +417876,8 @@
     ],
     "price": 600,
     "book": "draftkings",
-    "created_at": "2026-10-04T17:35:25.185791+00:00"
+    "created_at": "2026-10-04T17:35:25.185791+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Cade Stover_watch_99",
@@ -418042,7 +418100,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:21.004421+00:00",
     "price_source": "pregame_lock",
@@ -418053,7 +418111,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:21.004433+00:00",
     "player_name": "Chris Blair",
     "stamps": [
@@ -418065,7 +418123,8 @@
     ],
     "price": 1900,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:35:21.004421+00:00"
+    "created_at": "2026-10-04T17:35:21.004421+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Connor Heyward_watch_64",
@@ -418229,7 +418288,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:22.664491+00:00",
     "price_source": "pregame_lock",
@@ -418240,7 +418299,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:22.664508+00:00",
     "player_name": "Dare Ogunbowale",
     "stamps": [
@@ -418251,7 +418310,8 @@
     ],
     "price": 1700,
     "book": "betrivers",
-    "created_at": "2026-10-04T17:35:22.664491+00:00"
+    "created_at": "2026-10-04T17:35:22.664491+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Darnell Mooney_watch_83",
@@ -418640,7 +418700,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:13.514525+00:00",
     "price_source": "pregame_lock",
@@ -418651,7 +418711,7 @@
     "benford_note": "",
     "benford_cluster": 0.38,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:13.514536+00:00",
     "player_name": "Drew Sample",
     "stamps": [
@@ -418665,7 +418725,8 @@
     ],
     "price": 900,
     "book": "betrivers",
-    "created_at": "2026-10-04T17:35:19.235783+00:00"
+    "created_at": "2026-10-04T17:35:19.235783+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Efton Chism III_watch_88",
@@ -418864,7 +418925,7 @@
       "MGM 00"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:09.701464+00:00",
     "price_source": "pregame_lock",
@@ -418875,7 +418936,7 @@
     "benford_note": "",
     "benford_cluster": 0.6,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:09.701479+00:00",
     "player_name": "Elijah Moore",
     "stamps": [
@@ -418888,7 +418949,8 @@
     ],
     "price": 2250,
     "book": "hardrockbet",
-    "created_at": "2026-10-04T17:35:20.236985+00:00"
+    "created_at": "2026-10-04T17:35:20.236985+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Foster Moreau_watch_58",
@@ -418989,7 +419051,7 @@
       "MGM 00"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.417652+00:00",
     "price_source": "pregame_lock",
@@ -419000,7 +419062,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.417663+00:00",
     "player_name": "Hayden Rucci",
     "stamps": [
@@ -419013,7 +419075,8 @@
     ],
     "price": 2200,
     "book": "betrivers",
-    "created_at": "2026-10-04T17:35:20.583538+00:00"
+    "created_at": "2026-10-04T17:35:20.583538+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Houston Texans D/ST_watch_48",
@@ -419040,7 +419103,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:24.055741+00:00",
     "price_source": "pregame_lock",
@@ -419051,7 +419114,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:24.055754+00:00",
     "player_name": "Houston Texans D/ST",
     "stamps": [
@@ -419061,7 +419124,8 @@
     ],
     "price": 500,
     "book": "draftkings",
-    "created_at": "2026-10-04T17:35:24.055741+00:00"
+    "created_at": "2026-10-04T17:35:24.055741+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_J. Michael Sturdivant_watch_48",
@@ -419158,7 +419222,7 @@
       "Kelly Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:18.772127+00:00",
     "price_source": "pregame_lock",
@@ -419169,7 +419233,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:18.772138+00:00",
     "player_name": "Jackson Hawes",
     "stamps": [
@@ -419183,7 +419247,8 @@
     ],
     "price": 1050,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:35:18.772127+00:00"
+    "created_at": "2026-10-04T17:35:18.772127+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Jacob Saylors_watch_48",
@@ -419283,7 +419348,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:21.812057+00:00",
     "price_source": "pregame_lock",
@@ -419294,7 +419359,7 @@
     "benford_note": "",
     "benford_cluster": 0.83,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:21.812068+00:00",
     "player_name": "Jahdae Walker",
     "stamps": [
@@ -419306,7 +419371,8 @@
     ],
     "price": 1750,
     "book": "hardrockbet",
-    "created_at": "2026-10-04T17:35:21.812057+00:00"
+    "created_at": "2026-10-04T17:35:21.812057+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Jalen Royals_watch_74",
@@ -419411,7 +419477,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:23.394706+00:00",
     "price_source": "pregame_lock",
@@ -419422,7 +419488,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:23.394718+00:00",
     "player_name": "Jamaal Pritchett",
     "stamps": [
@@ -419433,7 +419499,8 @@
     ],
     "price": 2500,
     "book": "draftkings",
-    "created_at": "2026-10-04T17:35:23.394706+00:00"
+    "created_at": "2026-10-04T17:35:23.394706+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Jaylen Wright_watch_89",
@@ -419535,7 +419602,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:10.000133+00:00",
     "price_source": "pregame_lock",
@@ -419546,7 +419613,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:10.000148+00:00",
     "player_name": "Jeshaun Jones",
     "stamps": [
@@ -419560,7 +419627,8 @@
     ],
     "price": 2500,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:35:19.334990+00:00"
+    "created_at": "2026-10-04T17:35:19.334990+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Jonathan Mingo_watch_89",
@@ -419896,7 +419964,7 @@
       "MGM 00"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:10.196273+00:00",
     "price_source": "pregame_lock",
@@ -419907,7 +419975,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:10.196290+00:00",
     "player_name": "Luke Schoonmaker",
     "stamps": [
@@ -419918,7 +419986,8 @@
     ],
     "price": 1800,
     "book": "betrivers",
-    "created_at": "2026-10-04T17:35:22.182497+00:00"
+    "created_at": "2026-10-04T17:35:22.182497+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Malachi Fields_watch_79",
@@ -420320,7 +420389,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:12.261637+00:00",
     "price_source": "pregame_lock",
@@ -420331,7 +420400,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:12.261652+00:00",
     "player_name": "Philadelphia Eagles D/ST",
     "stamps": [
@@ -420341,7 +420410,8 @@
     ],
     "price": 575,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:35:24.191104+00:00"
+    "created_at": "2026-10-04T17:35:24.191104+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Ryan Miller_watch_89",
@@ -420382,7 +420452,7 @@
       "EV Support"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.627800+00:00",
     "price_source": "pregame_lock",
@@ -420393,7 +420463,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:45.627811+00:00",
     "player_name": "Ryan Miller",
     "stamps": [
@@ -420409,7 +420479,8 @@
     ],
     "price": 1800,
     "book": "bet365",
-    "created_at": "2026-10-04T17:35:16.499250+00:00"
+    "created_at": "2026-10-04T17:35:16.499250+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Sam Roush_watch_49",
@@ -420495,7 +420566,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:21.618920+00:00",
     "price_source": "pregame_lock",
@@ -420506,7 +420577,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:21.618934+00:00",
     "player_name": "Simi Fehoko",
     "stamps": [
@@ -420518,7 +420589,8 @@
     ],
     "price": 2500,
     "book": "bet365",
-    "created_at": "2026-10-04T17:35:21.618920+00:00"
+    "created_at": "2026-10-04T17:35:21.618920+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Sterling Shepard_watch_76",
@@ -420674,7 +420746,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:21.668068+00:00",
     "price_source": "pregame_lock",
@@ -420685,7 +420757,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:21.668081+00:00",
     "player_name": "Tanner Koziol",
     "stamps": [
@@ -420697,7 +420769,8 @@
     ],
     "price": 2000,
     "book": "betrivers",
-    "created_at": "2026-10-04T17:35:21.668068+00:00"
+    "created_at": "2026-10-04T17:35:21.668068+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Tommy Tremble_watch_72",
@@ -420805,7 +420878,7 @@
       "Kelly Caution"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:17.973438+00:00",
     "price_source": "pregame_lock",
@@ -420816,7 +420889,7 @@
     "benford_note": "",
     "benford_cluster": 0.71,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:17.973451+00:00",
     "player_name": "Travis Hunter",
     "stamps": [
@@ -420831,7 +420904,8 @@
     ],
     "price": 1400,
     "book": "draftkings",
-    "created_at": "2026-10-04T17:35:17.973438+00:00"
+    "created_at": "2026-10-04T17:35:17.973438+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Troy Franklin_watch_59",
@@ -420872,7 +420946,7 @@
       "Rivers short vs pack"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:09:44.912360+00:00",
     "price_source": "pregame_lock",
@@ -420883,7 +420957,7 @@
     "benford_note": "",
     "benford_cluster": 0.71,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:09:44.912379+00:00",
     "player_name": "Troy Franklin",
     "stamps": [
@@ -420898,7 +420972,8 @@
     ],
     "price": 1000,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:35:17.819090+00:00"
+    "created_at": "2026-10-04T17:35:17.819090+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Tyler Badie_watch_78",
@@ -420995,7 +421070,7 @@
       "Kelly Support"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:18.237157+00:00",
     "price_source": "pregame_lock",
@@ -421006,7 +421081,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:18.237167+00:00",
     "player_name": "Tyler Conklin",
     "stamps": [
@@ -421020,7 +421095,8 @@
     ],
     "price": 2200,
     "book": "draftkings",
-    "created_at": "2026-10-04T17:35:18.237157+00:00"
+    "created_at": "2026-10-04T17:35:18.237157+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Tyrone Tracy Jr._watch_64",
@@ -421186,7 +421262,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:35:20.732161+00:00",
     "price_source": "pregame_lock",
@@ -421197,7 +421273,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:35:20.732172+00:00",
     "player_name": "Zachariah Branch",
     "stamps": [
@@ -421209,7 +421285,8 @@
     ],
     "price": 1200,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:35:20.732161+00:00"
+    "created_at": "2026-10-04T17:35:20.732161+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Zavion Thomas_watch_52",
@@ -421764,7 +421841,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-04T17:35:32.550520+00:00",
     "price_source": "shop",
@@ -421772,14 +421849,15 @@
     "market": "anytime_td",
     "player_name": "Olamide Zaccheaus",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 750,
     "book": "fanatics",
     "created_at": "2026-10-04T17:35:32.550520+00:00",
-    "updated_at": "2026-10-04T22:17:54.860592+00:00"
+    "updated_at": "2026-10-04T22:17:54.860592+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Gunnar Helm_shop_lean_54",
@@ -422125,7 +422203,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:01:47.085203+00:00",
     "price_source": "pregame_lock",
@@ -422136,7 +422214,7 @@
     "benford_note": "",
     "benford_cluster": 0.86,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:01:47.085238+00:00",
     "player_name": "Brayden Willis",
     "stamps": [
@@ -422150,7 +422228,8 @@
     ],
     "price": 2500,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:43:08.733767+00:00"
+    "created_at": "2026-10-04T17:43:08.733767+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Calvin Ridley_watch_52",
@@ -422446,7 +422525,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:09.321910+00:00",
     "price_source": "pregame_lock",
@@ -422457,7 +422536,7 @@
     "benford_note": "",
     "benford_cluster": 0.71,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:09.321921+00:00",
     "player_name": "Jared Wayne",
     "stamps": [
@@ -422471,7 +422550,8 @@
     ],
     "price": 1150,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:43:09.321910+00:00"
+    "created_at": "2026-10-04T17:43:09.321910+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Johnny Mundt_watch_63",
@@ -422510,7 +422590,7 @@
       "Kelly Support"
     ],
     "core": 10,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:07.049121+00:00",
     "price_source": "pregame_lock",
@@ -422521,7 +422601,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:07.049137+00:00",
     "player_name": "Johnny Mundt",
     "stamps": [
@@ -422538,7 +422618,8 @@
     ],
     "price": 1000,
     "book": "draftkings",
-    "created_at": "2026-10-04T17:43:07.049121+00:00"
+    "created_at": "2026-10-04T17:43:07.049121+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Luke Farrell_watch_83",
@@ -422580,7 +422661,7 @@
       "Kelly Caution"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.467718+00:00",
     "price_source": "pregame_lock",
@@ -422591,7 +422672,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.467730+00:00",
     "player_name": "Luke Farrell",
     "stamps": [
@@ -422607,7 +422688,8 @@
     ],
     "price": 1500,
     "book": "betrivers",
-    "created_at": "2026-10-04T17:43:07.451199+00:00"
+    "created_at": "2026-10-04T17:43:07.451199+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Malik McClain_watch_49",
@@ -422641,7 +422723,7 @@
       "Kelly Caution"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:09.938332+00:00",
     "price_source": "pregame_lock",
@@ -422652,7 +422734,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:09.938347+00:00",
     "player_name": "Malik McClain",
     "stamps": [
@@ -422666,7 +422748,8 @@
     ],
     "price": 1400,
     "book": "betmgm",
-    "created_at": "2026-10-04T17:43:09.938332+00:00"
+    "created_at": "2026-10-04T17:43:09.938332+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Malik Turner_watch_49",
@@ -422702,7 +422785,7 @@
       "Fanatics Alone"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.301095+00:00",
     "price_source": "pregame_lock",
@@ -422713,7 +422796,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.301106+00:00",
     "player_name": "Malik Turner",
     "stamps": [
@@ -422726,7 +422809,8 @@
     ],
     "price": 1200,
     "book": "draftkings",
-    "created_at": "2026-10-04T17:43:11.024298+00:00"
+    "created_at": "2026-10-04T17:43:11.024298+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Payne Durham_watch_39",
@@ -422754,7 +422838,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T17:43:13.464159+00:00",
     "price_source": "pregame_lock",
@@ -422765,7 +422849,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T17:43:13.464174+00:00",
     "player_name": "Payne Durham",
     "stamps": [
@@ -422776,7 +422860,8 @@
     ],
     "price": 2500,
     "book": "fanatics",
-    "created_at": "2026-10-04T17:43:13.464159+00:00"
+    "created_at": "2026-10-04T17:43:13.464159+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Samaje Perine_watch_85",
@@ -423104,7 +423189,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-04T17:43:22.338844+00:00",
     "price_source": "shop",
@@ -423112,14 +423197,15 @@
     "market": "anytime_td",
     "player_name": "Isaiah Davis",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 500,
     "book": "fanduel",
     "created_at": "2026-10-04T17:43:22.338844+00:00",
-    "updated_at": "2026-10-04T17:43:22.338844+00:00"
+    "updated_at": "2026-10-04T17:43:22.338844+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_TreVeyon Henderson_shop_take_56",
@@ -425178,7 +425264,7 @@
       "MGM 00"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:46.707046+00:00",
     "price_source": "pregame_lock",
@@ -425189,7 +425275,7 @@
     "benford_note": "",
     "benford_cluster": 0.33,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:46.707056+00:00",
     "player_name": "San Francisco 49ers D/ST",
     "stamps": [
@@ -425201,7 +425287,8 @@
     ],
     "price": 950,
     "book": "betmgm",
-    "created_at": "2026-10-04T22:00:39.131228+00:00"
+    "created_at": "2026-10-04T22:00:39.131228+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Velus Jones Jr._watch_35",
@@ -425232,7 +425319,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:47.736703+00:00",
     "price_source": "pregame_lock",
@@ -425243,7 +425330,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:47.736718+00:00",
     "player_name": "Velus Jones Jr.",
     "stamps": [
@@ -425254,7 +425341,8 @@
     ],
     "price": 2250,
     "book": "hardrockbet",
-    "created_at": "2026-10-04T22:00:39.886440+00:00"
+    "created_at": "2026-10-04T22:00:39.886440+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Aatu R\u00e4ty_shop_lean_109",
@@ -425603,7 +425691,7 @@
       "Kelly Caution"
     ],
     "core": 9,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:17:45.768044+00:00",
     "price_source": "pregame_lock",
@@ -425614,7 +425702,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:17:45.768056+00:00",
     "player_name": "Alec Ingold",
     "stamps": [
@@ -425630,7 +425718,8 @@
     ],
     "price": 2500,
     "book": "fanatics",
-    "created_at": "2026-10-04T22:01:44.573110+00:00"
+    "created_at": "2026-10-04T22:01:44.573110+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Chris Bell_watch_49",
@@ -425778,7 +425867,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-04T22:01:45.118357+00:00",
     "price_source": "pregame_lock",
@@ -425789,7 +425878,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-04T22:01:45.118373+00:00",
     "player_name": "Jalen Nailor",
     "stamps": [
@@ -425802,7 +425891,8 @@
     ],
     "price": 475,
     "book": "betmgm",
-    "created_at": "2026-10-04T22:01:45.118357+00:00"
+    "created_at": "2026-10-04T22:01:45.118357+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-04_Marquez Valdes-Scantling_watch_39",
@@ -431044,7 +431134,7 @@
       "EV Premium"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-05T22:28:10.837693+00:00",
     "price_source": "pregame_lock",
@@ -431055,7 +431145,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:14.427418+00:00",
     "player_name": "Atlanta Falcons D/ST",
     "stamps": [
@@ -431068,7 +431158,8 @@
     ],
     "price": 550,
     "book": "draftkings",
-    "created_at": "2026-10-05T22:12:49.067115+00:00"
+    "created_at": "2026-10-05T22:12:49.067115+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Bijan Robinson_watch_40",
@@ -431178,7 +431269,7 @@
       "Kelly Caution"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.006401+00:00",
     "price_source": "pregame_lock",
@@ -431189,7 +431280,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.006411+00:00",
     "player_name": "Chris Blair",
     "stamps": [
@@ -431204,7 +431295,8 @@
     ],
     "price": 1900,
     "book": "betmgm",
-    "created_at": "2026-10-05T22:12:48.579316+00:00"
+    "created_at": "2026-10-05T22:12:48.579316+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Chris Olave_watch_45",
@@ -431243,7 +431335,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.480342+00:00",
     "price_source": "pregame_lock",
@@ -431254,7 +431346,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.480352+00:00",
     "player_name": "Chris Olave",
     "stamps": [
@@ -431266,7 +431358,8 @@
     ],
     "price": 130,
     "book": "fanatics",
-    "created_at": "2026-10-05T22:12:49.471030+00:00"
+    "created_at": "2026-10-05T22:12:49.471030+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Devaughn Vele_watch_45",
@@ -431304,7 +431397,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "watch",
     "logged_at": "2026-10-05T22:28:10.923908+00:00",
     "price_source": "pregame_lock",
@@ -431315,7 +431408,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "HIT",
     "updated_at": "2026-10-06T01:14:56.581540+00:00",
     "player_name": "Devaughn Vele",
     "stamps": [
@@ -431327,7 +431420,20 @@
     ],
     "price": 245,
     "book": "betrivers",
-    "created_at": "2026-10-05T22:12:49.583664+00:00"
+    "created_at": "2026-10-05T22:12:49.583664+00:00",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "MGM 40",
+      "Books tight",
+      "B365 over HardRock",
+      "EV Caution",
+      "Kelly Caution",
+      "DK FD-style",
+      "Multi-book method",
+      "EV Support",
+      "Kelly Support"
+    ],
+    "hit_when": "2026-10-05"
   },
   {
     "id": "2026-10-05_Drake London_watch_50",
@@ -431364,7 +431470,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:14:47.517831+00:00",
     "price_source": "pregame_lock",
@@ -431375,7 +431481,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:14:47.517843+00:00",
     "player_name": "Drake London",
     "stamps": [
@@ -431387,7 +431493,8 @@
     ],
     "price": 135,
     "book": "betmgm",
-    "created_at": "2026-10-05T22:12:49.346637+00:00"
+    "created_at": "2026-10-05T22:12:49.346637+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jahan Dotson_watch_52",
@@ -431432,7 +431539,7 @@
       "EV Premium"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:01.997501+00:00",
     "price_source": "pregame_lock",
@@ -431443,7 +431550,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "HIT",
     "updated_at": "2026-10-06T01:22:14.036980+00:00",
     "player_name": "Jahan Dotson",
     "stamps": [
@@ -431458,7 +431565,27 @@
     ],
     "price": 500,
     "book": "betmgm",
-    "created_at": "2026-10-05T22:12:48.686188+00:00"
+    "created_at": "2026-10-05T22:12:48.686188+00:00",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "FD Pattern",
+      "B365 over HardRock",
+      "Multi-book method",
+      "HardRock 00",
+      "Match 00",
+      "MGM 00",
+      "EV Support",
+      "Kelly Support",
+      "MGM 50",
+      "Match 50",
+      "FD 50",
+      "B365 50",
+      "Stayed in the group",
+      "Multi-book Shorten",
+      "Rivers short vs pack",
+      "EV Premium"
+    ],
+    "hit_when": "2026-10-05"
   },
   {
     "id": "2026-10-05_Juwan Johnson_watch_56",
@@ -431499,7 +431626,7 @@
       "Kelly Premium"
     ],
     "core": 8,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:14:44.156690+00:00",
     "price_source": "pregame_lock",
@@ -431510,7 +431637,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:14:55.014377+00:00",
     "player_name": "Juwan Johnson",
     "stamps": [
@@ -431525,7 +431652,8 @@
     ],
     "price": 240,
     "book": "bet365",
-    "created_at": "2026-10-05T22:12:48.466793+00:00"
+    "created_at": "2026-10-05T22:12:48.466793+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Kendre Miller_watch_33",
@@ -431558,7 +431686,7 @@
       "EV Premium"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-05T22:28:11.362934+00:00",
     "price_source": "pregame_lock",
@@ -431569,7 +431697,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:14:55.681870+00:00",
     "player_name": "Kendre Miller",
     "stamps": [
@@ -431579,7 +431707,8 @@
     ],
     "price": 300,
     "book": "betmgm",
-    "created_at": "2026-10-05T22:12:49.845300+00:00"
+    "created_at": "2026-10-05T22:12:49.845300+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Kyle Pitts Sr._watch_41",
@@ -431614,7 +431743,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-05T22:28:11.430393+00:00",
     "price_source": "pregame_lock",
@@ -431625,7 +431754,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:14.237442+00:00",
     "player_name": "Kyle Pitts Sr.",
     "stamps": [
@@ -431636,7 +431765,8 @@
     ],
     "price": 325,
     "book": "betmgm",
-    "created_at": "2026-10-05T22:12:49.650779+00:00"
+    "created_at": "2026-10-05T22:12:49.650779+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_New Orleans Saints D/ST_watch_54",
@@ -431667,7 +431797,7 @@
       "Stayed in the group"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-05T22:28:10.883376+00:00",
     "price_source": "pregame_lock",
@@ -431678,7 +431808,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-05T22:28:10.883387+00:00",
     "player_name": "New Orleans Saints D/ST",
     "stamps": [
@@ -431691,7 +431821,8 @@
     ],
     "price": 550,
     "book": "draftkings",
-    "created_at": "2026-10-05T22:12:48.976473+00:00"
+    "created_at": "2026-10-05T22:12:48.976473+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Noah Fant_watch_66",
@@ -431725,7 +431856,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-05T22:28:11.070242+00:00",
     "price_source": "pregame_lock",
@@ -431736,7 +431867,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-05T22:28:18.261448+00:00",
     "player_name": "Noah Fant",
     "stamps": [
@@ -431748,7 +431879,8 @@
     ],
     "price": 575,
     "book": "fanatics",
-    "created_at": "2026-10-05T22:12:49.184001+00:00"
+    "created_at": "2026-10-05T22:12:49.184001+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tyler Shough_watch_85",
@@ -431788,7 +431920,7 @@
       "Kelly Premium"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:14:44.109217+00:00",
     "price_source": "pregame_lock",
@@ -431799,7 +431931,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:14:54.833221+00:00",
     "player_name": "Tyler Shough",
     "stamps": [
@@ -431812,7 +431944,8 @@
     ],
     "price": 325,
     "book": "fanatics",
-    "created_at": "2026-10-05T22:12:48.908427+00:00"
+    "created_at": "2026-10-05T22:12:48.908427+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Zachariah Branch_watch_49",
@@ -431854,7 +431987,7 @@
       "EV Premium"
     ],
     "core": 7,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.377354+00:00",
     "price_source": "pregame_lock",
@@ -431865,7 +431998,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.377363+00:00",
     "player_name": "Zachariah Branch",
     "stamps": [
@@ -431879,7 +432012,8 @@
     ],
     "price": 1200,
     "book": "betmgm",
-    "created_at": "2026-10-05T22:12:48.784952+00:00"
+    "created_at": "2026-10-05T22:12:48.784952+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_CJ Donaldson_shop_lean_104",
@@ -431916,7 +432050,7 @@
       "Kelly Caution"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:22:03.250496+00:00",
     "price_source": "shop",
@@ -431924,14 +432058,15 @@
     "market": "anytime_td",
     "player_name": "CJ Donaldson",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-05T22:12:56.660880+00:00",
-    "updated_at": "2026-10-06T01:22:03.250505+00:00"
+    "updated_at": "2026-10-06T01:22:03.250505+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Austin Hooper_shop_lean_78",
@@ -431969,7 +432104,7 @@
       "Kelly Support"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:22:02.283767+00:00",
     "price_source": "shop",
@@ -431977,14 +432112,15 @@
     "market": "anytime_td",
     "player_name": "Austin Hooper",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-10-05T22:12:56.725131+00:00",
-    "updated_at": "2026-10-06T01:22:02.283775+00:00"
+    "updated_at": "2026-10-06T01:22:02.283775+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Olamide Zaccheaus_shop_lean_45",
@@ -432021,7 +432157,7 @@
       "Kelly Caution"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:22:02.493217+00:00",
     "price_source": "shop",
@@ -432029,14 +432165,15 @@
     "market": "anytime_td",
     "player_name": "Olamide Zaccheaus",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 750,
     "book": "fanatics",
     "created_at": "2026-10-05T22:12:56.823454+00:00",
-    "updated_at": "2026-10-06T01:22:02.493228+00:00"
+    "updated_at": "2026-10-06T01:22:02.493228+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_AJ Barner_watch_30",
@@ -432065,7 +432202,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.759798+00:00",
     "price_source": "pregame_lock",
@@ -432076,7 +432213,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.759808+00:00",
     "player_name": "AJ Barner",
     "stamps": [
@@ -432086,7 +432223,8 @@
     ],
     "price": 280,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:46.985440+00:00"
+    "created_at": "2026-10-06T01:14:46.985440+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Amon-Ra St. Brown_watch_25",
@@ -432113,7 +432251,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.509270+00:00",
     "price_source": "pregame_lock",
@@ -432124,7 +432262,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.509282+00:00",
     "player_name": "Amon-Ra St. Brown",
     "stamps": [
@@ -432134,7 +432272,8 @@
     ],
     "price": -140,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:47.926247+00:00"
+    "created_at": "2026-10-06T01:14:47.926247+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Ashton Jeanty_watch_25",
@@ -432161,7 +432300,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.284294+00:00",
     "price_source": "pregame_lock",
@@ -432172,7 +432311,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.284305+00:00",
     "player_name": "Ashton Jeanty",
     "stamps": [
@@ -432182,7 +432321,8 @@
     ],
     "price": -115,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:47.734342+00:00"
+    "created_at": "2026-10-06T01:14:47.734342+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Bhayshul Tuten_watch_35",
@@ -432212,7 +432352,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.898880+00:00",
     "price_source": "pregame_lock",
@@ -432223,7 +432363,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.898889+00:00",
     "player_name": "Bhayshul Tuten",
     "stamps": [
@@ -432234,7 +432374,8 @@
     ],
     "price": -110,
     "book": "caesars",
-    "created_at": "2026-10-06T01:14:46.115034+00:00"
+    "created_at": "2026-10-06T01:14:46.115034+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Brayden Willis_watch_62",
@@ -432265,7 +432406,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.558367+00:00",
     "price_source": "pregame_lock",
@@ -432276,7 +432417,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.558380+00:00",
     "player_name": "Brayden Willis",
     "stamps": [
@@ -432288,7 +432429,8 @@
     ],
     "price": 1700,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:44.228274+00:00"
+    "created_at": "2026-10-06T01:14:44.228274+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Brenton Strange_watch_41",
@@ -432318,7 +432460,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.366239+00:00",
     "price_source": "pregame_lock",
@@ -432329,7 +432471,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.366249+00:00",
     "player_name": "Brenton Strange",
     "stamps": [
@@ -432340,7 +432482,8 @@
     ],
     "price": 325,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.895659+00:00"
+    "created_at": "2026-10-06T01:14:45.895659+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Brian Thomas Jr._watch_62",
@@ -432372,7 +432515,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.736003+00:00",
     "price_source": "pregame_lock",
@@ -432383,7 +432526,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.736016+00:00",
     "player_name": "Brian Thomas Jr.",
     "stamps": [
@@ -432396,7 +432539,8 @@
     ],
     "price": 390,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:43.580869+00:00"
+    "created_at": "2026-10-06T01:14:43.580869+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Brock Bowers_watch_35",
@@ -432424,7 +432568,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.065802+00:00",
     "price_source": "pregame_lock",
@@ -432435,7 +432579,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.065811+00:00",
     "player_name": "Brock Bowers",
     "stamps": [
@@ -432446,7 +432590,8 @@
     ],
     "price": 140,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.222092+00:00"
+    "created_at": "2026-10-06T01:14:46.222092+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Bucky Irving_watch_62",
@@ -432481,7 +432626,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.781861+00:00",
     "price_source": "pregame_lock",
@@ -432492,7 +432637,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.781870+00:00",
     "player_name": "Bucky Irving",
     "stamps": [
@@ -432505,7 +432650,8 @@
     ],
     "price": 210,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:43.626350+00:00"
+    "created_at": "2026-10-06T01:14:43.626350+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Cam Skattebo_watch_45",
@@ -432534,7 +432680,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.169780+00:00",
     "price_source": "pregame_lock",
@@ -432545,7 +432691,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.169793+00:00",
     "player_name": "Cam Skattebo",
     "stamps": [
@@ -432557,7 +432703,8 @@
     ],
     "price": 110,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:44.826464+00:00"
+    "created_at": "2026-10-06T01:14:44.826464+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Chase Brown_watch_25",
@@ -432584,7 +432731,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.081450+00:00",
     "price_source": "pregame_lock",
@@ -432595,7 +432742,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.081463+00:00",
     "player_name": "Chase Brown",
     "stamps": [
@@ -432605,7 +432752,8 @@
     ],
     "price": -155,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:47.451810+00:00"
+    "created_at": "2026-10-06T01:14:47.451810+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Chris Rodriguez Jr._watch_78",
@@ -432637,7 +432785,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.687905+00:00",
     "price_source": "pregame_lock",
@@ -432648,7 +432796,7 @@
     "benford_note": "",
     "benford_cluster": 0.6,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.687918+00:00",
     "player_name": "Chris Rodriguez Jr.",
     "stamps": [
@@ -432661,7 +432809,8 @@
     ],
     "price": 340,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:43.530084+00:00"
+    "created_at": "2026-10-06T01:14:43.530084+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Christian McCaffrey_watch_45",
@@ -432694,7 +432843,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.046961+00:00",
     "price_source": "pregame_lock",
@@ -432705,7 +432854,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.046970+00:00",
     "player_name": "Christian McCaffrey",
     "stamps": [
@@ -432717,7 +432866,8 @@
     ],
     "price": -155,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:44.634071+00:00"
+    "created_at": "2026-10-06T01:14:44.634071+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Christian Watson_watch_25",
@@ -432744,7 +432894,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.844057+00:00",
     "price_source": "pregame_lock",
@@ -432755,7 +432905,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.844066+00:00",
     "player_name": "Christian Watson",
     "stamps": [
@@ -432765,7 +432915,8 @@
     ],
     "price": 170,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:47.096412+00:00"
+    "created_at": "2026-10-06T01:14:47.096412+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Colston Loveland_watch_51",
@@ -432793,7 +432944,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.741754+00:00",
     "price_source": "pregame_lock",
@@ -432804,7 +432955,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.741769+00:00",
     "player_name": "Colston Loveland",
     "stamps": [
@@ -432815,7 +432966,8 @@
     ],
     "price": 275,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.222548+00:00"
+    "created_at": "2026-10-06T01:14:45.222548+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Cooper Kupp_watch_78",
@@ -432846,7 +432998,7 @@
       "Kelly Premium"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.452689+00:00",
     "price_source": "pregame_lock",
@@ -432857,7 +433009,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:13.999678+00:00",
     "player_name": "Cooper Kupp",
     "stamps": [
@@ -432869,7 +433021,8 @@
     ],
     "price": 475,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:44.017704+00:00"
+    "created_at": "2026-10-06T01:14:44.017704+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_DK Metcalf_watch_25",
@@ -432896,7 +433049,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.980019+00:00",
     "price_source": "pregame_lock",
@@ -432907,7 +433060,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.980033+00:00",
     "player_name": "DK Metcalf",
     "stamps": [
@@ -432917,7 +433070,8 @@
     ],
     "price": 190,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:47.286371+00:00"
+    "created_at": "2026-10-06T01:14:47.286371+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Dallas Cowboys D/ST_watch_41",
@@ -432946,7 +433100,7 @@
       "Stayed in the group"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.731063+00:00",
     "price_source": "pregame_lock",
@@ -432957,7 +433111,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.731076+00:00",
     "player_name": "Dallas Cowboys D/ST",
     "stamps": [
@@ -432968,7 +433122,8 @@
     ],
     "price": 475,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:45.774379+00:00"
+    "created_at": "2026-10-06T01:14:45.774379+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Dawson Knox_watch_50",
@@ -432998,7 +433153,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.856841+00:00",
     "price_source": "pregame_lock",
@@ -433009,7 +433164,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.856850+00:00",
     "player_name": "Dawson Knox",
     "stamps": [
@@ -433021,7 +433176,8 @@
     ],
     "price": 550,
     "book": "caesars",
-    "created_at": "2026-10-06T01:14:44.391123+00:00"
+    "created_at": "2026-10-06T01:14:44.391123+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Deebo Samuel Sr._watch_32",
@@ -433052,7 +433208,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.576860+00:00",
     "price_source": "pregame_lock",
@@ -433063,7 +433219,7 @@
     "benford_note": "",
     "benford_cluster": 0.57,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.576872+00:00",
     "player_name": "Deebo Samuel Sr.",
     "stamps": [
@@ -433073,7 +433229,8 @@
     ],
     "price": 220,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:46.772982+00:00"
+    "created_at": "2026-10-06T01:14:46.772982+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Dontayvion Wicks_watch_58",
@@ -433103,7 +433260,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.536975+00:00",
     "price_source": "pregame_lock",
@@ -433114,7 +433271,7 @@
     "benford_note": "",
     "benford_cluster": 0.6,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.536987+00:00",
     "player_name": "Dontayvion Wicks",
     "stamps": [
@@ -433125,7 +433282,8 @@
     ],
     "price": 340,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.121538+00:00"
+    "created_at": "2026-10-06T01:14:45.121538+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Emanuel Wilson_watch_40",
@@ -433157,7 +433315,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.555211+00:00",
     "price_source": "pregame_lock",
@@ -433168,7 +433326,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.555223+00:00",
     "player_name": "Emanuel Wilson",
     "stamps": [
@@ -433179,7 +433337,8 @@
     ],
     "price": -130,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:45.943549+00:00"
+    "created_at": "2026-10-06T01:14:45.943549+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Emeka Egbuka_watch_52",
@@ -433215,7 +433374,7 @@
       "Stayed in the group"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.557784+00:00",
     "price_source": "pregame_lock",
@@ -433226,7 +433385,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.557796+00:00",
     "player_name": "Emeka Egbuka",
     "stamps": [
@@ -433239,7 +433398,8 @@
     ],
     "price": 290,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:43.729131+00:00"
+    "created_at": "2026-10-06T01:14:43.729131+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_George Holani_watch_31",
@@ -433268,7 +433428,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.711580+00:00",
     "price_source": "pregame_lock",
@@ -433279,7 +433439,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.711590+00:00",
     "player_name": "George Holani",
     "stamps": [
@@ -433289,7 +433449,8 @@
     ],
     "price": 270,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:46.922786+00:00"
+    "created_at": "2026-10-06T01:14:46.922786+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_George Kittle_watch_51",
@@ -433321,7 +433482,7 @@
       "Kelly Premium"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.817416+00:00",
     "price_source": "pregame_lock",
@@ -433332,7 +433493,7 @@
     "benford_note": "",
     "benford_cluster": 0.86,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.817425+00:00",
     "player_name": "George Kittle",
     "stamps": [
@@ -433343,7 +433504,8 @@
     ],
     "price": 200,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.292438+00:00"
+    "created_at": "2026-10-06T01:14:45.292438+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_George Pickens_watch_50",
@@ -433377,7 +433539,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.961017+00:00",
     "price_source": "pregame_lock",
@@ -433388,7 +433550,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.961030+00:00",
     "player_name": "George Pickens",
     "stamps": [
@@ -433400,7 +433562,8 @@
     ],
     "price": 135,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:44.457928+00:00"
+    "created_at": "2026-10-06T01:14:44.457928+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Isaiah Likely_watch_30",
@@ -433427,7 +433590,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.802027+00:00",
     "price_source": "pregame_lock",
@@ -433438,7 +433601,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.802036+00:00",
     "player_name": "Isaiah Likely",
     "stamps": [
@@ -433448,7 +433611,8 @@
     ],
     "price": 275,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:47.038255+00:00"
+    "created_at": "2026-10-06T01:14:47.038255+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jacob Cowing_watch_51",
@@ -433479,7 +433643,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.128717+00:00",
     "price_source": "pregame_lock",
@@ -433490,7 +433654,7 @@
     "benford_note": "",
     "benford_cluster": 0.4,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.128727+00:00",
     "player_name": "Jacob Cowing",
     "stamps": [
@@ -433502,7 +433666,8 @@
     ],
     "price": 1100,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:44.765619+00:00"
+    "created_at": "2026-10-06T01:14:44.765619+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jake Ferguson_watch_50",
@@ -433538,7 +433703,7 @@
       "Stayed in the group"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.599905+00:00",
     "price_source": "pregame_lock",
@@ -433549,7 +433714,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.599914+00:00",
     "player_name": "Jake Ferguson",
     "stamps": [
@@ -433562,7 +433727,8 @@
     ],
     "price": 250,
     "book": "betmgm",
-    "created_at": "2026-10-06T01:14:43.802578+00:00"
+    "created_at": "2026-10-06T01:14:43.802578+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jakobi Meyers_watch_31",
@@ -433591,7 +433757,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.618395+00:00",
     "price_source": "pregame_lock",
@@ -433602,7 +433768,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.618410+00:00",
     "player_name": "Jakobi Meyers",
     "stamps": [
@@ -433612,7 +433778,8 @@
     ],
     "price": 290,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.820972+00:00"
+    "created_at": "2026-10-06T01:14:46.820972+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_James Cook III_watch_25",
@@ -433640,7 +433807,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.345612+00:00",
     "price_source": "pregame_lock",
@@ -433651,7 +433818,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.345622+00:00",
     "player_name": "James Cook III",
     "stamps": [
@@ -433661,7 +433828,8 @@
     ],
     "price": -125,
     "book": "caesars",
-    "created_at": "2026-10-06T01:14:47.785784+00:00"
+    "created_at": "2026-10-06T01:14:47.785784+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jameson Williams_watch_25",
@@ -433692,7 +433860,7 @@
       "Kelly Premium"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.027153+00:00",
     "price_source": "pregame_lock",
@@ -433703,7 +433871,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.027165+00:00",
     "player_name": "Jameson Williams",
     "stamps": [
@@ -433716,7 +433884,8 @@
     ],
     "price": 145,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:47.356952+00:00"
+    "created_at": "2026-10-06T01:14:47.356952+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jaxon Smith-Njigba_watch_45",
@@ -433749,7 +433918,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.089119+00:00",
     "price_source": "pregame_lock",
@@ -433760,7 +433929,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.089129+00:00",
     "player_name": "Jaxon Smith-Njigba",
     "stamps": [
@@ -433772,7 +433941,8 @@
     ],
     "price": -120,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:44.687508+00:00"
+    "created_at": "2026-10-06T01:14:44.687508+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jaylen Waddle_watch_38",
@@ -433799,7 +433969,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.398507+00:00",
     "price_source": "pregame_lock",
@@ -433810,7 +433980,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.398518+00:00",
     "player_name": "Jaylen Waddle",
     "stamps": [
@@ -433820,7 +433990,8 @@
     ],
     "price": 200,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.594103+00:00"
+    "created_at": "2026-10-06T01:14:46.594103+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jaylen Warren_watch_52",
@@ -433848,7 +434019,7 @@
       "Kelly Premium"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.641480+00:00",
     "price_source": "pregame_lock",
@@ -433859,7 +434030,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.641493+00:00",
     "player_name": "Jaylen Warren",
     "stamps": [
@@ -433870,7 +434041,8 @@
     ],
     "price": -110,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:45.172376+00:00"
+    "created_at": "2026-10-06T01:14:45.172376+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Jonathan Taylor_watch_51",
@@ -433898,7 +434070,7 @@
       "Kelly Premium"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.892714+00:00",
     "price_source": "pregame_lock",
@@ -433909,7 +434081,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.892724+00:00",
     "player_name": "Jonathan Taylor",
     "stamps": [
@@ -433920,7 +434092,8 @@
     ],
     "price": -200,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.357246+00:00"
+    "created_at": "2026-10-06T01:14:45.357246+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Josh Cameron_watch_35",
@@ -433948,7 +434121,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.489018+00:00",
     "price_source": "pregame_lock",
@@ -433959,7 +434132,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.489028+00:00",
     "player_name": "Josh Cameron",
     "stamps": [
@@ -433969,7 +434142,8 @@
     ],
     "price": 750,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:46.692593+00:00"
+    "created_at": "2026-10-06T01:14:46.692593+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Kenny Gainwell_watch_59",
@@ -434010,7 +434184,7 @@
       "Stayed in the group"
     ],
     "core": 11,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.141360+00:00",
     "price_source": "pregame_lock",
@@ -434021,7 +434195,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.141369+00:00",
     "player_name": "Kenny Gainwell",
     "stamps": [
@@ -434039,7 +434213,8 @@
     ],
     "price": 450,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:43.387613+00:00"
+    "created_at": "2026-10-06T01:14:43.387613+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Keon Coleman_watch_49",
@@ -434070,7 +434245,7 @@
       "Kelly Caution"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.126978+00:00",
     "price_source": "pregame_lock",
@@ -434081,7 +434256,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.126987+00:00",
     "player_name": "Keon Coleman",
     "stamps": [
@@ -434094,7 +434269,8 @@
     ],
     "price": 240,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:43.872430+00:00"
+    "created_at": "2026-10-06T01:14:43.872430+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Kevin Austin Jr._watch_49",
@@ -434125,7 +434301,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:14:44.515880+00:00",
     "price_source": "pregame_lock",
@@ -434136,7 +434312,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:14:44.515893+00:00",
     "player_name": "Kevin Austin Jr.",
     "stamps": [
@@ -434148,7 +434324,8 @@
     ],
     "price": 1500,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:44.515880+00:00"
+    "created_at": "2026-10-06T01:14:44.515880+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Kyren Williams_watch_25",
@@ -434176,7 +434353,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.190591+00:00",
     "price_source": "pregame_lock",
@@ -434187,7 +434364,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.190600+00:00",
     "player_name": "Kyren Williams",
     "stamps": [
@@ -434197,7 +434374,8 @@
     ],
     "price": -180,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:47.628921+00:00"
+    "created_at": "2026-10-06T01:14:47.628921+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Makai Lemon_watch_48",
@@ -434226,7 +434404,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.205072+00:00",
     "price_source": "pregame_lock",
@@ -434237,7 +434415,7 @@
     "benford_note": "",
     "benford_cluster": 0.6,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.205081+00:00",
     "player_name": "Makai Lemon",
     "stamps": [
@@ -434247,7 +434425,8 @@
     ],
     "price": 430,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.337656+00:00"
+    "created_at": "2026-10-06T01:14:46.337656+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Malik Nabers_watch_50",
@@ -434275,7 +434454,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.949468+00:00",
     "price_source": "pregame_lock",
@@ -434286,7 +434465,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.949477+00:00",
     "player_name": "Malik Nabers",
     "stamps": [
@@ -434297,7 +434476,8 @@
     ],
     "price": 225,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.404936+00:00"
+    "created_at": "2026-10-06T01:14:45.404936+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Matthew Golden_watch_32",
@@ -434324,7 +434504,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.528648+00:00",
     "price_source": "pregame_lock",
@@ -434335,7 +434515,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.528658+00:00",
     "player_name": "Matthew Golden",
     "stamps": [
@@ -434345,7 +434525,8 @@
     ],
     "price": 240,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.731783+00:00"
+    "created_at": "2026-10-06T01:14:46.731783+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Mike Evans_watch_59",
@@ -434379,7 +434560,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.853081+00:00",
     "price_source": "pregame_lock",
@@ -434390,7 +434571,7 @@
     "benford_note": "",
     "benford_cluster": 0.57,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.853093+00:00",
     "player_name": "Mike Evans",
     "stamps": [
@@ -434403,7 +434584,8 @@
     ],
     "price": 215,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:43.677542+00:00"
+    "created_at": "2026-10-06T01:14:43.677542+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Montorie Foster Jr._watch_85",
@@ -434431,7 +434613,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.222725+00:00",
     "price_source": "pregame_lock",
@@ -434442,7 +434624,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.222735+00:00",
     "player_name": "Montorie Foster Jr.",
     "stamps": [
@@ -434453,7 +434635,8 @@
     ],
     "price": 2200,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.033621+00:00"
+    "created_at": "2026-10-06T01:14:45.033621+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Nick Muse_watch_45",
@@ -434484,7 +434667,7 @@
       "Rivers short vs pack"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.320454+00:00",
     "price_source": "pregame_lock",
@@ -434495,7 +434678,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.320463+00:00",
     "player_name": "Nick Muse",
     "stamps": [
@@ -434507,7 +434690,8 @@
     ],
     "price": 2500,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:44.971054+00:00"
+    "created_at": "2026-10-06T01:14:44.971054+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Nico Collins_watch_31",
@@ -434534,7 +434718,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.666073+00:00",
     "price_source": "pregame_lock",
@@ -434545,7 +434729,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.666082+00:00",
     "player_name": "Nico Collins",
     "stamps": [
@@ -434555,7 +434739,8 @@
     ],
     "price": 145,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.872501+00:00"
+    "created_at": "2026-10-06T01:14:46.872501+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Ollie Gordon II_watch_38",
@@ -434583,7 +434768,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.445897+00:00",
     "price_source": "pregame_lock",
@@ -434594,7 +434779,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.445911+00:00",
     "player_name": "Ollie Gordon II",
     "stamps": [
@@ -434604,7 +434789,8 @@
     ],
     "price": 170,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.647975+00:00"
+    "created_at": "2026-10-06T01:14:46.647975+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Oscar Delp_watch_82",
@@ -434642,7 +434828,7 @@
       "Multi-book method"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.069948+00:00",
     "price_source": "pregame_lock",
@@ -434653,7 +434839,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:14.077022+00:00",
     "player_name": "Oscar Delp",
     "stamps": [
@@ -434666,7 +434852,8 @@
     ],
     "price": 1200,
     "book": "bet365",
-    "created_at": "2026-10-06T01:14:43.484090+00:00"
+    "created_at": "2026-10-06T01:14:43.484090+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Parker Washington_watch_40",
@@ -434696,7 +434883,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.671056+00:00",
     "price_source": "pregame_lock",
@@ -434707,7 +434894,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.671066+00:00",
     "player_name": "Parker Washington",
     "stamps": [
@@ -434718,7 +434905,8 @@
     ],
     "price": 170,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.984136+00:00"
+    "created_at": "2026-10-06T01:14:45.984136+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Puka Nacua_watch_35",
@@ -434747,7 +434935,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.166680+00:00",
     "price_source": "pregame_lock",
@@ -434758,7 +434946,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.166687+00:00",
     "player_name": "Puka Nacua",
     "stamps": [
@@ -434769,7 +434957,8 @@
     ],
     "price": -130,
     "book": "caesars",
-    "created_at": "2026-10-06T01:14:46.282924+00:00"
+    "created_at": "2026-10-06T01:14:46.282924+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Quinshon Judkins_watch_59",
@@ -434797,7 +434986,7 @@
       "Kelly Premium"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:04.447678+00:00",
     "price_source": "pregame_lock",
@@ -434808,7 +434997,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:04.447686+00:00",
     "player_name": "Quinshon Judkins",
     "stamps": [
@@ -434819,7 +435008,8 @@
     ],
     "price": 110,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:45.080968+00:00"
+    "created_at": "2026-10-06T01:14:45.080968+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_RJ Harvey_watch_25",
@@ -434846,7 +435036,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.396993+00:00",
     "price_source": "pregame_lock",
@@ -434857,7 +435047,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.397003+00:00",
     "player_name": "RJ Harvey",
     "stamps": [
@@ -434867,7 +435057,8 @@
     ],
     "price": 175,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:47.836487+00:00"
+    "created_at": "2026-10-06T01:14:47.836487+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Rashid Shaheed_watch_45",
@@ -434897,7 +435088,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.197344+00:00",
     "price_source": "pregame_lock",
@@ -434908,7 +435099,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.197358+00:00",
     "player_name": "Rashid Shaheed",
     "stamps": [
@@ -434919,7 +435110,8 @@
     ],
     "price": 370,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.714832+00:00"
+    "created_at": "2026-10-06T01:14:45.714832+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Rhamondre Stevenson_watch_25",
@@ -434946,7 +435138,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.445687+00:00",
     "price_source": "pregame_lock",
@@ -434957,7 +435149,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.445697+00:00",
     "player_name": "Rhamondre Stevenson",
     "stamps": [
@@ -434967,7 +435159,8 @@
     ],
     "price": 130,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:47.878745+00:00"
+    "created_at": "2026-10-06T01:14:47.878745+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Romeo Doubs_watch_48",
@@ -434994,7 +435187,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.248064+00:00",
     "price_source": "pregame_lock",
@@ -435005,7 +435198,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.248072+00:00",
     "player_name": "Romeo Doubs",
     "stamps": [
@@ -435015,7 +435208,8 @@
     ],
     "price": 265,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:46.405341+00:00"
+    "created_at": "2026-10-06T01:14:46.405341+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Sam LaPorta_watch_40",
@@ -435043,7 +435237,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.300038+00:00",
     "price_source": "pregame_lock",
@@ -435054,7 +435248,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.300048+00:00",
     "player_name": "Sam LaPorta",
     "stamps": [
@@ -435064,7 +435258,8 @@
     ],
     "price": 190,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.462309+00:00"
+    "created_at": "2026-10-06T01:14:46.462309+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tampa Bay Buccaneers D/ST_watch_53",
@@ -435094,7 +435289,7 @@
       "Stayed in the group"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:03.052458+00:00",
     "price_source": "pregame_lock",
@@ -435105,7 +435300,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:03.052467+00:00",
     "player_name": "Tampa Bay Buccaneers D/ST",
     "stamps": [
@@ -435117,7 +435312,8 @@
     ],
     "price": 700,
     "book": "betmgm",
-    "created_at": "2026-10-06T01:14:44.577871+00:00"
+    "created_at": "2026-10-06T01:14:44.577871+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tanner Koziol_watch_46",
@@ -435147,7 +435343,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.092342+00:00",
     "price_source": "pregame_lock",
@@ -435158,7 +435354,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.092351+00:00",
     "player_name": "Tanner Koziol",
     "stamps": [
@@ -435169,7 +435365,8 @@
     ],
     "price": 2250,
     "book": "hardrockbet",
-    "created_at": "2026-10-06T01:14:45.619559+00:00"
+    "created_at": "2026-10-06T01:14:45.619559+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Ted Hurst III_watch_66",
@@ -435211,7 +435408,7 @@
       "Stayed in the group"
     ],
     "core": 12,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:01.926765+00:00",
     "price_source": "pregame_lock",
@@ -435222,7 +435419,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:01.926777+00:00",
     "player_name": "Ted Hurst III",
     "stamps": [
@@ -435241,7 +435438,8 @@
     ],
     "price": 500,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:43.346419+00:00"
+    "created_at": "2026-10-06T01:14:43.346419+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tony Pollard_watch_25",
@@ -435269,7 +435467,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.887029+00:00",
     "price_source": "pregame_lock",
@@ -435280,7 +435478,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.887039+00:00",
     "player_name": "Tony Pollard",
     "stamps": [
@@ -435290,7 +435488,8 @@
     ],
     "price": 200,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:47.154265+00:00"
+    "created_at": "2026-10-06T01:14:47.154265+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tory Horton_watch_51",
@@ -435321,7 +435520,7 @@
       "Kelly Caution"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:01.877721+00:00",
     "price_source": "pregame_lock",
@@ -435332,7 +435531,7 @@
     "benford_note": "",
     "benford_cluster": 0.4,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:01.877733+00:00",
     "player_name": "Tory Horton",
     "stamps": [
@@ -435344,7 +435543,8 @@
     ],
     "price": 750,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:43.301628+00:00"
+    "created_at": "2026-10-06T01:14:43.301628+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_TreVeyon Henderson_watch_25",
@@ -435372,7 +435572,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.932891+00:00",
     "price_source": "pregame_lock",
@@ -435383,7 +435583,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.932901+00:00",
     "player_name": "TreVeyon Henderson",
     "stamps": [
@@ -435393,7 +435593,8 @@
     ],
     "price": 190,
     "book": "hardrockbet",
-    "created_at": "2026-10-06T01:14:47.216387+00:00"
+    "created_at": "2026-10-06T01:14:47.216387+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Trey McBride_watch_41",
@@ -435421,7 +435622,7 @@
       "Kelly Support"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.280833+00:00",
     "price_source": "pregame_lock",
@@ -435432,7 +435633,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.280843+00:00",
     "player_name": "Trey McBride",
     "stamps": [
@@ -435443,7 +435644,8 @@
     ],
     "price": 165,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:45.837233+00:00"
+    "created_at": "2026-10-06T01:14:45.837233+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tyler Allgeier_watch_35",
@@ -435471,7 +435673,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.838882+00:00",
     "price_source": "pregame_lock",
@@ -435482,7 +435684,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.838895+00:00",
     "player_name": "Tyler Allgeier",
     "stamps": [
@@ -435493,7 +435695,8 @@
     ],
     "price": 165,
     "book": "hardrockbet",
-    "created_at": "2026-10-06T01:14:46.034297+00:00"
+    "created_at": "2026-10-06T01:14:46.034297+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tyler Goodson_watch_65",
@@ -435532,7 +435735,7 @@
       "Kelly Support"
     ],
     "core": 10,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.937065+00:00",
     "price_source": "pregame_lock",
@@ -435543,7 +435746,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.937076+00:00",
     "player_name": "Tyler Goodson",
     "stamps": [
@@ -435560,7 +435763,8 @@
     ],
     "price": 750,
     "book": "betrivers",
-    "created_at": "2026-10-06T01:14:43.438256+00:00"
+    "created_at": "2026-10-06T01:14:43.438256+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tyler Higbee_watch_25",
@@ -435588,7 +435792,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.136635+00:00",
     "price_source": "pregame_lock",
@@ -435599,7 +435803,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.136647+00:00",
     "player_name": "Tyler Higbee",
     "stamps": [
@@ -435609,7 +435813,8 @@
     ],
     "price": 185,
     "book": "fanduel",
-    "created_at": "2026-10-06T01:14:47.574920+00:00"
+    "created_at": "2026-10-06T01:14:47.574920+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Tyler Warren_watch_25",
@@ -435636,7 +435841,7 @@
       "Kelly Caution"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:07.235226+00:00",
     "price_source": "pregame_lock",
@@ -435647,7 +435852,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:07.235238+00:00",
     "player_name": "Tyler Warren",
     "stamps": [
@@ -435657,7 +435862,8 @@
     ],
     "price": 155,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:47.683725+00:00"
+    "created_at": "2026-10-06T01:14:47.683725+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Will Shipley_watch_39",
@@ -435686,7 +435892,7 @@
       "Kelly Support"
     ],
     "core": 3,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:06.353335+00:00",
     "price_source": "pregame_lock",
@@ -435697,7 +435903,7 @@
     "benford_note": "",
     "benford_cluster": 0.8,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:06.353346+00:00",
     "player_name": "Will Shipley",
     "stamps": [
@@ -435707,7 +435913,8 @@
     ],
     "price": 215,
     "book": "fanatics",
-    "created_at": "2026-10-06T01:14:46.546862+00:00"
+    "created_at": "2026-10-06T01:14:46.546862+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Anthony Cirelli_watch_49",
@@ -435938,7 +436145,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:14:55.506230+00:00",
     "price_source": "shop",
@@ -435947,13 +436154,14 @@
     "updated_at": "2026-10-06T01:22:14.582615+00:00",
     "player_name": "Tez Johnson",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 750,
     "book": "draftkings",
-    "created_at": "2026-10-06T01:14:55.506230+00:00"
+    "created_at": "2026-10-06T01:14:55.506230+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Elijah Arroyo_shop_lean_55",
@@ -435978,7 +436186,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:14:55.567044+00:00",
     "price_source": "shop",
@@ -435986,14 +436194,15 @@
     "market": "anytime_td",
     "player_name": "Elijah Arroyo",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 850,
     "book": "fanatics",
     "created_at": "2026-10-06T01:14:55.567044+00:00",
-    "updated_at": "2026-10-06T01:22:14.337440+00:00"
+    "updated_at": "2026-10-06T01:22:14.337440+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_KaVontae Turpin_shop_lean_50",
@@ -436021,7 +436230,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:14:55.824444+00:00",
     "price_source": "shop",
@@ -436029,14 +436238,15 @@
     "market": "anytime_td",
     "player_name": "KaVontae Turpin",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-06T01:14:55.824444+00:00",
-    "updated_at": "2026-10-06T01:22:14.376782+00:00"
+    "updated_at": "2026-10-06T01:22:14.376782+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Cade Otton_shop_lean_47",
@@ -436064,7 +436274,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:14:56.102391+00:00",
     "price_source": "shop",
@@ -436072,14 +436282,15 @@
     "market": "anytime_td",
     "player_name": "Cade Otton",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-06T01:14:56.102391+00:00",
-    "updated_at": "2026-10-06T01:22:14.469846+00:00"
+    "updated_at": "2026-10-06T01:22:14.469846+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Davis Allen_shop_lean_46",
@@ -436103,7 +436314,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:14:56.236440+00:00",
     "price_source": "shop",
@@ -436111,14 +436322,15 @@
     "market": "anytime_td",
     "player_name": "Davis Allen",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-06T01:14:56.236440+00:00",
-    "updated_at": "2026-10-06T01:22:14.538128+00:00"
+    "updated_at": "2026-10-06T01:22:14.538128+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Darius Cooper_shop_lean_41",
@@ -436143,7 +436355,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:14:56.519593+00:00",
     "price_source": "shop",
@@ -436151,14 +436363,15 @@
     "market": "anytime_td",
     "player_name": "Darius Cooper",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 475,
     "book": "draftkings",
     "created_at": "2026-10-06T01:14:56.519593+00:00",
-    "updated_at": "2026-10-06T01:22:14.635626+00:00"
+    "updated_at": "2026-10-06T01:22:14.635626+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Joshua Palmer_shop_lean_41",
@@ -436182,7 +436395,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "shop_lean",
     "logged_at": "2026-10-06T01:14:56.647431+00:00",
     "price_source": "shop",
@@ -436190,14 +436403,15 @@
     "market": "anytime_td",
     "player_name": "Joshua Palmer",
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 500,
     "book": "draftkings",
     "created_at": "2026-10-06T01:14:56.647431+00:00",
-    "updated_at": "2026-10-06T01:22:14.677075+00:00"
+    "updated_at": "2026-10-06T01:22:14.677075+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Anthony Cirelli_shop_take_85",
@@ -436493,7 +436707,7 @@
       "Kelly Support"
     ],
     "core": 6,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.643108+00:00",
     "price_source": "pregame_lock",
@@ -436504,7 +436718,7 @@
     "benford_note": "",
     "benford_cluster": 0.83,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.643125+00:00",
     "player_name": "Barion Brown",
     "stamps": [
@@ -436517,7 +436731,8 @@
     ],
     "price": 1650,
     "book": "betmgm",
-    "created_at": "2026-10-06T01:22:02.643108+00:00"
+    "created_at": "2026-10-06T01:22:02.643108+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Bryce Lance_watch_72",
@@ -436554,7 +436769,7 @@
       "Kelly Support"
     ],
     "core": 10,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:02.210364+00:00",
     "price_source": "pregame_lock",
@@ -436565,7 +436780,7 @@
     "benford_note": "",
     "benford_cluster": 0.67,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:02.210374+00:00",
     "player_name": "Bryce Lance",
     "stamps": [
@@ -436582,7 +436797,8 @@
     ],
     "price": 650,
     "book": "betmgm",
-    "created_at": "2026-10-06T01:22:02.210364+00:00"
+    "created_at": "2026-10-06T01:22:02.210364+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Charlie Woerner_watch_39",
@@ -436613,7 +436829,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_MISS",
     "source": "watch",
     "logged_at": "2026-10-06T01:22:05.765972+00:00",
     "price_source": "pregame_lock",
@@ -436624,7 +436840,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "MISS",
     "updated_at": "2026-10-06T01:22:05.765983+00:00",
     "player_name": "Charlie Woerner",
     "stamps": [
@@ -436635,7 +436851,8 @@
     ],
     "price": 2100,
     "book": "caesars",
-    "created_at": "2026-10-06T01:22:05.765972+00:00"
+    "created_at": "2026-10-06T01:22:05.765972+00:00",
+    "graded_by": "nfl_auto_closed"
   },
   {
     "id": "2026-10-05_Ivar Stenberg_shop_lean_102",
@@ -450050,7 +450267,7 @@
       "Kelly Support"
     ],
     "core": 5,
-    "result": "PENDING",
+    "result": "HIT",
     "source": "take_it",
     "logged_at": "2026-10-09T00:24:19.218461+00:00",
     "price_source": "pregame_lock",
@@ -450061,7 +450278,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "TAKE",
-    "status": "PENDING",
+    "status": "HIT",
     "updated_at": "2026-10-09T00:24:19.218474+00:00",
     "player_name": "Bucky Irving",
     "stamps": [
@@ -450073,7 +450290,20 @@
     ],
     "price": 200,
     "book": "betmgm",
-    "created_at": "2026-10-08T19:18:20.594410+00:00"
+    "created_at": "2026-10-08T19:18:20.594410+00:00",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Books tight",
+      "B365 75",
+      "DK FD-style",
+      "EV Caution",
+      "Kelly Caution",
+      "Match 00",
+      "MGM 00",
+      "EV Support",
+      "Kelly Support"
+    ],
+    "hit_when": "2026-10-08"
   },
   {
     "id": "2026-10-08_AJ Barner_watch_49",
@@ -453453,7 +453683,7 @@
       "Kelly Caution"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "watch",
     "logged_at": "2026-10-09T00:24:21.851788+00:00",
     "price_source": "pregame_lock",
@@ -453464,7 +453694,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "HIT",
     "updated_at": "2026-10-09T00:24:21.851832+00:00",
     "player_name": "Emeka Egbuka",
     "stamps": [
@@ -453475,7 +453705,19 @@
     ],
     "price": 290,
     "book": "betmgm",
-    "created_at": "2026-10-08T19:18:33.316741+00:00"
+    "created_at": "2026-10-08T19:18:33.316741+00:00",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Books tight",
+      "FD 50",
+      "EV Support",
+      "Kelly Support",
+      "Multi-book method",
+      "DK FD-style",
+      "EV Caution",
+      "Kelly Caution"
+    ],
+    "hit_when": "2026-10-08"
   },
   {
     "id": "2026-10-08_Garrett Wilson_watch_35",
@@ -454833,7 +455075,7 @@
       "Kelly Premium"
     ],
     "core": 4,
-    "result": "PENDING",
+    "result": "LEARN_HIT",
     "source": "watch",
     "logged_at": "2026-10-09T00:24:21.311978+00:00",
     "price_source": "pregame_lock",
@@ -454844,7 +455086,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "PENDING",
+    "status": "HIT",
     "updated_at": "2026-10-09T00:24:21.311989+00:00",
     "player_name": "Jameson Williams",
     "stamps": [
@@ -454858,7 +455100,22 @@
     ],
     "price": 185,
     "book": "betmgm",
-    "created_at": "2026-10-08T19:18:34.509405+00:00"
+    "created_at": "2026-10-08T19:18:34.509405+00:00",
+    "graded_by": "nfl_auto",
+    "hit_why": [
+      "Books tight",
+      "B365 Exact",
+      "EV Caution",
+      "Kelly Caution",
+      "B365 over HardRock",
+      "EV Support",
+      "Kelly Support",
+      "DK FD-style",
+      "Multi-book Shorten",
+      "Rivers short vs pack",
+      "Kelly Premium"
+    ],
+    "hit_when": "2026-10-08"
   },
   {
     "id": "2026-10-08_Jaylen Waddle_watch_53",
@@ -461348,7 +461605,7 @@
       "DK Best"
     ],
     "core": 5,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "take_it",
     "logged_at": "2026-10-08T20:36:22.614601+00:00",
     "price_source": "pregame_lock",
@@ -461359,7 +461616,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T20:36:22.614611+00:00",
     "player_name": "Mark Jankowski",
     "stamps": [
@@ -461377,8 +461634,7 @@
     ],
     "price": 475,
     "book": "draftkings",
-    "created_at": "2026-10-08T19:20:03.590264+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:03.590264+00:00"
   },
   {
     "id": "2026-10-08_Anthony Duclair_take_it_59",
@@ -461422,7 +461678,7 @@
       "Lane C"
     ],
     "core": 2,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "take_it",
     "logged_at": "2026-10-09T00:23:51.931597+00:00",
     "price_source": "pregame_lock",
@@ -461433,7 +461689,7 @@
     "benford_note": "",
     "benford_cluster": 0.62,
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-09T00:23:51.931609+00:00",
     "player_name": "Anthony Duclair",
     "stamps": [
@@ -461452,8 +461708,7 @@
     ],
     "price": 460,
     "book": "fanduel",
-    "created_at": "2026-10-08T19:20:01.046889+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:01.046889+00:00"
   },
   {
     "id": "2026-10-08_Adam Edstrom_watch_69",
@@ -461494,7 +461749,7 @@
       "Last one left"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T20:36:26.895914+00:00",
     "price_source": "pregame_lock",
@@ -461505,7 +461760,7 @@
     "benford_note": "",
     "benford_cluster": 0.38,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T20:36:26.895925+00:00",
     "player_name": "Adam Edstrom",
     "stamps": [
@@ -461523,8 +461778,7 @@
     ],
     "price": 1000,
     "book": "draftkings",
-    "created_at": "2026-10-08T19:20:05.458516+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:05.458516+00:00"
   },
   {
     "id": "2026-10-08_Alex Newhook_watch_31",
@@ -461560,7 +461814,7 @@
       "FD Best"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T20:36:28.367251+00:00",
     "price_source": "pregame_lock",
@@ -461571,7 +461825,7 @@
     "benford_note": "",
     "benford_cluster": 0.75,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T20:36:28.367262+00:00",
     "player_name": "Alex Newhook",
     "stamps": [
@@ -461585,8 +461839,7 @@
     ],
     "price": 350,
     "book": "fanduel",
-    "created_at": "2026-10-08T19:20:06.753172+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:06.753172+00:00"
   },
   {
     "id": "2026-10-08_Aydar Suniev_watch_63",
@@ -461874,7 +462127,7 @@
       "FD Best"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T20:36:27.818522+00:00",
     "price_source": "pregame_lock",
@@ -461885,7 +462138,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T20:36:27.818536+00:00",
     "player_name": "Casey Mittelstadt",
     "stamps": [
@@ -461898,8 +462151,7 @@
     ],
     "price": 550,
     "book": "fanduel",
-    "created_at": "2026-10-08T19:20:06.186085+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:06.186085+00:00"
   },
   {
     "id": "2026-10-08_Collin Graf_watch_39",
@@ -462632,7 +462884,7 @@
       "DK Best"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T19:28:05.081717+00:00",
     "price_source": "pregame_lock",
@@ -462643,7 +462895,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T19:28:05.081726+00:00",
     "player_name": "Jake DeBrusk",
     "stamps": [
@@ -462656,8 +462908,7 @@
     ],
     "price": 320,
     "book": "betrivers",
-    "created_at": "2026-10-08T19:20:04.861448+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:04.861448+00:00"
   },
   {
     "id": "2026-10-08_Jamie Drysdale_watch_84",
@@ -462763,7 +463014,7 @@
       "Lane C"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T20:36:27.873987+00:00",
     "price_source": "pregame_lock",
@@ -462774,7 +463025,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T20:36:27.873998+00:00",
     "player_name": "John Carlson",
     "stamps": [
@@ -462787,8 +463038,7 @@
     ],
     "price": 650,
     "book": "betrivers",
-    "created_at": "2026-10-08T19:20:06.141558+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:06.141558+00:00"
   },
   {
     "id": "2026-10-08_Jonathan Marchessault_watch_33",
@@ -463073,7 +463323,7 @@
       "DK Best"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T20:36:27.918055+00:00",
     "price_source": "pregame_lock",
@@ -463084,7 +463334,7 @@
     "benford_note": "",
     "benford_cluster": 0.5,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T20:36:27.918067+00:00",
     "player_name": "K'Andre Miller",
     "stamps": [
@@ -463099,8 +463349,7 @@
     ],
     "price": 750,
     "book": "fanduel",
-    "created_at": "2026-10-08T19:20:06.095705+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:06.095705+00:00"
   },
   {
     "id": "2026-10-08_Kiefer Sherwood_watch_36",
@@ -464120,7 +464369,7 @@
       "DK Best"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T19:28:05.028430+00:00",
     "price_source": "pregame_lock",
@@ -464131,7 +464380,7 @@
     "benford_note": "",
     "benford_cluster": 0.88,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T19:28:05.028442+00:00",
     "player_name": "Ryan O'Reilly",
     "stamps": [
@@ -464144,8 +464393,7 @@
     ],
     "price": 310,
     "book": "draftkings",
-    "created_at": "2026-10-08T19:20:04.815109+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:20:04.815109+00:00"
   },
   {
     "id": "2026-10-08_Samuel Honzek_watch_60",
@@ -464867,7 +465115,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-08T19:20:13.191982+00:00",
     "price_source": "shop",
@@ -464875,15 +465123,14 @@
     "market": "anytime_goal",
     "player_name": "Matthew Poitras",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 900,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.191982+00:00",
-    "updated_at": "2026-10-08T20:36:35.680956+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:35.680956+00:00"
   },
   {
     "id": "2026-10-08_Mark Kastelic_shop_take_206",
@@ -465240,7 +465487,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-09T00:23:51.241504+00:00",
     "price_source": "shop",
@@ -465248,15 +465495,14 @@
     "market": "anytime_goal",
     "player_name": "Adam Klapka",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:13.543717+00:00",
-    "updated_at": "2026-10-09T00:23:51.241516+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-09T00:23:51.241516+00:00"
   },
   {
     "id": "2026-10-08_Nic Dowd_shop_take_182",
@@ -466298,7 +466544,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "shop_take",
     "logged_at": "2026-10-08T19:20:14.940682+00:00",
     "price_source": "shop",
@@ -466306,15 +466552,14 @@
     "market": "anytime_goal",
     "player_name": "Devon Toews",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:14.940682+00:00",
-    "updated_at": "2026-10-08T19:28:16.896360+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T19:28:16.896360+00:00"
   },
   {
     "id": "2026-10-08_Jack McBain_shop_lean_125",
@@ -466342,7 +466587,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-08T19:20:14.984170+00:00",
     "price_source": "shop",
@@ -466350,15 +466595,14 @@
     "market": "anytime_goal",
     "player_name": "Jack McBain",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 800,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:14.984170+00:00",
-    "updated_at": "2026-10-08T20:36:37.398083+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:37.398083+00:00"
   },
   {
     "id": "2026-10-08_Mason Lohrei_shop_take_125",
@@ -466386,7 +466630,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "shop_take",
     "logged_at": "2026-10-08T19:20:15.027037+00:00",
     "price_source": "shop",
@@ -466394,15 +466638,14 @@
     "market": "anytime_goal",
     "player_name": "Mason Lohrei",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 850,
     "book": "hardrockbet",
     "created_at": "2026-10-08T19:20:15.027037+00:00",
-    "updated_at": "2026-10-08T20:36:37.447368+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:37.447368+00:00"
   },
   {
     "id": "2026-10-08_Noah Dobson_shop_lean_125",
@@ -467146,7 +467389,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "shop_take",
     "logged_at": "2026-10-08T19:20:15.903521+00:00",
     "price_source": "shop",
@@ -467154,15 +467397,14 @@
     "market": "anytime_goal",
     "player_name": "K'Andre Miller",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 750,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:15.903521+00:00",
-    "updated_at": "2026-10-08T20:36:38.818138+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:38.818138+00:00"
   },
   {
     "id": "2026-10-08_Jeffrey Viel_shop_take_98",
@@ -467458,7 +467700,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "shop_take",
     "logged_at": "2026-10-08T19:20:16.221532+00:00",
     "price_source": "shop",
@@ -467466,15 +467708,14 @@
     "market": "anytime_goal",
     "player_name": "John Carlson",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 575,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.221532+00:00",
-    "updated_at": "2026-10-08T20:36:38.771663+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:38.771663+00:00"
   },
   {
     "id": "2026-10-08_Luca Cagnoni_shop_take_94",
@@ -467685,7 +467926,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "shop_take",
     "logged_at": "2026-10-08T19:20:16.585877+00:00",
     "price_source": "shop",
@@ -467693,15 +467934,14 @@
     "market": "anytime_goal",
     "player_name": "Casey Mittelstadt",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "fanduel",
     "created_at": "2026-10-08T19:20:16.585877+00:00",
-    "updated_at": "2026-10-08T20:36:38.722053+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:38.722053+00:00"
   },
   {
     "id": "2026-10-08_Raphael Lavoie_shop_lean_91",
@@ -468042,7 +468282,7 @@
       "Shop TAKE"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "shop_take",
     "logged_at": "2026-10-08T19:20:16.998009+00:00",
     "price_source": "shop",
@@ -468050,15 +468290,14 @@
     "market": "anytime_goal",
     "player_name": "Quinn Hughes",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:16.998009+00:00",
-    "updated_at": "2026-10-08T20:36:39.347183+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:39.347183+00:00"
   },
   {
     "id": "2026-10-08_Collin Graf_shop_take_77",
@@ -468269,7 +468508,7 @@
       "FD Best"
     ],
     "core": 0,
-    "result": "HIT",
+    "result": "PENDING",
     "source": "shop_take",
     "logged_at": "2026-10-09T00:15:59.763338+00:00",
     "price_source": "shop",
@@ -468277,15 +468516,14 @@
     "market": "anytime_goal",
     "player_name": "Carter Yakemchuk",
     "call_type": "TAKE",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop TAKE"
     ],
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.288221+00:00",
-    "updated_at": "2026-10-09T00:15:59.763349+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-09T00:15:59.763349+00:00"
   },
   {
     "id": "2026-10-08_Filip Hronek_shop_lean_74",
@@ -469239,7 +469477,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-08T19:20:18.753852+00:00",
     "price_source": "shop",
@@ -469247,15 +469485,14 @@
     "market": "anytime_goal",
     "player_name": "Sam Steel",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 500,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.753852+00:00",
-    "updated_at": "2026-10-08T20:36:41.848544+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:41.848544+00:00"
   },
   {
     "id": "2026-10-08_Alexandre Texier_shop_lean_50",
@@ -469464,7 +469701,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-08T19:20:18.983342+00:00",
     "price_source": "shop",
@@ -469472,15 +469709,14 @@
     "market": "anytime_goal",
     "player_name": "Emil Heineman",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 400,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:18.983342+00:00",
-    "updated_at": "2026-10-08T20:36:41.734086+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:41.734086+00:00"
   },
   {
     "id": "2026-10-08_Mavrik Bourque_shop_lean_48",
@@ -469895,7 +470131,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-08T19:20:19.533523+00:00",
     "price_source": "shop",
@@ -469903,15 +470139,14 @@
     "market": "anytime_goal",
     "player_name": "Alexander Kerfoot",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 500,
     "book": "draftkings",
     "created_at": "2026-10-08T19:20:19.533523+00:00",
-    "updated_at": "2026-10-08T20:36:40.238793+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:40.238793+00:00"
   },
   {
     "id": "2026-10-08_Zachary Bolduc_shop_lean_42",
@@ -470143,7 +470378,7 @@
       "Lane D"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-08T19:21:11.532789+00:00",
     "price_source": "pregame_lock",
@@ -470154,7 +470389,7 @@
     "benford_note": "",
     "benford_cluster": 0.38,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-08T19:21:11.532798+00:00",
     "player_name": "Nick Cousins",
     "stamps": [
@@ -470168,8 +470403,7 @@
     ],
     "price": 1100,
     "book": "bet365",
-    "created_at": "2026-10-08T19:21:11.532789+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T19:21:11.532789+00:00"
   },
   {
     "id": "2026-10-08_Travis Sanheim_watch_98",
@@ -471404,7 +471638,7 @@
       "FD Best"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-09T00:15:57.186036+00:00",
     "price_source": "pregame_lock",
@@ -471415,7 +471649,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-09T00:15:57.186051+00:00",
     "player_name": "Morgan Geekie",
     "stamps": [
@@ -471429,8 +471663,7 @@
     ],
     "price": 250,
     "book": "fanatics",
-    "created_at": "2026-10-08T20:28:32.143665+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-08T20:28:32.143665+00:00"
   },
   {
     "id": "2026-10-08_Owen Tippett_watch_44",
@@ -471839,7 +472072,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-08T20:28:48.451584+00:00",
     "price_source": "shop",
@@ -471847,15 +472080,14 @@
     "market": "anytime_goal",
     "player_name": "Devon Toews",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 800,
     "book": "draftkings",
     "created_at": "2026-10-08T20:28:48.451584+00:00",
-    "updated_at": "2026-10-08T20:36:36.490634+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-08T20:36:36.490634+00:00"
   },
   {
     "id": "2026-10-08_Zemgus Girgensons_shop_lean_159",
@@ -475960,7 +476192,7 @@
       "Gone Missing"
     ],
     "core": 2,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "watch",
     "logged_at": "2026-10-09T00:23:50.713531+00:00",
     "price_source": "pregame_lock",
@@ -475971,7 +476203,7 @@
     "benford_note": "",
     "benford_cluster": 1.0,
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "updated_at": "2026-10-09T00:23:50.713547+00:00",
     "player_name": "Tyler Toffoli",
     "stamps": [
@@ -475985,8 +476217,7 @@
     ],
     "price": 350,
     "book": "bet365",
-    "created_at": "2026-10-09T00:15:58.502907+00:00",
-    "graded_by": "nhl_auto"
+    "created_at": "2026-10-09T00:15:58.502907+00:00"
   },
   {
     "id": "2026-10-08_Tyson Foerster_watch_42",
@@ -477374,7 +477605,7 @@
       "Shop LEAN"
     ],
     "core": 0,
-    "result": "LEARN_HIT",
+    "result": "PENDING",
     "source": "shop_lean",
     "logged_at": "2026-10-09T00:16:11.471406+00:00",
     "price_source": "shop",
@@ -477382,15 +477613,14 @@
     "market": "anytime_goal",
     "player_name": "Carter Yakemchuk",
     "call_type": "WATCH",
-    "status": "HIT",
+    "status": "PENDING",
     "stamps": [
       "Shop LEAN"
     ],
     "price": 950,
     "book": "fanduel",
     "created_at": "2026-10-09T00:16:11.471406+00:00",
-    "updated_at": "2026-10-09T00:16:11.471406+00:00",
-    "graded_by": "nhl_auto"
+    "updated_at": "2026-10-09T00:16:11.471406+00:00"
   },
   {
     "id": "2026-10-08_Jamie Benn_shop_lean_52",
