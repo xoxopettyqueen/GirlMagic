@@ -462493,7 +462493,7 @@
   {
     "id": "2026-10-08_Colton Sissons_watch_68",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "07:08 PM",
     "player": "Colton Sissons",
     "score": 68,
     "edge": 167,
@@ -462536,7 +462536,7 @@
     "benford_cluster": 0.25,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:36:36.216884+00:00",
+    "updated_at": "2026-10-09T02:08:28.854998+00:00",
     "player_name": "Colton Sissons",
     "stamps": [
       "FD 50",
@@ -464185,7 +464185,7 @@
   {
     "id": "2026-10-08_Nic Dowd_watch_71",
     "date": "2026-10-08",
-    "time": "05:23 PM",
+    "time": "07:08 PM",
     "player": "Nic Dowd",
     "score": 71,
     "edge": 182,
@@ -464229,7 +464229,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:23:51.330908+00:00",
+    "updated_at": "2026-10-09T02:08:28.965029+00:00",
     "player_name": "Nic Dowd",
     "stamps": [
       "FD 50",
@@ -468683,7 +468683,7 @@
   {
     "id": "2026-10-08_Darren Raddysh_shop_take_76",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "07:08 PM",
     "player": "Darren Raddysh",
     "score": 0,
     "edge": 76,
@@ -468721,7 +468721,7 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.145551+00:00",
-    "updated_at": "2026-10-08T20:36:39.501562+00:00"
+    "updated_at": "2026-10-09T02:08:29.580051+00:00"
   },
   {
     "id": "2026-10-08_Oliver Moore_shop_take_76",
@@ -469297,7 +469297,7 @@
     "price": 450,
     "book": "bet365",
     "created_at": "2026-10-08T19:20:17.872104+00:00",
-    "updated_at": "2026-10-09T02:08:17.672618+00:00"
+    "updated_at": "2026-10-09T02:08:29.664683+00:00"
   },
   {
     "id": "2026-10-08_Dalibor Dvorsky_shop_take_64",
@@ -472658,7 +472658,7 @@
   {
     "id": "2026-10-08_Raphael Lavoie_shop_take_113",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "07:08 PM",
     "player": "Raphael Lavoie",
     "score": 0,
     "edge": 113,
@@ -472693,12 +472693,12 @@
     "price": 725,
     "book": "fanduel",
     "created_at": "2026-10-08T20:28:50.062335+00:00",
-    "updated_at": "2026-10-08T20:36:37.863513+00:00"
+    "updated_at": "2026-10-09T02:08:29.161643+00:00"
   },
   {
     "id": "2026-10-08_Marc Gatcomb_shop_lean_111",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "07:08 PM",
     "player": "Marc Gatcomb",
     "score": 0,
     "edge": 111,
@@ -472736,7 +472736,7 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-10-08T20:28:50.205237+00:00",
-    "updated_at": "2026-10-08T20:36:38.007617+00:00"
+    "updated_at": "2026-10-09T02:08:29.291407+00:00"
   },
   {
     "id": "2026-10-08_Cam Fowler_shop_take_98",
@@ -472871,7 +472871,7 @@
   {
     "id": "2026-10-08_Nick Paul_shop_lean_85",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "07:08 PM",
     "player": "Nick Paul",
     "score": 0,
     "edge": 85,
@@ -472907,7 +472907,7 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-10-08T20:28:51.330457+00:00",
-    "updated_at": "2026-10-08T20:36:37.814541+00:00"
+    "updated_at": "2026-10-09T02:08:29.767670+00:00"
   },
   {
     "id": "2026-10-08_Fabian Zetterlund_shop_take_80",
@@ -472955,7 +472955,7 @@
   {
     "id": "2026-10-08_Rasmus Andersson_shop_take_78",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "07:08 PM",
     "player": "Rasmus Andersson",
     "score": 0,
     "edge": 78,
@@ -472993,7 +472993,7 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-08T20:28:51.557440+00:00",
-    "updated_at": "2026-10-08T20:36:39.402235+00:00"
+    "updated_at": "2026-10-09T02:08:29.486536+00:00"
   },
   {
     "id": "2026-10-08_Nolan Allan_shop_lean_77",
@@ -473251,7 +473251,7 @@
   {
     "id": "2026-10-08_Victor Olofsson_shop_take_60",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "07:08 PM",
     "player": "Victor Olofsson",
     "score": 0,
     "edge": 60,
@@ -473283,7 +473283,7 @@
     "price": 375,
     "book": "bet365",
     "created_at": "2026-10-08T20:28:53.114760+00:00",
-    "updated_at": "2026-10-08T20:36:40.809426+00:00"
+    "updated_at": "2026-10-09T02:08:29.889336+00:00"
   },
   {
     "id": "2026-10-08_James Hagens_shop_take_58",
@@ -477520,7 +477520,7 @@
   {
     "id": "2026-10-08_Noah Hanifin_shop_take_116",
     "date": "2026-10-08",
-    "time": "05:16 PM",
+    "time": "07:08 PM",
     "player": "Noah Hanifin",
     "score": 0,
     "edge": 116,
@@ -477558,12 +477558,12 @@
     "price": 850,
     "book": "bet365",
     "created_at": "2026-10-09T00:16:08.808265+00:00",
-    "updated_at": "2026-10-09T00:16:08.808265+00:00"
+    "updated_at": "2026-10-09T02:08:29.063493+00:00"
   },
   {
     "id": "2026-10-08_Shea Theodore_shop_lean_103",
     "date": "2026-10-08",
-    "time": "05:16 PM",
+    "time": "07:08 PM",
     "player": "Shea Theodore",
     "score": 0,
     "edge": 103,
@@ -477601,7 +477601,7 @@
     "price": 600,
     "book": "hardrockbet",
     "created_at": "2026-10-09T00:16:08.886988+00:00",
-    "updated_at": "2026-10-09T00:16:08.886988+00:00"
+    "updated_at": "2026-10-09T02:08:29.396879+00:00"
   },
   {
     "id": "2026-10-08_Jonatan Berggren_shop_take_102",
@@ -478665,7 +478665,7 @@
   {
     "id": "2026-10-08_Bo Groulx_shop_lean_48",
     "date": "2026-10-08",
-    "time": "07:00 PM",
+    "time": "07:08 PM",
     "player": "Bo Groulx",
     "score": 0,
     "edge": 48,
@@ -478701,12 +478701,12 @@
     "price": 950,
     "book": "bet365",
     "created_at": "2026-10-09T02:00:35.391305+00:00",
-    "updated_at": "2026-10-09T02:00:35.391305+00:00"
+    "updated_at": "2026-10-09T02:08:30.162601+00:00"
   },
   {
     "id": "2026-10-08_Artturi Lehkonen_shop_lean_45",
     "date": "2026-10-08",
-    "time": "07:00 PM",
+    "time": "07:08 PM",
     "player": "Artturi Lehkonen",
     "score": 0,
     "edge": 45,
@@ -478740,6 +478740,6 @@
     "price": 380,
     "book": "fanduel",
     "created_at": "2026-10-09T02:00:35.443652+00:00",
-    "updated_at": "2026-10-09T02:00:35.443652+00:00"
+    "updated_at": "2026-10-09T02:08:30.032641+00:00"
   }
 ]
