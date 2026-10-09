@@ -448892,7 +448892,7 @@
   {
     "id": "2026-10-08_Angel Mart\u00ednez_watch_51",
     "date": "2026-10-08",
-    "time": "01:36 PM",
+    "time": "05:15 PM",
     "player": "Angel Mart\u00ednez",
     "score": 51,
     "edge": 91,
@@ -448923,12 +448923,21 @@
       "Kelly Support",
       "FD Pattern",
       "DK FD-style",
-      "EV Support"
+      "EV Support",
+      "HardRock 50",
+      "Stayed in the group",
+      "Multi-book Shorten",
+      "FD 50",
+      "Rivers a bit over pack",
+      "Match 50",
+      "MGM 50",
+      "EV Caution",
+      "Kelly Caution"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T20:35:54.904385+00:00",
+    "logged_at": "2026-10-09T00:15:41.394276+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CLEVELAND GUARDIANS",
@@ -448938,7 +448947,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-08T20:36:01.551983+00:00",
+    "updated_at": "2026-10-09T00:15:41.394289+00:00",
     "player_name": "Angel Mart\u00ednez",
     "stamps": [
       "HardRock 00",
@@ -449054,12 +449063,14 @@
       "Multi-book method",
       "DK FD-style",
       "Match 25",
-      "MGM 25"
+      "MGM 25",
+      "Stayed in the group",
+      "Fanatics Drift"
     ],
     "core": 1,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-09T00:15:08.379720+00:00",
+    "logged_at": "2026-10-09T00:15:41.312146+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CLEVELAND GUARDIANS",
@@ -449083,7 +449094,7 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-08T19:11:42.969098+00:00",
-    "updated_at": "2026-10-09T00:15:13.507013+00:00"
+    "updated_at": "2026-10-09T00:15:41.312159+00:00"
   },
   {
     "id": "2026-10-08_Chase Meidroth_watch_36",
@@ -449131,7 +449142,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-09T00:15:08.545902+00:00",
+    "logged_at": "2026-10-09T00:15:41.353860+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -449141,7 +449152,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:15:08.545913+00:00",
+    "updated_at": "2026-10-09T00:15:41.353873+00:00",
     "player_name": "Chase Meidroth",
     "stamps": [
       "HardRock 00",
@@ -449418,7 +449429,7 @@
     "core": 3,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-09T00:15:08.459402+00:00",
+    "logged_at": "2026-10-09T00:15:41.211796+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -449428,7 +449439,7 @@
     "benford_cluster": 0.5,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:15:08.459412+00:00",
+    "updated_at": "2026-10-09T00:15:41.211824+00:00",
     "player_name": "Tommy Pham",
     "stamps": [
       "HardRock 50",
@@ -449687,12 +449698,14 @@
       "Multi-book method",
       "MGM 25",
       "EV Support",
-      "Kelly Support"
+      "Kelly Support",
+      "Stayed in the group",
+      "FD 40"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_take",
-    "logged_at": "2026-10-09T00:15:08.419954+00:00",
+    "logged_at": "2026-10-09T00:15:41.444888+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -449705,7 +449718,7 @@
     "price": 550,
     "book": "bet365",
     "created_at": "2026-10-08T19:17:27.124518+00:00",
-    "updated_at": "2026-10-09T00:15:08.419966+00:00"
+    "updated_at": "2026-10-09T00:15:41.444900+00:00"
   },
   {
     "id": "2026-10-08_Randal Grichuk_shop_lean_79",
@@ -449780,12 +449793,13 @@
       "FD 40",
       "MGM 25",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "Stayed in the group"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-09T00:15:08.339206+00:00",
+    "logged_at": "2026-10-09T00:15:41.170020+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -449798,7 +449812,7 @@
     "price": 589,
     "book": "draftkings",
     "created_at": "2026-10-08T19:17:27.297130+00:00",
-    "updated_at": "2026-10-09T00:15:13.631795+00:00"
+    "updated_at": "2026-10-09T00:15:41.170032+00:00"
   },
   {
     "id": "2026-10-08_Colson Montgomery_shop_lean_40",
@@ -470913,12 +470927,16 @@
       "Kelly Support",
       "HardRock 50",
       "MGM 25",
-      "Match 25"
+      "Match 25",
+      "Stayed in the group",
+      "Fanatics Drift",
+      "FD 50",
+      "Multi-book method"
     ],
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-09T00:15:08.503958+00:00",
+    "logged_at": "2026-10-09T00:15:41.259876+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CLEVELAND GUARDIANS",
@@ -470928,7 +470946,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:15:13.590385+00:00",
+    "updated_at": "2026-10-09T00:15:41.259889+00:00",
     "player_name": "Jos\u00e9 Ram\u00edrez",
     "stamps": [
       "FD Pattern",
