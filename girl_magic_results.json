@@ -449389,7 +449389,7 @@
   {
     "id": "2026-10-08_Angel Mart\u00ednez_watch_51",
     "date": "2026-10-08",
-    "time": "05:23 PM",
+    "time": "07:08 PM",
     "player": "Angel Mart\u00ednez",
     "score": 51,
     "edge": 91,
@@ -449437,7 +449437,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-09T00:23:06.546475+00:00",
+    "logged_at": "2026-10-09T02:08:04.280990+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CLEVELAND GUARDIANS",
@@ -449447,7 +449447,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:23:14.168901+00:00",
+    "updated_at": "2026-10-09T02:08:04.281003+00:00",
     "player_name": "Angel Mart\u00ednez",
     "stamps": [
       "HardRock 00",
@@ -449601,7 +449601,7 @@
   {
     "id": "2026-10-08_Chase Meidroth_watch_36",
     "date": "2026-10-08",
-    "time": "05:23 PM",
+    "time": "07:08 PM",
     "player": "Chase Meidroth",
     "score": 36,
     "edge": 74,
@@ -449645,7 +449645,7 @@
     "core": 2,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-09T00:23:06.439761+00:00",
+    "logged_at": "2026-10-09T02:08:04.050591+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CHICAGO WHITE SOX",
@@ -449655,7 +449655,7 @@
     "benford_cluster": 0.75,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:23:06.439772+00:00",
+    "updated_at": "2026-10-09T02:08:04.050602+00:00",
     "player_name": "Chase Meidroth",
     "stamps": [
       "HardRock 00",
@@ -449747,7 +449747,7 @@
   {
     "id": "2026-10-08_Nathaniel Lowe_watch_56",
     "date": "2026-10-08",
-    "time": "05:23 PM",
+    "time": "07:08 PM",
     "player": "Nathaniel Lowe",
     "score": 56,
     "edge": 3,
@@ -449781,12 +449781,18 @@
       "B365 a bit over FD",
       "FD Pattern",
       "EV Caution",
-      "Kelly Caution"
+      "Kelly Caution",
+      "Multi-book Shorten",
+      "Stayed in the group",
+      "MGM 50",
+      "HardRock 00",
+      "Match 50",
+      "Rivers short vs pack"
     ],
     "core": 4,
     "result": "PENDING",
     "source": "watch",
-    "logged_at": "2026-10-08T20:35:54.634949+00:00",
+    "logged_at": "2026-10-09T02:08:04.151663+00:00",
     "price_source": "pregame_lock",
     "sport": "MLB",
     "team": "CLEVELAND GUARDIANS",
@@ -449796,7 +449802,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:23:14.251311+00:00",
+    "updated_at": "2026-10-09T02:08:04.151675+00:00",
     "player_name": "Nathaniel Lowe",
     "stamps": [
       "HardRock 50",
@@ -450357,7 +450363,7 @@
   {
     "id": "2026-10-08_Colson Montgomery_shop_lean_40",
     "date": "2026-10-08",
-    "time": "07:01 PM",
+    "time": "07:08 PM",
     "player": "Colson Montgomery",
     "score": 0,
     "edge": 40,
@@ -450386,12 +450392,15 @@
       "B365 over HardRock",
       "B365 over MGM",
       "EV Premium",
-      "Kelly Support"
+      "Kelly Support",
+      "Multi-book Shorten",
+      "FD 50",
+      "HardRock 50"
     ],
     "core": 0,
     "result": "PENDING",
     "source": "shop_lean",
-    "logged_at": "2026-10-08T20:35:54.999187+00:00",
+    "logged_at": "2026-10-09T02:08:04.236095+00:00",
     "price_source": "shop",
     "sport": "MLB",
     "market": "batter_home_runs",
@@ -450404,7 +450413,7 @@
     "price": 525,
     "book": "bet365",
     "created_at": "2026-10-08T19:17:27.394229+00:00",
-    "updated_at": "2026-10-09T02:01:58.771100+00:00"
+    "updated_at": "2026-10-09T02:08:04.236109+00:00"
   },
   {
     "id": "2026-10-08_Tre' Harris_take_it_58",
