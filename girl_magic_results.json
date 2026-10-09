@@ -452838,7 +452838,7 @@
     "benford_cluster": 0.33,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T02:08:38.314012+00:00",
+    "updated_at": "2026-10-09T02:08:51.659758+00:00",
     "player_name": "Dallas Cowboys D/ST",
     "stamps": [
       "Books tight",
@@ -453786,7 +453786,7 @@
   {
     "id": "2026-10-08_Elijah Arroyo_watch_51",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Elijah Arroyo",
     "score": 51,
     "edge": -11,
@@ -453829,7 +453829,7 @@
     "benford_cluster": 0.38,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:24:29.681391+00:00",
+    "updated_at": "2026-10-09T02:08:50.155653+00:00",
     "player_name": "Elijah Arroyo",
     "stamps": [
       "HardRock 00",
@@ -456551,7 +456551,7 @@
     "benford_cluster": 1.0,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T02:08:35.278434+00:00",
+    "updated_at": "2026-10-09T02:08:49.991966+00:00",
     "player_name": "Keon Coleman",
     "stamps": [
       "FD 50",
@@ -457911,7 +457911,7 @@
   {
     "id": "2026-10-08_Noah Fant_watch_50",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Noah Fant",
     "score": 50,
     "edge": 2,
@@ -457953,7 +457953,7 @@
     "benford_cluster": 0.88,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:24:30.693976+00:00",
+    "updated_at": "2026-10-09T02:08:51.144261+00:00",
     "player_name": "Noah Fant",
     "stamps": [
       "FD 50",
@@ -458862,7 +458862,7 @@
   {
     "id": "2026-10-08_Ryan Flournoy_watch_47",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Ryan Flournoy",
     "score": 47,
     "edge": 7,
@@ -458905,7 +458905,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T00:24:22.915399+00:00",
+    "updated_at": "2026-10-09T02:08:49.922104+00:00",
     "player_name": "Ryan Flournoy",
     "stamps": [
       "Books tight",
@@ -459863,7 +459863,7 @@
     "benford_cluster": 0.62,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T02:08:35.410750+00:00",
+    "updated_at": "2026-10-09T02:08:50.899100+00:00",
     "player_name": "Ty Johnson",
     "stamps": [
       "FD 50",
@@ -460293,7 +460293,7 @@
   {
     "id": "2026-10-08_Sione Vaki_shop_lean_138",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Sione Vaki",
     "score": 0,
     "edge": 138,
@@ -460331,12 +460331,12 @@
     "price": 800,
     "book": "bet365",
     "created_at": "2026-10-08T19:18:41.447163+00:00",
-    "updated_at": "2026-10-09T00:24:31.391459+00:00"
+    "updated_at": "2026-10-09T02:08:52.168919+00:00"
   },
   {
     "id": "2026-10-08_Dameon Pierce_shop_lean_119",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Dameon Pierce",
     "score": 0,
     "edge": 119,
@@ -460373,12 +460373,12 @@
     "price": 625,
     "book": "bet365",
     "created_at": "2026-10-08T19:18:41.541574+00:00",
-    "updated_at": "2026-10-09T00:24:30.850495+00:00"
+    "updated_at": "2026-10-09T02:08:51.277185+00:00"
   },
   {
     "id": "2026-10-08_Darius Slayton_shop_take_97",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Darius Slayton",
     "score": 0,
     "edge": 97,
@@ -460412,12 +460412,12 @@
     "price": 950,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:41.626932+00:00",
-    "updated_at": "2026-10-09T00:24:29.400201+00:00"
+    "updated_at": "2026-10-09T02:08:50.105511+00:00"
   },
   {
     "id": "2026-10-08_Xavier Hutchinson_shop_lean_88",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Xavier Hutchinson",
     "score": 0,
     "edge": 88,
@@ -460455,12 +460455,12 @@
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:41.673157+00:00",
-    "updated_at": "2026-10-09T00:24:29.775573+00:00"
+    "updated_at": "2026-10-09T02:08:50.499555+00:00"
   },
   {
     "id": "2026-10-08_Austin Hooper_shop_lean_87",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Austin Hooper",
     "score": 0,
     "edge": 87,
@@ -460498,7 +460498,7 @@
     "price": 800,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:41.717769+00:00",
-    "updated_at": "2026-10-09T00:24:29.640233+00:00"
+    "updated_at": "2026-10-09T02:08:50.366450+00:00"
   },
   {
     "id": "2026-10-08_Tyrone Tracy Jr._shop_lean_85",
@@ -460546,7 +460546,7 @@
   {
     "id": "2026-10-08_Marvin Mims Jr._shop_lean_81",
     "date": "2026-10-08",
-    "time": "12:26 PM",
+    "time": "07:08 PM",
     "player": "Marvin Mims Jr.",
     "score": 0,
     "edge": 81,
@@ -460584,7 +460584,7 @@
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:41.852701+00:00",
-    "updated_at": "2026-10-08T19:26:08.899765+00:00"
+    "updated_at": "2026-10-09T02:08:50.948185+00:00"
   },
   {
     "id": "2026-10-08_Raheim Sanders_shop_take_79",
@@ -460632,7 +460632,7 @@
   {
     "id": "2026-10-08_Treylon Burks_shop_lean_79",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Treylon Burks",
     "score": 0,
     "edge": 79,
@@ -460670,12 +460670,12 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:41.944210+00:00",
-    "updated_at": "2026-10-09T00:24:29.546349+00:00"
+    "updated_at": "2026-10-09T02:08:50.248243+00:00"
   },
   {
     "id": "2026-10-08_Elic Ayomanor_shop_lean_78",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Elic Ayomanor",
     "score": 0,
     "edge": 78,
@@ -460713,7 +460713,7 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:41.990854+00:00",
-    "updated_at": "2026-10-09T00:24:29.878513+00:00"
+    "updated_at": "2026-10-09T02:08:50.572156+00:00"
   },
   {
     "id": "2026-10-08_Dawson Knox_shop_lean_77",
@@ -460814,7 +460814,7 @@
   {
     "id": "2026-10-08_Foster Moreau_shop_lean_74",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Foster Moreau",
     "score": 0,
     "edge": 74,
@@ -460852,12 +460852,12 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:42.171984+00:00",
-    "updated_at": "2026-10-09T00:24:29.928923+00:00"
+    "updated_at": "2026-10-09T02:08:50.652456+00:00"
   },
   {
     "id": "2026-10-08_Ty Johnson_shop_take_74",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Ty Johnson",
     "score": 0,
     "edge": 74,
@@ -460895,7 +460895,7 @@
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:42.220665+00:00",
-    "updated_at": "2026-10-09T00:24:29.088792+00:00"
+    "updated_at": "2026-10-09T02:08:49.859624+00:00"
   },
   {
     "id": "2026-10-08_Nate Boerkircher_shop_lean_73",
@@ -460948,7 +460948,7 @@
   {
     "id": "2026-10-08_Kaelon Black_shop_lean_72",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Kaelon Black",
     "score": 0,
     "edge": 72,
@@ -460984,12 +460984,12 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:42.317013+00:00",
-    "updated_at": "2026-10-09T00:24:30.022898+00:00"
+    "updated_at": "2026-10-09T02:08:50.841471+00:00"
   },
   {
     "id": "2026-10-08_Olamide Zaccheaus_shop_lean_69",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Olamide Zaccheaus",
     "score": 0,
     "edge": 69,
@@ -461027,12 +461027,12 @@
     "price": 900,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:42.366628+00:00",
-    "updated_at": "2026-10-09T00:24:30.069076+00:00"
+    "updated_at": "2026-10-09T02:08:50.781420+00:00"
   },
   {
     "id": "2026-10-08_Dyami Brown_shop_lean_66",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Dyami Brown",
     "score": 0,
     "edge": 66,
@@ -461070,7 +461070,7 @@
     "price": 650,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:42.422463+00:00",
-    "updated_at": "2026-10-09T00:24:29.350503+00:00"
+    "updated_at": "2026-10-09T02:08:50.052580+00:00"
   },
   {
     "id": "2026-10-08_Tyjae Spears_shop_lean_64",
@@ -461127,7 +461127,7 @@
   {
     "id": "2026-10-08_Caleb Douglas_shop_lean_58",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Caleb Douglas",
     "score": 0,
     "edge": 58,
@@ -461163,12 +461163,12 @@
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:42.531976+00:00",
-    "updated_at": "2026-10-09T00:24:30.792491+00:00"
+    "updated_at": "2026-10-09T02:08:51.516787+00:00"
   },
   {
     "id": "2026-10-08_Chris Bell_shop_lean_57",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Chris Bell",
     "score": 0,
     "edge": 57,
@@ -461204,12 +461204,12 @@
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:42.579219+00:00",
-    "updated_at": "2026-10-09T00:24:29.728648+00:00"
+    "updated_at": "2026-10-09T02:08:50.433200+00:00"
   },
   {
     "id": "2026-10-08_Jacob Cowing_shop_lean_57",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Jacob Cowing",
     "score": 0,
     "edge": 57,
@@ -461247,12 +461247,12 @@
     "price": 800,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:42.626705+00:00",
-    "updated_at": "2026-10-09T00:24:30.644534+00:00"
+    "updated_at": "2026-10-09T02:08:51.424661+00:00"
   },
   {
     "id": "2026-10-08_Darnell Mooney_shop_lean_56",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Darnell Mooney",
     "score": 0,
     "edge": 56,
@@ -461290,7 +461290,7 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:42.670970+00:00",
-    "updated_at": "2026-10-09T00:24:30.435262+00:00"
+    "updated_at": "2026-10-09T02:08:51.321783+00:00"
   },
   {
     "id": "2026-10-08_Tyler Goodson_shop_lean_56",
@@ -461344,7 +461344,7 @@
   {
     "id": "2026-10-08_Kendrick Bourne_shop_lean_53",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Kendrick Bourne",
     "score": 0,
     "edge": 53,
@@ -461382,12 +461382,12 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:42.815417+00:00",
-    "updated_at": "2026-10-09T00:24:30.897081+00:00"
+    "updated_at": "2026-10-09T02:08:51.562829+00:00"
   },
   {
     "id": "2026-10-08_Cam Ward_shop_lean_51",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Cam Ward",
     "score": 0,
     "edge": 51,
@@ -461425,7 +461425,7 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:42.863650+00:00",
-    "updated_at": "2026-10-09T00:24:30.385096+00:00"
+    "updated_at": "2026-10-09T02:08:51.233777+00:00"
   },
   {
     "id": "2026-10-08_Colby Parkinson_shop_lean_51",
@@ -461478,7 +461478,7 @@
   {
     "id": "2026-10-08_Jahan Dotson_shop_lean_50",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Jahan Dotson",
     "score": 0,
     "edge": 50,
@@ -461516,7 +461516,7 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:42.957634+00:00",
-    "updated_at": "2026-10-09T00:24:30.744418+00:00"
+    "updated_at": "2026-10-09T02:08:51.470426+00:00"
   },
   {
     "id": "2026-10-08_Luke Schoonmaker_shop_lean_50",
@@ -461624,7 +461624,7 @@
   {
     "id": "2026-10-08_Tyler Badie_shop_lean_50",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Tyler Badie",
     "score": 0,
     "edge": 50,
@@ -461662,12 +461662,12 @@
     "price": 800,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:43.097106+00:00",
-    "updated_at": "2026-10-09T00:24:30.338697+00:00"
+    "updated_at": "2026-10-09T02:08:51.188058+00:00"
   },
   {
     "id": "2026-10-08_Malachi Fields_shop_lean_49",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Malachi Fields",
     "score": 0,
     "edge": 49,
@@ -461703,12 +461703,12 @@
     "price": 475,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:43.145308+00:00",
-    "updated_at": "2026-10-09T00:24:30.945513+00:00"
+    "updated_at": "2026-10-09T02:08:51.611953+00:00"
   },
   {
     "id": "2026-10-08_Cole Kmet_shop_lean_46",
     "date": "2026-10-08",
-    "time": "12:18 PM",
+    "time": "07:08 PM",
     "player": "Cole Kmet",
     "score": 0,
     "edge": 46,
@@ -461746,7 +461746,7 @@
     "price": 600,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:43.318080+00:00",
-    "updated_at": "2026-10-08T19:18:43.318080+00:00"
+    "updated_at": "2026-10-09T02:08:50.994565+00:00"
   },
   {
     "id": "2026-10-08_Minnesota Vikings D/ST_shop_lean_45",
@@ -461790,12 +461790,12 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:43.360202+00:00",
-    "updated_at": "2026-10-09T02:08:36.813274+00:00"
+    "updated_at": "2026-10-09T02:08:51.830219+00:00"
   },
   {
     "id": "2026-10-08_Adam Trautman_shop_lean_40",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Adam Trautman",
     "score": 0,
     "edge": 40,
@@ -461833,12 +461833,12 @@
     "price": 900,
     "book": "draftkings",
     "created_at": "2026-10-08T19:18:43.487750+00:00",
-    "updated_at": "2026-10-09T00:24:31.609430+00:00"
+    "updated_at": "2026-10-09T02:08:52.226656+00:00"
   },
   {
     "id": "2026-10-08_Jaylin Noel_shop_lean_40",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Jaylin Noel",
     "score": 0,
     "edge": 40,
@@ -461876,7 +461876,7 @@
     "price": 500,
     "book": "fanduel",
     "created_at": "2026-10-08T19:18:43.574052+00:00",
-    "updated_at": "2026-10-09T00:24:31.056390+00:00"
+    "updated_at": "2026-10-09T02:08:52.042930+00:00"
   },
   {
     "id": "2026-10-08_Mark Jankowski_take_it_76",
@@ -471234,7 +471234,7 @@
     "benford_cluster": 0.67,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T02:08:36.754477+00:00",
+    "updated_at": "2026-10-09T02:08:51.776835+00:00",
     "player_name": "San Francisco 49ers D/ST",
     "stamps": [
       "Books tight",
@@ -471248,7 +471248,7 @@
   {
     "id": "2026-10-08_Tyjae Spears_shop_take_86",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Tyjae Spears",
     "score": 0,
     "edge": 86,
@@ -471286,7 +471286,7 @@
     "price": 650,
     "book": "fanduel",
     "created_at": "2026-10-08T19:26:08.765800+00:00",
-    "updated_at": "2026-10-09T00:24:29.595867+00:00"
+    "updated_at": "2026-10-09T02:08:50.299366+00:00"
   },
   {
     "id": "2026-10-08_Brent Burns_watch_78",
@@ -475097,7 +475097,7 @@
     "benford_cluster": 0.43,
     "call_type": "WATCH",
     "status": "PENDING",
-    "updated_at": "2026-10-09T02:08:33.783452+00:00",
+    "updated_at": "2026-10-09T02:08:52.102140+00:00",
     "player_name": "Mason Taylor",
     "stamps": [
       "FD Pattern",
@@ -475405,7 +475405,7 @@
   {
     "id": "2026-10-08_Davis Allen_shop_lean_113",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Davis Allen",
     "score": 0,
     "edge": 113,
@@ -475443,7 +475443,7 @@
     "price": 850,
     "book": "draftkings",
     "created_at": "2026-10-08T22:33:44.980393+00:00",
-    "updated_at": "2026-10-09T00:24:29.978335+00:00"
+    "updated_at": "2026-10-09T02:08:50.733340+00:00"
   },
   {
     "id": "2026-10-08_Darius Slayton_shop_lean_90",
@@ -475573,7 +475573,7 @@
   {
     "id": "2026-10-08_Raheim Sanders_shop_lean_57",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Raheim Sanders",
     "score": 0,
     "edge": 57,
@@ -475611,12 +475611,12 @@
     "price": 750,
     "book": "draftkings",
     "created_at": "2026-10-08T22:33:46.217867+00:00",
-    "updated_at": "2026-10-09T00:24:30.504772+00:00"
+    "updated_at": "2026-10-09T02:08:51.376125+00:00"
   },
   {
     "id": "2026-10-08_Greg Dulcich_shop_lean_55",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Greg Dulcich",
     "score": 0,
     "edge": 55,
@@ -475654,12 +475654,12 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-08T22:33:46.265440+00:00",
-    "updated_at": "2026-10-09T00:24:30.180955+00:00"
+    "updated_at": "2026-10-09T02:08:51.040578+00:00"
   },
   {
     "id": "2026-10-08_Jauan Jennings_shop_lean_48",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Jauan Jennings",
     "score": 0,
     "edge": 48,
@@ -475697,12 +475697,12 @@
     "price": 600,
     "book": "fanduel",
     "created_at": "2026-10-08T22:33:46.676923+00:00",
-    "updated_at": "2026-10-09T00:24:31.168045+00:00"
+    "updated_at": "2026-10-09T02:08:51.716077+00:00"
   },
   {
     "id": "2026-10-08_Isaac TeSlaa_shop_lean_44",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Isaac TeSlaa",
     "score": 0,
     "edge": 44,
@@ -475740,12 +475740,12 @@
     "price": 450,
     "book": "draftkings",
     "created_at": "2026-10-08T22:33:46.974403+00:00",
-    "updated_at": "2026-10-09T00:24:31.279415+00:00"
+    "updated_at": "2026-10-09T02:08:51.889745+00:00"
   },
   {
     "id": "2026-10-08_Jerry Jeudy_shop_lean_44",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Jerry Jeudy",
     "score": 0,
     "edge": 44,
@@ -475783,7 +475783,7 @@
     "price": 700,
     "book": "fanduel",
     "created_at": "2026-10-08T22:33:47.023868+00:00",
-    "updated_at": "2026-10-09T00:24:31.332254+00:00"
+    "updated_at": "2026-10-09T02:08:51.941137+00:00"
   },
   {
     "id": "2026-10-08_Tommy Pham_shop_take_100",
@@ -477138,7 +477138,7 @@
   {
     "id": "2026-10-08_Roschon Johnson_shop_take_88",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Roschon Johnson",
     "score": 0,
     "edge": 88,
@@ -477175,12 +477175,12 @@
     "price": 650,
     "book": "bet365",
     "created_at": "2026-10-09T00:16:41.917372+00:00",
-    "updated_at": "2026-10-09T00:24:29.504028+00:00"
+    "updated_at": "2026-10-09T02:08:50.206313+00:00"
   },
   {
     "id": "2026-10-08_Drew Sample_shop_lean_62",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Drew Sample",
     "score": 0,
     "edge": 62,
@@ -477218,12 +477218,12 @@
     "price": 700,
     "book": "draftkings",
     "created_at": "2026-10-09T00:16:42.729770+00:00",
-    "updated_at": "2026-10-09T00:24:30.240835+00:00"
+    "updated_at": "2026-10-09T02:08:51.089519+00:00"
   },
   {
     "id": "2026-10-08_Efton Chism III_shop_lean_41",
     "date": "2026-10-08",
-    "time": "05:24 PM",
+    "time": "07:08 PM",
     "player": "Efton Chism III",
     "score": 0,
     "edge": 41,
@@ -477261,7 +477261,7 @@
     "price": 550,
     "book": "draftkings",
     "created_at": "2026-10-09T00:16:43.763723+00:00",
-    "updated_at": "2026-10-09T00:24:31.512401+00:00"
+    "updated_at": "2026-10-09T02:08:51.994199+00:00"
   },
   {
     "id": "2026-10-08_Austin Hedges_watch_69",
