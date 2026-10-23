@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0
-Lean odds model focused on plus-money props.
-
-NBA: Assists o2.5–o6.5 (+750+), Points 8–15, Rebounds 5–8, Double-Doubles
-NFL: Anytime TD (+300+), Receiving Yards 1–15 (+300+)
-
-Tracks the books you use: FanDuel, DraftKings, BetMGM, Bet365, Caesars,
-Fanatics, theScore (espnbet), Hard Rock.
-
-Core loop: Fetch → filter → cards → lock → grade → see which odds and books cash.
+Girl Magic Odds 2.0 — usable version
+Plus-money props with real cards, filters, and a Tracker that shows
+which odds buckets and books are cashing once you grade.
 """
 
 import streamlit as st
@@ -24,40 +17,34 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-.stApp{background:#0b0e14;color:#e6edf3;font-family:'Inter',sans-serif}
-.hero{background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:16px;padding:18px 22px;margin-bottom:16px}
-.hero h1{margin:0;font-size:1.9rem;font-weight:800;color:#fff}
-.hero p{margin:4px 0 0;color:#e9d5ff;font-size:.9rem}
-.card{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:14px 16px;margin-bottom:12px}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+.stApp{background:#09090b;color:#fafafa;font-family:'Inter',sans-serif}
+.hero{background:linear-gradient(135deg,#6d28d9 0%,#7c3aed 50%,#a78bfa 100%);border-radius:20px;padding:20px 24px;margin-bottom:20px;box-shadow:0 8px 32px rgba(109,40,217,.25)}
+.hero h1{margin:0;font-size:1.85rem;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:6px 0 0;opacity:.9;font-size:.92rem}
+.card{background:#18181b;border:1px solid #27272a;border-radius:16px;padding:16px 18px;margin-bottom:14px;transition:border-color .15s}
 .card:hover{border-color:#a78bfa}
-.player{font-size:1.15rem;font-weight:800;color:#fff;margin:0}
-.meta{color:#8b949e;font-size:.78rem;margin:2px 0 8px}
-.line{font-size:1.05rem;font-weight:700;color:#c4b5fd}
-.odds{font-size:1.45rem;font-weight:800;color:#a78bfa}
-.book{font-size:.8rem;color:#f0abfc}
-.ev{display:inline-block;background:#1e1b4b;color:#c4b5fd;border:1px solid #7c3aed;border-radius:999px;padding:2px 10px;font-size:.72rem;font-weight:700;margin-left:8px}
-.tag{display:inline-block;background:#21262d;color:#c9d1d9;border-radius:999px;padding:2px 8px;font-size:.68rem;margin-right:4px}
+.player{font-size:1.2rem;font-weight:800;margin:0 0 2px}
+.meta{color:#a1a1aa;font-size:.78rem;margin-bottom:10px}
+.prop{font-size:1rem;font-weight:700;color:#c4b5fd}
+.odds{font-size:1.6rem;font-weight:800;color:#fafafa;letter-spacing:-.03em}
+.book{font-size:.82rem;color:#d4d4d8;margin-left:6px}
+.badge{display:inline-block;background:#27272a;color:#e4e4e7;border-radius:999px;padding:3px 10px;font-size:.7rem;font-weight:600;margin-right:6px}
+.ev-pos{display:inline-block;background:#14532d;color:#86efac;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:700}
+.ev-neg{display:inline-block;background:#3f1d1d;color:#fca5a5;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:700}
+.stat-row{display:flex;gap:16px;margin-top:10px;font-size:.75rem;color:#a1a1aa}
+.stat-row b{color:#fafafa}
 </style>
 """, unsafe_allow_html=True)
 
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 LEDGER = Path("odds_ledger.json")
 
-# Books you actually use (Odds API keys)
 MY_BOOKS = {
-    "fanduel": "FanDuel",
-    "draftkings": "DraftKings",
-    "betmgm": "BetMGM",
-    "bet365": "Bet365",
-    "williamhill_us": "Caesars",
-    "fanatics": "Fanatics",
-    "espnbet": "theScore",
-    "hardrockbet": "Hard Rock",
-    "hardrockbet_az": "Hard Rock AZ",
-    "hardrockbet_oh": "Hard Rock OH",
-    "hardrockbet_fl": "Hard Rock FL",
-    "caesars": "Caesars",
+    "fanduel": "FanDuel", "draftkings": "DraftKings", "betmgm": "BetMGM",
+    "bet365": "Bet365", "williamhill_us": "Caesars", "fanatics": "Fanatics",
+    "espnbet": "theScore", "hardrockbet": "Hard Rock",
+    "hardrockbet_az": "Hard Rock", "hardrockbet_oh": "Hard Rock", "hardrockbet_fl": "Hard Rock",
 }
 
 NBA_SKIP = {
@@ -80,10 +67,8 @@ def normalize_book(key):
 
 def load_ledger():
     if LEDGER.exists():
-        try:
-            return json.loads(LEDGER.read_text())
-        except Exception:
-            return []
+        try: return json.loads(LEDGER.read_text())
+        except: return []
     return []
 
 def save_ledger(rows):
@@ -93,10 +78,8 @@ def save_ledger(rows):
 def fetch_events(api_key, sport_key):
     try:
         r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
-        if r.status_code == 200:
-            return r.json() or []
-    except Exception:
-        pass
+        if r.status_code == 200: return r.json() or []
+    except: pass
     return []
 
 @st.cache_data(ttl=90)
@@ -107,23 +90,19 @@ def fetch_odds(api_key, sport_key, event_id, markets):
             params={"apiKey": api_key, "regions": "us,us2,uk", "markets": markets, "oddsFormat": "american"},
             timeout=20,
         )
-        if r.status_code == 200:
-            return r.json()
-    except Exception:
-        pass
+        if r.status_code == 200: return r.json()
+    except: pass
     return None
 
 def parse_plays(data, sport):
-    if not data:
-        return []
+    if not data: return []
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     plays = []
     for book in data.get("bookmakers") or []:
         bk_raw = book.get("key") or ""
         bk = normalize_book(bk_raw)
-        if bk not in MY_BOOKS and bk_raw not in MY_BOOKS:
-            continue
-        display = MY_BOOKS.get(bk) or MY_BOOKS.get(bk_raw) or bk
+        if bk not in MY_BOOKS: continue
+        display = MY_BOOKS.get(bk, bk)
         for market in book.get("markets") or []:
             mkey = (market.get("key") or "").lower()
             prop_type = None
@@ -132,11 +111,10 @@ def parse_plays(data, sport):
                 elif "points" in mkey and "rebounds" not in mkey and "assists" not in mkey: prop_type = "Points"
                 elif "rebounds" in mkey and "points" not in mkey and "assists" not in mkey: prop_type = "Rebounds"
                 elif "double_double" in mkey: prop_type = "DoubleDouble"
-            else:  # NFL
-                if "anytime_td" in mkey or mkey == "player_anytime_td": prop_type = "Anytime TD"
+            else:
+                if "anytime_td" in mkey: prop_type = "Anytime TD"
                 elif "reception_yds" in mkey or "receiving_yds" in mkey: prop_type = "Rec Yards"
-            if not prop_type:
-                continue
+            if not prop_type: continue
             for o in market.get("outcomes") or []:
                 oname = str(o.get("name") or "").lower()
                 if prop_type in ("DoubleDouble", "Anytime TD"):
@@ -155,7 +133,6 @@ def parse_plays(data, sport):
                     continue
                 try: price = int(o.get("price"))
                 except: continue
-                # Plus-money floors
                 if sport == "NBA":
                     if prop_type == "Assists" and not (2.5 <= line <= 6.5): continue
                     if prop_type == "Points" and not (8.0 <= line <= 15.0): continue
@@ -175,95 +152,160 @@ def parse_plays(data, sport):
 def best_cards(plays):
     by = defaultdict(list)
     for p in plays:
-        key = (p["sport"], p["player"], p["prop"], p["line"], p["event"])
+        key = (p["sport"], p["player"], p["prop"], round(p["line"], 1), p["event"])
         by[key].append(p)
     cards = []
     for key, group in by.items():
         best = max(group, key=lambda x: x["price"])
-        prices = [g["price"] for g in group]
-        med = sorted(prices)[len(prices)//2] if prices else best["price"]
-        cards.append({**best, "books": len(group), "gap": best["price"] - med, "median": med})
-    cards.sort(key=lambda x: (-x["price"], -x["gap"]))
+        prices = sorted(g["price"] for g in group)
+        med = prices[len(prices)//2]
+        # Simple +EV proxy: best price vs the median of the other books
+        others = [g["price"] for g in group if g["book"] != best["book"]]
+        fair = sorted(others)[len(others)//2] if others else med
+        gap = best["price"] - fair
+        # Implied edge rough: higher price = lower implied prob
+        cards.append({
+            **best,
+            "books": len(group),
+            "gap": gap,
+            "fair": fair,
+            "all_prices": prices,
+        })
+    cards.sort(key=lambda x: (-x["gap"], -x["price"]))
     return cards
 
+def odds_bucket(price):
+    if price < 500: return "+300–499"
+    if price < 750: return "+500–749"
+    if price < 1000: return "+750–999"
+    if price < 1500: return "+1000–1499"
+    if price < 2500: return "+1500–2499"
+    return "+2500+"
+
 def main():
-    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Plus-money props only. NBA assists first. NFL TDs + low rec yards. Track what actually cashes.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Plus-money props. Best price vs the field. Lock it, grade it, see what cashes.</p></div>', unsafe_allow_html=True)
 
     api_key = st.secrets.get("ODDS_API_KEY", "") or st.text_input("Odds API Key", type="password")
     if not api_key:
         st.info("Add ODDS_API_KEY to secrets or paste above.")
         return
 
-    sport = st.radio("Lane", ["NBA", "NFL"], horizontal=True, index=0)
-    sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
-    markets = (
-        "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double"
-        if sport == "NBA"
-        else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
-    )
-
-    if st.button("Fetch Slate", type="primary"):
-        with st.spinner(f"Loading {sport}..."):
-            events = fetch_events(api_key, sport_key)
-            all_plays = []
-            for ev in events[:15]:
-                data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
-                if data:
-                    all_plays.extend(parse_plays(data, sport))
-            st.session_state["cards"] = best_cards(all_plays)
-            st.session_state["fetched"] = datetime.now().strftime("%H:%M")
-            st.session_state["sport"] = sport
+    col_sport, col_fetch = st.columns([1, 3])
+    with col_sport:
+        sport = st.radio("Lane", ["NBA", "NFL"], horizontal=True, index=0)
+    with col_fetch:
+        if st.button("Fetch Slate", type="primary", use_container_width=True):
+            sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
+            markets = (
+                "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double"
+                if sport == "NBA"
+                else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
+            )
+            with st.spinner(f"Loading {sport}..."):
+                events = fetch_events(api_key, sport_key)
+                all_plays = []
+                for ev in events[:12]:
+                    data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
+                    if data: all_plays.extend(parse_plays(data, sport))
+                st.session_state["cards"] = best_cards(all_plays)
+                st.session_state["fetched"] = datetime.now().strftime("%H:%M")
+                st.session_state["sport"] = sport
 
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
-        st.caption(f"Last fetch {st.session_state['fetched']} · {len(cards)} plays · {sport}")
+        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} plays · {st.session_state.get('sport','')}")
 
-    tab1, tab2 = st.tabs(["Plays", "Ledger"])
+    tab_plays, tab_tracker = st.tabs(["Plays", "Tracker"])
 
-    with tab1:
+    with tab_plays:
         if not cards:
             st.info("Hit Fetch Slate.")
             return
-        c1, c2 = st.columns(2)
-        with c1:
-            min_odds = st.slider("Min odds", 300 if sport == "NFL" else 750, 2500, 750 if sport == "NBA" else 300, 50)
-        with c2:
-            min_gap = st.slider("Min gap vs median", 0, 300, 0, 10)
-        filtered = [c for c in cards if c["price"] >= min_odds and c["gap"] >= min_gap]
+
+        f1, f2, f3, f4 = st.columns(4)
+        with f1:
+            prop_opts = sorted({c["prop"] for c in cards})
+            prop_f = st.multiselect("Prop", prop_opts, default=prop_opts[:1] if prop_opts else [])
+        with f2:
+            min_odds = st.slider("Min odds", 300, 2000, 750 if sport == "NBA" else 300, 50)
+        with f3:
+            max_odds = st.slider("Max odds", 1000, 5000, 2000, 100)
+        with f4:
+            min_gap = st.slider("Min gap", -100, 400, 0, 25)
+            sort_by = st.selectbox("Sort", ["Biggest gap", "Highest odds", "Most books"])
+
+        filtered = [
+            c for c in cards
+            if c["prop"] in prop_f
+            and min_odds <= c["price"] <= max_odds
+            and c["gap"] >= min_gap
+        ]
+        if sort_by == "Highest odds":
+            filtered.sort(key=lambda x: -x["price"])
+        elif sort_by == "Most books":
+            filtered.sort(key=lambda x: -x["books"])
+        else:
+            filtered.sort(key=lambda x: (-x["gap"], -x["price"]))
+
         st.markdown(f"**{len(filtered)}** plays")
+
         cols = st.columns(2)
-        for i, c in enumerate(filtered[:50]):
-            line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else ("Yes" if c["prop"] == "DoubleDouble" else "Anytime")
-            ev_html = f'<span class="ev">+{c["gap"]} vs med</span>' if c["gap"] > 0 else ""
+        for i, c in enumerate(filtered[:40]):
+            line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
+            gap_cls = "ev-pos" if c["gap"] >= 50 else ("ev-neg" if c["gap"] < 0 else "badge")
+            gap_txt = f"+{c['gap']}" if c["gap"] >= 0 else str(c["gap"])
             with cols[i % 2]:
                 st.markdown(
                     f'''<div class="card">
                         <div class="player">{c["player"]}</div>
-                        <div class="meta">{c["event"]} · {c["books"]} books</div>
-                        <div class="line">{c["prop"]} {line_txt}</div>
-                        <div><span class="odds">{c["price"]:+d}</span> <span class="book">{c["book"]}</span>{ev_html}</div>
+                        <div class="meta">{c["event"]}</div>
+                        <div class="prop">{c["prop"]} {line_txt}</div>
+                        <div style="margin:8px 0">
+                            <span class="odds">{c["price"]:+d}</span>
+                            <span class="book">{c["book"]}</span>
+                            <span class="{gap_cls}">{gap_txt} vs field</span>
+                        </div>
+                        <div class="stat-row">
+                            <span><b>{c["books"]}</b> books</span>
+                            <span>field med <b>{c["fair"]:+d}</b></span>
+                        </div>
                     </div>''',
                     unsafe_allow_html=True,
                 )
-                if st.button("Lock", key=f"lock_{i}_{c['player']}_{c['prop']}_{c['line']}"):
+                if st.button("Lock", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}_{c['price']}"):
                     ledger = load_ledger()
                     ledger.append({
-                        "ts": datetime.now().isoformat(),
+                        "ts": datetime.now().isoformat(timespec="minutes"),
                         "sport": c["sport"], "player": c["player"], "prop": c["prop"],
                         "line": c["line"], "price": c["price"], "book": c["book"],
-                        "event": c["event"], "result": None,
+                        "event": c["event"], "result": None, "bucket": odds_bucket(c["price"]),
                     })
                     save_ledger(ledger)
-                    st.success("Locked")
+                    st.toast("Locked")
 
-    with tab2:
+    with tab_tracker:
         ledger = load_ledger()
         if not ledger:
-            st.info("No locks yet. Lock plays from the Plays tab.")
+            st.info("Lock some plays first. Once you grade them (hit/miss), this shows which odds buckets and books cash.")
             return
         df = pd.DataFrame(ledger)
-        st.dataframe(df[["ts", "sport", "player", "prop", "line", "price", "book", "result"]], use_container_width=True)
-        st.caption("Grade results later — the Tracker will show which odds buckets and books cash.")
+        st.subheader("Locked plays")
+        st.dataframe(df, use_container_width=True, hide_index=True)
+
+        graded = df[df["result"].notna()]
+        if graded.empty:
+            st.caption("No graded results yet. After games, set result to hit or miss in the JSON (or we can add buttons next).")
+            return
+
+        st.subheader("By odds bucket")
+        bucket = graded.groupby("bucket").agg(n=("result", "count"), hits=("result", lambda s: (s == "hit").sum()))
+        bucket["hit%"] = (bucket["hits"] / bucket["n"] * 100).round(1)
+        st.dataframe(bucket.sort_values("n", ascending=False), use_container_width=True)
+
+        st.subheader("By book")
+        book = graded.groupby("book").agg(n=("result", "count"), hits=("result", lambda s: (s == "hit").sum()))
+        book["hit%"] = (book["hits"] / book["n"] * 100).round(1)
+        st.dataframe(book.sort_values("hit%", ascending=False), use_container_width=True)
 
 if __name__ == "__main__":
     main()
