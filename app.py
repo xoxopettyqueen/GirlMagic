@@ -218,7 +218,7 @@ def odds_bucket(price):
     return "+4000+"
 
 def main():
-    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds only. EV gap. Spike. TAKE / LEAN / PASS.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds only. Chaos powered. Plus-money forever.</p></div>', unsafe_allow_html=True)
 
     api_key = st.secrets.get("ODDS_API_KEY","") or st.text_input("Odds API Key", type="password")
     if not api_key:
@@ -232,7 +232,7 @@ def main():
         if st.button("Fetch Board", type="primary", use_container_width=True):
             sport_key = "basketball_nba" if sport=="NBA" else "americanfootball_nfl"
             markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if sport=="NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
-            with st.spinner(f"Scanning {sport} pre-game..."):
+            with st.spinner("Cooking your edges… hold on queen."):
                 events = fetch_events(api_key, sport_key)
                 now = datetime.utcnow()
                 pregame = []
@@ -261,7 +261,7 @@ def main():
 
     with tab_board:
         if not cards:
-            st.info("Hit Fetch Board.")
+            st.info("Hit Fetch, baddie. The edges are waiting.")
             return
         f1,f2,f3 = st.columns(3)
         with f1:
@@ -294,7 +294,8 @@ def main():
                 card_cls = "card take-card" if c.get("decision")=="TAKE" else "card"
                 take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision")=="TAKE" else ""
                 vol_icon = "⚡" if c.get("vol")=="High" else "✨" if c.get("vol")=="Medium" else ""
-                move_icon = "💥" if c.get("move")=="Snap" else "🌙" if c.get("move")=="Solo" else ""
+                move_icon = "💥" if c.get("move")=="Snap" else "🌙" if "Solo" in str(c.get("tags",[])) else ""
+                vibe = "Run it." if c.get("decision")=="TAKE" else "Cute, but not worth the chaos." if c.get("decision")=="LEAN" else "Dead energy. Skip."
                 html = (
                     f'<div class="{card_cls}">'
                     f'{take_tag}'
@@ -304,6 +305,7 @@ def main():
                     f'<div class="books">{boxes_html}</div>'
                     f'{tags_html}'
                     f'<div class="why"><b>EV {c.get("ev_gap",0)}%</b> · <b>Spike {c.get("spike",0)}</b> · {vol_icon}{c.get("vol","")} · {move_icon}{c.get("move","")}</div>'
+                    f'<div class="why" style="font-size:.62rem;opacity:.8;">{vibe}</div>'
                     f'<div class="decision {dec_cls}">{c.get("decision","PASS")}</div>'
                     f'</div>'
                 )
@@ -317,7 +319,7 @@ def main():
     with tab_tracker:
         ledger = load_ledger()
         if not ledger:
-            st.info("No locks yet. Click Lock on a card from the Board. Locked plays will appear here.")
+            st.info("Your reads. Your chaos. Your hit rates. Lock a play from the Board to start.")
         else:
             df = pd.DataFrame(ledger)
             st.subheader(f"Locked ({len(df)})")
