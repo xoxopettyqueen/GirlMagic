@@ -275,21 +275,23 @@ def main():
             edge_val = float(c.get("edge", 0))
             edge_html = f'<span class="edge-pill">+{edge_val}% edge</span>' if edge_val >= 1 else ""
             with cols[i % 2]:
-                st.markdown(
-                    f'''<div class="card">
-                        <div class="player">{c["player"]}</div>
-                        <div class="meta">{c["event"]}</div>
-                        <div class="prop">{c["prop"]} {line_txt}</div>
-                        <div class="odds-row">
-                            <span class="odds">{c["price"]:+d}</span>
-                            <span class="book">{c["book"]}</span>
-                            {edge_html}
-                        </div>
-                        {tags_html}
-                        <div class="stat"><b>{c.get("books",1)}</b> books · field <b>{int(c.get("fair", c["price"])):+d}</b> · gap <b>{int(c.get("gap",0)):+d}</b></div>
-                    </div>''',
-                    unsafe_allow_html=True,
+                fair_txt = f"{int(c.get('fair', c['price'])):+d}"
+                gap_txt = f"{int(c.get('gap',0)):+d}"
+                card_html = (
+                    f'<div class="card">'
+                    f'<div class="player">{c["player"]}</div>'
+                    f'<div class="meta">{c["event"]}</div>'
+                    f'<div class="prop">{c["prop"]} {line_txt}</div>'
+                    f'<div class="odds-row">'
+                    f'<span class="odds">{c["price"]:+d}</span>'
+                    f'<span class="book">{c["book"]}</span>'
+                    f'{edge_html}'
+                    f'</div>'
+                    f'{tags_html}'
+                    f'<div class="stat"><b>{c.get("books",1)}</b> books · field <b>{fair_txt}</b> · gap <b>{gap_txt}</b></div>'
+                    f'</div>'
                 )
+                st.markdown(card_html, unsafe_allow_html=True)
                 if st.button("Lock this", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}_{c['price']}"):
                     ledger = load_ledger()
                     ledger.append({
