@@ -17,27 +17,30 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap');
-.stApp{background:#0B0B0F;color:#f5f3ff;font-family:'Inter',sans-serif}
-.hero{background:linear-gradient(135deg,#f472b6,#c084fc,#6d28d9);border-radius:28px;padding:22px 26px;margin-bottom:16px;color:#fff}
-.hero h1{margin:0;font-size:1.8rem;font-weight:700;font-family:'Playfair Display',serif}
-.hero p{margin:5px 0 0;opacity:.9;font-size:.85rem}
-.card{background:#14121c;border:1px solid #2d2640;border-radius:20px;padding:16px 18px;margin-bottom:14px;position:relative}
-.card.take-card{border-color:#ec4899;box-shadow:0 0 16px rgba(236,72,153,.25)}
-.player{font-size:1.15rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
-.meta{color:#a78bfa;font-size:.7rem;margin:2px 0 8px}
-.prop{font-size:.95rem;font-weight:600;color:#f0abfc;margin-bottom:8px}
-.books{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.bk{background:#1c1826;border:1px solid #3b3450;border-radius:10px;padding:6px 8px;text-align:center;min-width:64px;font-size:.72rem;font-weight:600}
-.bk.best{background:#4c1d95;border-color:#f472b6;box-shadow:0 0 10px rgba(244,114,182,.45)}
-.bk span{display:block;font-size:.58rem;color:#c4b5fd}
-.tag{display:inline-block;background:#2e1065;color:#e9d5ff;border-radius:999px;padding:2px 8px;font-size:.62rem;font-weight:600;margin:2px 3px 0 0}
-.decision{display:inline-block;border-radius:999px;padding:4px 12px;font-size:.75rem;font-weight:700;margin-top:6px}
-.take{background:#ec4899;color:#fff;box-shadow:0 0 10px rgba(236,72,153,.4)}
-.lean{background:#a855f7;color:#fff}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=Oswald:wght@500&display=swap');
+.stApp{background:#0B0B0F;color:#fff;font-family:'Inter',sans-serif}
+.hero{background:linear-gradient(90deg,#FF4DA6,#9B5FFF,#5E4AE3);border-radius:24px;padding:18px 22px;margin-bottom:14px;color:#fff;box-shadow:0 0 24px rgba(0,0,0,.6)}
+.hero h1{margin:0;font-size:1.7rem;font-weight:700;font-family:'Playfair Display',serif;text-shadow:0 0 12px rgba(255,77,166,.7);animation:shimmerText 3s ease-in-out infinite}
+.hero p{margin:4px 0 0;opacity:.9;font-size:.8rem;color:#F5E9FF}
+@keyframes shimmerText{0%{text-shadow:0 0 8px rgba(255,77,166,.4)}50%{text-shadow:0 0 16px rgba(255,77,166,.9)}100%{text-shadow:0 0 8px rgba(255,77,166,.4)}}
+.card{background:#14141A;border:1px solid #262633;border-radius:16px;padding:12px 14px;margin-bottom:12px;position:relative;transition:box-shadow .2s,transform .2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.8)}
+.card.take-card{border-color:rgba(255,77,166,.7);box-shadow:0 0 18px rgba(255,77,166,.4)}
+.player{font-size:1.05rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
+.meta{color:#B3B3C3;font-size:.68rem;margin:2px 0 6px}
+.prop{font-size:.9rem;font-weight:600;color:#FF4DA6;margin-bottom:6px}
+.books{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.bk{background:#0F0F14;border:1px solid #262633;border-radius:999px;padding:4px 8px;text-align:center;min-width:60px;font-size:.7rem;font-weight:600;font-family:'Oswald',sans-serif}
+.bk.best{border-color:#FF4DA6;box-shadow:0 0 10px rgba(255,77,166,.7)}
+.bk span{display:block;font-size:.55rem;color:#CBA6F7}
+.tag{display:inline-block;background:rgba(203,166,247,.18);color:#F5E9FF;border:1px solid rgba(203,166,247,.6);border-radius:999px;padding:2px 8px;font-size:.6rem;font-weight:600;margin:2px 3px 0 0}
+.decision{display:inline-block;border-radius:999px;padding:4px 12px;font-size:.72rem;font-weight:700;margin-top:6px}
+.take{background:linear-gradient(90deg,#FF4DA6,#FF7AC4);color:#fff;box-shadow:0 0 14px rgba(255,77,166,.7)}
+.lean{background:#9B5FFF;color:#fff}
 .pass{background:#4b5563;color:#fff}
-.why{font-size:.68rem;color:#c4b5fd;margin-top:6px}
-.take-tag{position:absolute;top:10px;right:12px;background:#ec4899;color:#fff;border-radius:999px;padding:2px 8px;font-size:.62rem;font-weight:700}
+.why{font-size:.66rem;color:#B3B3C3;margin-top:6px}
+.why b{color:#FF4DA6}
+.take-tag{position:absolute;top:8px;right:10px;font-size:.58rem;letter-spacing:.12em;color:#FF4DA6;font-weight:700;text-transform:uppercase}
 </style>
 """, unsafe_allow_html=True)
 
