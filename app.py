@@ -279,26 +279,20 @@ def main():
         cols = st.columns(2)
         for i, c in enumerate(filtered[:24]):
             line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
-            tags_html = "".join(f'<span class="tag tag-{t[0]}">{t[1]}</span>' for t in c.get("tags", []))
-            edge_html = f'<span class="edge">+{c.get("edge",0)}% edge</span>' if c.get("edge", 0) >= 1 else ""
-            # Side-by-side books
-            pills = []
-            for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1]):
-                cls = "book-pill best" if bk == c["book"] else "book-pill"
-                pills.append(f'<div class="{cls}"><span class="bk">{bk}</span>{px:+d}</div>')
-            pills_html = "".join(pills)
             with cols[i % 2]:
-                card_html = (
-                    f'<div class="card">'
-                    f'<div class="player">{c["player"]}</div>'
-                    f'<div class="meta">{c["event"]}</div>'
-                    f'<div class="prop">{c["prop"]} {line_txt}{edge_html}</div>'
-                    f'<div class="books-row">{pills_html}</div>'
-                    f'{tags_html}'
-                    f'<div class="why">{c.get("why","")}</div>'
-                    f'</div>'
-                )
-                st.markdown(card_html, unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown(f"**{c['player']}**")
+                    st.caption(c["event"])
+                    edge_txt = f" · +{c.get('edge',0)}% edge" if c.get("edge", 0) >= 1 else ""
+                    st.markdown(f"**{c['prop']} {line_txt}**{edge_txt}")
+                    # Book prices as a simple row
+                    bp = c.get("book_prices", {})
+                    if bp:
+                        book_line = " · ".join(f"{bk} {px:+d}" for bk, px in sorted(bp.items(), key=lambda x: -x[1]))
+                        st.markdown(f"`{book_line}`")
+                    if c.get("tags"):
+                        st.caption(" ".join(t[1] for t in c["tags"]))
+                    st.caption(c.get("why", ""))
                 if st.button("Lock best", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}_{c['price']}"):
                     ledger = load_ledger()
                     ledger.append({
