@@ -317,6 +317,23 @@ def main():
 
         filtered = [c for c in cards if c.get("prop") in prop_f and c.get("decision") in dec_f and int(c.get("price",0)) >= min_odds]
         filtered.sort(key=lambda x: (-x.get("spike",0), -x.get("ev_gap",0)))
+        # TAKE Density
+        vol_w = {"High": 1.0, "Medium": 0.7, "Low": 0.4}
+        takes = [c for c in filtered if c.get("decision") == "TAKE"]
+        weighted = 0.0
+        for c in takes:
+            ev = (c.get("ev_gap") or 0) / 100.0
+            spike = c.get("spike") or 0
+            vw = vol_w.get(c.get("vol"), 0.4)
+            weighted += (ev * 0.5 + spike * 0.3) * vw
+        density = (weighted / len(filtered) * 100) if filtered else 0
+        if density > 25:
+            status = "Slate is hot — Books are panicking. Run it."
+        elif density >= 10:
+            status = "Balanced chaos — Edges exist, but pick your battles."
+        else:
+            status = "Cold board — Books are comfy. Skip or wait."
+        st.markdown(f"**TAKE Density: {density:.1f}%** · {status}")
         st.markdown(f"**{len(filtered)}** props · TAKE = big gap + movement. LEAN = softer. PASS = tight.")
 
         if not filtered:
