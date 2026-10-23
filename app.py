@@ -85,13 +85,20 @@ def normalize_book(key):
     return k
 
 def load_ledger():
+    if "ledger" in st.session_state:
+        return st.session_state["ledger"]
     if LEDGER.exists():
-        try: return json.loads(LEDGER.read_text())
+        try:
+            data = json.loads(LEDGER.read_text())
+            st.session_state["ledger"] = data
+            return data
         except: return []
     return []
 
 def save_ledger(rows):
-    LEDGER.write_text(json.dumps(rows, indent=2))
+    st.session_state["ledger"] = rows
+    try: LEDGER.write_text(json.dumps(rows, indent=2))
+    except: pass
 
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
@@ -310,22 +317,22 @@ def main():
     with tab_tracker:
         ledger = load_ledger()
         if not ledger:
-            st.info("Lock props. Tracker shows hit rates by bucket, ending, book, movement, and volatility.")
-            return
-        df = pd.DataFrame(ledger)
-        st.subheader("Locked")
-        st.dataframe(df, use_container_width=True, hide_index=True)
-        graded = df[df["result"].notna()]
-        if graded.empty:
-            st.caption("No graded results yet.")
-            return
-        for title, col in [("By odds bucket","bucket"),("By ending","end"),("By book","book"),("By movement","move"),("By volatility","vol"),("By decision","decision")]:
-            if col not in graded.columns: continue
-            st.subheader(title)
-            g = graded.groupby(col).agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
-            g["hit%"] = (g["hits"]/g["n"]*100).round(1)
-            st.bar_chart(g["hit%"])
-            st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
+            st.info("No locks yet. Click Lock on a card from the Board. Locked plays will appear here.")
+        else:
+            df = pd.DataFrame(ledger)
+            st.subheader(f"Locked ({len(df)})")
+            st.dataframe(df, use_container_width=True, hide_index=True)
+            graded = df[df["result"].notna()]
+            if graded.empty:
+                st.caption("No graded results yet. Once results are marked, hit rates will show below.")
+            else:
+                for title, col in [("By odds bucket","bucket"),("By ending","end"),("By book","book"),("By movement","move"),("By volatility","vol"),("By decision","decision")]:
+                    if col not in graded.columns: continue
+                    st.subheader(title)
+                    g = graded.groupby(col).agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
+                    g["hit%"] = (g["hits"]/g["n"]*100).round(1)
+                    st.bar_chart(g["hit%"])
+                    st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
     with tab_how:
         st.markdown("""
