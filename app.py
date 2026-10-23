@@ -16,12 +16,14 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
-.stApp{background:linear-gradient(180deg,#1a0a2e,#0f0518);color:#fff;font-family:'Outfit',sans-serif}
-.hero{background:linear-gradient(135deg,#ec4899,#a855f7,#6366f1);border-radius:28px;padding:24px 28px;margin-bottom:20px;box-shadow:0 16px 48px rgba(236,72,153,.25)}
-.hero h1{margin:0;font-size:2rem;font-weight:800;letter-spacing:-.02em}
-.hero p{margin:6px 0 0;opacity:.95;font-size:.95rem;font-weight:500}
-div[data-testid="stVerticalBlockBorderWrapper"]{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:4px}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+.stApp{background:linear-gradient(180deg,#fff5f7,#fdf2f8 40%,#f5f3ff);color:#1f2937;font-family:'Nunito',sans-serif}
+.hero{background:linear-gradient(135deg,#f472b6,#c084fc,#818cf8);border-radius:32px;padding:28px 32px;margin-bottom:24px;box-shadow:0 20px 50px rgba(244,114,182,.3);color:#fff}
+.hero h1{margin:0;font-size:2.1rem;font-weight:800}
+.hero p{margin:8px 0 0;opacity:.95;font-size:1rem;font-weight:600}
+div[data-testid="stVerticalBlockBorderWrapper"]{background:#fff;border:1px solid #f3e8ff;border-radius:24px;box-shadow:0 4px 20px rgba(0,0,0,.04)}
+.stMarkdown h3{color:#1f2937}
+.stCaption{color:#6b7280}
 </style>
 """, unsafe_allow_html=True)
 
@@ -257,7 +259,7 @@ def main():
             and (not only_hot or c.get("end") in HOT_ENDS)
         ]
         filtered.sort(key=lambda x: (-float(x.get("edge", 0)), -int(x.get("gap", 0))))
-        st.markdown(f"**{len(filtered)}** props")
+        st.markdown(f"**{len(filtered)}** props · Lock the ones with a green edge and a hot ending. Tracker shows what cashes.")
 
         if not filtered:
             st.info("No props at these filters.")
