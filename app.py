@@ -215,10 +215,21 @@ def main():
         if st.button("Fetch Board", type="primary", use_container_width=True):
             sport_key = "basketball_nba" if sport=="NBA" else "americanfootball_nfl"
             markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if sport=="NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
-            with st.spinner(f"Scanning {sport}..."):
+            with st.spinner(f"Scanning {sport} pre-game..."):
                 events = fetch_events(api_key, sport_key)
+                now = datetime.utcnow()
+                pregame = []
+                for ev in events:
+                    ct = ev.get("commence_time")
+                    if not ct: continue
+                    try:
+                        # Odds API times are ISO UTC
+                        t = datetime.fromisoformat(ct.replace("Z","+00:00")).replace(tzinfo=None)
+                        if t > now:
+                            pregame.append(ev)
+                    except: continue
                 all_plays = []
-                for ev in events[:12]:
+                for ev in pregame[:12]:
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                     if data: all_plays.extend(parse_plays(data, sport))
                 st.session_state["cards"] = best_cards(all_plays)
@@ -302,15 +313,33 @@ def main():
 
     with tab_how:
         st.markdown("""
-**EV gap** = (Longest − Median) / Median. Higher is better.
+**EV gap** = (Longest − Median) / Median. Bigger = juicier.
 
-**Spike** = EV gap + volatility weight × spread. Big spike + movement = TAKE.
+**Spike** = EV gap + volatility weight × spread. Big spike = real edge.
 
 **TAKE** — big gap, books disagree, volatility active.  
 **LEAN** — softer gap, some movement.  
 **PASS** — books tight, little movement.
 
 Lock the TAKEs. Tracker shows which buckets, endings, books, and movement types cash.
+        """)
+        st.subheader("Glossary")
+        st.markdown("""
+| Term | Meaning |
+|---|---|
+| EV gap | How much better the longest odds are vs the median. |
+| Longest price | The best number on the board. |
+| Median | The normal price most books agree on. |
+| Volatility | How much the odds wiggle. High = chaos. |
+| Spike | EV gap + volatility + movement. Big = real edge. |
+| Solo | One book stands alone. |
+| Cluster | Books agree tightly. |
+| Snap | Sudden jump. |
+| Drift | Slow movement. |
+| Freeze | No movement. |
+| TAKE | Bet it. |
+| LEAN | Interesting but not must-bet. |
+| PASS | Skip it. |
         """)
 
 if __name__ == "__main__":
