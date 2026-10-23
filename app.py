@@ -23,8 +23,11 @@ st.markdown("""
 .hero h1{margin:0;font-size:1.7rem;font-weight:700;font-family:'Playfair Display',serif;text-shadow:0 0 12px rgba(255,77,166,.7);animation:shimmerText 3s ease-in-out infinite}
 .hero p{margin:4px 0 0;opacity:.85;font-size:.78rem;color:#F5E9FF;font-style:italic}
 @keyframes shimmerText{0%{text-shadow:0 0 8px rgba(255,77,166,.4)}50%{text-shadow:0 0 16px rgba(255,77,166,.9)}100%{text-shadow:0 0 8px rgba(255,77,166,.4)}}
-button[kind="primary"]{background:linear-gradient(90deg,#FF4DA6,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:600!important;box-shadow:0 0 16px rgba(255,77,166,.7)!important}
-button[kind="primary"]:hover{box-shadow:0 0 20px rgba(255,77,166,.9)!important}
+button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF4DA6,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:600!important;box-shadow:0 0 16px rgba(255,77,166,.7)!important;color:#fff!important}
+button[kind="primary"]:hover, .stButton > button[kind="primary"]:hover{box-shadow:0 0 20px rgba(255,77,166,.9)!important}
+.stTabs [data-baseweb="tab-list"]{gap:8px}
+.stTabs [data-baseweb="tab"]{background:#14141A;border-radius:999px;padding:6px 14px;color:#CBA6F7}
+.stTabs [aria-selected="true"]{background:linear-gradient(90deg,#FF4DA6,#9B5FFF)!important;color:#fff!important}
 .card{background:#14141A;border:1px solid #262633;border-radius:16px;padding:12px 14px;margin-bottom:12px;position:relative;transition:box-shadow .2s,transform .2s}
 .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.8)}
 .card.take-card{border-color:rgba(255,77,166,.7);box-shadow:0 0 18px rgba(255,77,166,.4)}
@@ -325,35 +328,31 @@ def main():
             st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
     with tab_how:
-        st.markdown("### How It Works")
-        st.markdown("""
-**1. Fetch Board** — pulls pre-game props only.
-
-**2. Scan for TAKE** — pink cards with a big EV gap and spike.
-
-**3. Lock** — Tracker learns which buckets, endings, and books cash.
-        """)
-        st.markdown("---")
-        st.markdown("### Glossary")
-        st.markdown("""
-| Term | Meaning |
-|---|---|
-| EV gap | How much better the longest odds are vs the median. |
-| Longest price | The best number on the board. |
-| Median | The normal price most books agree on. |
-| Volatility | How much the odds wiggle. High = chaos. |
-| Spike | EV gap + volatility + movement. Big = real edge. |
-| Solo | One book stands alone. |
-| Cluster | Books agree tightly. |
-| Snap | Sudden jump. |
-| Drift | Slow movement. |
-| Freeze | No movement. |
-| TAKE | Bet it. |
-| LEAN | Interesting but not must-bet. |
-| PASS | Skip it. |
-        """)
-        st.markdown("---")
-        st.caption("Built for the girls who read odds like poetry.")
+        st.write("### How It Works")
+        st.write("1. Fetch Board — pulls pre-game props only.")
+        st.write("2. Scan for TAKE — pink cards with a big EV gap and spike.")
+        st.write("3. Lock — Tracker learns which buckets, endings, and books cash.")
+        st.write("---")
+        st.write("### Glossary")
+        glossary = [
+            ("EV gap", "How much better the longest odds are vs the median."),
+            ("Longest price", "The best number on the board."),
+            ("Median", "The normal price most books agree on."),
+            ("Volatility", "How much the odds wiggle. High = chaos."),
+            ("Spike", "EV gap + volatility + movement. Big = real edge."),
+            ("Solo", "One book stands alone."),
+            ("Cluster", "Books agree tightly."),
+            ("Snap", "Sudden jump."),
+            ("Drift", "Slow movement."),
+            ("Freeze", "No movement."),
+            ("TAKE", "Bet it."),
+            ("LEAN", "Interesting but not must-bet."),
+            ("PASS", "Skip it."),
+        ]
+        for term, meaning in glossary:
+            st.write(f"**{term}** — {meaning}")
+        st.write("---")
+        st.write("Built for the girls who read odds like poetry.")
 
     st.markdown('<div style="text-align:center;margin-top:24px;color:#a78bfa;font-size:.75rem;font-style:italic;">Built for the girls who read odds like poetry.</div>', unsafe_allow_html=True)
 
