@@ -18,24 +18,24 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap');
-.stApp{background:#0a0612;color:#f5f3ff;font-family:'Inter',sans-serif}
-.hero{background:linear-gradient(135deg,#f472b6,#c084fc,#818cf8);border-radius:28px;padding:24px 28px;margin-bottom:18px;color:#fff}
+.stApp{background:#0B0B0F;color:#f5f3ff;font-family:'Inter',sans-serif}
+.hero{background:linear-gradient(135deg,#f472b6,#c084fc,#6d28d9);border-radius:28px;padding:24px 28px;margin-bottom:18px;color:#fff}
 .hero h1{margin:0;font-size:1.9rem;font-weight:700;font-family:'Playfair Display',serif}
 .hero p{margin:6px 0 0;opacity:.95;font-size:.9rem}
-.card{background:#120e1c;border:1px solid #2d2640;border-radius:18px;padding:14px 16px;margin-bottom:12px}
-.player{font-size:1.15rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
-.meta{color:#a78bfa;font-size:.7rem;margin:2px 0 6px}
-.prop{font-size:.95rem;font-weight:600;color:#f0abfc;margin-bottom:8px}
-.books{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
-.bk{background:#1a1526;border:1px solid #3b3450;border-radius:10px;padding:6px 8px;text-align:center;min-width:68px;font-size:.72rem}
-.bk.best{background:#4c1d95;border-color:#c084fc}
-.bk span{display:block;font-size:.6rem;color:#c4b5fd}
-.tag{display:inline-block;background:#2e1065;color:#e9d5ff;border-radius:999px;padding:2px 8px;font-size:.62rem;font-weight:600;margin:2px 3px 0 0}
-.decision{display:inline-block;border-radius:999px;padding:4px 12px;font-size:.75rem;font-weight:700;margin-top:6px}
-.take{background:#7c3aed;color:#fff}
+.card{background:#14121c;border:1px solid #2d2640;border-radius:20px;padding:16px 18px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.player{font-size:1.2rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
+.meta{color:#a78bfa;font-size:.72rem;margin:3px 0 8px}
+.prop{font-size:1rem;font-weight:600;color:#f0abfc;margin-bottom:10px}
+.books{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.bk{background:#1c1826;border:1px solid #3b3450;border-radius:12px;padding:8px 10px;text-align:center;min-width:72px;font-size:.75rem;font-weight:600}
+.bk.best{background:#4c1d95;border-color:#f472b6;box-shadow:0 0 12px rgba(244,114,182,.4)}
+.bk span{display:block;font-size:.62rem;color:#c4b5fd;font-weight:500}
+.tag{display:inline-block;background:#2e1065;color:#e9d5ff;border-radius:999px;padding:3px 9px;font-size:.64rem;font-weight:600;margin:3px 4px 0 0}
+.decision{display:inline-block;border-radius:999px;padding:5px 14px;font-size:.78rem;font-weight:700;margin-top:8px}
+.take{background:#ec4899;color:#fff;box-shadow:0 0 12px rgba(236,72,153,.5)}
 .lean{background:#a855f7;color:#fff}
 .pass{background:#4b5563;color:#fff}
-.why{font-size:.68rem;color:#c4b5fd;margin-top:6px}
+.why{font-size:.7rem;color:#c4b5fd;margin-top:8px}
 </style>
 """, unsafe_allow_html=True)
 
