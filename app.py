@@ -322,18 +322,16 @@ def main():
             st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
     with tab_how:
+        st.markdown("### How It Works")
         st.markdown("""
-**EV gap** = (Longest − Median) / Median. Bigger = juicier.
+**1. Fetch Board** — pulls pre-game props only.
 
-**Spike** = EV gap + volatility weight × spread. Big spike = real edge.
+**2. Scan for TAKE** — pink cards with a big EV gap and spike.
 
-**TAKE** — big gap, books disagree, volatility active.  
-**LEAN** — softer gap, some movement.  
-**PASS** — books tight, little movement.
-
-Lock the TAKEs. Tracker shows which buckets, endings, books, and movement types cash.
+**3. Lock** — Tracker learns which buckets, endings, and books cash.
         """)
-        st.subheader("Glossary")
+        st.markdown("---")
+        st.markdown("### Glossary")
         st.markdown("""
 | Term | Meaning |
 |---|---|
@@ -351,6 +349,8 @@ Lock the TAKEs. Tracker shows which buckets, endings, books, and movement types 
 | LEAN | Interesting but not must-bet. |
 | PASS | Skip it. |
         """)
+        st.markdown("---")
+        st.caption("Built for the girls who read odds like poetry.")
 
     st.markdown('<div style="text-align:center;margin-top:24px;color:#a78bfa;font-size:.75rem;font-style:italic;">Built for the girls who read odds like poetry.</div>', unsafe_allow_html=True)
 
