@@ -167,8 +167,8 @@ def best_cards(plays):
         cards.append({
             **best,
             "books": len(group),
-            "gap": gap,
-            "fair": fair,
+            "gap": int(gap),
+            "fair": int(fair),
             "all_prices": prices,
         })
     cards.sort(key=lambda x: (-x["gap"], -x["price"]))
@@ -236,9 +236,9 @@ def main():
 
         filtered = [
             c for c in cards
-            if c["prop"] in prop_f
-            and min_odds <= c["price"] <= max_odds
-            and c["gap"] >= min_gap
+            if c.get("prop") in prop_f
+            and min_odds <= int(c.get("price", 0)) <= max_odds
+            and int(c.get("gap", 0)) >= min_gap
         ]
         if sort_by == "Highest odds":
             filtered.sort(key=lambda x: -x["price"])
@@ -252,8 +252,9 @@ def main():
         cols = st.columns(2)
         for i, c in enumerate(filtered[:40]):
             line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
-            gap_cls = "ev-pos" if c["gap"] >= 50 else ("ev-neg" if c["gap"] < 0 else "badge")
-            gap_txt = f"+{c['gap']}" if c["gap"] >= 0 else str(c["gap"])
+            gap = int(c.get("gap", 0))
+            gap_cls = "ev-pos" if gap >= 50 else ("ev-neg" if gap < 0 else "badge")
+            gap_txt = f"+{gap}" if gap >= 0 else str(gap)
             with cols[i % 2]:
                 st.markdown(
                     f'''<div class="card">
@@ -266,8 +267,8 @@ def main():
                             <span class="{gap_cls}">{gap_txt} vs field</span>
                         </div>
                         <div class="stat-row">
-                            <span><b>{c["books"]}</b> books</span>
-                            <span>field med <b>{c["fair"]:+d}</b></span>
+                            <span><b>{c.get("books", 1)}</b> books</span>
+                            <span>field med <b>{int(c.get("fair", c.get("price", 0))):+d}</b></span>
                         </div>
                     </div>''',
                     unsafe_allow_html=True,
