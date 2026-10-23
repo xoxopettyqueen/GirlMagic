@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ -*- coding: utf-8 -*-
 """
 Girl Magic Odds 2.0
 Pure odds engine. EV gap, volatility, spike, TAKE/LEAN/PASS.
@@ -328,31 +328,45 @@ def main():
             st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
     with tab_how:
-        st.write("### How It Works")
-        st.write("1. Fetch Board — pulls pre-game props only.")
-        st.write("2. Scan for TAKE — pink cards with a big EV gap and spike.")
-        st.write("3. Lock — Tracker learns which buckets, endings, and books cash.")
-        st.write("---")
-        st.write("### Glossary")
-        glossary = [
-            ("EV gap", "How much better the longest odds are vs the median."),
-            ("Longest price", "The best number on the board."),
-            ("Median", "The normal price most books agree on."),
-            ("Volatility", "How much the odds wiggle. High = chaos."),
-            ("Spike", "EV gap + volatility + movement. Big = real edge."),
-            ("Solo", "One book stands alone."),
-            ("Cluster", "Books agree tightly."),
-            ("Snap", "Sudden jump."),
-            ("Drift", "Slow movement."),
-            ("Freeze", "No movement."),
-            ("TAKE", "Bet it."),
-            ("LEAN", "Interesting but not must-bet."),
-            ("PASS", "Skip it."),
-        ]
-        for term, meaning in glossary:
-            st.write(f"**{term}** — {meaning}")
-        st.write("---")
-        st.write("Built for the girls who read odds like poetry.")
+        st.markdown("""
+        <div style="padding:16px 0;">
+          <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">How It Works</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#FF4DA6,#9B5FFF);border-radius:16px;padding:14px;color:#fff;">
+              <div style="font-size:1.4rem;">🎯</div>
+              <div style="font-weight:700;margin-top:6px;">1. Fetch Board</div>
+              <div style="font-size:.8rem;opacity:.9;">Pre-game props only.</div>
+            </div>
+            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#9B5FFF,#5E4AE3);border-radius:16px;padding:14px;color:#fff;">
+              <div style="font-size:1.4rem;">💖</div>
+              <div style="font-weight:700;margin-top:6px;">2. Scan for TAKE</div>
+              <div style="font-size:.8rem;opacity:.9;">Pink cards with big EV gap and spike.</div>
+            </div>
+            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#5E4AE3,#FF4DA6);border-radius:16px;padding:14px;color:#fff;">
+              <div style="font-size:1.4rem;">🔒</div>
+              <div style="font-weight:700;margin-top:6px;">3. Lock</div>
+              <div style="font-size:.8rem;opacity:.9;">Tracker learns what cashes.</div>
+            </div>
+          </div>
+          <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">Glossary</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;">
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">EV gap</b><br><span style="font-size:.75rem;color:#B3B3C3;">How much better the longest odds are vs the median.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Longest price</b><br><span style="font-size:.75rem;color:#B3B3C3;">The best number on the board.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Median</b><br><span style="font-size:.75rem;color:#B3B3C3;">The normal price most books agree on.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Volatility</b><br><span style="font-size:.75rem;color:#B3B3C3;">How much the odds wiggle. High = chaos.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Spike</b><br><span style="font-size:.75rem;color:#B3B3C3;">EV gap + volatility + movement. Big = real edge.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Solo</b><br><span style="font-size:.75rem;color:#B3B3C3;">One book stands alone.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Cluster</b><br><span style="font-size:.75rem;color:#B3B3C3;">Books agree tightly.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Snap</b><br><span style="font-size:.75rem;color:#B3B3C3;">Sudden jump.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Drift</b><br><span style="font-size:.75rem;color:#B3B3C3;">Slow movement.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Freeze</b><br><span style="font-size:.75rem;color:#B3B3C3;">No movement.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">TAKE</b><br><span style="font-size:.75rem;color:#B3B3C3;">Bet it.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">LEAN</b><br><span style="font-size:.75rem;color:#B3B3C3;">Interesting but not must-bet.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">PASS</b><br><span style="font-size:.75rem;color:#B3B3C3;">Skip it.</span></div>
+          </div>
+          <div style="text-align:center;margin-top:20px;color:#CBA6F7;font-size:.8rem;font-style:italic;opacity:.8;">Built for the girls who read odds like poetry.</div>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown('<div style="text-align:center;margin-top:24px;color:#a78bfa;font-size:.75rem;font-style:italic;">Built for the girls who read odds like poetry.</div>', unsafe_allow_html=True)
 
