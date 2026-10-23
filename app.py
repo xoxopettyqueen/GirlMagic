@@ -366,10 +366,28 @@ def main():
         else:
             df = pd.DataFrame(ledger)
             st.subheader("Your Reads. Your Chaos. Your Hit Rates.")
-            st.dataframe(df, use_container_width=True, hide_index=True)
+            rename = {
+                "ts": "Timestamp (when chaos hit)",
+                "sport": "League",
+                "player": "Player",
+                "prop": "Prop Type",
+                "line": "Line",
+                "price": "Best Odds",
+                "book": "Book",
+                "event": "Matchup",
+                "end": "Result Time",
+                "bucket": "Odds Bucket",
+                "ev_gap": "EV Gap %",
+                "spike": "Spike Score",
+                "vol": "Volatility",
+                "move": "Movement Type",
+                "decision": "Decision",
+                "result": "Outcome",
+            }
+            st.dataframe(df.rename(columns=rename), use_container_width=True, hide_index=True)
             graded = df[df["result"].notna()]
             if graded.empty:
-                st.caption("No graded results yet. Once results are marked, hit rates will show below.")
+                st.caption("No graded results yet. Once results are marked, hit rates will show below. Built for the girls who read odds like poetry.")
             else:
                 for title, col in [("By odds bucket","bucket"),("By ending","end"),("By book","book"),("By movement","move"),("By volatility","vol"),("By decision","decision")]:
                     if col not in graded.columns: continue
