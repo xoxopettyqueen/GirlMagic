@@ -1006,16 +1006,16 @@ SPORT_CFG = {
     },
     "NBA": {
         "key": "basketball_nba",
-        "market": "player_points",
-        "label": "NBA longshots · P15 / 3M3 / A3C / R7 / R10",
+        "market": "player_assists",
+        "label": "NBA Assists o2.5-o6.5 +750+ · Pts 8-15 · Reb 5-8 · DD",
         "hit": "cash",
         "hits": "cashes",
         "sgo": False,
         "days": 2,
         "when": "Tip",
-        "lock_caption": "NBA longshots locked pre-tip. OPS is not Confidence.",
+        "lock_caption": "NBA alternate assists / points / rebounds locked pre-tip.",
         "lock_count": "NBA props",
-        "shop_empty": "Fetch NBA player points first. Other markets ride the same slate.",
+        "shop_empty": "Fetch NBA assists (and points/rebounds/DD). Board fills from the live slate.",
     },
     "NHL": {
         "key": "icehockey_nhl",
@@ -1033,8 +1033,8 @@ SPORT_CFG = {
 }
 
 def active_sport():
-    s = st.session_state.get("sport", "MLB")
-    return s if s in SPORT_CFG else "MLB"
+    s = st.session_state.get("sport", "NBA")
+    return s if s in SPORT_CFG else "NBA"
 
 def sport_cfg():
     return SPORT_CFG[active_sport()]
@@ -7648,6 +7648,13 @@ def fetch_odds_oddsapi(api_key, event_id, sport_key=None, market=None, restrict_
     if market == "player_anytime_td":
         # One market per call. Bundling yards with ATD 422s the whole NFL slate.
         markets = "player_anytime_td"
+    if "basketball_nba" in str(sport_key or "") or str(market or "") == "player_assists":
+        markets = (
+            "player_assists,player_assists_alternate,"
+            "player_points,player_points_alternate,"
+            "player_rebounds,player_rebounds_alternate,"
+            "player_double_double"
+        )
     url = f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds"
     us_books = ",".join([
         "fanduel", "draftkings", "betmgm", "fanatics",
@@ -7739,12 +7746,28 @@ def flatten_oddsapi(data):
                 "player_receiving_yds": "Receiving Yards",
                 "player_receptions": "Receptions",
             }
+            nba_map = {
+                "player_assists": "Assists",
+                "player_assists_alternate": "Assists",
+                "player_points": "Points",
+                "player_points_alternate": "Points",
+                "player_rebounds": "Rebounds",
+                "player_rebounds_alternate": "Rebounds",
+                "player_double_double": "DoubleDouble",
+            }
             prop_type = None
+            is_nba_prop = False
             for k, lab in need_map.items():
                 if mkey == k or mkey == k + "_alternate":
                     prop_type = lab
                     break
-            if prop_type and not is_full_game_prop(mkey):
+            if not prop_type:
+                for k, lab in nba_map.items():
+                    if mkey == k or mkey.startswith(k):
+                        prop_type = lab
+                        is_nba_prop = True
+                        break
+            if prop_type and not is_nba_prop and not is_full_game_prop(mkey):
                 prop_type = None
                 continue
             if mkey and not is_hr and not is_td and not is_goal and not prop_type:
@@ -7752,7 +7775,19 @@ def flatten_oddsapi(data):
             for o in market.get("outcomes", []):
                 oname = str(o.get("name") or "").lower()
                 pt = o.get("point")
-                if is_td:
+                if is_nba_prop:
+                    if prop_type == "DoubleDouble":
+                        if oname not in ("yes", "over"):
+                            continue
+                        player = o.get("description") or o.get("name")
+                        pt = 1.0
+                    else:
+                        if oname != "over":
+                            continue
+                        if pt is None:
+                            continue
+                        player = o.get("description")
+                elif is_td:
                     if oname not in ("yes", "over"):
                         continue
                     if oname == "over" and pt is not None and abs(float(pt) - 0.5) > 0.01:
@@ -7790,9 +7825,35 @@ def flatten_oddsapi(data):
                     continue
                 if is_blocked_player(player):
                     continue
+                NBA_SKIP = {"nikola jokic","trae young","tyrese haliburton","luka doncic","james harden","jalen brunson","damian lillard","stephen curry","lamelo ball","cade cunningham"}
+                if is_nba_prop and prop_type == "Assists" and any(x in str(player).lower() for x in NBA_SKIP):
+                    continue
+                # NBA line + odds filter
+                if is_nba_prop and prop_type != "DoubleDouble":
+                    try:
+                        line = float(pt)
+                    except Exception:
+                        continue
+                    if prop_type == "Assists" and not (2.5 <= line <= 6.5):
+                        continue
+                    if prop_type == "Points" and not (8.0 <= line <= 15.0):
+                        continue
+                    if prop_type == "Rebounds" and not (5.0 <= line <= 8.0):
+                        continue
+                    if int(price) < 750:
+                        continue
+                elif is_nba_prop and prop_type == "DoubleDouble":
+                    if int(price) < 400:
+                        continue
+                point_val = 0.5
+                if is_nba_prop:
+                    try:
+                        point_val = float(pt) if prop_type != "DoubleDouble" else 1.0
+                    except Exception:
+                        point_val = 0.5
                 rows.append({
                     "event": event, "book": bk, "player": player, "price": price,
-                    "point": 0.5, "team": "", "source": "oddsapi",
+                    "point": point_val, "team": "", "source": "oddsapi",
                     "sport": "NFL" if is_td else ("NHL" if is_goal else ("NBA" if prop_type else "MLB")),
                     "prop_type": prop_type,
                     "commence_time": data.get("commence_time") or "",
