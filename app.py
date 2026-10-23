@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — usable version
-Plus-money props with real cards, filters, and a Tracker that shows
-which odds buckets and books are cashing once you grade.
+Girl Magic Odds 2.0
+Ultimate +EV tool for the plus-money markets that matter.
+
+Edge = best price vs the field on the exact prop.
+Hot endings and known book patterns tagged.
+Tracker watches which odds, endings, and books cash.
 """
 
 import streamlit as st
@@ -19,21 +22,22 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 .stApp{background:#09090b;color:#fafafa;font-family:'Inter',sans-serif}
-.hero{background:linear-gradient(135deg,#6d28d9 0%,#7c3aed 50%,#a78bfa 100%);border-radius:20px;padding:20px 24px;margin-bottom:20px;box-shadow:0 8px 32px rgba(109,40,217,.25)}
-.hero h1{margin:0;font-size:1.85rem;font-weight:800;letter-spacing:-.02em}
-.hero p{margin:6px 0 0;opacity:.9;font-size:.92rem}
-.card{background:#18181b;border:1px solid #27272a;border-radius:16px;padding:16px 18px;margin-bottom:14px;transition:border-color .15s}
-.card:hover{border-color:#a78bfa}
+.hero{background:linear-gradient(135deg,#4c1d95,#6d28d9 40%,#7c3aed);border-radius:20px;padding:20px 24px;margin-bottom:18px;box-shadow:0 10px 40px rgba(109,40,217,.3)}
+.hero h1{margin:0;font-size:1.9rem;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:6px 0 0;opacity:.9;font-size:.9rem}
+.card{background:#18181b;border:1px solid #27272a;border-radius:16px;padding:16px;margin-bottom:14px;transition:all .15s}
+.card:hover{border-color:#a78bfa;transform:translateY(-1px)}
 .player{font-size:1.2rem;font-weight:800;margin:0 0 2px}
-.meta{color:#a1a1aa;font-size:.78rem;margin-bottom:10px}
+.meta{color:#a1a1aa;font-size:.75rem;margin-bottom:8px}
 .prop{font-size:1rem;font-weight:700;color:#c4b5fd}
-.odds{font-size:1.6rem;font-weight:800;color:#fafafa;letter-spacing:-.03em}
-.book{font-size:.82rem;color:#d4d4d8;margin-left:6px}
-.badge{display:inline-block;background:#27272a;color:#e4e4e7;border-radius:999px;padding:3px 10px;font-size:.7rem;font-weight:600;margin-right:6px}
-.ev-pos{display:inline-block;background:#14532d;color:#86efac;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:700}
-.ev-neg{display:inline-block;background:#3f1d1d;color:#fca5a5;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:700}
-.stat-row{display:flex;gap:16px;margin-top:10px;font-size:.75rem;color:#a1a1aa}
-.stat-row b{color:#fafafa}
+.odds{font-size:1.7rem;font-weight:800;letter-spacing:-.03em}
+.book{font-size:.8rem;color:#d4d4d8;margin-left:6px}
+.edge{display:inline-block;background:#14532d;color:#86efac;border-radius:999px;padding:4px 12px;font-size:.75rem;font-weight:800;margin-left:8px}
+.tag{display:inline-block;background:#27272a;color:#e4e4e7;border-radius:999px;padding:2px 8px;font-size:.68rem;font-weight:600;margin:3px 4px 0 0}
+.tag-hot{background:#166534;color:#bbf7d0}
+.tag-dead{background:#7f1d1d;color:#fecaca}
+.stat{font-size:.72rem;color:#a1a1aa;margin-top:8px}
+.stat b{color:#fafafa}
 </style>
 """, unsafe_allow_html=True)
 
@@ -47,11 +51,23 @@ MY_BOOKS = {
     "hardrockbet_az": "Hard Rock", "hardrockbet_oh": "Hard Rock", "hardrockbet_fl": "Hard Rock",
 }
 
+HOT_ENDS = {5, 10, 25, 30, 35, 40, 55, 65, 75, 80, 85, 90}
+DEAD_ENDS = {0, 50}
 NBA_SKIP = {
     "nikola jokic", "trae young", "tyrese haliburton", "luka doncic",
     "james harden", "jalen brunson", "damian lillard", "stephen curry",
     "lamelo ball", "cade cunningham", "scoot henderson", "chris paul",
 }
+
+def last_two(p):
+    try: return abs(int(p)) % 100
+    except: return None
+
+def implied(price):
+    try:
+        p = int(price)
+        return 100 / (p + 100) if p > 0 else abs(p) / (abs(p) + 100)
+    except: return None
 
 def normalize_book(key):
     k = str(key or "").lower()
@@ -99,10 +115,9 @@ def parse_plays(data, sport):
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     plays = []
     for book in data.get("bookmakers") or []:
-        bk_raw = book.get("key") or ""
-        bk = normalize_book(bk_raw)
+        bk = normalize_book(book.get("key"))
         if bk not in MY_BOOKS: continue
-        display = MY_BOOKS.get(bk, bk)
+        display = MY_BOOKS[bk]
         for market in book.get("markets") or []:
             mkey = (market.get("key") or "").lower()
             prop_type = None
@@ -159,19 +174,29 @@ def best_cards(plays):
         best = max(group, key=lambda x: x["price"])
         prices = sorted(g["price"] for g in group)
         med = prices[len(prices)//2]
-        # Simple +EV proxy: best price vs the median of the other books
         others = [g["price"] for g in group if g["book"] != best["book"]]
-        fair = sorted(others)[len(others)//2] if others else med
-        gap = best["price"] - fair
-        # Implied edge rough: higher price = lower implied prob
+        fair_price = sorted(others)[len(others)//2] if others else med
+        # Simple edge: how much longer is the best price vs the field median
+        gap = best["price"] - fair_price
+        # Rough EV proxy using implied probs (higher price = lower implied = more edge if field is shorter)
+        best_imp = implied(best["price"]) or 0.5
+        fair_imp = implied(fair_price) or 0.5
+        edge_pts = round((fair_imp - best_imp) * 100, 1) if best_imp and fair_imp else 0
+        end = last_two(best["price"])
+        tags = []
+        if end in HOT_ENDS: tags.append(("hot", f"Hot {end:02d}"))
+        if end in DEAD_ENDS: tags.append(("dead", f"Dead {end:02d}"))
+        if edge_pts >= 3: tags.append(("edge", f"+{edge_pts}% edge"))
         cards.append({
             **best,
             "books": len(group),
             "gap": int(gap),
-            "fair": int(fair),
-            "all_prices": prices,
+            "fair": int(fair_price),
+            "edge": edge_pts,
+            "end": end,
+            "tags": tags,
         })
-    cards.sort(key=lambda x: (-x["gap"], -x["price"]))
+    cards.sort(key=lambda x: (-x["edge"], -x["gap"], -x["price"]))
     return cards
 
 def odds_bucket(price):
@@ -183,25 +208,25 @@ def odds_bucket(price):
     return "+2500+"
 
 def main():
-    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Plus-money props. Best price vs the field. Lock it, grade it, see what cashes.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Plus-money edge tool. Biggest book gaps on the lines you actually bet. Hot endings tagged. Tracker watches what cashes.</p></div>', unsafe_allow_html=True)
 
     api_key = st.secrets.get("ODDS_API_KEY", "") or st.text_input("Odds API Key", type="password")
     if not api_key:
         st.info("Add ODDS_API_KEY to secrets or paste above.")
         return
 
-    col_sport, col_fetch = st.columns([1, 3])
-    with col_sport:
-        sport = st.radio("Lane", ["NBA", "NFL"], horizontal=True, index=0)
-    with col_fetch:
-        if st.button("Fetch Slate", type="primary", use_container_width=True):
+    c1, c2 = st.columns([1, 4])
+    with c1:
+        sport = st.radio("Lane", ["NBA", "NFL"], horizontal=True)
+    with c2:
+        if st.button("Fetch Edge Board", type="primary", use_container_width=True):
             sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
             markets = (
                 "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double"
                 if sport == "NBA"
                 else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
             )
-            with st.spinner(f"Loading {sport}..."):
+            with st.spinner(f"Scanning {sport} books..."):
                 events = fetch_events(api_key, sport_key)
                 all_plays = []
                 for ev in events[:12]:
@@ -213,48 +238,41 @@ def main():
 
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
-        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} plays · {st.session_state.get('sport','')}")
+        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} edges · {st.session_state.get('sport','')}")
 
-    tab_plays, tab_tracker = st.tabs(["Plays", "Tracker"])
+    tab_plays, tab_tracker, tab_glossary = st.tabs(["Edge Board", "Tracker", "How It Works"])
 
     with tab_plays:
         if not cards:
-            st.info("Hit Fetch Slate.")
+            st.info("Hit Fetch Edge Board.")
             return
-
         f1, f2, f3, f4 = st.columns(4)
         with f1:
-            prop_opts = sorted({c["prop"] for c in cards})
-            prop_f = st.multiselect("Prop", prop_opts, default=prop_opts[:1] if prop_opts else [])
+            props = sorted({c["prop"] for c in cards})
+            prop_f = st.multiselect("Prop", props, default=props[:1] if props else [])
         with f2:
             min_odds = st.slider("Min odds", 300, 2000, 750 if sport == "NBA" else 300, 50)
         with f3:
-            max_odds = st.slider("Max odds", 1000, 5000, 2000, 100)
+            max_odds = st.slider("Max odds", 1000, 4000, 2000, 100)
         with f4:
-            min_gap = st.slider("Min gap", -100, 400, 0, 25)
-            sort_by = st.selectbox("Sort", ["Biggest gap", "Highest odds", "Most books"])
+            min_edge = st.slider("Min edge %", 0.0, 10.0, 1.0, 0.5)
+            only_hot = st.checkbox("Hot endings only")
 
         filtered = [
             c for c in cards
             if c.get("prop") in prop_f
             and min_odds <= int(c.get("price", 0)) <= max_odds
-            and int(c.get("gap", 0)) >= min_gap
+            and float(c.get("edge", 0)) >= min_edge
+            and (not only_hot or c.get("end") in HOT_ENDS)
         ]
-        if sort_by == "Highest odds":
-            filtered.sort(key=lambda x: -x["price"])
-        elif sort_by == "Most books":
-            filtered.sort(key=lambda x: -x["books"])
-        else:
-            filtered.sort(key=lambda x: (-x["gap"], -x["price"]))
-
-        st.markdown(f"**{len(filtered)}** plays")
+        filtered.sort(key=lambda x: (-float(x.get("edge", 0)), -int(x.get("gap", 0))))
+        st.markdown(f"**{len(filtered)}** edges")
 
         cols = st.columns(2)
         for i, c in enumerate(filtered[:40]):
             line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
-            gap = int(c.get("gap", 0))
-            gap_cls = "ev-pos" if gap >= 50 else ("ev-neg" if gap < 0 else "badge")
-            gap_txt = f"+{gap}" if gap >= 0 else str(gap)
+            tags_html = "".join(f'<span class="tag tag-{t[0]}">{t[1]}</span>' for t in c.get("tags", []))
+            edge_html = f'<span class="edge">+{c.get("edge",0)}% edge</span>' if c.get("edge", 0) >= 1 else ""
             with cols[i % 2]:
                 st.markdown(
                     f'''<div class="card">
@@ -264,12 +282,10 @@ def main():
                         <div style="margin:8px 0">
                             <span class="odds">{c["price"]:+d}</span>
                             <span class="book">{c["book"]}</span>
-                            <span class="{gap_cls}">{gap_txt} vs field</span>
+                            {edge_html}
                         </div>
-                        <div class="stat-row">
-                            <span><b>{c.get("books", 1)}</b> books</span>
-                            <span>field med <b>{int(c.get("fair", c.get("price", 0))):+d}</b></span>
-                        </div>
+                        {tags_html}
+                        <div class="stat"><b>{c.get("books",1)}</b> books · field <b>{int(c.get("fair", c["price"])):+d}</b> · gap <b>{int(c.get("gap",0)):+d}</b></div>
                     </div>''',
                     unsafe_allow_html=True,
                 )
@@ -279,7 +295,9 @@ def main():
                         "ts": datetime.now().isoformat(timespec="minutes"),
                         "sport": c["sport"], "player": c["player"], "prop": c["prop"],
                         "line": c["line"], "price": c["price"], "book": c["book"],
-                        "event": c["event"], "result": None, "bucket": odds_bucket(c["price"]),
+                        "event": c["event"], "end": c.get("end"),
+                        "bucket": odds_bucket(c["price"]), "edge": c.get("edge"),
+                        "result": None,
                     })
                     save_ledger(ledger)
                     st.toast("Locked")
@@ -287,26 +305,37 @@ def main():
     with tab_tracker:
         ledger = load_ledger()
         if not ledger:
-            st.info("Lock some plays first. Once you grade them (hit/miss), this shows which odds buckets and books cash.")
+            st.info("Lock edges from the board. The Tracker will show which odds buckets, endings, and books cash once results are marked.")
             return
         df = pd.DataFrame(ledger)
-        st.subheader("Locked plays")
+        st.subheader("Locked edges")
         st.dataframe(df, use_container_width=True, hide_index=True)
-
         graded = df[df["result"].notna()]
         if graded.empty:
-            st.caption("No graded results yet. After games, set result to hit or miss in the JSON (or we can add buttons next).")
+            st.caption("No graded results yet. After games, set result = hit or miss and this breaks out the patterns.")
             return
+        for title, col in [("By odds bucket", "bucket"), ("By ending", "end"), ("By book", "book")]:
+            st.subheader(title)
+            g = graded.groupby(col).agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
+            g["hit%"] = (g["hits"]/g["n"]*100).round(1)
+            st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
-        st.subheader("By odds bucket")
-        bucket = graded.groupby("bucket").agg(n=("result", "count"), hits=("result", lambda s: (s == "hit").sum()))
-        bucket["hit%"] = (bucket["hits"] / bucket["n"] * 100).round(1)
-        st.dataframe(bucket.sort_values("n", ascending=False), use_container_width=True)
+    with tab_glossary:
+        st.markdown("""
+**Edge %** — how much better the best price is than the field median on that exact prop (implied probability difference). Bigger is better.  
 
-        st.subheader("By book")
-        book = graded.groupby("book").agg(n=("result", "count"), hits=("result", lambda s: (s == "hit").sum()))
-        book["hit%"] = (book["hits"] / book["n"] * 100).round(1)
-        st.dataframe(book.sort_values("hit%", ascending=False), use_container_width=True)
+**Gap** — raw American odds difference between the best book and the field median.  
+
+**Hot ending** — last two digits that cashed above the floor in the graded data (10, 25, 30, 35, 40, 55, 65, 75, 80, 85, 90…).  
+
+**Dead ending** — 00 and 50. Volume without the rate.  
+
+**Why this works** — books disagree most on niche alternate lines and secondary players. The assists o2.5–o6.5 +750+ lane (and the NFL low-yardage / TD plus-money spots) is where that disagreement shows up as real edge.  
+
+**Ticket books** — FanDuel, DraftKings, BetMGM, Bet365, Caesars, Fanatics, theScore, Hard Rock.  
+
+Lock the ones with the biggest edge and the best endings. The Tracker tells you which patterns actually cash.
+        """)
 
 if __name__ == "__main__":
     main()
