@@ -1,4 +1,4 @@
- -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Girl Magic Odds 2.0
 Pure odds engine. EV gap, volatility, spike, TAKE/LEAN/PASS.
