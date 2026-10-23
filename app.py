@@ -21,14 +21,16 @@ st.markdown("""
 .stApp{background:#0B0B0F;color:#fff;font-family:'Inter',sans-serif}
 .hero{background:linear-gradient(90deg,#FF4DA6,#9B5FFF,#5E4AE3);border-radius:24px;padding:18px 22px;margin-bottom:14px;color:#fff;box-shadow:0 0 24px rgba(0,0,0,.6)}
 .hero h1{margin:0;font-size:1.7rem;font-weight:700;font-family:'Playfair Display',serif;text-shadow:0 0 12px rgba(255,77,166,.7);animation:shimmerText 3s ease-in-out infinite}
-.hero p{margin:4px 0 0;opacity:.9;font-size:.8rem;color:#F5E9FF}
+.hero p{margin:4px 0 0;opacity:.85;font-size:.78rem;color:#F5E9FF;font-style:italic}
 @keyframes shimmerText{0%{text-shadow:0 0 8px rgba(255,77,166,.4)}50%{text-shadow:0 0 16px rgba(255,77,166,.9)}100%{text-shadow:0 0 8px rgba(255,77,166,.4)}}
+button[kind="primary"]{background:linear-gradient(90deg,#FF4DA6,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:600!important;box-shadow:0 0 16px rgba(255,77,166,.7)!important}
+button[kind="primary"]:hover{box-shadow:0 0 20px rgba(255,77,166,.9)!important}
 .card{background:#14141A;border:1px solid #262633;border-radius:16px;padding:12px 14px;margin-bottom:12px;position:relative;transition:box-shadow .2s,transform .2s}
 .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.8)}
 .card.take-card{border-color:rgba(255,77,166,.7);box-shadow:0 0 18px rgba(255,77,166,.4)}
 .player{font-size:1.05rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
-.meta{color:#B3B3C3;font-size:.68rem;margin:2px 0 6px}
-.prop{font-size:.9rem;font-weight:600;color:#FF4DA6;margin-bottom:6px}
+.meta{color:#B3B3C3;font-size:.68rem;margin:2px 0 6px;font-style:italic}
+.prop{font-size:.9rem;font-weight:600;color:#FF4DA6;margin-bottom:6px;text-transform:uppercase}
 .books{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
 .bk{background:#0F0F14;border:1px solid #262633;border-radius:999px;padding:4px 8px;text-align:center;min-width:60px;font-size:.7rem;font-weight:600;font-family:'Oswald',sans-serif}
 .bk.best{border-color:#FF4DA6;box-shadow:0 0 10px rgba(255,77,166,.7)}
@@ -319,6 +321,7 @@ def main():
             st.subheader(title)
             g = graded.groupby(col).agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
             g["hit%"] = (g["hits"]/g["n"]*100).round(1)
+            st.bar_chart(g["hit%"])
             st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
     with tab_how:
