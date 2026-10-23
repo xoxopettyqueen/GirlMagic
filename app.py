@@ -234,21 +234,25 @@ def main():
             markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if "NBA" in str(sport) else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
             with st.spinner("Cooking your edges… hold on queen."):
                 events = fetch_events(api_key, sport_key)
+                st.session_state["debug_events"] = len(events)
                 now = datetime.utcnow()
                 pregame = []
                 for ev in events:
                     ct = ev.get("commence_time")
                     if not ct: continue
                     try:
-                        # Odds API times are ISO UTC
                         t = datetime.fromisoformat(ct.replace("Z","+00:00")).replace(tzinfo=None)
                         if t > now:
                             pregame.append(ev)
                     except: continue
+                st.session_state["debug_pregame"] = len(pregame)
+                # If no pre-game, fall back to all events so we can see data
+                target = pregame if pregame else events
                 all_plays = []
-                for ev in pregame[:12]:
+                for ev in target[:12]:
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                     if data: all_plays.extend(parse_plays(data, sport))
+                st.session_state["debug_plays"] = len(all_plays)
                 cards = best_cards(all_plays)
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
@@ -284,7 +288,8 @@ def main():
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
         tracked = st.session_state.get("last_tracked", 0)
-        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · Auto-tracked {tracked} TAKE plays · {st.session_state.get('sport','')}")
+        dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · plays {st.session_state.get('debug_plays',0)}"
+        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · Auto-tracked {tracked} TAKE plays · {dbg}")
 
     tab_board, tab_tracker, tab_how = st.tabs(["Board","Tracker","How It Works"])
 
