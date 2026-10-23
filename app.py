@@ -16,25 +16,12 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-.stApp{background:#07070a;color:#fff;font-family:'Inter',sans-serif}
-.hero{background:linear-gradient(120deg,#4c1d95,#7c3aed 50%,#c084fc);border-radius:22px;padding:20px 24px;margin-bottom:16px;box-shadow:0 12px 40px rgba(124,58,237,.3)}
-.hero h1{margin:0;font-size:1.85rem;font-weight:900}
-.hero p{margin:5px 0 0;opacity:.9;font-size:.9rem}
-.card{background:#121214;border:1px solid #2a2a30;border-radius:16px;padding:14px 16px;margin-bottom:12px}
-.card:hover{border-color:#a78bfa}
-.player{font-size:1.15rem;font-weight:800;margin:0}
-.meta{color:#9ca3af;font-size:.72rem;margin:2px 0 6px}
-.prop{font-size:.95rem;font-weight:700;color:#d8b4fe}
-.books-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.book-pill{background:#1e1e22;border:1px solid #333;border-radius:10px;padding:6px 10px;font-size:.75rem;font-weight:600;min-width:70px;text-align:center}
-.book-pill.best{background:#14532d;border-color:#22c55e;color:#fff}
-.book-pill .bk{font-size:.65rem;color:#a1a1aa;display:block}
-.book-pill.best .bk{color:#bbf7d0}
-.edge{display:inline-block;background:#16a34a;color:#fff;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:800;margin-left:8px}
-.tag{display:inline-block;background:#27272a;border-radius:999px;padding:2px 8px;font-size:.65rem;font-weight:700;margin:2px 3px 0 0}
-.tag-hot{background:#15803d;color:#fff}
-.why{font-size:.72rem;color:#a1a1aa;margin-top:6px;font-style:italic}
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+.stApp{background:linear-gradient(180deg,#1a0a2e,#0f0518);color:#fff;font-family:'Outfit',sans-serif}
+.hero{background:linear-gradient(135deg,#ec4899,#a855f7,#6366f1);border-radius:28px;padding:24px 28px;margin-bottom:20px;box-shadow:0 16px 48px rgba(236,72,153,.25)}
+.hero h1{margin:0;font-size:2rem;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:6px 0 0;opacity:.95;font-size:.95rem;font-weight:500}
+div[data-testid="stVerticalBlockBorderWrapper"]{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:4px}
 </style>
 """, unsafe_allow_html=True)
 
@@ -281,17 +268,18 @@ def main():
             line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
             with cols[i % 2]:
                 with st.container(border=True):
-                    st.markdown(f"**{c['player']}**")
+                    st.markdown(f"### {c['player']}")
                     st.caption(c["event"])
-                    edge_txt = f" · +{c.get('edge',0)}% edge" if c.get("edge", 0) >= 1 else ""
+                    edge_txt = f" · +{c.get('edge',0)}% edge" if float(c.get("edge", 0)) >= 1 else ""
                     st.markdown(f"**{c['prop']} {line_txt}**{edge_txt}")
-                    # Book prices as a simple row
-                    bp = c.get("book_prices", {})
+                    bp = c.get("book_prices") or {}
                     if bp:
-                        book_line = " · ".join(f"{bk} {px:+d}" for bk, px in sorted(bp.items(), key=lambda x: -x[1]))
-                        st.markdown(f"`{book_line}`")
+                        rows = [{"Book": bk, "Odds": f"{px:+d}"} for bk, px in sorted(bp.items(), key=lambda x: -x[1])]
+                        st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+                    else:
+                        st.caption("No book prices")
                     if c.get("tags"):
-                        st.caption(" ".join(t[1] for t in c["tags"]))
+                        st.caption(" · ".join(t[1] for t in c["tags"]))
                     st.caption(c.get("why", ""))
                 if st.button("Lock best", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}_{c['price']}"):
                     ledger = load_ledger()
