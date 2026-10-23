@@ -230,8 +230,8 @@ def main():
         sport = st.radio("Lane", ["NBA 🔮","NFL 🔥"], horizontal=True)
     with c2:
         if st.button("Fetch the Board 💅", type="primary", use_container_width=True):
-            sport_key = "basketball_nba" if "NBA" in sport else "americanfootball_nfl"
-            markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if "NBA" in sport else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
+            sport_key = "basketball_nba" if "NBA" in str(sport) else "americanfootball_nfl"
+            markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if "NBA" in str(sport) else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
             with st.spinner("Cooking your edges… hold on queen."):
                 events = fetch_events(api_key, sport_key)
                 now = datetime.utcnow()
@@ -276,11 +276,15 @@ def main():
                             added += 1
                 if added:
                     save_ledger(ledger)
+                    st.session_state["last_tracked"] = added
                     st.toast(f"Auto-tracked {added} TAKE plays")
+                else:
+                    st.session_state["last_tracked"] = 0
 
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
-        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · {st.session_state.get('sport','')}")
+        tracked = st.session_state.get("last_tracked", 0)
+        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · Auto-tracked {tracked} TAKE plays · {st.session_state.get('sport','')}")
 
     tab_board, tab_tracker, tab_how = st.tabs(["Board","Tracker","How It Works"])
 
@@ -295,7 +299,7 @@ def main():
         with f2:
             dec_f = st.multiselect("Decision", ["TAKE","LEAN","PASS"], default=["TAKE","LEAN"])
         with f3:
-            min_odds = st.slider("Min Odds +750", 300, 2000, 750 if "NBA" in sport else 300, 50)
+            min_odds = st.slider("Min Odds +750", 300, 2000, 750 if "NBA" in str(sport) else 300, 50)
 
         filtered = [c for c in cards if c.get("prop") in prop_f and c.get("decision") in dec_f and int(c.get("price",0)) >= min_odds]
         filtered.sort(key=lambda x: (-x.get("spike",0), -x.get("ev_gap",0)))
