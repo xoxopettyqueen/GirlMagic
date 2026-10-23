@@ -218,7 +218,7 @@ def odds_bucket(price):
     return "+4000+"
 
 def main():
-    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds only. Chaos powered. Plus-money forever.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds Only. Chaos Powered. Plus-Money Forever.</p></div>', unsafe_allow_html=True)
 
     api_key = st.secrets.get("ODDS_API_KEY","") or st.text_input("Odds API Key", type="password")
     if not api_key:
@@ -227,11 +227,11 @@ def main():
 
     c1, c2 = st.columns([1,4])
     with c1:
-        sport = st.radio("Lane", ["NBA","NFL"], horizontal=True)
+        sport = st.radio("Lane", ["NBA 🔮","NFL 🔥"], horizontal=True)
     with c2:
-        if st.button("Fetch Board", type="primary", use_container_width=True):
-            sport_key = "basketball_nba" if sport=="NBA" else "americanfootball_nfl"
-            markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if sport=="NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
+        if st.button("Fetch the Board 💅", type="primary", use_container_width=True):
+            sport_key = "basketball_nba" if "NBA" in sport else "americanfootball_nfl"
+            markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if "NBA" in sport else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
             with st.spinner("Cooking your edges… hold on queen."):
                 events = fetch_events(api_key, sport_key)
                 now = datetime.utcnow()
@@ -249,9 +249,34 @@ def main():
                 for ev in pregame[:12]:
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                     if data: all_plays.extend(parse_plays(data, sport))
-                st.session_state["cards"] = best_cards(all_plays)
+                cards = best_cards(all_plays)
+                st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
                 st.session_state["sport"] = sport
+                # Auto-track TAKE plays
+                ledger = load_ledger()
+                existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
+                added = 0
+                for c in cards:
+                    if c.get("decision") == "TAKE":
+                        key = (c["player"], c["prop"], c["line"], c["price"])
+                        if key not in existing:
+                            ledger.append({
+                                "ts": datetime.now().isoformat(timespec="minutes"),
+                                "sport": c["sport"], "player": c["player"], "prop": c["prop"],
+                                "line": c["line"], "price": c["price"],
+                                "book": BOOK_FULL.get(c["book"], c["book"]),
+                                "event": c["event"], "end": c.get("end"),
+                                "bucket": odds_bucket(c["price"]),
+                                "ev_gap": c.get("ev_gap"), "spike": c.get("spike"),
+                                "vol": c.get("vol"), "move": c.get("move"),
+                                "decision": c.get("decision"), "result": None
+                            })
+                            existing.add(key)
+                            added += 1
+                if added:
+                    save_ledger(ledger)
+                    st.toast(f"Auto-tracked {added} TAKE plays")
 
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
@@ -270,7 +295,7 @@ def main():
         with f2:
             dec_f = st.multiselect("Decision", ["TAKE","LEAN","PASS"], default=["TAKE","LEAN"])
         with f3:
-            min_odds = st.slider("Min odds", 300, 2000, 750 if sport=="NBA" else 300, 50)
+            min_odds = st.slider("Min Odds +750", 300, 2000, 750 if "NBA" in sport else 300, 50)
 
         filtered = [c for c in cards if c.get("prop") in prop_f and c.get("decision") in dec_f and int(c.get("price",0)) >= min_odds]
         filtered.sort(key=lambda x: (-x.get("spike",0), -x.get("ev_gap",0)))
@@ -306,11 +331,11 @@ def main():
                     f'{tags_html}'
                     f'<div class="why"><b>EV {c.get("ev_gap",0)}%</b> · <b>Spike {c.get("spike",0)}</b> · {vol_icon}{c.get("vol","")} · {move_icon}{c.get("move","")}</div>'
                     f'<div class="why" style="font-size:.62rem;opacity:.8;">{vibe}</div>'
-                    f'<div class="decision {dec_cls}">{c.get("decision","PASS")}</div>'
+                    f'<div class="decision {dec_cls}">{c.get("decision","PASS")} {"💖" if c.get("decision")=="TAKE" else "💜" if c.get("decision")=="LEAN" else "🩶"}</div>'
                     f'</div>'
                 )
                 st.markdown(html, unsafe_allow_html=True)
-                if st.button("Lock", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}_{c['price']}"):
+                if st.button("Lock 🔒", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}_{c['price']}"):
                     ledger = load_ledger()
                     ledger.append({"ts":datetime.now().isoformat(timespec="minutes"), "sport":c["sport"], "player":c["player"], "prop":c["prop"], "line":c["line"], "price":c["price"], "book":BOOK_FULL.get(c["book"],c["book"]), "event":c["event"], "end":c.get("end"), "bucket":odds_bucket(c["price"]), "ev_gap":c.get("ev_gap"), "spike":c.get("spike"), "vol":c.get("vol"), "move":c.get("move"), "decision":c.get("decision"), "result":None})
                     save_ledger(ledger)
@@ -322,7 +347,7 @@ def main():
             st.info("Your reads. Your chaos. Your hit rates. Lock a play from the Board to start.")
         else:
             df = pd.DataFrame(ledger)
-            st.subheader(f"Locked ({len(df)})")
+            st.subheader("Your Reads. Your Chaos. Your Hit Rates.")
             st.dataframe(df, use_container_width=True, hide_index=True)
             graded = df[df["result"].notna()]
             if graded.empty:
