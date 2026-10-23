@@ -349,5 +349,7 @@ Lock the TAKEs. Tracker shows which buckets, endings, books, and movement types 
 | PASS | Skip it. |
         """)
 
+    st.markdown('<div style="text-align:center;margin-top:24px;color:#a78bfa;font-size:.75rem;font-style:italic;">Built for the girls who read odds like poetry.</div>', unsafe_allow_html=True)
+
 if __name__ == "__main__":
     main()
