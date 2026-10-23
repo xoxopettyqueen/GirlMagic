@@ -128,7 +128,7 @@ def parse_plays(data, sport):
         for market in book.get("markets") or []:
             mkey = (market.get("key") or "").lower()
             prop_type = None
-            if sport=="NBA":
+            if "NBA" in str(sport):
                 if "assists" in mkey: prop_type="Assists"
                 elif "points" in mkey and "rebounds" not in mkey and "assists" not in mkey: prop_type="Points"
                 elif "rebounds" in mkey and "points" not in mkey and "assists" not in mkey: prop_type="Rebounds"
@@ -151,10 +151,10 @@ def parse_plays(data, sport):
                     try: line=float(line)
                     except: continue
                 if not player or str(player).lower() in ("yes","no","over","under"): continue
-                if sport=="NBA" and prop_type=="Assists" and any(x in str(player).lower() for x in NBA_SKIP): continue
+                if "NBA" in str(sport) and prop_type=="Assists" and any(x in str(player).lower() for x in NBA_SKIP): continue
                 try: price=int(o.get("price"))
                 except: continue
-                if sport=="NBA":
+                if "NBA" in str(sport):
                     if prop_type=="Assists" and not (2.5<=line<=6.5): continue
                     if prop_type=="Points" and not (8.0<=line<=15.0): continue
                     if prop_type=="Rebounds" and not (5.0<=line<=8.0): continue
@@ -249,10 +249,19 @@ def main():
                 # If no pre-game, fall back to all events so we can see data
                 target = pregame if pregame else events
                 all_plays = []
+                book_count = 0
+                market_count = 0
                 for ev in target[:12]:
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
-                    if data: all_plays.extend(parse_plays(data, sport))
+                    if data:
+                        for b in data.get("bookmakers") or []:
+                            book_count += 1
+                            for m in b.get("markets") or []:
+                                market_count += 1
+                        all_plays.extend(parse_plays(data, sport))
                 st.session_state["debug_plays"] = len(all_plays)
+                st.session_state["debug_books"] = book_count
+                st.session_state["debug_markets"] = market_count
                 cards = best_cards(all_plays)
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
@@ -288,7 +297,7 @@ def main():
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
         tracked = st.session_state.get("last_tracked", 0)
-        dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · plays {st.session_state.get('debug_plays',0)}"
+        dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · books {st.session_state.get('debug_books',0)} · markets {st.session_state.get('debug_markets',0)} · plays {st.session_state.get('debug_plays',0)}"
         st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · Auto-tracked {tracked} TAKE plays · {dbg}")
 
     tab_board, tab_tracker, tab_how = st.tabs(["Board","Tracker","How It Works"])
