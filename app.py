@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Clean Breakdown
-Full breakdown shows book prices as clean pills instead of raw JSON.
+Girl Magic Odds 2.0 — Separated Sports + More Filters
+NBA and NFL stay separate. Extra filters for decision, True EV, and book.
 """
 
 import streamlit as st
@@ -214,7 +214,7 @@ def parse_plays(data, sport):
         for market in book.get("markets") or []:
             mkey = (market.get("key") or "").lower()
             prop_type = None
-            if "NBA" in str(sport):
+            if "NBA" in str(sport) or "basketball" in str(sport).lower():
                 if "assists" in mkey: prop_type = "Assists"
                 elif "points" in mkey and "rebounds" not in mkey and "assists" not in mkey: prop_type = "Points"
                 elif "rebounds" in mkey and "points" not in mkey and "assists" not in mkey: prop_type = "Rebounds"
@@ -350,64 +350,70 @@ def main():
             save_auto_weights(BASE_WEIGHTS.copy())
             st.rerun()
 
-    c1, c2 = st.columns([1, 4])
-    with c1:
-        sport = st.radio("Lane", ["NBA 🔮", "NFL 🔥"], horizontal=True)
-    with c2:
-        if st.button("Pull the chaos 💅", type="primary", use_container_width=True):
-            sport_key = "basketball_nba" if "NBA" in str(sport) else "americanfootball_nfl"
-            markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if "NBA" in str(sport) else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
-            with st.spinner("Pulling edges…"):
-                events = fetch_events(api_key, sport_key)
-                now = datetime.utcnow()
-                pregame = [ev for ev in events if ev.get("commence_time") and datetime.fromisoformat(ev["commence_time"].replace("Z", "+00:00")).replace(tzinfo=None) > now]
-                target = pregame if pregame else events
-                all_plays = []
-                for ev in target[:15]:
-                    data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
-                    if data: all_plays.extend(parse_plays(data, sport))
-                cards = best_cards(all_plays, live_weights)
-                sharp = update_sharpness(cards)
-                update_auto_weights(sharp)
-                st.session_state["cards"] = cards
-                st.session_state["fetched"] = datetime.now().strftime("%H:%M")
-                ledger = load_ledger()
-                existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
-                added = 0
-                for c in cards:
-                    if c.get("decision") == "TAKE":
-                        key = (c["player"], c["prop"], c["line"], c["price"])
-                        if key not in existing:
-                            ledger.append({
-                                "ts": datetime.now().isoformat(timespec="minutes"),
-                                "sport": c["sport"], "player": c["player"], "prop": c["prop"],
-                                "line": c["line"], "price": c["price"],
-                                "book": BOOK_FULL.get(c["book"], c["book"]),
-                                "event": c["event"],
-                                "true_ev": c.get("true_ev"),
-                                "fair_prob": c.get("fair_prob"),
-                                "decision": c.get("decision"),
-                                "petty_range_match": c.get("petty_range_match"),
-                                "result": None,
-                                "clv": None,
-                                "locked_price": c["price"],
-                                "petty_mode": st.session_state.get("petty_mode", True),
-                            })
-                            existing.add(key)
-                            added += 1
-                save_ledger(ledger)
-                if added: st.toast(f"Auto-tracked {added} TAKE plays")
-                st.toast("Weights auto-tuned")
+    # Sport selection is now strict — no mixing
+    sport_choice = st.radio("Lane", ["NBA 🔮", "NFL 🔥"], horizontal=True, key="sport_choice")
+    current_sport = "NBA" if "NBA" in sport_choice else "NFL"
 
-    cards = st.session_state.get("cards") or []
-    if st.session_state.get("fetched"):
-        st.caption(f"Board live @ {st.session_state['fetched']} — {len(cards)} props")
+    if st.button("Pull the chaos 💅", type="primary", use_container_width=True):
+        sport_key = "basketball_nba" if current_sport == "NBA" else "americanfootball_nfl"
+        markets = ("player_assists,player_assists_alternate,player_points,player_points_alternate,"
+                   "player_rebounds,player_rebounds_alternate,player_double_double"
+                   if current_sport == "NBA" else
+                   "player_anytime_td,player_reception_yds,player_reception_yds_alternate")
+        with st.spinner(f"Pulling {current_sport} edges…"):
+            events = fetch_events(api_key, sport_key)
+            now = datetime.utcnow()
+            pregame = [ev for ev in events if ev.get("commence_time") and datetime.fromisoformat(ev["commence_time"].replace("Z", "+00:00")).replace(tzinfo=None) > now]
+            target = pregame if pregame else events
+            all_plays = []
+            for ev in target[:15]:
+                data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
+                if data:
+                    all_plays.extend(parse_plays(data, current_sport))
+            cards = best_cards(all_plays, live_weights)
+            sharp = update_sharpness(cards)
+            update_auto_weights(sharp)
+            st.session_state[f"cards_{current_sport}"] = cards
+            st.session_state["fetched"] = datetime.now().strftime("%H:%M")
+            st.session_state["last_sport"] = current_sport
+            ledger = load_ledger()
+            existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
+            added = 0
+            for c in cards:
+                if c.get("decision") == "TAKE":
+                    key = (c["player"], c["prop"], c["line"], c["price"])
+                    if key not in existing:
+                        ledger.append({
+                            "ts": datetime.now().isoformat(timespec="minutes"),
+                            "sport": c["sport"], "player": c["player"], "prop": c["prop"],
+                            "line": c["line"], "price": c["price"],
+                            "book": BOOK_FULL.get(c["book"], c["book"]),
+                            "event": c["event"],
+                            "true_ev": c.get("true_ev"),
+                            "fair_prob": c.get("fair_prob"),
+                            "decision": c.get("decision"),
+                            "petty_range_match": c.get("petty_range_match"),
+                            "result": None,
+                            "clv": None,
+                            "locked_price": c["price"],
+                            "petty_mode": st.session_state.get("petty_mode", True),
+                        })
+                        existing.add(key)
+                        added += 1
+            save_ledger(ledger)
+            if added: st.toast(f"Auto-tracked {added} TAKE plays")
+            st.toast("Weights auto-tuned")
+
+    # Only show the board for the currently selected sport
+    cards = st.session_state.get(f"cards_{current_sport}") or []
+    if st.session_state.get("fetched") and st.session_state.get("last_sport") == current_sport:
+        st.caption(f"{current_sport} board live @ {st.session_state['fetched']} — {len(cards)} props")
 
     tab_board, tab_tracker = st.tabs(["📊 Board", "🔒 Tracker"])
 
     with tab_board:
         if not cards:
-            st.info("Hit **Pull the chaos**.")
+            st.info(f"Hit **Pull the chaos** for {current_sport}.")
             return
 
         col_a, col_b, col_c = st.columns(3)
@@ -421,30 +427,31 @@ def main():
             petty_mode = st.toggle("💅 Petty Mode", value=st.session_state.get("petty_mode", True))
             st.session_state["petty_mode"] = petty_mode
 
-        prop_filter = st.multiselect(
-            "Prop Type",
-            ["Assists", "Points", "Rebounds", "DoubleDouble", "Anytime TD"],
-            default=["Assists", "Points", "Rebounds", "DoubleDouble", "Anytime TD"]
-        )
+        # Extra filters
+        f1, f2, f3 = st.columns(3)
+        with f1:
+            prop_options = ["Assists", "Points", "Rebounds", "DoubleDouble"] if current_sport == "NBA" else ["Anytime TD", "Rec Yards"]
+            prop_filter = st.multiselect("Prop Type", prop_options, default=prop_options)
+        with f2:
+            decision_filter = st.multiselect("Decision", ["TAKE", "LEAN", "PASS"], default=["TAKE", "LEAN"])
+        with f3:
+            min_ev = st.slider("Min True EV %", -5.0, 15.0, 0.0, 0.5)
 
+        book_options = sorted(set(c["book"] for c in cards))
+        book_filter = st.multiselect("Book (longest price)", book_options, default=book_options)
+
+        filtered = cards
         if simple_mode and petty_mode:
-            filtered = [
-                c for c in cards
-                if c.get("decision") == "TAKE"
-                and (c.get("true_ev") or 0) >= 2
-                and c.get("petty_range_match")
-                and c.get("prop") in prop_filter
-            ]
-            st.markdown("**Your preferred ranges only.**")
+            filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2 and c.get("petty_range_match")]
         elif simple_mode:
-            filtered = [c for c in cards if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2 and c.get("prop") in prop_filter]
-            st.markdown("**Strongest edges.**")
-        else:
-            filtered = [c for c in cards if c.get("prop") in prop_filter]
-            st.markdown("**All props — preferred ranges highlighted.**")
+            filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
+        filtered = [c for c in filtered if c.get("prop") in prop_filter]
+        filtered = [c for c in filtered if c.get("decision") in decision_filter]
+        filtered = [c for c in filtered if (c.get("true_ev") or -999) >= min_ev]
+        filtered = [c for c in filtered if c.get("book") in book_filter]
 
         if not filtered:
-            st.info("No matching edges right now.")
+            st.info("No matching edges with current filters.")
             return
 
         st.markdown(f"**{len(filtered)} plays ready.**")
@@ -484,13 +491,12 @@ def main():
                         st.write(f"**True EV:** {c.get('true_ev')}% (fair {c.get('fair_prob')}%)")
                         st.write(f"**Gap / Spike / Vol:** {c.get('ev_gap')}% / {c.get('spike')} / {c.get('vol')}")
                         st.write(f"**In preferred range:** {c.get('petty_range_match')}")
-                        # Clean book prices instead of JSON
                         bp_html = "".join(
                             f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
                             for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
                         )
                         st.markdown(f'<div class="books">{bp_html}</div>', unsafe_allow_html=True)
-                if st.button("Lock 🔒", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}"):
+                if st.button("Lock 🔒", key=f"lk_{current_sport}_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                     ledger = load_ledger()
                     ledger.append({
                         "ts": datetime.now().isoformat(timespec="minutes"),
@@ -522,7 +528,7 @@ def main():
             st.info("Nothing locked yet.")
         else:
             df = pd.DataFrame(ledger)
-            keep = ["ts", "player", "prop", "line", "price", "book", "event", "true_ev", "fair_prob", "decision", "petty_range_match", "result", "clv"]
+            keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "fair_prob", "decision", "petty_range_match", "result", "clv"]
             existing = [c for c in keep if c in df.columns]
             df = df[existing].fillna("—")
             finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
