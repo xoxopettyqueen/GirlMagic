@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Teaching Detailed Mode
-Detailed expander explains why the play exists instead of just repeating numbers.
+Girl Magic Odds 2.0 — Full Book List + Teaching Mode
+All books (including 365) always appear in filters. Detailed Mode teaches the edge.
 """
 
 import streamlit as st
@@ -58,6 +58,8 @@ MY_BOOKS = {
     "pinnacle":"PIN","circa":"CIR","bookmaker":"BM",
 }
 BOOK_FULL = {"FD":"FanDuel","DK":"DraftKings","MGM":"BetMGM","365":"Bet365","CZR":"Caesars","FAN":"Fanatics","SCR":"theScore","HR":"Hard Rock","PIN":"Pinnacle","CIR":"Circa","BM":"Bookmaker"}
+
+ALL_BOOK_CODES = sorted(set(BOOK_FULL.keys()))
 
 BASE_WEIGHTS = {
     "PIN": 3.5, "CIR": 3.0, "BM": 2.8,
@@ -434,8 +436,13 @@ def main():
         with f3:
             min_ev = st.slider("Min True EV %", -5.0, 15.0, 0.0, 0.5)
 
-        book_options = sorted(set(c["book"] for c in cards))
-        book_filter = st.multiselect("Book (longest price)", book_options, default=book_options)
+        # Always show every book, including 365
+        book_filter = st.multiselect(
+            "Book (longest price)",
+            ALL_BOOK_CODES,
+            default=ALL_BOOK_CODES,
+            format_func=lambda x: BOOK_FULL.get(x, x)
+        )
 
         filtered = cards
         if simple_mode and petty_mode:
