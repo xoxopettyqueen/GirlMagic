@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Full Rebuild
-Two-sided True EV, strict Simple Mode, Detailed chaos, glossary, CLV-ready tracker.
+Girl Magic Odds 2.0 — Final Polish
+Visual rhythm, typography, glow balance, and micro-motion on top of the full rebuild.
 """
 
 import streamlit as st
@@ -16,27 +16,30 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=Pacifico&display=swap');
 .stApp{background:#0c0c10!important;color:#fff!important;font-family:'Inter',sans-serif!important}
-.hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:18px;padding:14px 18px;margin-bottom:10px;color:#fff;box-shadow:0 0 20px rgba(255,62,191,.3)}
-.hero h1{margin:0;font-size:1.45rem;font-weight:700;font-family:'Playfair Display',serif}
-.hero p{margin:2px 0 0;opacity:.9;font-size:.78rem;color:#F5E9FF;font-family:'Pacifico',cursive}
-button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF3EBF,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:700!important}
-.card{background:linear-gradient(180deg,#15151b 0%,#101014 100%);border:1px solid #2a2a33;border-radius:12px;padding:9px 11px;margin-bottom:8px;position:relative}
-.card.compact{padding:6px 8px;margin-bottom:6px}
-.card.take-card{border-color:#FF3EBF;box-shadow:0 0 14px rgba(255,62,191,.45)}
-.card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 20px rgba(255,62,191,.7)}
-.player{font-size:1.05rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
-.meta{color:#999;font-size:.62rem;margin:1px 0 3px}
-.prop{font-size:.78rem;font-weight:600;color:#FF3EBF;margin-bottom:3px;text-transform:uppercase}
-.books{display:flex;flex-wrap:wrap;gap:3px;margin:3px 0}
-.bk{background:#0d0d12;border:1px solid #333;border-radius:999px;padding:2px 6px;text-align:center;min-width:48px;font-size:.62rem;font-weight:600}
-.bk.best{border-color:#FF3EBF;box-shadow:0 0 6px rgba(255,62,191,.55)}
-.true-ev{font-size:.76rem;font-weight:700;color:#FF3EBF;margin:2px 0}
-.why{font-size:.66rem;color:#ddd;margin-top:3px;line-height:1.25}
-.take-tag{position:absolute;top:5px;right:7px;font-size:.52rem;letter-spacing:.08em;color:#FF3EBF;font-weight:700}
-.tag{display:inline-block;background:rgba(199,125,255,.12);color:#F5E9FF;border:1px solid rgba(199,125,255,.35);border-radius:999px;padding:1px 5px;font-size:.52rem;margin:1px 2px 0 0}
-.glossary{font-size:.7rem;color:#bbb;margin-top:12px;padding:8px;background:#111;border-radius:8px}
+.hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:20px;padding:18px 22px;margin-bottom:12px;color:#fff;box-shadow:0 0 28px rgba(255,62,191,.4);animation:pulseBar 6s linear infinite}
+@keyframes pulseBar{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}
+.hero h1{margin:0;font-size:1.75rem;font-weight:700;font-family:'Inter',sans-serif;text-shadow:0 0 10px rgba(255,215,0,.45)}
+.hero p{margin:4px 0 0;opacity:.95;font-size:1.05rem;color:#F5E9FF;font-family:'Pacifico',cursive;text-shadow:0 0 8px rgba(199,125,255,.6)}
+button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF3EBF,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:700!important;min-height:44px}
+.card{background:linear-gradient(180deg,rgba(21,21,27,.95) 0%,rgba(16,16,20,.95) 100%);border:1px solid #2a2a33;border-radius:14px;padding:11px 13px;margin-bottom:10px;position:relative;transition:box-shadow .4s ease-in-out,transform .3s}
+.card:hover{transform:translateY(-2px);box-shadow:0 0 22px rgba(255,62,191,.55)}
+.card.compact{padding:7px 9px;margin-bottom:7px}
+.card.take-card{border-color:#FF3EBF;box-shadow:0 0 16px rgba(255,62,191,.5)}
+.card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 22px rgba(255,62,191,.75)}
+.player{font-size:1.15rem;font-weight:700;margin:0;font-family:'Inter',sans-serif}
+.meta{color:#aaa;font-size:.65rem;margin:2px 0 4px}
+.prop{font-size:.85rem;font-weight:600;color:#FF3EBF;margin-bottom:4px;text-transform:uppercase}
+.books{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+.bk{background:#0d0d12;border:1px solid #333;border-radius:999px;padding:3px 7px;text-align:center;min-width:50px;font-size:.64rem;font-weight:600;color:#fff}
+.bk.best{border-color:#FF3EBF;box-shadow:0 0 8px rgba(255,62,191,.6)}
+.true-ev{font-size:.9rem;font-weight:700;color:#FF3EBF;margin:3px 0;text-shadow:0 0 6px rgba(255,62,191,.4)}
+.why{font-size:.72rem;color:#e0d4f5;margin-top:4px;line-height:1.3;max-width:90%}
+.take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
+.tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
+.glossary{font-size:.72rem;color:#ccc;margin-top:16px;padding:10px 12px;background:#111118;border-radius:10px;border:1px solid #2a2a33}
+.glossary b{color:#FF3EBF}
 </style>
 """, unsafe_allow_html=True)
 
@@ -263,7 +266,7 @@ def best_cards(plays, weights=None):
             "decision": decision,
             "fair_prob": round(fair*100, 1) if fair else None,
             "true_ev": true_ev,
-            "one_sided": True,  # flag until both sides are reliably collected
+            "one_sided": True,
             "devig_method": "multiplicative",
             "weights_used": weights or DEFAULT_WEIGHTS,
         })
@@ -325,7 +328,7 @@ def main():
                                 "decision": c.get("decision"),
                                 "one_sided": c.get("one_sided"),
                                 "devig_method": c.get("devig_method"),
-                                "weights_used": c.get("weights_used"),
+                                "weights_used": str(c.get("weights_used")),
                                 "result": None,
                                 "clv": None,
                                 "locked_price": c["price"],
