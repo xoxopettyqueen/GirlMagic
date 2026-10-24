@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Glossary is its own tab
+Girl Magic Odds 2.0 — Odds Filter + Card Score
+Glossary is its own tab. Odds range filter. Score on TAKE cards.
 """
 
 import streamlit as st
@@ -34,6 +35,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .bk{background:#0d0d12;border:1px solid #333;border-radius:999px;padding:3px 7px;text-align:center;min-width:50px;font-size:.64rem;font-weight:600;color:#fff}
 .bk.best{border-color:#FF3EBF;box-shadow:0 0 8px rgba(255,62,191,.6)}
 .true-ev{font-size:.9rem;font-weight:700;color:#FF3EBF;margin:3px 0;text-shadow:0 0 6px rgba(255,62,191,.4)}
+.score{font-size:.8rem;font-weight:700;color:#FFD700;margin:2px 0}
 .why{font-size:.72rem;color:#e0d4f5;margin-top:4px;line-height:1.3;max-width:90%}
 .take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
 .tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
@@ -77,7 +79,8 @@ GLOSSARY = """
 <strong>Weak-spot</strong> — A book that has been hanging soft numbers more often than others.<br>
 <strong>Petty Mode</strong> — Only shows props inside your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).<br>
 <strong>Auto Weights</strong> — The app watches which books are soft and slowly adjusts how much it trusts them.<br>
-<strong>TAKE / LEAN / PASS</strong> — TAKE = strongest edges. LEAN = okay but optional. PASS = no real edge.
+<strong>TAKE / LEAN / PASS</strong> — TAKE = strongest edges. LEAN = okay but optional. PASS = no real edge.<br>
+<strong>Score</strong> — Simple strength number on TAKE cards (higher = stronger edge).
 """
 
 def in_user_range(prop, line):
@@ -161,6 +164,13 @@ def plain_reason(c):
     if c.get("decision") == "TAKE":
         return f"Books disagree. {bk} is the longest."
     return "Tight. Skip."
+
+def card_score(c):
+    """Simple 1-10 style score for TAKE cards."""
+    tev = c.get("true_ev") or 0
+    spike = c.get("spike") or 0
+    base = max(0, min(10, (tev * 0.4) + (spike * 3)))
+    return round(base, 1)
 
 def normalize_book(key):
     k = str(key or "").lower()
@@ -312,6 +322,7 @@ def best_cards(plays, weights=None):
             "one_sided": True,
             "petty_range_match": petty,
             "devig_method": "multiplicative",
+            "score": card_score({**signals, "true_ev": true_ev}),
         })
     cards.sort(key=lambda x: (-(x.get("true_ev") or -999), -x.get("spike", 0)))
     return cards
@@ -436,6 +447,12 @@ def main():
         with f3:
             min_ev = st.slider("Min True EV %", -5.0, 15.0, 0.0, 0.5)
 
+        o1, o2 = st.columns(2)
+        with o1:
+            min_odds = st.number_input("Min Odds", value=-500, step=50)
+        with o2:
+            max_odds = st.number_input("Max Odds", value=2000, step=100)
+
         book_filter = st.multiselect(
             "Book (longest price)",
             ALL_BOOK_CODES,
@@ -451,6 +468,7 @@ def main():
         filtered = [c for c in filtered if c.get("prop") in prop_filter]
         filtered = [c for c in filtered if c.get("decision") in decision_filter]
         filtered = [c for c in filtered if (c.get("true_ev") or -999) >= min_ev]
+        filtered = [c for c in filtered if min_odds <= c.get("price", 0) <= max_odds]
         filtered = [c for c in filtered if c.get("book") in book_filter]
 
         if not filtered:
@@ -476,6 +494,7 @@ def main():
             if not c.get("petty_range_match") and not simple_mode:
                 card_cls += " dimmed"
             take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
+            score_html = f'<div class="score">Score {c.get("score", "—")}</div>' if c.get("decision") == "TAKE" else ""
             html = (
                 f'<div class="{card_cls}">{take_tag}'
                 f'<div class="player">{c["player"]}</div>'
@@ -484,6 +503,7 @@ def main():
                 f'<div class="books">{boxes_html}</div>'
                 f'{tags_html}'
                 f'<div class="true-ev">True EV {c.get("true_ev", "—")}%</div>'
+                f'{score_html}'
                 f'<div class="why">{plain_reason(c)}</div>'
                 f'</div>'
             )
