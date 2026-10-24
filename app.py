@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Clean Chaos (Styled Glossary + Softness)
-Glossary and Book Softness now match the rest of the app.
+Girl Magic Odds 2.0 — Clean Chaos
+Tracker only shows useful columns. Glossary and Softness stay styled.
 """
 
 import streamlit as st
@@ -516,6 +516,13 @@ def main():
             st.info("Nothing locked yet.")
         else:
             df = pd.DataFrame(ledger)
+            keep = [
+                "ts", "player", "prop", "line", "price", "book",
+                "event", "true_ev", "fair_prob", "decision",
+                "petty_range_match", "result", "clv"
+            ]
+            existing = [c for c in keep if c in df.columns]
+            df = df[existing]
             finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
             hits = (finished["result"] == "hit").sum() if not finished.empty else 0
             st.markdown(f"**You’ve locked {len(df)} plays.** {len(finished)} finished. {hits} hit.")
