@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Separated Sports + More Filters
-NBA and NFL stay separate. Extra filters for decision, True EV, and book.
+Girl Magic Odds 2.0 — Teaching Detailed Mode
+Detailed expander explains why the play exists instead of just repeating numbers.
 """
 
 import streamlit as st
@@ -350,7 +350,6 @@ def main():
             save_auto_weights(BASE_WEIGHTS.copy())
             st.rerun()
 
-    # Sport selection is now strict — no mixing
     sport_choice = st.radio("Lane", ["NBA 🔮", "NFL 🔥"], horizontal=True, key="sport_choice")
     current_sport = "NBA" if "NBA" in sport_choice else "NFL"
 
@@ -404,7 +403,6 @@ def main():
             if added: st.toast(f"Auto-tracked {added} TAKE plays")
             st.toast("Weights auto-tuned")
 
-    # Only show the board for the currently selected sport
     cards = st.session_state.get(f"cards_{current_sport}") or []
     if st.session_state.get("fetched") and st.session_state.get("last_sport") == current_sport:
         st.caption(f"{current_sport} board live @ {st.session_state['fetched']} — {len(cards)} props")
@@ -424,10 +422,9 @@ def main():
             detailed = st.toggle("🔍 Detailed", value=st.session_state.get("detailed", False))
             st.session_state["detailed"] = detailed
         with col_c:
-            petty_mode = st.toggle("💅 Petty Mode", value=st.session_state.get("petty_mode", True))
+            petty_mode = st.toggle("💅 Petty Mode", value=st.session_state.get("petty_mode", False))
             st.session_state["petty_mode"] = petty_mode
 
-        # Extra filters
         f1, f2, f3 = st.columns(3)
         with f1:
             prop_options = ["Assists", "Points", "Rebounds", "DoubleDouble"] if current_sport == "NBA" else ["Anytime TD", "Rec Yards"]
@@ -487,10 +484,34 @@ def main():
             with cols[i % 2]:
                 st.markdown(html, unsafe_allow_html=True)
                 if detailed:
-                    with st.expander("Full breakdown"):
-                        st.write(f"**True EV:** {c.get('true_ev')}% (fair {c.get('fair_prob')}%)")
-                        st.write(f"**Gap / Spike / Vol:** {c.get('ev_gap')}% / {c.get('spike')} / {c.get('vol')}")
-                        st.write(f"**In preferred range:** {c.get('petty_range_match')}")
+                    with st.expander("Why this is a play"):
+                        tev = c.get("true_ev") or 0
+                        bk = c.get("book", "")
+                        gap = c.get("ev_gap") or 0
+                        vol = c.get("vol", "")
+                        move = c.get("move", "")
+                        beh = c.get("book_beh", "")
+
+                        st.markdown(f"**Decision:** {c.get('decision')}")
+                        if c.get("decision") == "TAKE" and tev >= 3:
+                            st.markdown(f"**Why it glows:** {bk} is the longest price and the weighted fair price says this is a real edge ({tev}%). The books are disagreeing enough that one of them is soft.")
+                        elif c.get("decision") == "TAKE":
+                            st.markdown(f"**Why it shows:** {bk} is paying more than the blend. Not the strongest edge, but the books are not lined up.")
+                        else:
+                            st.markdown("**Why it’s here:** The numbers are close. No clear edge right now.")
+
+                        if gap >= 30:
+                            st.markdown(f"**Gap:** The best price is {gap}% longer than the median. That’s a big disagreement.")
+                        if vol == "High":
+                            st.markdown("**Volatility:** High — the books are far apart on this number.")
+                        if move == "Snap":
+                            st.markdown("**Movement:** Snap — something moved fast.")
+                        if beh == "Solo":
+                            st.markdown("**Behavior:** Solo — one book is standing alone with the longest price.")
+                        if any("soft" in str(t).lower() for t in c.get("tags", [])):
+                            st.markdown(f"**Soft book note:** {bk} has been hanging soft numbers recently.")
+
+                        st.markdown("**All prices:**")
                         bp_html = "".join(
                             f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
                             for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
