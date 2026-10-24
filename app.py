@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Full Book List + Teaching Mode
-All books (including 365) always appear in filters. Detailed Mode teaches the edge.
+Girl Magic Odds 2.0 — Glossary is its own tab
 """
 
 import streamlit as st
@@ -39,7 +38,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
 .tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
 .tag.range{background:rgba(255,62,191,.2);border-color:#FF3EBF}
-.glossary{font-size:.74rem;color:#e8e0f0;margin-top:20px;padding:14px 16px;background:linear-gradient(180deg,#121218 0%,#0e0e14 100%);border-radius:12px;border:1px solid #2a2a33;line-height:1.6}
+.glossary{font-size:.85rem;color:#e8e0f0;margin-top:10px;padding:18px 20px;background:linear-gradient(180deg,#121218 0%,#0e0e14 100%);border-radius:12px;border:1px solid #2a2a33;line-height:1.7}
 .glossary strong{color:#FF3EBF;font-weight:700}
 .softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
 .tracker-wrap{background:#121218;border:1px solid #2a2a33;border-radius:12px;padding:12px;margin:10px 0}
@@ -68,16 +67,17 @@ BASE_WEIGHTS = {
 }
 
 GLOSSARY = """
-<strong>Glossary</strong><br>
-<strong>True EV</strong> — Expected value vs the weighted fair price.<br>
-<strong>Fair price</strong> — No-vig probability after blending book weights.<br>
-<strong>EV Gap</strong> — How much longer the best price is vs the median.<br>
-<strong>Spike</strong> — Chaos score combining gap + movement + volatility.<br>
-<strong>Volatility</strong> — How far apart the books are right now.<br>
-<strong>Solo / Cluster</strong> — One book alone vs books clustered.<br>
-<strong>Weak-spot</strong> — Book that repeatedly hangs soft numbers.<br>
-<strong>Petty Mode</strong> — Only your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).<br>
-<strong>Auto Weights</strong> — The app learns which books are soft and adjusts trust automatically.
+<strong>Glossary</strong><br><br>
+<strong>True EV</strong> — Expected value vs the weighted fair price. Positive means the longest price is better than the blended fair number.<br>
+<strong>Fair price</strong> — The no-vig probability after blending all books using their weights.<br>
+<strong>EV Gap</strong> — How much longer the best price is compared to the median price.<br>
+<strong>Spike</strong> — Chaos score that mixes the gap, how much the books moved, and how far apart they are.<br>
+<strong>Volatility</strong> — How far apart the books currently are on the same prop.<br>
+<strong>Solo / Cluster</strong> — Solo means one book is standing alone with the longest price. Cluster means the books are close together.<br>
+<strong>Weak-spot</strong> — A book that has been hanging soft numbers more often than others.<br>
+<strong>Petty Mode</strong> — Only shows props inside your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).<br>
+<strong>Auto Weights</strong> — The app watches which books are soft and slowly adjusts how much it trusts them.<br>
+<strong>TAKE / LEAN / PASS</strong> — TAKE = strongest edges. LEAN = okay but optional. PASS = no real edge.
 """
 
 def in_user_range(prop, line):
@@ -409,7 +409,7 @@ def main():
     if st.session_state.get("fetched") and st.session_state.get("last_sport") == current_sport:
         st.caption(f"{current_sport} board live @ {st.session_state['fetched']} — {len(cards)} props")
 
-    tab_board, tab_tracker = st.tabs(["📊 Board", "🔒 Tracker"])
+    tab_board, tab_tracker, tab_glossary = st.tabs(["📊 Board", "🔒 Tracker", "📖 Glossary"])
 
     with tab_board:
         if not cards:
@@ -436,7 +436,6 @@ def main():
         with f3:
             min_ev = st.slider("Min True EV %", -5.0, 15.0, 0.0, 0.5)
 
-        # Always show every book, including 365
         book_filter = st.multiselect(
             "Book (longest price)",
             ALL_BOOK_CODES,
@@ -544,8 +543,6 @@ def main():
                     save_ledger(ledger)
                     st.toast("Locked.")
 
-        st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
-
     with tab_tracker:
         ledger = load_ledger()
         sharp = load_sharpness()
@@ -566,6 +563,8 @@ def main():
             st.dataframe(df, use_container_width=True, hide_index=True)
             st.markdown('</div>', unsafe_allow_html=True)
             render_softness(sharp)
+
+    with tab_glossary:
         st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
 
 try:
