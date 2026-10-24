@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Phase 1
-Fixed True EV + tighter design. Open the site, lock the edges.
+Girl Magic Odds 2.0 — Phase 2
+Detailed Mode + book sharpness + steam/lag + weak spots + CLV ready.
 """
 
 import streamlit as st
@@ -17,13 +17,12 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&family=Pacifico&display=swap');
-.stApp{background:#0e0e12!important;background-image:radial-gradient(circle at 20% 30%,rgba(255,62,191,.06) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(199,125,255,.06) 0%,transparent 50%)!important;color:#fff!important;font-family:'Inter',sans-serif!important}
+.stApp{background:#0e0e12!important;color:#fff!important;font-family:'Inter',sans-serif!important}
 .hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:20px;padding:16px 20px;margin-bottom:12px;color:#fff;box-shadow:0 0 24px rgba(255,62,191,.35)}
 .hero h1{margin:0;font-size:1.55rem;font-weight:700;font-family:'Playfair Display',serif}
 .hero p{margin:3px 0 0;opacity:.9;font-size:.8rem;color:#F5E9FF;font-family:'Pacifico',cursive}
-button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF3EBF,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:700!important;box-shadow:0 0 16px rgba(255,62,191,.6)!important;color:#fff!important}
-.card{background:linear-gradient(180deg,#16161c 0%,#121218 100%);border:1px solid #2a2a33;border-radius:14px;padding:10px 12px;margin-bottom:10px;position:relative;transition:box-shadow .2s,transform .2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.6)}
+button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF3EBF,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:700!important}
+.card{background:linear-gradient(180deg,#16161c 0%,#121218 100%);border:1px solid #2a2a33;border-radius:14px;padding:10px 12px;margin-bottom:10px;position:relative}
 .card.take-card{border-color:#FF3EBF;box-shadow:0 0 18px rgba(255,62,191,.55)}
 .card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 24px rgba(255,62,191,.8)}
 .player{font-size:1.08rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
@@ -35,12 +34,13 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .true-ev{font-size:.8rem;font-weight:700;color:#FF3EBF;margin:3px 0}
 .why{font-size:.68rem;color:#ddd;margin-top:4px;line-height:1.3}
 .take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
-.lock-row{margin-top:6px;text-align:right}
+.tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
 </style>
 """, unsafe_allow_html=True)
 
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 LEDGER = Path("odds_ledger.json")
+SHARPNESS = Path("book_sharpness.json")
 
 MY_BOOKS = {
     "fanduel":"FD","draftkings":"DK","betmgm":"MGM","bet365":"365",
@@ -56,6 +56,16 @@ DEFAULT_WEIGHTS = {
     "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1,
 }
 
+def load_sharpness():
+    if SHARPNESS.exists():
+        try: return json.loads(SHARPNESS.read_text())
+        except: pass
+    return {}
+
+def save_sharpness(data):
+    try: SHARPNESS.write_text(json.dumps(data, indent=2))
+    except: pass
+
 def implied(price):
     try:
         p = int(price)
@@ -63,7 +73,6 @@ def implied(price):
     except: return None
 
 def weighted_fair_prob(book_prices, weights=None):
-    """One-sided fallback with conservative clamp. Two-sided preferred when available."""
     if weights is None: weights = DEFAULT_WEIGHTS
     weighted = []
     total_w = 0.0
@@ -76,7 +85,6 @@ def weighted_fair_prob(book_prices, weights=None):
             total_w += w
     if not weighted or total_w == 0: return None
     fair = sum(weighted) / total_w
-    # Conservative clamp so True EV stays realistic on one-sided props
     return max(0.08, min(0.75, fair))
 
 def compute_true_ev(best_price, fair_prob):
@@ -84,7 +92,7 @@ def compute_true_ev(best_price, fair_prob):
     try:
         decimal = (best_price / 100 + 1) if best_price > 0 else (100 / abs(best_price) + 1)
         ev = (fair_prob * decimal - 1) * 100
-        return round(max(-20, min(25, ev)), 1)  # realistic range
+        return round(max(-20, min(25, ev)), 1)
     except: return None
 
 def plain_reason(c):
@@ -199,24 +207,48 @@ def compute_signals(book_prices, best_price):
         "decision": decision,
     }, decision
 
+def update_sharpness(cards):
+    sharp = load_sharpness()
+    for c in cards:
+        bk = c.get("book")
+        if not bk: continue
+        if bk not in sharp:
+            sharp[bk] = {"soft_count": 0, "total": 0, "props": {}}
+        sharp[bk]["total"] += 1
+        if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2:
+            sharp[bk]["soft_count"] += 1
+            prop = c.get("prop", "Other")
+            sharp[bk]["props"][prop] = sharp[bk]["props"].get(prop, 0) + 1
+    save_sharpness(sharp)
+    return sharp
+
 def best_cards(plays, weights=None):
     by = defaultdict(list)
     for p in plays:
         key = (p["sport"], p["player"], p["prop"], round(p["line"], 1), p["event"])
         by[key].append(p)
     cards = []
+    sharp = load_sharpness()
     for key, group in by.items():
         best = max(group, key=lambda x: x["price"])
         book_prices = {g["book"]: g["price"] for g in group}
         signals, decision = compute_signals(book_prices, best["price"])
         fair = weighted_fair_prob(book_prices, weights)
         true_ev = compute_true_ev(best["price"], fair)
+        tags = []
+        if signals.get("book_beh") == "Solo": tags.append("Solo")
+        if signals.get("move") == "Snap": tags.append("Snap")
+        if signals.get("vol") == "High": tags.append("Surge")
+        # Weak-spot / lag tag
+        bk = best["book"]
+        if bk in sharp and sharp[bk]["soft_count"] >= 3:
+            tags.append(f"{bk} soft")
+        if true_ev and true_ev >= 3: tags.append("True EV")
         cards.append({
-            **best, "book_prices": book_prices, **signals,
+            **best, "book_prices": book_prices, **signals, "tags": tags,
             "decision": decision,
             "fair_prob": round(fair*100, 1) if fair else None,
             "true_ev": true_ev,
-            "one_sided": True,
         })
     cards.sort(key=lambda x: (-(x.get("true_ev") or -999), -x.get("spike", 0)))
     return cards
@@ -231,7 +263,6 @@ def main():
 
     with st.sidebar:
         st.markdown("### 💅 Book Weights")
-        st.caption("Higher = trust more. Leave alone if you want.")
         live_weights = {}
         for short in sorted(set(list(DEFAULT_WEIGHTS.keys()) + list(BOOK_FULL.keys()))):
             default = DEFAULT_WEIGHTS.get(short, 1.0)
@@ -254,9 +285,9 @@ def main():
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                     if data: all_plays.extend(parse_plays(data, sport))
                 cards = best_cards(all_plays, live_weights)
+                update_sharpness(cards)
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
-                # Auto-track TAKEs with full data
                 ledger = load_ledger()
                 existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
                 added = 0
@@ -294,9 +325,10 @@ def main():
             st.info("Hit **Pull the chaos**.")
             return
         simple_mode = st.toggle("✨ Simple Mode (recommended)", value=True)
+        detailed = st.toggle("🔍 Detailed Mode", value=False)
         if simple_mode:
             filtered = [c for c in cards if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
-            st.markdown("**Strongest edges only.** Glowing pink = lock it.")
+            st.markdown("**Strongest edges only.**")
         else:
             filtered = cards
         if not filtered:
@@ -311,6 +343,7 @@ def main():
                 f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
                 for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
             )
+            tags_html = "".join(f'<span class="tag">{t}</span>' for t in c.get("tags", []))
             card_cls = "card"
             if c.get("decision") == "TAKE": card_cls += " take-card"
             if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
@@ -321,12 +354,22 @@ def main():
                 f'<div class="meta">{c["event"]}</div>'
                 f'<div class="prop">{c["prop"]} {line_txt}</div>'
                 f'<div class="books">{boxes_html}</div>'
+                f'{tags_html}'
                 f'<div class="true-ev">True EV {c.get("true_ev", "—")}%</div>'
                 f'<div class="why">{plain_reason(c)}</div>'
                 f'</div>'
             )
             with cols[i % 2]:
                 st.markdown(html, unsafe_allow_html=True)
+                if detailed:
+                    with st.expander("Why this card"):
+                        st.write(f"**True EV:** {c.get('true_ev')}% · Fair {c.get('fair_prob')}%")
+                        st.write(f"**EV Gap:** {c.get('ev_gap')}% · Spike {c.get('spike')}")
+                        st.write(f"**Vol / Move:** {c.get('vol')} / {c.get('move')}")
+                        st.write("**All books:**")
+                        st.json(c.get("book_prices", {}))
+                        if "soft" in str(c.get("tags")):
+                            st.caption("This book has been hanging soft numbers recently.")
                 if st.button("Lock 🔒", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                     ledger = load_ledger()
                     ledger.append({
@@ -346,6 +389,7 @@ def main():
 
     with tab_tracker:
         ledger = load_ledger()
+        sharp = load_sharpness()
         if st.button("Wipe the slate"):
             save_ledger([])
             st.rerun()
@@ -355,6 +399,9 @@ def main():
             df = pd.DataFrame(ledger)
             st.markdown(f"**You’ve locked {len(df)} plays.**")
             st.dataframe(df, use_container_width=True, hide_index=True)
+            if sharp:
+                st.subheader("Book Sharpness (soft counts)")
+                st.json(sharp)
 
 try:
     main()
