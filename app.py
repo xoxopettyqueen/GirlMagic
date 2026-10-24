@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Final Polish
-Visual rhythm, typography, glow balance, and micro-motion on top of the full rebuild.
+Girl Magic Odds 2.0 — Final Polish + Simple Mode Fix
+Simple Mode now shows strongest TAKE cards even when one-sided.
 """
 
 import streamlit as st
@@ -312,7 +312,7 @@ def main():
                 existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
                 added = 0
                 for c in cards:
-                    if c.get("decision") == "TAKE" and not c.get("one_sided"):
+                    if c.get("decision") == "TAKE":
                         key = (c["player"], c["prop"], c["line"], c["price"])
                         if key not in existing:
                             ledger.append({
@@ -362,7 +362,13 @@ def main():
             st.session_state["compact"] = compact
 
         if simple_mode:
-            filtered = [c for c in cards if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2 and not c.get("one_sided") and c.get("fair_prob") and c.get("true_ev") is not None]
+            filtered = [
+                c for c in cards
+                if c.get("decision") == "TAKE"
+                and (c.get("true_ev") or 0) >= 2
+                and c.get("fair_prob") is not None
+                and c.get("true_ev") is not None
+            ]
             st.markdown("**Strongest edges only.**")
         else:
             filtered = cards
