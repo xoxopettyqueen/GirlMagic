@@ -498,12 +498,17 @@ def main():
             save_ledger(ledger)
             st.toast(f"Auto-graded {graded_n} plays")
         # Export / import so the ledger survives restarts
-        col_a, col_b = st.columns(2)
+        col_a, col_b, col_c = st.columns(3)
         with col_a:
             if ledger:
                 st.download_button("Save your slate 📂", json.dumps(ledger, indent=2), "odds_ledger.json", "application/json")
         with col_b:
             up = st.file_uploader("Reload past chaos 🔁", type="json", key="ledger_up")
+        with col_c:
+            if st.button("Reset All Data 🧹"):
+                save_ledger([])
+                st.toast("Ledger cleared")
+                st.rerun()
             if up:
                 try:
                     imported = json.loads(up.read())
