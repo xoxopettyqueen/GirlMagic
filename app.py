@@ -549,6 +549,7 @@ def main():
                     st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
     with tab_how:
+        st.markdown("### How It Works")
         st.markdown("""
         <div style="padding:16px 0;">
           <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">How It Works</h3>
