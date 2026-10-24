@@ -490,9 +490,9 @@ def main():
         col_a, col_b = st.columns(2)
         with col_a:
             if ledger:
-                st.download_button("Download Ledger", json.dumps(ledger, indent=2), "odds_ledger.json", "application/json")
+                st.download_button("Save your slate 📂", json.dumps(ledger, indent=2), "odds_ledger.json", "application/json")
         with col_b:
-            up = st.file_uploader("Upload Ledger", type="json", key="ledger_up")
+            up = st.file_uploader("Reload past chaos 🔁", type="json", key="ledger_up")
             if up:
                 try:
                     imported = json.loads(up.read())
@@ -502,37 +502,16 @@ def main():
                         st.rerun()
                 except: st.error("Bad file")
         if not ledger:
-            st.info("Your reads. Your chaos. Your hit rates. Lock a play from the Board to start.")
+            st.info("Games still cooking — results drop soon 🔥")
         else:
             df = pd.DataFrame(ledger)
             st.subheader("Your Reads. Your Chaos. Your Hit Rates.")
-            rename = {
-                "ts": "Timestamp (when chaos hit)",
-                "sport": "League",
-                "player": "Player",
-                "prop": "Prop Type",
-                "line": "Line",
-                "price": "Best Odds",
-                "book": "Book",
-                "event": "Matchup",
-                "end": "Result Time",
-                "bucket": "Odds Bucket",
-                "ev_gap": "EV Gap %",
-                "spike": "Spike Score",
-                "vol": "Volatility",
-                "move": "Movement Type",
-                "decision": "Decision",
-                "result": "Outcome",
-            }
-            st.dataframe(df.rename(columns=rename), use_container_width=True, hide_index=True)
-            graded = df[df["result"].notna()]
+            graded = df[df["result"].isin(["hit","miss"])]
             takes = len(df)
             hits = (graded["result"] == "hit").sum() if not graded.empty else 0
             misses = (graded["result"] == "miss").sum() if not graded.empty else 0
             hit_rate = (hits / len(graded) * 100) if len(graded) else 0
-            # Simple density from logged takes
             density = (takes / max(takes, 1) * 100) if takes else 0
-            # Weighted Hit Rate
             vol_w = {"High": 1.0, "Medium": 0.7, "Low": 0.4}
             hit_chaos = 0.0
             total_chaos = 0.0
@@ -542,9 +521,28 @@ def main():
                 if r.get("result") == "hit":
                     hit_chaos += chaos
             w_hit = (hit_chaos / total_chaos * 100) if total_chaos else 0
-            st.markdown(f"**TAKEs: {takes} | HITs: {hits} | MISS: {misses} | Hit Rate: {hit_rate:.1f}% | Weighted Hit Rate: {w_hit:.1f}% | TAKE Density: {density:.1f}%**")
+            st.markdown(f"**{takes} TAKEs | {hits} HITs | {misses} MISSes → Hit Rate {hit_rate:.0f}% 💥 | Weighted {w_hit:.0f}% | Density {density:.0f}%**")
+            rename = {
+                "ts": "🕒 When Chaos Hit",
+                "sport": "🏀 Lane",
+                "player": "Player",
+                "prop": "🎯 Prop",
+                "line": "📈 Line",
+                "price": "💸 Odds",
+                "book": "Book",
+                "event": "Matchup",
+                "end": "Result Time",
+                "bucket": "Odds Bucket",
+                "ev_gap": "🔥 Edge %",
+                "spike": "⚡ Spike",
+                "vol": "🌪 Vol",
+                "move": "💥 Move",
+                "decision": "💖 Call",
+                "result": "🎉 Result",
+            }
+            st.dataframe(df.rename(columns=rename), use_container_width=True, hide_index=True)
             if graded.empty:
-                st.caption("No graded results yet. Once results are marked, hit rates will show below. Built for the girls who read odds like poetry.")
+                st.caption("Games still cooking — results drop soon 🔥")
             else:
                 # Movement Hit Rate
                 if "move" in graded.columns:
