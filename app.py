@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Better Alternate Line Pull
-Captures X+ style props and more outcome labels so soft books show up.
+Girl Magic Odds 2.0 — 3+ and o2.5 Lines
+Pulls both 3+ style and o2.5 style for all props.
 """
 
 import streamlit as st
 import pandas as pd
 import requests
 import json
+import re
 from datetime import datetime
 from collections import defaultdict
 from pathlib import Path
@@ -236,17 +237,19 @@ def parse_plays(data, sport):
             if not prop_type: continue
             for o in market.get("outcomes") or []:
                 oname = str(o.get("name") or "").lower().strip()
-                desc = str(o.get("description") or "").lower()
-                # More flexible outcome matching for alt lines
+                desc = str(o.get("description") or "").lower().strip()
+                full_text = f"{oname} {desc}"
+
                 is_over_like = (
                     oname in ("over", "yes", "o")
                     or "over" in oname
-                    or "+" in oname
-                    or "or more" in oname
-                    or "or more" in desc
+                    or "+" in full_text
+                    or "or more" in full_text
+                    or full_text.startswith("o")
                 )
+
                 if prop_type in ("DoubleDouble", "Anytime TD"):
-                    if oname not in ("yes", "over") and "yes" not in oname: continue
+                    if "yes" not in oname and oname not in ("over", "yes"): continue
                     player = o.get("description") or o.get("name")
                     line = 0.5 if prop_type == "Anytime TD" else 1.0
                 else:
@@ -254,21 +257,29 @@ def parse_plays(data, sport):
                     player = o.get("description") or o.get("name")
                     line = o.get("point")
                     if line is None:
-                        # Try to extract number from name like "3+"
-                        import re
-                        m = re.search(r"(\d+\.?\d*)", oname + " " + desc)
+                        m = re.search(r"(\d+\.?\d*)", full_text)
                         if m:
-                            try: line = float(m.group(1))
-                            except: continue
+                            try:
+                                line = float(m.group(1))
+                            except:
+                                continue
                         else:
                             continue
                     else:
-                        try: line = float(line)
-                        except: continue
-                if not player or str(player).lower() in ("yes", "no", "over", "under"): continue
-                try: price = int(o.get("price"))
-                except: continue
-                plays.append({"sport": sport, "event": event, "player": player, "prop": prop_type, "line": line, "price": price, "book": short})
+                        try:
+                            line = float(line)
+                        except:
+                            continue
+
+                if not player or str(player).lower() in ("yes", "no", "over", "under", "o", "u"): continue
+                try:
+                    price = int(o.get("price"))
+                except:
+                    continue
+                plays.append({
+                    "sport": sport, "event": event, "player": player,
+                    "prop": prop_type, "line": line, "price": price, "book": short
+                })
     return plays
 
 def compute_signals(book_prices, best_price):
