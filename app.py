@@ -268,10 +268,10 @@ def parse_plays(data, sport):
                 try: price=int(o.get("price"))
                 except: continue
                 if "NBA" in str(sport):
-                    if prop_type=="Assists" and not (2.5<=line<=6.5): continue
-                    if prop_type=="Points" and not (8.0<=line<=15.0): continue
-                    if prop_type=="Rebounds" and not (5.0<=line<=8.0): continue
-                    if prop_type!="DoubleDouble" and price<300: continue
+                    if prop_type=="Assists" and not (3.0<=line<=7.0): continue
+                    if prop_type=="Points" and not (8.0<=line<=15.5): continue
+                    if prop_type=="Rebounds" and not (4.0<=line<=10.0): continue
+                    if prop_type!="DoubleDouble" and price<200: continue
                     if prop_type=="DoubleDouble" and price<400: continue
                 else:
                     if prop_type=="Anytime TD" and price<300: continue
@@ -372,7 +372,7 @@ def main():
                 book_count = 0
                 market_count = 0
                 sample = []
-                for ev in target[:12]:
+                for ev in target[:20]:
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                     if data:
                         for b in data.get("bookmakers") or []:
