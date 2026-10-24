@@ -560,45 +560,27 @@ def main():
 
     with tab_how:
         st.markdown("### How It Works")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.markdown("**1. Fetch Board**")
+            st.caption("Pre-game props only.")
+        with c2:
+            st.markdown("**2. Scan for TAKE**")
+            st.caption("Pink cards with big EV gap and spike.")
+        with c3:
+            st.markdown("**3. Lock**")
+            st.caption("Tracker learns what cashes.")
+        st.markdown("### Glossary")
         st.markdown("""
-        <div style="padding:16px 0;">
-          <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">How It Works</h3>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
-            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#FF4DA6,#9B5FFF);border-radius:16px;padding:14px;color:#fff;">
-              <div style="font-size:1.4rem;">🎯</div>
-              <div style="font-weight:700;margin-top:6px;">1. Fetch Board</div>
-              <div style="font-size:.8rem;opacity:.9;">Pre-game props only.</div>
-            </div>
-            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#9B5FFF,#5E4AE3);border-radius:16px;padding:14px;color:#fff;">
-              <div style="font-size:1.4rem;">💖</div>
-              <div style="font-weight:700;margin-top:6px;">2. Scan for TAKE</div>
-              <div style="font-size:.8rem;opacity:.9;">Pink cards with big EV gap and spike.</div>
-            </div>
-            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#5E4AE3,#FF4DA6);border-radius:16px;padding:14px;color:#fff;">
-              <div style="font-size:1.4rem;">🔒</div>
-              <div style="font-weight:700;margin-top:6px;">3. Lock</div>
-              <div style="font-size:.8rem;opacity:.9;">Tracker learns what cashes.</div>
-            </div>
-          </div>
-          <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">Glossary</h3>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;">
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">EV gap</b><br><span style="font-size:.75rem;color:#B3B3C3;">How disrespectful the longest odds are compared to the rest.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Spike</b><br><span style="font-size:.75rem;color:#B3B3C3;">The chaos score. EV + movement + volatility. Higher spike = edges.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Volatility</b><br><span style="font-size:.75rem;color:#B3B3C3;">How shaky the books are. High vol = books nervous.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Solo</b><br><span style="font-size:.75rem;color:#B3B3C3;">One book is out here alone. Rebels = edges.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Cluster</b><br><span style="font-size:.75rem;color:#B3B3C3;">Books holding hands. No edge.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Snap</b><br><span style="font-size:.75rem;color:#B3B3C3;">Sudden jump. Someone flinched. Usually a good sign.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Surge</b><br><span style="font-size:.75rem;color:#B3B3C3;">Strong move. Energy building.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Freeze</b><br><span style="font-size:.75rem;color:#B3B3C3;">No movement. Dead energy.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">TAKE</b><br><span style="font-size:.75rem;color:#B3B3C3;">Run it. This is your play.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">LEAN</b><br><span style="font-size:.75rem;color:#B3B3C3;">Cute but optional.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">PASS</b><br><span style="font-size:.75rem;color:#B3B3C3;">Skip. No edge.</span></div>
-          </div>
-          <div style="text-align:center;margin-top:20px;color:#CBA6F7;font-size:.8rem;font-style:italic;opacity:.8;">Built for the girls who read odds like poetry.</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown('<div style="text-align:center;margin-top:24px;color:#a78bfa;font-size:.75rem;font-style:italic;">Built for the girls who read odds like poetry.</div>', unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    main()
+- **EV gap**: How disrespectful the longest odds are compared to the rest.
+- **Spike**: The chaos score. EV + movement + volatility.
+- **Volatility**: How shaky the books are. High vol = books nervous.
+- **Solo**: One book is out here alone. Rebels = edges.
+- **Cluster**: Books holding hands. No edge.
+- **Snap**: Sudden jump. Someone flinched.
+- **Surge**: Strong move. Energy building.
+- **Freeze**: No movement. Dead energy.
+- **TAKE**: Run it. This is your play.
+- **LEAN**: Cute but optional.
+- **PASS**: Skip. No edge.
+        """)
