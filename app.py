@@ -100,6 +100,88 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
+def auto_grade_nba(ledger):
+    """Grade NBA plays using ESPN public box scores. No extra API key."""
+    if not ledger:
+        return ledger, 0
+    graded = 0
+    try:
+        # Get recent finished games from scoreboard
+        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=15)
+        if r.status_code != 200:
+            return ledger, 0
+        events = r.json().get("events") or []
+        # Build player stat lookup from finished games
+        player_stats = {}
+        for ev in events:
+            status = (ev.get("status") or {}).get("type", {}).get("completed")
+            if not status:
+                continue
+            eid = ev.get("id")
+            if not eid:
+                continue
+            try:
+                sr = requests.get(f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={eid}", timeout=15)
+                if sr.status_code != 200:
+                    continue
+                box = sr.json().get("boxscore") or {}
+                for team in box.get("players") or []:
+                    for stat_group in team.get("statistics") or []:
+                        labels = [x.lower() for x in (stat_group.get("labels") or [])]
+                        for ath in stat_group.get("athletes") or []:
+                            name = (ath.get("athlete") or {}).get("displayName") or ""
+                            stats = ath.get("stats") or []
+                            if not name or not stats:
+                                continue
+                            # Map common labels
+                            sdict = {}
+                            for i, lab in enumerate(labels):
+                                if i < len(stats):
+                                    try:
+                                        sdict[lab] = float(stats[i]) if stats[i] not in ("", "-") else 0
+                                    except:
+                                        sdict[lab] = 0
+                            player_stats[name.lower()] = sdict
+            except:
+                continue
+        # Grade ledger rows
+        for row in ledger:
+            if row.get("result") or "NBA" not in str(row.get("sport", "")):
+                continue
+            player = (row.get("player") or "").lower()
+            if not player:
+                continue
+            # Find matching player
+            match = None
+            for pname, sdict in player_stats.items():
+                if player in pname or pname in player:
+                    match = sdict
+                    break
+            if not match:
+                continue
+            prop = row.get("prop")
+            line = float(row.get("line") or 0)
+            val = None
+            if prop == "Assists":
+                val = match.get("ast") or match.get("assists")
+            elif prop == "Points":
+                val = match.get("pts") or match.get("points")
+            elif prop == "Rebounds":
+                val = match.get("reb") or match.get("rebounds")
+            elif prop == "DoubleDouble":
+                pts = match.get("pts") or match.get("points") or 0
+                reb = match.get("reb") or match.get("rebounds") or 0
+                ast = match.get("ast") or match.get("assists") or 0
+                val = sum(1 for v in (pts, reb, ast) if v >= 10)
+            if val is None:
+                continue
+            hit = (val > line) if prop != "DoubleDouble" else (val >= 2)
+            row["result"] = "hit" if hit else "miss"
+            graded += 1
+    except:
+        pass
+    return ledger, graded
+
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
     try:
@@ -382,6 +464,15 @@ def main():
 
     with tab_tracker:
         ledger = load_ledger()
+        if st.button("Auto Grade Finished Games", key="auto_grade_btn"):
+            with st.spinner("Checking ESPN box scores…"):
+                ledger, n = auto_grade_nba(ledger)
+                if n:
+                    save_ledger(ledger)
+                    st.toast(f"Auto-graded {n} plays")
+                    st.rerun()
+                else:
+                    st.info("No finished games ready to grade yet. Try again after tip-off.")
         if not ledger:
             st.info("Your reads. Your chaos. Your hit rates. Lock a play from the Board to start.")
         else:
