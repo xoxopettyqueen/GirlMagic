@@ -175,9 +175,11 @@ def auto_grade_nba(ledger):
                 ast = match.get("ast") or match.get("assists") or 0
                 val = sum(1 for v in (pts, reb, ast) if v >= 10)
             if val is None:
+                row["result"] = "PENDING"
                 continue
             hit = (val > line) if prop != "DoubleDouble" else (val >= 2)
             row["result"] = "hit" if hit else "miss"
+            row["graded_at"] = datetime.now().isoformat(timespec="minutes")
             graded += 1
     except:
         pass
@@ -530,7 +532,17 @@ def main():
             hit_rate = (hits / len(graded) * 100) if len(graded) else 0
             # Simple density from logged takes
             density = (takes / max(takes, 1) * 100) if takes else 0
-            st.markdown(f"**TAKEs: {takes} | HITs: {hits} | MISS: {misses} | Hit Rate: {hit_rate:.1f}% | TAKE Density: {density:.1f}%**")
+            # Weighted Hit Rate
+            vol_w = {"High": 1.0, "Medium": 0.7, "Low": 0.4}
+            hit_chaos = 0.0
+            total_chaos = 0.0
+            for _, r in graded.iterrows():
+                chaos = (r.get("ev_gap") or 0) * (r.get("spike") or 0) * vol_w.get(r.get("vol"), 0.4)
+                total_chaos += chaos
+                if r.get("result") == "hit":
+                    hit_chaos += chaos
+            w_hit = (hit_chaos / total_chaos * 100) if total_chaos else 0
+            st.markdown(f"**TAKEs: {takes} | HITs: {hits} | MISS: {misses} | Hit Rate: {hit_rate:.1f}% | Weighted Hit Rate: {w_hit:.1f}% | TAKE Density: {density:.1f}%**")
             if graded.empty:
                 st.caption("No graded results yet. Once results are marked, hit rates will show below. Built for the girls who read odds like poetry.")
             else:
