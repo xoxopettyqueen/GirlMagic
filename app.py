@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Styled Tracker
-Tracker matches the rest of the app instead of looking like a raw dataframe.
+Girl Magic Odds 2.0 — Clean Breakdown
+Full breakdown shows book prices as clean pills instead of raw JSON.
 """
 
 import streamlit as st
@@ -484,7 +484,12 @@ def main():
                         st.write(f"**True EV:** {c.get('true_ev')}% (fair {c.get('fair_prob')}%)")
                         st.write(f"**Gap / Spike / Vol:** {c.get('ev_gap')}% / {c.get('spike')} / {c.get('vol')}")
                         st.write(f"**In preferred range:** {c.get('petty_range_match')}")
-                        st.json(c.get("book_prices", {}))
+                        # Clean book prices instead of JSON
+                        bp_html = "".join(
+                            f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
+                            for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
+                        )
+                        st.markdown(f'<div class="books">{bp_html}</div>', unsafe_allow_html=True)
                 if st.button("Lock 🔒", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                     ledger = load_ledger()
                     ledger.append({
