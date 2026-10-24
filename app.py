@@ -85,15 +85,16 @@ def normalize_book(key):
     return k
 
 def load_ledger():
-    if "ledger" in st.session_state:
-        return st.session_state["ledger"]
+    file_data = []
     if LEDGER.exists():
         try:
-            data = json.loads(LEDGER.read_text())
-            st.session_state["ledger"] = data
-            return data
-        except: return []
-    return []
+            file_data = json.loads(LEDGER.read_text())
+        except: file_data = []
+    sess = st.session_state.get("ledger", [])
+    # Keep whichever is longer so a cleared session doesn't wipe the file
+    best = file_data if len(file_data) > len(sess) else sess
+    st.session_state["ledger"] = best
+    return best
 
 def save_ledger(rows):
     st.session_state["ledger"] = rows
