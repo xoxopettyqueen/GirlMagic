@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Clean Chaos
-Less top noise. Glossary back. Petty Mode does the filtering. No Compact.
+Girl Magic Odds 2.0 — Clean Chaos (Styled Glossary + Softness)
+Glossary and Book Softness now match the rest of the app.
 """
 
 import streamlit as st
@@ -39,8 +39,9 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
 .tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
 .tag.range{background:rgba(255,62,191,.2);border-color:#FF3EBF}
-.glossary{font-size:.75rem;color:#ddd;margin-top:20px;padding:12px 14px;background:#111118;border-radius:10px;border:1px solid #2a2a33}
-.glossary b{color:#FF3EBF}
+.glossary{font-size:.74rem;color:#e8e0f0;margin-top:20px;padding:14px 16px;background:linear-gradient(180deg,#121218 0%,#0e0e14 100%);border-radius:12px;border:1px solid #2a2a33;line-height:1.6}
+.glossary strong{color:#FF3EBF;font-weight:700}
+.softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
 </style>
 """, unsafe_allow_html=True)
 
@@ -64,16 +65,16 @@ BASE_WEIGHTS = {
 }
 
 GLOSSARY = """
-**Glossary**  
-- **True EV**: Expected value vs the weighted fair price.  
-- **Fair price**: No-vig probability after blending book weights.  
-- **EV Gap**: How much longer the best price is vs the median.  
-- **Spike**: Chaos score combining gap + movement + volatility.  
-- **Volatility**: How far apart the books are right now.  
-- **Solo / Cluster**: One book alone vs books clustered.  
-- **Weak-spot**: Book that repeatedly hangs soft numbers.  
-- **Petty Mode**: Only your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).  
-- **Auto Weights**: The app learns which books are soft and adjusts trust automatically.  
+<strong>Glossary</strong><br>
+<strong>True EV</strong> — Expected value vs the weighted fair price.<br>
+<strong>Fair price</strong> — No-vig probability after blending book weights.<br>
+<strong>EV Gap</strong> — How much longer the best price is vs the median.<br>
+<strong>Spike</strong> — Chaos score combining gap + movement + volatility.<br>
+<strong>Volatility</strong> — How far apart the books are right now.<br>
+<strong>Solo / Cluster</strong> — One book alone vs books clustered.<br>
+<strong>Weak-spot</strong> — Book that repeatedly hangs soft numbers.<br>
+<strong>Petty Mode</strong> — Only your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).<br>
+<strong>Auto Weights</strong> — The app learns which books are soft and adjusts trust automatically.
 """
 
 def in_user_range(prop, line):
@@ -324,7 +325,7 @@ def render_softness(sharp):
         rows.append({"Book": bk, "Soft Count": soft, "Total": total, "% Soft": pct, "Top Soft Prop": top_prop})
     if rows:
         df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
-        st.subheader("Book Softness")
+        st.markdown('<div class="softness-title">Book Softness</div>', unsafe_allow_html=True)
         st.dataframe(df, use_container_width=True, hide_index=True)
 
 def main():
