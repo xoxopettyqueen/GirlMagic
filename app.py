@@ -342,9 +342,11 @@ def main():
                             book_count += 1
                             for m in b.get("markets") or []:
                                 market_count += 1
-                                for o in (m.get("outcomes") or [])[:3]:
-                                    if len(sample) < 5:
-                                        sample.append(f"{b.get('key')} {m.get('key')} {o.get('description')} {o.get('point')} @ {o.get('price')}")
+                                bk_key = normalize_book(b.get("key"))
+                                if bk_key in MY_BOOKS:
+                                    for o in (m.get("outcomes") or [])[:2]:
+                                        if len(sample) < 8:
+                                            sample.append(f"{bk_key} {m.get('key')} {o.get('description')} {o.get('point')} @ {o.get('price')}")
                         all_plays.extend(parse_plays(data, sport))
                 st.session_state["debug_plays"] = len(all_plays)
                 st.session_state["debug_books"] = book_count
