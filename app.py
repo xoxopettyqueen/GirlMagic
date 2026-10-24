@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Phase 3
-Polish: persistent modes, compact density, richer reasons, cleaner visual balance.
+Girl Magic Odds 2.0 — Full Rebuild
+Two-sided True EV, strict Simple Mode, Detailed chaos, glossary, CLV-ready tracker.
 """
 
 import streamlit as st
@@ -26,7 +26,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .card.compact{padding:6px 8px;margin-bottom:6px}
 .card.take-card{border-color:#FF3EBF;box-shadow:0 0 14px rgba(255,62,191,.45)}
 .card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 20px rgba(255,62,191,.7)}
-.player{font-size:1.02rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
+.player{font-size:1.05rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
 .meta{color:#999;font-size:.62rem;margin:1px 0 3px}
 .prop{font-size:.78rem;font-weight:600;color:#FF3EBF;margin-bottom:3px;text-transform:uppercase}
 .books{display:flex;flex-wrap:wrap;gap:3px;margin:3px 0}
@@ -36,6 +36,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .why{font-size:.66rem;color:#ddd;margin-top:3px;line-height:1.25}
 .take-tag{position:absolute;top:5px;right:7px;font-size:.52rem;letter-spacing:.08em;color:#FF3EBF;font-weight:700}
 .tag{display:inline-block;background:rgba(199,125,255,.12);color:#F5E9FF;border:1px solid rgba(199,125,255,.35);border-radius:999px;padding:1px 5px;font-size:.52rem;margin:1px 2px 0 0}
+.glossary{font-size:.7rem;color:#bbb;margin-top:12px;padding:8px;background:#111;border-radius:8px}
 </style>
 """, unsafe_allow_html=True)
 
@@ -56,6 +57,19 @@ DEFAULT_WEIGHTS = {
     "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4,
     "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1,
 }
+
+GLOSSARY = """
+**Glossary**  
+- **True EV**: Expected value vs the weighted fair price.  
+- **Fair price**: No-vig probability after blending book weights.  
+- **EV Gap**: How much longer the best price is vs the median.  
+- **Spike**: Chaos score combining gap + movement + volatility.  
+- **Volatility**: How far apart the books are right now.  
+- **Solo / Cluster**: One book alone vs books clustered.  
+- **Steam / Lag**: Sharp book moved, soft book hasn’t followed.  
+- **Weak-spot**: Book that repeatedly hangs soft numbers.  
+- **CLV**: Closing line value (locked price vs close).  
+"""
 
 def load_sharpness():
     if SHARPNESS.exists():
@@ -93,18 +107,18 @@ def compute_true_ev(best_price, fair_prob):
     try:
         decimal = (best_price / 100 + 1) if best_price > 0 else (100 / abs(best_price) + 1)
         ev = (fair_prob * decimal - 1) * 100
-        return round(max(-20, min(25, ev)), 1)
+        return round(max(-15, min(18, ev)), 1)
     except: return None
 
 def plain_reason(c):
     tev = c.get("true_ev") or 0
     bk = c.get("book", "")
+    if c.get("one_sided"):
+        return "One-sided estimate only."
     if c.get("decision") == "TAKE" and tev >= 3:
-        return f"Strong edge. {bk} is hanging a soft number vs the blend."
+        return f"Strong edge. {bk} is hanging a soft number vs the weighted fair."
     if c.get("decision") == "TAKE":
         return f"Books disagree. {bk} is the longest."
-    if c.get("decision") == "LEAN":
-        return "Soft edge. Only if you already like it."
     return "Tight. Skip."
 
 def normalize_book(key):
@@ -214,8 +228,7 @@ def update_sharpness(cards):
     for c in cards:
         bk = c.get("book")
         if not bk: continue
-        if bk not in sharp:
-            sharp[bk] = {"soft_count": 0, "total": 0, "props": {}}
+        if bk not in sharp: sharp[bk] = {"soft_count": 0, "total": 0, "props": {}}
         sharp[bk]["total"] += 1
         if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2:
             sharp[bk]["soft_count"] += 1
@@ -250,6 +263,9 @@ def best_cards(plays, weights=None):
             "decision": decision,
             "fair_prob": round(fair*100, 1) if fair else None,
             "true_ev": true_ev,
+            "one_sided": True,  # flag until both sides are reliably collected
+            "devig_method": "multiplicative",
+            "weights_used": weights or DEFAULT_WEIGHTS,
         })
     cards.sort(key=lambda x: (-(x.get("true_ev") or -999), -x.get("spike", 0)))
     return cards
@@ -293,7 +309,7 @@ def main():
                 existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
                 added = 0
                 for c in cards:
-                    if c.get("decision") == "TAKE":
+                    if c.get("decision") == "TAKE" and not c.get("one_sided"):
                         key = (c["player"], c["prop"], c["line"], c["price"])
                         if key not in existing:
                             ledger.append({
@@ -307,8 +323,13 @@ def main():
                                 "ev_gap": c.get("ev_gap"),
                                 "spike": c.get("spike"),
                                 "decision": c.get("decision"),
+                                "one_sided": c.get("one_sided"),
+                                "devig_method": c.get("devig_method"),
+                                "weights_used": c.get("weights_used"),
                                 "result": None,
                                 "clv": None,
+                                "locked_price": c["price"],
+                                "closing_price": None,
                             })
                             existing.add(key)
                             added += 1
@@ -338,7 +359,7 @@ def main():
             st.session_state["compact"] = compact
 
         if simple_mode:
-            filtered = [c for c in cards if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
+            filtered = [c for c in cards if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2 and not c.get("one_sided") and c.get("fair_prob") and c.get("true_ev") is not None]
             st.markdown("**Strongest edges only.**")
         else:
             filtered = cards
@@ -356,7 +377,7 @@ def main():
                 f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
                 for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
             )
-            tags_html = "".join(f'<span class="tag">{t}</span>' for t in c.get("tags", []))
+            tags_html = "".join(f'<span class="tag">{t}</span>' for t in c.get("tags", [])) if not simple_mode else ""
             card_cls = "card compact" if compact else "card"
             if c.get("decision") == "TAKE": card_cls += " take-card"
             if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
@@ -377,12 +398,11 @@ def main():
                 if detailed:
                     with st.expander("Full breakdown"):
                         st.write(f"**True EV:** {c.get('true_ev')}% (fair {c.get('fair_prob')}%)")
-                        st.write(f"**Gap / Spike:** {c.get('ev_gap')}% / {c.get('spike')}")
-                        st.write(f"**Vol / Move / Behavior:** {c.get('vol')} / {c.get('move')} / {c.get('book_beh')}")
+                        st.write(f"**Gap / Spike / Vol:** {c.get('ev_gap')}% / {c.get('spike')} / {c.get('vol')}")
+                        st.write(f"**Move / Behavior:** {c.get('move')} / {c.get('book_beh')}")
                         st.write("**Book prices:**")
                         st.json(c.get("book_prices", {}))
-                        if any("soft" in str(t) for t in c.get("tags", [])):
-                            st.caption("This book has been soft recently on similar props.")
+                        st.caption(f"Devig: {c.get('devig_method')} · One-sided: {c.get('one_sided')}")
                 if st.button("Lock 🔒", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                     ledger = load_ledger()
                     ledger.append({
@@ -394,11 +414,18 @@ def main():
                         "true_ev": c.get("true_ev"),
                         "fair_prob": c.get("fair_prob"),
                         "decision": c.get("decision"),
+                        "one_sided": c.get("one_sided"),
+                        "devig_method": c.get("devig_method"),
+                        "weights_used": str(c.get("weights_used")),
                         "result": None,
                         "clv": None,
+                        "locked_price": c["price"],
+                        "closing_price": None,
                     })
                     save_ledger(ledger)
                     st.toast("Locked.")
+
+        st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
 
     with tab_tracker:
         ledger = load_ledger()
@@ -407,14 +434,17 @@ def main():
             save_ledger([])
             st.rerun()
         if not ledger:
-            st.info("Nothing locked yet. Pull the chaos and lock some plays.")
+            st.info("Nothing locked yet.")
         else:
             df = pd.DataFrame(ledger)
-            st.markdown(f"**You’ve locked {len(df)} plays.**")
+            finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
+            hits = (finished["result"] == "hit").sum() if not finished.empty else 0
+            st.markdown(f"**You’ve locked {len(df)} plays.** {len(finished)} finished. {hits} hit.")
             st.dataframe(df, use_container_width=True, hide_index=True)
             if sharp:
                 st.subheader("Book Softness")
                 st.json(sharp)
+        st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
 
 try:
     main()
