@@ -45,6 +45,7 @@ button[kind="primary"]:hover, .stButton > button[kind="primary"]:hover{box-shado
 .pass{background:#444;color:#fff}
 .why{font-size:.66rem;color:#aaa;margin-top:6px}
 .why b{color:#FF3EBF}
+.true-ev{font-size:.78rem;font-weight:700;color:#FF3EBF;margin:4px 0}
 .take-tag{position:absolute;top:8px;right:10px;font-size:.58rem;letter-spacing:.12em;color:#FF3EBF;font-weight:700;text-transform:uppercase}
 </style>
 """, unsafe_allow_html=True)
@@ -70,6 +71,30 @@ def implied(price):
     try:
         p = int(price)
         return 100/(p+100) if p>0 else abs(p)/(abs(p)+100)
+    except: return None
+
+DEFAULT_WEIGHTS = {"PIN": 3.5, "CIR": 3.0, "BM": 2.8, "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4, "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1}
+
+def weighted_fair_prob(book_prices, weights=None):
+    if weights is None: weights = DEFAULT_WEIGHTS
+    weighted = []
+    total_w = 0.0
+    for bk, price in book_prices.items():
+        w = weights.get(bk, 1.0)
+        if w <= 0: continue
+        imp = implied(price)
+        if imp and 0 < imp < 1:
+            weighted.append(imp * w)
+            total_w += w
+    if not weighted or total_w == 0: return None
+    fair = sum(weighted) / total_w
+    return max(0.03, min(0.97, fair))
+
+def compute_true_ev(best_price, fair_prob):
+    if not fair_prob or best_price is None: return None
+    try:
+        decimal = (best_price / 100 + 1) if best_price > 0 else (100 / abs(best_price) + 1)
+        return round((fair_prob * decimal - 1) * 100, 1)
     except: return None
 
 def normalize_book(key):
@@ -301,7 +326,7 @@ def compute_signals(book_prices, best_price):
         "decision": decision,
     }, decision
 
-def best_cards(plays):
+def best_cards(plays, weights=None):
     by = defaultdict(list)
     for p in plays:
         key = (p["sport"], p["player"], p["prop"], round(p["line"],1), p["event"])
@@ -311,6 +336,8 @@ def best_cards(plays):
         best = max(group, key=lambda x: x["price"])
         book_prices = {g["book"]: g["price"] for g in group}
         signals, decision = compute_signals(book_prices, best["price"])
+        fair = weighted_fair_prob(book_prices, weights)
+        true_ev = compute_true_ev(best["price"], fair)
         end = last_two(best["price"])
         tags = []
         if signals.get("book_beh")=="Solo": tags.append("Solo")
@@ -320,8 +347,9 @@ def best_cards(plays):
         if signals.get("move")=="Freeze": tags.append("Freeze")
         if signals.get("vol")=="High": tags.append("Surge")
         if end in HOT_ENDS: tags.append(f"Hot {end:02d}")
-        cards.append({**best, "book_prices":book_prices, **signals, "end":end, "tags":tags, "decision":decision})
-    cards.sort(key=lambda x: (-x.get("spike",0), -x.get("ev_gap",0)))
+        if true_ev and true_ev >= 3: tags.append("True EV")
+        cards.append({**best, "book_prices":book_prices, **signals, "end":end, "tags":tags, "decision":decision, "fair_prob": round(fair*100,1) if fair else None, "true_ev": true_ev})
+    cards.sort(key=lambda x: (-(x.get("true_ev") or -999), -x.get("spike",0), -x.get("ev_gap",0)))
     return cards
 
 def odds_bucket(price):
@@ -344,6 +372,13 @@ def main():
     if not api_key:
         st.info("Add ODDS_API_KEY to secrets or paste above.")
         return
+    with st.sidebar:
+        st.markdown("### 💅 Book Weights")
+        st.caption("Higher = trust more for fair price")
+        live_weights = {}
+        for short in ["PIN","CIR","BM","FD","DK","365","MGM","CZR","FAN","SCR","HR"]:
+            default = DEFAULT_WEIGHTS.get(short, 1.0)
+            live_weights[short] = st.slider(short, 0.0, 5.0, float(default), 0.1, key=f"w_{short}")
 
     c1, c2 = st.columns([1,4])
     with c1:
@@ -389,7 +424,7 @@ def main():
                 st.session_state["debug_books"] = book_count
                 st.session_state["debug_markets"] = market_count
                 st.session_state["debug_sample"] = sample
-                cards = best_cards(all_plays)
+                cards = best_cards(all_plays, live_weights)
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
                 st.session_state["sport"] = sport
@@ -446,10 +481,11 @@ def main():
             dec_f = st.multiselect("Decision", ["TAKE","LEAN","PASS"], default=["TAKE","LEAN"])
         with f3:
             min_odds = st.slider("Min Odds +300", 200, 2000, 300 if "NBA" in str(sport) else 200, 50)
+        min_true_ev = st.slider("Min True EV %", -10.0, 20.0, -5.0, 0.5)
         all_tags = sorted({t for c in cards for t in c.get("tags",[])})
         tag_f = st.multiselect("Tags", all_tags, default=[], help="Filter by Solo, Snap, Surge, Cluster, etc. Leave empty to show all.")
 
-        filtered = [c for c in cards if c.get("prop") in prop_f and c.get("decision") in dec_f and int(c.get("price",0)) >= min_odds]
+        filtered = [c for c in cards if c.get("prop") in prop_f and c.get("decision") in dec_f and int(c.get("price",0)) >= min_odds and (c.get("true_ev") or -999) >= min_true_ev]
         if tag_f:
             filtered = [c for c in filtered if any(t in c.get("tags",[]) for t in tag_f)]
         filtered.sort(key=lambda x: (-x.get("spike",0), -x.get("ev_gap",0)))
@@ -505,7 +541,8 @@ def main():
                     f'<div class="prop">{c["prop"]} {line_txt}</div>'
                     f'<div class="books">{boxes_html}</div>'
                     f'{tags_html}'
-                    f'<div class="why"><b>EV {c.get("ev_gap",0)}%</b> · <b>Spike {c.get("spike",0)}</b> · {vol_icon}{c.get("vol","")} · {move_icon}{c.get("move","")}</div>'
+                    f'<div class="true-ev">True EV {c.get("true_ev","—")}% · Fair {c.get("fair_prob","—")}%</div>'
+                    f'<div class="why"><b>EV Gap {c.get("ev_gap",0)}%</b> · <b>Spike {c.get("spike",0)}</b> · {vol_icon}{c.get("vol","")} · {move_icon}{c.get("move","")}</div>'
                     f'<div class="why" style="font-size:.62rem;opacity:.8;">{vibe}</div>'
                     f'<div class="decision {dec_cls}">{c.get("decision","PASS")} {"💖" if c.get("decision")=="TAKE" else "💜" if c.get("decision")=="LEAN" else "🩶"}</div>'
                     f'</div>'
