@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Softness Table + Simple Mode Working
-Book Softness is readable. Simple Mode shows real TAKE cards.
+Girl Magic Odds 2.0 — Petty Mode Range Filters
+Simple Mode = your preferred lanes only. Detailed = everything, highlighted.
 """
 
 import streamlit as st
@@ -28,6 +28,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .card.compact{padding:7px 9px;margin-bottom:7px}
 .card.take-card{border-color:#FF3EBF;box-shadow:0 0 16px rgba(255,62,191,.5)}
 .card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 22px rgba(255,62,191,.75)}
+.card.dimmed{opacity:0.65;border-color:#5a4a6a}
 .player{font-size:1.15rem;font-weight:700;margin:0;font-family:'Inter',sans-serif}
 .meta{color:#aaa;font-size:.65rem;margin:2px 0 4px}
 .prop{font-size:.85rem;font-weight:600;color:#FF3EBF;margin-bottom:4px;text-transform:uppercase}
@@ -38,6 +39,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .why{font-size:.72rem;color:#e0d4f5;margin-top:4px;line-height:1.3;max-width:90%}
 .take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
 .tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
+.tag.range{background:rgba(255,62,191,.2);border-color:#FF3EBF}
 .glossary{font-size:.72rem;color:#ccc;margin-top:16px;padding:10px 12px;background:#111118;border-radius:10px;border:1px solid #2a2a33}
 .glossary b{color:#FF3EBF}
 </style>
@@ -72,7 +74,19 @@ GLOSSARY = """
 - **Steam / Lag**: Sharp book moved, soft book hasn’t followed.  
 - **Weak-spot**: Book that repeatedly hangs soft numbers.  
 - **CLV**: Closing line value (locked price vs close).  
+- **Petty Mode**: Only your preferred line ranges.  
 """
+
+def in_user_range(prop, line):
+    if prop == "Assists":
+        return 3 <= line <= 8
+    if prop == "Points":
+        return 8 <= line <= 15
+    if prop == "Rebounds":
+        return 4 <= line <= 10
+    if prop in ("DoubleDouble", "FirstBasket", "Anytime TD"):
+        return True
+    return False
 
 def load_sharpness():
     if SHARPNESS.exists():
@@ -253,6 +267,7 @@ def best_cards(plays, weights=None):
         signals, decision = compute_signals(book_prices, best["price"])
         fair = weighted_fair_prob(book_prices, weights)
         true_ev = compute_true_ev(best["price"], fair)
+        petty = in_user_range(best["prop"], best["line"])
         tags = []
         if signals.get("book_beh") == "Solo": tags.append("Solo")
         if signals.get("move") == "Snap": tags.append("Snap")
@@ -261,12 +276,17 @@ def best_cards(plays, weights=None):
         if bk in sharp and sharp[bk]["soft_count"] >= 3:
             tags.append(f"{bk} soft")
         if true_ev and true_ev >= 3: tags.append("True EV")
+        if petty:
+            tags.append("In your preferred range")
+        else:
+            tags.append("Outside your range")
         cards.append({
             **best, "book_prices": book_prices, **signals, "tags": tags,
             "decision": decision,
             "fair_prob": round(fair*100, 1) if fair else None,
             "true_ev": true_ev,
             "one_sided": True,
+            "petty_range_match": petty,
             "devig_method": "multiplicative",
             "weights_used": weights or DEFAULT_WEIGHTS,
         })
@@ -349,12 +369,15 @@ def main():
                                 "spike": c.get("spike"),
                                 "decision": c.get("decision"),
                                 "one_sided": c.get("one_sided"),
+                                "petty_range_match": c.get("petty_range_match"),
                                 "devig_method": c.get("devig_method"),
                                 "weights_used": str(c.get("weights_used")),
                                 "result": None,
                                 "clv": None,
                                 "locked_price": c["price"],
                                 "closing_price": None,
+                                "petty_mode": st.session_state.get("petty_mode", True),
+                                "range_filter_used": "petty" if st.session_state.get("petty_mode", True) else "all",
                             })
                             existing.add(key)
                             added += 1
@@ -372,7 +395,9 @@ def main():
             st.info("Hit **Pull the chaos**.")
             return
 
-        col_a, col_b, col_c = st.columns(3)
+        st.markdown("**Your Prop Lanes (Petty Mode)** — Assists 3–8 · Points 8–15 · Rebounds 4–10 · DoubleDouble On")
+
+        col_a, col_b, col_c, col_d = st.columns(4)
         with col_a:
             simple_mode = st.toggle("✨ Simple Mode", value=st.session_state.get("simple_mode", True))
             st.session_state["simple_mode"] = simple_mode
@@ -382,36 +407,62 @@ def main():
         with col_c:
             compact = st.toggle("Compact", value=st.session_state.get("compact", False))
             st.session_state["compact"] = compact
+        with col_d:
+            petty_mode = st.toggle("💅 Petty Mode", value=st.session_state.get("petty_mode", True))
+            st.session_state["petty_mode"] = petty_mode
 
-        if simple_mode:
+        prop_filter = st.multiselect(
+            "Prop Type",
+            ["Assists", "Points", "Rebounds", "DoubleDouble", "Anytime TD"],
+            default=["Assists", "Points", "Rebounds", "DoubleDouble", "Anytime TD"]
+        )
+
+        if simple_mode and petty_mode:
             filtered = [
                 c for c in cards
                 if c.get("decision") == "TAKE"
                 and (c.get("true_ev") or 0) >= 2
+                and c.get("petty_range_match")
+                and c.get("prop") in prop_filter
                 and c.get("fair_prob") is not None
                 and c.get("true_ev") is not None
             ]
-            st.markdown("**Strongest edges only.**")
+            st.markdown("**Petty Mode — your preferred ranges only.**")
+        elif simple_mode:
+            filtered = [
+                c for c in cards
+                if c.get("decision") == "TAKE"
+                and (c.get("true_ev") or 0) >= 2
+                and c.get("prop") in prop_filter
+                and c.get("fair_prob") is not None
+            ]
+            st.markdown("**Strongest edges (all ranges).**")
         else:
-            filtered = [c for c in cards if c.get("decision") in ("TAKE", "LEAN")]
+            filtered = [c for c in cards if c.get("prop") in prop_filter]
+            st.markdown("**All props — your lanes highlighted.**")
 
         if not filtered:
-            st.info("No strong edges right now. Books are tight.")
+            st.info("No matching edges right now.")
             return
 
         st.markdown(f"**{len(filtered)} plays ready.**")
 
         cols = st.columns(2)
-        for i, c in enumerate(filtered[:20]):
+        for i, c in enumerate(filtered[:24]):
             line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
             boxes_html = "".join(
                 f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
                 for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
             )
-            tags_html = "".join(f'<span class="tag">{t}</span>' for t in c.get("tags", [])) if not simple_mode else ""
+            tags_html = "".join(
+                f'<span class="tag {"range" if "preferred" in t else ""}">{t}</span>'
+                for t in c.get("tags", [])
+            ) if not simple_mode else ""
             card_cls = "card compact" if compact else "card"
             if c.get("decision") == "TAKE": card_cls += " take-card"
             if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
+            if not c.get("petty_range_match") and not simple_mode:
+                card_cls += " dimmed"
             take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
             html = (
                 f'<div class="{card_cls}">{take_tag}'
@@ -430,10 +481,9 @@ def main():
                     with st.expander("Full breakdown"):
                         st.write(f"**True EV:** {c.get('true_ev')}% (fair {c.get('fair_prob')}%)")
                         st.write(f"**Gap / Spike / Vol:** {c.get('ev_gap')}% / {c.get('spike')} / {c.get('vol')}")
-                        st.write(f"**Move / Behavior:** {c.get('move')} / {c.get('book_beh')}")
+                        st.write(f"**In preferred range:** {c.get('petty_range_match')}")
                         st.write("**Book prices:**")
                         st.json(c.get("book_prices", {}))
-                        st.caption(f"Devig: {c.get('devig_method')} · One-sided: {c.get('one_sided')}")
                 if st.button("Lock 🔒", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                     ledger = load_ledger()
                     ledger.append({
@@ -446,12 +496,15 @@ def main():
                         "fair_prob": c.get("fair_prob"),
                         "decision": c.get("decision"),
                         "one_sided": c.get("one_sided"),
+                        "petty_range_match": c.get("petty_range_match"),
                         "devig_method": c.get("devig_method"),
                         "weights_used": str(c.get("weights_used")),
                         "result": None,
                         "clv": None,
                         "locked_price": c["price"],
                         "closing_price": None,
+                        "petty_mode": petty_mode,
+                        "range_filter_used": "petty" if petty_mode else "all",
                     })
                     save_ledger(ledger)
                     st.toast("Locked.")
