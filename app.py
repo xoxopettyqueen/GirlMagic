@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — 3+ and o2.5 Lines
-Pulls both 3+ style and o2.5 style for all props.
+Girl Magic Odds 2.0 — No Display Limit
+Shows every matching play. Event pull raised to 30.
 """
 
 import streamlit as st
@@ -407,7 +407,7 @@ def main():
             pregame = [ev for ev in events if ev.get("commence_time") and datetime.fromisoformat(ev["commence_time"].replace("Z", "+00:00")).replace(tzinfo=None) > now]
             target = pregame if pregame else events
             all_plays = []
-            for ev in target[:15]:
+            for ev in target[:30]:
                 data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                 if data:
                     all_plays.extend(parse_plays(data, current_sport))
@@ -507,7 +507,7 @@ def main():
         st.markdown(f"**{len(filtered)} plays ready.**")
 
         cols = st.columns(2)
-        for i, c in enumerate(filtered[:24]):
+        for i, c in enumerate(filtered):
             line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
             boxes_html = "".join(
                 f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
