@@ -380,6 +380,11 @@ def main():
                 # Always save so the file stays current
                 save_ledger(ledger)
                 st.session_state["last_tracked"] = added
+                # Auto-grade any finished games
+                ledger, graded_n = auto_grade_nba(ledger)
+                if graded_n:
+                    save_ledger(ledger)
+                    st.toast(f"Auto-graded {graded_n} plays")
                 if added:
                     st.toast(f"Auto-tracked {added} TAKE plays")
 
@@ -474,15 +479,11 @@ def main():
 
     with tab_tracker:
         ledger = load_ledger()
-        if st.button("Auto Grade Finished Games", key="auto_grade_btn"):
-            with st.spinner("Checking ESPN box scores…"):
-                ledger, n = auto_grade_nba(ledger)
-                if n:
-                    save_ledger(ledger)
-                    st.toast(f"Auto-graded {n} plays")
-                    st.rerun()
-                else:
-                    st.info("No finished games ready to grade yet. Try again after tip-off.")
+        # Auto-grade on every Tracker load
+        ledger, graded_n = auto_grade_nba(ledger)
+        if graded_n:
+            save_ledger(ledger)
+            st.toast(f"Auto-graded {graded_n} plays")
         # Export / import so the ledger survives restarts
         col_a, col_b = st.columns(2)
         with col_a:
@@ -522,23 +523,6 @@ def main():
                 "result": "Outcome",
             }
             st.dataframe(df.rename(columns=rename), use_container_width=True, hide_index=True)
-            st.markdown("**Grade a play**")
-            if not df.empty:
-                opts = [f"{i}: {r['player']} {r['prop']} {r['line']} @ {r['price']}" for i, r in df.iterrows()]
-                pick = st.selectbox("Pick a locked play", opts, key="grade_pick")
-                c1, c2 = st.columns(2)
-                with c1:
-                    if st.button("Mark HIT", key="mark_hit"):
-                        idx = int(pick.split(":")[0])
-                        df.at[idx, "result"] = "hit"
-                        save_ledger(df.to_dict("records"))
-                        st.rerun()
-                with c2:
-                    if st.button("Mark MISS", key="mark_miss"):
-                        idx = int(pick.split(":")[0])
-                        df.at[idx, "result"] = "miss"
-                        save_ledger(df.to_dict("records"))
-                        st.rerun()
             graded = df[df["result"].notna()]
             takes = len(df)
             hits = (graded["result"] == "hit").sum() if not graded.empty else 0
@@ -550,7 +534,30 @@ def main():
             if graded.empty:
                 st.caption("No graded results yet. Once results are marked, hit rates will show below. Built for the girls who read odds like poetry.")
             else:
-                for title, col in [("By odds bucket","bucket"),("By ending","end"),("By book","book"),("By movement","move"),("By volatility","vol"),("By decision","decision")]:
+                # Movement Hit Rate
+                if "move" in graded.columns:
+                    st.subheader("Movement Hit Rate")
+                    g = graded.groupby("move").agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
+                    g["hit%"] = (g["hits"]/g["n"]*100).round(1)
+                    st.bar_chart(g["hit%"])
+                    st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
+                # Book Hit Rate
+                if "book" in graded.columns:
+                    st.subheader("Book Hit Rate")
+                    g = graded.groupby("book").agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
+                    g["hit%"] = (g["hits"]/g["n"]*100).round(1)
+                    st.bar_chart(g["hit%"])
+                    st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
+                # EV Gap Hit Rate
+                if "ev_gap" in graded.columns:
+                    st.subheader("EV Gap Hit Rate")
+                    graded["ev_bucket"] = pd.cut(graded["ev_gap"].fillna(0), bins=[-1,20,40,60,100,1000], labels=["0-20%","20-40%","40-60%","60-100%","100%+"])
+                    g = graded.groupby("ev_bucket", observed=False).agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
+                    g["hit%"] = (g["hits"]/g["n"]*100).round(1)
+                    st.bar_chart(g["hit%"])
+                    st.dataframe(g, use_container_width=True)
+                # Remaining breakdowns
+                for title, col in [("By odds bucket","bucket"),("By ending","end"),("By volatility","vol"),("By decision","decision")]:
                     if col not in graded.columns: continue
                     st.subheader(title)
                     g = graded.groupby(col).agg(n=("result","count"), hits=("result", lambda s: (s=="hit").sum()))
