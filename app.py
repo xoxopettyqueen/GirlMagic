@@ -17,35 +17,35 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=Oswald:wght@500&display=swap');
-.stApp{background:#0B0B0F;background-image:radial-gradient(circle at 20% 30%,rgba(255,77,166,.04) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(155,95,255,.04) 0%,transparent 50%);color:#fff;font-family:'Inter',sans-serif}
-.hero{background:linear-gradient(90deg,#FF4DA6,#9B5FFF,#5E4AE3);border-radius:24px;padding:18px 22px;margin-bottom:14px;color:#fff;box-shadow:0 0 24px rgba(0,0,0,.6)}
-.hero h1{margin:0;font-size:1.7rem;font-weight:700;font-family:'Playfair Display',serif;text-shadow:0 0 12px rgba(255,77,166,.7);animation:shimmerText 3s ease-in-out infinite}
-.hero p{margin:4px 0 0;opacity:.85;font-size:.78rem;color:#F5E9FF;font-style:italic}
-@keyframes shimmerText{0%{text-shadow:0 0 8px rgba(255,77,166,.4)}50%{text-shadow:0 0 16px rgba(255,77,166,.9)}100%{text-shadow:0 0 8px rgba(255,77,166,.4)}}
-button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF4DA6,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:600!important;box-shadow:0 0 16px rgba(255,77,166,.7)!important;color:#fff!important}
-button[kind="primary"]:hover, .stButton > button[kind="primary"]:hover{box-shadow:0 0 20px rgba(255,77,166,.9)!important}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&family=Pacifico&display=swap');
+.stApp{background:#121212!important;background-image:radial-gradient(circle at 20% 30%,rgba(255,62,191,.08) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(199,125,255,.08) 0%,transparent 50%)!important;color:#fff!important;font-family:'Inter',sans-serif!important}
+.hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:24px;padding:18px 22px;margin-bottom:14px;color:#fff;box-shadow:0 0 30px rgba(255,62,191,.4);animation:shimmerText 5s ease-in-out infinite}
+.hero h1{margin:0;font-size:1.7rem;font-weight:700;font-family:'Playfair Display',serif;text-shadow:0 0 12px rgba(255,62,191,.8)}
+.hero p{margin:4px 0 0;opacity:.9;font-size:.85rem;color:#F5E9FF;font-family:'Pacifico',cursive}
+@keyframes shimmerText{0%,100%{filter:brightness(1)}50%{filter:brightness(1.2)}}
+button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF3EBF,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:700!important;box-shadow:0 0 20px rgba(255,62,191,.7)!important;color:#fff!important;padding:12px 24px!important}
+button[kind="primary"]:hover, .stButton > button[kind="primary"]:hover{box-shadow:0 0 30px rgba(255,62,191,.9)!important;transform:scale(1.02)}
 .stTabs [data-baseweb="tab-list"]{gap:8px}
-.stTabs [data-baseweb="tab"]{background:#14141A;border-radius:999px;padding:6px 14px;color:#CBA6F7}
-.stTabs [aria-selected="true"]{background:linear-gradient(90deg,#FF4DA6,#9B5FFF)!important;color:#fff!important}
-.card{background:#14141A;border:1px solid #262633;border-radius:16px;padding:12px 14px;margin-bottom:12px;position:relative;transition:box-shadow .2s,transform .2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.8)}
-.card.take-card{border-color:#FF4DA6;box-shadow:0 0 22px rgba(255,77,166,.6);animation:takePulse 3s ease-in-out infinite}@keyframes takePulse{0%,100%{box-shadow:0 0 18px rgba(255,77,166,.4)}50%{box-shadow:0 0 28px rgba(255,77,166,.8)}}
+.stTabs [data-baseweb="tab"]{background:#1a1a1a;border-radius:999px;padding:6px 14px;color:#C77DFF;border:1px solid #C77DFF}
+.stTabs [aria-selected="true"]{background:linear-gradient(90deg,#FF3EBF,#C77DFF)!important;color:#fff!important;border-color:#FF3EBF!important;box-shadow:0 0 12px rgba(255,62,191,.5)}
+.card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;padding:12px 14px;margin-bottom:12px;position:relative;transition:box-shadow .2s,transform .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.8)}
+.card.take-card{border-color:#FF3EBF;box-shadow:0 0 22px rgba(255,62,191,.6);animation:takePulse 3s ease-in-out infinite}
+@keyframes takePulse{0%,100%{box-shadow:0 0 18px rgba(255,62,191,.4)}50%{box-shadow:0 0 32px rgba(255,62,191,.9)}}
 .player{font-size:1.05rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
-.meta{color:#B3B3C3;font-size:.68rem;margin:2px 0 6px;font-style:italic}
-.prop{font-size:.9rem;font-weight:600;color:#FF4DA6;margin-bottom:6px;text-transform:uppercase}
+.meta{color:#aaa;font-size:.68rem;margin:2px 0 6px}
+.prop{font-size:.9rem;font-weight:600;color:#FF3EBF;margin-bottom:6px;text-transform:uppercase}
 .books{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
-.bk{background:#0F0F14;border:1px solid #262633;border-radius:999px;padding:4px 8px;text-align:center;min-width:60px;font-size:.7rem;font-weight:600;font-family:'Oswald',sans-serif}
-.bk.best{border-color:#FF4DA6;box-shadow:0 0 10px rgba(255,77,166,.7)}
-.bk span{display:block;font-size:.55rem;color:#CBA6F7}
-.tag{display:inline-block;background:rgba(203,166,247,.18);color:#F5E9FF;border:1px solid rgba(203,166,247,.6);border-radius:999px;padding:2px 8px;font-size:.6rem;font-weight:600;margin:2px 3px 0 0}
+.bk{background:#0f0f0f;border:1px solid #333;border-radius:999px;padding:4px 8px;text-align:center;min-width:60px;font-size:.7rem;font-weight:600}
+.bk.best{border-color:#FF3EBF;box-shadow:0 0 10px rgba(255,62,191,.7)}
+.tag{display:inline-block;background:rgba(199,125,255,.18);color:#F5E9FF;border:1px solid rgba(199,125,255,.6);border-radius:999px;padding:2px 8px;font-size:.6rem;font-weight:600;margin:2px 3px 0 0}
 .decision{display:inline-block;border-radius:999px;padding:4px 12px;font-size:.72rem;font-weight:700;margin-top:6px}
-.take{background:linear-gradient(90deg,#FF4DA6,#FF7AC4);color:#fff;box-shadow:0 0 14px rgba(255,77,166,.7)}
-.lean{background:#9B5FFF;color:#fff}
-.pass{background:#4b5563;color:#fff}
-.why{font-size:.66rem;color:#B3B3C3;margin-top:6px}
-.why b{color:#FF4DA6}
-.take-tag{position:absolute;top:8px;right:10px;font-size:.58rem;letter-spacing:.12em;color:#FF4DA6;font-weight:700;text-transform:uppercase}
+.take{background:linear-gradient(90deg,#FF3EBF,#FF7AC4);color:#fff;box-shadow:0 0 14px rgba(255,62,191,.7)}
+.lean{background:#C77DFF;color:#fff}
+.pass{background:#444;color:#fff}
+.why{font-size:.66rem;color:#aaa;margin-top:6px}
+.why b{color:#FF3EBF}
+.take-tag{position:absolute;top:8px;right:10px;font-size:.58rem;letter-spacing:.12em;color:#FF3EBF;font-weight:700;text-transform:uppercase}
 </style>
 """, unsafe_allow_html=True)
 
@@ -429,7 +429,7 @@ def main():
     if st.session_state.get("fetched"):
         tracked = st.session_state.get("last_tracked", 0)
         dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · books {st.session_state.get('debug_books',0)} · markets {st.session_state.get('debug_markets',0)} · plays {st.session_state.get('debug_plays',0)}"
-        st.caption(f"Board dropped @ {st.session_state['fetched']} — {len(cards)} props live and chaotic 💅 Tracking edges like a mad scientist.")
+        st.caption(f"Board dropped @ {st.session_state['fetched']} — {len(cards)} props live and feral 🔥 Tracking edges like a mad scientist.")
 
 
     tab_board, tab_tracker, tab_how = st.tabs(["📊 Board","🔒 Tracker","💖 How It Works"])
@@ -470,7 +470,7 @@ def main():
             status = "💅 Balanced Chaos — Edges exist, pick your battles, queen."
             mood = "Balanced Chaos"
         else:
-            status = "🥶 Cold Board — Books snuggled up tight. Let them sleep."
+            status = "🥶 Cold Board — Books snuggled up tight. Let them nap."
             mood = "Cold Board"
         st.markdown(f"**TAKE Density: {density:.1f}%** · {status}")
         if density > 20:
@@ -600,7 +600,7 @@ def main():
             }
             st.dataframe(df.rename(columns=rename), use_container_width=True, hide_index=True)
             if graded.empty:
-                st.caption("Chaos still in the oven 🔥 — results coming hot.")
+                st.caption("Chaos still in the oven 🔥 — results coming hot. Chaos cooked 🔥 — see what hit.")
             else:
                 # Movement Hit Rate
                 if "move" in graded.columns:
