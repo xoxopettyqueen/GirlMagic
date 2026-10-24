@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Odds Filter + Card Score
-Glossary is its own tab. Odds range filter. Score on TAKE cards.
+Girl Magic Odds 2.0 — Score Fixed
+TAKE cards now show a real Score number.
 """
 
 import streamlit as st
@@ -165,12 +165,12 @@ def plain_reason(c):
         return f"Books disagree. {bk} is the longest."
     return "Tight. Skip."
 
-def card_score(c):
-    """Simple 1-10 style score for TAKE cards."""
-    tev = c.get("true_ev") or 0
-    spike = c.get("spike") or 0
-    base = max(0, min(10, (tev * 0.4) + (spike * 3)))
-    return round(base, 1)
+def card_score(true_ev, spike):
+    """Returns a 1–10 style score. Always returns a number."""
+    tev = true_ev or 0
+    sp = spike or 0
+    raw = (max(0, tev) * 0.35) + (sp * 4)
+    return round(max(1.0, min(10.0, raw)), 1)
 
 def normalize_book(key):
     k = str(key or "").lower()
@@ -314,6 +314,7 @@ def best_cards(plays, weights=None):
             tags.append("In range")
         else:
             tags.append("Outside range")
+        score = card_score(true_ev, signals.get("spike"))
         cards.append({
             **best, "book_prices": book_prices, **signals, "tags": tags,
             "decision": decision,
@@ -322,7 +323,7 @@ def best_cards(plays, weights=None):
             "one_sided": True,
             "petty_range_match": petty,
             "devig_method": "multiplicative",
-            "score": card_score({**signals, "true_ev": true_ev}),
+            "score": score,
         })
     cards.sort(key=lambda x: (-(x.get("true_ev") or -999), -x.get("spike", 0)))
     return cards
@@ -494,7 +495,8 @@ def main():
             if not c.get("petty_range_match") and not simple_mode:
                 card_cls += " dimmed"
             take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
-            score_html = f'<div class="score">Score {c.get("score", "—")}</div>' if c.get("decision") == "TAKE" else ""
+            score_val = c.get("score")
+            score_html = f'<div class="score">Score {score_val}</div>' if c.get("decision") == "TAKE" and score_val is not None else ""
             html = (
                 f'<div class="{card_cls}">{take_tag}'
                 f'<div class="player">{c["player"]}</div>'
