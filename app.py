@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Clean Chaos
-Tracker only shows useful columns. Glossary and Softness stay styled.
+Girl Magic Odds 2.0 — Styled Tracker
+Tracker matches the rest of the app instead of looking like a raw dataframe.
 """
 
 import streamlit as st
@@ -42,6 +42,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .glossary{font-size:.74rem;color:#e8e0f0;margin-top:20px;padding:14px 16px;background:linear-gradient(180deg,#121218 0%,#0e0e14 100%);border-radius:12px;border:1px solid #2a2a33;line-height:1.6}
 .glossary strong{color:#FF3EBF;font-weight:700}
 .softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
+.tracker-wrap{background:#121218;border:1px solid #2a2a33;border-radius:12px;padding:12px;margin:10px 0}
 </style>
 """, unsafe_allow_html=True)
 
@@ -516,17 +517,15 @@ def main():
             st.info("Nothing locked yet.")
         else:
             df = pd.DataFrame(ledger)
-            keep = [
-                "ts", "player", "prop", "line", "price", "book",
-                "event", "true_ev", "fair_prob", "decision",
-                "petty_range_match", "result", "clv"
-            ]
+            keep = ["ts", "player", "prop", "line", "price", "book", "event", "true_ev", "fair_prob", "decision", "petty_range_match", "result", "clv"]
             existing = [c for c in keep if c in df.columns]
-            df = df[existing]
+            df = df[existing].fillna("—")
             finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
             hits = (finished["result"] == "hit").sum() if not finished.empty else 0
             st.markdown(f"**You’ve locked {len(df)} plays.** {len(finished)} finished. {hits} hit.")
+            st.markdown('<div class="tracker-wrap">', unsafe_allow_html=True)
             st.dataframe(df, use_container_width=True, hide_index=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             render_softness(sharp)
         st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
 
