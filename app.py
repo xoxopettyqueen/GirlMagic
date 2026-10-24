@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Grouped by Game + Manual Results
-Board ordered by matchup. Tracker lets you mark hit/miss.
+Girl Magic Odds 2.0 — Auto Grade NBA
+Board grouped by game. Tracker auto-fills hit/miss for finished NBA games.
 """
 
 import streamlit as st
@@ -199,6 +199,85 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
+def auto_grade_nba(ledger):
+    """Fill result for locked NBA plays using ESPN box scores."""
+    try:
+        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=10)
+        if r.status_code != 200:
+            return ledger
+        data = r.json()
+    except:
+        return ledger
+
+    finished = []
+    for event in data.get("events", []):
+        status = (event.get("status", {}).get("type", {}) or {}).get("name", "")
+        if status not in ("STATUS_FINAL", "STATUS_FULL_TIME"):
+            continue
+        finished.append(event.get("id"))
+
+    if not finished:
+        return ledger
+
+    updated = False
+    for row in ledger:
+        if row.get("sport") != "NBA" or row.get("result") is not None:
+            continue
+        player = (row.get("player") or "").lower()
+        prop = row.get("prop")
+        line = row.get("line")
+        if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
+            continue
+
+        for game_id in finished:
+            try:
+                box = requests.get(
+                    f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}",
+                    timeout=8
+                )
+                if box.status_code != 200:
+                    continue
+                box_data = box.json()
+            except:
+                continue
+
+            for team in box_data.get("boxscore", {}).get("players", []):
+                stats_list = team.get("statistics", [{}])
+                if not stats_list:
+                    continue
+                for athlete in stats_list[0].get("athletes", []):
+                    name = (athlete.get("athlete", {}).get("displayName") or "").lower()
+                    if player not in name and name not in player:
+                        continue
+                    stats = athlete.get("stats", [])
+                    try:
+                        reb = float(stats[4]) if len(stats) > 4 else 0
+                        ast = float(stats[5]) if len(stats) > 5 else 0
+                        pts = float(stats[11]) if len(stats) > 11 else 0
+                    except:
+                        continue
+
+                    actual = None
+                    if prop == "Assists":
+                        actual = ast
+                    elif prop == "Points":
+                        actual = pts
+                    elif prop == "Rebounds":
+                        actual = reb
+                    elif prop == "DoubleDouble":
+                        actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
+
+                    if actual is not None:
+                        row["result"] = "hit" if actual > line else "miss"
+                        updated = True
+                        break
+            if row.get("result"):
+                break
+
+    if updated:
+        save_ledger(ledger)
+    return ledger
+
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
     try:
@@ -354,7 +433,6 @@ def best_cards(plays, weights=None):
             "devig_method": "multiplicative",
             "score": score,
         })
-    # Sort by game then by True EV
     cards.sort(key=lambda x: (x.get("event", ""), -(x.get("true_ev") or -999)))
     return cards
 
@@ -508,7 +586,6 @@ def main():
 
         st.markdown(f"**{len(filtered)} plays ready.**")
 
-        # Group by game
         by_game = defaultdict(list)
         for c in filtered:
             by_game[c.get("event", "Unknown")].append(c)
@@ -604,6 +681,7 @@ def main():
 
     with tab_tracker:
         ledger = load_ledger()
+        ledger = auto_grade_nba(ledger)
         sharp = load_sharpness()
         if st.button("Wipe the slate"):
             save_ledger([])
@@ -621,23 +699,6 @@ def main():
             st.markdown('<div class="tracker-wrap">', unsafe_allow_html=True)
             st.dataframe(df, use_container_width=True, hide_index=True)
             st.markdown('</div>', unsafe_allow_html=True)
-
-            st.markdown("### Mark Results")
-            for idx, row in df.iterrows():
-                c1, c2, c3 = st.columns([3, 1, 1])
-                with c1:
-                    st.caption(f"{row.get('player')} {row.get('prop')} {row.get('line')} @ {row.get('book')}")
-                with c2:
-                    if st.button("Hit", key=f"hit_{idx}"):
-                        ledger[idx]["result"] = "hit"
-                        save_ledger(ledger)
-                        st.rerun()
-                with c3:
-                    if st.button("Miss", key=f"miss_{idx}"):
-                        ledger[idx]["result"] = "miss"
-                        save_ledger(ledger)
-                        st.rerun()
-
             render_softness(sharp)
 
     with tab_glossary:
