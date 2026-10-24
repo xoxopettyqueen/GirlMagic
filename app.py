@@ -18,7 +18,7 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=Oswald:wght@500&display=swap');
-.stApp{background:#0B0B0F;color:#fff;font-family:'Inter',sans-serif}
+.stApp{background:#0B0B0F;background-image:radial-gradient(circle at 20% 30%,rgba(255,77,166,.04) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(155,95,255,.04) 0%,transparent 50%);color:#fff;font-family:'Inter',sans-serif}
 .hero{background:linear-gradient(90deg,#FF4DA6,#9B5FFF,#5E4AE3);border-radius:24px;padding:18px 22px;margin-bottom:14px;color:#fff;box-shadow:0 0 24px rgba(0,0,0,.6)}
 .hero h1{margin:0;font-size:1.7rem;font-weight:700;font-family:'Playfair Display',serif;text-shadow:0 0 12px rgba(255,77,166,.7);animation:shimmerText 3s ease-in-out infinite}
 .hero p{margin:4px 0 0;opacity:.85;font-size:.78rem;color:#F5E9FF;font-style:italic}
@@ -30,7 +30,7 @@ button[kind="primary"]:hover, .stButton > button[kind="primary"]:hover{box-shado
 .stTabs [aria-selected="true"]{background:linear-gradient(90deg,#FF4DA6,#9B5FFF)!important;color:#fff!important}
 .card{background:#14141A;border:1px solid #262633;border-radius:16px;padding:12px 14px;margin-bottom:12px;position:relative;transition:box-shadow .2s,transform .2s}
 .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.8)}
-.card.take-card{border-color:rgba(255,77,166,.7);box-shadow:0 0 18px rgba(255,77,166,.4)}
+.card.take-card{border-color:#FF4DA6;box-shadow:0 0 22px rgba(255,77,166,.6);animation:takePulse 3s ease-in-out infinite}@keyframes takePulse{0%,100%{box-shadow:0 0 18px rgba(255,77,166,.4)}50%{box-shadow:0 0 28px rgba(255,77,166,.8)}}
 .player{font-size:1.05rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
 .meta{color:#B3B3C3;font-size:.68rem;margin:2px 0 6px;font-style:italic}
 .prop{font-size:.9rem;font-weight:600;color:#FF4DA6;margin-bottom:6px;text-transform:uppercase}
@@ -332,7 +332,7 @@ def odds_bucket(price):
 
 def main():
     restore_browser_ledger()
-    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds Only. Chaos Powered. Plus-Money Forever.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds Only. Chaos Always. Plus-Money or Bust 💅.</p></div>', unsafe_allow_html=True)
     st.markdown("""<div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px;font-size:.65rem;color:#CBA6F7;">
     <span style="background:#14141A;border:1px solid #FF4DA6;border-radius:999px;padding:3px 8px;">1. Pull the chaos</span>
     <span style="background:#14141A;border:1px solid #9B5FFF;border-radius:999px;padding:3px 8px;">2. Scan TAKEs</span>
