@@ -304,6 +304,12 @@ def odds_bucket(price):
 
 def main():
     st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds Only. Chaos Powered. Plus-Money Forever.</p></div>', unsafe_allow_html=True)
+    st.markdown("""<div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px;font-size:.65rem;color:#CBA6F7;">
+    <span style="background:#14141A;border:1px solid #FF4DA6;border-radius:999px;padding:3px 8px;">1. Pull the chaos</span>
+    <span style="background:#14141A;border:1px solid #9B5FFF;border-radius:999px;padding:3px 8px;">2. Scan TAKEs</span>
+    <span style="background:#14141A;border:1px solid #5E4AE3;border-radius:999px;padding:3px 8px;">3. Tracker learns</span>
+    <span style="background:#14141A;border:1px solid #F5C451;border-radius:999px;padding:3px 8px;">4. See what cooked</span>
+    </div>""", unsafe_allow_html=True)
 
     api_key = st.secrets.get("ODDS_API_KEY","") or st.text_input("Odds API Key", type="password")
     if not api_key:
@@ -314,7 +320,7 @@ def main():
     with c1:
         sport = st.radio("Lane", ["NBA 🔮","NFL 🔥"], horizontal=True)
     with c2:
-        if st.button("Fetch the Board 💅", type="primary", use_container_width=True):
+        if st.button("Pull the chaos 💅", type="primary", use_container_width=True, help="Pull the latest edges. Plus-money only."):
             sport_key = "basketball_nba" if "NBA" in str(sport) else "americanfootball_nfl"
             markets = "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double" if "NBA" in str(sport) else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
             with st.spinner("Cooking your edges… hold on queen."):
