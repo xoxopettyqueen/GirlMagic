@@ -361,6 +361,7 @@ def odds_bucket(price):
 def main():
     restore_browser_ledger()
     st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds Only. Chaos Always. Plus-Money or Bust 💅.</p></div>', unsafe_allow_html=True)
+    fair_ev_on = st.toggle("Fair EV Engine 🐝", value=True, help="Blend weighted books for True EV")
     st.markdown("""<div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px;font-size:.65rem;color:#CBA6F7;">
     <span style="background:#14141A;border:1px solid #FF4DA6;border-radius:999px;padding:3px 8px;">1. Pull the chaos</span>
     <span style="background:#14141A;border:1px solid #9B5FFF;border-radius:999px;padding:3px 8px;">2. Scan TAKEs</span>
@@ -424,7 +425,7 @@ def main():
                 st.session_state["debug_books"] = book_count
                 st.session_state["debug_markets"] = market_count
                 st.session_state["debug_sample"] = sample
-                cards = best_cards(all_plays, live_weights)
+                cards = best_cards(all_plays, live_weights if fair_ev_on else None)
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
                 st.session_state["sport"] = sport
