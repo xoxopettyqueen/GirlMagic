@@ -473,6 +473,21 @@ def main():
                     st.rerun()
                 else:
                     st.info("No finished games ready to grade yet. Try again after tip-off.")
+        # Export / import so the ledger survives restarts
+        col_a, col_b = st.columns(2)
+        with col_a:
+            if ledger:
+                st.download_button("Download Ledger", json.dumps(ledger, indent=2), "odds_ledger.json", "application/json")
+        with col_b:
+            up = st.file_uploader("Upload Ledger", type="json", key="ledger_up")
+            if up:
+                try:
+                    imported = json.loads(up.read())
+                    if isinstance(imported, list):
+                        save_ledger(imported)
+                        st.toast(f"Imported {len(imported)} plays")
+                        st.rerun()
+                except: st.error("Bad file")
         if not ledger:
             st.info("Your reads. Your chaos. Your hit rates. Lock a play from the Board to start.")
         else:
