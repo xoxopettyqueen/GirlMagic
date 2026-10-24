@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Auto Track +300 or Higher
-Only locks longer-priced TAKEs. Board still shows everything.
+Girl Magic Odds 2.0 — Softness Bar Chart
+Tracker has a visual bar chart for book softness instead of just a table.
 """
 
 import streamlit as st
@@ -444,10 +444,30 @@ def render_softness(sharp):
         pct = round((soft / total * 100), 1) if total else 0
         props = data.get("props", {})
         top_prop = max(props, key=props.get) if props else "—"
-        rows.append({"Book": bk, "Soft Count": soft, "Total": total, "% Soft": pct, "Top Soft Prop": top_prop})
-    if rows:
-        df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
-        st.markdown('<div class="softness-title">Book Softness</div>', unsafe_allow_html=True)
+        rows.append({
+            "Book": BOOK_FULL.get(bk, bk),
+            "Soft Count": soft,
+            "Total Props": total,
+            "% Soft": pct,
+            "Softest Prop": top_prop
+        })
+    if not rows: return
+
+    df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
+    st.markdown('<div class="softness-title">Book Softness</div>', unsafe_allow_html=True)
+    st.caption("How often each book is the longest price on a TAKE. Higher % = softer book.")
+
+    softest = df.iloc[0]
+    st.markdown(
+        f"**Softest right now:** {softest['Book']} "
+        f"({softest['% Soft']}% of the time on {softest['Softest Prop']})."
+    )
+
+    # Bar chart
+    chart_df = df.set_index("Book")[["% Soft"]]
+    st.bar_chart(chart_df, use_container_width=True, color="#FF3EBF")
+
+    with st.expander("Full table"):
         st.dataframe(df, use_container_width=True, hide_index=True)
 
 def main():
@@ -500,7 +520,6 @@ def main():
             existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
             added = 0
             for c in cards:
-                # Only auto-track TAKEs at +300 or higher
                 if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 300:
                     key = (c["player"], c["prop"], c["line"], c["price"])
                     if key not in existing:
