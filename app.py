@@ -349,7 +349,7 @@ def main():
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
                 st.session_state["sport"] = sport
-                # Auto-track TAKE plays
+                # Auto-track TAKE plays — only append, never clear
                 ledger = load_ledger()
                 existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
                 added = 0
@@ -370,12 +370,11 @@ def main():
                             })
                             existing.add(key)
                             added += 1
+                # Always save so the file stays current
+                save_ledger(ledger)
+                st.session_state["last_tracked"] = added
                 if added:
-                    save_ledger(ledger)
-                    st.session_state["last_tracked"] = added
                     st.toast(f"Auto-tracked {added} TAKE plays")
-                else:
-                    st.session_state["last_tracked"] = 0
 
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
