@@ -362,6 +362,7 @@ def main():
     restore_browser_ledger()
     st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds Only. Chaos Always. Plus-Money or Bust 💅.</p></div>', unsafe_allow_html=True)
     fair_ev_on = st.toggle("Fair EV Engine 🐝", value=True, help="Blend weighted books for True EV")
+    simple_mode = st.toggle("Simple Mode 💅", value=False, help="Show only the good ones.")
     st.markdown("""<div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px;font-size:.65rem;color:#CBA6F7;">
     <span style="background:#14141A;border:1px solid #FF4DA6;border-radius:999px;padding:3px 8px;">1. Pull the chaos</span>
     <span style="background:#14141A;border:1px solid #9B5FFF;border-radius:999px;padding:3px 8px;">2. Scan TAKEs</span>
@@ -472,7 +473,7 @@ def main():
 
     with tab_board:
         if not cards:
-            st.info("Hit Fetch, baddie. The edges are waiting.")
+            st.info("No edges right now. Books are tight. Try again in a few minutes or switch sports." if simple_mode else "Hit Fetch, baddie. The edges are waiting.")
             return
         f1,f2,f3 = st.columns(3)
         with f1:
@@ -487,6 +488,8 @@ def main():
         tag_f = st.multiselect("Tags", all_tags, default=[], help="Filter by Solo, Snap, Surge, Cluster, etc. Leave empty to show all.")
 
         filtered = [c for c in cards if c.get("prop") in prop_f and c.get("decision") in dec_f and int(c.get("price",0)) >= min_odds and (c.get("true_ev") or -999) >= min_true_ev]
+        if simple_mode:
+            filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
         if tag_f:
             filtered = [c for c in filtered if any(t in c.get("tags",[]) for t in tag_f)]
         filtered.sort(key=lambda x: (-x.get("spike",0), -x.get("ev_gap",0)))
@@ -534,6 +537,8 @@ def main():
                 vol_icon = "⚡" if c.get("vol")=="High" else "✨" if c.get("vol")=="Medium" else ""
                 move_icon = "💥" if c.get("move")=="Snap" else "🌙" if "Solo" in str(c.get("tags",[])) else ""
                 vibe = "Run it." if c.get("decision")=="TAKE" else "Cute, but not worth the chaos." if c.get("decision")=="LEAN" else "Dead energy. Skip."
+                if simple_mode and c.get("decision")=="TAKE":
+                    vibe = "This book is paying way more than the others and the fair price says it's a good bet."
                 html = (
                     f'<div class="{card_cls}">'
                     f'{take_tag}'
