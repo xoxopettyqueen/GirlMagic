@@ -431,12 +431,17 @@ def main():
             weighted += (ev * 0.5 + spike * 0.3) * vw
         density = (weighted / len(filtered) * 100) if filtered else 0
         if density > 25:
-            status = "Slate is hot — Books are panicking. Run it."
+            status = "🔥 Hot Board — Books are panicking. Run it."
+            mood = "Hot Board"
         elif density >= 10:
-            status = "Balanced chaos — Edges exist, but pick your battles."
+            status = "💅 Balanced Chaos — Edges exist, pick your battles."
+            mood = "Balanced Chaos"
         else:
-            status = "Cold board — Books are comfy. Skip or wait."
+            status = "❄️ Cold Board — Books are comfy. Skip or wait."
+            mood = "Cold Board"
         st.markdown(f"**TAKE Density: {density:.1f}%** · {status}")
+        if density > 20:
+            st.success(f"⚡ Edge Alert — TAKE Density spiked to {density:.0f}%. Chaos is live.")
         st.markdown(f"**{len(filtered)}** props · TAKE = big gap + movement. LEAN = softer. PASS = tight.")
 
         if not filtered:
@@ -540,6 +545,14 @@ def main():
                 <div style="font-size:.7rem;color:#CBA6F7;">TAKEs</div>
                 <div style="font-size:1.4rem;font-weight:700;color:#fff;">{takes}</div></div>""", unsafe_allow_html=True)
             st.markdown(f"**{takes} TAKEs | {hits} HITs | {misses} MISSes → Hit Rate {hit_rate:.0f}% 💥**")
+            # Chaos Meter
+            chaos_score = min(100, density + (w_hit * 0.3))
+            meter_color = "#FF4DA6" if chaos_score > 50 else "#9B5FFF" if chaos_score > 25 else "#4b5563"
+            st.markdown(f"""<div style="margin:8px 0;">
+            <div style="font-size:.75rem;color:#CBA6F7;margin-bottom:4px;">Chaos Meter</div>
+            <div style="background:#262633;border-radius:999px;height:10px;overflow:hidden;">
+            <div style="width:{chaos_score:.0f}%;height:100%;background:{meter_color};border-radius:999px;"></div>
+            </div></div>""", unsafe_allow_html=True)
             # Volatility mix
             if "vol" in df.columns and not df.empty:
                 vol_counts = df["vol"].value_counts()
