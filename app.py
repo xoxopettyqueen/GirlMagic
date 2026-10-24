@@ -430,9 +430,7 @@ def main():
         tracked = st.session_state.get("last_tracked", 0)
         dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · books {st.session_state.get('debug_books',0)} · markets {st.session_state.get('debug_markets',0)} · plays {st.session_state.get('debug_plays',0)}"
         st.caption(f"Board dropped @ {st.session_state['fetched']} — {len(cards)} props live and chaotic 💅 Tracking edges like a mad scientist.")
-        sample = st.session_state.get("debug_sample") or []
-        if sample:
-            st.caption("Sample: " + " | ".join(sample))
+
 
     tab_board, tab_tracker, tab_how = st.tabs(["📊 Board","🔒 Tracker","💖 How It Works"])
 
@@ -639,27 +637,33 @@ def main():
         st.markdown("### How It Works")
         c1, c2, c3 = st.columns(3)
         with c1:
-            st.markdown("**1. Fetch Board**")
-            st.caption("Pre-game props only.")
+            st.markdown("""<div style="background:linear-gradient(135deg,#FF4DA6,#9B5FFF);border-radius:16px;padding:14px;color:#fff;">
+            <div style="font-size:1.3rem;">🎯</div>
+            <div style="font-weight:700;margin-top:6px;">1. Pull the Chaos</div>
+            <div style="font-size:.75rem;opacity:.9;">Only fresh edges — no stale chaos allowed 🔥</div></div>""", unsafe_allow_html=True)
         with c2:
-            st.markdown("**2. Scan for TAKE**")
-            st.caption("Pink cards with big EV gap and spike.")
+            st.markdown("""<div style="background:linear-gradient(135deg,#9B5FFF,#5E4AE3);border-radius:16px;padding:14px;color:#fff;">
+            <div style="font-size:1.3rem;">💖</div>
+            <div style="font-weight:700;margin-top:6px;">2. Scan for TAKE</div>
+            <div style="font-size:.75rem;opacity:.9;">Pink cards with big EV gap and spike — that's your money move.</div></div>""", unsafe_allow_html=True)
         with c3:
-            st.markdown("**3. Lock**")
-            st.caption("Tracker learns what cashes.")
+            st.markdown("""<div style="background:linear-gradient(135deg,#5E4AE3,#FF4DA6);border-radius:16px;padding:14px;color:#fff;">
+            <div style="font-size:1.3rem;">🔒</div>
+            <div style="font-weight:700;margin-top:6px;">3. Tracker Learns</div>
+            <div style="font-size:.75rem;opacity:.9;">Chaos never forgets what cashes.</div></div>""", unsafe_allow_html=True)
         st.markdown("### Glossary")
         st.markdown("""
-- **EV gap**: How disrespectful the longest odds are compared to the rest.
-- **Spike**: The chaos score. EV + movement + volatility.
-- **Volatility**: How shaky the books are. High vol = books nervous.
-- **Solo**: One book is out here alone. Rebels = edges.
-- **Cluster**: Books holding hands. No edge.
-- **Snap**: Sudden jump. Someone flinched.
-- **Surge**: Strong move. Energy building.
-- **Freeze**: No movement. Dead energy.
-- **TAKE**: Run it. This is your play.
-- **LEAN**: Cute but optional.
-- **PASS**: Skip. No edge.
+- **EV gap**: How disrespectful the longest odds are 💅
+- **Spike**: The chaos score — EV × movement × volatility ⚡
+- **Volatility**: How nervous the books are — high vol = they're sweating.
+- **Solo**: One book standing alone like a rebel queen 👑
+- **Cluster**: Books holding hands — no edge 🩶
+- **Snap**: Sudden jump — someone flinched 💥
+- **Surge**: Strong move — energy building 🔥
+- **Freeze**: No movement — dead vibes 🥶
+- **TAKE**: Run it. This is your play 💖
+- **LEAN**: Cute but optional 💜
+- **PASS**: Skip it. No edge 🩶
         """)
 
 
