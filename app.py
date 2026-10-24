@@ -429,7 +429,7 @@ def main():
     if st.session_state.get("fetched"):
         tracked = st.session_state.get("last_tracked", 0)
         dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · books {st.session_state.get('debug_books',0)} · markets {st.session_state.get('debug_markets',0)} · plays {st.session_state.get('debug_plays',0)}"
-        st.caption(f"Board pulled at {st.session_state['fetched']} — fresh edges only · {len(cards)} props · Tracking your chaos in real time 💅")
+        st.caption(f"Board dropped @ {st.session_state['fetched']} — {len(cards)} props live and chaotic 💅 Tracking edges like a mad scientist.")
         sample = st.session_state.get("debug_sample") or []
         if sample:
             st.caption("Sample: " + " | ".join(sample))
@@ -466,13 +466,13 @@ def main():
             weighted += (ev * 0.5 + spike * 0.3) * vw
         density = (weighted / len(filtered) * 100) if filtered else 0
         if density > 25:
-            status = "🔥 Hot Board — Books are panicking. Run it."
+            status = "🔥 Hot Board — Books are panicking. Run it, baby."
             mood = "Hot Board"
         elif density >= 10:
-            status = "💅 Balanced Chaos — Edges exist, pick your battles."
+            status = "💅 Balanced Chaos — Edges exist, pick your battles, queen."
             mood = "Balanced Chaos"
         else:
-            status = "❄️ Cold Board — Books are comfy. Skip or wait."
+            status = "🥶 Cold Board — Books snuggled up tight. Let them sleep."
             mood = "Cold Board"
         st.markdown(f"**TAKE Density: {density:.1f}%** · {status}")
         if density > 20:
@@ -527,15 +527,15 @@ def main():
             save_ledger(ledger)
             st.toast(f"Auto-graded {graded_n} plays")
         # Plays stay in your browser. No download needed.
-        if st.button("Reset All Data 🧹"):
+        if st.button("Wipe the slate 🧹", help="Start fresh chaos."):
             save_ledger([])
             st.toast("Ledger cleared")
             st.rerun()
         if not ledger:
-            st.info("Games still cooking — results drop soon 🔥")
+            st.info("Chaos still in the oven 🔥 — results coming hot.")
         else:
             df = pd.DataFrame(ledger)
-            st.subheader("Your Reads. Your Chaos. Your Hit Rates.")
+            st.subheader("Your Reads. Your Chaos. Your Era 💖.")
             graded = df[df["result"].isin(["hit","miss"])]
             takes = len(df)
             hits = (graded["result"] == "hit").sum() if not graded.empty else 0
@@ -602,7 +602,7 @@ def main():
             }
             st.dataframe(df.rename(columns=rename), use_container_width=True, hide_index=True)
             if graded.empty:
-                st.caption("Games still cooking — results drop soon 🔥")
+                st.caption("Chaos still in the oven 🔥 — results coming hot.")
             else:
                 # Movement Hit Rate
                 if "move" in graded.columns:
