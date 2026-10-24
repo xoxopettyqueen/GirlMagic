@@ -85,21 +85,49 @@ def normalize_book(key):
     return k
 
 def load_ledger():
+    # Prefer browser localStorage if available, else session, else file
+    browser = st.session_state.get("_browser_ledger")
+    if browser is not None:
+        return browser
+    sess = st.session_state.get("ledger", [])
     file_data = []
     if LEDGER.exists():
         try:
             file_data = json.loads(LEDGER.read_text())
         except: file_data = []
-    sess = st.session_state.get("ledger", [])
-    # Keep whichever is longer so a cleared session doesn't wipe the file
     best = file_data if len(file_data) > len(sess) else sess
     st.session_state["ledger"] = best
     return best
 
 def save_ledger(rows):
     st.session_state["ledger"] = rows
+    st.session_state["_browser_ledger"] = rows
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
+    # Push to browser localStorage
+    st.components.v1.html(f"""
+    <script>
+    try {{
+        localStorage.setItem('gmo_ledger', {json.dumps(json.dumps(rows))});
+    }} catch(e) {{}}
+    </script>
+    """, height=0)
+
+def restore_browser_ledger():
+    # Pull from localStorage on first load
+    if "_browser_checked" in st.session_state:
+        return
+    st.session_state["_browser_checked"] = True
+    st.components.v1.html("""
+    <script>
+    try {
+        const data = localStorage.getItem('gmo_ledger');
+        if (data) {
+            window.parent.postMessage({type:'gmo_ledger', data: JSON.parse(data)}, '*');
+        }
+    } catch(e) {}
+    </script>
+    """, height=0)
 
 def auto_grade_nba(ledger):
     """Grade NBA plays using ESPN public box scores. No extra API key."""
@@ -303,6 +331,7 @@ def odds_bucket(price):
     return "+4000+"
 
 def main():
+    restore_browser_ledger()
     st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Odds Only. Chaos Powered. Plus-Money Forever.</p></div>', unsafe_allow_html=True)
     st.markdown("""<div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px;font-size:.65rem;color:#CBA6F7;">
     <span style="background:#14141A;border:1px solid #FF4DA6;border-radius:999px;padding:3px 8px;">1. Pull the chaos</span>
@@ -497,26 +526,11 @@ def main():
         if graded_n:
             save_ledger(ledger)
             st.toast(f"Auto-graded {graded_n} plays")
-        # Export / import so the ledger survives restarts
-        col_a, col_b, col_c = st.columns(3)
-        with col_a:
-            if ledger:
-                st.download_button("Save your slate 📂", json.dumps(ledger, indent=2), "odds_ledger.json", "application/json")
-        with col_b:
-            up = st.file_uploader("Reload past chaos 🔁", type="json", key="ledger_up")
-        with col_c:
-            if st.button("Reset All Data 🧹"):
-                save_ledger([])
-                st.toast("Ledger cleared")
-                st.rerun()
-            if up:
-                try:
-                    imported = json.loads(up.read())
-                    if isinstance(imported, list):
-                        save_ledger(imported)
-                        st.toast(f"Imported {len(imported)} plays")
-                        st.rerun()
-                except: st.error("Bad file")
+        # Plays stay in your browser. No download needed.
+        if st.button("Reset All Data 🧹"):
+            save_ledger([])
+            st.toast("Ledger cleared")
+            st.rerun()
         if not ledger:
             st.info("Games still cooking — results drop soon 🔥")
         else:
