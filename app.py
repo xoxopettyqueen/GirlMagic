@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Phase 2
-Detailed Mode + book sharpness + steam/lag + weak spots + CLV ready.
+Girl Magic Odds 2.0 — Phase 3
+Polish: persistent modes, compact density, richer reasons, cleaner visual balance.
 """
 
 import streamlit as st
@@ -17,24 +17,25 @@ st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wi
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&family=Pacifico&display=swap');
-.stApp{background:#0e0e12!important;color:#fff!important;font-family:'Inter',sans-serif!important}
-.hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:20px;padding:16px 20px;margin-bottom:12px;color:#fff;box-shadow:0 0 24px rgba(255,62,191,.35)}
-.hero h1{margin:0;font-size:1.55rem;font-weight:700;font-family:'Playfair Display',serif}
-.hero p{margin:3px 0 0;opacity:.9;font-size:.8rem;color:#F5E9FF;font-family:'Pacifico',cursive}
+.stApp{background:#0c0c10!important;color:#fff!important;font-family:'Inter',sans-serif!important}
+.hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:18px;padding:14px 18px;margin-bottom:10px;color:#fff;box-shadow:0 0 20px rgba(255,62,191,.3)}
+.hero h1{margin:0;font-size:1.45rem;font-weight:700;font-family:'Playfair Display',serif}
+.hero p{margin:2px 0 0;opacity:.9;font-size:.78rem;color:#F5E9FF;font-family:'Pacifico',cursive}
 button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF3EBF,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:700!important}
-.card{background:linear-gradient(180deg,#16161c 0%,#121218 100%);border:1px solid #2a2a33;border-radius:14px;padding:10px 12px;margin-bottom:10px;position:relative}
-.card.take-card{border-color:#FF3EBF;box-shadow:0 0 18px rgba(255,62,191,.55)}
-.card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 24px rgba(255,62,191,.8)}
-.player{font-size:1.08rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
-.meta{color:#999;font-size:.65rem;margin:1px 0 4px}
-.prop{font-size:.82rem;font-weight:600;color:#FF3EBF;margin-bottom:4px;text-transform:uppercase}
-.books{display:flex;flex-wrap:wrap;gap:3px;margin:4px 0}
-.bk{background:#0d0d12;border:1px solid #333;border-radius:999px;padding:3px 7px;text-align:center;min-width:52px;font-size:.65rem;font-weight:600}
-.bk.best{border-color:#FF3EBF;box-shadow:0 0 8px rgba(255,62,191,.6)}
-.true-ev{font-size:.8rem;font-weight:700;color:#FF3EBF;margin:3px 0}
-.why{font-size:.68rem;color:#ddd;margin-top:4px;line-height:1.3}
-.take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
-.tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
+.card{background:linear-gradient(180deg,#15151b 0%,#101014 100%);border:1px solid #2a2a33;border-radius:12px;padding:9px 11px;margin-bottom:8px;position:relative}
+.card.compact{padding:6px 8px;margin-bottom:6px}
+.card.take-card{border-color:#FF3EBF;box-shadow:0 0 14px rgba(255,62,191,.45)}
+.card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 20px rgba(255,62,191,.7)}
+.player{font-size:1.02rem;font-weight:700;margin:0;font-family:'Playfair Display',serif}
+.meta{color:#999;font-size:.62rem;margin:1px 0 3px}
+.prop{font-size:.78rem;font-weight:600;color:#FF3EBF;margin-bottom:3px;text-transform:uppercase}
+.books{display:flex;flex-wrap:wrap;gap:3px;margin:3px 0}
+.bk{background:#0d0d12;border:1px solid #333;border-radius:999px;padding:2px 6px;text-align:center;min-width:48px;font-size:.62rem;font-weight:600}
+.bk.best{border-color:#FF3EBF;box-shadow:0 0 6px rgba(255,62,191,.55)}
+.true-ev{font-size:.76rem;font-weight:700;color:#FF3EBF;margin:2px 0}
+.why{font-size:.66rem;color:#ddd;margin-top:3px;line-height:1.25}
+.take-tag{position:absolute;top:5px;right:7px;font-size:.52rem;letter-spacing:.08em;color:#FF3EBF;font-weight:700}
+.tag{display:inline-block;background:rgba(199,125,255,.12);color:#F5E9FF;border:1px solid rgba(199,125,255,.35);border-radius:999px;padding:1px 5px;font-size:.52rem;margin:1px 2px 0 0}
 </style>
 """, unsafe_allow_html=True)
 
@@ -97,10 +98,11 @@ def compute_true_ev(best_price, fair_prob):
 
 def plain_reason(c):
     tev = c.get("true_ev") or 0
+    bk = c.get("book", "")
     if c.get("decision") == "TAKE" and tev >= 3:
-        return "Strong edge. Books disagree and the fair price likes it."
+        return f"Strong edge. {bk} is hanging a soft number vs the blend."
     if c.get("decision") == "TAKE":
-        return "Books are paying more than the blend. Worth a look."
+        return f"Books disagree. {bk} is the longest."
     if c.get("decision") == "LEAN":
         return "Soft edge. Only if you already like it."
     return "Tight. Skip."
@@ -239,7 +241,6 @@ def best_cards(plays, weights=None):
         if signals.get("book_beh") == "Solo": tags.append("Solo")
         if signals.get("move") == "Snap": tags.append("Snap")
         if signals.get("vol") == "High": tags.append("Surge")
-        # Weak-spot / lag tag
         bk = best["book"]
         if bk in sharp and sharp[bk]["soft_count"] >= 3:
             tags.append(f"{bk} soft")
@@ -324,16 +325,28 @@ def main():
         if not cards:
             st.info("Hit **Pull the chaos**.")
             return
-        simple_mode = st.toggle("✨ Simple Mode (recommended)", value=True)
-        detailed = st.toggle("🔍 Detailed Mode", value=False)
+
+        col_a, col_b, col_c = st.columns(3)
+        with col_a:
+            simple_mode = st.toggle("✨ Simple Mode", value=st.session_state.get("simple_mode", True))
+            st.session_state["simple_mode"] = simple_mode
+        with col_b:
+            detailed = st.toggle("🔍 Detailed", value=st.session_state.get("detailed", False))
+            st.session_state["detailed"] = detailed
+        with col_c:
+            compact = st.toggle("Compact", value=st.session_state.get("compact", False))
+            st.session_state["compact"] = compact
+
         if simple_mode:
             filtered = [c for c in cards if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
             st.markdown("**Strongest edges only.**")
         else:
             filtered = cards
+
         if not filtered:
-            st.info("No strong edges right now.")
+            st.info("No strong edges right now. Books are tight.")
             return
+
         st.markdown(f"**{len(filtered)} plays ready.**")
 
         cols = st.columns(2)
@@ -344,7 +357,7 @@ def main():
                 for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
             )
             tags_html = "".join(f'<span class="tag">{t}</span>' for t in c.get("tags", []))
-            card_cls = "card"
+            card_cls = "card compact" if compact else "card"
             if c.get("decision") == "TAKE": card_cls += " take-card"
             if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
             take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
@@ -362,14 +375,14 @@ def main():
             with cols[i % 2]:
                 st.markdown(html, unsafe_allow_html=True)
                 if detailed:
-                    with st.expander("Why this card"):
-                        st.write(f"**True EV:** {c.get('true_ev')}% · Fair {c.get('fair_prob')}%")
-                        st.write(f"**EV Gap:** {c.get('ev_gap')}% · Spike {c.get('spike')}")
-                        st.write(f"**Vol / Move:** {c.get('vol')} / {c.get('move')}")
-                        st.write("**All books:**")
+                    with st.expander("Full breakdown"):
+                        st.write(f"**True EV:** {c.get('true_ev')}% (fair {c.get('fair_prob')}%)")
+                        st.write(f"**Gap / Spike:** {c.get('ev_gap')}% / {c.get('spike')}")
+                        st.write(f"**Vol / Move / Behavior:** {c.get('vol')} / {c.get('move')} / {c.get('book_beh')}")
+                        st.write("**Book prices:**")
                         st.json(c.get("book_prices", {}))
-                        if "soft" in str(c.get("tags")):
-                            st.caption("This book has been hanging soft numbers recently.")
+                        if any("soft" in str(t) for t in c.get("tags", [])):
+                            st.caption("This book has been soft recently on similar props.")
                 if st.button("Lock 🔒", key=f"lk_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                     ledger = load_ledger()
                     ledger.append({
@@ -394,13 +407,13 @@ def main():
             save_ledger([])
             st.rerun()
         if not ledger:
-            st.info("Nothing locked yet.")
+            st.info("Nothing locked yet. Pull the chaos and lock some plays.")
         else:
             df = pd.DataFrame(ledger)
             st.markdown(f"**You’ve locked {len(df)} plays.**")
             st.dataframe(df, use_container_width=True, hide_index=True)
             if sharp:
-                st.subheader("Book Sharpness (soft counts)")
+                st.subheader("Book Softness")
                 st.json(sharp)
 
 try:
