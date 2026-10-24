@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Auto Grade NBA
-Board grouped by game. Tracker auto-fills hit/miss for finished NBA games.
+Girl Magic Odds 2.0 — Auto Track +300 or Higher
+Only locks longer-priced TAKEs. Board still shows everything.
 """
 
 import streamlit as st
@@ -200,7 +200,6 @@ def save_ledger(rows):
     except: pass
 
 def auto_grade_nba(ledger):
-    """Fill result for locked NBA plays using ESPN box scores."""
     try:
         r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=10)
         if r.status_code != 200:
@@ -501,7 +500,8 @@ def main():
             existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
             added = 0
             for c in cards:
-                if c.get("decision") == "TAKE":
+                # Only auto-track TAKEs at +300 or higher
+                if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 300:
                     key = (c["player"], c["prop"], c["line"], c["price"])
                     if key not in existing:
                         ledger.append({
@@ -522,7 +522,7 @@ def main():
                         existing.add(key)
                         added += 1
             save_ledger(ledger)
-            if added: st.toast(f"Auto-tracked {added} TAKE plays")
+            if added: st.toast(f"Auto-tracked {added} TAKE plays (+300+)")
             st.toast("Weights auto-tuned")
 
     cards = st.session_state.get(f"cards_{current_sport}") or []
