@@ -334,6 +334,7 @@ def main():
                 all_plays = []
                 book_count = 0
                 market_count = 0
+                sample = []
                 for ev in target[:12]:
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                     if data:
@@ -341,10 +342,14 @@ def main():
                             book_count += 1
                             for m in b.get("markets") or []:
                                 market_count += 1
+                                for o in (m.get("outcomes") or [])[:3]:
+                                    if len(sample) < 5:
+                                        sample.append(f"{b.get('key')} {m.get('key')} {o.get('description')} {o.get('point')} @ {o.get('price')}")
                         all_plays.extend(parse_plays(data, sport))
                 st.session_state["debug_plays"] = len(all_plays)
                 st.session_state["debug_books"] = book_count
                 st.session_state["debug_markets"] = market_count
+                st.session_state["debug_sample"] = sample
                 cards = best_cards(all_plays)
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
@@ -381,6 +386,9 @@ def main():
         tracked = st.session_state.get("last_tracked", 0)
         dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · books {st.session_state.get('debug_books',0)} · markets {st.session_state.get('debug_markets',0)} · plays {st.session_state.get('debug_plays',0)}"
         st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · Auto-tracked {tracked} TAKE plays · {dbg}")
+        sample = st.session_state.get("debug_sample") or []
+        if sample:
+            st.caption("Sample: " + " | ".join(sample))
 
     tab_board, tab_tracker, tab_how = st.tabs(["Board","Tracker","How It Works"])
 
