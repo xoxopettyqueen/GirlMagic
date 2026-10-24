@@ -394,12 +394,12 @@ def main():
     if st.session_state.get("fetched"):
         tracked = st.session_state.get("last_tracked", 0)
         dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · books {st.session_state.get('debug_books',0)} · markets {st.session_state.get('debug_markets',0)} · plays {st.session_state.get('debug_plays',0)}"
-        st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · Auto-tracked {tracked} TAKE plays · {dbg}")
+        st.caption(f"Board pulled at {st.session_state['fetched']} — fresh edges only · {len(cards)} props · Tracking your chaos in real time 💅")
         sample = st.session_state.get("debug_sample") or []
         if sample:
             st.caption("Sample: " + " | ".join(sample))
 
-    tab_board, tab_tracker, tab_how = st.tabs(["Board","Tracker","How It Works"])
+    tab_board, tab_tracker, tab_how = st.tabs(["📊 Board","🔒 Tracker","💖 How It Works"])
 
     with tab_board:
         if not cards:
@@ -521,7 +521,29 @@ def main():
                 if r.get("result") == "hit":
                     hit_chaos += chaos
             w_hit = (hit_chaos / total_chaos * 100) if total_chaos else 0
-            st.markdown(f"**{takes} TAKEs | {hits} HITs | {misses} MISSes → Hit Rate {hit_rate:.0f}% 💥 | Weighted {w_hit:.0f}% | Density {density:.0f}%**")
+            # Mini metric cards
+            c1, c2, c3, c4 = st.columns(4)
+            with c1:
+                st.markdown(f"""<div style="background:#14141A;border:1px solid #FF4DA6;border-radius:12px;padding:10px;text-align:center;">
+                <div style="font-size:.7rem;color:#CBA6F7;">Hit Rate</div>
+                <div style="font-size:1.4rem;font-weight:700;color:#F5C451;">{hit_rate:.0f}%</div></div>""", unsafe_allow_html=True)
+            with c2:
+                st.markdown(f"""<div style="background:#14141A;border:1px solid #9B5FFF;border-radius:12px;padding:10px;text-align:center;">
+                <div style="font-size:.7rem;color:#CBA6F7;">Weighted</div>
+                <div style="font-size:1.4rem;font-weight:700;color:#CBA6F7;">{w_hit:.0f}%</div></div>""", unsafe_allow_html=True)
+            with c3:
+                st.markdown(f"""<div style="background:#14141A;border:1px solid #FF4DA6;border-radius:12px;padding:10px;text-align:center;">
+                <div style="font-size:.7rem;color:#CBA6F7;">TAKE Density</div>
+                <div style="font-size:1.4rem;font-weight:700;color:#FF4DA6;">{density:.0f}%</div></div>""", unsafe_allow_html=True)
+            with c4:
+                st.markdown(f"""<div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;text-align:center;">
+                <div style="font-size:.7rem;color:#CBA6F7;">TAKEs</div>
+                <div style="font-size:1.4rem;font-weight:700;color:#fff;">{takes}</div></div>""", unsafe_allow_html=True)
+            st.markdown(f"**{takes} TAKEs | {hits} HITs | {misses} MISSes → Hit Rate {hit_rate:.0f}% 💥**")
+            # Volatility mix
+            if "vol" in df.columns and not df.empty:
+                vol_counts = df["vol"].value_counts()
+                st.caption(f"🌪 Vol mix: High {vol_counts.get('High',0)} · Medium {vol_counts.get('Medium',0)} · Low {vol_counts.get('Low',0)}")
             rename = {
                 "ts": "🕒 When Chaos Hit",
                 "sport": "🏀 Lane",
