@@ -402,7 +402,31 @@ def main():
                 "result": "Outcome",
             }
             st.dataframe(df.rename(columns=rename), use_container_width=True, hide_index=True)
+            st.markdown("**Grade a play**")
+            if not df.empty:
+                opts = [f"{i}: {r['player']} {r['prop']} {r['line']} @ {r['price']}" for i, r in df.iterrows()]
+                pick = st.selectbox("Pick a locked play", opts, key="grade_pick")
+                c1, c2 = st.columns(2)
+                with c1:
+                    if st.button("Mark HIT", key="mark_hit"):
+                        idx = int(pick.split(":")[0])
+                        df.at[idx, "result"] = "hit"
+                        save_ledger(df.to_dict("records"))
+                        st.rerun()
+                with c2:
+                    if st.button("Mark MISS", key="mark_miss"):
+                        idx = int(pick.split(":")[0])
+                        df.at[idx, "result"] = "miss"
+                        save_ledger(df.to_dict("records"))
+                        st.rerun()
             graded = df[df["result"].notna()]
+            takes = len(df)
+            hits = (graded["result"] == "hit").sum() if not graded.empty else 0
+            misses = (graded["result"] == "miss").sum() if not graded.empty else 0
+            hit_rate = (hits / len(graded) * 100) if len(graded) else 0
+            # Simple density from logged takes
+            density = (takes / max(takes, 1) * 100) if takes else 0
+            st.markdown(f"**TAKEs: {takes} | HITs: {hits} | MISS: {misses} | Hit Rate: {hit_rate:.1f}% | TAKE Density: {density:.1f}%**")
             if graded.empty:
                 st.caption("No graded results yet. Once results are marked, hit rates will show below. Built for the girls who read odds like poetry.")
             else:
