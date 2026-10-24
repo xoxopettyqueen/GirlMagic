@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Score Fixed
-TAKE cards now show a real Score number.
+Girl Magic Odds 2.0 — Petty Mode Fixed
+Petty Mode works by itself. Preferred ranges only when it's on.
 """
 
 import streamlit as st
@@ -166,7 +166,6 @@ def plain_reason(c):
     return "Tight. Skip."
 
 def card_score(true_ev, spike):
-    """Returns a 1–10 style score. Always returns a number."""
     tev = true_ev or 0
     sp = spike or 0
     raw = (max(0, tev) * 0.35) + (sp * 4)
@@ -461,10 +460,11 @@ def main():
             format_func=lambda x: BOOK_FULL.get(x, x)
         )
 
-        filtered = cards
-        if simple_mode and petty_mode:
-            filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2 and c.get("petty_range_match")]
-        elif simple_mode:
+        filtered = cards[:]
+        # Petty Mode works by itself
+        if petty_mode:
+            filtered = [c for c in filtered if c.get("petty_range_match")]
+        if simple_mode:
             filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
         filtered = [c for c in filtered if c.get("prop") in prop_filter]
         filtered = [c for c in filtered if c.get("decision") in decision_filter]
