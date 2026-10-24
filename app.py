@@ -85,103 +85,20 @@ def normalize_book(key):
     return k
 
 def load_ledger():
-    file_data = []
+    if "ledger" in st.session_state:
+        return st.session_state["ledger"]
     if LEDGER.exists():
         try:
-            file_data = json.loads(LEDGER.read_text())
-        except: file_data = []
-    sess = st.session_state.get("ledger", [])
-    # Keep whichever is longer so a cleared session doesn't wipe the file
-    best = file_data if len(file_data) > len(sess) else sess
-    st.session_state["ledger"] = best
-    return best
+            data = json.loads(LEDGER.read_text())
+            st.session_state["ledger"] = data
+            return data
+        except: return []
+    return []
 
 def save_ledger(rows):
     st.session_state["ledger"] = rows
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
-
-def auto_grade_nba(ledger):
-    """Grade NBA plays using ESPN public box scores. No extra API key."""
-    if not ledger:
-        return ledger, 0
-    graded = 0
-    try:
-        # Get recent finished games from scoreboard
-        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=15)
-        if r.status_code != 200:
-            return ledger, 0
-        events = r.json().get("events") or []
-        # Build player stat lookup from finished games
-        player_stats = {}
-        for ev in events:
-            status = (ev.get("status") or {}).get("type", {}).get("completed")
-            if not status:
-                continue
-            eid = ev.get("id")
-            if not eid:
-                continue
-            try:
-                sr = requests.get(f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={eid}", timeout=15)
-                if sr.status_code != 200:
-                    continue
-                box = sr.json().get("boxscore") or {}
-                for team in box.get("players") or []:
-                    for stat_group in team.get("statistics") or []:
-                        labels = [x.lower() for x in (stat_group.get("labels") or [])]
-                        for ath in stat_group.get("athletes") or []:
-                            name = (ath.get("athlete") or {}).get("displayName") or ""
-                            stats = ath.get("stats") or []
-                            if not name or not stats:
-                                continue
-                            # Map common labels
-                            sdict = {}
-                            for i, lab in enumerate(labels):
-                                if i < len(stats):
-                                    try:
-                                        sdict[lab] = float(stats[i]) if stats[i] not in ("", "-") else 0
-                                    except:
-                                        sdict[lab] = 0
-                            player_stats[name.lower()] = sdict
-            except:
-                continue
-        # Grade ledger rows
-        for row in ledger:
-            if row.get("result") or "NBA" not in str(row.get("sport", "")):
-                continue
-            player = (row.get("player") or "").lower()
-            if not player:
-                continue
-            # Find matching player
-            match = None
-            for pname, sdict in player_stats.items():
-                if player in pname or pname in player:
-                    match = sdict
-                    break
-            if not match:
-                continue
-            prop = row.get("prop")
-            line = float(row.get("line") or 0)
-            val = None
-            if prop == "Assists":
-                val = match.get("ast") or match.get("assists")
-            elif prop == "Points":
-                val = match.get("pts") or match.get("points")
-            elif prop == "Rebounds":
-                val = match.get("reb") or match.get("rebounds")
-            elif prop == "DoubleDouble":
-                pts = match.get("pts") or match.get("points") or 0
-                reb = match.get("reb") or match.get("rebounds") or 0
-                ast = match.get("ast") or match.get("assists") or 0
-                val = sum(1 for v in (pts, reb, ast) if v >= 10)
-            if val is None:
-                continue
-            hit = (val > line) if prop != "DoubleDouble" else (val >= 2)
-            row["result"] = "hit" if hit else "miss"
-            graded += 1
-    except:
-        pass
-    return ledger, graded
 
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
@@ -334,7 +251,6 @@ def main():
                 all_plays = []
                 book_count = 0
                 market_count = 0
-                sample = []
                 for ev in target[:12]:
                     data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                     if data:
@@ -342,21 +258,15 @@ def main():
                             book_count += 1
                             for m in b.get("markets") or []:
                                 market_count += 1
-                                bk_key = normalize_book(b.get("key"))
-                                if bk_key in MY_BOOKS:
-                                    for o in (m.get("outcomes") or [])[:2]:
-                                        if len(sample) < 8:
-                                            sample.append(f"{bk_key} {m.get('key')} {o.get('description')} {o.get('point')} @ {o.get('price')}")
                         all_plays.extend(parse_plays(data, sport))
                 st.session_state["debug_plays"] = len(all_plays)
                 st.session_state["debug_books"] = book_count
                 st.session_state["debug_markets"] = market_count
-                st.session_state["debug_sample"] = sample
                 cards = best_cards(all_plays)
                 st.session_state["cards"] = cards
                 st.session_state["fetched"] = datetime.now().strftime("%H:%M")
                 st.session_state["sport"] = sport
-                # Auto-track TAKE plays — only append, never clear
+                # Auto-track TAKE plays
                 ledger = load_ledger()
                 existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
                 added = 0
@@ -377,20 +287,18 @@ def main():
                             })
                             existing.add(key)
                             added += 1
-                # Always save so the file stays current
-                save_ledger(ledger)
-                st.session_state["last_tracked"] = added
                 if added:
+                    save_ledger(ledger)
+                    st.session_state["last_tracked"] = added
                     st.toast(f"Auto-tracked {added} TAKE plays")
+                else:
+                    st.session_state["last_tracked"] = 0
 
     cards = st.session_state.get("cards") or []
     if st.session_state.get("fetched"):
         tracked = st.session_state.get("last_tracked", 0)
         dbg = f"events {st.session_state.get('debug_events',0)} · pregame {st.session_state.get('debug_pregame',0)} · books {st.session_state.get('debug_books',0)} · markets {st.session_state.get('debug_markets',0)} · plays {st.session_state.get('debug_plays',0)}"
         st.caption(f"Fetched {st.session_state['fetched']} · {len(cards)} props · Auto-tracked {tracked} TAKE plays · {dbg}")
-        sample = st.session_state.get("debug_sample") or []
-        if sample:
-            st.caption("Sample: " + " | ".join(sample))
 
     tab_board, tab_tracker, tab_how = st.tabs(["Board","Tracker","How It Works"])
 
@@ -474,30 +382,6 @@ def main():
 
     with tab_tracker:
         ledger = load_ledger()
-        if st.button("Auto Grade Finished Games", key="auto_grade_btn"):
-            with st.spinner("Checking ESPN box scores…"):
-                ledger, n = auto_grade_nba(ledger)
-                if n:
-                    save_ledger(ledger)
-                    st.toast(f"Auto-graded {n} plays")
-                    st.rerun()
-                else:
-                    st.info("No finished games ready to grade yet. Try again after tip-off.")
-        # Export / import so the ledger survives restarts
-        col_a, col_b = st.columns(2)
-        with col_a:
-            if ledger:
-                st.download_button("Download Ledger", json.dumps(ledger, indent=2), "odds_ledger.json", "application/json")
-        with col_b:
-            up = st.file_uploader("Upload Ledger", type="json", key="ledger_up")
-            if up:
-                try:
-                    imported = json.loads(up.read())
-                    if isinstance(imported, list):
-                        save_ledger(imported)
-                        st.toast(f"Imported {len(imported)} plays")
-                        st.rerun()
-                except: st.error("Bad file")
         if not ledger:
             st.info("Your reads. Your chaos. Your hit rates. Lock a play from the Board to start.")
         else:
@@ -559,28 +443,45 @@ def main():
                     st.dataframe(g.sort_values("hit%", ascending=False), use_container_width=True)
 
     with tab_how:
-        st.markdown("### How It Works")
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.markdown("**1. Fetch Board**")
-            st.caption("Pre-game props only.")
-        with c2:
-            st.markdown("**2. Scan for TAKE**")
-            st.caption("Pink cards with big EV gap and spike.")
-        with c3:
-            st.markdown("**3. Lock**")
-            st.caption("Tracker learns what cashes.")
-        st.markdown("### Glossary")
         st.markdown("""
-- **EV gap**: How disrespectful the longest odds are compared to the rest.
-- **Spike**: The chaos score. EV + movement + volatility.
-- **Volatility**: How shaky the books are. High vol = books nervous.
-- **Solo**: One book is out here alone. Rebels = edges.
-- **Cluster**: Books holding hands. No edge.
-- **Snap**: Sudden jump. Someone flinched.
-- **Surge**: Strong move. Energy building.
-- **Freeze**: No movement. Dead energy.
-- **TAKE**: Run it. This is your play.
-- **LEAN**: Cute but optional.
-- **PASS**: Skip. No edge.
-        """)
+        <div style="padding:16px 0;">
+          <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">How It Works</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#FF4DA6,#9B5FFF);border-radius:16px;padding:14px;color:#fff;">
+              <div style="font-size:1.4rem;">🎯</div>
+              <div style="font-weight:700;margin-top:6px;">1. Fetch Board</div>
+              <div style="font-size:.8rem;opacity:.9;">Pre-game props only.</div>
+            </div>
+            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#9B5FFF,#5E4AE3);border-radius:16px;padding:14px;color:#fff;">
+              <div style="font-size:1.4rem;">💖</div>
+              <div style="font-weight:700;margin-top:6px;">2. Scan for TAKE</div>
+              <div style="font-size:.8rem;opacity:.9;">Pink cards with big EV gap and spike.</div>
+            </div>
+            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#5E4AE3,#FF4DA6);border-radius:16px;padding:14px;color:#fff;">
+              <div style="font-size:1.4rem;">🔒</div>
+              <div style="font-weight:700;margin-top:6px;">3. Lock</div>
+              <div style="font-size:.8rem;opacity:.9;">Tracker learns what cashes.</div>
+            </div>
+          </div>
+          <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">Glossary</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;">
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">EV gap</b><br><span style="font-size:.75rem;color:#B3B3C3;">How disrespectful the longest odds are compared to the rest.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Spike</b><br><span style="font-size:.75rem;color:#B3B3C3;">The chaos score. EV + movement + volatility. Higher spike = edges.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Volatility</b><br><span style="font-size:.75rem;color:#B3B3C3;">How shaky the books are. High vol = books nervous.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Solo</b><br><span style="font-size:.75rem;color:#B3B3C3;">One book is out here alone. Rebels = edges.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Cluster</b><br><span style="font-size:.75rem;color:#B3B3C3;">Books holding hands. No edge.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Snap</b><br><span style="font-size:.75rem;color:#B3B3C3;">Sudden jump. Someone flinched. Usually a good sign.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Surge</b><br><span style="font-size:.75rem;color:#B3B3C3;">Strong move. Energy building.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Freeze</b><br><span style="font-size:.75rem;color:#B3B3C3;">No movement. Dead energy.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">TAKE</b><br><span style="font-size:.75rem;color:#B3B3C3;">Run it. This is your play.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">LEAN</b><br><span style="font-size:.75rem;color:#B3B3C3;">Cute but optional.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">PASS</b><br><span style="font-size:.75rem;color:#B3B3C3;">Skip. No edge.</span></div>
+          </div>
+          <div style="text-align:center;margin-top:20px;color:#CBA6F7;font-size:.8rem;font-style:italic;opacity:.8;">Built for the girls who read odds like poetry.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('<div style="text-align:center;margin-top:24px;color:#a78bfa;font-size:.75rem;font-style:italic;">Built for the girls who read odds like poetry.</div>', unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    main()
