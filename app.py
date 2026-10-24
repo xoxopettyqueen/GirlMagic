@@ -314,8 +314,12 @@ def main():
             dec_f = st.multiselect("Decision", ["TAKE","LEAN","PASS"], default=["TAKE","LEAN"])
         with f3:
             min_odds = st.slider("Min Odds +750", 300, 2000, 750 if "NBA" in str(sport) else 300, 50)
+        all_tags = sorted({t for c in cards for t in c.get("tags",[])})
+        tag_f = st.multiselect("Tags", all_tags, default=[], help="Filter by Solo, Snap, Surge, Cluster, etc. Leave empty to show all.")
 
         filtered = [c for c in cards if c.get("prop") in prop_f and c.get("decision") in dec_f and int(c.get("price",0)) >= min_odds]
+        if tag_f:
+            filtered = [c for c in filtered if any(t in c.get("tags",[]) for t in tag_f)]
         filtered.sort(key=lambda x: (-x.get("spike",0), -x.get("ev_gap",0)))
         # TAKE Density
         vol_w = {"High": 1.0, "Medium": 0.7, "Low": 0.4}
@@ -461,19 +465,17 @@ def main():
           </div>
           <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:12px;">Glossary</h3>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;">
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">EV gap</b><br><span style="font-size:.75rem;color:#B3B3C3;">How much better the longest odds are vs the median.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Longest price</b><br><span style="font-size:.75rem;color:#B3B3C3;">The best number on the board.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Median</b><br><span style="font-size:.75rem;color:#B3B3C3;">The normal price most books agree on.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Volatility</b><br><span style="font-size:.75rem;color:#B3B3C3;">How much the odds wiggle. High = chaos.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Spike</b><br><span style="font-size:.75rem;color:#B3B3C3;">EV gap + volatility + movement. Big = real edge.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Solo</b><br><span style="font-size:.75rem;color:#B3B3C3;">One book stands alone.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Cluster</b><br><span style="font-size:.75rem;color:#B3B3C3;">Books agree tightly.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Snap</b><br><span style="font-size:.75rem;color:#B3B3C3;">Sudden jump.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Drift</b><br><span style="font-size:.75rem;color:#B3B3C3;">Slow movement.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Freeze</b><br><span style="font-size:.75rem;color:#B3B3C3;">No movement.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">TAKE</b><br><span style="font-size:.75rem;color:#B3B3C3;">Bet it.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">LEAN</b><br><span style="font-size:.75rem;color:#B3B3C3;">Interesting but not must-bet.</span></div>
-            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">PASS</b><br><span style="font-size:.75rem;color:#B3B3C3;">Skip it.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">EV gap</b><br><span style="font-size:.75rem;color:#B3B3C3;">How disrespectful the longest odds are compared to the rest.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Spike</b><br><span style="font-size:.75rem;color:#B3B3C3;">The chaos score. EV + movement + volatility. Higher spike = edges.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Volatility</b><br><span style="font-size:.75rem;color:#B3B3C3;">How shaky the books are. High vol = books nervous.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Solo</b><br><span style="font-size:.75rem;color:#B3B3C3;">One book is out here alone. Rebels = edges.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Cluster</b><br><span style="font-size:.75rem;color:#B3B3C3;">Books holding hands. No edge.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Snap</b><br><span style="font-size:.75rem;color:#B3B3C3;">Sudden jump. Someone flinched. Usually a good sign.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Surge</b><br><span style="font-size:.75rem;color:#B3B3C3;">Strong move. Energy building.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">Freeze</b><br><span style="font-size:.75rem;color:#B3B3C3;">No movement. Dead energy.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">TAKE</b><br><span style="font-size:.75rem;color:#B3B3C3;">Run it. This is your play.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">LEAN</b><br><span style="font-size:.75rem;color:#B3B3C3;">Cute but optional.</span></div>
+            <div style="background:#14141A;border:1px solid #262633;border-radius:12px;padding:10px;"><b style="color:#FF4DA6;">PASS</b><br><span style="font-size:.75rem;color:#B3B3C3;">Skip. No edge.</span></div>
           </div>
           <div style="text-align:center;margin-top:20px;color:#CBA6F7;font-size:.8rem;font-style:italic;opacity:.8;">Built for the girls who read odds like poetry.</div>
         </div>
