@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Petty Mode Fixed
-Petty Mode works by itself. Preferred ranges only when it's on.
+Girl Magic Odds 2.0 — Better Alternate Line Pull
+Captures X+ style props and more outcome labels so soft books show up.
 """
 
 import streamlit as st
@@ -226,27 +226,45 @@ def parse_plays(data, sport):
             mkey = (market.get("key") or "").lower()
             prop_type = None
             if "NBA" in str(sport) or "basketball" in str(sport).lower():
-                if "assists" in mkey: prop_type = "Assists"
-                elif "points" in mkey and "rebounds" not in mkey and "assists" not in mkey: prop_type = "Points"
-                elif "rebounds" in mkey and "points" not in mkey and "assists" not in mkey: prop_type = "Rebounds"
+                if "assist" in mkey: prop_type = "Assists"
+                elif "point" in mkey and "rebound" not in mkey and "assist" not in mkey: prop_type = "Points"
+                elif "rebound" in mkey and "point" not in mkey and "assist" not in mkey: prop_type = "Rebounds"
                 elif "double_double" in mkey: prop_type = "DoubleDouble"
             else:
                 if "anytime_td" in mkey: prop_type = "Anytime TD"
                 elif "reception_yds" in mkey or "receiving_yds" in mkey: prop_type = "Rec Yards"
             if not prop_type: continue
             for o in market.get("outcomes") or []:
-                oname = str(o.get("name") or "").lower()
+                oname = str(o.get("name") or "").lower().strip()
+                desc = str(o.get("description") or "").lower()
+                # More flexible outcome matching for alt lines
+                is_over_like = (
+                    oname in ("over", "yes", "o")
+                    or "over" in oname
+                    or "+" in oname
+                    or "or more" in oname
+                    or "or more" in desc
+                )
                 if prop_type in ("DoubleDouble", "Anytime TD"):
-                    if oname not in ("yes", "over"): continue
+                    if oname not in ("yes", "over") and "yes" not in oname: continue
                     player = o.get("description") or o.get("name")
                     line = 0.5 if prop_type == "Anytime TD" else 1.0
                 else:
-                    if oname != "over": continue
-                    player = o.get("description")
+                    if not is_over_like: continue
+                    player = o.get("description") or o.get("name")
                     line = o.get("point")
-                    if line is None: continue
-                    try: line = float(line)
-                    except: continue
+                    if line is None:
+                        # Try to extract number from name like "3+"
+                        import re
+                        m = re.search(r"(\d+\.?\d*)", oname + " " + desc)
+                        if m:
+                            try: line = float(m.group(1))
+                            except: continue
+                        else:
+                            continue
+                    else:
+                        try: line = float(line)
+                        except: continue
                 if not player or str(player).lower() in ("yes", "no", "over", "under"): continue
                 try: price = int(o.get("price"))
                 except: continue
@@ -461,7 +479,6 @@ def main():
         )
 
         filtered = cards[:]
-        # Petty Mode works by itself
         if petty_mode:
             filtered = [c for c in filtered if c.get("petty_range_match")]
         if simple_mode:
