@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Final Polish + Simple Mode Fix
-Simple Mode now shows strongest TAKE cards even when one-sided.
+Girl Magic Odds 2.0 — Softness Table + Simple Mode Working
+Book Softness is readable. Simple Mode shows real TAKE cards.
 """
 
 import streamlit as st
@@ -117,11 +117,11 @@ def plain_reason(c):
     tev = c.get("true_ev") or 0
     bk = c.get("book", "")
     if c.get("one_sided"):
-        return "One-sided estimate only."
+        return "One-sided estimate."
     if c.get("decision") == "TAKE" and tev >= 3:
-        return f"Strong edge. {bk} is hanging a soft number vs the weighted fair."
+        return f"Strong edge. {bk} hanging soft vs the blend."
     if c.get("decision") == "TAKE":
-        return f"Books disagree. {bk} is the longest."
+        return f"Books disagree. {bk} is longest."
     return "Tight. Skip."
 
 def normalize_book(key):
@@ -273,6 +273,28 @@ def best_cards(plays, weights=None):
     cards.sort(key=lambda x: (-(x.get("true_ev") or -999), -x.get("spike", 0)))
     return cards
 
+def render_softness(sharp):
+    if not sharp:
+        return
+    rows = []
+    for bk, data in sharp.items():
+        total = data.get("total", 0)
+        soft = data.get("soft_count", 0)
+        pct = round((soft / total * 100), 1) if total else 0
+        props = data.get("props", {})
+        top_prop = max(props, key=props.get) if props else "—"
+        rows.append({
+            "Book": bk,
+            "Soft Count": soft,
+            "Total": total,
+            "% Soft": pct,
+            "Top Soft Prop": top_prop,
+        })
+    if rows:
+        df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
+        st.subheader("Book Softness")
+        st.dataframe(df, use_container_width=True, hide_index=True)
+
 def main():
     st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Open the site. Edges appear. You lock them. 💅</p></div>', unsafe_allow_html=True)
 
@@ -371,7 +393,7 @@ def main():
             ]
             st.markdown("**Strongest edges only.**")
         else:
-            filtered = cards
+            filtered = [c for c in cards if c.get("decision") in ("TAKE", "LEAN")]
 
         if not filtered:
             st.info("No strong edges right now. Books are tight.")
@@ -450,9 +472,7 @@ def main():
             hits = (finished["result"] == "hit").sum() if not finished.empty else 0
             st.markdown(f"**You’ve locked {len(df)} plays.** {len(finished)} finished. {hits} hit.")
             st.dataframe(df, use_container_width=True, hide_index=True)
-            if sharp:
-                st.subheader("Book Softness")
-                st.json(sharp)
+            render_softness(sharp)
         st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
 
 try:
