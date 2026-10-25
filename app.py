@@ -34,7 +34,7 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .counter.hits{background:gold;color:#1a1020;box-shadow:0 0 18px gold}
 .counter.miss{background:#2a2a34;box-shadow:0 0 12px #444}
 .game-header{font-size:1rem;font-weight:700;color:#ffb3ea;margin:16px 0 8px}
-.card{margin-bottom:10px;padding:12px 14px;border-radius:14px;background:linear-gradient(90deg,#1a1a24,#2a2a3a);border:2px solid #ff00cc;box-shadow:0 0 14px #ff00cc44;transition:transform .15s,box-shadow .15s}
+.card{margin-bottom:10px;padding:12px;border-radius:18px;background:#16101f;border:1px solid #3b0764;box-shadow:0 0 16px #ff00cc33;min-height:160px}
 .card:hover{transform:scale(1.015);box-shadow:0 0 22px #ff00cc88}
 .card.hit{border-color:gold;box-shadow:0 0 18px gold}
 .card.miss{border-color:#553333;opacity:.8;box-shadow:none}
@@ -773,18 +773,20 @@ def main():
                 by_game[x.get("event") or "Unknown"].append(x)
             for game, rows in by_game.items():
                 st.markdown(f'<div class="game-header">{game}</div>', unsafe_allow_html=True)
+                cols = st.columns(2)
                 for i, x in enumerate(rows):
-                    st.markdown(glow_card(x), unsafe_allow_html=True)
-                    if st.button("Lock", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
-                        ledger = load_ledger()
-                        ledger.append({
-                            "ts": datetime.now().isoformat(timespec="minutes"), "sport": x["sport"],
-                            "player": x["player"], "prop": x["prop"], "line": x["line"], "price": x["price"],
-                            "book": x["book"], "event": x["event"], "true_ev": x.get("true_ev"),
-                            "ev_gap": x.get("ev_gap"), "result": None,
-                        })
-                        save_ledger(ledger)
-                        st.toast("Locked 💫")
+                    with cols[i % 2]:
+                        st.markdown(glow_card(x), unsafe_allow_html=True)
+                        if st.button("Lock", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
+                            ledger = load_ledger()
+                            ledger.append({
+                                "ts": datetime.now().isoformat(timespec="minutes"), "sport": x["sport"],
+                                "player": x["player"], "prop": x["prop"], "line": x["line"], "price": x["price"],
+                                "book": x["book"], "event": x["event"], "true_ev": x.get("true_ev"),
+                                "ev_gap": x.get("ev_gap"), "result": None,
+                            })
+                            save_ledger(ledger)
+                            st.toast("Locked 💫")
     with tracker:
         ledger = load_ledger()
         c1, c2 = st.columns(2)
@@ -836,19 +838,53 @@ def main():
             if not rows:
                 st.caption("Nothing in this cut.")
                 return
+            grouped = {}
+            for r in rows:
+                gkey = (r.get("player"), r.get("sport"), r.get("event") or "")
+                grouped.setdefault(gkey, []).append(r)
+            cards = []
+            for gkey, props in grouped.items():
+                seen = set()
+                clean = []
+                for r in props:
+                    sig = (r.get("prop"), r.get("line"), r.get("book"))
+                    if sig in seen:
+                        continue
+                    seen.add(sig)
+                    clean.append(r)
+                clean.sort(key=lambda z: -(z.get("ev_gap") or 0))
+                avg = sum((z.get("true_ev") or 0) for z in clean) / max(1, len(clean))
+                cards.append((avg, gkey, clean))
+            cards.sort(key=lambda z: -z[0])
             page = st.number_input("Page", min_value=1, value=1, step=1, key=key)
-            start = (int(page) - 1) * 10
-            for r in list(reversed(rows))[start:start + 10]:
-                card = {
-                    "player": r.get("player"), "prop": r.get("prop"), "line": r.get("line"),
-                    "book": r.get("book"), "price": r.get("price"), "true_ev": r.get("true_ev"),
-                    "ev_gap": r.get("ev_gap"), "event": r.get("event"), "ts": r.get("ts"),
-                    "graded_ts": r.get("graded_ts"), "player_stat": r.get("player_stat"),
-                    "clv": r.get("clv"), "book_prices": {r.get("book"): r.get("price")},
-                    "decision": r.get("result") or "LOCKED",
-                }
-                st.markdown(glow_card(card, r.get("result") or "LOCKED"), unsafe_allow_html=True)
-            st.caption(f"{len(rows)} plays · page {int(page)}")
+            start = (int(page) - 1) * 8
+            pair = st.columns(2)
+            for n, (avg, (player, sport_name, event), props) in enumerate(cards[start:start + 8]):
+                rows_html = []
+                for r in props:
+                    res = r.get("result") or "LOCKED"
+                    color = "gold" if res == "HIT" else "#ff4d4d" if res == "MISS" else "#ff00cc"
+                    clv = r.get("clv")
+                    clv_txt = f"{clv:+.1f}" if isinstance(clv, (int, float)) else "—"
+                    got = f" · got {r.get('player_stat')}" if r.get("player_stat") is not None else ""
+                    note = r.get("grade_note") or ""
+                    rows_html.append(
+                        f'<div style="margin-top:8px;padding:10px;border-radius:10px;background:{color}22;border:1px solid {color};box-shadow:0 0 10px {color}44">'
+                        f'<b>{r.get("prop")} {r.get("line")}{got}</b> — {res}'
+                        f'<div style="color:#ddd;font-size:.75rem;margin-top:4px">'
+                        f'{r.get("book")} {r.get("price")} · gap {r.get("ev_gap") or "—"}% · edge {r.get("true_ev") or "—"}% · CLV {clv_txt}'
+                        f'</div><div style="color:#ffe27a;font-size:.72rem">{note}</div></div>'
+                    )
+                with pair[n % 2]:
+                    st.markdown(
+                    f'<div style="margin-bottom:12px;padding:12px;border-radius:16px;background:#16101f;border:1px solid #ff00cc;box-shadow:0 0 14px #ff00cc44">'
+                    f'<div style="display:flex;justify-content:space-between;align-items:center">'
+                    f'<b style="color:#ff00cc;font-size:18px">{player}</b>'
+                    f'<span style="color:#aaa;font-size:13px">{sport_name} · {event}</span></div>'
+                    + "".join(rows_html) + "</div>",
+                    unsafe_allow_html=True,
+                )
+            st.caption(f"{len(cards)} players · {len(rows)} props · page {int(page)}")
 
         with tab_all:
             show(view, "pg_all")
