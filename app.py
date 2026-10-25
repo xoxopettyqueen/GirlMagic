@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Improved Grade
-Odds API finds finished games. ESPN stats with tighter name matching.
+Girl Magic Odds 2.0 — Tracker filtered by current sport
+NBA lane shows NBA. NFL lane shows NFL.
 """
 
 import streamlit as st
@@ -717,9 +717,9 @@ def main():
         if not ledger:
             st.info("Nothing locked yet. Pull the chaos first.")
         else:
-            clean = [r for r in ledger if (r.get("price") or 0) >= 300]
+            clean = [r for r in ledger if (r.get("price") or 0) >= 300 and r.get("sport") == current_sport]
             if not clean:
-                st.info("No +300 or higher plays locked yet.")
+                st.info(f"No +300 or higher {current_sport} plays locked yet.")
             else:
                 df = pd.DataFrame(clean)
                 keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
@@ -727,7 +727,7 @@ def main():
                 df = df[existing].fillna("—")
                 finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
                 hits = (finished["result"] == "hit").sum() if not finished.empty else 0
-                st.markdown(f"**{len(df)} longer-priced plays locked.** {len(finished)} finished. {hits} hit.")
+                st.markdown(f"**{len(df)} longer-priced {current_sport} plays locked.** {len(finished)} finished. {hits} hit.")
                 st.dataframe(df, use_container_width=True, hide_index=True)
                 render_softness(load_sharpness())
 
