@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Grade in batches of 50
-Stops spinning. Click again to grade more.
+Girl Magic Odds 2.0 — BallDontLie GOAT
+NBA + NFL stats. Grades 50 at a time.
 """
 
 import streamlit as st
@@ -213,13 +213,14 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
-def grade_with_bdl(ledger, bdl_key):
+def grade_with_bdl(ledger, bdl_key, sport):
     if not bdl_key:
         st.warning("No BallDontLie key in secrets.")
         return ledger
     headers = {"Authorization": bdl_key}
     updated = 0
-    ungraded = [r for r in ledger if r.get("sport") == "NBA" and r.get("result") in (None, "—", "") and r.get("prop") in ("Assists", "Points", "Rebounds", "DoubleDouble")]
+    props_ok = ("Assists", "Points", "Rebounds", "DoubleDouble") if sport == "NBA" else ("Anytime TD", "Rec Yards")
+    ungraded = [r for r in ledger if r.get("sport") == sport and r.get("result") in (None, "—", "") and r.get("prop") in props_ok]
     for row in ungraded[:50]:
         player = row.get("player")
         prop = row.get("prop")
@@ -264,6 +265,8 @@ def grade_with_bdl(ledger, bdl_key):
                 pts = float(stat.get("pts") or 0)
                 reb = float(stat.get("reb") or 0)
                 ast = float(stat.get("ast") or 0)
+                rec_yds = float(stat.get("receiving_yards") or stat.get("rec_yds") or 0)
+                tds = float(stat.get("touchdowns") or stat.get("tds") or 0)
                 actual = None
                 if prop == "Points":
                     actual = pts
@@ -273,6 +276,10 @@ def grade_with_bdl(ledger, bdl_key):
                     actual = ast
                 elif prop == "DoubleDouble":
                     actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
+                elif prop == "Anytime TD":
+                    actual = 1 if tds >= 1 else 0
+                elif prop == "Rec Yards":
+                    actual = rec_yds
                 if actual is not None:
                     row["result"] = "hit" if actual > line else "miss"
                     row["player_stat"] = actual
@@ -283,9 +290,9 @@ def grade_with_bdl(ledger, bdl_key):
                 break
     if updated:
         save_ledger(ledger)
-        st.success(f"Graded {updated} of {len(ungraded)} plays. Click again for more.")
+        st.success(f"Graded {updated} of {len(ungraded)} {sport} plays. Click again for more.")
     else:
-        st.info("No matches in this batch. Games may not be final yet.")
+        st.info(f"No {sport} matches in this batch. Games may not be final yet.")
     return ledger
 
 @st.cache_data(ttl=120)
@@ -692,9 +699,9 @@ def main():
         if st.button("Wipe the slate"):
             save_ledger([])
             st.rerun()
-        if st.button("Grade NBA results"):
-            with st.spinner("Grading 50 plays…"):
-                ledger = grade_with_bdl(ledger, bdl_key)
+        if st.button(f"Grade {current_sport} results"):
+            with st.spinner(f"Grading 50 {current_sport} plays…"):
+                ledger = grade_with_bdl(ledger, bdl_key, current_sport)
             st.rerun()
 
         uploaded = st.file_uploader("Import old plays (CSV)", type="csv")
@@ -742,7 +749,7 @@ def main():
                 df = df[existing].fillna("—")
                 finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
                 hits = (finished["result"] == "hit").sum() if not finished.empty else 0
-                st.markdown(f'<div class="status-box"><h3>Grading Status</h3><div class="metric"><div class="num">{len(df)}</div><div class="lbl">Locked</div></div><div class="metric"><div class="num">{len(finished)}</div><div class="lbl">Finished</div></div><div class="metric"><div class="num">{hits}</div><div class="lbl">Hits</div></div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="status-box"><h3>Grading Status — {current_sport}</h3><div class="metric"><div class="num">{len(df)}</div><div class="lbl">Locked</div></div><div class="metric"><div class="num">{len(finished)}</div><div class="lbl">Finished</div></div><div class="metric"><div class="num">{hits}</div><div class="lbl">Hits</div></div></div>', unsafe_allow_html=True)
                 st.dataframe(df, use_container_width=True, hide_index=True)
                 render_softness(load_sharpness())
 
