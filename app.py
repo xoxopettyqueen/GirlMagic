@@ -813,17 +813,19 @@ def main():
                 pkey = (_norm_name(c["player"]), c["event"])
                 if per_player[pkey] >= 2:
                     continue
-                if True:
-                        ledger.append({
-                            "ts": datetime.now().isoformat(timespec="minutes"), "sport": c["sport"],
-                            "player": c["player"], "prop": c["prop"], "line": c["line"], "price": c["price"],
-                            "book": c["book"], "event": c["event"], "true_ev": c.get("true_ev"),
-                            "ev_gap": c.get("ev_gap"), "result": None,
-                        })
-                        seen.add(key)
-                        added += 1
-                        per_player[pkey] += 1
-                        lane_count += 1
+                key = (c["sport"], _norm_name(c["player"]), c["prop"], round(float(c["line"]), 1), c["event"])
+                if key in seen:
+                    continue
+                ledger.append({
+                    "ts": datetime.now().isoformat(timespec="minutes"), "sport": c["sport"],
+                    "player": c["player"], "prop": c["prop"], "line": c["line"], "price": c["price"],
+                    "book": c["book"], "event": c["event"], "true_ev": c.get("true_ev"),
+                    "ev_gap": c.get("ev_gap"), "result": None,
+                })
+                seen.add(key)
+                added += 1
+                per_player[pkey] += 1
+                lane_count += 1
             save_ledger(ledger)
             st.toast(f"{sum(1 for c in cards if c.get('decision')=='TAKE')} TAKE · tracked {added}")
     cards = st.session_state.get(f"cards_{sport}") or []
