@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0
-Price-gap model. Weighted books. BallDontLie GOAT grader.
-Paste this whole file over app.py.
+Girl Magic Odds 2.0 — chaos glow.
+Gap math and grader are unchanged. This is the skin.
 """
 import json
 import re
@@ -17,37 +16,46 @@ import streamlit as st
 st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wide")
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@500;700&display=swap');
-.stApp{background:#0c0a1a;color:#fce7f3;font-family:'Inter',sans-serif}
-h1{font-family:'Playfair Display',serif!important;font-weight:900!important;color:#f8f4ff!important;font-size:2.2rem!important;margin:0!important}
-.queen-banner{display:inline-block;background:linear-gradient(90deg,#db2777,#9333ea);color:#fff;font-size:.72rem;font-weight:700;padding:5px 14px;border-radius:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.how-to{background:#16101f;border:1px solid #2a2038;border-radius:999px;padding:8px 16px;margin:8px 0 14px;font-size:.78rem;color:#d8c8ea}
-.stButton>button{background:linear-gradient(90deg,#db2777,#9333ea)!important;color:#fff!important;border:none!important;border-radius:10px!important;font-weight:700!important;font-family:'Space Grotesk',sans-serif!important;letter-spacing:.04em}
-.game-header{font-size:.95rem;font-weight:700;color:#f9a8d4;margin:16px 0 6px;border-bottom:1px solid #2a2038;padding-bottom:4px}
-.row{display:flex;gap:12px;align-items:center;background:#16101f;border:1px solid #2a2038;border-radius:14px;padding:10px 12px;margin-bottom:6px}
-.row.take{border-color:#db2777;box-shadow:0 0 0 1px rgba(219,39,119,.35)}
-.row.hit{border-color:#34d399}
-.row.miss{opacity:.72}
-.who{min-width:190px;flex:0 0 190px}
-.player{font-weight:700;color:#fff;font-size:.95rem}
-.prop{color:#f9a8d4;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
-.books{display:flex;flex-wrap:wrap;gap:4px;flex:1}
-.bk{background:#1b1226;border:1px solid #3b0764;border-radius:999px;padding:3px 7px;font-size:.64rem;font-weight:700;color:#e9d5ff}
-.bk.best{background:#db2777;border-color:#f9a8d4;color:#fff}
-.nums{min-width:150px;text-align:right}
-.score-pill{display:inline-block;background:#ec4899;color:#fff;font-weight:800;font-size:.68rem;padding:3px 8px;border-radius:999px}
-.ev{display:block;color:#ffe27a;font-weight:700;font-size:.85rem;margin-top:3px}
-.gap{display:block;color:#d8c8ea;font-size:.68rem}
-.why{color:#e9d5ff;font-size:.72rem;margin-top:2px}
-.tag{display:inline-block;background:#1b1226;color:#e9d5ff;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:999px;margin:2px 3px 0 0;border:1px solid #3b0764}
-.rate-chip{display:inline-block;background:#1a0f28;border:1px solid #a855f7;border-radius:12px;padding:8px 12px;margin:4px;text-align:center;min-width:78px}
-.rate-chip.hot{border-color:#34d399;background:#0c2418}
-.rate-chip b{display:block;font-size:1.05rem;color:#fce7f3}
-.rate-chip span{font-size:.62rem;color:#d8c8ea}
-.statpill{background:#16101f;border:1px solid #2a2038;border-radius:14px;padding:10px;text-align:center}
-.statpill b{display:block;font-size:1.35rem;color:#f9a8d4}
-.glossary{background:#16101f;border:1px solid #2a2038;border-radius:16px;padding:16px;font-size:.9rem;line-height:1.65;color:#f3e8ff}
-.glossary strong{color:#f9a8d4}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+.stApp{background:linear-gradient(180deg,#0b0b0f 0%,#1a1a24 100%)!important;color:#fff!important;font-family:'Inter',sans-serif!important}
+h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:2.1rem!important;margin:0!important;background:linear-gradient(90deg,#ff00cc,#b366ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pulse-bar{height:6px;border-radius:999px;margin:8px 0 14px;background:linear-gradient(90deg,#ff00cc,#6600ff,#b366ff,#ff00cc);background-size:200% 100%;animation:shimmer 3s linear infinite,pulse 3s ease-in-out infinite;box-shadow:0 0 16px #ff00cc88}
+@keyframes shimmer{0%{background-position:0 0}100%{background-position:200% 0}}
+@keyframes pulse{0%,100%{opacity:.85;filter:brightness(1)}50%{opacity:1;filter:brightness(1.25)}}
+.how-to{background:#14141c;border:1px solid #ff00cc55;border-radius:999px;padding:8px 16px;margin-bottom:12px;font-size:.8rem;color:#f3e8ff;box-shadow:0 0 12px #ff00cc33}
+.stButton>button{background:linear-gradient(90deg,#ff00cc,#6600ff)!important;color:#fff!important;border:none!important;border-radius:999px!important;font-weight:700!important;box-shadow:0 0 14px #ff00cc66!important;transition:transform .15s,box-shadow .15s}
+.stButton>button:hover{transform:scale(1.03);box-shadow:0 0 22px #ff00ccaa!important}
+.counters{display:flex;gap:14px;margin:8px 0 16px;flex-wrap:wrap}
+.counter{padding:12px 18px;border-radius:14px;color:#fff;min-width:110px;animation:pulse 2s infinite;box-shadow:0 0 18px #ff00cc55}
+.counter b{display:block;font-size:1.4rem}
+.counter.locked{background:#ff00cc}
+.counter.done{background:#6600ff}
+.counter.hits{background:gold;color:#1a1020;box-shadow:0 0 18px gold}
+.counter.miss{background:#2a2a34;box-shadow:0 0 12px #444}
+.game-header{font-size:1rem;font-weight:700;color:#ffb3ea;margin:16px 0 8px}
+.card{margin-bottom:10px;padding:12px 14px;border-radius:14px;background:linear-gradient(90deg,#1a1a24,#2a2a3a);border:2px solid #ff00cc;box-shadow:0 0 14px #ff00cc44;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:scale(1.015);box-shadow:0 0 22px #ff00cc88}
+.card.hit{border-color:gold;box-shadow:0 0 18px gold}
+.card.miss{border-color:#553333;opacity:.8;box-shadow:none}
+.card.wait{border-color:#6600ff;box-shadow:0 0 14px #6600ff66;animation:pulse 2.4s infinite}
+.player{font-weight:700;font-size:1.02rem}
+.prop{color:#ffb3ea;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin:2px 0 6px}
+.books{display:flex;flex-wrap:wrap;gap:5px}
+.bk{background:#12121a;border:1px solid #6600ff;border-radius:999px;padding:3px 8px;font-size:.66rem;font-weight:700}
+.bk.best{background:#ff00cc;border-color:#ffd0f2;box-shadow:0 0 10px #ff00cc88}
+.nums{float:right;text-align:right}
+.pill{display:inline-block;background:#ff00cc;color:#fff;font-weight:800;font-size:.66rem;padding:3px 9px;border-radius:999px;box-shadow:0 0 10px #ff00cc88}
+.pill.hit{background:gold;color:#1a1020;box-shadow:0 0 12px gold}
+.pill.miss{background:#444}
+.ev{display:block;color:#ffe27a;font-weight:700;margin-top:4px}
+.why{color:#f3e8ff;font-size:.74rem;margin-top:6px;clear:both}
+.tag{display:inline-block;background:#2a1040;color:#f3e8ff;border:1px solid #b366ff;border-radius:999px;padding:2px 7px;font-size:.6rem;margin:3px 3px 0 0}
+.rate-chip{display:inline-block;background:#1a1a24;border:1px solid #b366ff;border-radius:14px;padding:10px 12px;margin:4px;text-align:center;min-width:84px;box-shadow:0 0 10px #6600ff44}
+.rate-chip.hot{border-color:gold;box-shadow:0 0 14px gold}
+.rate-chip b{display:block;font-size:1.1rem}
+.rate-chip span{font-size:.62rem;color:#ddd}
+.glossary{background:#14141c;border:1px solid #ff00cc66;border-radius:16px;padding:16px;box-shadow:0 0 16px #ff00cc33;line-height:1.65}
+.glossary strong{color:#ffb3ea}
 </style>
 """, unsafe_allow_html=True)
 
@@ -62,26 +70,18 @@ MY_BOOKS = {
     "hardrockbet": "HR", "hardrockbet_az": "HR", "hardrockbet_oh": "HR", "hardrockbet_fl": "HR",
     "pinnacle": "PIN", "circa": "CIR", "bookmaker": "BM",
 }
-BOOK_FULL = {
-    "FD": "FanDuel", "DK": "DraftKings", "MGM": "BetMGM", "365": "Bet365",
-    "CZR": "Caesars", "FAN": "Fanatics", "SCR": "theScore", "HR": "Hard Rock",
-    "PIN": "Pinnacle", "CIR": "Circa", "BM": "Bookmaker",
-}
+BOOK_FULL = {"FD": "FanDuel", "DK": "DraftKings", "MGM": "BetMGM", "365": "Bet365", "CZR": "Caesars", "FAN": "Fanatics", "SCR": "theScore", "HR": "Hard Rock", "PIN": "Pinnacle", "CIR": "Circa", "BM": "Bookmaker"}
 ALL_BOOK_CODES = sorted(BOOK_FULL)
-BASE_WEIGHTS = {
-    "PIN": 3.5, "CIR": 3.0, "BM": 2.8, "FD": 2.0, "DK": 1.8, "365": 2.0,
-    "MGM": 1.4, "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1,
-}
+BASE_WEIGHTS = {"PIN": 3.5, "CIR": 3.0, "BM": 2.8, "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4, "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1}
 GLOSSARY = """
-<strong>This is a price-gap tool.</strong> The longest number against the pack is the tell. Weights decide how much each book counts in the blend.<br><br>
-<strong>True EV</strong> — longest price vs the weighted blend. Positive means that book is hanging a softer number than the group.<br>
-<strong>Gap</strong> — how much longer the best price is than the median. Big gap, one book out on its own, is the chaos.<br>
-<strong>Spike</strong> — gap plus how far apart the books are. TAKE is a high spike. LEAN is a smaller one.<br>
-<strong>Solo</strong> — one book is standing alone with the long number.<br>
-<strong>Soft book</strong> — a book that keeps being the longest, and those plays cash.<br>
-<strong>Grader</strong> — NBA uses your BallDontLie GOAT key. NFL uses ESPN finals. Click Grade. Do not do it by hand.
+<strong>This is a price-gap tool.</strong> The longest number against the pack is the tell.<br><br>
+<strong>True EV</strong> — longest price vs the weighted blend.<br>
+<strong>Gap</strong> — how much longer the best price is than the median.<br>
+<strong>Spike</strong> — gap plus how far apart the books are. High spike is TAKE.<br>
+<strong>Solo</strong> — one book standing alone with the long number.<br>
+<strong>Soft book</strong> — keeps being the longest, and those plays cash.<br>
+<strong>Grader</strong> — NBA uses your BallDontLie GOAT key. NFL uses ESPN finals.
 """
-
 
 def secret(name):
     try:
@@ -549,45 +549,69 @@ def fmt_price(px):
         return "—"
 
 
-def row_html(c, result=None):
+
+def fmt_price(px):
+    try:
+        return f"{int(px):+d}"
+    except Exception:
+        return "—"
+
+
+def glow_card(c, result=None):
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
     boxes = "".join(
         f'<div class="bk {"best" if bk == c.get("book") else ""}">{bk} {fmt_price(px)}</div>'
         for bk, px in sorted((c.get("book_prices") or {c.get("book"): c.get("price")}).items(), key=lambda z: -(z[1] or 0))
     )
     tags = "".join(f'<span class="tag">{t}</span>' for t in (c.get("tags") or []))
-    cls = "row"
-    if result == "HIT" or c.get("decision") == "TAKE":
-        cls += " take" if result != "MISS" else " miss"
-    if result == "HIT":
+    state = (result or "").upper()
+    cls = "card"
+    pill_cls = "pill"
+    if state == "HIT":
         cls += " hit"
-    if result == "MISS":
+        pill_cls += " hit"
+    elif state == "MISS":
         cls += " miss"
-    pill = result or c.get("decision") or ""
+        pill_cls += " miss"
+    elif state in ("", "LOCKED", "WAITING") or c.get("decision") != "TAKE":
+        cls += " wait"
+    label = state or c.get("decision") or "TAKE"
     tev = c.get("true_ev")
     tev_txt = f"{tev}%" if tev is not None else "—"
     gap = c.get("ev_gap")
     gap_txt = f"gap {gap}%" if gap is not None else ""
     return (
-        f'<div class="{cls}"><div class="who"><div class="player">{c.get("player")}</div>'
-        f'<div class="prop">{c.get("prop")} {line_txt}</div></div>'
-        f'<div class="books">{boxes}{tags}</div>'
-        f'<div class="nums"><span class="score-pill">{pill}</span>'
-        f'<span class="ev">{tev_txt}</span><span class="gap">{gap_txt} · {c.get("book")}</span>'
-        f'<div class="why">{plain_reason(c)}</div></div></div>'
+        f'<div class="{cls}"><div class="nums"><span class="{pill_cls}">{label}</span>'
+        f'<span class="ev">{tev_txt}</span><span class="why" style="margin:0">{gap_txt} · {c.get("book") or ""}</span></div>'
+        f'<div class="player">{c.get("player")}</div>'
+        f'<div class="prop">{c.get("prop")} {line_txt}</div>'
+        f'<div class="books">{boxes}</div>{tags}'
+        f'<div class="why">{plain_reason(c)}</div></div>'
     )
 
 
-def chip(label, hits, n, hot=False):
+def chip(label, hits, n):
     rate = round(100 * hits / n) if n else 0
-    cls = "rate-chip hot" if hot and n >= 8 else "rate-chip"
-    return f'<div class="{cls}"><b>{rate}%</b><span>{label}<br>{hits} of {n}</span></div>'
+    hot = " hot" if n >= 8 and hits / n >= 0.15 else ""
+    return f'<div class="rate-chip{hot}"><b>{rate}%</b><span>{label}<br>{hits} of {n}</span></div>'
+
+
+def counters(locked, finished, hits, misses):
+    st.markdown(
+        f'''<div class="counters">
+        <div class="counter locked">Locked<b>{locked}</b></div>
+        <div class="counter done">Finished<b>{finished}</b></div>
+        <div class="counter hits">Hits<b>{hits}</b></div>
+        <div class="counter miss">Misses<b>{misses}</b></div>
+        </div>''',
+        unsafe_allow_html=True,
+    )
 
 
 def main():
-    st.markdown('<div class="queen-banner">Girl Magic · 2.0</div>', unsafe_allow_html=True)
-    st.markdown("# Odds, gaps, tells")
-    st.markdown('<div class="how-to">Pull the board. The long number is the tell. Lock it. Grade closes it. No scrolling a thousand cards.</div>', unsafe_allow_html=True)
+    st.markdown("# ✨ Girl Magic Odds 2.0")
+    st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="how-to">Pull the board. The long number is the tell. Lock it. Grade closes it.</div>', unsafe_allow_html=True)
     api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
     if not api_key:
         st.info("Add your Odds API key.")
@@ -596,7 +620,7 @@ def main():
     auto_weights = load_auto_weights()
     with st.sidebar:
         st.markdown("### Book weights")
-        st.caption("Heavier book counts more in the blend. Auto-tunes after 10 plays.")
+        st.caption("Heavier book counts more in the blend.")
         live = {}
         for short in sorted(BASE_WEIGHTS):
             live[short] = st.slider(short, 0.5, 4.0, float(auto_weights.get(short, BASE_WEIGHTS[short])), 0.1, key=f"w_{short}")
@@ -642,13 +666,12 @@ def main():
                             "ts": datetime.now().isoformat(timespec="minutes"), "sport": c["sport"],
                             "player": c["player"], "prop": c["prop"], "line": c["line"], "price": c["price"],
                             "book": c["book"], "event": c["event"], "true_ev": c.get("true_ev"),
-                            "ev_gap": c.get("ev_gap"), "book_beh": c.get("book_beh"), "result": None,
+                            "ev_gap": c.get("ev_gap"), "result": None,
                         })
                         seen.add(key)
                         added += 1
             save_ledger(ledger)
-            takes = sum(1 for c in cards if c.get("decision") == "TAKE")
-            st.toast(f"{takes} TAKE · auto-tracked {added}")
+            st.toast(f"{sum(1 for c in cards if c.get('decision')=='TAKE')} TAKE · tracked {added}")
     cards = st.session_state.get(f"cards_{sport}") or []
     if st.session_state.get("last_sport") == sport and st.session_state.get("fetched"):
         st.caption(f"{sport} @ {st.session_state['fetched']} · {len(cards)} priced · {sum(1 for c in cards if c.get('decision')=='TAKE')} TAKE")
@@ -657,46 +680,39 @@ def main():
         if not cards:
             st.info("Pull the board.")
         else:
-            a, b, c = st.columns(3)
+            a, b = st.columns(2)
             simple = a.toggle("TAKE only", value=True)
             petty = b.toggle("Petty ranges", value=False)
-            show_why = c.toggle("Show the why", value=True)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
-            f1, f2 = st.columns(2)
-            prop_filter = f1.multiselect("Prop", props, default=props)
-            books = f2.multiselect("Longest book", ALL_BOOK_CODES, default=ALL_BOOK_CODES, format_func=lambda x: BOOK_FULL.get(x, x))
+            prop_filter = st.multiselect("Prop", props, default=props)
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
-            filtered = [x for x in cards if x.get("prop") in prop_filter and x.get("book") in books and line_ok(x.get("prop"), x.get("line"))]
+            filtered = [x for x in cards if x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
             if petty:
                 filtered = [x for x in filtered if x.get("petty_range_match")]
             if simple:
                 filtered = [x for x in filtered if x.get("decision") == "TAKE"]
-            filtered = [x for x in filtered if (x.get("price") or 0) >= min_odds]
-            filtered = sorted(filtered, key=lambda x: -(x.get("true_ev") or -999))[:80]
-            if not filtered:
-                st.info("Nothing clears. Turn TAKE only off, or drop the min odds.")
-            else:
-                st.markdown(f"**{len(filtered)} on the board.** Best gaps first. Not the whole slate.")
-                by_game = defaultdict(list)
-                for x in filtered:
-                    by_game[x.get("event") or "Unknown"].append(x)
-                for game, rows in by_game.items():
-                    st.markdown(f'<div class="game-header">{game}</div>', unsafe_allow_html=True)
-                    for i, x in enumerate(rows):
-                        html = row_html(x)
-                        if not show_why:
-                            html = html.replace(f'<div class="why">{plain_reason(x)}</div>', "")
-                        st.markdown(html, unsafe_allow_html=True)
-                        if st.button("Lock", key=f"lk_{sport}_{game}_{i}_{x['player']}_{x['line']}"):
-                            ledger = load_ledger()
-                            ledger.append({
-                                "ts": datetime.now().isoformat(timespec="minutes"), "sport": x["sport"],
-                                "player": x["player"], "prop": x["prop"], "line": x["line"], "price": x["price"],
-                                "book": x["book"], "event": x["event"], "true_ev": x.get("true_ev"),
-                                "ev_gap": x.get("ev_gap"), "result": None,
-                            })
-                            save_ledger(ledger)
-                            st.toast("Locked.")
+            filtered = sorted(filtered, key=lambda x: -(x.get("true_ev") or -999))
+            page = st.number_input("Board page", min_value=1, value=1, step=1)
+            start = (int(page) - 1) * 24
+            shown = filtered[start:start + 24]
+            st.markdown(f"**{len(filtered)} match.** Showing {start + 1}–{start + len(shown)}. Best gaps first.")
+            by_game = defaultdict(list)
+            for x in shown:
+                by_game[x.get("event") or "Unknown"].append(x)
+            for game, rows in by_game.items():
+                st.markdown(f'<div class="game-header">{game}</div>', unsafe_allow_html=True)
+                for i, x in enumerate(rows):
+                    st.markdown(glow_card(x), unsafe_allow_html=True)
+                    if st.button("Lock", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
+                        ledger = load_ledger()
+                        ledger.append({
+                            "ts": datetime.now().isoformat(timespec="minutes"), "sport": x["sport"],
+                            "player": x["player"], "prop": x["prop"], "line": x["line"], "price": x["price"],
+                            "book": x["book"], "event": x["event"], "true_ev": x.get("true_ev"),
+                            "ev_gap": x.get("ev_gap"), "result": None,
+                        })
+                        save_ledger(ledger)
+                        st.toast("Locked 💫")
     with tracker:
         ledger = load_ledger()
         c1, c2 = st.columns(2)
@@ -705,52 +721,48 @@ def main():
             st.rerun()
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
-                if sport == "NBA":
-                    ledger, msg = grade_nba(ledger, bdl_key)
-                else:
-                    ledger, msg = grade_nfl(ledger)
+                ledger, msg = grade_nba(ledger, bdl_key) if sport == "NBA" else grade_nfl(ledger)
             st.success(msg)
+            st.toast("Grading complete — chaos contained 💫")
+            st.balloons()
             st.rerun()
         mine = [r for r in ledger if r.get("sport") == sport]
-        if not mine:
-            st.info("Nothing locked on this lane.")
-        else:
-            hits = sum(r.get("result") == "HIT" for r in mine)
-            misses = sum(r.get("result") == "MISS" for r in mine)
-            waiting = len(mine) - hits - misses
-            a, b, c, d = st.columns(4)
-            a.markdown(f'<div class="statpill"><b>{len(mine)}</b>locked</div>', unsafe_allow_html=True)
-            b.markdown(f'<div class="statpill"><b>{hits}</b>hit</div>', unsafe_allow_html=True)
-            c.markdown(f'<div class="statpill"><b>{misses}</b>miss</div>', unsafe_allow_html=True)
-            d.markdown(f'<div class="statpill"><b>{waiting}</b>waiting</div>', unsafe_allow_html=True)
-            graded = [r for r in mine if r.get("result") in ("HIT", "MISS")]
-            if graded:
-                st.markdown("**What cashed**")
-                by_book = defaultdict(lambda: [0, 0])
-                by_gap = defaultdict(lambda: [0, 0])
-                for r in graded:
-                    by_book[r.get("book") or "?"][1] += 1
-                    by_book[r.get("book") or "?"][0] += r.get("result") == "HIT"
-                    gap = r.get("ev_gap") or 0
-                    bucket = "gap 40+" if gap >= 40 else "gap 20–39" if gap >= 20 else "gap under 20"
-                    by_gap[bucket][1] += 1
-                    by_gap[bucket][0] += r.get("result") == "HIT"
-                html = "".join(chip(BOOK_FULL.get(bk, bk), h, n, h / n >= 0.2) for bk, (h, n) in sorted(by_book.items(), key=lambda z: -z[1][0]))
-                html += "".join(chip(bucket, h, n, h / n >= 0.2) for bucket, (h, n) in by_gap.items())
-                st.markdown(html, unsafe_allow_html=True)
-            st.markdown("**Latest locks**")
-            page = st.number_input("Page", min_value=1, value=1, step=1)
-            start = (int(page) - 1) * 20
-            for r in list(reversed(mine))[start:start + 20]:
-                fake = {
-                    "player": r.get("player"), "prop": r.get("prop"), "line": r.get("line"),
-                    "book": r.get("book"), "price": r.get("price"), "true_ev": r.get("true_ev"),
-                    "ev_gap": r.get("ev_gap"), "decision": r.get("result") or "LOCKED",
-                    "book_prices": {r.get("book"): r.get("price")}, "tags": [],
-                }
-                st.markdown(row_html(fake, r.get("result")), unsafe_allow_html=True)
+        hits = sum(r.get("result") == "HIT" for r in mine)
+        misses = sum(r.get("result") == "MISS" for r in mine)
+        counters(len(mine), hits + misses, hits, misses)
+        graded = [r for r in mine if r.get("result") in ("HIT", "MISS")]
+        if graded:
+            st.markdown("**What cashed**")
+            by_book = defaultdict(lambda: [0, 0])
+            by_gap = defaultdict(lambda: [0, 0])
+            for r in graded:
+                by_book[r.get("book") or "?"][1] += 1
+                by_book[r.get("book") or "?"][0] += r.get("result") == "HIT"
+                gap = r.get("ev_gap") or 0
+                bucket = "gap 40+" if gap >= 40 else "gap 20–39" if gap >= 20 else "gap under 20"
+                by_gap[bucket][1] += 1
+                by_gap[bucket][0] += r.get("result") == "HIT"
+            html = "".join(chip(BOOK_FULL.get(bk, bk), h, n) for bk, (h, n) in sorted(by_book.items(), key=lambda z: -(z[1][0] / z[1][1] if z[1][1] else 0)))
+            html += "".join(chip(bkt, h, n) for bkt, (h, n) in by_gap.items())
+            st.markdown(html, unsafe_allow_html=True)
+            chart = pd.DataFrame([
+                {"Book": BOOK_FULL.get(bk, bk), "Hit %": round(100 * h / n, 1)}
+                for bk, (h, n) in by_book.items() if n
+            ]).set_index("Book")
+            st.bar_chart(chart, use_container_width=True, color="#ff00cc")
+        page = st.number_input("Tracker page", min_value=1, value=1, step=1)
+        start = (int(page) - 1) * 16
+        for r in list(reversed(mine))[start:start + 16]:
+            fake = {
+                "player": r.get("player"), "prop": r.get("prop"), "line": r.get("line"),
+                "book": r.get("book"), "price": r.get("price"), "true_ev": r.get("true_ev"),
+                "ev_gap": r.get("ev_gap"), "decision": r.get("result") or "LOCKED",
+                "book_prices": {r.get("book"): r.get("price")}, "tags": [],
+            }
+            st.markdown(glow_card(fake, r.get("result") or "LOCKED"), unsafe_allow_html=True)
     with glossary:
-        st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
+        with st.expander("✨ Glossary", expanded=True):
+            st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
 
 
 try:
