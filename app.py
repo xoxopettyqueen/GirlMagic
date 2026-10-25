@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Streamlit-Only Grade
-NBA only via BallDontLie /stats. NFL marked N/A. Visual counters + colored blocks.
+Girl Magic Odds 2.0 — Tracker matches Board cards
+NBA Grade 40 at a time. NFL shows message.
 """
 
 import streamlit as st
@@ -669,85 +669,40 @@ def main():
             st.rerun()
         if current_sport == "NBA":
             if st.button("Grade NBA results"):
-                with st.spinner("Grading 40 NBA plays…"):
+                with st.spinner("Looking up 40 plays…"):
                     ledger = grade_nba_batch(ledger, bdl_key)
                 st.rerun()
         else:
-            st.info("NFL grading is not supported by BallDontLie. Only NBA results can be graded.")
-
-        uploaded = st.file_uploader("Import old plays (CSV)", type="csv")
-        if uploaded is not None:
-            df_import = pd.read_csv(uploaded)
-            existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
-            added = 0
-            for _, row in df_import.iterrows():
-                key = (row.get("player"), row.get("prop"), row.get("line"), row.get("price"))
-                if key not in existing and (row.get("price") or 0) >= 500 and line_ok(row.get("prop"), row.get("line")):
-                    ledger.append({
-                        "ts": row.get("ts"),
-                        "sport": row.get("sport"),
-                        "player": row.get("player"),
-                        "prop": row.get("prop"),
-                        "line": row.get("line"),
-                        "price": row.get("price"),
-                        "book": row.get("book"),
-                        "event": row.get("event"),
-                        "true_ev": row.get("true_ev"),
-                        "fair_prob": row.get("fair_prob"),
-                        "decision": row.get("decision"),
-                        "petty_range_match": row.get("petty_range_match"),
-                        "result": None if str(row.get("result")) in ("—", "nan", "") else row.get("result"),
-                        "clv": None,
-                        "locked_price": row.get("price"),
-                    })
-                    existing.add(key)
-                    added += 1
-            if added:
-                save_ledger(ledger)
-                st.success(f"Imported {added} plays.")
-                st.rerun()
+            st.info("NFL is not graded by BallDontLie.")
 
         if not ledger:
-            st.info("Nothing locked yet. Pull the chaos first.")
+            st.info("Nothing locked yet.")
         else:
             clean = [r for r in ledger if (r.get("price") or 0) >= 500 and r.get("sport") == current_sport and line_ok(r.get("prop"), r.get("line"))]
             if not clean:
-                st.info(f"No +500 or higher {current_sport} plays locked yet.")
+                st.info(f"No +500 {current_sport} plays yet.")
             else:
                 hits = sum(1 for r in clean if r.get("result") == "HIT")
                 misses = sum(1 for r in clean if r.get("result") == "MISS")
-                finished = hits + misses
-                st.markdown(
-                    f"""
-                    <div style='display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;'>
-                      <div style='background:#FF3EBF;padding:12px 18px;border-radius:12px;color:white;min-width:90px;text-align:center;'>
-                        Locked<br><b style='font-size:1.4rem'>{len(clean)}</b>
-                      </div>
-                      <div style='background:#7B2CBF;padding:12px 18px;border-radius:12px;color:white;min-width:90px;text-align:center;'>
-                        Finished<br><b style='font-size:1.4rem'>{finished}</b>
-                      </div>
-                      <div style='background:#FFD700;padding:12px 18px;border-radius:12px;color:black;min-width:90px;text-align:center;'>
-                        Hits<br><b style='font-size:1.4rem'>{hits}</b>
-                      </div>
-                      <div style='background:#444;padding:12px 18px;border-radius:12px;color:white;min-width:90px;text-align:center;'>
-                        Misses<br><b style='font-size:1.4rem'>{misses}</b>
-                      </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-                for r in clean[:100]:
+                st.markdown(f"**{len(clean)} locked · {hits} hit · {misses} miss**")
+                cols = st.columns(2)
+                for i, r in enumerate(clean[:40]):
                     res = r.get("result") or "—"
-                    bg = "#FFD700" if res == "HIT" else ("#333" if res == "MISS" else "#1a1a22")
-                    color = "black" if res == "HIT" else "white"
-                    st.markdown(
-                        f"""
-                        <div style='margin-bottom:6px;padding:10px 14px;border-radius:10px;background:{bg};color:{color};border:1px solid #2a2a33;'>
-                          <b>{r.get('player')}</b> — {r.get('prop')} {r.get('line')} · {r.get('book')} {r.get('price')} → <b>{res}</b>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
+                    card_cls = "card"
+                    if res == "HIT":
+                        card_cls += " true-ev-glow"
+                    elif res == "MISS":
+                        card_cls += " dimmed"
+                    html = (
+                        f'<div class="{card_cls}">'
+                        f'<div class="player">{r.get("player")}</div>'
+                        f'<div class="meta">{r.get("event")}</div>'
+                        f'<div class="prop">{r.get("prop")} {r.get("line")}</div>'
+                        f'<div class="true-ev">{r.get("book")} {r.get("price")} · {res}</div>'
+                        f'</div>'
                     )
+                    with cols[i % 2]:
+                        st.markdown(html, unsafe_allow_html=True)
                 render_softness(load_sharpness())
 
     with tab_glossary:
