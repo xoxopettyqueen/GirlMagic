@@ -709,6 +709,53 @@ def fmt_price(px):
         return "—"
 
 
+
+LEAGUE_AVG = {"Points": 112.0, "Assists": 26.0, "Rebounds": 44.0}
+
+def dvp_answer(player, prop, event, bdl_key):
+    """Yes if the opponent allows more than league average of this stat. None if unknown."""
+    if not bdl_key or prop not in LEAGUE_AVG:
+        return None
+    cache = st.session_state.setdefault("dvp_cache", {})
+    opp = ""
+    parts = [x.strip() for x in str(event or "").split("@")]
+    if len(parts) == 2:
+        opp = parts[1]
+    key = (prop, opp)
+    if key in cache:
+        return cache[key]
+    try:
+        status, teams = bdl_get("teams", bdl_key, {"per_page": 50})
+        if status != 200:
+            cache[key] = None
+            return None
+        token = opp.split()[-1].lower() if opp else ""
+        team = next((t for t in (teams.get("data") or []) if token and token in str(t.get("full_name") or "").lower()), None)
+        if not team:
+            cache[key] = None
+            return None
+        tid = team.get("id")
+        status, games = bdl_get("games", bdl_key, {"team_ids[]": tid, "per_page": 8, "seasons[]": 2025})
+        rows = (games.get("data") or []) if status == 200 else []
+        allowed = []
+        field = {"Points": "home_team_score", "Assists": None, "Rebounds": None}[prop]
+        for g in rows[:5]:
+            if prop == "Points":
+                score = g.get("visitor_team_score") if (g.get("home_team") or {}).get("id") == tid else g.get("home_team_score")
+                if score:
+                    allowed.append(float(score))
+        if not allowed:
+            cache[key] = None
+            return None
+        avg = sum(allowed) / len(allowed)
+        answer = "Yes" if avg >= LEAGUE_AVG[prop] else "No"
+        cache[key] = answer
+        return answer
+    except Exception:
+        cache[key] = None
+        return None
+
+
 def glow_card(c, result=None):
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
@@ -754,7 +801,9 @@ def glow_card(c, result=None):
         f'<span class="tag">edge {tev if tev is not None else "—"}%</span>'
         f'<span class="tag">CLV {clv_txt}</span>'
         f'<span class="tag">locked {locked}</span>'
-        f'<span class="tag">graded {graded}</span></div>'
+        f'<span class="tag">graded {graded}</span>'
+        + (f'<span class="tag">DVP {c.get("dvp")}</span>' if c.get("dvp") else "")
+        + '</div>'
         f'<div class="why">{desc}</div>'
         f'<div class="why" style="color:#ffe27a">{note}</div></div>'
     )
@@ -864,9 +913,10 @@ def main():
         if not cards:
             st.info("Pull the board.")
         else:
-            a, b = st.columns(2)
+            a, b, c3 = st.columns(3)
             simple = a.toggle("TAKE only", value=True)
             petty = b.toggle("Petty ranges", value=True)
+            dvp_on = c3.toggle("DVP tag", value=False)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
@@ -888,6 +938,8 @@ def main():
                 cols = st.columns(2)
                 for i, x in enumerate(rows):
                     with cols[i % 2]:
+                        if dvp_on and sport == "NBA" and not x.get("dvp"):
+                            x["dvp"] = dvp_answer(x.get("player"), x.get("prop"), x.get("event"), bdl_key)
                         st.markdown(glow_card(x), unsafe_allow_html=True)
                         if st.button("Lock", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
                             ledger = load_ledger()
