@@ -325,6 +325,7 @@ def grade_nba(ledger, bdl_key, days=6, regrade=False):
     ]
     if not pending:
         return ledger, "NBA: nothing left to grade."
+    pending = pending[:30]
     by_name = defaultdict(list)
     for row in pending:
         by_name[_norm_name(row.get("player"))].append(row)
@@ -645,17 +646,17 @@ def update_sharpness(cards):
 
 
 def worth_locking(c):
-    gap = c.get("ev_gap") or 0
-    edge = c.get("true_ev") or 0
     if c.get("decision") != "TAKE":
         return False
-    if gap < 20 or edge < 15:
+    if (c.get("price") or 0) < 500:
         return False
-    if c.get("book_beh") == "Solo" and gap < 25:
+    if (c.get("true_ev") or 0) < 4:
         return False
-    if not line_ok(c.get("prop"), c.get("line")):
+    if not in_user_range(c.get("prop"), c.get("line")):
         return False
-    if (c.get("price") or 0) < 150:
+    books = c.get("book_prices") or {}
+    long_ones = [px for px in books.values() if px and px >= (c.get("price") or 0) * 0.9]
+    if len(long_ones) > 2:
         return False
     return True
 
@@ -864,8 +865,8 @@ def main():
             st.info("Pull the board.")
         else:
             a, b = st.columns(2)
-            simple = a.toggle("TAKE only", value=False)
-            petty = b.toggle("Petty ranges", value=False)
+            simple = a.toggle("TAKE only", value=True)
+            petty = b.toggle("Petty ranges", value=True)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
