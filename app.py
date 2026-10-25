@@ -267,75 +267,112 @@ def bdl_get(path, key, params=None):
     return r.status_code, body
 
 
-def grade_nba(ledger, bdl_key, days=5):
+def teams_in(event):
+    parts = [x.strip() for x in str(event or "").split("@")]
+    return [p for p in parts if p]
+
+
+def event_matches(event, home, away):
+    blob = str(event or "").lower()
+    return home and away and home.lower() in blob and away.lower() in blob
+
+
+def grade_nba(ledger, bdl_key, days=6, regrade=False):
     if not bdl_key:
         return ledger, "No BallDontLie key. Add BALLDONTLIE_API_KEY to secrets."
+    if regrade:
+        for r in ledger:
+            if r.get("sport") == "NBA":
+                r["result"] = None
+                r["player_stat"] = None
     pending = [
         r for r in ledger
         if r.get("sport") == "NBA" and r.get("result") in (None, "", "—")
         and r.get("prop") in ("Assists", "Points", "Rebounds", "DoubleDouble")
+        and line_ok(r.get("prop"), r.get("line"))
     ]
     if not pending:
         return ledger, "NBA: nothing left to grade."
     by_name = defaultdict(list)
     for row in pending:
         by_name[_norm_name(row.get("player"))].append(row)
-    updated, notes = 0, []
+    updated, skipped, notes = 0, 0, []
     for back in range(days):
         day = (datetime.now(timezone.utc) - timedelta(days=back)).strftime("%Y-%m-%d")
         status, games = bdl_get("games", bdl_key, {"dates[]": day, "per_page": 30})
         if status != 200:
             notes.append(f"{day} games {status}")
             continue
-        ids = [g.get("id") for g in (games.get("data") or []) if g.get("id")]
+        game_rows = games.get("data") or []
+        ids = [g.get("id") for g in game_rows if g.get("id")]
         if not ids:
             continue
-        status, stats = bdl_get("stats", bdl_key, {"game_ids[]": ids, "per_page": 100})
-        if status != 200:
-            notes.append(f"{day} stats {status}")
-            continue
-        for stat in stats.get("data") or []:
+        names = {}
+        for g in game_rows:
+            home = ((g.get("home_team") or {}).get("full_name")) or ""
+            away = ((g.get("visitor_team") or {}).get("full_name")) or ""
+            names[g.get("id")] = (home, away)
+        page, all_stats = 1, []
+        while page <= 8:
+            status, stats = bdl_get("stats", bdl_key, {"game_ids[]": ids, "per_page": 100, "page": page})
+            if status != 200:
+                notes.append(f"{day} stats {status}")
+                break
+            chunk = stats.get("data") or []
+            all_stats.extend(chunk)
+            if len(chunk) < 100:
+                break
+            page += 1
+        for stat in all_stats:
             player = stat.get("player") or {}
             full = _norm_name(f"{player.get('first_name', '')} {player.get('last_name', '')}")
+            gid = (stat.get("game") or {}).get("id") or stat.get("game_id")
+            home, away = names.get(gid, ("", ""))
+            pts, reb, ast = stat.get("pts"), stat.get("reb"), stat.get("ast")
+            if pts is None and reb is None and ast is None:
+                continue
             for row in by_name.get(full) or []:
-                if row.get("result") in ("HIT", "MISS"):
+                if row.get("result") in ("HIT", "MISS", "N/A"):
                     continue
-                pts = float(stat.get("pts") or 0)
-                reb = float(stat.get("reb") or 0)
-                ast = float(stat.get("ast") or 0)
+                if row.get("event") and not event_matches(row.get("event"), home, away):
+                    continue
                 prop = row.get("prop")
                 line = float(row.get("line") or 0)
                 actual = {"Points": pts, "Rebounds": reb, "Assists": ast}.get(prop)
                 if prop == "DoubleDouble":
-                    actual, line = (1 if sum(x >= 10 for x in (pts, reb, ast)) >= 2 else 0), 1
+                    if None in (pts, reb, ast):
+                        continue
+                    actual = 1 if sum(float(x) >= 10 for x in (pts, reb, ast)) >= 2 else 0
+                    line = 1
                 if actual is None:
+                    row["result"] = "N/A"
+                    row["grade_note"] = "stat missing"
+                    skipped += 1
                     continue
+                actual = float(actual)
                 row["result"] = "HIT" if actual >= line else "MISS"
                 row["player_stat"] = actual
+                row["grade_note"] = f"{prop} {actual} vs {line} · {away} @ {home}"
                 row["graded_ts"] = datetime.now().isoformat(timespec="minutes")
                 updated += 1
     save_ledger(ledger)
-    msg = f"NBA graded {updated}."
+    msg = f"NBA graded {updated}. Left {skipped} as N/A."
     if notes:
-        msg += " API said: " + ", ".join(notes[:3])
+        msg += " API: " + ", ".join(notes[:3])
     return ledger, msg
 
 
-def espn(url, params=None):
-    try:
-        r = requests.get(url, params=params or {}, timeout=15)
-        if r.status_code == 200:
-            return r.json()
-    except Exception:
-        pass
-    return {}
-
-
-def grade_nfl(ledger, days=5):
+def grade_nfl(ledger, days=6, regrade=False):
+    if regrade:
+        for r in ledger:
+            if r.get("sport") == "NFL":
+                r["result"] = None
+                r["player_stat"] = None
     pending = [
         r for r in ledger
         if r.get("sport") == "NFL" and r.get("result") in (None, "", "—")
         and r.get("prop") in ("Anytime TD", "Rec Yards")
+        and line_ok(r.get("prop"), r.get("line"))
     ]
     if not pending:
         return ledger, "NFL: nothing left to grade."
@@ -347,48 +384,61 @@ def grade_nfl(ledger, days=5):
             comp = (ev.get("competitions") or [{}])[0]
             if ((comp.get("status") or {}).get("type") or {}).get("state") != "post":
                 continue
+            teams = [((t.get("team") or {}).get("displayName") or "") for t in (comp.get("competitors") or [])]
             box = espn("https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary", {"event": ev.get("id")})
-            players = []
+            by_player = {}
             for team in ((box.get("boxscore") or {}).get("players") or []):
                 for block in team.get("statistics") or []:
+                    name = str(block.get("name") or "").lower()
                     labels = [str(x).lower() for x in (block.get("labels") or [])]
                     for ath in block.get("athletes") or []:
                         nm = ((ath.get("athlete") or {}).get("displayName")) or ""
+                        key = _norm_name(nm)
                         stats = ath.get("stats") or []
-                        row = {labels[i]: stats[i] for i in range(min(len(labels), len(stats)))}
-                        players.append((nm, row))
+                        row = by_player.setdefault(key, {"name": nm})
+                        mapped = {labels[i]: stats[i] for i in range(min(len(labels), len(stats)))}
+                        if "receiving" in name and "yds" in mapped:
+                            row["receiving_yards"] = mapped.get("yds")
+                        if "rushing" in name and "yds" in mapped:
+                            row["rushing_yards"] = mapped.get("yds")
+                        if "td" in mapped:
+                            row.setdefault("td_parts", []).append(mapped.get("td"))
             for rec in pending:
-                if rec.get("result") in ("HIT", "MISS"):
+                if rec.get("result") in ("HIT", "MISS", "N/A"):
                     continue
-                hit = next((row for nm, row in players if _norm_name(rec.get("player")) == _norm_name(nm) or _norm_name(rec.get("player")) in _norm_name(nm)), None)
+                if rec.get("event") and not any(t and t.lower() in str(rec.get("event")).lower() for t in teams):
+                    continue
+                key = _norm_name(rec.get("player"))
+                hit = by_player.get(key)
                 if not hit:
                     continue
                 if rec.get("prop") == "Anytime TD":
-                    td = 0
-                    for k, v in hit.items():
-                        if "td" in k:
-                            try:
-                                td += float(v)
-                            except Exception:
-                                pass
+                    td = 0.0
+                    for v in hit.get("td_parts") or []:
+                        try:
+                            td += float(v)
+                        except Exception:
+                            pass
                     rec["result"] = "HIT" if td > 0 else "MISS"
                     rec["player_stat"] = td
-                    rec["graded_ts"] = datetime.now().isoformat(timespec="minutes")
-                    updated += 1
+                    rec["grade_note"] = f"touchdowns {td} · {' @ '.join(teams)}"
                 elif rec.get("prop") == "Rec Yards":
-                    yds = None
-                    for k in ("yds", "rec yds", "receiving yards"):
-                        if k in hit:
-                            try:
-                                yds = float(str(hit[k]).split("-")[-1])
-                            except Exception:
-                                pass
-                    if yds is None:
+                    raw = hit.get("receiving_yards")
+                    if raw is None:
+                        rec["result"] = "N/A"
+                        rec["grade_note"] = "receiving_yards missing"
+                        continue
+                    try:
+                        yds = float(str(raw).split("-")[-1])
+                    except Exception:
+                        rec["result"] = "N/A"
+                        rec["grade_note"] = "receiving_yards unreadable"
                         continue
                     rec["result"] = "HIT" if yds >= float(rec.get("line") or 0) else "MISS"
                     rec["player_stat"] = yds
-                    rec["graded_ts"] = datetime.now().isoformat(timespec="minutes")
-                    updated += 1
+                    rec["grade_note"] = f"receiving_yards {yds} vs {rec.get('line')} · {' @ '.join(teams)}"
+                rec["graded_ts"] = datetime.now().isoformat(timespec="minutes")
+                updated += 1
     save_ledger(ledger)
     return ledger, f"NFL graded {updated}."
 
@@ -580,6 +630,7 @@ def glow_card(c, result=None):
     gap = c.get("ev_gap")
     stat = c.get("player_stat")
     got = f" · got {stat}" if stat is not None else ""
+    note = c.get("grade_note") or ""
     clv = c.get("clv")
     clv_txt = f"{clv:+.1f}" if isinstance(clv, (int, float)) else "—"
     locked = c.get("ts") or "—"
@@ -606,7 +657,8 @@ def glow_card(c, result=None):
         f'<span class="tag">CLV {clv_txt}</span>'
         f'<span class="tag">locked {locked}</span>'
         f'<span class="tag">graded {graded}</span></div>'
-        f'<div class="why">{desc}</div></div>'
+        f'<div class="why">{desc}</div>'
+        f'<div class="why" style="color:#ffe27a">{note}</div></div>'
     )
 
 
@@ -739,9 +791,10 @@ def main():
         if c1.button("Wipe tracker"):
             save_ledger([])
             st.rerun()
+        regrade = st.checkbox("Regrade, clear old hits first")
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
-                ledger, msg = grade_nba(ledger, bdl_key) if sport == "NBA" else grade_nfl(ledger)
+                ledger, msg = grade_nba(ledger, bdl_key, regrade=regrade) if sport == "NBA" else grade_nfl(ledger, regrade=regrade)
             st.success(msg)
             st.toast("Grading complete — chaos contained 💫")
             st.balloons()
