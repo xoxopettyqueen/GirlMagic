@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Grade Button
-Tracker shows. Click Grade NBA results to fill hit/miss.
+Girl Magic Odds 2.0 — EV Uncapped + Better Grade
+True EV no longer stuck at 18. Grade tries harder to match players.
 """
 
 import streamlit as st
@@ -147,14 +147,14 @@ def weighted_fair_prob(book_prices, weights=None):
             total_w += w
     if not weighted or total_w == 0: return None
     fair = sum(weighted) / total_w
-    return max(0.08, min(0.75, fair))
+    return max(0.05, min(0.85, fair))
 
 def compute_true_ev(best_price, fair_prob):
     if not fair_prob or best_price is None: return None
     try:
         decimal = (best_price / 100 + 1) if best_price > 0 else (100 / abs(best_price) + 1)
         ev = (fair_prob * decimal - 1) * 100
-        return round(max(-15, min(18, ev)), 1)
+        return round(max(-20, min(80, ev)), 1)
     except: return None
 
 def plain_reason(c):
@@ -169,7 +169,7 @@ def plain_reason(c):
 def card_score(true_ev, spike):
     tev = true_ev or 0
     sp = spike or 0
-    raw = (max(0, tev) * 0.35) + (sp * 4)
+    raw = (max(0, tev) * 0.25) + (sp * 4)
     return round(max(1.0, min(10.0, raw)), 1)
 
 def normalize_book(key):
@@ -200,7 +200,7 @@ def save_ledger(rows):
 
 def auto_grade_nba(ledger):
     try:
-        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=10)
+        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=12)
         if r.status_code != 200:
             return ledger
         data = r.json()
@@ -221,7 +221,7 @@ def auto_grade_nba(ledger):
     for row in ledger:
         if row.get("sport") != "NBA" or row.get("result") is not None:
             continue
-        player = (row.get("player") or "").lower()
+        player = (row.get("player") or "").lower().strip()
         prop = row.get("prop")
         line = row.get("line")
         if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
@@ -231,7 +231,7 @@ def auto_grade_nba(ledger):
             try:
                 box = requests.get(
                     f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}",
-                    timeout=8
+                    timeout=10
                 )
                 if box.status_code != 200:
                     continue
@@ -244,8 +244,9 @@ def auto_grade_nba(ledger):
                 if not stats_list:
                     continue
                 for athlete in stats_list[0].get("athletes", []):
-                    name = (athlete.get("athlete", {}).get("displayName") or "").lower()
-                    if player not in name and name not in player:
+                    name = (athlete.get("athlete", {}).get("displayName") or "").lower().strip()
+                    short = (athlete.get("athlete", {}).get("shortName") or "").lower().strip()
+                    if not (player in name or name in player or player in short or short in player):
                         continue
                     stats = athlete.get("stats", [])
                     try:
@@ -558,7 +559,7 @@ def main():
             with f2:
                 decision_filter = st.multiselect("Decision", ["TAKE", "LEAN", "PASS"], default=["TAKE", "LEAN"])
             with f3:
-                min_ev = st.slider("Min True EV %", -5.0, 15.0, 0.0, 0.5)
+                min_ev = st.slider("Min True EV %", -5.0, 30.0, 0.0, 0.5)
 
             o1, o2 = st.columns(2)
             with o1:
