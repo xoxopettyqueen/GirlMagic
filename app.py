@@ -58,9 +58,9 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .glossary{background:#14141c;border:1px solid #ff00cc66;border-radius:16px;padding:16px;box-shadow:0 0 16px #ff00cc33;line-height:1.65}
 .glossary strong{color:#ffb3ea}
 
-.gm{background:#10241c;border:1px solid #ec4899;border-radius:18px;padding:12px 14px;margin-bottom:10px;color:#fdf2f8;box-shadow:0 0 16px #ec489933}
+.gm{background:#10241c;min-height:240px;border:1px solid #ec4899;border-radius:18px;padding:14px;margin-bottom:10px;color:#fdf2f8;box-shadow:0 0 16px #ec489933}
 .gm-top{display:flex;justify-content:space-between;align-items:center}
-.gm-name{font-size:1.15rem;font-weight:800;color:#fff}
+.gm-math{display:flex;gap:8px;margin-bottom:10px}.gm-stat{flex:1;background:#1b1226;border:1px solid #a855f7;border-radius:12px;padding:8px;text-align:center}.gm-stat span{display:block;font-size:.62rem;letter-spacing:.08em;color:#f9a8d4}.gm-stat b{display:block;font-size:1.35rem;color:#fff}.gm-stat small{display:block;font-size:.62rem;color:#d8c8ea}.gm-name{font-size:1.2rem;font-weight:800;color:#fff}
 .pscore{background:#ec4899;color:#fff;font-weight:800;font-size:.68rem;padding:4px 10px;border-radius:999px}
 .run{font-size:.62rem;letter-spacing:.14em;color:#f9a8d4;font-weight:700}
 .gm-sub{color:#c4b5d4;font-size:.72rem;margin:2px 0 6px}
@@ -97,7 +97,15 @@ GLOSSARY = """
 <strong>Soft book</strong> — the one that keeps hanging the longest number and paying you for it.<br>
 <strong>Petty range</strong> — assists 3–8, points 8–15, rebounds 4–10, TD yes. Cute little alt lines.<br>
 <strong>Receipts</strong> — after the game, NBA comes from BallDontLie, NFL from ESPN. HIT she did it. MISS she did not. N/A the data was trash.<br>
-<strong>How to read a chart</strong> — gold is a hit. The donut is the whole slate. The scatter is gap across, edge up. Top right is the loud one that also had juice.
+<strong>How to use this if you are new</strong><br>
+1. Pull the heat board.<br>
+2. Gap over 20% means one book is hanging a number way longer than the pack. That is the tell.<br>
+3. Edge over 15% is the juice. +EV means that number is profitable over time if the math holds.<br>
+4. After the games, run the receipts. HIT she did it. MISS she did not.<br>
+5. Gold books are the soft ones. Play those more.<br><br>
+<strong>Price gap</strong> — how far one book's number stands from the middle of the pack.<br>
+<strong>+EV</strong> — expected value over zero. You are getting a longer number than the blend says is fair.<br>
+<strong>CLV</strong> — your locked price against the close. Plus means you beat the market.
 """
 
 def secret(name):
@@ -713,25 +721,26 @@ def glow_card(c, result=None):
     gap = c.get("ev_gap") or 0
     edge = c.get("true_ev") or 0
     score = int(min(100, max(1, (gap * 0.6) + (edge * 0.4))))
-    bars = "".join('<span class="meter on"></span>' if i < min(6, max(1, score // 16)) else '<span class="meter"></span>' for i in range(6))
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
-    tags = "".join(f'<span class="mtag">{bk} {fmt_price(v)}</span>' for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6])
+    books = "".join(
+        f'<span class="mtag">{bk}<b>{fmt_price(v)}</b></span>'
+        for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
+    )
     state = (result or c.get("decision") or "TAKE").upper()
     border = "#f5c542" if state == "HIT" else "#ff4d6d" if state == "MISS" else "#ec4899"
-    got = f" · got {c.get('player_stat')}" if c.get("player_stat") is not None else ""
-    note = c.get("grade_note") or plain_reason(c)
     return (
         f'<div class="gm" style="border-color:{border}">'
-        f'<div class="run">RUN IT, BADDIE</div>'
-        f'<div class="gm-top"><div class="gm-name">{c.get("player")}</div>'
-        f'<div class="pscore">Petty {score}</div></div>'
-        f'<div class="gm-sub">{c.get("event") or ""} · {c.get("prop")} {line_txt}{got}</div>'
-        f'<div class="meters">{bars}</div>'
-        f'<div class="gm-line"><b>Best {px_txt} on {c.get("book")}</b> · pack {med_txt}</div>'
-        f'<div class="gm-line">Edge {edge}% · gap {gap}%</div>'
-        f'<div class="mtags">{tags}</div>'
-        f'<div class="gm-why">· {note}</div>'
-        f'<div class="gm-foot">{state} · score {score}/100 · {c.get("book_beh") or "cluster"}</div>'
+        f'<div class="gm-math">'
+        f'<div class="gm-stat"><span>GAP</span><b>{gap}%</b><small>how far from the pack</small></div>'
+        f'<div class="gm-stat"><span>EDGE</span><b>{edge}%</b><small>juice vs fair</small></div>'
+        f'<div class="gm-stat"><span>PETTY</span><b>{score}</b><small>gap and edge together</small></div>'
+        f'</div>'
+        f'<div class="gm-name">{c.get("player")}</div>'
+        f'<div class="gm-sub">{c.get("prop")} {line_txt} · {c.get("event") or ""}</div>'
+        f'<div class="gm-line"><b>Best {px_txt}</b> at {c.get("book")} · pack is {med_txt}</div>'
+        f'<div class="mtags">{books}</div>'
+        f'<div class="gm-why">{plain_reason(c)}</div>'
+        f'<div class="gm-foot">{state} · fair is the blend · lock the longest</div>'
         f'</div>'
     )
 
@@ -755,7 +764,8 @@ def counters(locked, finished, hits, misses):
 
 
 def main():
-    st.markdown("# ✨ Girl Magic Odds 2.0")
+    st.markdown("# ✨ Girl Magic Odds 2.0 💖")
+    st.caption("Chaos engine for real edges. Pull the board. Lock the loud ones. Run the receipts.")
     st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
     st.markdown('<div class="how-to">Pull the chaos board. The long number is the tell. Lock her. Run the receipts.</div>', unsafe_allow_html=True)
     api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
@@ -877,12 +887,41 @@ def main():
                             st.toast("Locked 💫")
     with tracker:
         ledger = load_ledger()
-        c1, c2 = st.columns(2)
-        if c1.button("Wipe tracker"):
+        c1, c2, c3 = st.columns(3)
+        if c1.button("Clear the slate"):
             save_ledger([])
             st.rerun()
+        upload = c3.file_uploader("Upload lost receipts", type=["json", "csv"])
+        if upload is not None:
+            raw = upload.getvalue().decode("utf-8", errors="ignore")
+            incoming = []
+            if upload.name.endswith(".json"):
+                try:
+                    incoming = json.loads(raw)
+                except Exception:
+                    incoming = []
+            else:
+                import csv, io
+                incoming = list(csv.DictReader(io.StringIO(raw)))
+            if isinstance(incoming, dict):
+                incoming = incoming.get("plays") or incoming.get("ledger") or []
+            merged = load_ledger()
+            have = {(str(r.get("player")), str(r.get("prop")), str(r.get("line"))) for r in merged}
+            added_up = 0
+            for r in incoming:
+                key = (str(r.get("player")), str(r.get("prop")), str(r.get("line")))
+                if not r.get("player") or key in have:
+                    continue
+                r.setdefault("sport", sport)
+                r.setdefault("result", None)
+                merged.append(r)
+                have.add(key)
+                added_up += 1
+            save_ledger(merged)
+            st.success(f"Restored {added_up} receipts")
+            st.rerun()
         regrade = st.checkbox("Regrade, clear old hits first")
-        if c2.button("Grade finals"):
+        if c2.button("Run the receipts"):
             with st.spinner("Closing plays…"):
                 ledger, msg = grade_nba(ledger, bdl_key, regrade=regrade) if sport == "NBA" else grade_nfl(ledger, regrade=regrade)
             st.success(msg)
