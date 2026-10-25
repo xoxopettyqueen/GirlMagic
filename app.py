@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Tracker filtered by current sport
-NBA lane shows NBA. NFL lane shows NFL.
+Girl Magic Odds 2.0 — +500 minimum
+Only +500 or higher. Higher odds, real discrepancies.
 """
 
 import streamlit as st
@@ -90,6 +90,14 @@ def in_user_range(prop, line):
     if prop == "Rebounds": return 4 <= line <= 10
     if prop in ("DoubleDouble", "Anytime TD"): return True
     return False
+
+def line_ok(prop, line):
+    if prop == "Points": return line <= 20
+    if prop == "Rebounds": return line <= 12
+    if prop == "Assists": return line <= 12
+    if prop == "Rec Yards": return line <= 25
+    if prop in ("DoubleDouble", "Anytime TD"): return True
+    return True
 
 def load_sharpness():
     if SHARPNESS.exists():
@@ -526,7 +534,7 @@ def main():
             existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
             added = 0
             for c in cards:
-                if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 300:
+                if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 500 and line_ok(c.get("prop"), c.get("line")):
                     key = (c["player"], c["prop"], c["line"], c["price"])
                     if key not in existing:
                         ledger.append({
@@ -547,7 +555,7 @@ def main():
                         existing.add(key)
                         added += 1
             save_ledger(ledger)
-            if added: st.toast(f"Auto-tracked {added} TAKE plays (+300+)")
+            if added: st.toast(f"Auto-tracked {added} TAKE plays (+500+)")
             st.toast("Weights auto-tuned")
 
     cards = st.session_state.get(f"cards_{current_sport}") or []
@@ -582,9 +590,9 @@ def main():
 
             o1, o2 = st.columns(2)
             with o1:
-                min_odds = st.number_input("Min Odds", value=-500, step=50)
+                min_odds = st.number_input("Min Odds", value=500, step=50)
             with o2:
-                max_odds = st.number_input("Max Odds", value=2000, step=100)
+                max_odds = st.number_input("Max Odds", value=5000, step=100)
 
             book_filter = st.multiselect(
                 "Book (longest price)",
@@ -594,6 +602,7 @@ def main():
             )
 
             filtered = cards[:]
+            filtered = [c for c in filtered if line_ok(c.get("prop"), c.get("line"))]
             if petty_mode:
                 filtered = [c for c in filtered if c.get("petty_range_match")]
             if simple_mode:
@@ -689,7 +698,7 @@ def main():
             added = 0
             for _, row in df_import.iterrows():
                 key = (row.get("player"), row.get("prop"), row.get("line"), row.get("price"))
-                if key not in existing and (row.get("price") or 0) >= 300:
+                if key not in existing and (row.get("price") or 0) >= 500 and line_ok(row.get("prop"), row.get("line")):
                     ledger.append({
                         "ts": row.get("ts"),
                         "sport": row.get("sport"),
@@ -717,9 +726,9 @@ def main():
         if not ledger:
             st.info("Nothing locked yet. Pull the chaos first.")
         else:
-            clean = [r for r in ledger if (r.get("price") or 0) >= 300 and r.get("sport") == current_sport]
+            clean = [r for r in ledger if (r.get("price") or 0) >= 500 and r.get("sport") == current_sport and line_ok(r.get("prop"), r.get("line"))]
             if not clean:
-                st.info(f"No +300 or higher {current_sport} plays locked yet.")
+                st.info(f"No +500 or higher {current_sport} plays locked yet.")
             else:
                 df = pd.DataFrame(clean)
                 keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
