@@ -9,7 +9,10 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import altair as alt
+try:
+    import altair as alt
+except Exception:
+    alt = None
 import pandas as pd
 import requests
 import streamlit as st
