@@ -75,15 +75,14 @@ BOOK_FULL = {"FD": "FanDuel", "DK": "DraftKings", "MGM": "BetMGM", "365": "Bet36
 ALL_BOOK_CODES = sorted(BOOK_FULL)
 BASE_WEIGHTS = {"PIN": 3.5, "CIR": 3.0, "BM": 2.8, "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4, "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1}
 GLOSSARY = """
-<strong>This is a chaos engine.</strong> The longest number against the pack is the tell. She is the loud one.<br><br>
-<strong>True EV</strong> — the real juice. Longest price against the weighted blend.<br>
-<strong>Gap</strong> — how far she stands from the crowd. Big gap, one book out on her own.<br>
-<strong>Spike</strong> — gap plus how far the books are apart. High spike is a TAKE.<br>
-<strong>Solo</strong> — one book standing alone with the long number.<br>
-<strong>Soft book</strong> — keeps hanging the long number, and those plays cash.<br>
-<strong>CLV</strong> — your locked price against the pack median the next time you pull. Plus means you beat the close.<br>
-<strong>Grader</strong> — NBA uses your BallDontLie GOAT key. NFL uses ESPN finals. The gold line is the number it used. If that number is wrong, the grade is wrong.<br>
-<strong>How to read a chart</strong> — gold is a hit, pink or gray is a miss. The donut is the whole slate. The scatter is gap on the bottom, edge up the side. Top-right is the chaos that also had juice.
+<strong>Push the button. See the edges. Lock the chaos. Wake up to the receipts.</strong><br><br>
+<strong>True EV</strong> — the real edge. Blend the books, then compare to the longest number.<br>
+<strong>Gap</strong> — how far the long number stands from the pack.<br>
+<strong>Spike</strong> — one book screaming a number way off the pack. That is a TAKE.<br>
+<strong>Soft book</strong> — the one that keeps hanging the longest number and paying you for it.<br>
+<strong>Petty range</strong> — assists 3–8, points 8–15, rebounds 4–10, TD yes. Cute little alt lines.<br>
+<strong>Receipts</strong> — after the game, NBA comes from BallDontLie, NFL from ESPN. HIT she did it. MISS she did not. N/A the data was trash.<br>
+<strong>How to read a chart</strong> — gold is a hit. The donut is the whole slate. The scatter is gap across, edge up. Top right is the loud one that also had juice.
 """
 
 def secret(name):
@@ -219,15 +218,13 @@ def card_score(true_ev, spike):
 
 def plain_reason(c):
     bk = c.get("book") or "A book"
-    tev = c.get("true_ev")
-    tev_txt = f"{tev}%" if tev is not None else "n/a"
+    px = c.get("price")
+    med = c.get("median")
     gap = c.get("ev_gap")
-    gap_txt = f"{gap}%" if gap is not None else "n/a"
-    if c.get("decision") == "TAKE" and (tev or 0) >= 3:
-        return f"{bk} is the long number. Gap {gap_txt} vs the pack. Edge {tev_txt}."
-    if c.get("decision") == "TAKE":
-        return f"Books disagree. {bk} is longest. Gap {gap_txt}."
-    return "Tight. The books agree. Skip."
+    tev = c.get("true_ev")
+    px_txt = f"{int(px):+d}" if isinstance(px, (int, float)) else "—"
+    med_txt = f"{int(med):+d}" if isinstance(med, (int, float)) else "the pack"
+    return f"{bk} is paying {px_txt} where the pack is {med_txt} — gap {gap if gap is not None else '—'}%, edge {tev if tev is not None else '—'}%. Soft book energy."
 
 
 def normalize_book(key):
@@ -639,7 +636,7 @@ def worth_locking(c):
         return False
     if not line_ok(c.get("prop"), c.get("line")):
         return False
-    if (c.get("price") or 0) < 150:
+    if (c.get("price") or 0) < 500:
         return False
     return True
 
