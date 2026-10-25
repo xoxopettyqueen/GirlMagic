@@ -561,15 +561,13 @@ def grade_nfl(ledger, days=6, regrade=False):
 
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
-    if not api_key:
-        return [], "No Odds API key. Add ODDS_API_KEY to secrets."
     try:
         r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
         if r.status_code == 200:
-            return r.json() or [], ""
-        return [], f"Events {r.status_code}: {(r.text or '')[:120]}"
-    except Exception as e:
-        return [], str(e)
+            return r.json() or []
+    except Exception:
+        pass
+    return []
 
 
 @st.cache_data(ttl=90)
@@ -577,14 +575,14 @@ def fetch_odds(api_key, sport_key, event_id, markets):
     try:
         r = requests.get(
             f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
-            params={"apiKey": api_key, "regions": "us", "markets": markets, "oddsFormat": "american"},
+            params={"apiKey": api_key, "regions": "us,us2,uk", "markets": markets, "oddsFormat": "american"},
             timeout=20,
         )
         if r.status_code == 200:
-            return r.json(), ""
-        return None, f"{r.status_code} {(r.text or '')[:100]}"
-    except Exception as e:
-        return None, str(e)
+            return r.json()
+    except Exception:
+        pass
+    return None
 
 
 def parse_plays(data, sport):
@@ -829,9 +827,7 @@ def main():
             if sport == "NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
         )
         with st.spinner(f"Pulling {sport}…"):
-            events, err = fetch_events(api_key, sport_key)
-            if err:
-                st.error(err)
+            events = fetch_events(api_key, sport_key)
             now = datetime.now(timezone.utc)
             pregame = []
             for ev in events:
@@ -842,17 +838,10 @@ def main():
                 except Exception:
                     continue
             plays = []
-            notes = []
-            core = "player_points,player_assists,player_rebounds" if sport == "NBA" else "player_anytime_td,player_reception_yds"
-            for ev in (pregame or events)[:8]:
-                data, why = fetch_odds(api_key, sport_key, ev.get("id"), markets)
-                if not data:
-                    data, why = fetch_odds(api_key, sport_key, ev.get("id"), core)
-                books = len((data or {}).get("bookmakers") or []) if data else 0
-                if data and books:
+            for ev in (pregame or events)[:30]:
+                data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
+                if data:
                     plays.extend(parse_plays(data, sport))
-                notes.append(f"{ev.get('home_team')}: {books} books" + (f" · {why}" if why else ""))
-            st.session_state["pull_debug"] = " | ".join(notes[:4])
             cards = best_cards(plays, live)
             update_auto_weights(update_sharpness(cards))
             st.session_state[f"cards_{sport}"] = cards
