@@ -81,7 +81,6 @@ GLOSSARY = """
 <strong>Spike</strong> — gap plus how far the books are apart. High spike is a TAKE.<br>
 <strong>Solo</strong> — one book standing alone with the long number.<br>
 <strong>Soft book</strong> — keeps hanging the long number, and those plays cash.<br>
-<strong>CLV</strong> — your locked price against the pack median the next time you pull. Plus means you beat the close.<br>
 <strong>Grader</strong> — NBA uses your BallDontLie GOAT key. NFL uses ESPN finals. The gold line is the number it used. If that number is wrong, the grade is wrong.<br>
 <strong>How to read a chart</strong> — gold is a hit, pink or gray is a miss. The donut is the whole slate. The scatter is gap on the bottom, edge up the side. Top-right is the chaos that also had juice.
 """
@@ -776,14 +775,12 @@ def glow_card(c, result=None):
     stat = c.get("player_stat")
     got = f" · got {stat}" if stat is not None else ""
     note = c.get("grade_note") or ""
-    clv = c.get("clv")
-    clv_txt = f"{clv:+.1f}" if isinstance(clv, (int, float)) else "—"
     locked = c.get("ts") or "—"
     graded = c.get("graded_ts") or "—"
     desc = (
         f"Longest was {c.get('book') or '?'} {fmt_price(c.get('price'))}. "
         f"Gap {gap if gap is not None else '—'}% vs the pack. "
-        f"Edge {tev if tev is not None else '—'}%. CLV {clv_txt}."
+        f"Edge {tev if tev is not None else '—'}%. "
     )
     return (
         f'<div class="{cls}">'
@@ -799,7 +796,6 @@ def glow_card(c, result=None):
         f'<span class="tag">book {c.get("book") or "?"}</span>'
         f'<span class="tag">price {fmt_price(c.get("price"))}</span>'
         f'<span class="tag">edge {tev if tev is not None else "—"}%</span>'
-        f'<span class="tag">CLV {clv_txt}</span>'
         f'<span class="tag">locked {locked}</span>'
         f'<span class="tag">graded {graded}</span>'
         + (f'<span class="tag">DVP {c.get("dvp")}</span>' if c.get("dvp") else "")
@@ -1025,15 +1021,6 @@ def main():
             st.toast("Grading complete — chaos contained 💫")
             st.balloons()
             st.rerun()
-        # fill CLV from the live board when the same play is still up
-        live = {(x.get("player"), x.get("prop"), x.get("line")): x for x in cards}
-        for r in ledger:
-            match = live.get((r.get("player"), r.get("prop"), r.get("line")))
-            if match and r.get("price") and match.get("median"):
-                try:
-                    r["clv"] = round((float(r["price"]) - float(match["median"])) / abs(float(match["median"])) * 100, 1)
-                except Exception:
-                    pass
         save_ledger(ledger)
         show_all = st.toggle("Show every restored row", value=False)
         st.caption(f"Ledger has {len(ledger)} total.")
@@ -1098,15 +1085,13 @@ def main():
                 for r in props:
                     res = r.get("result") or "LOCKED"
                     color = "gold" if res == "HIT" else "#ff4d4d" if res == "MISS" else "#ff00cc"
-                    clv = r.get("clv")
-                    clv_txt = f"{clv:+.1f}" if isinstance(clv, (int, float)) else "—"
                     got = f" · got {r.get('player_stat')}" if r.get("player_stat") is not None else ""
                     note = r.get("grade_note") or ""
                     rows_html.append(
                         f'<div style="margin-top:8px;padding:10px;border-radius:10px;background:{color}22;border:1px solid {color};box-shadow:0 0 10px {color}44">'
                         f'<b>{r.get("prop")} {r.get("line")}{got}</b> — {res}'
                         f'<div style="color:#ddd;font-size:.75rem;margin-top:4px">'
-                        f'Locked {r.get("price")} at {r.get("book")}. Gap {r.get("ev_gap") or "—"}%. Edge {r.get("true_ev") or "—"}%. CLV {clv_txt}.'
+                        f'Locked {r.get("price")} at {r.get("book")}. Gap {r.get("ev_gap") or "—"}%. Edge {r.get("true_ev") or "—"}%.'
                         f'</div><div style="color:#ffe27a;font-size:.72rem">{note or "Waiting on the box score."}</div></div>'
                     )
                 with pair[n % 2]:
