@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Fixed Indentation
-Tracker and Glossary content is properly inside the tab blocks.
+Girl Magic Odds 2.0 — Radio Selector
+No tabs. Content always renders.
 """
 
 import streamlit as st
@@ -44,7 +44,6 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .glossary{font-size:.85rem;color:#e8e0f0;margin-top:10px;padding:18px 20px;background:linear-gradient(180deg,#121218 0%,#0e0e14 100%);border-radius:12px;border:1px solid #2a2a33;line-height:1.7}
 .glossary strong{color:#FF3EBF;font-weight:700}
 .softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
-.tracker-wrap{background:#121218;border:1px solid #2a2a33;border-radius:12px;padding:12px;margin:10px 0}
 .game-header{font-size:1.05rem;font-weight:700;color:#FF3EBF;margin:18px 0 8px;border-bottom:1px solid #2a2a33;padding-bottom:4px}
 </style>
 """, unsafe_allow_html=True)
@@ -69,21 +68,6 @@ BASE_WEIGHTS = {
     "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4,
     "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1,
 }
-
-GLOSSARY = """
-<strong>Glossary</strong><br><br>
-<strong>True EV</strong> — Expected value vs the weighted fair price. Positive means the longest price is better than the blended fair number.<br>
-<strong>Fair price</strong> — The no-vig probability after blending all books using their weights.<br>
-<strong>EV Gap</strong> — How much longer the best price is compared to the median price.<br>
-<strong>Spike</strong> — Chaos score that mixes the gap, how much the books moved, and how far apart they are.<br>
-<strong>Volatility</strong> — How far apart the books currently are on the same prop.<br>
-<strong>Solo / Cluster</strong> — Solo means one book is standing alone with the longest price. Cluster means the books are close together.<br>
-<strong>Weak-spot</strong> — A book that has been hanging soft numbers more often than others.<br>
-<strong>Petty Mode</strong> — Only shows props inside your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).<br>
-<strong>Auto Weights</strong> — The app watches which books are soft and slowly adjusts how much it trusts them.<br>
-<strong>TAKE / LEAN / PASS</strong> — TAKE = strongest edges. LEAN = okay but optional. PASS = no real edge.<br>
-<strong>Score</strong> — Simple strength number on TAKE cards (higher = stronger edge).
-"""
 
 def in_user_range(prop, line):
     if prop == "Assists": return 3 <= line <= 8
@@ -198,84 +182,6 @@ def save_ledger(rows):
     st.session_state["ledger"] = rows
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
-
-def auto_grade_nba(ledger):
-    try:
-        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=10)
-        if r.status_code != 200:
-            return ledger
-        data = r.json()
-    except:
-        return ledger
-
-    finished = []
-    for event in data.get("events", []):
-        status = (event.get("status", {}).get("type", {}) or {}).get("name", "")
-        if status not in ("STATUS_FINAL", "STATUS_FULL_TIME"):
-            continue
-        finished.append(event.get("id"))
-
-    if not finished:
-        return ledger
-
-    updated = False
-    for row in ledger:
-        if row.get("sport") != "NBA" or row.get("result") is not None:
-            continue
-        player = (row.get("player") or "").lower()
-        prop = row.get("prop")
-        line = row.get("line")
-        if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
-            continue
-
-        for game_id in finished:
-            try:
-                box = requests.get(
-                    f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}",
-                    timeout=8
-                )
-                if box.status_code != 200:
-                    continue
-                box_data = box.json()
-            except:
-                continue
-
-            for team in box_data.get("boxscore", {}).get("players", []):
-                stats_list = team.get("statistics", [{}])
-                if not stats_list:
-                    continue
-                for athlete in stats_list[0].get("athletes", []):
-                    name = (athlete.get("athlete", {}).get("displayName") or "").lower()
-                    if player not in name and name not in player:
-                        continue
-                    stats = athlete.get("stats", [])
-                    try:
-                        reb = float(stats[4]) if len(stats) > 4 else 0
-                        ast = float(stats[5]) if len(stats) > 5 else 0
-                        pts = float(stats[11]) if len(stats) > 11 else 0
-                    except:
-                        continue
-
-                    actual = None
-                    if prop == "Assists":
-                        actual = ast
-                    elif prop == "Points":
-                        actual = pts
-                    elif prop == "Rebounds":
-                        actual = reb
-                    elif prop == "DoubleDouble":
-                        actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
-
-                    if actual is not None:
-                        row["result"] = "hit" if actual > line else "miss"
-                        updated = True
-                        break
-            if row.get("result"):
-                break
-
-    if updated:
-        save_ledger(ledger)
-    return ledger
 
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
@@ -450,12 +356,10 @@ def render_softness(sharp):
             "Softest Prop": top_prop
         })
     if not rows: return
-
     df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
     st.markdown('<div class="softness-title">Which books are soft</div>', unsafe_allow_html=True)
     softest = df.iloc[0]
     st.markdown(f"**{softest['Book']}** is hanging soft numbers most often right now ({softest['% Soft']}% on {softest['Softest Prop']}).")
-
     chart_df = df.set_index("Book")[["% Soft"]]
     st.bar_chart(chart_df, use_container_width=True, color="#FF3EBF")
 
@@ -537,9 +441,9 @@ def main():
     if st.session_state.get("fetched") and st.session_state.get("last_sport") == current_sport:
         st.caption(f"{current_sport} board live @ {st.session_state['fetched']} — {len(cards)} props")
 
-    tab_board, tab_tracker, tab_glossary = st.tabs(["📊 Board", "🔒 Tracker", "📖 Glossary"])
+    view = st.radio("View", ["Board", "Tracker", "Glossary"], horizontal=True, key="view")
 
-    with tab_board:
+    if view == "Board":
         if not cards:
             st.info(f"Hit **Pull the chaos** for {current_sport}.")
         else:
@@ -591,11 +495,9 @@ def main():
                 st.info("No matching edges with current filters.")
             else:
                 st.markdown(f"**{len(filtered)} plays ready.**")
-
                 by_game = defaultdict(list)
                 for c in filtered:
                     by_game[c.get("event", "Unknown")].append(c)
-
                 for game, game_cards in by_game.items():
                     st.markdown(f'<div class="game-header">{game}</div>', unsafe_allow_html=True)
                     cols = st.columns(2)
@@ -635,36 +537,13 @@ def main():
                                 with st.expander("Why this is a play"):
                                     tev = c.get("true_ev") or 0
                                     bk = c.get("book", "")
-                                    gap = c.get("ev_gap") or 0
-                                    vol = c.get("vol", "")
-                                    move = c.get("move", "")
-                                    beh = c.get("book_beh", "")
-
                                     st.markdown(f"**Decision:** {c.get('decision')}")
                                     if c.get("decision") == "TAKE" and tev >= 3:
-                                        st.markdown(f"**Why it glows:** {bk} is the longest price and the weighted fair price says this is a real edge ({tev}%). The books are disagreeing enough that one of them is soft.")
+                                        st.markdown(f"**Why it glows:** {bk} is the longest price and the weighted fair price says this is a real edge ({tev}%).")
                                     elif c.get("decision") == "TAKE":
-                                        st.markdown(f"**Why it shows:** {bk} is paying more than the blend. Not the strongest edge, but the books are not lined up.")
+                                        st.markdown(f"**Why it shows:** {bk} is paying more than the blend.")
                                     else:
-                                        st.markdown("**Why it’s here:** The numbers are close. No clear edge right now.")
-
-                                    if gap >= 30:
-                                        st.markdown(f"**Gap:** The best price is {gap}% longer than the median. That’s a big disagreement.")
-                                    if vol == "High":
-                                        st.markdown("**Volatility:** High — the books are far apart on this number.")
-                                    if move == "Snap":
-                                        st.markdown("**Movement:** Snap — something moved fast.")
-                                    if beh == "Solo":
-                                        st.markdown("**Behavior:** Solo — one book is standing alone with the longest price.")
-                                    if any("soft" in str(t).lower() for t in c.get("tags", [])):
-                                        st.markdown(f"**Soft book note:** {bk} has been hanging soft numbers recently.")
-
-                                    st.markdown("**All prices:**")
-                                    bp_html = "".join(
-                                        f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
-                                        for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
-                                    )
-                                    st.markdown(f'<div class="books">{bp_html}</div>', unsafe_allow_html=True)
+                                        st.markdown("**Why it’s here:** The numbers are close.")
                             if st.button("Lock 🔒", key=f"lk_{current_sport}_{game}_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                                 ledger = load_ledger()
                                 ledger.append({
@@ -674,49 +553,61 @@ def main():
                                     "book": BOOK_FULL.get(c["book"], c["book"]),
                                     "event": c["event"],
                                     "true_ev": c.get("true_ev"),
-                                    "fair_prob": c.get("fair_prob"),
                                     "decision": c.get("decision"),
-                                    "petty_range_match": c.get("petty_range_match"),
                                     "result": None,
-                                    "clv": None,
                                     "locked_price": c["price"],
-                                    "petty_mode": petty_mode,
                                 })
                                 save_ledger(ledger)
                                 st.toast("Locked.")
 
-    with tab_tracker:
-        try:
-            ledger = load_ledger()
-            ledger = auto_grade_nba(ledger)
-            sharp = load_sharpness()
-            if st.button("Wipe the slate"):
-                save_ledger([])
-                st.rerun()
-            if not ledger:
-                st.info("Nothing locked yet. Pull the chaos first.")
+    elif view == "Tracker":
+        st.subheader("Tracker")
+        if st.button("Wipe the slate"):
+            save_ledger([])
+            st.rerun()
+        ledger = load_ledger()
+        if not ledger:
+            st.info("Nothing locked yet. Pull the chaos first.")
+        else:
+            clean = [r for r in ledger if (r.get("price") or 0) >= 300]
+            if not clean:
+                st.info("No +300 or higher plays locked yet.")
             else:
-                clean = [r for r in ledger if (r.get("price") or 0) >= 300]
-                if not clean:
-                    st.info("No +300 or higher plays locked yet.")
-                else:
-                    df = pd.DataFrame(clean)
-                    keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
-                    existing = [c for c in keep if c in df.columns]
-                    df = df[existing].fillna("—")
-                    finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
-                    hits = (finished["result"] == "hit").sum() if not finished.empty else 0
-                    st.markdown(f"**{len(df)} longer-priced plays locked.** {len(finished)} finished. {hits} hit.")
-                    st.dataframe(df, use_container_width=True, hide_index=True)
-                    render_softness(sharp)
-        except Exception as e:
-            st.error(f"Tracker error: {e}")
+                df = pd.DataFrame(clean)
+                keep = ["ts", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
+                existing = [c for c in keep if c in df.columns]
+                df = df[existing].fillna("—")
+                finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
+                hits = (finished["result"] == "hit").sum() if not finished.empty else 0
+                st.markdown(f"**{len(df)} longer-priced plays locked.** {len(finished)} finished. {hits} hit.")
+                st.dataframe(df, use_container_width=True, hide_index=True)
+                render_softness(load_sharpness())
 
-    with tab_glossary:
-        try:
-            st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
-        except Exception as e:
-            st.error(f"Glossary error: {e}")
+    elif view == "Glossary":
+        st.subheader("Glossary")
+        st.markdown("""
+**True EV** — Expected value vs the weighted fair price. Positive means the longest price is better than the blended fair number.  
+
+**Fair price** — The no-vig probability after blending all books using their weights.  
+
+**EV Gap** — How much longer the best price is compared to the median price.  
+
+**Spike** — Chaos score that mixes the gap, how much the books moved, and how far apart they are.  
+
+**Volatility** — How far apart the books currently are on the same prop.  
+
+**Solo / Cluster** — Solo means one book is standing alone with the longest price. Cluster means the books are close together.  
+
+**Weak-spot** — A book that has been hanging soft numbers more often than others.  
+
+**Petty Mode** — Only shows props inside your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).  
+
+**Auto Weights** — The app watches which books are soft and slowly adjusts how much it trusts them.  
+
+**TAKE / LEAN / PASS** — TAKE = strongest edges. LEAN = okay but optional. PASS = no real edge.  
+
+**Score** — Simple strength number on TAKE cards (higher = stronger edge).
+        """)
 
 try:
     main()
