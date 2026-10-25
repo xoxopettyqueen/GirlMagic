@@ -888,6 +888,44 @@ def main():
         if c1.button("Wipe tracker"):
             save_ledger([])
             st.rerun()
+        upload = st.file_uploader("Upload lost receipts", type=["json", "csv"])
+        if upload is not None and st.session_state.get("upload_name") != upload.name:
+            st.session_state["upload_name"] = upload.name
+            raw = upload.getvalue().decode("utf-8", errors="ignore")
+            incoming = []
+            if upload.name.endswith(".json"):
+                try:
+                    incoming = json.loads(raw)
+                except Exception:
+                    incoming = []
+            else:
+                import csv, io
+                incoming = list(csv.DictReader(io.StringIO(raw)))
+            if isinstance(incoming, dict):
+                incoming = incoming.get("plays") or incoming.get("ledger") or []
+            merged = load_ledger()
+            have = {(str(r.get("player")), str(r.get("prop")), str(r.get("line"))) for r in merged}
+            added_up = 0
+            for r in incoming:
+                low = {str(k).strip().lower(): v for k, v in r.items()}
+                player = low.get("player") or low.get("name")
+                if not player:
+                    continue
+                row = {
+                    "player": player, "prop": low.get("prop") or low.get("market"),
+                    "line": low.get("line") or low.get("point"), "price": low.get("price") or low.get("odds"),
+                    "book": low.get("book"), "event": low.get("event") or low.get("matchup"),
+                    "sport": low.get("sport") or sport, "result": low.get("result") or None,
+                    "true_ev": low.get("true_ev"), "ev_gap": low.get("ev_gap"),
+                }
+                key = (str(row["player"]), str(row["prop"]), str(row["line"]))
+                if key in have:
+                    continue
+                merged.append(row)
+                have.add(key)
+                added_up += 1
+            save_ledger(merged)
+            st.success(f"Restored {added_up} of {len(incoming)}")
         regrade = st.checkbox("Regrade, clear old hits first")
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
