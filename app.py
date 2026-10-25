@@ -92,6 +92,19 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .hero-kicker{font-size:.68rem;letter-spacing:.2em;color:#ffe4f5;font-weight:700}
 .hero-title{font-size:1.8rem;font-weight:800;color:#fff;text-shadow:0 0 12px #fff6}
 .hero-sub{color:#ffeaf6;font-size:.95rem;margin-top:2px}
+
+.gm{background:#16121e;border:1px solid #c77dff;border-radius:16px;padding:14px;margin-bottom:10px;color:#f7eefc}
+.gm-kicker{font-size:.62rem;letter-spacing:.16em;color:#e9b3ff;font-weight:700}
+.gm-name{font-size:1.1rem;font-weight:800;color:#fff;margin-top:4px}
+.gm-sub{color:#cbb6e0;font-size:.74rem;margin-bottom:8px}
+.gm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}
+.gm-grid div{background:#21182c;border-radius:10px;padding:6px;text-align:center}
+.gm-grid span{display:block;font-size:.6rem;color:#cbb6e0;letter-spacing:.06em}
+.gm-grid b{display:block;font-size:1rem;color:#fff}
+.gm-grid small{display:block;font-size:.6rem;color:#b9a4d4}
+.mtags{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.mtag{background:#21182c;border:1px solid #8b6bb5;border-radius:999px;padding:3px 8px;font-size:.62rem;color:#e7d6f5}
+.gm-why{font-size:.75rem;color:#f4e6ff;margin-top:6px}
 </style>
 """, unsafe_allow_html=True)
 
@@ -740,23 +753,23 @@ def glow_card(c, result=None):
     med_txt = f"{int(med):+d}" if isinstance(med, (int, float)) else "—"
     gap = c.get("ev_gap") or 0
     edge = c.get("true_ev") or 0
-    score = int(min(100, max(1, (gap * 0.6) + (edge * 0.4))))
-    bars = "".join('<span class="meter on"></span>' if i < min(6, max(1, score // 16)) else '<span class="meter"></span>' for i in range(6))
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
-    tags = "".join(f'<span class="mtag">{bk} {fmt_price(v)}</span>' for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:5])
+    books = "".join(f'<span class="mtag">{bk} {fmt_price(v)}</span>' for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:5])
     state = (result or c.get("decision") or "TAKE").upper()
-    border = "#e8b923" if state == "HIT" else "#c45c7a" if state == "MISS" else "#ec4899"
+    border = "#e8b923" if state == "HIT" else "#c45c7a" if state == "MISS" else "#c77dff"
     return (
         f'<div class="gm" style="border-color:{border}">'
-        f'<div class="gm-top"><div class="run">RUN IT, BADDIE</div><div class="pscore">Petty {score}</div></div>'
+        f'<div class="gm-kicker">TRUE VALUE · {state}</div>'
         f'<div class="gm-name">{c.get("player")}</div>'
         f'<div class="gm-sub">{c.get("prop")} {line_txt} · {c.get("event") or ""}</div>'
-        f'<div class="meters">{bars}</div>'
-        f'<div class="gm-line"><b>Best {px_txt}</b> on {c.get("book")} · pack {med_txt}</div>'
-        f'<div class="gm-line">Gap {gap}% · Edge {edge}%</div>'
-        f'<div class="mtags">{tags}</div>'
-        f'<div class="gm-why">{plain_reason(c)}</div>'
-        f'<div class="gm-foot">Petty is gap plus edge. Higher is louder.</div>'
+        f'<div class="gm-grid">'
+        f'<div><span>Best</span><b>{px_txt}</b><small>{c.get("book")}</small></div>'
+        f'<div><span>Fair pack</span><b>{med_txt}</b><small>the blend</small></div>'
+        f'<div><span>Gap</span><b>{gap}%</b><small>discrepancy</small></div>'
+        f'<div><span>Edge</span><b>{edge}%</b><small>true EV</small></div>'
+        f'</div>'
+        f'<div class="mtags">{books}</div>'
+        f'<div class="gm-why">{c.get("book")} is hanging {px_txt}. The pack says {med_txt}. That gap is the tell.</div>'
         f'</div>'
     )
 
