@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Tabs Always Show Content
-Tracker and Glossary have their own error handling so they never go blank.
+Girl Magic Odds 2.0 — Fixed Indentation
+Tracker and Glossary content is properly inside the tab blocks.
 """
 
 import streamlit as st
