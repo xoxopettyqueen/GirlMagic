@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — No early returns
-Tracker and Glossary always render.
+Girl Magic Odds 2.0 — Grade Button
+Tracker shows. Click Grade NBA results to fill hit/miss.
 """
 
 import streamlit as st
@@ -655,13 +655,14 @@ def main():
 
     with tab_tracker:
         ledger = load_ledger()
-        ledger = auto_grade_nba(ledger)
-        sharp = load_sharpness()
         if st.button("Wipe the slate"):
             save_ledger([])
             st.rerun()
+        if st.button("Grade NBA results"):
+            ledger = auto_grade_nba(ledger)
+            st.rerun()
         if not ledger:
-            st.info("Nothing locked yet.")
+            st.info("Nothing locked yet. Pull the chaos first.")
         else:
             clean = [r for r in ledger if (r.get("price") or 0) >= 300]
             if not clean:
@@ -675,7 +676,7 @@ def main():
                 hits = (finished["result"] == "hit").sum() if not finished.empty else 0
                 st.markdown(f"**{len(df)} longer-priced plays locked.** {len(finished)} finished. {hits} hit.")
                 st.dataframe(df, use_container_width=True, hide_index=True)
-                render_softness(sharp)
+                render_softness(load_sharpness())
 
     with tab_glossary:
         st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
