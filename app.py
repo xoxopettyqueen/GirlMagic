@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — EV Uncapped + Better Grade
-True EV no longer stuck at 18. Grade tries harder to match players.
+Girl Magic Odds 2.0 — Full Fix
+True EV uncapped. Grade button. Tabs render. +300 tracking.
 """
 
 import streamlit as st
