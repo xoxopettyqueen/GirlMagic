@@ -959,7 +959,9 @@ def main():
             save_ledger(merged)
             cols = sorted({k for r in incoming[:1] for k in r}) if incoming else []
             graded_in = sum(1 for r in incoming if str(r.get("result") or r.get("grade") or "").strip())
-            st.success(f"File had {len(incoming)} rows, {graded_in} with a result. Added {added_up}. Ledger now {len(merged)}. Columns: {', '.join(cols[:8])}")
+            names = sorted({str(r.get("player")) for r in merged if r.get("player")})
+            st.success(f"File {len(incoming)} rows. Added {added_up}. Ledger {len(merged)} players {len(names)}.")
+            st.write(", ".join(names[:40]))
         regrade = st.checkbox("Regrade, clear old hits first")
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
