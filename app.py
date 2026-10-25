@@ -870,7 +870,7 @@ def main():
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
-            filtered = [x for x in cards if x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
+            filtered = [x for x in cards if x.get("sport") == sport and x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
             if petty:
                 filtered = [x for x in filtered if x.get("petty_range_match")]
             if simple:
@@ -905,6 +905,7 @@ def main():
         if c1.button("Wipe tracker"):
             save_ledger([])
             st.rerun()
+        st.download_button("Download the ledger", json.dumps(load_ledger(), indent=2), "girlmagic_ledger.json", "application/json")
         upload = st.file_uploader("Upload lost receipts", type=["json", "csv"])
         do_restore = st.button("Restore this file")
         if upload is not None and do_restore:
@@ -981,7 +982,7 @@ def main():
                 except Exception:
                     pass
         save_ledger(ledger)
-        show_all = st.toggle("Show every restored row", value=True)
+        show_all = st.toggle("Show every restored row", value=False)
         st.caption(f"Ledger has {len(ledger)} total.")
         if show_all:
             mine = list(ledger)
