@@ -562,13 +562,15 @@ def grade_nfl(ledger, days=6, regrade=False):
 
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
+    if not api_key:
+        return [], "No Odds API key. Add ODDS_API_KEY to secrets."
     try:
         r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
         if r.status_code == 200:
-            return r.json() or []
-    except Exception:
-        pass
-    return []
+            return r.json() or [], ""
+        return [], f"Events {r.status_code}: {(r.text or '')[:120]}"
+    except Exception as e:
+        return [], str(e)
 
 
 @st.cache_data(ttl=90)
@@ -828,7 +830,9 @@ def main():
             if sport == "NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
         )
         with st.spinner(f"Pulling {sport}…"):
-            events = fetch_events(api_key, sport_key)
+            events, err = fetch_events(api_key, sport_key)
+            if err:
+                st.error(err)
             now = datetime.now(timezone.utc)
             pregame = []
             for ev in events:
@@ -847,6 +851,7 @@ def main():
             update_auto_weights(update_sharpness(cards))
             st.session_state[f"cards_{sport}"] = cards
             st.session_state["fetched"] = datetime.now().strftime("%H:%M")
+            st.session_state["pull_note"] = f"{len(events)} events · {len(plays)} prices · {len(cards)} cards"
             st.session_state["last_sport"] = sport
             ledger = load_ledger()
             seen = {(r.get("sport"), _norm_name(r.get("player")), r.get("prop"), round(float(r.get("line") or 0), 1), r.get("event")) for r in ledger}
@@ -878,7 +883,7 @@ def main():
     cards = st.session_state.get(f"cards_{sport}") or []
     if st.session_state.get("last_sport") == sport and st.session_state.get("fetched"):
         qualified = sum(1 for c in cards if worth_locking(c))
-        st.caption(f"{sport} @ {st.session_state['fetched']} · {len(cards)} priced · {qualified} worth locking")
+        st.caption(f"{sport} @ {st.session_state['fetched']} · {len(cards)} priced · {qualified} worth locking · {st.session_state.get('pull_note','')}")
         if cards:
             density = round(100 * qualified / len(cards))
             st.markdown(f'<div class="how-to">Board density {density}%. {qualified} of {len(cards)} clear the chaos filter. Gap 20+, edge 15+.</div>', unsafe_allow_html=True)
@@ -928,7 +933,8 @@ def main():
             st.rerun()
         replace = st.checkbox("Replace the slate with this file")
         upload = c3.file_uploader("Upload lost receipts", type=["json", "csv"])
-        if upload is not None:
+        if upload is not None and st.session_state.get("upload_name") != upload.name:
+            st.session_state["upload_name"] = upload.name
             raw = upload.getvalue().decode("utf-8", errors="ignore")
             incoming = []
             if upload.name.endswith(".json"):
