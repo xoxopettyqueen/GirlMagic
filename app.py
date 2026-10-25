@@ -1,712 +1,826 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Tracker matches Board cards
-NBA Grade 40 at a time. NFL shows message.
-"""
+Girl Magic Odds 2.0 — positive EV, not a price-gap costume.
 
-import streamlit as st
-import pandas as pd
-import requests
+A number is +EV only when:
+1. We have both sides (Over/Under or Yes/No) on at least two books.
+2. Each book is de-vigged (multiplicative).
+3. Those fair probs are blended by book weight.
+4. The best price beats that fair price.
+
+A book hanging +500 while everyone else is +400 is a disagreement.
+It is not automatically +EV.
+"""
 import json
 import re
-from datetime import datetime, timedelta
 from collections import defaultdict
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wide")
+import pandas as pd
+import requests
+import streamlit as st
 
+st.set_page_config(page_title="Girl Magic Odds 2.0", page_icon="✨", layout="wide")
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pacifico&display=swap');
 .stApp{background:#0c0c10!important;color:#fff!important;font-family:'Inter',sans-serif!important}
-.hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:20px;padding:18px 22px;margin-bottom:12px;color:#fff;box-shadow:0 0 28px rgba(255,62,191,.4);animation:pulseBar 6s linear infinite}
-@keyframes pulseBar{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}
-.hero h1{margin:0;font-size:1.75rem;font-weight:700;font-family:'Inter',sans-serif;text-shadow:0 0 10px rgba(255,215,0,.45)}
-.hero p{margin:4px 0 0;opacity:.95;font-size:1.05rem;color:#F5E9FF;font-family:'Pacifico',cursive;text-shadow:0 0 8px rgba(199,125,255,.6)}
+.hero{background:linear-gradient(90deg,#FF3EBF,#C77DFF,#7B2CBF)!important;border-radius:20px;padding:18px 22px;margin-bottom:12px;color:#fff;box-shadow:0 0 28px rgba(255,62,191,.4)}
+.hero h1{margin:0;font-size:1.75rem;font-weight:700}
+.hero p{margin:4px 0 0;opacity:.95;font-size:1.02rem;color:#F5E9FF;font-family:'Pacifico',cursive}
 button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gradient(90deg,#FF3EBF,#FF7AC4)!important;border:none!important;border-radius:999px!important;font-weight:700!important;min-height:44px}
-.card{background:linear-gradient(180deg,rgba(21,21,27,.95) 0%,rgba(16,16,20,.95) 100%);border:1px solid #2a2a33;border-radius:14px;padding:11px 13px;margin-bottom:10px;position:relative;transition:box-shadow .4s ease-in-out,transform .3s}
-.card:hover{transform:translateY(-2px);box-shadow:0 0 22px rgba(255,62,191,.55)}
+.card{background:linear-gradient(180deg,rgba(21,21,27,.95) 0%,rgba(16,16,20,.95) 100%);border:1px solid #2a2a33;border-radius:14px;padding:11px 13px;margin-bottom:10px;position:relative}
 .card.take-card{border-color:#FF3EBF;box-shadow:0 0 16px rgba(255,62,191,.5)}
 .card.true-ev-glow{border-color:#FF3EBF;box-shadow:0 0 22px rgba(255,62,191,.75)}
 .card.dimmed{opacity:0.65;border-color:#5a4a6a}
-.player{font-size:1.15rem;font-weight:700;margin:0;font-family:'Inter',sans-serif}
+.player{font-size:1.15rem;font-weight:700;margin:0}
 .meta{color:#aaa;font-size:.65rem;margin:2px 0 4px}
 .prop{font-size:.85rem;font-weight:600;color:#FF3EBF;margin-bottom:4px;text-transform:uppercase}
 .books{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
 .bk{background:#0d0d12;border:1px solid #333;border-radius:999px;padding:3px 7px;text-align:center;min-width:50px;font-size:.64rem;font-weight:600;color:#fff}
 .bk.best{border-color:#FF3EBF;box-shadow:0 0 8px rgba(255,62,191,.6)}
-.true-ev{font-size:.9rem;font-weight:700;color:#FF3EBF;margin:3px 0;text-shadow:0 0 6px rgba(255,62,191,.4)}
+.true-ev{font-size:.9rem;font-weight:700;color:#FF3EBF;margin:3px 0}
 .score{font-size:.8rem;font-weight:700;color:#FFD700;margin:2px 0}
-.why{font-size:.72rem;color:#e0d4f5;margin-top:4px;line-height:1.3;max-width:90%}
+.why{font-size:.72rem;color:#e0d4f5;margin-top:4px;line-height:1.3}
 .take-tag{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;color:#FF3EBF;font-weight:700}
 .tag{display:inline-block;background:rgba(199,125,255,.15);color:#F5E9FF;border:1px solid rgba(199,125,255,.4);border-radius:999px;padding:1px 6px;font-size:.55rem;margin:2px 2px 0 0}
 .tag.range{background:rgba(255,62,191,.2);border-color:#FF3EBF}
 .glossary{font-size:.85rem;color:#e8e0f0;margin-top:10px;padding:18px 20px;background:linear-gradient(180deg,#121218 0%,#0e0e14 100%);border-radius:12px;border:1px solid #2a2a33;line-height:1.7}
-.glossary strong{color:#FF3EBF;font-weight:700}
-.softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
+.glossary strong{color:#FF3EBF}
+.softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px}
 .game-header{font-size:1.05rem;font-weight:700;color:#FF3EBF;margin:18px 0 8px;border-bottom:1px solid #2a2a33;padding-bottom:4px}
 </style>
 """, unsafe_allow_html=True)
 
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
-BDL_BASE = "https://www.balldontlie.io/api/v1"
 LEDGER = Path("odds_ledger.json")
 SHARPNESS = Path("book_sharpness.json")
 WEIGHTS_FILE = Path("auto_weights.json")
 
 MY_BOOKS = {
-    "fanduel":"FD","draftkings":"DK","betmgm":"MGM","bet365":"365",
-    "williamhill_us":"CZR","fanatics":"FAN","espnbet":"SCR","hardrockbet":"HR",
-    "hardrockbet_az":"HR","hardrockbet_oh":"HR","hardrockbet_fl":"HR",
-    "pinnacle":"PIN","circa":"CIR","bookmaker":"BM",
+    "fanduel": "FD", "draftkings": "DK", "betmgm": "MGM", "bet365": "365",
+    "williamhill_us": "CZR", "fanatics": "FAN", "espnbet": "SCR",
+    "hardrockbet": "HR", "hardrockbet_az": "HR", "hardrockbet_oh": "HR", "hardrockbet_fl": "HR",
+    "pinnacle": "PIN", "circa": "CIR", "bookmaker": "BM",
 }
-BOOK_FULL = {"FD":"FanDuel","DK":"DraftKings","MGM":"BetMGM","365":"Bet365","CZR":"Caesars","FAN":"Fanatics","SCR":"theScore","HR":"Hard Rock","PIN":"Pinnacle","CIR":"Circa","BM":"Bookmaker"}
-
+BOOK_FULL = {
+    "FD": "FanDuel", "DK": "DraftKings", "MGM": "BetMGM", "365": "Bet365",
+    "CZR": "Caesars", "FAN": "Fanatics", "SCR": "theScore", "HR": "Hard Rock",
+    "PIN": "Pinnacle", "CIR": "Circa", "BM": "Bookmaker",
+}
 ALL_BOOK_CODES = sorted(set(BOOK_FULL.keys()))
-
+SHARP_BOOKS = {"PIN", "CIR", "BM"}
 BASE_WEIGHTS = {
     "PIN": 3.5, "CIR": 3.0, "BM": 2.8,
-    "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4,
-    "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1,
+    "FD": 1.6, "DK": 1.5, "365": 1.4, "MGM": 1.2,
+    "CZR": 1.1, "FAN": 1.0, "SCR": 1.0, "HR": 1.0,
 }
 
 GLOSSARY = """
 <strong>Glossary</strong><br><br>
-<strong>True EV</strong> — Expected value vs the weighted fair price. Positive means the longest price is better than the blended fair number.<br>
-<strong>Fair price</strong> — The no-vig probability after blending all books using their weights.<br>
-<strong>EV Gap</strong> — How much longer the best price is compared to the median price.<br>
-<strong>Spike</strong> — Chaos score that mixes the gap, how much the books moved, and how far apart they are.<br>
-<strong>Volatility</strong> — How far apart the books currently are on the same prop.<br>
-<strong>Solo / Cluster</strong> — Solo means one book is standing alone with the longest price. Cluster means the books are close together.<br>
-<strong>Weak-spot</strong> — A book that has been hanging soft numbers more often than others.<br>
-<strong>Petty Mode</strong> — Only shows props inside your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).<br>
-<strong>Auto Weights</strong> — The app watches which books are soft and slowly adjusts how much it trusts them.<br>
-<strong>TAKE / LEAN / PASS</strong> — TAKE = strongest edges. LEAN = okay but optional. PASS = no real edge.<br>
-<strong>Score</strong> — Simple strength number on TAKE cards (higher = stronger edge).<br>
-<strong>CLV</strong> — Closing line value. Difference between the price you locked and the closing price. Positive is good.<br>
+<strong>True EV</strong> — (fair probability × decimal odds) − 1. Positive means the best price pays more than the de-vigged blend says it should.<br>
+<strong>Fair price</strong> — Both sides of the market, vig pulled off each book, then blended by weight. Not the average of the Over prices.<br>
+<strong>No de-vig</strong> — We only saw one side. That card is a price disagreement, not +EV. It will not green.<br>
+<strong>Soft disagreement</strong> — Real de-vig, but no Pinnacle / Circa / Bookmaker in the blend. It can still be a lead. It is not a sharp-closing edge.<br>
+<strong>TAKE</strong> — De-vigged, at least two books, True EV at least 2%, best price longer than fair.<br>
+<strong>LEAN</strong> — De-vigged and EV at least 0.5%. Optional.<br>
+<strong>PASS</strong> — No real edge, or we could not de-vig.<br>
+<strong>CLV</strong> — Locked price vs the price at close. Positive means you beat the close.<br>
 """
 
-def in_user_range(prop, line):
-    if prop == "Assists": return 3 <= line <= 8
-    if prop == "Points": return 8 <= line <= 15
-    if prop == "Rebounds": return 4 <= line <= 10
-    if prop in ("DoubleDouble", "Anytime TD"): return True
-    return False
 
-def line_ok(prop, line):
-    if prop == "Points": return line <= 20
-    if prop == "Rebounds": return line <= 12
-    if prop == "Assists": return line <= 12
-    if prop == "Rec Yards": return line <= 25
-    if prop in ("DoubleDouble", "Anytime TD"): return True
-    return True
+def secret(name):
+    try:
+        return st.secrets.get(name, "") or ""
+    except Exception:
+        return ""
 
-def load_sharpness():
-    if SHARPNESS.exists():
-        try: return json.loads(SHARPNESS.read_text())
-        except: pass
-    return {}
-
-def save_sharpness(data):
-    try: SHARPNESS.write_text(json.dumps(data, indent=2))
-    except: pass
-
-def load_auto_weights():
-    if WEIGHTS_FILE.exists():
-        try: return json.loads(WEIGHTS_FILE.read_text())
-        except: pass
-    return BASE_WEIGHTS.copy()
-
-def save_auto_weights(w):
-    try: WEIGHTS_FILE.write_text(json.dumps(w, indent=2))
-    except: pass
-
-def update_auto_weights(sharp):
-    current = load_auto_weights()
-    for bk, data in sharp.items():
-        total = data.get("total", 0)
-        soft = data.get("soft_count", 0)
-        if total < 10: continue
-        soft_rate = soft / total
-        base = BASE_WEIGHTS.get(bk, 1.0)
-        if soft_rate > 0.25:
-            current[bk] = max(0.8, round(base * 0.75, 2))
-        elif soft_rate > 0.15:
-            current[bk] = max(0.9, round(base * 0.85, 2))
-        else:
-            current[bk] = round(min(3.5, base * 1.05), 2)
-    save_auto_weights(current)
-    return current
 
 def implied(price):
     try:
         p = int(price)
-        return 100/(p+100) if p > 0 else abs(p)/(abs(p)+100)
-    except: return None
+    except Exception:
+        return None
+    if p == 0:
+        return None
+    if p > 0:
+        return 100 / (p + 100)
+    return abs(p) / (abs(p) + 100)
 
-def weighted_fair_prob(book_prices, weights=None):
-    if weights is None: weights = load_auto_weights()
-    weighted = []
-    total_w = 0.0
-    for bk, price in book_prices.items():
-        w = weights.get(bk, 1.0)
-        if w <= 0: continue
-        imp = implied(price)
-        if imp and 0 < imp < 1:
-            weighted.append(imp * w)
-            total_w += w
-    if not weighted or total_w == 0: return None
-    fair = sum(weighted) / total_w
-    return max(0.05, min(0.85, fair))
 
-def compute_true_ev(best_price, fair_prob):
-    if not fair_prob or best_price is None: return None
+def to_decimal(price):
     try:
-        decimal = (best_price / 100 + 1) if best_price > 0 else (100 / abs(best_price) + 1)
-        ev = (fair_prob * decimal - 1) * 100
-        return round(max(-20, min(80, ev)), 1)
-    except: return None
+        p = int(price)
+    except Exception:
+        return None
+    if p > 0:
+        return 1 + p / 100.0
+    if p < 0:
+        return 1 + 100 / abs(p)
+    return None
 
-def plain_reason(c):
-    tev = c.get("true_ev") or 0
-    bk = c.get("book", "")
-    if c.get("decision") == "TAKE" and tev >= 3:
-        return f"Strong edge. {bk} is hanging a soft number vs the blend."
-    if c.get("decision") == "TAKE":
-        return f"Books disagree. {bk} is the longest."
-    return "Tight. Skip."
 
-def card_score(true_ev, spike):
-    tev = true_ev or 0
-    sp = spike or 0
-    raw = (max(0, tev) * 0.25) + (sp * 4)
-    return round(max(1.0, min(10.0, raw)), 1)
+def prob_to_american(prob):
+    try:
+        p = float(prob)
+    except Exception:
+        return None
+    if p <= 0.01 or p >= 0.99:
+        return None
+    if p >= 0.5:
+        return int(round(-100 * p / (1 - p)))
+    return int(round(100 * (1 - p) / p))
+
+
+def devig(over_imp, under_imp):
+    if not over_imp or not under_imp:
+        return None
+    total = over_imp + under_imp
+    if total <= 1.0:
+        return over_imp
+    return over_imp / total
+
+
+def in_user_range(prop, line):
+    try:
+        line = float(line)
+    except Exception:
+        return False
+    if prop == "Assists":
+        return 3 <= line <= 8
+    if prop == "Points":
+        return 8 <= line <= 15
+    if prop == "Rebounds":
+        return 4 <= line <= 10
+    return prop in ("DoubleDouble", "Anytime TD")
+
+
+def line_ok(prop, line):
+    try:
+        line = float(line)
+    except Exception:
+        return True
+    if prop == "Points":
+        return line <= 40
+    if prop == "Rebounds":
+        return line <= 20
+    if prop == "Assists":
+        return line <= 16
+    if prop == "Rec Yards":
+        return line <= 120
+    return True
+
+
+def load_json(path, default):
+    if path.exists():
+        try:
+            return json.loads(path.read_text())
+        except Exception:
+            pass
+    return default
+
+
+def save_json(path, data):
+    try:
+        path.write_text(json.dumps(data, indent=2))
+    except Exception:
+        pass
+
+
+def load_sharpness():
+    return load_json(SHARPNESS, {})
+
+
+def load_auto_weights():
+    saved = load_json(WEIGHTS_FILE, {})
+    out = BASE_WEIGHTS.copy()
+    out.update(saved or {})
+    return out
+
+
+def save_auto_weights(w):
+    save_json(WEIGHTS_FILE, w)
+
 
 def normalize_book(key):
     k = str(key or "").lower()
-    if "pinnacle" in k: return "pinnacle"
-    if "circa" in k: return "circa"
-    if "bookmaker" in k: return "bookmaker"
-    if "bet365" in k: return "bet365"
-    if "fanatic" in k: return "fanatics"
-    if "hardrock" in k: return "hardrockbet"
-    if "espnbet" in k or "score" in k: return "espnbet"
-    if "draftking" in k: return "draftkings"
-    if "fanduel" in k: return "fanduel"
-    if "betmgm" in k or k == "mgm": return "betmgm"
-    if "williamhill" in k or "caesar" in k: return "williamhill_us"
+    if "pinnacle" in k:
+        return "pinnacle"
+    if "circa" in k:
+        return "circa"
+    if "bookmaker" in k:
+        return "bookmaker"
+    if "bet365" in k:
+        return "bet365"
+    if "fanatic" in k:
+        return "fanatics"
+    if "hardrock" in k:
+        return "hardrockbet"
+    if "espnbet" in k or "score" in k:
+        return "espnbet"
+    if "draftking" in k:
+        return "draftkings"
+    if "fanduel" in k:
+        return "fanduel"
+    if "betmgm" in k or k == "mgm":
+        return "betmgm"
+    if "williamhill" in k or "caesar" in k:
+        return "williamhill_us"
     return k
 
+
 def load_ledger():
-    if LEDGER.exists():
-        try: return json.loads(LEDGER.read_text())
-        except: pass
-    return st.session_state.get("ledger", [])
+    rows = load_json(LEDGER, None)
+    if rows is None:
+        return st.session_state.get("ledger", [])
+    return rows
+
 
 def save_ledger(rows):
     st.session_state["ledger"] = rows
-    try: LEDGER.write_text(json.dumps(rows, indent=2))
-    except: pass
+    save_json(LEDGER, rows)
 
-def grade_nba_batch(ledger, bdl_key):
-    if not bdl_key:
-        st.warning("No BallDontLie key in secrets.")
-        return ledger
-    headers = {"Authorization": bdl_key}
-    updated = 0
-    ungraded = [r for r in ledger if r.get("sport") == "NBA" and r.get("result") in (None, "—", "") and r.get("prop") in ("Assists", "Points", "Rebounds", "DoubleDouble")]
-    for row in ungraded[:40]:
-        player = row.get("player")
-        prop = row.get("prop")
-        line = float(row.get("line") or 0)
-        if not player:
-            continue
-        try:
-            r = requests.get(f"{BDL_BASE}/players", params={"search": player}, headers=headers, timeout=6)
-            if r.status_code != 200:
-                continue
-            pdata = r.json().get("data", [])
-            if not pdata:
-                continue
-            pid = pdata[0].get("id")
-            if not pid:
-                continue
-        except:
-            continue
-        for days_back in range(0, 2):
-            d = (datetime.utcnow() - timedelta(days=days_back)).strftime("%Y-%m-%d")
-            try:
-                gr = requests.get(f"{BDL_BASE}/games", params={"dates[]": d}, headers=headers, timeout=6)
-                if gr.status_code != 200:
-                    continue
-                games = gr.json().get("data", [])
-            except:
-                continue
-            for g in games[:4]:
-                gid = g.get("id")
-                if not gid:
-                    continue
-                try:
-                    sr = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": pid, "game_ids[]": gid}, headers=headers, timeout=6)
-                    if sr.status_code != 200:
-                        continue
-                    stats = sr.json().get("data", [])
-                    if not stats:
-                        continue
-                    stat = stats[0]
-                except:
-                    continue
-                pts = float(stat.get("pts") or 0)
-                reb = float(stat.get("reb") or 0)
-                ast = float(stat.get("ast") or 0)
-                actual = None
-                if prop == "Points":
-                    actual = pts
-                elif prop == "Rebounds":
-                    actual = reb
-                elif prop == "Assists":
-                    actual = ast
-                elif prop == "DoubleDouble":
-                    actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
-                if actual is not None:
-                    row["result"] = "HIT" if actual >= line else "MISS"
-                    row["player_stat"] = actual
-                    row["player_id"] = pid
-                    updated += 1
-                    break
-            if row.get("result") in ("HIT", "MISS"):
-                break
-    save_ledger(ledger)
-    st.success(f"Graded {updated} NBA plays. Click again for more.")
-    return ledger
 
 @st.cache_data(ttl=120)
 def fetch_events(api_key, sport_key):
     try:
-        r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events", params={"apiKey": api_key}, timeout=15)
-        if r.status_code == 200: return r.json() or []
-    except: pass
+        r = requests.get(
+            f"{ODDS_API_BASE}/sports/{sport_key}/events",
+            params={"apiKey": api_key},
+            timeout=15,
+        )
+        if r.status_code == 200:
+            return r.json() or []
+    except Exception:
+        pass
     return []
+
 
 @st.cache_data(ttl=90)
 def fetch_odds(api_key, sport_key, event_id, markets):
     try:
-        r = requests.get(f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
-            params={"apiKey": api_key, "regions": "us,us2,uk", "markets": markets, "oddsFormat": "american"}, timeout=20)
-        if r.status_code == 200: return r.json()
-    except: pass
+        r = requests.get(
+            f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
+            params={
+                "apiKey": api_key,
+                "regions": "us,us2,eu,uk",
+                "markets": markets,
+                "oddsFormat": "american",
+            },
+            timeout=20,
+        )
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
     return None
 
+
+def _prop_from_market(mkey, sport):
+    mkey = (mkey or "").lower()
+    if sport == "NBA":
+        if "double_double" in mkey:
+            return "DoubleDouble"
+        if "assist" in mkey:
+            return "Assists"
+        if "rebound" in mkey and "point" not in mkey:
+            return "Rebounds"
+        if "point" in mkey and "rebound" not in mkey and "assist" not in mkey:
+            return "Points"
+        return None
+    if "anytime_td" in mkey or "goal_scorer" in mkey:
+        return "Anytime TD"
+    if "reception_yds" in mkey or "receiving_yds" in mkey:
+        return "Rec Yards"
+    return None
+
+
+def _side_and_player(outcome, prop):
+    name = str(outcome.get("name") or "").strip()
+    desc = str(outcome.get("description") or "").strip()
+    low_name = name.lower()
+    low_desc = desc.lower()
+    blob = f"{low_name} {low_desc}"
+    if prop in ("DoubleDouble", "Anytime TD"):
+        if low_name in ("yes", "over") or "yes" in low_name:
+            return "over", desc or name
+        if low_name in ("no", "under") or low_name == "no":
+            return "under", desc or name
+        return None, None
+    if low_name in ("over", "o") or blob.startswith("over"):
+        return "over", desc or name
+    if low_name in ("under", "u") or blob.startswith("under"):
+        return "under", desc or name
+    return None, None
+
+
+def _line_of(outcome, prop, blob):
+    if prop == "Anytime TD":
+        return 0.5
+    if prop == "DoubleDouble":
+        return 1.0
+    point = outcome.get("point")
+    if point is not None:
+        try:
+            return float(point)
+        except Exception:
+            pass
+    m = re.search(r"(\d+\.?\d*)", blob)
+    if not m:
+        return None
+    try:
+        return float(m.group(1))
+    except Exception:
+        return None
+
+
 def parse_plays(data, sport):
-    if not data: return []
+    if not data:
+        return []
     event = f"{data.get('away_team')} @ {data.get('home_team')}"
     plays = []
     for book in data.get("bookmakers") or []:
         bk = normalize_book(book.get("key"))
-        if bk not in MY_BOOKS: continue
+        if bk not in MY_BOOKS:
+            continue
         short = MY_BOOKS[bk]
         for market in book.get("markets") or []:
-            mkey = (market.get("key") or "").lower()
-            prop_type = None
-            if "NBA" in str(sport) or "basketball" in str(sport).lower():
-                if "assist" in mkey: prop_type = "Assists"
-                elif "point" in mkey and "rebound" not in mkey and "assist" not in mkey: prop_type = "Points"
-                elif "rebound" in mkey and "point" not in mkey and "assist" not in mkey: prop_type = "Rebounds"
-                elif "double_double" in mkey: prop_type = "DoubleDouble"
-            else:
-                if "anytime_td" in mkey: prop_type = "Anytime TD"
-                elif "reception_yds" in mkey or "receiving_yds" in mkey: prop_type = "Rec Yards"
-            if not prop_type: continue
+            prop = _prop_from_market(market.get("key"), sport)
+            if not prop:
+                continue
             for o in market.get("outcomes") or []:
-                oname = str(o.get("name") or "").lower().strip()
-                desc = str(o.get("description") or "").lower().strip()
-                full_text = f"{oname} {desc}"
-                is_over_like = (
-                    oname in ("over", "yes", "o")
-                    or "over" in oname
-                    or "+" in full_text
-                    or "or more" in full_text
-                    or full_text.startswith("o")
-                )
-                if prop_type in ("DoubleDouble", "Anytime TD"):
-                    if "yes" not in oname and oname not in ("over", "yes"): continue
-                    player = o.get("description") or o.get("name")
-                    line = 0.5 if prop_type == "Anytime TD" else 1.0
-                else:
-                    if not is_over_like: continue
-                    player = o.get("description") or o.get("name")
-                    line = o.get("point")
-                    if line is None:
-                        m = re.search(r"(\d+\.?\d*)", full_text)
-                        if m:
-                            try: line = float(m.group(1))
-                            except: continue
-                        else: continue
-                    else:
-                        try: line = float(line)
-                        except: continue
-                if not player or str(player).lower() in ("yes", "no", "over", "under", "o", "u"): continue
-                try: price = int(o.get("price"))
-                except: continue
+                side, player = _side_and_player(o, prop)
+                if not side or not player:
+                    continue
+                if str(player).lower() in ("yes", "no", "over", "under", "o", "u"):
+                    continue
+                blob = f"{o.get('name') or ''} {o.get('description') or ''}"
+                line = _line_of(o, prop, blob)
+                if line is None:
+                    continue
+                try:
+                    price = int(o.get("price"))
+                except Exception:
+                    continue
                 plays.append({
-                    "sport": sport, "event": event, "player": player,
-                    "prop": prop_type, "line": line, "price": price, "book": short
+                    "sport": sport,
+                    "event": event,
+                    "player": player,
+                    "prop": prop,
+                    "line": line,
+                    "side": side,
+                    "price": price,
+                    "book": short,
                 })
     return plays
 
-def compute_signals(book_prices, best_price):
-    prices = list(book_prices.values())
-    if not prices: return {}, "PASS"
-    med = sorted(prices)[len(prices)//2]
-    longest = max(prices)
-    ev_gap = (longest - med) / med if med else 0
-    spread = (max(prices) - min(prices)) / med if med else 0
-    vol = "High" if spread > 0.4 else "Medium" if spread > 0.15 else "Low"
-    move = "Snap" if spread > 0.5 else "Drift" if spread > 0.2 else "Freeze"
-    book_beh = "Solo" if len(prices) <= 2 or (longest - med) / med > 0.6 else "Cluster"
-    spike = ev_gap + (0.3 if vol == "High" else 0.15 if vol == "Medium" else 0.05) * spread
-    if spike > 0.25 and vol != "Low": decision = "TAKE"
-    elif spike > 0.08: decision = "LEAN"
-    else: decision = "PASS"
-    return {
-        "median": int(med), "longest": longest, "ev_gap": round(ev_gap*100, 1),
-        "vol": vol, "move": move, "book_beh": book_beh, "spike": round(spike, 2),
-        "decision": decision,
-    }, decision
-
-def update_sharpness(cards):
-    sharp = load_sharpness()
-    for c in cards:
-        bk = c.get("book")
-        if not bk: continue
-        if bk not in sharp: sharp[bk] = {"soft_count": 0, "total": 0, "props": {}}
-        sharp[bk]["total"] += 1
-        if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2:
-            sharp[bk]["soft_count"] += 1
-            prop = c.get("prop", "Other")
-            sharp[bk]["props"][prop] = sharp[bk]["props"].get(prop, 0) + 1
-    save_sharpness(sharp)
-    return sharp
 
 def best_cards(plays, weights=None):
-    by = defaultdict(list)
+    weights = weights or load_auto_weights()
+    grouped = defaultdict(list)
     for p in plays:
-        key = (p["sport"], p["player"], p["prop"], round(p["line"], 1), p["event"])
-        by[key].append(p)
+        key = (p["sport"], p["player"], p["prop"], round(float(p["line"]), 1), p["event"])
+        grouped[key].append(p)
     cards = []
-    sharp = load_sharpness()
-    for key, group in by.items():
-        best = max(group, key=lambda x: x["price"])
-        book_prices = {g["book"]: g["price"] for g in group}
-        signals, decision = compute_signals(book_prices, best["price"])
-        fair = weighted_fair_prob(book_prices, weights)
-        true_ev = compute_true_ev(best["price"], fair)
-        petty = in_user_range(best["prop"], best["line"])
+    for key, group in grouped.items():
+        overs = [g for g in group if g["side"] == "over"]
+        unders = [g for g in group if g["side"] == "under"]
+        if not overs:
+            continue
+        over_px = {}
+        under_px = {}
+        for g in overs:
+            prev = over_px.get(g["book"])
+            if prev is None or g["price"] > prev:
+                over_px[g["book"]] = g["price"]
+        for g in unders:
+            prev = under_px.get(g["book"])
+            if prev is None or g["price"] > prev:
+                under_px[g["book"]] = g["price"]
+        best_book = max(over_px, key=lambda b: over_px[b])
+        best_price = over_px[best_book]
+        devigged = {}
+        for bk, opx in over_px.items():
+            upx = under_px.get(bk)
+            if upx is None:
+                continue
+            fair_side = devig(implied(opx), implied(upx))
+            if fair_side:
+                devigged[bk] = fair_side
+        fair = None
+        if devigged:
+            num = den = 0.0
+            for bk, prob in devigged.items():
+                w = float(weights.get(bk, 1.0) or 1.0)
+                num += prob * w
+                den += w
+            fair = num / den if den else None
+        true_ev = None
+        if fair:
+            dec = to_decimal(best_price)
+            if dec:
+                true_ev = round((fair * dec - 1) * 100, 1)
+        has_sharp = any(bk in SHARP_BOOKS for bk in devigged)
+        n_devig = len(devigged)
+        if n_devig < 2 or true_ev is None:
+            decision = "PASS"
+            quality = "no de-vig"
+        elif true_ev >= 2:
+            decision = "TAKE"
+            quality = "sharp blend" if has_sharp else "soft disagreement"
+        elif true_ev >= 0.5:
+            decision = "LEAN"
+            quality = "sharp blend" if has_sharp else "soft disagreement"
+        else:
+            decision = "PASS"
+            quality = "priced in"
+        prices = list(over_px.values())
+        med = sorted(prices)[len(prices) // 2]
+        spread = (max(prices) - min(prices)) / abs(med) if med else 0
         tags = []
-        if signals.get("book_beh") == "Solo": tags.append("Solo")
-        if signals.get("move") == "Snap": tags.append("Snap")
-        if signals.get("vol") == "High": tags.append("Surge")
-        bk = best["book"]
-        if bk in sharp and sharp[bk]["soft_count"] >= 3:
-            tags.append(f"{bk} soft")
-        if true_ev and true_ev >= 3: tags.append("True EV")
-        if petty: tags.append("In range")
-        else: tags.append("Outside range")
-        score = card_score(true_ev, signals.get("spike"))
+        if quality == "no de-vig":
+            tags.append("No de-vig")
+        elif has_sharp:
+            tags.append("Sharp in blend")
+        else:
+            tags.append("Soft books only")
+        if n_devig:
+            tags.append(f"{n_devig} de-vig")
+        if len(over_px) <= 2:
+            tags.append("Thin")
+        sample = next(g for g in overs if g["book"] == best_book)
+        petty = in_user_range(sample["prop"], sample["line"])
+        tags.append("In range" if petty else "Outside range")
+        fair_am = prob_to_american(fair) if fair else None
         cards.append({
-            **best, "book_prices": book_prices, **signals, "tags": tags,
+            **{k: sample[k] for k in ("sport", "event", "player", "prop", "line")},
+            "price": best_price,
+            "book": best_book,
+            "book_prices": over_px,
+            "under_prices": under_px,
             "decision": decision,
-            "fair_prob": round(fair*100, 1) if fair else None,
             "true_ev": true_ev,
-            "one_sided": True,
+            "fair_prob": round(fair * 100, 1) if fair else None,
+            "fair_american": fair_am,
+            "quality": quality,
+            "n_devig": n_devig,
+            "has_sharp": has_sharp,
+            "tags": tags,
             "petty_range_match": petty,
-            "devig_method": "multiplicative",
-            "score": score,
+            "spread": round(spread, 2),
+            "score": round(max(0, true_ev or 0), 1),
         })
-    cards.sort(key=lambda x: (x.get("event", ""), -(x.get("true_ev") or -999)))
+    cards.sort(key=lambda x: (x.get("event") or "", -(x.get("true_ev") or -999)))
     return cards
 
-def render_softness(sharp):
-    if not sharp: return
+
+def plain_reason(c):
+    tev = c.get("true_ev")
+    bk = c.get("book") or ""
+    fair = c.get("fair_american")
+    if c.get("quality") == "no de-vig":
+        return "One side only. This is a price gap, not +EV."
+    if c.get("decision") == "TAKE":
+        extra = "" if c.get("has_sharp") else " No sharp book in the blend."
+        return f"{bk} {c.get('price'):+d} vs fair {fair:+d}. Edge {tev}%." + extra
+    if c.get("decision") == "LEAN":
+        return f"Small edge. {bk} {c.get('price'):+d} vs fair {fair:+d}."
+    if tev is not None and fair is not None:
+        return f"Priced in. Fair is {fair:+d}, best is {c.get('price'):+d}."
+    return "No edge."
+
+
+def _espn_json(url, params=None):
+    try:
+        r = requests.get(url, params=params or {}, timeout=12)
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
+    return {}
+
+
+def _name_hit(a, b):
+    a = re.sub(r"[^a-z]", "", str(a or "").lower())
+    b = re.sub(r"[^a-z]", "", str(b or "").lower())
+    return bool(a and b and (a == b or a in b or b in a))
+
+
+def grade_nba(ledger):
+    pending = [
+        r for r in ledger
+        if r.get("sport") == "NBA" and r.get("result") in (None, "—", "")
+        and r.get("prop") in ("Assists", "Points", "Rebounds", "DoubleDouble")
+    ]
+    updated = 0
+    for days_back in range(0, 3):
+        day = (datetime.now(timezone.utc) - timedelta(days=days_back)).strftime("%Y%m%d")
+        board = _espn_json(
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+            {"dates": day},
+        )
+        for ev in board.get("events") or []:
+            comp = (ev.get("competitions") or [{}])[0]
+            state = ((comp.get("status") or {}).get("type") or {}).get("state")
+            if state != "post":
+                continue
+            box = _espn_json(
+                "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary",
+                {"event": ev.get("id")},
+            )
+            players = []
+            for team in ((box.get("boxscore") or {}).get("players") or []):
+                for block in team.get("statistics") or []:
+                    labels = [str(x).lower() for x in (block.get("labels") or block.get("names") or [])]
+                    for ath in block.get("athletes") or []:
+                        nm = ((ath.get("athlete") or {}).get("displayName")) or ""
+                        stats = ath.get("stats") or []
+                        row = {}
+                        for i, lab in enumerate(labels):
+                            if i < len(stats):
+                                row[lab] = stats[i]
+                        players.append((nm, row))
+            for rec in pending:
+                if rec.get("result") in ("HIT", "MISS"):
+                    continue
+                hit = next((row for nm, row in players if _name_hit(rec.get("player"), nm)), None)
+                if not hit:
+                    continue
+                def num(keys):
+                    for k in keys:
+                        if k in hit:
+                            try:
+                                return float(str(hit[k]).split("-")[0])
+                            except Exception:
+                                pass
+                    return None
+                pts = num(["pts", "points"]) or 0
+                reb = num(["reb", "rebounds"]) or 0
+                ast = num(["ast", "assists"]) or 0
+                prop = rec.get("prop")
+                line = float(rec.get("line") or 0)
+                actual = {"Points": pts, "Rebounds": reb, "Assists": ast}.get(prop)
+                if prop == "DoubleDouble":
+                    actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
+                    line = 1
+                if actual is None:
+                    continue
+                rec["result"] = "HIT" if actual >= line else "MISS"
+                rec["player_stat"] = actual
+                updated += 1
+    save_ledger(ledger)
+    return updated
+
+
+def grade_nfl(ledger):
+    pending = [
+        r for r in ledger
+        if r.get("sport") == "NFL" and r.get("result") in (None, "—", "")
+        and r.get("prop") == "Anytime TD"
+    ]
+    updated = 0
+    for days_back in range(0, 4):
+        day = (datetime.now(timezone.utc) - timedelta(days=days_back)).strftime("%Y%m%d")
+        board = _espn_json(
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+            {"dates": day},
+        )
+        for ev in board.get("events") or []:
+            comp = (ev.get("competitions") or [{}])[0]
+            state = ((comp.get("status") or {}).get("type") or {}).get("state")
+            if state != "post":
+                continue
+            box = _espn_json(
+                "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary",
+                {"event": ev.get("id")},
+            )
+            scorers = []
+            for team in ((box.get("boxscore") or {}).get("players") or []):
+                for block in team.get("statistics") or []:
+                    name = str(block.get("name") or "").lower()
+                    if "touchdown" not in name and name not in ("scoring", "rushing", "receiving"):
+                        continue
+                    labels = [str(x).lower() for x in (block.get("labels") or [])]
+                    for ath in block.get("athletes") or []:
+                        nm = ((ath.get("athlete") or {}).get("displayName")) or ""
+                        stats = ath.get("stats") or []
+                        td = 0
+                        for i, lab in enumerate(labels):
+                            if i < len(stats) and "td" in lab:
+                                try:
+                                    td += float(stats[i])
+                                except Exception:
+                                    pass
+                        if td > 0 or "touchdown" in name:
+                            scorers.append(nm)
+            if not scorers:
+                continue
+            for rec in pending:
+                if rec.get("result") in ("HIT", "MISS"):
+                    continue
+                rec["result"] = "HIT" if any(_name_hit(rec.get("player"), n) for n in scorers) else "MISS"
+                updated += 1
+    save_ledger(ledger)
+    return updated
+
+
+def render_softness(cards):
+    if not cards:
+        return
     rows = []
-    for bk, data in sharp.items():
-        total = data.get("total", 0)
-        soft = data.get("soft_count", 0)
-        pct = round((soft / total * 100), 1) if total else 0
-        props = data.get("props", {})
-        top_prop = max(props, key=props.get) if props else "—"
-        rows.append({"Book": BOOK_FULL.get(bk, bk), "% Soft": pct, "Softest Prop": top_prop})
-    if not rows: return
-    df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
-    st.markdown('<div class="softness-title">Which books are soft</div>', unsafe_allow_html=True)
-    softest = df.iloc[0]
-    st.markdown(f"**{softest['Book']}** is hanging soft numbers most often right now ({softest['% Soft']}% on {softest['Softest Prop']}).")
-    chart_df = df.set_index("Book")[["% Soft"]]
-    st.bar_chart(chart_df, use_container_width=True, color="#FF3EBF")
+    for bk in ALL_BOOK_CODES:
+        takes = [c for c in cards if c.get("book") == bk and c.get("decision") == "TAKE"]
+        priced = [c for c in cards if bk in (c.get("book_prices") or {})]
+        if not priced:
+            continue
+        rows.append({
+            "Book": BOOK_FULL.get(bk, bk),
+            "TAKE count": len(takes),
+            "On slate": len(priced),
+        })
+    if not rows:
+        return
+    df = pd.DataFrame(rows).sort_values("TAKE count", ascending=False)
+    st.markdown('<div class="softness-title">Who is hanging the long number</div>', unsafe_allow_html=True)
+    st.caption("This is who had the best price on a real +EV card. It is not proof the book is soft.")
+    st.bar_chart(df.set_index("Book")[["TAKE count"]], use_container_width=True, color="#FF3EBF")
+
 
 def main():
-    st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Open the site. Edges appear. You lock them. 💅</p></div>', unsafe_allow_html=True)
-
-    api_key = st.secrets.get("ODDS_API_KEY", "") or st.text_input("Odds API Key", type="password")
+    st.markdown(
+        '<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1>'
+        '<p>De-vig first. Then the edge. A long number is not a model.</p></div>',
+        unsafe_allow_html=True,
+    )
+    api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
     if not api_key:
         st.info("Add your Odds API key.")
         return
-
-    bdl_key = st.secrets.get("BALLDONTLIE_API_KEY", "")
-
     auto_weights = load_auto_weights()
-
     with st.sidebar:
-        st.markdown("### 💅 Book Weights (auto)")
-        st.caption("Updated automatically. Override only if you want.")
+        st.markdown("### Book weights")
+        st.caption("Pinnacle, Circa, and Bookmaker should stay heavy. They are the sharp side.")
         live_weights = {}
-        for short in sorted(set(list(BASE_WEIGHTS.keys()) + list(BOOK_FULL.keys()))):
-            default = auto_weights.get(short, BASE_WEIGHTS.get(short, 1.0))
-            live_weights[short] = st.slider(short, 0.5, 4.0, float(default), 0.1, key=f"w_{short}")
-        if st.button("Reset weights to auto"):
+        for short in sorted(BASE_WEIGHTS):
+            default = float(auto_weights.get(short, BASE_WEIGHTS[short]))
+            live_weights[short] = st.slider(short, 0.5, 4.0, default, 0.1, key=f"w_{short}")
+        if st.button("Reset weights"):
             save_auto_weights(BASE_WEIGHTS.copy())
             st.rerun()
-
-    sport_choice = st.radio("Lane", ["NBA 🔮", "NFL 🔥"], horizontal=True, key="sport_choice")
-    current_sport = "NBA" if "NBA" in sport_choice else "NFL"
-
-    if st.button("Pull the chaos 💅", type="primary", use_container_width=True):
-        sport_key = "basketball_nba" if current_sport == "NBA" else "americanfootball_nfl"
-        markets = ("player_assists,player_assists_alternate,player_points,player_points_alternate,"
-                   "player_rebounds,player_rebounds_alternate,player_double_double"
-                   if current_sport == "NBA" else
-                   "player_anytime_td,player_reception_yds,player_reception_yds_alternate")
-        with st.spinner(f"Pulling {current_sport} edges…"):
+    sport_choice = st.radio("Lane", ["NBA", "NFL"], horizontal=True)
+    if st.button("Pull the board", type="primary", use_container_width=True):
+        sport_key = "basketball_nba" if sport_choice == "NBA" else "americanfootball_nfl"
+        markets = (
+            "player_assists,player_assists_alternate,player_points,player_points_alternate,"
+            "player_rebounds,player_rebounds_alternate,player_double_double"
+            if sport_choice == "NBA"
+            else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
+        )
+        with st.spinner(f"Pulling {sport_choice}…"):
             events = fetch_events(api_key, sport_key)
-            now = datetime.utcnow()
-            pregame = [ev for ev in events if ev.get("commence_time") and datetime.fromisoformat(ev["commence_time"].replace("Z", "+00:00")).replace(tzinfo=None) > now]
-            target = pregame if pregame else events
-            all_plays = []
-            for ev in target[:30]:
+            now = datetime.now(timezone.utc)
+            pregame = []
+            for ev in events:
+                raw = ev.get("commence_time") or ""
+                try:
+                    start = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+                    if start > now:
+                        pregame.append(ev)
+                except Exception:
+                    continue
+            target = pregame or events
+            plays = []
+            for ev in target[:24]:
                 data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                 if data:
-                    all_plays.extend(parse_plays(data, current_sport))
-            cards = best_cards(all_plays, live_weights)
-            sharp = update_sharpness(cards)
-            update_auto_weights(sharp)
-            st.session_state[f"cards_{current_sport}"] = cards
+                    plays.extend(parse_plays(data, sport_choice))
+            cards = best_cards(plays, live_weights)
+            st.session_state[f"cards_{sport_choice}"] = cards
             st.session_state["fetched"] = datetime.now().strftime("%H:%M")
-            st.session_state["last_sport"] = current_sport
-            ledger = load_ledger()
-            existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
-            added = 0
-            for c in cards:
-                if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 500 and line_ok(c.get("prop"), c.get("line")):
-                    key = (c["player"], c["prop"], c["line"], c["price"])
-                    if key not in existing:
-                        ledger.append({
-                            "ts": datetime.now().isoformat(timespec="minutes"),
-                            "sport": c["sport"], "player": c["player"], "prop": c["prop"],
-                            "line": c["line"], "price": c["price"],
-                            "book": BOOK_FULL.get(c["book"], c["book"]),
-                            "event": c["event"],
-                            "true_ev": c.get("true_ev"),
-                            "fair_prob": c.get("fair_prob"),
-                            "ev_gap": c.get("ev_gap"),
-                            "spike": c.get("spike"),
-                            "vol": c.get("vol"),
-                            "tags": c.get("tags"),
-                            "decision": c.get("decision"),
-                            "petty_range_match": c.get("petty_range_match"),
-                            "result": None,
-                            "player_stat": None,
-                            "clv": None,
-                            "closing_price": None,
-                            "locked_price": c["price"],
-                            "petty_mode": st.session_state.get("petty_mode", True),
-                            "weights_used": live_weights,
-                            "devig_method": "multiplicative",
-                        })
-                        existing.add(key)
-                        added += 1
-            save_ledger(ledger)
-            if added: st.toast(f"Auto-tracked {added} TAKE plays (+500+)")
-            st.toast("Weights auto-tuned")
-
-    cards = st.session_state.get(f"cards_{current_sport}") or []
-    if st.session_state.get("fetched") and st.session_state.get("last_sport") == current_sport:
-        st.caption(f"{current_sport} board live @ {st.session_state['fetched']} — {len(cards)} props")
-
-    tab_board, tab_tracker, tab_glossary = st.tabs(["📊 Board", "🔒 Tracker", "📖 Glossary"])
-
+            st.session_state["last_sport"] = sport_choice
+            st.toast(f"{len(cards)} priced props. {sum(1 for c in cards if c['decision']=='TAKE')} real TAKE.")
+    cards = st.session_state.get(f"cards_{sport_choice}") or []
+    if st.session_state.get("fetched") and st.session_state.get("last_sport") == sport_choice:
+        real = sum(1 for c in cards if c.get("n_devig", 0) >= 2)
+        st.caption(f"{sport_choice} @ {st.session_state['fetched']} — {len(cards)} props, {real} with a real de-vig")
+    tab_board, tab_tracker, tab_glossary = st.tabs(["Board", "Tracker", "Glossary"])
     with tab_board:
         if not cards:
-            st.info(f"Hit **Pull the chaos** for {current_sport}.")
+            st.info("Pull the board.")
         else:
-            col_a, col_b, col_c = st.columns(3)
-            with col_a:
-                simple_mode = st.toggle("✨ Simple Mode", value=st.session_state.get("simple_mode", True))
-                st.session_state["simple_mode"] = simple_mode
-            with col_b:
-                detailed = st.toggle("🔍 Detailed", value=st.session_state.get("detailed", False))
-                st.session_state["detailed"] = detailed
-            with col_c:
-                petty_mode = st.toggle("💅 Petty Mode", value=st.session_state.get("petty_mode", False))
-                st.session_state["petty_mode"] = petty_mode
-
+            c1, c2, c3 = st.columns(3)
+            simple = c1.toggle("Simple — TAKE only", value=True)
+            detailed = c2.toggle("Show the why", value=False)
+            petty = c3.toggle("Petty ranges", value=False)
             f1, f2, f3 = st.columns(3)
-            with f1:
-                prop_options = ["Assists", "Points", "Rebounds", "DoubleDouble"] if current_sport == "NBA" else ["Anytime TD", "Rec Yards"]
-                prop_filter = st.multiselect("Prop Type", prop_options, default=prop_options)
-            with f2:
-                decision_filter = st.multiselect("Decision", ["TAKE", "LEAN", "PASS"], default=["TAKE", "LEAN"])
-            with f3:
-                min_ev = st.slider("Min True EV %", -5.0, 30.0, 0.0, 0.5)
-
+            props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport_choice == "NBA" else ["Anytime TD", "Rec Yards"]
+            prop_filter = f1.multiselect("Prop", props, default=props)
+            decision_filter = f2.multiselect("Call", ["TAKE", "LEAN", "PASS"], default=["TAKE", "LEAN"])
+            min_ev = f3.slider("Min True EV %", -10.0, 30.0, 0.0, 0.5)
             o1, o2 = st.columns(2)
-            with o1:
-                min_odds = st.number_input("Min Odds", value=500, step=50)
-            with o2:
-                max_odds = st.number_input("Max Odds", value=5000, step=100)
-
-            book_filter = st.multiselect(
-                "Book (longest price)",
-                ALL_BOOK_CODES,
-                default=ALL_BOOK_CODES,
-                format_func=lambda x: BOOK_FULL.get(x, x)
-            )
-
-            filtered = cards[:]
-            filtered = [c for c in filtered if line_ok(c.get("prop"), c.get("line"))]
-            if petty_mode:
+            min_odds = o1.number_input("Min odds", value=-150, step=10)
+            max_odds = o2.number_input("Max odds", value=2000, step=50)
+            book_filter = st.multiselect("Best-price book", ALL_BOOK_CODES, default=ALL_BOOK_CODES, format_func=lambda x: BOOK_FULL.get(x, x))
+            filtered = [c for c in cards if c.get("prop") in prop_filter and line_ok(c.get("prop"), c.get("line"))]
+            if petty:
                 filtered = [c for c in filtered if c.get("petty_range_match")]
-            if simple_mode:
-                filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
-            filtered = [c for c in filtered if c.get("prop") in prop_filter]
+            if simple:
+                filtered = [c for c in filtered if c.get("decision") == "TAKE"]
             filtered = [c for c in filtered if c.get("decision") in decision_filter]
             filtered = [c for c in filtered if (c.get("true_ev") or -999) >= min_ev]
-            filtered = [c for c in filtered if min_odds <= c.get("price", 0) <= max_odds]
+            filtered = [c for c in filtered if min_odds <= (c.get("price") or 0) <= max_odds]
             filtered = [c for c in filtered if c.get("book") in book_filter]
-
             if not filtered:
-                st.info("No matching edges with current filters.")
+                st.info("Nothing clears these filters. Drop Simple or lower Min odds — real edges are often shorter than +500.")
             else:
-                st.markdown(f"**{len(filtered)} plays ready.**")
+                sharp_n = sum(1 for c in filtered if c.get("has_sharp"))
+                st.markdown(f"**{len(filtered)} plays.** {sharp_n} have a sharp book in the blend.")
                 by_game = defaultdict(list)
                 for c in filtered:
-                    by_game[c.get("event", "Unknown")].append(c)
+                    by_game[c.get("event") or "Unknown"].append(c)
                 for game, game_cards in by_game.items():
                     st.markdown(f'<div class="game-header">{game}</div>', unsafe_allow_html=True)
                     cols = st.columns(2)
                     for i, c in enumerate(game_cards):
-                        line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
-                        boxes_html = "".join(
+                        line_txt = "Yes" if c["prop"] in ("DoubleDouble", "Anytime TD") else f"o{c['line']}"
+                        boxes = "".join(
                             f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
                             for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
                         )
-                        tags_html = "".join(
-                            f'<span class="tag {"range" if "range" in t.lower() else ""}">{t}</span>'
-                            for t in c.get("tags", [])
-                        ) if not simple_mode else ""
-                        card_cls = "card"
-                        if c.get("decision") == "TAKE": card_cls += " take-card"
-                        if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
-                        if not c.get("petty_range_match") and not simple_mode: card_cls += " dimmed"
-                        take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
-                        score_val = c.get("score")
-                        score_html = f'<div class="score">Score {score_val}</div>' if c.get("decision") == "TAKE" and score_val is not None else ""
+                        tags = "".join(f'<span class="tag">{t}</span>' for t in c.get("tags") or [])
+                        cls = "card"
+                        if c.get("decision") == "TAKE":
+                            cls += " take-card"
+                        if (c.get("true_ev") or 0) >= 3 and c.get("has_sharp"):
+                            cls += " true-ev-glow"
+                        fair = c.get("fair_american")
+                        fair_txt = f"{fair:+d}" if isinstance(fair, int) else "—"
+                        tev = c.get("true_ev")
+                        tev_txt = f"{tev}%" if tev is not None else "—"
                         html = (
-                            f'<div class="{card_cls}">{take_tag}'
+                            f'<div class="{cls}">'
                             f'<div class="player">{c["player"]}</div>'
                             f'<div class="meta">{c["event"]}</div>'
                             f'<div class="prop">{c["prop"]} {line_txt}</div>'
-                            f'<div class="books">{boxes_html}</div>'
-                            f'{tags_html}'
-                            f'<div class="true-ev">True EV {c.get("true_ev", "—")}%</div>'
-                            f'{score_html}'
-                            f'<div class="why">{plain_reason(c)}</div>'
-                            f'</div>'
+                            f'<div class="books">{boxes}</div>{tags}'
+                            f'<div class="true-ev">{c.get("decision")} · EV {tev_txt} · fair {fair_txt}</div>'
+                            f'<div class="why">{plain_reason(c)}</div></div>'
                         )
                         with cols[i % 2]:
                             st.markdown(html, unsafe_allow_html=True)
                             if detailed:
-                                with st.expander("Why this is a play"):
-                                    tev = c.get("true_ev") or 0
-                                    bk = c.get("book", "")
-                                    st.markdown(f"**Decision:** {c.get('decision')}")
-                                    if c.get("decision") == "TAKE" and tev >= 3:
-                                        st.markdown(f"**Why it glows:** {bk} is the longest price and the weighted fair price says this is a real edge ({tev}%).")
-                                    elif c.get("decision") == "TAKE":
-                                        st.markdown(f"**Why it shows:** {bk} is paying more than the blend.")
-                                    else:
-                                        st.markdown("**Why it’s here:** The numbers are close.")
-                            if st.button("Lock 🔒", key=f"lk_{current_sport}_{game}_{i}_{c['player']}_{c['prop']}_{c['line']}"):
+                                with st.expander("Why"):
+                                    st.write(plain_reason(c))
+                                    st.write(f"De-vigged books: {c.get('n_devig')} · sharp: {c.get('has_sharp')}")
+                            if st.button("Lock", key=f"lk_{sport_choice}_{i}_{c['player']}_{c['prop']}_{c['line']}"):
                                 ledger = load_ledger()
                                 ledger.append({
                                     "ts": datetime.now().isoformat(timespec="minutes"),
                                     "sport": c["sport"], "player": c["player"], "prop": c["prop"],
                                     "line": c["line"], "price": c["price"],
                                     "book": BOOK_FULL.get(c["book"], c["book"]),
-                                    "event": c["event"],
-                                    "true_ev": c.get("true_ev"),
-                                    "fair_prob": c.get("fair_prob"),
-                                    "ev_gap": c.get("ev_gap"),
-                                    "spike": c.get("spike"),
-                                    "vol": c.get("vol"),
-                                    "tags": c.get("tags"),
-                                    "decision": c.get("decision"),
-                                    "petty_range_match": c.get("petty_range_match"),
+                                    "event": c["event"], "true_ev": c.get("true_ev"),
+                                    "fair_prob": c.get("fair_prob"), "fair_american": c.get("fair_american"),
+                                    "decision": c.get("decision"), "quality": c.get("quality"),
                                     "result": None,
-                                    "player_stat": None,
-                                    "clv": None,
-                                    "closing_price": None,
-                                    "locked_price": c["price"],
-                                    "weights_used": live_weights,
-                                    "devig_method": "multiplicative",
                                 })
                                 save_ledger(ledger)
                                 st.toast("Locked.")
-
+                render_softness(filtered)
     with tab_tracker:
         ledger = load_ledger()
-        if st.button("Wipe the slate"):
+        if st.button("Wipe tracker"):
             save_ledger([])
             st.rerun()
-        if current_sport == "NBA":
-            if st.button("Grade NBA results"):
-                with st.spinner("Looking up 40 plays…"):
-                    ledger = grade_nba_batch(ledger, bdl_key)
-                st.rerun()
+        if st.button("Grade what we can"):
+            with st.spinner("Checking finals…"):
+                n = grade_nba(ledger) if sport_choice == "NBA" else grade_nfl(ledger)
+            st.success(f"Graded {n}.")
+            st.rerun()
+        mine = [r for r in ledger if r.get("sport") == sport_choice]
+        if not mine:
+            st.info("Nothing locked on this lane.")
         else:
-            st.info("NFL is not graded by BallDontLie.")
-
-        if not ledger:
-            st.info("Nothing locked yet.")
-        else:
-            clean = [r for r in ledger if (r.get("price") or 0) >= 500 and r.get("sport") == current_sport and line_ok(r.get("prop"), r.get("line"))]
-            if not clean:
-                st.info(f"No +500 {current_sport} plays yet.")
-            else:
-                hits = sum(1 for r in clean if r.get("result") == "HIT")
-                misses = sum(1 for r in clean if r.get("result") == "MISS")
-                st.markdown(f"**{len(clean)} locked · {hits} hit · {misses} miss**")
-                cols = st.columns(2)
-                for i, r in enumerate(clean[:40]):
-                    res = r.get("result") or "—"
-                    card_cls = "card"
-                    if res == "HIT":
-                        card_cls += " true-ev-glow"
-                    elif res == "MISS":
-                        card_cls += " dimmed"
-                    html = (
-                        f'<div class="{card_cls}">'
-                        f'<div class="player">{r.get("player")}</div>'
-                        f'<div class="meta">{r.get("event")}</div>'
-                        f'<div class="prop">{r.get("prop")} {r.get("line")}</div>'
-                        f'<div class="true-ev">{r.get("book")} {r.get("price")} · {res}</div>'
-                        f'</div>'
-                    )
-                    with cols[i % 2]:
-                        st.markdown(html, unsafe_allow_html=True)
-                render_softness(load_sharpness())
-
+            hits = sum(1 for r in mine if r.get("result") == "HIT")
+            misses = sum(1 for r in mine if r.get("result") == "MISS")
+            st.markdown(f"**{len(mine)} locked · {hits} hit · {misses} miss**")
+            cols = st.columns(2)
+            for i, r in enumerate(mine[:40]):
+                res = r.get("result") or "—"
+                cls = "card" + (" true-ev-glow" if res == "HIT" else " dimmed" if res == "MISS" else "")
+                html = (
+                    f'<div class="{cls}"><div class="player">{r.get("player")}</div>'
+                    f'<div class="meta">{r.get("event")}</div>'
+                    f'<div class="prop">{r.get("prop")} {r.get("line")}</div>'
+                    f'<div class="true-ev">{r.get("book")} {r.get("price")} · EV {r.get("true_ev")}% · {res}</div></div>'
+                )
+                with cols[i % 2]:
+                    st.markdown(html, unsafe_allow_html=True)
     with tab_glossary:
         st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
+        st.caption("If Pinnacle is missing from the pull, the EU region on your Odds API key is off. The board will say so.")
+
 
 try:
     main()
