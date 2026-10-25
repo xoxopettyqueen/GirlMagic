@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — BallDontLie Grade
-Free player stats. Maps names, pulls box scores, grades HIT/MISS.
-Closing lines still unavailable.
+Girl Magic Odds 2.0 — BallDontLie Grade with Key
+Maps players, finds games, pulls stats, grades HIT/MISS.
 """
 
 import streamlit as st
@@ -10,7 +9,7 @@ import pandas as pd
 import requests
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import defaultdict
 from pathlib import Path
 
@@ -209,38 +208,11 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
-def bdl_search_player(name):
-    try:
-        r = requests.get(f"{BDL_BASE}/players", params={"search": name}, timeout=10)
-        if r.status_code == 200:
-            data = r.json().get("data", [])
-            if data:
-                return data[0]
-    except:
-        pass
-    return None
-
-def bdl_games_for_date(date_str):
-    try:
-        r = requests.get(f"{BDL_BASE}/games", params={"dates[]": date_str}, timeout=10)
-        if r.status_code == 200:
-            return r.json().get("data", [])
-    except:
-        pass
-    return []
-
-def bdl_stats(player_id, game_id):
-    try:
-        r = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": player_id, "game_ids[]": game_id}, timeout=10)
-        if r.status_code == 200:
-            data = r.json().get("data", [])
-            if data:
-                return data[0]
-    except:
-        pass
-    return None
-
-def grade_with_bdl(ledger):
+def grade_with_bdl(ledger, bdl_key):
+    if not bdl_key:
+        st.warning("No BallDontLie key in secrets.")
+        return ledger
+    headers = {"Authorization": bdl_key}
     updated = 0
     for row in ledger:
         if row.get("sport") != "NBA" or row.get("result") not in (None, "—", ""):
@@ -251,23 +223,41 @@ def grade_with_bdl(ledger):
         if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
             continue
 
-        pinfo = bdl_search_player(player)
-        if not pinfo:
-            continue
-        pid = pinfo.get("id")
-        if not pid:
+        try:
+            r = requests.get(f"{BDL_BASE}/players", params={"search": player}, headers=headers, timeout=10)
+            if r.status_code != 200:
+                continue
+            pdata = r.json().get("data", [])
+            if not pdata:
+                continue
+            pid = pdata[0].get("id")
+            if not pid:
+                continue
+        except:
             continue
 
-        # Try last 3 days for games
         for days_back in range(0, 3):
-            d = (datetime.utcnow() - pd.Timedelta(days=days_back)).strftime("%Y-%m-%d")
-            games = bdl_games_for_date(d)
+            d = (datetime.utcnow() - timedelta(days=days_back)).strftime("%Y-%m-%d")
+            try:
+                gr = requests.get(f"{BDL_BASE}/games", params={"dates[]": d}, headers=headers, timeout=10)
+                if gr.status_code != 200:
+                    continue
+                games = gr.json().get("data", [])
+            except:
+                continue
             for g in games:
                 gid = g.get("id")
                 if not gid:
                     continue
-                stat = bdl_stats(pid, gid)
-                if not stat:
+                try:
+                    sr = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": pid, "game_ids[]": gid}, headers=headers, timeout=10)
+                    if sr.status_code != 200:
+                        continue
+                    stats = sr.json().get("data", [])
+                    if not stats:
+                        continue
+                    stat = stats[0]
+                except:
                     continue
                 pts = float(stat.get("pts") or 0)
                 reb = float(stat.get("reb") or 0)
@@ -294,6 +284,9 @@ def grade_with_bdl(ledger):
 
     if updated:
         save_ledger(ledger)
+        st.success(f"Graded {updated} plays.")
+    else:
+        st.info("No matches. Games may not be final yet or key is invalid.")
     return ledger
 
 @st.cache_data(ttl=120)
@@ -483,6 +476,8 @@ def main():
     if not api_key:
         st.info("Add your Odds API key.")
         return
+
+    bdl_key = st.secrets.get("BALLDONTLIE_API_KEY", "")
 
     auto_weights = load_auto_weights()
 
@@ -699,7 +694,8 @@ def main():
             save_ledger([])
             st.rerun()
         if st.button("Grade NBA results"):
-            ledger = grade_with_bdl(ledger)
+            with st.spinner("Grading…"):
+                ledger = grade_with_bdl(ledger, bdl_key)
             st.rerun()
 
         uploaded = st.file_uploader("Import old plays (CSV)", type="csv")
