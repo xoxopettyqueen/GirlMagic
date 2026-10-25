@@ -9,6 +9,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import altair as alt
 import pandas as pd
 import requests
 import streamlit as st
@@ -727,39 +728,99 @@ def main():
             st.balloons()
             st.rerun()
         mine = [r for r in ledger if r.get("sport") == sport]
-        hits = sum(r.get("result") == "HIT" for r in mine)
-        misses = sum(r.get("result") == "MISS" for r in mine)
-        counters(len(mine), hits + misses, hits, misses)
-        graded = [r for r in mine if r.get("result") in ("HIT", "MISS")]
-        if graded:
-            st.markdown("**What cashed**")
-            by_book = defaultdict(lambda: [0, 0])
-            by_gap = defaultdict(lambda: [0, 0])
-            for r in graded:
-                by_book[r.get("book") or "?"][1] += 1
-                by_book[r.get("book") or "?"][0] += r.get("result") == "HIT"
-                gap = r.get("ev_gap") or 0
-                bucket = "gap 40+" if gap >= 40 else "gap 20–39" if gap >= 20 else "gap under 20"
-                by_gap[bucket][1] += 1
-                by_gap[bucket][0] += r.get("result") == "HIT"
-            html = "".join(chip(BOOK_FULL.get(bk, bk), h, n) for bk, (h, n) in sorted(by_book.items(), key=lambda z: -(z[1][0] / z[1][1] if z[1][1] else 0)))
-            html += "".join(chip(bkt, h, n) for bkt, (h, n) in by_gap.items())
-            st.markdown(html, unsafe_allow_html=True)
-            chart = pd.DataFrame([
-                {"Book": BOOK_FULL.get(bk, bk), "Hit %": round(100 * h / n, 1)}
-                for bk, (h, n) in by_book.items() if n
-            ]).set_index("Book")
-            st.bar_chart(chart, use_container_width=True, color="#ff00cc")
-        page = st.number_input("Tracker page", min_value=1, value=1, step=1)
-        start = (int(page) - 1) * 16
-        for r in list(reversed(mine))[start:start + 16]:
-            fake = {
-                "player": r.get("player"), "prop": r.get("prop"), "line": r.get("line"),
-                "book": r.get("book"), "price": r.get("price"), "true_ev": r.get("true_ev"),
-                "ev_gap": r.get("ev_gap"), "decision": r.get("result") or "LOCKED",
-                "book_prices": {r.get("book"): r.get("price")}, "tags": [],
-            }
-            st.markdown(glow_card(fake, r.get("result") or "LOCKED"), unsafe_allow_html=True)
+        hits_n = sum(r.get("result") == "HIT" for r in mine)
+        misses_n = sum(r.get("result") == "MISS" for r in mine)
+        counters(len(mine), hits_n + misses_n, hits_n, misses_n)
+        hits = [r for r in mine if r.get("result") == "HIT"]
+        misses = [r for r in mine if r.get("result") == "MISS"]
+        graded = hits + misses
+        tab_all, tab_hits, tab_misses, tab_charts = st.tabs(["All Plays", "Hits Only", "Misses Only", "Charts"])
+
+        def play_card(r, color):
+            clv = r.get("clv")
+            clv_txt = f"{clv:+.1f}" if isinstance(clv, (int, float)) else "—"
+            border = "gold" if r.get("result") == "HIT" else ("#ff00cc" if r.get("result") in (None, "", "—", "LOCKED") else "#444")
+            return (
+                f'<div style="padding:10px 12px;border-radius:12px;margin-bottom:8px;'
+                f'background:linear-gradient(90deg,#1a1a24,#2a2a3a);border:2px solid {border};'
+                f'box-shadow:0 0 12px {border}66;color:#fff">'
+                f'<b>{r.get("player")}</b> — {r.get("prop")} {r.get("line")} → {r.get("result") or "LOCKED"}'
+                f'<span style="float:right;color:#ffe27a">CLV {clv_txt}</span><br>'
+                f'<span style="color:#aaa;font-size:.75rem">{r.get("book")} {r.get("price")} · gap {r.get("ev_gap") or "—"}</span>'
+                f'</div>'
+            )
+
+        def render_page(rows, key):
+            if not rows:
+                st.caption("Nothing here yet.")
+                return
+            page = st.number_input("Page", min_value=1, value=1, step=1, key=key)
+            start = (int(page) - 1) * 12
+            chunk = list(reversed(rows))[start:start + 12]
+            st.markdown("".join(play_card(r, "#b366ff") for r in chunk), unsafe_allow_html=True)
+            st.caption(f"{len(rows)} plays · page {int(page)}")
+
+        with tab_all:
+            render_page(mine, "pg_all")
+        with tab_hits:
+            render_page(hits, "pg_hits")
+        with tab_misses:
+            render_page(misses, "pg_miss")
+        with tab_charts:
+            if not graded:
+                st.info("Grade a slate and the charts fill in.")
+            else:
+                chart_df = pd.DataFrame([{"book": BOOK_FULL.get(r.get("book"), r.get("book") or "?"), "result": r.get("result")} for r in graded])
+                hit_chart = alt.Chart(chart_df).mark_bar(size=28, cornerRadiusEnd=6).encode(
+                    x=alt.X("book:N", title="Sportsbook", sort="-y"),
+                    y=alt.Y("count():Q", title="Plays"),
+                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#444"])),
+                    tooltip=["book", "result", "count()"],
+                ).properties(height=280, title="Hit rate by book")
+                st.altair_chart(hit_chart, use_container_width=True)
+                clv_rows = [{"clv": r.get("clv")} for r in graded if isinstance(r.get("clv"), (int, float))]
+                if clv_rows:
+                    clv_chart = alt.Chart(pd.DataFrame(clv_rows)).mark_area(opacity=0.65, color="#ff00cc").encode(
+                        x=alt.X("clv:Q", bin=alt.Bin(maxbins=16), title="CLV"),
+                        y=alt.Y("count()", title="Plays"),
+                    ).properties(height=240, title="CLV distribution")
+                    st.altair_chart(clv_chart, use_container_width=True)
+                else:
+                    st.caption("CLV fills in once a close is logged. Hits and misses are already graded.")
+                pie_df = pd.DataFrame([{"result": "HIT", "count": len(hits)}, {"result": "MISS", "count": len(misses)}])
+                pie = alt.Chart(pie_df).mark_arc(innerRadius=60).encode(
+                    theta="count:Q",
+                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#444"])),
+                    tooltip=["result", "count"],
+                ).properties(height=280, title="Hit vs miss")
+                st.altair_chart(pie, use_container_width=True)
+        st.markdown("**What cashed**")
+        all_books = ["DraftKings", "FanDuel", "BetMGM", "Caesars", "Bet365", "Fanatics", "Hard Rock", "theScore"]
+        short_to_full = {"DK": "DraftKings", "FD": "FanDuel", "MGM": "BetMGM", "CZR": "Caesars", "365": "Bet365", "FAN": "Fanatics", "HR": "Hard Rock", "SCR": "theScore"}
+        book_stats = {b: {"hits": 0, "total": 0} for b in all_books}
+        for r in graded:
+            name = short_to_full.get(r.get("book"), r.get("book"))
+            if name in book_stats:
+                book_stats[name]["total"] += 1
+                book_stats[name]["hits"] += r.get("result") == "HIT"
+        tiles = []
+        for book, stats in book_stats.items():
+            h, total = stats["hits"], stats["total"]
+            pct = round(h / total * 100, 1) if total else 0
+            color = "gold" if pct >= 10 else "#ff00cc" if pct >= 5 else "#6600ff" if pct > 0 else "#333"
+            tiles.append(
+                f'<div style="width:150px;height:112px;background:#12121a;border-radius:12px;border:2px solid {color};'
+                f'box-shadow:0 0 12px {color}55;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:6px">'
+                f'<div style="font-size:22px;color:{color};font-weight:700">{pct}%</div>'
+                f'<div style="color:#fff;font-size:13px">{book}</div>'
+                f'<div style="color:#aaa;font-size:12px">{h} of {total}</div></div>'
+            )
+        st.markdown('<div style="display:flex;flex-wrap:wrap">' + "".join(tiles) + "</div>", unsafe_allow_html=True)
+        st.markdown(
+            '<div style="height:4px;width:100%;margin-top:12px;border-radius:2px;'
+            'background:linear-gradient(90deg,#ff00cc,#6600ff,#b366ff);background-size:200% 100%;animation:shimmer 2s linear infinite"></div>',
+            unsafe_allow_html=True,
+        )
     with glossary:
         with st.expander("✨ Glossary", expanded=True):
             st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
