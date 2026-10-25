@@ -777,10 +777,14 @@ def glow_card(c, result=None):
     note = c.get("grade_note") or ""
     locked = c.get("ts") or "—"
     graded = c.get("graded_ts") or "—"
+    fair = c.get("fair_prob")
+    fair_txt = f"{fair}%" if fair else "—"
+    market = c.get("median")
+    market_txt = f"{int(market):+d}" if isinstance(market, (int, float)) else "—"
     desc = (
         f"Longest was {c.get('book') or '?'} {fmt_price(c.get('price'))}. "
-        f"Gap {gap if gap is not None else '—'}% vs the pack. "
-        f"Edge {tev if tev is not None else '—'}%. "
+        f"Fair value {fair_txt}. Market {market_txt}. "
+        f"Gap {gap if gap is not None else '—'}%. Edge {tev if tev is not None else '—'}%."
     )
     return (
         f'<div class="{cls}">'
@@ -795,6 +799,8 @@ def glow_card(c, result=None):
         f'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
         f'<span class="tag">book {c.get("book") or "?"}</span>'
         f'<span class="tag">price {fmt_price(c.get("price"))}</span>'
+        f'<span class="tag">fair {fair_txt}</span>'
+        f'<span class="tag">market {market_txt}</span>'
         f'<span class="tag">edge {tev if tev is not None else "—"}%</span>'
         f'<span class="tag">locked {locked}</span>'
         f'<span class="tag">graded {graded}</span>'
