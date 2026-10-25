@@ -910,6 +910,7 @@ def main():
         if c1.button("Clear the slate"):
             save_ledger([])
             st.rerun()
+        replace = st.checkbox("Replace the slate with this file")
         upload = c3.file_uploader("Upload lost receipts", type=["json", "csv"])
         if upload is not None:
             raw = upload.getvalue().decode("utf-8", errors="ignore")
@@ -924,20 +925,41 @@ def main():
                 incoming = list(csv.DictReader(io.StringIO(raw)))
             if isinstance(incoming, dict):
                 incoming = incoming.get("plays") or incoming.get("ledger") or []
-            merged = load_ledger()
+            aliases = {
+                "player": ("player", "name", "athlete"),
+                "prop": ("prop", "market", "stat"),
+                "line": ("line", "point", "number"),
+                "price": ("price", "odds", "american"),
+                "book": ("book", "sportsbook"),
+                "event": ("event", "matchup", "game"),
+                "result": ("result", "grade"),
+                "sport": ("sport", "league"),
+            }
+            cleaned = []
+            for r in incoming:
+                low = {str(k).strip().lower(): v for k, v in r.items()}
+                row = {}
+                for dest, names in aliases.items():
+                    for name in names:
+                        if low.get(name) not in (None, ""):
+                            row[dest] = low.get(name)
+                            break
+                if row.get("player"):
+                    row.setdefault("sport", sport)
+                    row.setdefault("result", None)
+                    cleaned.append(row)
+            merged = [] if replace else load_ledger()
             have = {(str(r.get("player")), str(r.get("prop")), str(r.get("line"))) for r in merged}
             added_up = 0
-            for r in incoming:
+            for r in cleaned:
                 key = (str(r.get("player")), str(r.get("prop")), str(r.get("line")))
-                if not r.get("player") or key in have:
+                if key in have:
                     continue
-                r.setdefault("sport", sport)
-                r.setdefault("result", None)
                 merged.append(r)
                 have.add(key)
                 added_up += 1
             save_ledger(merged)
-            st.success(f"Restored {added_up} receipts")
+            st.success(f"File had {len(incoming)} rows. Read {len(cleaned)}. Restored {added_up}.")
             st.rerun()
         regrade = st.checkbox("Regrade, clear old hits first")
         if c2.button("Run the receipts"):
