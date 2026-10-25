@@ -9,10 +9,6 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-try:
-    import altair as alt
-except Exception:
-    alt = None
 import pandas as pd
 import requests
 import streamlit as st
@@ -1036,64 +1032,7 @@ def main():
         with tab_locked:
             show([r for r in view if r.get("result") not in ("HIT", "MISS")], "pg_lock")
         with tab_charts:
-            graded = [r for r in view if r.get("result") in ("HIT", "MISS")]
-            if not graded:
-                st.info("Grade a slate and the charts fill in.")
-            else:
-                chart_df = pd.DataFrame([{"book": BOOK_FULL.get(r.get("book"), r.get("book") or "?"), "result": r.get("result")} for r in graded])
-                hit_chart = alt.Chart(chart_df).mark_bar(size=26, cornerRadiusEnd=6).encode(
-                    x=alt.X("book:N", title="Sportsbook", sort="-y"),
-                    y=alt.Y("count():Q", title="Plays"),
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
-                    tooltip=["book", "result", "count()"],
-                ).properties(height=260, title="Who cashed — gold is a hit, gray is a miss")
-                st.altair_chart(hit_chart, use_container_width=True)
-                gap_df = pd.DataFrame([{"gap": r.get("ev_gap") or 0, "edge": r.get("true_ev") or 0, "result": r.get("result")} for r in graded])
-                scatter = alt.Chart(gap_df).mark_circle(size=70).encode(
-                    x=alt.X("gap:Q", title="Gap %"),
-                    y=alt.Y("edge:Q", title="Edge %"),
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#ff00cc"])),
-                    tooltip=["gap", "edge", "result"],
-                ).properties(height=260, title="Gap across, edge up. Top right is the loud one that also had juice")
-                st.altair_chart(scatter, use_container_width=True)
-                pie_df = pd.DataFrame([{"result": "HIT", "count": sum(r.get("result")=="HIT" for r in graded)}, {"result": "MISS", "count": sum(r.get("result")=="MISS" for r in graded)}])
-                pie = alt.Chart(pie_df).mark_arc(innerRadius=55).encode(
-                    theta="count:Q",
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
-                    tooltip=["result", "count"],
-                ).properties(height=260, title="The whole slate. Gold slice is she hit that")
-                st.altair_chart(pie, use_container_width=True)
-                prop_df = pd.DataFrame([{"prop": r.get("prop"), "result": r.get("result")} for r in graded])
-                heat = alt.Chart(prop_df).mark_rect().encode(
-                    x=alt.X("prop:N", title="Prop"),
-                    y=alt.Y("result:N", title=""),
-                    color=alt.Color("count():Q", scale=alt.Scale(scheme="plasma")),
-                    tooltip=["prop", "result", "count()"],
-                ).properties(height=140, title="Which props cash")
-                st.altair_chart(heat, use_container_width=True)
-        st.markdown("**What cashed**")
-        all_books = ["DraftKings", "FanDuel", "BetMGM", "Caesars", "Bet365", "Fanatics", "Hard Rock", "theScore"]
-        short_to_full = {"DK": "DraftKings", "FD": "FanDuel", "MGM": "BetMGM", "CZR": "Caesars", "365": "Bet365", "FAN": "Fanatics", "HR": "Hard Rock", "SCR": "theScore"}
-        book_stats = {b: {"hits": 0, "total": 0} for b in all_books}
-        for r in [x for x in view if x.get("result") in ("HIT", "MISS")]:
-            name = short_to_full.get(r.get("book"), r.get("book"))
-            if name in book_stats:
-                book_stats[name]["total"] += 1
-                book_stats[name]["hits"] += r.get("result") == "HIT"
-        tiles = []
-        for book, stats in book_stats.items():
-            h, total = stats["hits"], stats["total"]
-            pct = round(h / total * 100, 1) if total else 0
-            color = "gold" if pct >= 10 else "#ff00cc" if pct >= 5 else "#6600ff" if pct > 0 else "#333"
-            tiles.append(
-                f'<div style="width:148px;height:108px;background:#12121a;border-radius:14px;border:2px solid {color};'
-                f'box-shadow:0 0 12px {color}55;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:6px">'
-                f'<div style="font-size:22px;color:{color};font-weight:700">{pct}%</div>'
-                f'<div style="color:#fff;font-size:13px">{book}</div>'
-                f'<div style="color:#aaa;font-size:12px">{h} of {total}</div></div>'
-            )
-        st.markdown('<div style="display:flex;flex-wrap:wrap">' + "".join(tiles) + "</div>", unsafe_allow_html=True)
-        st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
+            st.info('Charts are off while we get the app back.')
     with glossary:
         with st.expander("✨ Glossary", expanded=True):
             st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
