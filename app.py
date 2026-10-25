@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Softness Bar Chart
-Tracker has a visual bar chart for book softness instead of just a table.
+Girl Magic Odds 2.0 — Cleaner Tracker
+Only +300+ auto-tracked. Softness is a simple callout + bar chart.
 """
 
 import streamlit as st
@@ -446,29 +446,18 @@ def render_softness(sharp):
         top_prop = max(props, key=props.get) if props else "—"
         rows.append({
             "Book": BOOK_FULL.get(bk, bk),
-            "Soft Count": soft,
-            "Total Props": total,
             "% Soft": pct,
             "Softest Prop": top_prop
         })
     if not rows: return
 
     df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
-    st.markdown('<div class="softness-title">Book Softness</div>', unsafe_allow_html=True)
-    st.caption("How often each book is the longest price on a TAKE. Higher % = softer book.")
-
+    st.markdown('<div class="softness-title">Which books are soft</div>', unsafe_allow_html=True)
     softest = df.iloc[0]
-    st.markdown(
-        f"**Softest right now:** {softest['Book']} "
-        f"({softest['% Soft']}% of the time on {softest['Softest Prop']})."
-    )
+    st.markdown(f"**{softest['Book']}** is hanging soft numbers most often right now ({softest['% Soft']}% on {softest['Softest Prop']}).")
 
-    # Bar chart
     chart_df = df.set_index("Book")[["% Soft"]]
     st.bar_chart(chart_df, use_container_width=True, color="#FF3EBF")
-
-    with st.expander("Full table"):
-        st.dataframe(df, use_container_width=True, hide_index=True)
 
 def main():
     st.markdown('<div class="hero"><h1>✨ Girl Magic Odds 2.0</h1><p>Open the site. Edges appear. You lock them. 💅</p></div>', unsafe_allow_html=True)
@@ -708,13 +697,15 @@ def main():
         if not ledger:
             st.info("Nothing locked yet.")
         else:
-            df = pd.DataFrame(ledger)
-            keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "fair_prob", "decision", "petty_range_match", "result", "clv"]
+            # Filter display to +300+ only (in case old rows are still there)
+            clean = [r for r in ledger if (r.get("price") or 0) >= 300]
+            df = pd.DataFrame(clean)
+            keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
             existing = [c for c in keep if c in df.columns]
             df = df[existing].fillna("—")
             finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
             hits = (finished["result"] == "hit").sum() if not finished.empty else 0
-            st.markdown(f"**You’ve locked {len(df)} plays.** {len(finished)} finished. {hits} hit.")
+            st.markdown(f"**{len(df)} longer-priced plays locked.** {len(finished)} finished. {hits} hit.")
             st.markdown('<div class="tracker-wrap">', unsafe_allow_html=True)
             st.dataframe(df, use_container_width=True, hide_index=True)
             st.markdown('</div>', unsafe_allow_html=True)
