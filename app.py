@@ -577,14 +577,14 @@ def fetch_odds(api_key, sport_key, event_id, markets):
     try:
         r = requests.get(
             f"{ODDS_API_BASE}/sports/{sport_key}/events/{event_id}/odds",
-            params={"apiKey": api_key, "regions": "us,us2,uk", "markets": markets, "oddsFormat": "american"},
+            params={"apiKey": api_key, "regions": "us", "markets": markets, "oddsFormat": "american"},
             timeout=20,
         )
         if r.status_code == 200:
-            return r.json()
-    except Exception:
-        pass
-    return None
+            return r.json(), ""
+        return None, f"{r.status_code} {(r.text or '')[:100]}"
+    except Exception as e:
+        return None, str(e)
 
 
 def parse_plays(data, sport):
@@ -842,10 +842,17 @@ def main():
                 except Exception:
                     continue
             plays = []
-            for ev in (pregame or events)[:30]:
-                data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
-                if data:
+            notes = []
+            core = "player_points,player_assists,player_rebounds" if sport == "NBA" else "player_anytime_td,player_reception_yds"
+            for ev in (pregame or events)[:8]:
+                data, why = fetch_odds(api_key, sport_key, ev.get("id"), markets)
+                if not data:
+                    data, why = fetch_odds(api_key, sport_key, ev.get("id"), core)
+                books = len((data or {}).get("bookmakers") or []) if data else 0
+                if data and books:
                     plays.extend(parse_plays(data, sport))
+                notes.append(f"{ev.get('home_team')}: {books} books" + (f" · {why}" if why else ""))
+            st.session_state["pull_debug"] = " | ".join(notes[:4])
             cards = best_cards(plays, live)
             update_auto_weights(update_sharpness(cards))
             st.session_state[f"cards_{sport}"] = cards
@@ -883,6 +890,8 @@ def main():
     if st.session_state.get("last_sport") == sport and st.session_state.get("fetched"):
         qualified = sum(1 for c in cards if worth_locking(c))
         st.caption(f"{sport} @ {st.session_state['fetched']} · {len(cards)} priced · {qualified} worth locking · {st.session_state.get('pull_note','')}")
+        if st.session_state.get("pull_debug"):
+            st.warning(st.session_state["pull_debug"])
         if cards:
             density = round(100 * qualified / len(cards))
             st.markdown(f'<div class="how-to">Board density {density}%. {qualified} of {len(cards)} clear the chaos filter. Gap 20+, edge 15+.</div>', unsafe_allow_html=True)
