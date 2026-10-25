@@ -87,6 +87,11 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .mtag{background:#1b1226;border:1px solid #a855f7;border-radius:999px;padding:3px 8px;font-size:.62rem;font-weight:700;color:#e9d5ff}
 .gm-why{font-size:.75rem;color:#fce7f3;margin-top:6px}
 .gm-foot{font-size:.66rem;color:#d8c8ea;margin-top:4px}
+
+.hero{background:linear-gradient(90deg,#ff3ebf,#c77dff,#7b2cbf);border-radius:18px;padding:16px 20px;margin-bottom:10px;box-shadow:0 0 28px #ff3ebf55}
+.hero-kicker{font-size:.68rem;letter-spacing:.2em;color:#ffe4f5;font-weight:700}
+.hero-title{font-size:1.8rem;font-weight:800;color:#fff;text-shadow:0 0 12px #fff6}
+.hero-sub{color:#ffeaf6;font-size:.95rem;margin-top:2px}
 </style>
 """, unsafe_allow_html=True)
 
@@ -775,8 +780,13 @@ def counters(locked, finished, hits, misses):
 
 
 def main():
-    st.markdown("# ✨ Girl Magic Odds 2.0 💖")
-    st.caption("Chaos engine for real edges. Pull the board. Lock the loud ones. Run the receipts.")
+    st.markdown("""
+    <div class="hero">
+      <div class="hero-kicker">CHAOS ENGINE</div>
+      <div class="hero-title">Girl Magic Odds 2.0</div>
+      <div class="hero-sub">Pull the board. Lock the loud ones. Run the receipts.</div>
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
     st.markdown('<div class="how-to">Pull the chaos board. The long number is the tell. Lock her. Run the receipts.</div>', unsafe_allow_html=True)
     api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
