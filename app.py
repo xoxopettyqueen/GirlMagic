@@ -58,7 +58,7 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .glossary{background:#14141c;border:1px solid #ff00cc66;border-radius:16px;padding:16px;box-shadow:0 0 16px #ff00cc33;line-height:1.65}
 .glossary strong{color:#ffb3ea}
 
-.gm{background:#1a1224;border:1px solid #c77dff;border-radius:16px;padding:14px 16px;margin-bottom:10px;color:#f7eefc}
+.gm{background:#16121c;border:1px solid #8b6bb5;border-radius:14px;padding:12px 14px;margin-bottom:8px;color:#f4eef8}
 .gm-top{display:flex;justify-content:space-between;align-items:center}
 .gm-name{font-size:1.05rem;font-weight:800;color:#fff}.gm-row{display:flex;justify-content:space-between;font-size:.9rem;margin:3px 0}.gm-row span{color:#cbb6e0}.gm-books{font-size:.72rem;color:#e7d6f5;margin-top:6px}
 .pscore{background:#ec4899;color:#fff;font-weight:800;font-size:.68rem;padding:4px 10px;border-radius:999px}
@@ -659,7 +659,7 @@ def worth_locking(c):
         return False
     if not line_ok(c.get("prop"), c.get("line")):
         return False
-    if (c.get("price") or 0) < 500:
+    if (c.get("price") or 0) < 1000:
         return False
     return True
 
@@ -848,17 +848,15 @@ def main():
             petty = b.toggle("Petty ranges", value=False)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props)
-            min_odds = st.slider("Min odds", -200, 2000, 150, 25)
+            min_odds = st.slider("Min odds", -200, 5000, 1000, 50)
             filtered = [x for x in cards if x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
             if petty:
                 filtered = [x for x in filtered if x.get("petty_range_match")]
             if simple:
                 filtered = [x for x in filtered if worth_locking(x)]
             filtered = sorted(filtered, key=lambda x: -(x.get("true_ev") or -999))
-            page = st.number_input("Board page", min_value=1, value=1, step=1)
-            start = (int(page) - 1) * 24
-            shown = filtered[start:start + 24]
-            st.markdown(f"**{len(filtered)} match.** Showing {start + 1}–{start + len(shown)}. Best gaps first.")
+            shown = filtered[:40]
+            st.markdown(f"**{len(filtered)} match.** Top {len(shown)} by edge. No pages.")
             by_game = defaultdict(list)
             for x in shown:
                 by_game[x.get("event") or "Unknown"].append(x)
@@ -868,7 +866,7 @@ def main():
                 for i, x in enumerate(rows):
                     with cols[i % 2]:
                         st.markdown(glow_card(x), unsafe_allow_html=True)
-                        if st.button("Lock", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
+                        if st.button("Lock", key=f"lk_{sport}_{game}_{i}_{x['player']}_{x['line']}"):
                             ledger = load_ledger()
                             ledger.append({
                                 "ts": datetime.now().isoformat(timespec="minutes"), "sport": x["sport"],
