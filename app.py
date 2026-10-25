@@ -889,8 +889,8 @@ def main():
             save_ledger([])
             st.rerun()
         upload = st.file_uploader("Upload lost receipts", type=["json", "csv"])
-        if upload is not None and st.session_state.get("upload_name") != upload.name:
-            st.session_state["upload_name"] = upload.name
+        do_restore = st.button("Restore this file")
+        if upload is not None and do_restore:
             raw = upload.getvalue().decode("utf-8", errors="ignore")
             incoming = []
             if upload.name.endswith(".json"):
