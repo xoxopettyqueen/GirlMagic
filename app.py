@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — CSV Import + Grade
-Upload the old CSV in the Tracker, then click Grade.
+Girl Magic Odds 2.0 — Grade Fixed
+Pulls finished games once, matches in memory. No more infinite spin.
 """
 
 import streamlit as st
@@ -200,26 +200,37 @@ def save_ledger(rows):
 
 def auto_grade_nba(ledger):
     try:
-        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=12)
+        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=15)
         if r.status_code != 200:
             return ledger
         data = r.json()
     except:
         return ledger
 
-    finished = []
+    finished_ids = []
     for event in data.get("events", []):
         status = (event.get("status", {}).get("type", {}) or {}).get("name", "")
-        if status not in ("STATUS_FINAL", "STATUS_FULL_TIME"):
-            continue
-        finished.append(event.get("id"))
+        if status in ("STATUS_FINAL", "STATUS_FULL_TIME"):
+            finished_ids.append(event.get("id"))
 
-    if not finished:
+    if not finished_ids:
         return ledger
+
+    boxes = {}
+    for game_id in finished_ids[:8]:
+        try:
+            box = requests.get(
+                f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}",
+                timeout=10
+            )
+            if box.status_code == 200:
+                boxes[game_id] = box.json()
+        except:
+            continue
 
     updated = False
     for row in ledger:
-        if row.get("sport") != "NBA" or row.get("result") is not None:
+        if row.get("sport") != "NBA" or row.get("result") not in (None, "—", ""):
             continue
         player = (row.get("player") or "").lower().strip()
         prop = row.get("prop")
@@ -227,18 +238,7 @@ def auto_grade_nba(ledger):
         if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
             continue
 
-        for game_id in finished:
-            try:
-                box = requests.get(
-                    f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}",
-                    timeout=10
-                )
-                if box.status_code != 200:
-                    continue
-                box_data = box.json()
-            except:
-                continue
-
+        for game_id, box_data in boxes.items():
             for team in box_data.get("boxscore", {}).get("players", []):
                 stats_list = team.get("statistics", [{}])
                 if not stats_list:
@@ -270,7 +270,7 @@ def auto_grade_nba(ledger):
                         row["result"] = "hit" if actual > line else "miss"
                         updated = True
                         break
-            if row.get("result"):
+            if row.get("result") in ("hit", "miss"):
                 break
 
     if updated:
