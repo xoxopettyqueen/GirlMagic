@@ -110,7 +110,7 @@ BOOK_FULL = {"FD": "FanDuel", "DK": "DraftKings", "MGM": "BetMGM", "365": "Bet36
 ALL_BOOK_CODES = sorted(BOOK_FULL)
 BASE_WEIGHTS = {"PIN": 3.5, "CIR": 3.0, "BM": 2.8, "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4, "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1}
 GLOSSARY = """
-<strong>Push the button. See the edges. Lock the chaos. Wake up to the receipts.</strong><br><br>
+<strong>Be a better bettor.</strong> Hunt the true value. Catch the books sleeping at the wheel.<br><br><br><br>
 <strong>True EV</strong> — the real edge. Blend the books, then compare to the longest number.<br>
 <strong>Gap</strong> — how far the long number stands from the pack.<br>
 <strong>Spike</strong> — one book screaming a number way off the pack. That is a TAKE.<br>
@@ -784,7 +784,7 @@ def main():
     <div class="hero">
       <div class="hero-kicker">CHAOS ENGINE</div>
       <div class="hero-title">Girl Magic Odds 2.0</div>
-      <div class="hero-sub">Pull the board. Lock the loud ones. Run the receipts.</div>
+      <div class="hero-sub">Be a better bettor. Catch the books slippin.</div>
     </div>
     """, unsafe_allow_html=True)
     st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
