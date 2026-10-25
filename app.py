@@ -34,7 +34,7 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .counter.hits{background:gold;color:#1a1020;box-shadow:0 0 18px gold}
 .counter.miss{background:#2a2a34;box-shadow:0 0 12px #444}
 .game-header{font-size:1rem;font-weight:700;color:#ffb3ea;margin:16px 0 8px}
-.card{margin-bottom:10px;padding:12px;border-radius:18px;background:#16101f;border:1px solid #3b0764;box-shadow:0 0 16px #ff00cc33;min-height:160px}
+.card{margin-bottom:10px;padding:12px;border-radius:18px;background:linear-gradient(180deg,#241433,#16101f);border:1px solid #ff4fd8;box-shadow:0 0 18px #ff00cc66;min-height:160px}
 .card:hover{transform:scale(1.015);box-shadow:0 0 22px #ff00cc88}
 .card.hit{border-color:gold;box-shadow:0 0 18px gold}
 .card.miss{border-color:#553333;opacity:.8;box-shadow:none}
@@ -75,13 +75,15 @@ BOOK_FULL = {"FD": "FanDuel", "DK": "DraftKings", "MGM": "BetMGM", "365": "Bet36
 ALL_BOOK_CODES = sorted(BOOK_FULL)
 BASE_WEIGHTS = {"PIN": 3.5, "CIR": 3.0, "BM": 2.8, "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4, "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1}
 GLOSSARY = """
-<strong>This is a price-gap tool.</strong> The longest number against the pack is the tell.<br><br>
-<strong>True EV</strong> — longest price vs the weighted blend.<br>
-<strong>Gap</strong> — how much longer the best price is than the median.<br>
-<strong>Spike</strong> — gap plus how far apart the books are. High spike is TAKE.<br>
+<strong>This is a chaos engine.</strong> The longest number against the pack is the tell. She is the loud one.<br><br>
+<strong>True EV</strong> — the real juice. Longest price against the weighted blend.<br>
+<strong>Gap</strong> — how far she stands from the crowd. Big gap, one book out on her own.<br>
+<strong>Spike</strong> — gap plus how far the books are apart. High spike is a TAKE.<br>
 <strong>Solo</strong> — one book standing alone with the long number.<br>
-<strong>Soft book</strong> — keeps being the longest, and those plays cash.<br>
-<strong>Grader</strong> — NBA uses your BallDontLie GOAT key. NFL uses ESPN finals.
+<strong>Soft book</strong> — keeps hanging the long number, and those plays cash.<br>
+<strong>CLV</strong> — your locked price against the pack median the next time you pull. Plus means you beat the close.<br>
+<strong>Grader</strong> — NBA uses your BallDontLie GOAT key. NFL uses ESPN finals. The gold line is the number it used. If that number is wrong, the grade is wrong.<br>
+<strong>How to read a chart</strong> — gold is a hit, pink or gray is a miss. The donut is the whole slate. The scatter is gap on the bottom, edge up the side. Top-right is the chaos that also had juice.
 """
 
 def secret(name):
@@ -413,6 +415,17 @@ def grade_nba(ledger, bdl_key, days=6, regrade=False):
     return ledger, msg
 
 
+
+def espn(url, params=None):
+    try:
+        r = requests.get(url, params=params or {}, timeout=15)
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
+    return {}
+
+
 def grade_nfl(ledger, days=6, regrade=False):
     if regrade:
         for r in ledger:
@@ -614,6 +627,23 @@ def update_sharpness(cards):
     return sharp
 
 
+
+def worth_locking(c):
+    gap = c.get("ev_gap") or 0
+    edge = c.get("true_ev") or 0
+    if c.get("decision") != "TAKE":
+        return False
+    if gap < 20 or edge < 15:
+        return False
+    if c.get("book_beh") == "Solo" and gap < 25:
+        return False
+    if not line_ok(c.get("prop"), c.get("line")):
+        return False
+    if (c.get("price") or 0) < 150:
+        return False
+    return True
+
+
 def best_cards(plays, weights=None):
     by = defaultdict(list)
     for p in plays:
@@ -722,10 +752,10 @@ def chip(label, hits, n):
 def counters(locked, finished, hits, misses):
     st.markdown(
         f'''<div class="counters">
-        <div class="counter locked">Locked<b>{locked}</b></div>
-        <div class="counter done">Finished<b>{finished}</b></div>
-        <div class="counter hits">Hits<b>{hits}</b></div>
-        <div class="counter miss">Misses<b>{misses}</b></div>
+        <div class="counter locked">Locked<b>{locked}</b><span style="font-size:.65rem">tighten the chaos</span></div>
+        <div class="counter done">Receipts<b>{finished}</b></div>
+        <div class="counter hits">She hit that<b>{hits}</b></div>
+        <div class="counter miss">Did not hit<b>{misses}</b></div>
         </div>''',
         unsafe_allow_html=True,
     )
@@ -734,7 +764,7 @@ def counters(locked, finished, hits, misses):
 def main():
     st.markdown("# ✨ Girl Magic Odds 2.0")
     st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="how-to">Pull the board. The long number is the tell. Lock it. Grade closes it.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="how-to">Pull the chaos board. The long number is the tell. Lock her. Run the receipts.</div>', unsafe_allow_html=True)
     api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
     if not api_key:
         st.info("Add your Odds API key.")
@@ -751,7 +781,7 @@ def main():
             save_auto_weights(BASE_WEIGHTS.copy())
             st.rerun()
     sport = st.radio("Lane", ["NBA", "NFL"], horizontal=True)
-    if st.button("Pull the board", type="primary", use_container_width=True):
+    if st.button("Pull the chaos board", type="primary", use_container_width=True):
         sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
         markets = (
             "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double"
@@ -781,10 +811,16 @@ def main():
             ledger = load_ledger()
             seen = {(r.get("sport"), _norm_name(r.get("player")), r.get("prop"), round(float(r.get("line") or 0), 1), r.get("event")) for r in ledger}
             added = 0
-            for c in cards:
-                if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 150 and line_ok(c.get("prop"), c.get("line")):
-                    key = (c["sport"], _norm_name(c["player"]), c["prop"], round(float(c["line"]), 1), c["event"])
-                    if key not in seen:
+            per_player = defaultdict(int)
+            lane_count = sum(1 for r in ledger if r.get("sport") == sport)
+            ranked = sorted([c for c in cards if worth_locking(c)], key=lambda z: -(z.get("true_ev") or 0))
+            for c in ranked:
+                if lane_count >= 300:
+                    break
+                pkey = (_norm_name(c["player"]), c["event"])
+                if per_player[pkey] >= 2:
+                    continue
+                if True:
                         ledger.append({
                             "ts": datetime.now().isoformat(timespec="minutes"), "sport": c["sport"],
                             "player": c["player"], "prop": c["prop"], "line": c["line"], "price": c["price"],
@@ -793,11 +829,17 @@ def main():
                         })
                         seen.add(key)
                         added += 1
+                        per_player[pkey] += 1
+                        lane_count += 1
             save_ledger(ledger)
             st.toast(f"{sum(1 for c in cards if c.get('decision')=='TAKE')} TAKE · tracked {added}")
     cards = st.session_state.get(f"cards_{sport}") or []
     if st.session_state.get("last_sport") == sport and st.session_state.get("fetched"):
-        st.caption(f"{sport} @ {st.session_state['fetched']} · {len(cards)} priced · {sum(1 for c in cards if c.get('decision')=='TAKE')} TAKE")
+        qualified = sum(1 for c in cards if worth_locking(c))
+        st.caption(f"{sport} @ {st.session_state['fetched']} · {len(cards)} priced · {qualified} worth locking")
+        if cards:
+            density = round(100 * qualified / len(cards))
+            st.markdown(f'<div class="how-to">Board density {density}%. {qualified} of {len(cards)} clear the chaos filter. Gap 20+, edge 15+.</div>', unsafe_allow_html=True)
     board, tracker, glossary = st.tabs(["Board", "Tracker", "What this means"])
     with board:
         if not cards:
@@ -813,7 +855,7 @@ def main():
             if petty:
                 filtered = [x for x in filtered if x.get("petty_range_match")]
             if simple:
-                filtered = [x for x in filtered if x.get("decision") == "TAKE"]
+                filtered = [x for x in filtered if worth_locking(x)]
             filtered = sorted(filtered, key=lambda x: -(x.get("true_ev") or -999))
             page = st.number_input("Board page", min_value=1, value=1, step=1)
             start = (int(page) - 1) * 24
@@ -883,7 +925,7 @@ def main():
                 return g >= 41
             return True
         view = [r for r in mine if r.get("prop") in prop_f and r.get("book") in book_f and gap_ok(r)]
-        tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "Hits Only", "Misses Only", "Locked Only", "Charts"])
+        tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "Read the Charts"])
 
         def show(rows, key):
             if not rows:
@@ -923,8 +965,8 @@ def main():
                         f'<div style="margin-top:8px;padding:10px;border-radius:10px;background:{color}22;border:1px solid {color};box-shadow:0 0 10px {color}44">'
                         f'<b>{r.get("prop")} {r.get("line")}{got}</b> — {res}'
                         f'<div style="color:#ddd;font-size:.75rem;margin-top:4px">'
-                        f'{r.get("book")} {r.get("price")} · gap {r.get("ev_gap") or "—"}% · edge {r.get("true_ev") or "—"}% · CLV {clv_txt}'
-                        f'</div><div style="color:#ffe27a;font-size:.72rem">{note}</div></div>'
+                        f'Locked {r.get("price")} at {r.get("book")}. Gap {r.get("ev_gap") or "—"}%. Edge {r.get("true_ev") or "—"}%. CLV {clv_txt}.'
+                        f'</div><div style="color:#ffe27a;font-size:.72rem">{note or "Waiting on the box score."}</div></div>'
                     )
                 with pair[n % 2]:
                     st.markdown(
@@ -956,7 +998,7 @@ def main():
                     y=alt.Y("count():Q", title="Plays"),
                     color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
                     tooltip=["book", "result", "count()"],
-                ).properties(height=260, title="Hit rate by book")
+                ).properties(height=260, title="Who cashed — gold is a hit, gray is a miss")
                 st.altair_chart(hit_chart, use_container_width=True)
                 gap_df = pd.DataFrame([{"gap": r.get("ev_gap") or 0, "edge": r.get("true_ev") or 0, "result": r.get("result")} for r in graded])
                 scatter = alt.Chart(gap_df).mark_circle(size=70).encode(
@@ -964,14 +1006,14 @@ def main():
                     y=alt.Y("edge:Q", title="Edge %"),
                     color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#ff00cc"])),
                     tooltip=["gap", "edge", "result"],
-                ).properties(height=260, title="Gap vs edge")
+                ).properties(height=260, title="Gap across, edge up. Top right is the loud one that also had juice")
                 st.altair_chart(scatter, use_container_width=True)
                 pie_df = pd.DataFrame([{"result": "HIT", "count": sum(r.get("result")=="HIT" for r in graded)}, {"result": "MISS", "count": sum(r.get("result")=="MISS" for r in graded)}])
                 pie = alt.Chart(pie_df).mark_arc(innerRadius=55).encode(
                     theta="count:Q",
                     color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
                     tooltip=["result", "count"],
-                ).properties(height=260, title="Hit vs miss")
+                ).properties(height=260, title="The whole slate. Gold slice is she hit that")
                 st.altair_chart(pie, use_container_width=True)
                 prop_df = pd.DataFrame([{"prop": r.get("prop"), "result": r.get("result")} for r in graded])
                 heat = alt.Chart(prop_df).mark_rect().encode(
