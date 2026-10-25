@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Clean Grade Loop
-50 plays. One write at the end. Sport selected.
+Girl Magic Odds 2.0 — Streamlit-Only Grade
+NBA only via BallDontLie /stats. NFL marked N/A. Visual counters + colored blocks.
 """
 
 import streamlit as st
@@ -45,11 +45,6 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .glossary strong{color:#FF3EBF;font-weight:700}
 .softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
 .game-header{font-size:1.05rem;font-weight:700;color:#FF3EBF;margin:18px 0 8px;border-bottom:1px solid #2a2a33;padding-bottom:4px}
-.status-box{background:linear-gradient(135deg,#1a1020,#0e0e14);border:1px solid #2a2a33;border-radius:16px;padding:16px 20px;margin-bottom:16px}
-.status-box h3{margin:0 0 8px;color:#FF3EBF;font-size:1.1rem}
-.metric{display:inline-block;background:#0d0d12;border:1px solid #333;border-radius:12px;padding:10px 16px;margin:4px 6px 4px 0;text-align:center}
-.metric .num{font-size:1.4rem;font-weight:700;color:#FF3EBF}
-.metric .lbl{font-size:.7rem;color:#aaa;text-transform:uppercase}
 </style>
 """, unsafe_allow_html=True)
 
@@ -213,16 +208,14 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
-def grade_with_bdl(ledger, bdl_key, sport):
+def grade_nba_batch(ledger, bdl_key):
     if not bdl_key:
         st.warning("No BallDontLie key in secrets.")
         return ledger
     headers = {"Authorization": bdl_key}
     updated = 0
-    props_ok = ("Assists", "Points", "Rebounds", "DoubleDouble") if sport == "NBA" else ("Anytime TD", "Rec Yards")
-    ungraded = [r for r in ledger if r.get("sport") == sport and r.get("result") in (None, "—", "") and r.get("prop") in props_ok]
-    batch = ungraded[:50]
-    for row in batch:
+    ungraded = [r for r in ledger if r.get("sport") == "NBA" and r.get("result") in (None, "—", "") and r.get("prop") in ("Assists", "Points", "Rebounds", "DoubleDouble")]
+    for row in ungraded[:40]:
         player = row.get("player")
         prop = row.get("prop")
         line = float(row.get("line") or 0)
@@ -266,8 +259,6 @@ def grade_with_bdl(ledger, bdl_key, sport):
                 pts = float(stat.get("pts") or 0)
                 reb = float(stat.get("reb") or 0)
                 ast = float(stat.get("ast") or 0)
-                rec_yds = float(stat.get("receiving_yards") or stat.get("rec_yds") or 0)
-                tds = float(stat.get("touchdowns") or stat.get("tds") or 0)
                 actual = None
                 if prop == "Points":
                     actual = pts
@@ -277,23 +268,16 @@ def grade_with_bdl(ledger, bdl_key, sport):
                     actual = ast
                 elif prop == "DoubleDouble":
                     actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
-                elif prop == "Anytime TD":
-                    actual = 1 if tds >= 1 else 0
-                elif prop == "Rec Yards":
-                    actual = rec_yds
                 if actual is not None:
-                    row["result"] = "hit" if actual > line else "miss"
+                    row["result"] = "HIT" if actual >= line else "MISS"
                     row["player_stat"] = actual
                     row["player_id"] = pid
                     updated += 1
                     break
-            if row.get("result") in ("hit", "miss"):
+            if row.get("result") in ("HIT", "MISS"):
                 break
     save_ledger(ledger)
-    if updated:
-        st.success(f"Graded {updated} of {len(ungraded)} {sport} plays. Click again for more.")
-    else:
-        st.info(f"No {sport} matches in this batch.")
+    st.success(f"Graded {updated} NBA plays. Click again for more.")
     return ledger
 
 @st.cache_data(ttl=120)
@@ -683,10 +667,13 @@ def main():
         if st.button("Wipe the slate"):
             save_ledger([])
             st.rerun()
-        if st.button(f"Grade {current_sport} results"):
-            with st.spinner(f"Grading 50 {current_sport} plays…"):
-                ledger = grade_with_bdl(ledger, bdl_key, current_sport)
-            st.rerun()
+        if current_sport == "NBA":
+            if st.button("Grade NBA results"):
+                with st.spinner("Grading 40 NBA plays…"):
+                    ledger = grade_nba_batch(ledger, bdl_key)
+                st.rerun()
+        else:
+            st.info("NFL grading is not supported by BallDontLie. Only NBA results can be graded.")
 
         uploaded = st.file_uploader("Import old plays (CSV)", type="csv")
         if uploaded is not None:
@@ -727,14 +714,40 @@ def main():
             if not clean:
                 st.info(f"No +500 or higher {current_sport} plays locked yet.")
             else:
-                df = pd.DataFrame(clean)
-                keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result", "player_stat", "clv"]
-                existing = [c for c in keep if c in df.columns]
-                df = df[existing].fillna("—")
-                finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
-                hits = (finished["result"] == "hit").sum() if not finished.empty else 0
-                st.markdown(f'<div class="status-box"><h3>Grading Status — {current_sport}</h3><div class="metric"><div class="num">{len(df)}</div><div class="lbl">Locked</div></div><div class="metric"><div class="num">{len(finished)}</div><div class="lbl">Finished</div></div><div class="metric"><div class="num">{hits}</div><div class="lbl">Hits</div></div></div>', unsafe_allow_html=True)
-                st.dataframe(df, use_container_width=True, hide_index=True)
+                hits = sum(1 for r in clean if r.get("result") == "HIT")
+                misses = sum(1 for r in clean if r.get("result") == "MISS")
+                finished = hits + misses
+                st.markdown(
+                    f"""
+                    <div style='display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;'>
+                      <div style='background:#FF3EBF;padding:12px 18px;border-radius:12px;color:white;min-width:90px;text-align:center;'>
+                        Locked<br><b style='font-size:1.4rem'>{len(clean)}</b>
+                      </div>
+                      <div style='background:#7B2CBF;padding:12px 18px;border-radius:12px;color:white;min-width:90px;text-align:center;'>
+                        Finished<br><b style='font-size:1.4rem'>{finished}</b>
+                      </div>
+                      <div style='background:#FFD700;padding:12px 18px;border-radius:12px;color:black;min-width:90px;text-align:center;'>
+                        Hits<br><b style='font-size:1.4rem'>{hits}</b>
+                      </div>
+                      <div style='background:#444;padding:12px 18px;border-radius:12px;color:white;min-width:90px;text-align:center;'>
+                        Misses<br><b style='font-size:1.4rem'>{misses}</b>
+                      </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+                for r in clean[:100]:
+                    res = r.get("result") or "—"
+                    bg = "#FFD700" if res == "HIT" else ("#333" if res == "MISS" else "#1a1a22")
+                    color = "black" if res == "HIT" else "white"
+                    st.markdown(
+                        f"""
+                        <div style='margin-bottom:6px;padding:10px 14px;border-radius:10px;background:{bg};color:{color};border:1px solid #2a2a33;'>
+                          <b>{r.get('player')}</b> — {r.get('prop')} {r.get('line')} · {r.get('book')} {r.get('price')} → <b>{res}</b>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
                 render_softness(load_sharpness())
 
     with tab_glossary:
