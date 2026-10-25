@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — BallDontLie Grade with Key
-Maps players, finds games, pulls stats, grades HIT/MISS.
+Girl Magic Odds 2.0 — Grade in batches of 50
+Stops spinning. Click again to grade more.
 """
 
 import streamlit as st
@@ -45,6 +45,11 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .glossary strong{color:#FF3EBF;font-weight:700}
 .softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
 .game-header{font-size:1.05rem;font-weight:700;color:#FF3EBF;margin:18px 0 8px;border-bottom:1px solid #2a2a33;padding-bottom:4px}
+.status-box{background:linear-gradient(135deg,#1a1020,#0e0e14);border:1px solid #2a2a33;border-radius:16px;padding:16px 20px;margin-bottom:16px}
+.status-box h3{margin:0 0 8px;color:#FF3EBF;font-size:1.1rem}
+.metric{display:inline-block;background:#0d0d12;border:1px solid #333;border-radius:12px;padding:10px 16px;margin:4px 6px 4px 0;text-align:center}
+.metric .num{font-size:1.4rem;font-weight:700;color:#FF3EBF}
+.metric .lbl{font-size:.7rem;color:#aaa;text-transform:uppercase}
 </style>
 """, unsafe_allow_html=True)
 
@@ -214,17 +219,15 @@ def grade_with_bdl(ledger, bdl_key):
         return ledger
     headers = {"Authorization": bdl_key}
     updated = 0
-    for row in ledger:
-        if row.get("sport") != "NBA" or row.get("result") not in (None, "—", ""):
-            continue
+    ungraded = [r for r in ledger if r.get("sport") == "NBA" and r.get("result") in (None, "—", "") and r.get("prop") in ("Assists", "Points", "Rebounds", "DoubleDouble")]
+    for row in ungraded[:50]:
         player = row.get("player")
         prop = row.get("prop")
         line = float(row.get("line") or 0)
-        if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
+        if not player:
             continue
-
         try:
-            r = requests.get(f"{BDL_BASE}/players", params={"search": player}, headers=headers, timeout=10)
+            r = requests.get(f"{BDL_BASE}/players", params={"search": player}, headers=headers, timeout=8)
             if r.status_code != 200:
                 continue
             pdata = r.json().get("data", [])
@@ -235,22 +238,21 @@ def grade_with_bdl(ledger, bdl_key):
                 continue
         except:
             continue
-
-        for days_back in range(0, 3):
+        for days_back in range(0, 2):
             d = (datetime.utcnow() - timedelta(days=days_back)).strftime("%Y-%m-%d")
             try:
-                gr = requests.get(f"{BDL_BASE}/games", params={"dates[]": d}, headers=headers, timeout=10)
+                gr = requests.get(f"{BDL_BASE}/games", params={"dates[]": d}, headers=headers, timeout=8)
                 if gr.status_code != 200:
                     continue
                 games = gr.json().get("data", [])
             except:
                 continue
-            for g in games:
+            for g in games[:5]:
                 gid = g.get("id")
                 if not gid:
                     continue
                 try:
-                    sr = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": pid, "game_ids[]": gid}, headers=headers, timeout=10)
+                    sr = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": pid, "game_ids[]": gid}, headers=headers, timeout=8)
                     if sr.status_code != 200:
                         continue
                     stats = sr.json().get("data", [])
@@ -262,7 +264,6 @@ def grade_with_bdl(ledger, bdl_key):
                 pts = float(stat.get("pts") or 0)
                 reb = float(stat.get("reb") or 0)
                 ast = float(stat.get("ast") or 0)
-
                 actual = None
                 if prop == "Points":
                     actual = pts
@@ -272,7 +273,6 @@ def grade_with_bdl(ledger, bdl_key):
                     actual = ast
                 elif prop == "DoubleDouble":
                     actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
-
                 if actual is not None:
                     row["result"] = "hit" if actual > line else "miss"
                     row["player_stat"] = actual
@@ -281,12 +281,11 @@ def grade_with_bdl(ledger, bdl_key):
                     break
             if row.get("result") in ("hit", "miss"):
                 break
-
     if updated:
         save_ledger(ledger)
-        st.success(f"Graded {updated} plays.")
+        st.success(f"Graded {updated} of {len(ungraded)} plays. Click again for more.")
     else:
-        st.info("No matches. Games may not be final yet or key is invalid.")
+        st.info("No matches in this batch. Games may not be final yet.")
     return ledger
 
 @st.cache_data(ttl=120)
@@ -694,7 +693,7 @@ def main():
             save_ledger([])
             st.rerun()
         if st.button("Grade NBA results"):
-            with st.spinner("Grading…"):
+            with st.spinner("Grading 50 plays…"):
                 ledger = grade_with_bdl(ledger, bdl_key)
             st.rerun()
 
@@ -743,7 +742,7 @@ def main():
                 df = df[existing].fillna("—")
                 finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
                 hits = (finished["result"] == "hit").sum() if not finished.empty else 0
-                st.markdown(f"**{len(df)} longer-priced {current_sport} plays locked.** {len(finished)} finished. {hits} hit.")
+                st.markdown(f'<div class="status-box"><h3>Grading Status</h3><div class="metric"><div class="num">{len(df)}</div><div class="lbl">Locked</div></div><div class="metric"><div class="num">{len(finished)}</div><div class="lbl">Finished</div></div><div class="metric"><div class="num">{hits}</div><div class="lbl">Hits</div></div></div>', unsafe_allow_html=True)
                 st.dataframe(df, use_container_width=True, hide_index=True)
                 render_softness(load_sharpness())
 
