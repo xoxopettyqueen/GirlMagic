@@ -167,6 +167,45 @@ def parse_plays(data, sport):
                 plays.append({"sport": sport, "event": event, "player": player, "prop": prop_type, "line": line, "price": price, "book": short})
     return plays
 
+
+def parse_sgo(ev, sport):
+    teams = ev.get("teams") or {}
+    away = ((teams.get("away") or {}).get("names") or {}).get("long") or ""
+    home = ((teams.get("home") or {}).get("names") or {}).get("long") or ""
+    event = f"{away} @ {home}"
+    plays = []
+    for odd in (ev.get("odds") or {}).values():
+        if odd.get("statEntityID") in ("all", "home", "away", None):
+            continue
+        if odd.get("sideID") not in ("over", "yes"):
+            continue
+        stat = odd.get("statID") or ""
+        prop = {"points": "Points", "assists": "Assists", "rebounds": "Rebounds", "receiving_yards": "Rec Yards"}.get(stat)
+        if "touchdown" in stat:
+            prop = "Anytime TD"
+        if not prop:
+            continue
+        pid = odd.get("playerID") or odd.get("statEntityID") or ""
+        name = " ".join(w.capitalize() for w in pid.split("_")[:-2]) or pid
+        for bk, row in (odd.get("byBookmaker") or {}).items():
+            short = MY_BOOKS.get(normalize_book(bk))
+            if not short:
+                continue
+            try:
+                price = int(str(row.get("odds")).replace("+", ""))
+            except Exception:
+                continue
+            line = row.get("overUnder")
+            try:
+                line = float(line) if line is not None else (0.5 if prop == "Anytime TD" else None)
+            except Exception:
+                line = None
+            if line is None:
+                continue
+            plays.append({"sport": sport, "event": event, "player": name, "prop": prop, "line": line, "price": price, "book": short})
+    return plays
+
+
 def best_cards(plays):
     by = defaultdict(list)
     for p in plays:
@@ -191,19 +230,34 @@ def main():
         st.info("Add ODDS_API_KEY to secrets, or paste it above.")
         return
     sport = "NBA" if "NBA" in st.radio("Lane", ["NBA", "NFL"], horizontal=True) else "NFL"
+    sgo = secret("SPORTSGAMEODDS_API_KEY")
     if st.button("Pull the board", type="primary", use_container_width=True):
-        sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
-        markets = "player_points,player_assists,player_rebounds" if sport == "NBA" else "player_anytime_td,player_reception_yds"
-        with st.spinner("Pulling…"):
-            events, err = fetch_events(api_key, sport_key)
-            plays, why = [], err
-            for ev in events[:12]:
-                data, why = fetch_odds(api_key, sport_key, ev.get("id"), markets)
-                if data:
-                    plays.extend(parse_plays(data, sport))
-            cards = best_cards(plays)
-            st.session_state[f"cards_{sport}"] = cards
-            st.session_state["note"] = f"{len(events)} games · {len(plays)} prices · {len(cards)} cards" + (f" · {why}" if why else "")
+        with st.spinner("Pulling SportsGameOdds…"):
+            if not sgo:
+                st.session_state["note"] = "Add SPORTSGAMEODDS_API_KEY to secrets."
+                st.session_state[f"cards_{sport}"] = []
+            else:
+                league = "NBA" if sport == "NBA" else "NFL"
+                odds_ids = (
+                    "points-PLAYER_ID-game-ou-over,assists-PLAYER_ID-game-ou-over,rebounds-PLAYER_ID-game-ou-over"
+                    if sport == "NBA" else
+                    "receiving_yards-PLAYER_ID-game-ou-over,anytime_touchdown-PLAYER_ID-game-yn-yes"
+                )
+                r = requests.get(
+                    "https://api.sportsgameodds.com/v2/events",
+                    params={"apiKey": sgo, "leagueID": league, "oddsAvailable": "true", "oddIDs": odds_ids, "limit": 15},
+                    timeout=30,
+                )
+                plays = []
+                if r.status_code == 200:
+                    for ev in (r.json() or {}).get("data") or []:
+                        plays.extend(parse_sgo(ev, sport))
+                    note = f"SGO {r.status_code} · {len(plays)} prices"
+                else:
+                    note = f"SGO {r.status_code}: {(r.text or '')[:80]}"
+                cards = best_cards(plays)
+                st.session_state[f"cards_{sport}"] = cards
+                st.session_state["note"] = note + f" · {len(cards)} cards"
     cards = st.session_state.get(f"cards_{sport}") or []
     if st.session_state.get("note"):
         st.warning(st.session_state["note"])
