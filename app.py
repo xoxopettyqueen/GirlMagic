@@ -75,7 +75,7 @@ BOOK_FULL = {"FD": "FanDuel", "DK": "DraftKings", "MGM": "BetMGM", "365": "Bet36
 ALL_BOOK_CODES = sorted(BOOK_FULL)
 BASE_WEIGHTS = {"PIN": 3.5, "CIR": 3.0, "BM": 2.8, "FD": 2.0, "DK": 1.8, "365": 2.0, "MGM": 1.4, "CZR": 1.3, "FAN": 1.2, "SCR": 1.1, "HR": 1.1}
 GLOSSARY = """
-<strong>This is a chaos engine.</strong> The longest number against the pack is the tell. She is the loud one.<br><br>
+<strong>Be a better bettor. Crack the code.</strong> The longest number against the pack is the tell. These books are cooked.<br><br>
 <strong>True EV</strong> — the real juice. Longest price against the weighted blend.<br>
 <strong>Gap</strong> — how far she stands from the crowd. Big gap, one book out on her own.<br>
 <strong>Spike</strong> — gap plus how far the books are apart. High spike is a TAKE.<br>
@@ -786,7 +786,7 @@ def glow_card(c, result=None):
         f"Fair value {fair_txt}. Market {market_txt}. "
         f"Gap {gap if gap is not None else '—'}%. Edge {tev if tev is not None else '—'}%."
     )
-    play = f"{c.get('book') or 'A book'} is paying {fmt_price(c.get('price'))}. The pack is at {market_txt}. That gap is the play."
+    play = f"{c.get('book') or 'A book'} is paying {fmt_price(c.get('price'))}. The pack is at {market_txt}. That gap is the crack. These books are cooked."
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
@@ -829,8 +829,9 @@ def counters(locked, finished, hits, misses):
 
 def main():
     st.markdown("# ✨ Girl Magic Odds 2.0")
+    st.caption("Be a better bettor. Crack the code. These books are cooked.")
     st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="how-to">Pull the chaos board. The long number is the tell. Lock her. Run the receipts.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="how-to">Be a better bettor. Crack the code. The long number is the tell. These books are cooked.</div>', unsafe_allow_html=True)
     api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
     if not api_key:
         st.info("Add your Odds API key.")
