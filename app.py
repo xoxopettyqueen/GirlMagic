@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Visual + Tracker Rebuild
-BallDontLie grading in batches of 50. Sport filter. +500 min. Line limits.
+Girl Magic Odds 2.0 — Clean Grade Loop
+50 plays. One write at the end. Sport selected.
 """
 
 import streamlit as st
@@ -221,14 +221,15 @@ def grade_with_bdl(ledger, bdl_key, sport):
     updated = 0
     props_ok = ("Assists", "Points", "Rebounds", "DoubleDouble") if sport == "NBA" else ("Anytime TD", "Rec Yards")
     ungraded = [r for r in ledger if r.get("sport") == sport and r.get("result") in (None, "—", "") and r.get("prop") in props_ok]
-    for row in ungraded[:50]:
+    batch = ungraded[:50]
+    for row in batch:
         player = row.get("player")
         prop = row.get("prop")
         line = float(row.get("line") or 0)
         if not player:
             continue
         try:
-            r = requests.get(f"{BDL_BASE}/players", params={"search": player}, headers=headers, timeout=8)
+            r = requests.get(f"{BDL_BASE}/players", params={"search": player}, headers=headers, timeout=6)
             if r.status_code != 200:
                 continue
             pdata = r.json().get("data", [])
@@ -242,18 +243,18 @@ def grade_with_bdl(ledger, bdl_key, sport):
         for days_back in range(0, 2):
             d = (datetime.utcnow() - timedelta(days=days_back)).strftime("%Y-%m-%d")
             try:
-                gr = requests.get(f"{BDL_BASE}/games", params={"dates[]": d}, headers=headers, timeout=8)
+                gr = requests.get(f"{BDL_BASE}/games", params={"dates[]": d}, headers=headers, timeout=6)
                 if gr.status_code != 200:
                     continue
                 games = gr.json().get("data", [])
             except:
                 continue
-            for g in games[:5]:
+            for g in games[:4]:
                 gid = g.get("id")
                 if not gid:
                     continue
                 try:
-                    sr = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": pid, "game_ids[]": gid}, headers=headers, timeout=8)
+                    sr = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": pid, "game_ids[]": gid}, headers=headers, timeout=6)
                     if sr.status_code != 200:
                         continue
                     stats = sr.json().get("data", [])
@@ -288,11 +289,11 @@ def grade_with_bdl(ledger, bdl_key, sport):
                     break
             if row.get("result") in ("hit", "miss"):
                 break
+    save_ledger(ledger)
     if updated:
-        save_ledger(ledger)
         st.success(f"Graded {updated} of {len(ungraded)} {sport} plays. Click again for more.")
     else:
-        st.info(f"No {sport} matches in this batch. Games may not be final yet.")
+        st.info(f"No {sport} matches in this batch.")
     return ledger
 
 @st.cache_data(ttl=120)
@@ -336,7 +337,6 @@ def parse_plays(data, sport):
                 oname = str(o.get("name") or "").lower().strip()
                 desc = str(o.get("description") or "").lower().strip()
                 full_text = f"{oname} {desc}"
-
                 is_over_like = (
                     oname in ("over", "yes", "o")
                     or "over" in oname
@@ -344,7 +344,6 @@ def parse_plays(data, sport):
                     or "or more" in full_text
                     or full_text.startswith("o")
                 )
-
                 if prop_type in ("DoubleDouble", "Anytime TD"):
                     if "yes" not in oname and oname not in ("over", "yes"): continue
                     player = o.get("description") or o.get("name")
@@ -356,23 +355,15 @@ def parse_plays(data, sport):
                     if line is None:
                         m = re.search(r"(\d+\.?\d*)", full_text)
                         if m:
-                            try:
-                                line = float(m.group(1))
-                            except:
-                                continue
-                        else:
-                            continue
+                            try: line = float(m.group(1))
+                            except: continue
+                        else: continue
                     else:
-                        try:
-                            line = float(line)
-                        except:
-                            continue
-
+                        try: line = float(line)
+                        except: continue
                 if not player or str(player).lower() in ("yes", "no", "over", "under", "o", "u"): continue
-                try:
-                    price = int(o.get("price"))
-                except:
-                    continue
+                try: price = int(o.get("price"))
+                except: continue
                 plays.append({
                     "sport": sport, "event": event, "player": player,
                     "prop": prop_type, "line": line, "price": price, "book": short
@@ -435,10 +426,8 @@ def best_cards(plays, weights=None):
         if bk in sharp and sharp[bk]["soft_count"] >= 3:
             tags.append(f"{bk} soft")
         if true_ev and true_ev >= 3: tags.append("True EV")
-        if petty:
-            tags.append("In range")
-        else:
-            tags.append("Outside range")
+        if petty: tags.append("In range")
+        else: tags.append("Outside range")
         score = card_score(true_ev, signals.get("spike"))
         cards.append({
             **best, "book_prices": book_prices, **signals, "tags": tags,
@@ -462,11 +451,7 @@ def render_softness(sharp):
         pct = round((soft / total * 100), 1) if total else 0
         props = data.get("props", {})
         top_prop = max(props, key=props.get) if props else "—"
-        rows.append({
-            "Book": BOOK_FULL.get(bk, bk),
-            "% Soft": pct,
-            "Softest Prop": top_prop
-        })
+        rows.append({"Book": BOOK_FULL.get(bk, bk), "% Soft": pct, "Softest Prop": top_prop})
     if not rows: return
     df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
     st.markdown('<div class="softness-title">Which books are soft</div>', unsafe_allow_html=True)
@@ -637,8 +622,7 @@ def main():
                         card_cls = "card"
                         if c.get("decision") == "TAKE": card_cls += " take-card"
                         if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
-                        if not c.get("petty_range_match") and not simple_mode:
-                            card_cls += " dimmed"
+                        if not c.get("petty_range_match") and not simple_mode: card_cls += " dimmed"
                         take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
                         score_val = c.get("score")
                         score_html = f'<div class="score">Score {score_val}</div>' if c.get("decision") == "TAKE" and score_val is not None else ""
