@@ -34,13 +34,13 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .counter.hits{background:gold;color:#1a1020;box-shadow:0 0 18px gold}
 .counter.miss{background:#2a2a34;box-shadow:0 0 12px #444}
 .game-header{font-size:1rem;font-weight:700;color:#ffb3ea;margin:16px 0 8px}
-.card{margin-bottom:10px;padding:12px;border-radius:18px;background:linear-gradient(180deg,#241433,#16101f);border:1px solid #ff4fd8;box-shadow:0 0 18px #ff00cc66;min-height:160px}
+.card{margin-bottom:14px;padding:16px 18px;border-radius:20px;background:linear-gradient(180deg,#2a1840,#140e1c);border:2px solid #ff4fd8;box-shadow:0 0 22px #ff00cc55;min-height:220px}
 .card:hover{transform:scale(1.015);box-shadow:0 0 22px #ff00cc88}
 .card.hit{border-color:gold;box-shadow:0 0 18px gold}
 .card.miss{border-color:#553333;opacity:.8;box-shadow:none}
 .card.wait{border-color:#6600ff;box-shadow:0 0 14px #6600ff66;animation:pulse 2.4s infinite}
-.player{font-weight:700;font-size:1.02rem}
-.prop{color:#ffb3ea;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin:2px 0 6px}
+.player{font-weight:800;font-size:1.25rem;letter-spacing:-.01em}
+.prop{color:#ffd0f2;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:4px 0 8px}
 .books{display:flex;flex-wrap:wrap;gap:5px}
 .bk{background:#12121a;border:1px solid #6600ff;border-radius:999px;padding:3px 8px;font-size:.66rem;font-weight:700}
 .bk.best{background:#ff00cc;border-color:#ffd0f2;box-shadow:0 0 10px #ff00cc88}
@@ -786,28 +786,26 @@ def glow_card(c, result=None):
         f"Fair value {fair_txt}. Market {market_txt}. "
         f"Gap {gap if gap is not None else '—'}%. Edge {tev if tev is not None else '—'}%."
     )
+    play = f"{c.get('book') or 'A book'} is paying {fmt_price(c.get('price'))}. The pack is at {market_txt}. That gap is the play."
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
         f'<div><div class="player">{c.get("player")}</div>'
         f'<div class="prop">{c.get("prop")} {line_txt}{got}</div>'
-        f'<div style="color:#c9b8de;font-size:.72rem">{c.get("event") or ""}</div></div>'
+        f'<div style="color:#d4c4ea;font-size:.8rem">{c.get("event") or ""}</div></div>'
         f'<div style="text-align:right"><span class="pill">{state or "TAKE"}</span>'
-        f'<div class="ev">{tev if tev is not None else "—"}%</div>'
-        f'<div style="color:#ffe27a;font-size:.72rem">gap {gap if gap is not None else "—"}%</div></div></div>'
-        f'<div class="books" style="margin-top:8px">{boxes}</div>'
-        f'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
-        f'<span class="tag">book {c.get("book") or "?"}</span>'
-        f'<span class="tag">price {fmt_price(c.get("price"))}</span>'
-        f'<span class="tag">fair {fair_txt}</span>'
-        f'<span class="tag">market {market_txt}</span>'
-        f'<span class="tag">edge {tev if tev is not None else "—"}%</span>'
-        f'<span class="tag">locked {locked}</span>'
-        f'<span class="tag">graded {graded}</span>'
-        + (f'<span class="tag">DVP {c.get("dvp")}</span>' if c.get("dvp") else "")
+        f'<div class="ev" style="font-size:1.3rem">{tev if tev is not None else "—"}%</div>'
+        f'<div style="color:#ffe27a;font-size:.75rem">edge</div></div></div>'
+        f'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0">'
+        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">BEST</span><b>{fmt_price(c.get("price"))}</b></div>'
+        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">PACK</span><b>{market_txt}</b></div>'
+        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">GAP</span><b>{gap if gap is not None else "—"}%</b></div>'
+        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">FAIR</span><b>{fair_txt}</b></div></div>'
+        f'<div class="books">{boxes}</div>'
+        f'<div class="why" style="font-size:.85rem;margin-top:10px">{play}</div>'
+        + (f'<div class="why">DVP {c.get("dvp")}. The defense {"allows" if c.get("dvp")=="Yes" else "does not allow"} this.</div>' if c.get("dvp") else "")
+        + (f'<div class="why" style="color:#ffe27a">{note}</div>' if note else "")
         + '</div>'
-        f'<div class="why">{desc}</div>'
-        f'<div class="why" style="color:#ffe27a">{note}</div></div>'
     )
 
 
