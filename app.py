@@ -224,7 +224,9 @@ def best_cards(plays):
     return cards
 
 def main():
-    st.markdown('<div class="hero"><h1>Girl Magic Odds 2.0</h1><p>Be a better bettor. Catch the books slippin.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="hero"><h1>Girl Magic Odds 2.0</h1><p>SportsGameOdds feed. Be a better bettor.</p></div>', unsafe_allow_html=True)
+    if "odds 401" in str(st.session_state.get("note") or ""):
+        st.session_state["note"] = ""
     api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
     if not api_key:
         st.info("Add ODDS_API_KEY to secrets, or paste it above.")
@@ -281,5 +283,4 @@ def main():
 try:
     main()
 except Exception as e:
-    st.error(f"App error: {e}")
-    st.exception(e)
+    st.error(f"App error: {e
