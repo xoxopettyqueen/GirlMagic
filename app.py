@@ -58,9 +58,9 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .glossary{background:#14141c;border:1px solid #ff00cc66;border-radius:16px;padding:16px;box-shadow:0 0 16px #ff00cc33;line-height:1.65}
 .glossary strong{color:#ffb3ea}
 
-.gm{background:#10241c;min-height:240px;border:1px solid #ec4899;border-radius:18px;padding:14px;margin-bottom:10px;color:#fdf2f8;box-shadow:0 0 16px #ec489933}
+.gm{background:#1a1224;border:1px solid #c77dff;border-radius:16px;padding:14px 16px;margin-bottom:10px;color:#f7eefc}
 .gm-top{display:flex;justify-content:space-between;align-items:center}
-.gm-math{display:flex;gap:8px;margin-bottom:10px}.gm-stat{flex:1;background:#1b1226;border:1px solid #a855f7;border-radius:12px;padding:8px;text-align:center}.gm-stat span{display:block;font-size:.62rem;letter-spacing:.08em;color:#f9a8d4}.gm-stat b{display:block;font-size:1.35rem;color:#fff}.gm-stat small{display:block;font-size:.62rem;color:#d8c8ea}.gm-name{font-size:1.2rem;font-weight:800;color:#fff}
+.gm-name{font-size:1.05rem;font-weight:800;color:#fff}.gm-row{display:flex;justify-content:space-between;font-size:.9rem;margin:3px 0}.gm-row span{color:#cbb6e0}.gm-books{font-size:.72rem;color:#e7d6f5;margin-top:6px}
 .pscore{background:#ec4899;color:#fff;font-weight:800;font-size:.68rem;padding:4px 10px;border-radius:999px}
 .run{font-size:.62rem;letter-spacing:.14em;color:#f9a8d4;font-weight:700}
 .gm-sub{color:#c4b5d4;font-size:.72rem;margin:2px 0 6px}
@@ -720,27 +720,20 @@ def glow_card(c, result=None):
     med_txt = f"{int(med):+d}" if isinstance(med, (int, float)) else "—"
     gap = c.get("ev_gap") or 0
     edge = c.get("true_ev") or 0
-    score = int(min(100, max(1, (gap * 0.6) + (edge * 0.4))))
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
-    books = "".join(
-        f'<span class="mtag">{bk}<b>{fmt_price(v)}</b></span>'
-        for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
-    )
+    books = " · ".join(f"{bk} {fmt_price(v)}" for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:5])
     state = (result or c.get("decision") or "TAKE").upper()
-    border = "#f5c542" if state == "HIT" else "#ff4d6d" if state == "MISS" else "#ec4899"
+    border = "#e8b923" if state == "HIT" else "#c45c7a" if state == "MISS" else "#c77dff"
     return (
         f'<div class="gm" style="border-color:{border}">'
-        f'<div class="gm-math">'
-        f'<div class="gm-stat"><span>GAP</span><b>{gap}%</b><small>how far from the pack</small></div>'
-        f'<div class="gm-stat"><span>EDGE</span><b>{edge}%</b><small>juice vs fair</small></div>'
-        f'<div class="gm-stat"><span>PETTY</span><b>{score}</b><small>gap and edge together</small></div>'
-        f'</div>'
         f'<div class="gm-name">{c.get("player")}</div>'
         f'<div class="gm-sub">{c.get("prop")} {line_txt} · {c.get("event") or ""}</div>'
-        f'<div class="gm-line"><b>Best {px_txt}</b> at {c.get("book")} · pack is {med_txt}</div>'
-        f'<div class="mtags">{books}</div>'
+        f'<div class="gm-row"><span>Best</span><b>{px_txt} {c.get("book")}</b></div>'
+        f'<div class="gm-row"><span>Pack</span><b>{med_txt}</b></div>'
+        f'<div class="gm-row"><span>Gap</span><b>{gap}%</b></div>'
+        f'<div class="gm-row"><span>Edge</span><b>{edge}%</b></div>'
+        f'<div class="gm-books">{books}</div>'
         f'<div class="gm-why">{plain_reason(c)}</div>'
-        f'<div class="gm-foot">{state} · fair is the blend · lock the longest</div>'
         f'</div>'
     )
 
@@ -855,7 +848,7 @@ def main():
             petty = b.toggle("Petty ranges", value=False)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props)
-            min_odds = st.slider("Min odds", -200, 2000, 500, 25)
+            min_odds = st.slider("Min odds", -200, 2000, 150, 25)
             filtered = [x for x in cards if x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
             if petty:
                 filtered = [x for x in filtered if x.get("petty_range_match")]
