@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Cleaner Tracker
-Only +300+ auto-tracked. Softness is a simple callout + bar chart.
+Girl Magic Odds 2.0 — No early returns
+Tracker and Glossary always render.
 """
 
 import streamlit as st
@@ -44,7 +44,6 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 .glossary{font-size:.85rem;color:#e8e0f0;margin-top:10px;padding:18px 20px;background:linear-gradient(180deg,#121218 0%,#0e0e14 100%);border-radius:12px;border:1px solid #2a2a33;line-height:1.7}
 .glossary strong{color:#FF3EBF;font-weight:700}
 .softness-title{font-size:1.1rem;font-weight:700;color:#fff;margin:18px 0 8px;font-family:'Inter',sans-serif}
-.tracker-wrap{background:#121218;border:1px solid #2a2a33;border-radius:12px;padding:12px;margin:10px 0}
 .game-header{font-size:1.05rem;font-weight:700;color:#FF3EBF;margin:18px 0 8px;border-bottom:1px solid #2a2a33;padding-bottom:4px}
 </style>
 """, unsafe_allow_html=True)
@@ -450,12 +449,10 @@ def render_softness(sharp):
             "Softest Prop": top_prop
         })
     if not rows: return
-
     df = pd.DataFrame(rows).sort_values("% Soft", ascending=False)
     st.markdown('<div class="softness-title">Which books are soft</div>', unsafe_allow_html=True)
     softest = df.iloc[0]
     st.markdown(f"**{softest['Book']}** is hanging soft numbers most often right now ({softest['% Soft']}% on {softest['Softest Prop']}).")
-
     chart_df = df.set_index("Book")[["% Soft"]]
     st.bar_chart(chart_df, use_container_width=True, color="#FF3EBF")
 
@@ -542,150 +539,119 @@ def main():
     with tab_board:
         if not cards:
             st.info(f"Hit **Pull the chaos** for {current_sport}.")
-            return
+        else:
+            col_a, col_b, col_c = st.columns(3)
+            with col_a:
+                simple_mode = st.toggle("✨ Simple Mode", value=st.session_state.get("simple_mode", True))
+                st.session_state["simple_mode"] = simple_mode
+            with col_b:
+                detailed = st.toggle("🔍 Detailed", value=st.session_state.get("detailed", False))
+                st.session_state["detailed"] = detailed
+            with col_c:
+                petty_mode = st.toggle("💅 Petty Mode", value=st.session_state.get("petty_mode", False))
+                st.session_state["petty_mode"] = petty_mode
 
-        col_a, col_b, col_c = st.columns(3)
-        with col_a:
-            simple_mode = st.toggle("✨ Simple Mode", value=st.session_state.get("simple_mode", True))
-            st.session_state["simple_mode"] = simple_mode
-        with col_b:
-            detailed = st.toggle("🔍 Detailed", value=st.session_state.get("detailed", False))
-            st.session_state["detailed"] = detailed
-        with col_c:
-            petty_mode = st.toggle("💅 Petty Mode", value=st.session_state.get("petty_mode", False))
-            st.session_state["petty_mode"] = petty_mode
+            f1, f2, f3 = st.columns(3)
+            with f1:
+                prop_options = ["Assists", "Points", "Rebounds", "DoubleDouble"] if current_sport == "NBA" else ["Anytime TD", "Rec Yards"]
+                prop_filter = st.multiselect("Prop Type", prop_options, default=prop_options)
+            with f2:
+                decision_filter = st.multiselect("Decision", ["TAKE", "LEAN", "PASS"], default=["TAKE", "LEAN"])
+            with f3:
+                min_ev = st.slider("Min True EV %", -5.0, 15.0, 0.0, 0.5)
 
-        f1, f2, f3 = st.columns(3)
-        with f1:
-            prop_options = ["Assists", "Points", "Rebounds", "DoubleDouble"] if current_sport == "NBA" else ["Anytime TD", "Rec Yards"]
-            prop_filter = st.multiselect("Prop Type", prop_options, default=prop_options)
-        with f2:
-            decision_filter = st.multiselect("Decision", ["TAKE", "LEAN", "PASS"], default=["TAKE", "LEAN"])
-        with f3:
-            min_ev = st.slider("Min True EV %", -5.0, 15.0, 0.0, 0.5)
+            o1, o2 = st.columns(2)
+            with o1:
+                min_odds = st.number_input("Min Odds", value=-500, step=50)
+            with o2:
+                max_odds = st.number_input("Max Odds", value=2000, step=100)
 
-        o1, o2 = st.columns(2)
-        with o1:
-            min_odds = st.number_input("Min Odds", value=-500, step=50)
-        with o2:
-            max_odds = st.number_input("Max Odds", value=2000, step=100)
+            book_filter = st.multiselect(
+                "Book (longest price)",
+                ALL_BOOK_CODES,
+                default=ALL_BOOK_CODES,
+                format_func=lambda x: BOOK_FULL.get(x, x)
+            )
 
-        book_filter = st.multiselect(
-            "Book (longest price)",
-            ALL_BOOK_CODES,
-            default=ALL_BOOK_CODES,
-            format_func=lambda x: BOOK_FULL.get(x, x)
-        )
+            filtered = cards[:]
+            if petty_mode:
+                filtered = [c for c in filtered if c.get("petty_range_match")]
+            if simple_mode:
+                filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
+            filtered = [c for c in filtered if c.get("prop") in prop_filter]
+            filtered = [c for c in filtered if c.get("decision") in decision_filter]
+            filtered = [c for c in filtered if (c.get("true_ev") or -999) >= min_ev]
+            filtered = [c for c in filtered if min_odds <= c.get("price", 0) <= max_odds]
+            filtered = [c for c in filtered if c.get("book") in book_filter]
 
-        filtered = cards[:]
-        if petty_mode:
-            filtered = [c for c in filtered if c.get("petty_range_match")]
-        if simple_mode:
-            filtered = [c for c in filtered if c.get("decision") == "TAKE" and (c.get("true_ev") or 0) >= 2]
-        filtered = [c for c in filtered if c.get("prop") in prop_filter]
-        filtered = [c for c in filtered if c.get("decision") in decision_filter]
-        filtered = [c for c in filtered if (c.get("true_ev") or -999) >= min_ev]
-        filtered = [c for c in filtered if min_odds <= c.get("price", 0) <= max_odds]
-        filtered = [c for c in filtered if c.get("book") in book_filter]
-
-        if not filtered:
-            st.info("No matching edges with current filters.")
-            return
-
-        st.markdown(f"**{len(filtered)} plays ready.**")
-
-        by_game = defaultdict(list)
-        for c in filtered:
-            by_game[c.get("event", "Unknown")].append(c)
-
-        for game, game_cards in by_game.items():
-            st.markdown(f'<div class="game-header">{game}</div>', unsafe_allow_html=True)
-            cols = st.columns(2)
-            for i, c in enumerate(game_cards):
-                line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
-                boxes_html = "".join(
-                    f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
-                    for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
-                )
-                tags_html = "".join(
-                    f'<span class="tag {"range" if "range" in t.lower() else ""}">{t}</span>'
-                    for t in c.get("tags", [])
-                ) if not simple_mode else ""
-                card_cls = "card"
-                if c.get("decision") == "TAKE": card_cls += " take-card"
-                if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
-                if not c.get("petty_range_match") and not simple_mode:
-                    card_cls += " dimmed"
-                take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
-                score_val = c.get("score")
-                score_html = f'<div class="score">Score {score_val}</div>' if c.get("decision") == "TAKE" and score_val is not None else ""
-                html = (
-                    f'<div class="{card_cls}">{take_tag}'
-                    f'<div class="player">{c["player"]}</div>'
-                    f'<div class="meta">{c["event"]}</div>'
-                    f'<div class="prop">{c["prop"]} {line_txt}</div>'
-                    f'<div class="books">{boxes_html}</div>'
-                    f'{tags_html}'
-                    f'<div class="true-ev">True EV {c.get("true_ev", "—")}%</div>'
-                    f'{score_html}'
-                    f'<div class="why">{plain_reason(c)}</div>'
-                    f'</div>'
-                )
-                with cols[i % 2]:
-                    st.markdown(html, unsafe_allow_html=True)
-                    if detailed:
-                        with st.expander("Why this is a play"):
-                            tev = c.get("true_ev") or 0
-                            bk = c.get("book", "")
-                            gap = c.get("ev_gap") or 0
-                            vol = c.get("vol", "")
-                            move = c.get("move", "")
-                            beh = c.get("book_beh", "")
-
-                            st.markdown(f"**Decision:** {c.get('decision')}")
-                            if c.get("decision") == "TAKE" and tev >= 3:
-                                st.markdown(f"**Why it glows:** {bk} is the longest price and the weighted fair price says this is a real edge ({tev}%). The books are disagreeing enough that one of them is soft.")
-                            elif c.get("decision") == "TAKE":
-                                st.markdown(f"**Why it shows:** {bk} is paying more than the blend. Not the strongest edge, but the books are not lined up.")
-                            else:
-                                st.markdown("**Why it’s here:** The numbers are close. No clear edge right now.")
-
-                            if gap >= 30:
-                                st.markdown(f"**Gap:** The best price is {gap}% longer than the median. That’s a big disagreement.")
-                            if vol == "High":
-                                st.markdown("**Volatility:** High — the books are far apart on this number.")
-                            if move == "Snap":
-                                st.markdown("**Movement:** Snap — something moved fast.")
-                            if beh == "Solo":
-                                st.markdown("**Behavior:** Solo — one book is standing alone with the longest price.")
-                            if any("soft" in str(t).lower() for t in c.get("tags", [])):
-                                st.markdown(f"**Soft book note:** {bk} has been hanging soft numbers recently.")
-
-                            st.markdown("**All prices:**")
-                            bp_html = "".join(
-                                f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
-                                for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
-                            )
-                            st.markdown(f'<div class="books">{bp_html}</div>', unsafe_allow_html=True)
-                    if st.button("Lock 🔒", key=f"lk_{current_sport}_{game}_{i}_{c['player']}_{c['prop']}_{c['line']}"):
-                        ledger = load_ledger()
-                        ledger.append({
-                            "ts": datetime.now().isoformat(timespec="minutes"),
-                            "sport": c["sport"], "player": c["player"], "prop": c["prop"],
-                            "line": c["line"], "price": c["price"],
-                            "book": BOOK_FULL.get(c["book"], c["book"]),
-                            "event": c["event"],
-                            "true_ev": c.get("true_ev"),
-                            "fair_prob": c.get("fair_prob"),
-                            "decision": c.get("decision"),
-                            "petty_range_match": c.get("petty_range_match"),
-                            "result": None,
-                            "clv": None,
-                            "locked_price": c["price"],
-                            "petty_mode": petty_mode,
-                        })
-                        save_ledger(ledger)
-                        st.toast("Locked.")
+            if not filtered:
+                st.info("No matching edges with current filters.")
+            else:
+                st.markdown(f"**{len(filtered)} plays ready.**")
+                by_game = defaultdict(list)
+                for c in filtered:
+                    by_game[c.get("event", "Unknown")].append(c)
+                for game, game_cards in by_game.items():
+                    st.markdown(f'<div class="game-header">{game}</div>', unsafe_allow_html=True)
+                    cols = st.columns(2)
+                    for i, c in enumerate(game_cards):
+                        line_txt = f"o{c['line']}" if c["prop"] not in ("DoubleDouble", "Anytime TD") else "Yes"
+                        boxes_html = "".join(
+                            f'<div class="bk {"best" if bk == c["book"] else ""}"><span>{bk}</span>{px:+d}</div>'
+                            for bk, px in sorted(c.get("book_prices", {}).items(), key=lambda x: -x[1])
+                        )
+                        tags_html = "".join(
+                            f'<span class="tag {"range" if "range" in t.lower() else ""}">{t}</span>'
+                            for t in c.get("tags", [])
+                        ) if not simple_mode else ""
+                        card_cls = "card"
+                        if c.get("decision") == "TAKE": card_cls += " take-card"
+                        if (c.get("true_ev") or 0) >= 3 and c.get("decision") == "TAKE": card_cls += " true-ev-glow"
+                        if not c.get("petty_range_match") and not simple_mode:
+                            card_cls += " dimmed"
+                        take_tag = '<div class="take-tag">TAKE</div>' if c.get("decision") == "TAKE" else ""
+                        score_val = c.get("score")
+                        score_html = f'<div class="score">Score {score_val}</div>' if c.get("decision") == "TAKE" and score_val is not None else ""
+                        html = (
+                            f'<div class="{card_cls}">{take_tag}'
+                            f'<div class="player">{c["player"]}</div>'
+                            f'<div class="meta">{c["event"]}</div>'
+                            f'<div class="prop">{c["prop"]} {line_txt}</div>'
+                            f'<div class="books">{boxes_html}</div>'
+                            f'{tags_html}'
+                            f'<div class="true-ev">True EV {c.get("true_ev", "—")}%</div>'
+                            f'{score_html}'
+                            f'<div class="why">{plain_reason(c)}</div>'
+                            f'</div>'
+                        )
+                        with cols[i % 2]:
+                            st.markdown(html, unsafe_allow_html=True)
+                            if detailed:
+                                with st.expander("Why this is a play"):
+                                    tev = c.get("true_ev") or 0
+                                    bk = c.get("book", "")
+                                    st.markdown(f"**Decision:** {c.get('decision')}")
+                                    if c.get("decision") == "TAKE" and tev >= 3:
+                                        st.markdown(f"**Why it glows:** {bk} is the longest price and the weighted fair price says this is a real edge ({tev}%).")
+                                    elif c.get("decision") == "TAKE":
+                                        st.markdown(f"**Why it shows:** {bk} is paying more than the blend.")
+                                    else:
+                                        st.markdown("**Why it’s here:** The numbers are close.")
+                            if st.button("Lock 🔒", key=f"lk_{current_sport}_{game}_{i}_{c['player']}_{c['prop']}_{c['line']}"):
+                                ledger = load_ledger()
+                                ledger.append({
+                                    "ts": datetime.now().isoformat(timespec="minutes"),
+                                    "sport": c["sport"], "player": c["player"], "prop": c["prop"],
+                                    "line": c["line"], "price": c["price"],
+                                    "book": BOOK_FULL.get(c["book"], c["book"]),
+                                    "event": c["event"],
+                                    "true_ev": c.get("true_ev"),
+                                    "decision": c.get("decision"),
+                                    "result": None,
+                                    "locked_price": c["price"],
+                                })
+                                save_ledger(ledger)
+                                st.toast("Locked.")
 
     with tab_tracker:
         ledger = load_ledger()
@@ -697,19 +663,19 @@ def main():
         if not ledger:
             st.info("Nothing locked yet.")
         else:
-            # Filter display to +300+ only (in case old rows are still there)
             clean = [r for r in ledger if (r.get("price") or 0) >= 300]
-            df = pd.DataFrame(clean)
-            keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
-            existing = [c for c in keep if c in df.columns]
-            df = df[existing].fillna("—")
-            finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
-            hits = (finished["result"] == "hit").sum() if not finished.empty else 0
-            st.markdown(f"**{len(df)} longer-priced plays locked.** {len(finished)} finished. {hits} hit.")
-            st.markdown('<div class="tracker-wrap">', unsafe_allow_html=True)
-            st.dataframe(df, use_container_width=True, hide_index=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-            render_softness(sharp)
+            if not clean:
+                st.info("No +300 or higher plays locked yet.")
+            else:
+                df = pd.DataFrame(clean)
+                keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
+                existing = [c for c in keep if c in df.columns]
+                df = df[existing].fillna("—")
+                finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
+                hits = (finished["result"] == "hit").sum() if not finished.empty else 0
+                st.markdown(f"**{len(df)} longer-priced plays locked.** {len(finished)} finished. {hits} hit.")
+                st.dataframe(df, use_container_width=True, hide_index=True)
+                render_softness(sharp)
 
     with tab_glossary:
         st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
