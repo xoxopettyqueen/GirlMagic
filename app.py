@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Odds API Grade
-Uses your paid Odds API to find finished games, then pulls stats.
+Girl Magic Odds 2.0 — Improved Grade
+Odds API finds finished games. ESPN stats with tighter name matching.
 """
 
 import streamlit as st
@@ -198,11 +198,15 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
+def norm_name(s):
+    s = re.sub(r"[^a-z\s]", "", (s or "").lower())
+    return " ".join(s.split())
+
 def auto_grade_nba(ledger, api_key):
     try:
         r = requests.get(
             "https://api.the-odds-api.com/v4/sports/basketball_nba/scores",
-            params={"apiKey": api_key, "daysFrom": 2},
+            params={"apiKey": api_key, "daysFrom": 3},
             timeout=15
         )
         if r.status_code != 200:
@@ -217,15 +221,15 @@ def auto_grade_nba(ledger, api_key):
 
     espn_ids = []
     try:
-        scoreboard = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=12)
-        if scoreboard.status_code == 200:
-            espn_events = scoreboard.json().get("events", [])
+        sb = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=12)
+        if sb.status_code == 200:
+            espn_events = sb.json().get("events", [])
             for g in finished:
-                home = (g.get("home_team") or "").lower()
-                away = (g.get("away_team") or "").lower()
+                home = norm_name(g.get("home_team"))
+                away = norm_name(g.get("away_team"))
                 for ev in espn_events:
-                    ev_name = (ev.get("name") or "").lower()
-                    if home in ev_name and away in ev_name:
+                    evn = norm_name(ev.get("name"))
+                    if home in evn and away in evn:
                         espn_ids.append(ev.get("id"))
                         break
     except:
@@ -235,7 +239,7 @@ def auto_grade_nba(ledger, api_key):
         return ledger
 
     boxes = {}
-    for eid in espn_ids[:10]:
+    for eid in espn_ids[:12]:
         try:
             box = requests.get(
                 f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={eid}",
@@ -246,11 +250,11 @@ def auto_grade_nba(ledger, api_key):
         except:
             continue
 
-    updated = False
+    updated = 0
     for row in ledger:
         if row.get("sport") != "NBA" or row.get("result") not in (None, "—", ""):
             continue
-        player = (row.get("player") or "").lower().strip()
+        player = norm_name(row.get("player"))
         prop = row.get("prop")
         line = float(row.get("line") or 0)
         if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
@@ -262,8 +266,8 @@ def auto_grade_nba(ledger, api_key):
                 if not stats_list:
                     continue
                 for athlete in stats_list[0].get("athletes", []):
-                    name = (athlete.get("athlete", {}).get("displayName") or "").lower().strip()
-                    short = (athlete.get("athlete", {}).get("shortName") or "").lower().strip()
+                    name = norm_name(athlete.get("athlete", {}).get("displayName"))
+                    short = norm_name(athlete.get("athlete", {}).get("shortName"))
                     if not (player in name or name in player or player in short or short in player):
                         continue
                     stats = athlete.get("stats", [])
@@ -283,7 +287,7 @@ def auto_grade_nba(ledger, api_key):
 
                     if actual is not None:
                         row["result"] = "hit" if actual > line else "miss"
-                        updated = True
+                        updated += 1
                         break
             if row.get("result") in ("hit", "miss"):
                 break
