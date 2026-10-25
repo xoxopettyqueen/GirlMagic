@@ -210,14 +210,16 @@ def main():
     if not cards:
         st.info("Pull the board.")
         return
-    st.markdown(f"**{len(cards)} plays.**")
+    cards = [c for c in cards if (c.get("price") or 0) >= 500 and (c.get("true_ev") or 0) >= 3]
+    st.markdown(f"**{len(cards)} plays.** +500 and edge 3% or more. One book longer than the blend.")
     cols = st.columns(2)
     for i, c in enumerate(cards[:40]):
         html = (
             f'<div class="card take-card"><div class="player">{c["player"]}</div>'
             f'<div class="meta">{c["event"]}</div><div class="prop">{c["prop"]} o{c["line"]}</div>'
             f'<div>Best {c["price"]:+d} {c["book"]} · pack {c["median"]:+d}</div>'
-            f'<div class="true-ev">Gap {c["ev_gap"]}% · Edge {c["true_ev"]}%</div></div>'
+            f'<div class="true-ev">Gap {c["ev_gap"]}% · Edge {c["true_ev"]}%</div>'
+            f'<div class="meta">{c["book"]} is longest versus the blend.</div></div>'
         )
         with cols[i % 2]:
             st.markdown(html, unsafe_allow_html=True)
