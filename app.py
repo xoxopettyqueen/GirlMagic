@@ -911,12 +911,20 @@ def main():
                 player = low.get("player") or low.get("name")
                 if not player:
                     continue
+                res = str(low.get("result") or low.get("grade") or "").strip().upper()
+                if res in ("HIT", "H", "WIN", "W"):
+                    res = "HIT"
+                elif res in ("MISS", "M", "LOSS", "L"):
+                    res = "MISS"
+                else:
+                    res = None
                 row = {
-                    "player": player, "prop": low.get("prop") or low.get("market"),
+                    "player": player, "prop": low.get("prop") or low.get("market") or low.get("stat"),
                     "line": low.get("line") or low.get("point"), "price": low.get("price") or low.get("odds"),
-                    "book": low.get("book"), "event": low.get("event") or low.get("matchup"),
-                    "sport": low.get("sport") or sport, "result": low.get("result") or None,
-                    "true_ev": low.get("true_ev"), "ev_gap": low.get("ev_gap"),
+                    "book": low.get("book") or low.get("sportsbook"), "event": low.get("event") or low.get("matchup") or low.get("game"),
+                    "sport": (low.get("sport") or low.get("league") or sport), "result": res,
+                    "true_ev": low.get("true_ev"), "ev_gap": low.get("ev_gap") or low.get("gap"),
+                    "player_stat": low.get("player_stat") or low.get("actual"),
                 }
                 key = (str(row["player"]), str(row["prop"]), str(row["line"]))
                 if key in have:
@@ -925,7 +933,9 @@ def main():
                 have.add(key)
                 added_up += 1
             save_ledger(merged)
-            st.success(f"Restored {added_up} of {len(incoming)}")
+            from collections import Counter
+            sports = Counter(str(r.get("sport")) for r in merged)
+            st.success(f"Restored {added_up} of {len(incoming)}. Ledger now {len(merged)}: " + ", ".join(f"{k} {v}" for k, v in sports.items()))
         regrade = st.checkbox("Regrade, clear old hits first")
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
@@ -944,7 +954,12 @@ def main():
                 except Exception:
                     pass
         save_ledger(ledger)
-        mine = [r for r in ledger if r.get("sport") == sport and line_ok(r.get("prop"), r.get("line"))]
+        show_all = st.toggle("Show every restored row", value=True)
+        st.caption(f"Ledger has {len(ledger)} total.")
+        if show_all:
+            mine = list(ledger)
+        else:
+            mine = [r for r in ledger if r.get("sport") == sport]
         hits = [r for r in mine if r.get("result") == "HIT"]
         misses = [r for r in mine if r.get("result") == "MISS"]
         locked = [r for r in mine if r.get("result") not in ("HIT", "MISS")]
