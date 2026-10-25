@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Grade Fixed
-Pulls finished games once, matches in memory. No more infinite spin.
+Girl Magic Odds 2.0 — Odds API Grade
+Uses your paid Odds API to find finished games, then pulls stats.
 """
 
 import streamlit as st
@@ -198,33 +198,51 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
-def auto_grade_nba(ledger):
+def auto_grade_nba(ledger, api_key):
     try:
-        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=15)
+        r = requests.get(
+            "https://api.the-odds-api.com/v4/sports/basketball_nba/scores",
+            params={"apiKey": api_key, "daysFrom": 2},
+            timeout=15
+        )
         if r.status_code != 200:
             return ledger
-        data = r.json()
+        games = r.json() or []
     except:
         return ledger
 
-    finished_ids = []
-    for event in data.get("events", []):
-        status = (event.get("status", {}).get("type", {}) or {}).get("name", "")
-        if status in ("STATUS_FINAL", "STATUS_FULL_TIME"):
-            finished_ids.append(event.get("id"))
+    finished = [g for g in games if g.get("completed")]
+    if not finished:
+        return ledger
 
-    if not finished_ids:
+    espn_ids = []
+    try:
+        scoreboard = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=12)
+        if scoreboard.status_code == 200:
+            espn_events = scoreboard.json().get("events", [])
+            for g in finished:
+                home = (g.get("home_team") or "").lower()
+                away = (g.get("away_team") or "").lower()
+                for ev in espn_events:
+                    ev_name = (ev.get("name") or "").lower()
+                    if home in ev_name and away in ev_name:
+                        espn_ids.append(ev.get("id"))
+                        break
+    except:
+        pass
+
+    if not espn_ids:
         return ledger
 
     boxes = {}
-    for game_id in finished_ids[:8]:
+    for eid in espn_ids[:10]:
         try:
             box = requests.get(
-                f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}",
+                f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={eid}",
                 timeout=10
             )
             if box.status_code == 200:
-                boxes[game_id] = box.json()
+                boxes[eid] = box.json()
         except:
             continue
 
@@ -234,11 +252,11 @@ def auto_grade_nba(ledger):
             continue
         player = (row.get("player") or "").lower().strip()
         prop = row.get("prop")
-        line = row.get("line")
+        line = float(row.get("line") or 0)
         if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
             continue
 
-        for game_id, box_data in boxes.items():
+        for eid, box_data in boxes.items():
             for team in box_data.get("boxscore", {}).get("players", []):
                 stats_list = team.get("statistics", [{}])
                 if not stats_list:
@@ -257,12 +275,9 @@ def auto_grade_nba(ledger):
                         continue
 
                     actual = None
-                    if prop == "Assists":
-                        actual = ast
-                    elif prop == "Points":
-                        actual = pts
-                    elif prop == "Rebounds":
-                        actual = reb
+                    if prop == "Assists": actual = ast
+                    elif prop == "Points": actual = pts
+                    elif prop == "Rebounds": actual = reb
                     elif prop == "DoubleDouble":
                         actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
 
@@ -660,7 +675,7 @@ def main():
             save_ledger([])
             st.rerun()
         if st.button("Grade NBA results"):
-            ledger = auto_grade_nba(ledger)
+            ledger = auto_grade_nba(ledger, api_key)
             st.rerun()
 
         uploaded = st.file_uploader("Import old plays (CSV)", type="csv")
