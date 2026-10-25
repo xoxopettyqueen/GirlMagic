@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — BallDontLie GOAT
-NBA + NFL stats. Grades 50 at a time.
+Girl Magic Odds 2.0 — Visual + Tracker Rebuild
+BallDontLie grading in batches of 50. Sport filter. +500 min. Line limits.
 """
 
 import streamlit as st
