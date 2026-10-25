@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — +500 minimum
-Only +500 or higher. Higher odds, real discrepancies.
+Girl Magic Odds 2.0 — BallDontLie Grade
+Free player stats. Maps names, pulls box scores, grades HIT/MISS.
+Closing lines still unavailable.
 """
 
 import streamlit as st
@@ -49,6 +50,7 @@ button[kind="primary"], .stButton > button[kind="primary"]{background:linear-gra
 """, unsafe_allow_html=True)
 
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
+BDL_BASE = "https://www.balldontlie.io/api/v1"
 LEDGER = Path("odds_ledger.json")
 SHARPNESS = Path("book_sharpness.json")
 WEIGHTS_FILE = Path("auto_weights.json")
@@ -81,7 +83,8 @@ GLOSSARY = """
 <strong>Petty Mode</strong> — Only shows props inside your preferred line ranges (Assists 3–8, Points 8–15, Rebounds 4–10).<br>
 <strong>Auto Weights</strong> — The app watches which books are soft and slowly adjusts how much it trusts them.<br>
 <strong>TAKE / LEAN / PASS</strong> — TAKE = strongest edges. LEAN = okay but optional. PASS = no real edge.<br>
-<strong>Score</strong> — Simple strength number on TAKE cards (higher = stronger edge).
+<strong>Score</strong> — Simple strength number on TAKE cards (higher = stronger edge).<br>
+<strong>CLV</strong> — Closing line value. Difference between the price you locked and the closing price. Positive is good.<br>
 """
 
 def in_user_range(prop, line):
@@ -206,97 +209,86 @@ def save_ledger(rows):
     try: LEDGER.write_text(json.dumps(rows, indent=2))
     except: pass
 
-def norm_name(s):
-    s = re.sub(r"[^a-z\s]", "", (s or "").lower())
-    return " ".join(s.split())
-
-def auto_grade_nba(ledger, api_key):
+def bdl_search_player(name):
     try:
-        r = requests.get(
-            "https://api.the-odds-api.com/v4/sports/basketball_nba/scores",
-            params={"apiKey": api_key, "daysFrom": 3},
-            timeout=15
-        )
-        if r.status_code != 200:
-            return ledger
-        games = r.json() or []
-    except:
-        return ledger
-
-    finished = [g for g in games if g.get("completed")]
-    if not finished:
-        return ledger
-
-    espn_ids = []
-    try:
-        sb = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", timeout=12)
-        if sb.status_code == 200:
-            espn_events = sb.json().get("events", [])
-            for g in finished:
-                home = norm_name(g.get("home_team"))
-                away = norm_name(g.get("away_team"))
-                for ev in espn_events:
-                    evn = norm_name(ev.get("name"))
-                    if home in evn and away in evn:
-                        espn_ids.append(ev.get("id"))
-                        break
+        r = requests.get(f"{BDL_BASE}/players", params={"search": name}, timeout=10)
+        if r.status_code == 200:
+            data = r.json().get("data", [])
+            if data:
+                return data[0]
     except:
         pass
+    return None
 
-    if not espn_ids:
-        return ledger
+def bdl_games_for_date(date_str):
+    try:
+        r = requests.get(f"{BDL_BASE}/games", params={"dates[]": date_str}, timeout=10)
+        if r.status_code == 200:
+            return r.json().get("data", [])
+    except:
+        pass
+    return []
 
-    boxes = {}
-    for eid in espn_ids[:12]:
-        try:
-            box = requests.get(
-                f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={eid}",
-                timeout=10
-            )
-            if box.status_code == 200:
-                boxes[eid] = box.json()
-        except:
-            continue
+def bdl_stats(player_id, game_id):
+    try:
+        r = requests.get(f"{BDL_BASE}/stats", params={"player_ids[]": player_id, "game_ids[]": game_id}, timeout=10)
+        if r.status_code == 200:
+            data = r.json().get("data", [])
+            if data:
+                return data[0]
+    except:
+        pass
+    return None
 
+def grade_with_bdl(ledger):
     updated = 0
     for row in ledger:
         if row.get("sport") != "NBA" or row.get("result") not in (None, "—", ""):
             continue
-        player = norm_name(row.get("player"))
+        player = row.get("player")
         prop = row.get("prop")
         line = float(row.get("line") or 0)
         if not player or prop not in ("Assists", "Points", "Rebounds", "DoubleDouble"):
             continue
 
-        for eid, box_data in boxes.items():
-            for team in box_data.get("boxscore", {}).get("players", []):
-                stats_list = team.get("statistics", [{}])
-                if not stats_list:
+        pinfo = bdl_search_player(player)
+        if not pinfo:
+            continue
+        pid = pinfo.get("id")
+        if not pid:
+            continue
+
+        # Try last 3 days for games
+        for days_back in range(0, 3):
+            d = (datetime.utcnow() - pd.Timedelta(days=days_back)).strftime("%Y-%m-%d")
+            games = bdl_games_for_date(d)
+            for g in games:
+                gid = g.get("id")
+                if not gid:
                     continue
-                for athlete in stats_list[0].get("athletes", []):
-                    name = norm_name(athlete.get("athlete", {}).get("displayName"))
-                    short = norm_name(athlete.get("athlete", {}).get("shortName"))
-                    if not (player in name or name in player or player in short or short in player):
-                        continue
-                    stats = athlete.get("stats", [])
-                    try:
-                        reb = float(stats[4]) if len(stats) > 4 else 0
-                        ast = float(stats[5]) if len(stats) > 5 else 0
-                        pts = float(stats[11]) if len(stats) > 11 else 0
-                    except:
-                        continue
+                stat = bdl_stats(pid, gid)
+                if not stat:
+                    continue
+                pts = float(stat.get("pts") or 0)
+                reb = float(stat.get("reb") or 0)
+                ast = float(stat.get("ast") or 0)
 
-                    actual = None
-                    if prop == "Assists": actual = ast
-                    elif prop == "Points": actual = pts
-                    elif prop == "Rebounds": actual = reb
-                    elif prop == "DoubleDouble":
-                        actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
+                actual = None
+                if prop == "Points":
+                    actual = pts
+                elif prop == "Rebounds":
+                    actual = reb
+                elif prop == "Assists":
+                    actual = ast
+                elif prop == "DoubleDouble":
+                    actual = 1 if sum(1 for x in (pts, reb, ast) if x >= 10) >= 2 else 0
 
-                    if actual is not None:
-                        row["result"] = "hit" if actual > line else "miss"
-                        updated += 1
-                        break
+                if actual is not None:
+                    row["result"] = "hit" if actual > line else "miss"
+                    row["player_stat"] = actual
+                    row["player_id"] = pid
+                    updated += 1
+                    break
             if row.get("result") in ("hit", "miss"):
                 break
 
@@ -545,12 +537,20 @@ def main():
                             "event": c["event"],
                             "true_ev": c.get("true_ev"),
                             "fair_prob": c.get("fair_prob"),
+                            "ev_gap": c.get("ev_gap"),
+                            "spike": c.get("spike"),
+                            "vol": c.get("vol"),
+                            "tags": c.get("tags"),
                             "decision": c.get("decision"),
                             "petty_range_match": c.get("petty_range_match"),
                             "result": None,
+                            "player_stat": None,
                             "clv": None,
+                            "closing_price": None,
                             "locked_price": c["price"],
                             "petty_mode": st.session_state.get("petty_mode", True),
+                            "weights_used": live_weights,
+                            "devig_method": "multiplicative",
                         })
                         existing.add(key)
                         added += 1
@@ -675,9 +675,20 @@ def main():
                                     "book": BOOK_FULL.get(c["book"], c["book"]),
                                     "event": c["event"],
                                     "true_ev": c.get("true_ev"),
+                                    "fair_prob": c.get("fair_prob"),
+                                    "ev_gap": c.get("ev_gap"),
+                                    "spike": c.get("spike"),
+                                    "vol": c.get("vol"),
+                                    "tags": c.get("tags"),
                                     "decision": c.get("decision"),
+                                    "petty_range_match": c.get("petty_range_match"),
                                     "result": None,
+                                    "player_stat": None,
+                                    "clv": None,
+                                    "closing_price": None,
                                     "locked_price": c["price"],
+                                    "weights_used": live_weights,
+                                    "devig_method": "multiplicative",
                                 })
                                 save_ledger(ledger)
                                 st.toast("Locked.")
@@ -688,7 +699,7 @@ def main():
             save_ledger([])
             st.rerun()
         if st.button("Grade NBA results"):
-            ledger = auto_grade_nba(ledger, api_key)
+            ledger = grade_with_bdl(ledger)
             st.rerun()
 
         uploaded = st.file_uploader("Import old plays (CSV)", type="csv")
@@ -731,7 +742,7 @@ def main():
                 st.info(f"No +500 or higher {current_sport} plays locked yet.")
             else:
                 df = pd.DataFrame(clean)
-                keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result"]
+                keep = ["ts", "sport", "player", "prop", "line", "price", "book", "event", "true_ev", "decision", "result", "player_stat", "clv"]
                 existing = [c for c in keep if c in df.columns]
                 df = df[existing].fillna("—")
                 finished = df[df["result"].isin(["hit", "miss"])] if "result" in df.columns else pd.DataFrame()
