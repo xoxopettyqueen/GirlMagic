@@ -72,6 +72,21 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .mtag{background:#1b1226;border:1px solid #a855f7;border-radius:999px;padding:3px 8px;font-size:.62rem;font-weight:700;color:#e9d5ff}
 .gm-why{font-size:.75rem;color:#fce7f3;margin-top:6px}
 .gm-foot{font-size:.68rem;color:#d8c8ea;margin-top:6px}
+
+.gm{background:#10241c;border:1px solid #ec4899;border-radius:18px;padding:14px;margin-bottom:10px;color:#fdf2f8}
+.gm-top{display:flex;justify-content:space-between;align-items:center}
+.run{font-size:.62rem;letter-spacing:.14em;color:#f9a8d4;font-weight:700}
+.pscore{background:#ec4899;color:#fff;font-weight:800;font-size:.68rem;padding:4px 10px;border-radius:999px}
+.gm-name{font-size:1.15rem;font-weight:800;color:#fff;margin-top:4px}
+.gm-sub{color:#c4b5d4;font-size:.72rem;margin:2px 0 6px}
+.meters{display:flex;gap:4px;margin:4px 0 8px}
+.meter{width:18px;height:6px;border-radius:3px;background:#374151}
+.meter.on{background:linear-gradient(90deg,#f472b6,#c026d3)}
+.gm-line{font-size:.86rem;margin:2px 0}
+.mtags{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.mtag{background:#1b1226;border:1px solid #a855f7;border-radius:999px;padding:3px 8px;font-size:.62rem;font-weight:700;color:#e9d5ff}
+.gm-why{font-size:.75rem;color:#fce7f3;margin-top:6px}
+.gm-foot{font-size:.66rem;color:#d8c8ea;margin-top:4px}
 </style>
 """, unsafe_allow_html=True)
 
@@ -720,20 +735,23 @@ def glow_card(c, result=None):
     med_txt = f"{int(med):+d}" if isinstance(med, (int, float)) else "—"
     gap = c.get("ev_gap") or 0
     edge = c.get("true_ev") or 0
+    score = int(min(100, max(1, (gap * 0.6) + (edge * 0.4))))
+    bars = "".join('<span class="meter on"></span>' if i < min(6, max(1, score // 16)) else '<span class="meter"></span>' for i in range(6))
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
-    books = " · ".join(f"{bk} {fmt_price(v)}" for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:5])
+    tags = "".join(f'<span class="mtag">{bk} {fmt_price(v)}</span>' for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:5])
     state = (result or c.get("decision") or "TAKE").upper()
-    border = "#e8b923" if state == "HIT" else "#c45c7a" if state == "MISS" else "#c77dff"
+    border = "#e8b923" if state == "HIT" else "#c45c7a" if state == "MISS" else "#ec4899"
     return (
         f'<div class="gm" style="border-color:{border}">'
+        f'<div class="gm-top"><div class="run">RUN IT, BADDIE</div><div class="pscore">Petty {score}</div></div>'
         f'<div class="gm-name">{c.get("player")}</div>'
         f'<div class="gm-sub">{c.get("prop")} {line_txt} · {c.get("event") or ""}</div>'
-        f'<div class="gm-row"><span>Best</span><b>{px_txt} {c.get("book")}</b></div>'
-        f'<div class="gm-row"><span>Pack</span><b>{med_txt}</b></div>'
-        f'<div class="gm-row"><span>Gap</span><b>{gap}%</b></div>'
-        f'<div class="gm-row"><span>Edge</span><b>{edge}%</b></div>'
-        f'<div class="gm-books">{books}</div>'
+        f'<div class="meters">{bars}</div>'
+        f'<div class="gm-line"><b>Best {px_txt}</b> on {c.get("book")} · pack {med_txt}</div>'
+        f'<div class="gm-line">Gap {gap}% · Edge {edge}%</div>'
+        f'<div class="mtags">{tags}</div>'
         f'<div class="gm-why">{plain_reason(c)}</div>'
+        f'<div class="gm-foot">Petty is gap plus edge. Higher is louder.</div>'
         f'</div>'
     )
 
