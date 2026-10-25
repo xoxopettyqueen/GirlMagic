@@ -117,7 +117,7 @@ def line_ok(prop, line):
     if prop == "Assists":
         return line <= 16
     if prop == "Rec Yards":
-        return line <= 120
+        return line <= 50
     return True
 
 
@@ -312,6 +312,7 @@ def grade_nba(ledger, bdl_key, days=5):
                     continue
                 row["result"] = "HIT" if actual >= line else "MISS"
                 row["player_stat"] = actual
+                row["graded_ts"] = datetime.now().isoformat(timespec="minutes")
                 updated += 1
     save_ledger(ledger)
     msg = f"NBA graded {updated}."
@@ -372,6 +373,7 @@ def grade_nfl(ledger, days=5):
                                 pass
                     rec["result"] = "HIT" if td > 0 else "MISS"
                     rec["player_stat"] = td
+                    rec["graded_ts"] = datetime.now().isoformat(timespec="minutes")
                     updated += 1
                 elif rec.get("prop") == "Rec Yards":
                     yds = None
@@ -385,6 +387,7 @@ def grade_nfl(ledger, days=5):
                         continue
                     rec["result"] = "HIT" if yds >= float(rec.get("line") or 0) else "MISS"
                     rec["player_stat"] = yds
+                    rec["graded_ts"] = datetime.now().isoformat(timespec="minutes")
                     updated += 1
     save_ledger(ledger)
     return ledger, f"NFL graded {updated}."
@@ -560,34 +563,50 @@ def fmt_price(px):
 
 def glow_card(c, result=None):
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
+    prices = c.get("book_prices") or {c.get("book"): c.get("price")}
     boxes = "".join(
-        f'<div class="bk {"best" if bk == c.get("book") else ""}">{bk} {fmt_price(px)}</div>'
-        for bk, px in sorted((c.get("book_prices") or {c.get("book"): c.get("price")}).items(), key=lambda z: -(z[1] or 0))
+        f'<span class="bk {"best" if bk == c.get("book") else ""}">{bk} {fmt_price(px)}</span>'
+        for bk, px in sorted(prices.items(), key=lambda z: -(z[1] or 0))
     )
-    tags = "".join(f'<span class="tag">{t}</span>' for t in (c.get("tags") or []))
-    state = (result or "").upper()
+    state = (result or c.get("decision") or "").upper()
     cls = "card"
-    pill_cls = "pill"
     if state == "HIT":
         cls += " hit"
-        pill_cls += " hit"
     elif state == "MISS":
         cls += " miss"
-        pill_cls += " miss"
-    elif state in ("", "LOCKED", "WAITING") or c.get("decision") != "TAKE":
+    elif state in ("LOCKED", "WAITING", ""):
         cls += " wait"
-    label = state or c.get("decision") or "TAKE"
     tev = c.get("true_ev")
-    tev_txt = f"{tev}%" if tev is not None else "—"
     gap = c.get("ev_gap")
-    gap_txt = f"gap {gap}%" if gap is not None else ""
+    stat = c.get("player_stat")
+    got = f" · got {stat}" if stat is not None else ""
+    clv = c.get("clv")
+    clv_txt = f"{clv:+.1f}" if isinstance(clv, (int, float)) else "—"
+    locked = c.get("ts") or "—"
+    graded = c.get("graded_ts") or "—"
+    desc = (
+        f"Longest was {c.get('book') or '?'} {fmt_price(c.get('price'))}. "
+        f"Gap {gap if gap is not None else '—'}% vs the pack. "
+        f"Edge {tev if tev is not None else '—'}%. CLV {clv_txt}."
+    )
     return (
-        f'<div class="{cls}"><div class="nums"><span class="{pill_cls}">{label}</span>'
-        f'<span class="ev">{tev_txt}</span><span class="why" style="margin:0">{gap_txt} · {c.get("book") or ""}</span></div>'
-        f'<div class="player">{c.get("player")}</div>'
-        f'<div class="prop">{c.get("prop")} {line_txt}</div>'
-        f'<div class="books">{boxes}</div>{tags}'
-        f'<div class="why">{plain_reason(c)}</div></div>'
+        f'<div class="{cls}">'
+        f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+        f'<div><div class="player">{c.get("player")}</div>'
+        f'<div class="prop">{c.get("prop")} {line_txt}{got}</div>'
+        f'<div style="color:#c9b8de;font-size:.72rem">{c.get("event") or ""}</div></div>'
+        f'<div style="text-align:right"><span class="pill">{state or "TAKE"}</span>'
+        f'<div class="ev">{tev if tev is not None else "—"}%</div>'
+        f'<div style="color:#ffe27a;font-size:.72rem">gap {gap if gap is not None else "—"}%</div></div></div>'
+        f'<div class="books" style="margin-top:8px">{boxes}</div>'
+        f'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
+        f'<span class="tag">book {c.get("book") or "?"}</span>'
+        f'<span class="tag">price {fmt_price(c.get("price"))}</span>'
+        f'<span class="tag">edge {tev if tev is not None else "—"}%</span>'
+        f'<span class="tag">CLV {clv_txt}</span>'
+        f'<span class="tag">locked {locked}</span>'
+        f'<span class="tag">graded {graded}</span></div>'
+        f'<div class="why">{desc}</div></div>'
     )
 
 
@@ -660,7 +679,7 @@ def main():
             seen = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
             added = 0
             for c in cards:
-                if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 150:
+                if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 150 and line_ok(c.get("prop"), c.get("line")):
                     key = (c["player"], c["prop"], c["line"], c["price"])
                     if key not in seen:
                         ledger.append({
@@ -727,78 +746,106 @@ def main():
             st.toast("Grading complete — chaos contained 💫")
             st.balloons()
             st.rerun()
-        mine = [r for r in ledger if r.get("sport") == sport]
-        hits_n = sum(r.get("result") == "HIT" for r in mine)
-        misses_n = sum(r.get("result") == "MISS" for r in mine)
-        counters(len(mine), hits_n + misses_n, hits_n, misses_n)
+        # fill CLV from the live board when the same play is still up
+        live = {(x.get("player"), x.get("prop"), x.get("line")): x for x in cards}
+        for r in ledger:
+            match = live.get((r.get("player"), r.get("prop"), r.get("line")))
+            if match and r.get("price") and match.get("median"):
+                try:
+                    r["clv"] = round((float(r["price"]) - float(match["median"])) / abs(float(match["median"])) * 100, 1)
+                except Exception:
+                    pass
+        save_ledger(ledger)
+        mine = [r for r in ledger if r.get("sport") == sport and line_ok(r.get("prop"), r.get("line"))]
         hits = [r for r in mine if r.get("result") == "HIT"]
         misses = [r for r in mine if r.get("result") == "MISS"]
-        graded = hits + misses
-        tab_all, tab_hits, tab_misses, tab_charts = st.tabs(["All Plays", "Hits Only", "Misses Only", "Charts"])
+        locked = [r for r in mine if r.get("result") not in ("HIT", "MISS")]
+        counters(len(mine), len(hits) + len(misses), len(hits), len(misses))
+        f1, f2, f3 = st.columns(3)
+        prop_opts = sorted({r.get("prop") for r in mine if r.get("prop")})
+        book_opts = sorted({r.get("book") for r in mine if r.get("book")})
+        prop_f = f1.multiselect("Prop", prop_opts, default=prop_opts)
+        book_f = f2.multiselect("Book", book_opts, default=book_opts)
+        gap_f = f3.selectbox("Gap", ["All", "0–20", "21–40", "41+"])
+        def gap_ok(r):
+            g = r.get("ev_gap") or 0
+            if gap_f == "0–20":
+                return g < 21
+            if gap_f == "21–40":
+                return 21 <= g <= 40
+            if gap_f == "41+":
+                return g >= 41
+            return True
+        view = [r for r in mine if r.get("prop") in prop_f and r.get("book") in book_f and gap_ok(r)]
+        tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "Hits Only", "Misses Only", "Locked Only", "Charts"])
 
-        def play_card(r, color):
-            clv = r.get("clv")
-            clv_txt = f"{clv:+.1f}" if isinstance(clv, (int, float)) else "—"
-            border = "gold" if r.get("result") == "HIT" else ("#ff00cc" if r.get("result") in (None, "", "—", "LOCKED") else "#444")
-            return (
-                f'<div style="padding:10px 12px;border-radius:12px;margin-bottom:8px;'
-                f'background:linear-gradient(90deg,#1a1a24,#2a2a3a);border:2px solid {border};'
-                f'box-shadow:0 0 12px {border}66;color:#fff">'
-                f'<b>{r.get("player")}</b> — {r.get("prop")} {r.get("line")} → {r.get("result") or "LOCKED"}'
-                f'<span style="float:right;color:#ffe27a">CLV {clv_txt}</span><br>'
-                f'<span style="color:#aaa;font-size:.75rem">{r.get("book")} {r.get("price")} · gap {r.get("ev_gap") or "—"}</span>'
-                f'</div>'
-            )
-
-        def render_page(rows, key):
+        def show(rows, key):
             if not rows:
-                st.caption("Nothing here yet.")
+                st.caption("Nothing in this cut.")
                 return
             page = st.number_input("Page", min_value=1, value=1, step=1, key=key)
-            start = (int(page) - 1) * 12
-            chunk = list(reversed(rows))[start:start + 12]
-            st.markdown("".join(play_card(r, "#b366ff") for r in chunk), unsafe_allow_html=True)
+            start = (int(page) - 1) * 10
+            for r in list(reversed(rows))[start:start + 10]:
+                card = {
+                    "player": r.get("player"), "prop": r.get("prop"), "line": r.get("line"),
+                    "book": r.get("book"), "price": r.get("price"), "true_ev": r.get("true_ev"),
+                    "ev_gap": r.get("ev_gap"), "event": r.get("event"), "ts": r.get("ts"),
+                    "graded_ts": r.get("graded_ts"), "player_stat": r.get("player_stat"),
+                    "clv": r.get("clv"), "book_prices": {r.get("book"): r.get("price")},
+                    "decision": r.get("result") or "LOCKED",
+                }
+                st.markdown(glow_card(card, r.get("result") or "LOCKED"), unsafe_allow_html=True)
             st.caption(f"{len(rows)} plays · page {int(page)}")
 
         with tab_all:
-            render_page(mine, "pg_all")
+            show(view, "pg_all")
         with tab_hits:
-            render_page(hits, "pg_hits")
+            show([r for r in view if r.get("result") == "HIT"], "pg_hit")
         with tab_misses:
-            render_page(misses, "pg_miss")
+            show([r for r in view if r.get("result") == "MISS"], "pg_miss")
+        with tab_locked:
+            show([r for r in view if r.get("result") not in ("HIT", "MISS")], "pg_lock")
         with tab_charts:
+            graded = [r for r in view if r.get("result") in ("HIT", "MISS")]
             if not graded:
                 st.info("Grade a slate and the charts fill in.")
             else:
                 chart_df = pd.DataFrame([{"book": BOOK_FULL.get(r.get("book"), r.get("book") or "?"), "result": r.get("result")} for r in graded])
-                hit_chart = alt.Chart(chart_df).mark_bar(size=28, cornerRadiusEnd=6).encode(
+                hit_chart = alt.Chart(chart_df).mark_bar(size=26, cornerRadiusEnd=6).encode(
                     x=alt.X("book:N", title="Sportsbook", sort="-y"),
                     y=alt.Y("count():Q", title="Plays"),
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#444"])),
+                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
                     tooltip=["book", "result", "count()"],
-                ).properties(height=280, title="Hit rate by book")
+                ).properties(height=260, title="Hit rate by book")
                 st.altair_chart(hit_chart, use_container_width=True)
-                clv_rows = [{"clv": r.get("clv")} for r in graded if isinstance(r.get("clv"), (int, float))]
-                if clv_rows:
-                    clv_chart = alt.Chart(pd.DataFrame(clv_rows)).mark_area(opacity=0.65, color="#ff00cc").encode(
-                        x=alt.X("clv:Q", bin=alt.Bin(maxbins=16), title="CLV"),
-                        y=alt.Y("count()", title="Plays"),
-                    ).properties(height=240, title="CLV distribution")
-                    st.altair_chart(clv_chart, use_container_width=True)
-                else:
-                    st.caption("CLV fills in once a close is logged. Hits and misses are already graded.")
-                pie_df = pd.DataFrame([{"result": "HIT", "count": len(hits)}, {"result": "MISS", "count": len(misses)}])
-                pie = alt.Chart(pie_df).mark_arc(innerRadius=60).encode(
+                gap_df = pd.DataFrame([{"gap": r.get("ev_gap") or 0, "edge": r.get("true_ev") or 0, "result": r.get("result")} for r in graded])
+                scatter = alt.Chart(gap_df).mark_circle(size=70).encode(
+                    x=alt.X("gap:Q", title="Gap %"),
+                    y=alt.Y("edge:Q", title="Edge %"),
+                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#ff00cc"])),
+                    tooltip=["gap", "edge", "result"],
+                ).properties(height=260, title="Gap vs edge")
+                st.altair_chart(scatter, use_container_width=True)
+                pie_df = pd.DataFrame([{"result": "HIT", "count": sum(r.get("result")=="HIT" for r in graded)}, {"result": "MISS", "count": sum(r.get("result")=="MISS" for r in graded)}])
+                pie = alt.Chart(pie_df).mark_arc(innerRadius=55).encode(
                     theta="count:Q",
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#444"])),
+                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
                     tooltip=["result", "count"],
-                ).properties(height=280, title="Hit vs miss")
+                ).properties(height=260, title="Hit vs miss")
                 st.altair_chart(pie, use_container_width=True)
+                prop_df = pd.DataFrame([{"prop": r.get("prop"), "result": r.get("result")} for r in graded])
+                heat = alt.Chart(prop_df).mark_rect().encode(
+                    x=alt.X("prop:N", title="Prop"),
+                    y=alt.Y("result:N", title=""),
+                    color=alt.Color("count():Q", scale=alt.Scale(scheme="plasma")),
+                    tooltip=["prop", "result", "count()"],
+                ).properties(height=140, title="Which props cash")
+                st.altair_chart(heat, use_container_width=True)
         st.markdown("**What cashed**")
         all_books = ["DraftKings", "FanDuel", "BetMGM", "Caesars", "Bet365", "Fanatics", "Hard Rock", "theScore"]
         short_to_full = {"DK": "DraftKings", "FD": "FanDuel", "MGM": "BetMGM", "CZR": "Caesars", "365": "Bet365", "FAN": "Fanatics", "HR": "Hard Rock", "SCR": "theScore"}
         book_stats = {b: {"hits": 0, "total": 0} for b in all_books}
-        for r in graded:
+        for r in [x for x in view if x.get("result") in ("HIT", "MISS")]:
             name = short_to_full.get(r.get("book"), r.get("book"))
             if name in book_stats:
                 book_stats[name]["total"] += 1
@@ -809,18 +856,14 @@ def main():
             pct = round(h / total * 100, 1) if total else 0
             color = "gold" if pct >= 10 else "#ff00cc" if pct >= 5 else "#6600ff" if pct > 0 else "#333"
             tiles.append(
-                f'<div style="width:150px;height:112px;background:#12121a;border-radius:12px;border:2px solid {color};'
+                f'<div style="width:148px;height:108px;background:#12121a;border-radius:14px;border:2px solid {color};'
                 f'box-shadow:0 0 12px {color}55;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:6px">'
                 f'<div style="font-size:22px;color:{color};font-weight:700">{pct}%</div>'
                 f'<div style="color:#fff;font-size:13px">{book}</div>'
                 f'<div style="color:#aaa;font-size:12px">{h} of {total}</div></div>'
             )
         st.markdown('<div style="display:flex;flex-wrap:wrap">' + "".join(tiles) + "</div>", unsafe_allow_html=True)
-        st.markdown(
-            '<div style="height:4px;width:100%;margin-top:12px;border-radius:2px;'
-            'background:linear-gradient(90deg,#ff00cc,#6600ff,#b366ff);background-size:200% 100%;animation:shimmer 2s linear infinite"></div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
     with glossary:
         with st.expander("✨ Glossary", expanded=True):
             st.markdown(f'<div class="glossary">{GLOSSARY}</div>', unsafe_allow_html=True)
