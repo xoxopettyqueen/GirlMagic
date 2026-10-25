@@ -928,14 +928,22 @@ def main():
                 }
                 key = (str(row["player"]), str(row["prop"]), str(row["line"]))
                 if key in have:
+                    if row.get("result"):
+                        for old in merged:
+                            if (str(old.get("player")), str(old.get("prop")), str(old.get("line"))) == key:
+                                old["result"] = row["result"]
+                                if row.get("player_stat"):
+                                    old["player_stat"] = row["player_stat"]
+                                added_up += 1
+                                break
                     continue
                 merged.append(row)
                 have.add(key)
                 added_up += 1
             save_ledger(merged)
-            from collections import Counter
-            sports = Counter(str(r.get("sport")) for r in merged)
-            st.success(f"Restored {added_up} of {len(incoming)}. Ledger now {len(merged)}: " + ", ".join(f"{k} {v}" for k, v in sports.items()))
+            cols = sorted({k for r in incoming[:1] for k in r}) if incoming else []
+            graded_in = sum(1 for r in incoming if str(r.get("result") or r.get("grade") or "").strip())
+            st.success(f"File had {len(incoming)} rows, {graded_in} with a result. Added {added_up}. Ledger now {len(merged)}. Columns: {', '.join(cols[:8])}")
         regrade = st.checkbox("Regrade, clear old hits first")
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
