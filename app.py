@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Girl Magic Odds 2.0 — Full Fix
-True EV uncapped. Grade button. Tabs render. +300 tracking.
+Girl Magic Odds 2.0 — CSV Import + Grade
+Upload the old CSV in the Tracker, then click Grade.
 """
 
 import streamlit as st
@@ -662,6 +662,39 @@ def main():
         if st.button("Grade NBA results"):
             ledger = auto_grade_nba(ledger)
             st.rerun()
+
+        uploaded = st.file_uploader("Import old plays (CSV)", type="csv")
+        if uploaded is not None:
+            df_import = pd.read_csv(uploaded)
+            existing = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
+            added = 0
+            for _, row in df_import.iterrows():
+                key = (row.get("player"), row.get("prop"), row.get("line"), row.get("price"))
+                if key not in existing and (row.get("price") or 0) >= 300:
+                    ledger.append({
+                        "ts": row.get("ts"),
+                        "sport": row.get("sport"),
+                        "player": row.get("player"),
+                        "prop": row.get("prop"),
+                        "line": row.get("line"),
+                        "price": row.get("price"),
+                        "book": row.get("book"),
+                        "event": row.get("event"),
+                        "true_ev": row.get("true_ev"),
+                        "fair_prob": row.get("fair_prob"),
+                        "decision": row.get("decision"),
+                        "petty_range_match": row.get("petty_range_match"),
+                        "result": None if str(row.get("result")) in ("—", "nan", "") else row.get("result"),
+                        "clv": None,
+                        "locked_price": row.get("price"),
+                    })
+                    existing.add(key)
+                    added += 1
+            if added:
+                save_ledger(ledger)
+                st.success(f"Imported {added} plays.")
+                st.rerun()
+
         if not ledger:
             st.info("Nothing locked yet. Pull the chaos first.")
         else:
