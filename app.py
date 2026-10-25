@@ -746,32 +746,35 @@ def fmt_price(px):
 
 
 def glow_card(c, result=None):
-    line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
-    px = c.get("price")
-    med = c.get("median")
-    px_txt = f"{int(px):+d}" if isinstance(px, (int, float)) else "—"
-    med_txt = f"{int(med):+d}" if isinstance(med, (int, float)) else "—"
-    gap = c.get("ev_gap") or 0
-    edge = c.get("true_ev") or 0
-    prices = c.get("book_prices") or {c.get("book"): c.get("price")}
-    books = "".join(f'<span class="mtag">{bk} {fmt_price(v)}</span>' for bk, v in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:5])
-    state = (result or c.get("decision") or "TAKE").upper()
-    border = "#e8b923" if state == "HIT" else "#c45c7a" if state == "MISS" else "#c77dff"
-    return (
-        f'<div class="gm" style="border-color:{border}">'
-        f'<div class="gm-kicker">TRUE VALUE · {state}</div>'
-        f'<div class="gm-name">{c.get("player")}</div>'
-        f'<div class="gm-sub">{c.get("prop")} {line_txt} · {c.get("event") or ""}</div>'
-        f'<div class="gm-grid">'
-        f'<div><span>Best</span><b>{px_txt}</b><small>{c.get("book")}</small></div>'
-        f'<div><span>Fair pack</span><b>{med_txt}</b><small>the blend</small></div>'
-        f'<div><span>Gap</span><b>{gap}%</b><small>discrepancy</small></div>'
-        f'<div><span>Edge</span><b>{edge}%</b><small>true EV</small></div>'
-        f'</div>'
-        f'<div class="mtags">{books}</div>'
-        f'<div class="gm-why">{c.get("book")} is hanging {px_txt}. The pack says {med_txt}. That gap is the tell.</div>'
-        f'</div>'
-    )
+    try:
+        line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
+        px, med = c.get("price"), c.get("median")
+        px_txt = fmt_price(px)
+        med_txt = fmt_price(med)
+        gap = c.get("ev_gap") if isinstance(c.get("ev_gap"), (int, float)) else 0
+        edge = c.get("true_ev") if isinstance(c.get("true_ev"), (int, float)) else 0
+        prices = c.get("book_prices") or {c.get("book"): c.get("price")}
+        books = "".join(f'<span class="mtag">{bk} {fmt_price(v)}</span>' for bk, v in list(prices.items())[:5])
+        state = (result or c.get("decision") or "TAKE")
+        state = str(state).upper()
+        border = "#e8b923" if state == "HIT" else "#c45c7a" if state == "MISS" else "#c77dff"
+        return (
+            f'<div class="gm" style="border-color:{border}">'
+            f'<div class="gm-kicker">TRUE VALUE · {state}</div>'
+            f'<div class="gm-name">{c.get("player") or ""}</div>'
+            f'<div class="gm-sub">{c.get("prop") or ""} {line_txt} · {c.get("event") or ""}</div>'
+            f'<div class="gm-grid">'
+            f'<div><span>Best</span><b>{px_txt}</b><small>{c.get("book") or ""}</small></div>'
+            f'<div><span>Fair pack</span><b>{med_txt}</b><small>the blend</small></div>'
+            f'<div><span>Gap</span><b>{gap}%</b><small>discrepancy</small></div>'
+            f'<div><span>Edge</span><b>{edge}%</b><small>true EV</small></div>'
+            f'</div>'
+            f'<div class="mtags">{books}</div>'
+            f'<div class="gm-why">{c.get("book") or "A book"} is hanging {px_txt}. The pack says {med_txt}. That gap is the tell.</div>'
+            f'</div>'
+        )
+    except Exception:
+        return f'<div class="gm">{c.get("player") or "Play"}</div>'
 
 
 def chip(label, hits, n):
