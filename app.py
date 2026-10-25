@@ -230,6 +230,22 @@ def plain_reason(c):
     return "Tight. The books agree. Skip."
 
 
+def normalize_prop(name):
+    n = str(name or "").lower().replace(" ", "").replace("_", "").replace("-", "")
+    if "double" in n or n in ("dd",):
+        return "DoubleDouble"
+    if "assist" in n:
+        return "Assists"
+    if "rebound" in n or n in ("reb", "rebs"):
+        return "Rebounds"
+    if "point" in n and "three" not in n:
+        return "Points"
+    if "recyard" in n or "receivingyard" in n:
+        return "Rec Yards"
+    if "td" in n or "touchdown" in n:
+        return "Anytime TD"
+    return name
+
 def normalize_book(key):
     k = str(key or "").lower()
     for needle, name in (
@@ -921,7 +937,7 @@ def main():
                 row = {
                     "player": player, "prop": low.get("prop") or low.get("market") or low.get("stat"),
                     "line": low.get("line") or low.get("point"), "price": low.get("price") or low.get("odds"),
-                    "book": low.get("book") or low.get("sportsbook"), "event": low.get("event") or low.get("matchup") or low.get("game"),
+                    "book": MY_BOOKS.get(normalize_book(low.get("book") or low.get("sportsbook")), low.get("book") or low.get("sportsbook")), "event": low.get("event") or low.get("matchup") or low.get("game"),
                     "sport": (low.get("sport") or low.get("league") or sport), "result": res,
                     "true_ev": low.get("true_ev"), "ev_gap": low.get("ev_gap") or low.get("gap"),
                     "player_stat": low.get("player_stat") or low.get("actual"),
@@ -987,7 +1003,12 @@ def main():
             if gap_f == "41+":
                 return g >= 41
             return True
-        view = [r for r in mine if r.get("prop") in prop_f and r.get("book") in book_f and gap_ok(r)]
+        find = st.text_input("Find a player", placeholder="Kuzma, Ekholm, Gillespie")
+        book_ok = set(book_f) | {BOOK_FULL.get(b, b) for b in book_f}
+        view = [r for r in mine if r.get("prop") in prop_f and (r.get("book") in book_ok) and gap_ok(r)]
+        if find:
+            q = find.lower()
+            view = [r for r in mine if q in str(r.get("player") or "").lower()]
         tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "Read the Charts"])
 
         def show(rows, key):
