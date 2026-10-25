@@ -851,7 +851,7 @@ def main():
             simple = a.toggle("TAKE only", value=False)
             petty = b.toggle("Petty ranges", value=False)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
-            prop_filter = st.multiselect("Prop", props, default=props)
+            prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
             filtered = [x for x in cards if x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
             if petty:
@@ -952,8 +952,8 @@ def main():
         f1, f2, f3 = st.columns(3)
         prop_opts = sorted({r.get("prop") for r in mine if r.get("prop")})
         book_opts = sorted({r.get("book") for r in mine if r.get("book")})
-        prop_f = f1.multiselect("Prop", prop_opts, default=prop_opts)
-        book_f = f2.multiselect("Book", book_opts, default=book_opts)
+        prop_f = f1.multiselect("Prop", prop_opts, default=prop_opts, key=f"track_prop_{sport}")
+        book_f = f2.multiselect("Book", book_opts, default=book_opts, key=f"track_book_{sport}")
         gap_f = f3.selectbox("Gap", ["All", "0–20", "21–40", "41+"])
         def gap_ok(r):
             g = r.get("ev_gap") or 0
