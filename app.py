@@ -244,7 +244,15 @@ def normalize_book(key):
 
 def load_ledger():
     rows = load_json(LEDGER, None)
-    return st.session_state.get("ledger", []) if rows is None else rows
+    rows = st.session_state.get("ledger", []) if rows is None else rows
+    kept, seen = [], set()
+    for r in rows:
+        key = (r.get("sport"), _norm_name(r.get("player")), r.get("prop"), round(float(r.get("line") or 0), 1), r.get("event"))
+        if key in seen:
+            continue
+        seen.add(key)
+        kept.append(r)
+    return kept
 
 
 def save_ledger(rows):
@@ -274,7 +282,13 @@ def teams_in(event):
 
 def event_matches(event, home, away):
     blob = str(event or "").lower()
-    return home and away and home.lower() in blob and away.lower() in blob
+    if not blob:
+        return True
+    def token(name):
+        parts = [w for w in str(name or "").lower().replace(".", "").split() if w not in ("the", "at")]
+        return parts[-1] if parts else ""
+    ht, at = token(home), token(away)
+    return (ht and ht in blob) or (at and at in blob)
 
 
 def grade_nba(ledger, bdl_key, days=6, regrade=False):
@@ -355,6 +369,43 @@ def grade_nba(ledger, bdl_key, days=6, regrade=False):
                 row["grade_note"] = f"{prop} {actual} vs {line} · {away} @ {home}"
                 row["graded_ts"] = datetime.now().isoformat(timespec="minutes")
                 updated += 1
+    leftover = [r for r in pending if r.get("result") in (None, "", "—")]
+    by_player_stats = defaultdict(list)
+    for back in range(days):
+        day = (datetime.now(timezone.utc) - timedelta(days=back)).strftime("%Y-%m-%d")
+        status, games = bdl_get("games", bdl_key, {"dates[]": day, "per_page": 30})
+        if status != 200:
+            continue
+        ids = [g.get("id") for g in (games.get("data") or []) if g.get("id")]
+        if not ids:
+            continue
+        status, stats = bdl_get("stats", bdl_key, {"game_ids[]": ids, "per_page": 100})
+        if status != 200:
+            continue
+        for stat in stats.get("data") or []:
+            player = stat.get("player") or {}
+            full = _norm_name(f"{player.get('first_name', '')} {player.get('last_name', '')}")
+            by_player_stats[full].append(stat)
+    for row in leftover:
+        stats = by_player_stats.get(_norm_name(row.get("player"))) or []
+        if len(stats) != 1:
+            continue
+        stat = stats[0]
+        pts, reb, ast = stat.get("pts"), stat.get("reb"), stat.get("ast")
+        prop = row.get("prop")
+        line = float(row.get("line") or 0)
+        actual = {"Points": pts, "Rebounds": reb, "Assists": ast}.get(prop)
+        if prop == "DoubleDouble" and None not in (pts, reb, ast):
+            actual = 1 if sum(float(x) >= 10 for x in (pts, reb, ast)) >= 2 else 0
+            line = 1
+        if actual is None:
+            continue
+        actual = float(actual)
+        row["result"] = "HIT" if actual >= line else "MISS"
+        row["player_stat"] = actual
+        row["grade_note"] = f"{prop} {actual} vs {line} · only game in window"
+        row["graded_ts"] = datetime.now().isoformat(timespec="minutes")
+        updated += 1
     save_ledger(ledger)
     msg = f"NBA graded {updated}. Left {skipped} as N/A."
     if notes:
@@ -728,11 +779,11 @@ def main():
             st.session_state["fetched"] = datetime.now().strftime("%H:%M")
             st.session_state["last_sport"] = sport
             ledger = load_ledger()
-            seen = {(r.get("player"), r.get("prop"), r.get("line"), r.get("price")) for r in ledger}
+            seen = {(r.get("sport"), _norm_name(r.get("player")), r.get("prop"), round(float(r.get("line") or 0), 1), r.get("event")) for r in ledger}
             added = 0
             for c in cards:
                 if c.get("decision") == "TAKE" and (c.get("price") or 0) >= 150 and line_ok(c.get("prop"), c.get("line")):
-                    key = (c["player"], c["prop"], c["line"], c["price"])
+                    key = (c["sport"], _norm_name(c["player"]), c["prop"], round(float(c["line"]), 1), c["event"])
                     if key not in seen:
                         ledger.append({
                             "ts": datetime.now().isoformat(timespec="minutes"), "sport": c["sport"],
