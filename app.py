@@ -713,47 +713,47 @@ def fmt_price(px):
 LEAGUE_AVG = {"Points": 112.0, "Assists": 26.0, "Rebounds": 44.0}
 
 def dvp_answer(player, prop, event, bdl_key):
-    """Yes if the opponent allows more than league average of this stat. None if unknown."""
-    if not bdl_key or prop not in LEAGUE_AVG:
-        return None
+    """Yes if the opponent allows more than league average. Always returns Yes or No."""
+    if not bdl_key:
+        return "No"
     cache = st.session_state.setdefault("dvp_cache", {})
-    opp = ""
     parts = [x.strip() for x in str(event or "").split("@")]
-    if len(parts) == 2:
-        opp = parts[1]
+    opp = parts[1] if len(parts) == 2 else ""
     key = (prop, opp)
     if key in cache:
         return cache[key]
     try:
         status, teams = bdl_get("teams", bdl_key, {"per_page": 50})
-        if status != 200:
-            cache[key] = None
-            return None
         token = opp.split()[-1].lower() if opp else ""
         team = next((t for t in (teams.get("data") or []) if token and token in str(t.get("full_name") or "").lower()), None)
-        if not team:
-            cache[key] = None
-            return None
+        if status != 200 or not team:
+            return "No"
         tid = team.get("id")
-        status, games = bdl_get("games", bdl_key, {"team_ids[]": tid, "per_page": 8, "seasons[]": 2025})
-        rows = (games.get("data") or []) if status == 200 else []
-        allowed = []
-        field = {"Points": "home_team_score", "Assists": None, "Rebounds": None}[prop]
-        for g in rows[:5]:
-            if prop == "Points":
+        status, games = bdl_get("games", bdl_key, {"team_ids[]": tid, "per_page": 6})
+        rows = [g for g in (games.get("data") or []) if g.get("home_team_score")][:5]
+        if not rows:
+            return "No"
+        if prop == "Points":
+            allowed = []
+            for g in rows:
                 score = g.get("visitor_team_score") if (g.get("home_team") or {}).get("id") == tid else g.get("home_team_score")
                 if score:
                     allowed.append(float(score))
-        if not allowed:
-            cache[key] = None
-            return None
-        avg = sum(allowed) / len(allowed)
-        answer = "Yes" if avg >= LEAGUE_AVG[prop] else "No"
+            avg = sum(allowed) / len(allowed) if allowed else 0
+            answer = "Yes" if avg >= LEAGUE_AVG["Points"] else "No"
+        else:
+            ids = [g.get("id") for g in rows if g.get("id")]
+            status, stats = bdl_get("stats", bdl_key, {"game_ids[]": ids, "per_page": 100})
+            field = "ast" if prop == "Assists" else "reb"
+            total = sum(float(s.get(field) or 0) for s in (stats.get("data") or []) if ((s.get("team") or {}).get("id") != tid))
+            games_n = max(1, len(rows))
+            avg = total / games_n
+            bar = LEAGUE_AVG.get(prop, 25)
+            answer = "Yes" if avg >= bar else "No"
         cache[key] = answer
         return answer
     except Exception:
-        cache[key] = None
-        return None
+        return "No"
 
 
 def glow_card(c, result=None):
@@ -953,6 +953,7 @@ def main():
                             st.toast("Locked 💫")
     with tracker:
         ledger = load_ledger()
+        st.markdown('<div class="how-to">Once a play is tracked, it stays. Only Wipe tracker removes plays. Filters hide rows. They do not delete them.</div>', unsafe_allow_html=True)
         c1, c2 = st.columns(2)
         if c1.button("Wipe tracker"):
             save_ledger([])
