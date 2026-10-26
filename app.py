@@ -1218,13 +1218,13 @@ def main():
         book_opts = sorted({r.get("book") for r in mine if r.get("book")})
         prop_f = f1.multiselect("Prop", prop_opts)
         book_f = f2.multiselect("Book", book_opts)
-        gap_f = f3.selectbox("Gap", ["All", "0–20", "21–40", "41+"])
+        gap_f = f3.selectbox("Gap", ["All", "0–19", "20–40", "41+"])
         def gap_ok(r):
             g = r.get("ev_gap") or 0
-            if gap_f == "0–20":
-                return g < 21
-            if gap_f == "21–40":
-                return 21 <= g <= 40
+            if gap_f == "0–19":
+                return g < 20
+            if gap_f == "20–40":
+                return 20 <= g <= 40
             if gap_f == "41+":
                 return g >= 41
             return True
@@ -1248,7 +1248,8 @@ def main():
         view = [r for r in mine if (not prop_f or r.get("prop") in prop_f) and (not book_f or r.get("book") in book_ok) and gap_ok(r) and date_ok(r)]
         if find:
             q = find.lower()
-            view = [r for r in mine if q in str(r.get("player") or "").lower()]
+            view = [r for r in view if q in str(r.get("player") or "").lower()]
+        st.caption(f"{len(view)} match these filters.")
         tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "The Lab"])
 
         def show(rows, key):
