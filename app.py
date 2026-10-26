@@ -356,7 +356,7 @@ def grade_nba(ledger, bdl_key, days=14, regrade=False):
     pending = [
         r for r in ledger
         if r.get("sport") == "NBA" and r.get("result") in (None, "", "—")
-        and r.get("prop") in ("Assists", "Points", "Rebounds", "DoubleDouble")
+        and r.get("prop") in ("Assists", "Points", "Rebounds", "Threes", "DoubleDouble", "TripleDouble", "FirstBasket")
         and line_ok(r.get("prop"), r.get("line"))
     ]
     if not pending:
@@ -407,6 +407,18 @@ def grade_nba(ledger, bdl_key, days=14, regrade=False):
                 prop = row.get("prop")
                 line = float(row.get("line") or 0)
                 actual = {"Points": pts, "Rebounds": reb, "Assists": ast}.get(prop)
+                if prop == "FirstBasket":
+                    scorer = first_basket(row.get("event"))
+                    if scorer and _norm_name(scorer) == _norm_name(row.get("player")):
+                        row["result"] = "HIT"
+                        row["player_stat"] = 1
+                        row["grade_note"] = f"first basket {scorer}"
+                    elif scorer:
+                        row["result"] = "MISS"
+                        row["player_stat"] = 0
+                        row["grade_note"] = f"first basket was {scorer}"
+                    updated += 1
+                    continue
                 if prop == "DoubleDouble":
                     if None in (pts, reb, ast):
                         continue
@@ -1072,7 +1084,7 @@ def main():
             a, b, c3 = st.columns(3)
             simple = a.toggle("TAKE only", value=True)
             petty = b.toggle("Petty ranges", value=True)
-            props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
+            props = ["Assists", "Points", "Rebounds", "Threes", "DoubleDouble", "TripleDouble", "FirstBasket"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", 500, 12000, 500, 50)
             now_ts = datetime.now(timezone.utc)
