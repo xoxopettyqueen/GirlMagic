@@ -879,6 +879,9 @@ def glow_card(c, result=None):
         low = max(5, round(tev * 0.5))
         high = max(low + 5, round(tev * 1.5))
         stake = f"Stake ${low}–${high} on a $1k bankroll."
+    sgo = c.get("sgo_fair")
+    sgo_txt = f" SGO fair {int(sgo):+d}." if isinstance(sgo, (int, float)) else ""
+    agree = " Both fairs agree." if isinstance(sgo, (int, float)) and (c.get("price") or 0) > sgo else ""
     why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅{sgo_txt}{agree} {tag_txt}. {stake}"
     dvp_line = ""
     if c.get("dvp"):
