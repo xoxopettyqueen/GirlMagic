@@ -543,7 +543,7 @@ def fetch_events(api_key, sport_key):
     return []
 
 
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=45)
 def fetch_odds(api_key, sport_key, event_id, markets):
     try:
         r = requests.get(
@@ -668,6 +668,34 @@ def worth_locking(c):
         return False
     return True
 
+
+
+@st.cache_data(ttl=60)
+def sgo_fair(sgo_key, player, prop):
+    if not sgo_key:
+        return None
+    try:
+        r = requests.get(
+            "https://api.sportsgameodds.com/v2/events",
+            headers={"x-api-key": sgo_key},
+            params={"leagueID": "NBA", "oddsAvailable": "true", "limit": 5},
+            timeout=12,
+        )
+        if r.status_code != 200:
+            return None
+        stat = {"Points": "points", "Rebounds": "rebounds", "Assists": "assists"}.get(prop)
+        if not stat:
+            return None
+        token = _norm_name(player).replace(" ", "_").upper()
+        for ev in (r.json().get("data") or []):
+            for odd in (ev.get("odds") or {}).values():
+                if stat in str(odd.get("statID") or "") and token.split("_")[-1] in str(odd.get("playerID") or "").upper():
+                    fo = odd.get("fairOdds")
+                    if fo:
+                        return int(str(fo).replace("+", ""))
+    except Exception:
+        return None
+    return None
 
 def best_cards(plays, weights=None):
     by = defaultdict(list)
@@ -851,7 +879,7 @@ def glow_card(c, result=None):
         low = max(5, round(tev * 0.5))
         high = max(low + 5, round(tev * 1.5))
         stake = f"Stake ${low}–${high} on a $1k bankroll."
-    why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅 {tag_txt}. {stake}"
+    why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅{sgo_txt}{agree} {tag_txt}. {stake}"
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = ""
