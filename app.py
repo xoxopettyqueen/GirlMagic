@@ -1094,7 +1094,12 @@ def main():
                     return (now_ts - pulled).total_seconds() <= 90
                 except Exception:
                     return True
-            filtered = [x for x in cards if fresh(x) and x.get("sport") == sport and x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
+            def price_ok(x):
+                try:
+                    return float(x.get("price") or 0) >= min_odds
+                except Exception:
+                    return False
+            filtered = [x for x in cards if fresh(x) and x.get("sport") == sport and x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and price_ok(x)]
             if petty:
                 filtered = [x for x in filtered if x.get("petty_range_match")]
             if simple:
