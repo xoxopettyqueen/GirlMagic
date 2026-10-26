@@ -884,9 +884,10 @@ def glow_card(c, result=None):
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+        f'<div style="display:flex;gap:10px;align-items:center"><img src="https://a.espncdn.com/i/teamlogos/{"nba" if c.get("sport")=="NBA" else "nfl"}/500/{(c.get("event") or "").split("@")[-1].strip().split()[-1][:3].lower()}.png" style="width:36px;height:36px;border-radius:50%;object-fit:contain" onerror="this.style.display="none"">'
         f'<div><div class="player" style="font-size:1.6rem;text-shadow:0 0 12px #FF4EC8">{c.get("player")}</div>'
         f'<div class="prop" style="color:#FFD447;font-weight:700">{c.get("prop")} {line_txt}</div>'
-        f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div>'
+        f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div></div>'
         f'<div style="text-align:right;display:flex;gap:10px;align-items:center">'
         f'{gauge}'
         f'<div><div style="font-size:2.6rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
