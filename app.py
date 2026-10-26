@@ -879,15 +879,18 @@ def glow_card(c, result=None):
     if c.get("dvp"):
         dvp_line = ""
     edge_color = "#ffd84a" if (tev or 0) >= 25 else "#ff4fd8"
+    take_score = min(100, round((tev or 0) * 2 + (gap or 0)))
+    gauge = f'<div style="width:64px;height:64px;border-radius:50%;background:conic-gradient(#FFD447 {take_score}%, #2a1a3a 0);display:flex;align-items:center;justify-content:center"><div style="width:48px;height:48px;border-radius:50%;background:#14141A;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#FFD447">{take_score}</div></div>'
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
         f'<div><div class="player" style="font-size:1.3rem">{c.get("player")}</div>'
         f'<div class="prop" style="color:#FFD447;font-weight:700">{c.get("prop")} {line_txt}</div>'
         f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div>'
-        f'<div style="text-align:right">'
-        f'<div style="font-size:2.2rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
-        f'<div style="display:inline-block;margin-top:2px;background:{edge_color};color:#1a1020;font-weight:800;font-size:.68rem;padding:2px 8px;border-radius:999px">{book} BEST</div></div></div>'
+        f'<div style="text-align:right;display:flex;gap:10px;align-items:center">'
+        f'{gauge}'
+        f'<div><div style="font-size:2.2rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
+        f'<div style="display:inline-block;margin-top:2px;background:{edge_color};color:#1a1020;font-weight:800;font-size:.68rem;padding:2px 8px;border-radius:999px">{book} BEST</div></div></div></div>'
         f'<div class="why" style="font-size:.88rem;margin:12px 0 8px;line-height:1.4">{why}</div>'
         f'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 12px">'
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">FAIR</span><b style="font-size:1rem">{fair_txt}</b></div>'
