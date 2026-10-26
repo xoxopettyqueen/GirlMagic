@@ -1020,7 +1020,7 @@ def main():
                     "player": player, "prop": low.get("prop") or low.get("market") or low.get("stat"),
                     "line": low.get("line") or low.get("point"), "price": low.get("price") or low.get("odds"),
                     "book": MY_BOOKS.get(normalize_book(low.get("book") or low.get("sportsbook")), low.get("book") or low.get("sportsbook")), "event": low.get("event") or low.get("matchup") or low.get("game"),
-                    "sport": (low.get("sport") or low.get("league") or sport), "result": res,
+                    "sport": ("NFL" if "nfl" in str(low.get("sport") or low.get("league") or "").lower() or "football" in str(low.get("sport") or "").lower() else "NBA" if "nba" in str(low.get("sport") or low.get("league") or "").lower() or "basketball" in str(low.get("sport") or "").lower() else sport), "result": res,
                     "true_ev": low.get("true_ev"), "ev_gap": low.get("ev_gap") or low.get("gap"),
                     "player_stat": low.get("player_stat") or low.get("actual"),
                 }
@@ -1053,12 +1053,8 @@ def main():
             st.balloons()
             st.rerun()
         save_ledger(ledger)
-        show_all = st.toggle("Show every restored row", value=False)
-        st.caption(f"Ledger has {len(ledger)} total.")
-        if show_all:
-            mine = list(ledger)
-        else:
-            mine = [r for r in ledger if r.get("sport") == sport]
+        st.caption(f"{sport} only. {sum(1 for r in ledger if r.get('sport') == sport)} in this lane.")
+        mine = [r for r in ledger if str(r.get("sport") or "").upper() == sport]
         hits = [r for r in mine if r.get("result") == "HIT"]
         misses = [r for r in mine if r.get("result") == "MISS"]
         locked = [r for r in mine if r.get("result") not in ("HIT", "MISS")]
