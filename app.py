@@ -543,7 +543,7 @@ def fetch_events(api_key, sport_key):
     return []
 
 
-@st.cache_data(ttl=90)
+@st.cache_data(ttl=60)
 def fetch_odds(api_key, sport_key, event_id, markets):
     try:
         r = requests.get(
@@ -836,7 +836,22 @@ def glow_card(c, result=None):
             more = f"Pays {round((c.get('price') - market) / abs(market) * 100)}% more than the pack."
         except Exception:
             more = ""
-    why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅"
+    tags = []
+    if len(prices) <= 2:
+        tags.append("Solo")
+    if (gap or 0) >= 25:
+        tags.append("Big Gap")
+    if (tev or 0) >= 12:
+        tags.append("High Confidence")
+    if c.get("book") in ("HR", "SCR", "FAN"):
+        tags.append("Soft Book")
+    tag_txt = " · ".join(tags)
+    stake = ""
+    if isinstance(tev, (int, float)) and tev > 0:
+        low = max(5, round(tev * 0.5))
+        high = max(low + 5, round(tev * 1.5))
+        stake = f"Stake ${low}–${high} on a $1k bankroll."
+    why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅 {tag_txt}. {stake}"
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = ""
