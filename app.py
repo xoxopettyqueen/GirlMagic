@@ -869,8 +869,6 @@ def glow_card(c, result=None):
         tags.append("Solo")
     if (gap or 0) >= 25:
         tags.append("Big Gap")
-    if (tev or 0) >= 12:
-        tags.append("High Confidence")
     if c.get("book") in ("HR", "SCR", "FAN"):
         tags.append("Soft Book")
     tag_txt = " · ".join(tags)
@@ -881,7 +879,11 @@ def glow_card(c, result=None):
         stake = f"Stake ${low}–${high} on a $1k bankroll."
     sgo = c.get("sgo_fair")
     sgo_txt = f" SGO fair {int(sgo):+d}." if isinstance(sgo, (int, float)) else ""
-    agree = " Both fairs agree." if isinstance(sgo, (int, float)) and (c.get("price") or 0) > sgo else ""
+    both = isinstance(sgo, (int, float)) and (c.get("price") or 0) > sgo and (tev or 0) > 0
+    agree = " Both fairs agree." if both else ""
+    if both:
+        tags.append("High Confidence")
+        tag_txt = " · ".join(tags)
     why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅{sgo_txt}{agree} {tag_txt}. {stake}"
     dvp_line = ""
     if c.get("dvp"):
@@ -897,8 +899,9 @@ def glow_card(c, result=None):
         f'<div style="font-size:1.9rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
         f'<div style="display:inline-block;margin-top:2px;background:{edge_color};color:#1a1020;font-weight:800;font-size:.68rem;padding:2px 8px;border-radius:999px">{book} BEST</div></div></div>'
         f'<div class="why" style="font-size:.88rem;margin:12px 0 8px;line-height:1.4">{why}</div>'
-        f'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 12px">'
+        f'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 12px">'
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">FAIR</span><b style="font-size:1rem">{fair_txt}</b></div>'
+        f'<div style="background:#1a1024;border:1px solid #FFD447;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#FFD447">SGO</span><b style="font-size:1rem">{(str(int(c.get("sgo_fair"))) if isinstance(c.get("sgo_fair"), (int, float)) else "—")}</b></div>'
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">PACK</span><b style="font-size:1rem">{market_txt}</b></div>'
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">VS NEXT</span><b style="font-size:1rem">{vs_next}</b></div>'
         f'<div style="background:#1a1024;border:1px solid {edge_color};border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:{edge_color}">EDGE</span><b style="font-size:1rem;color:{edge_color}">{tev if tev is not None else "—"}%</b></div></div>'
