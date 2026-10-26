@@ -874,7 +874,7 @@ def glow_card(c, result=None):
     if both:
         tags.append("High Confidence")
         tag_txt = " · ".join(tags)
-    why = f"{book} is hanging {price}. The pack is {market_txt}. That is the crack. {stake}"
+    why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap {gap if gap is not None else '—'}%. Edge {tev if tev is not None else '—'}%. Soft book energy 💅 {stake}"
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = ""
@@ -883,7 +883,7 @@ def glow_card(c, result=None):
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
         f'<div><div class="player" style="font-size:1.3rem">{c.get("player")}</div>'
-        f'<div class="prop">{c.get("prop")} {line_txt}</div>'
+        f'<div class="prop" style="color:#FFD447;font-weight:700">{c.get("prop")} {line_txt}</div>'
         f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div>'
         f'<div style="text-align:right">'
         f'<div style="font-size:2.2rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
