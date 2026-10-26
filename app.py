@@ -963,6 +963,11 @@ def main():
                 if data:
                     plays.extend(parse_plays(data, sport))
             cards = best_cards(plays, live)
+            sgo_key = secret("SGO_API_KEY")
+            if sgo_key:
+                for c in cards:
+                    if worth_locking(c):
+                        c["sgo_fair"] = sgo_fair(sgo_key, c.get("player"), c.get("prop"))
             update_auto_weights(update_sharpness(cards))
             st.session_state["dvp_cache"] = {}
             st.session_state[f"cards_{sport}"] = cards
