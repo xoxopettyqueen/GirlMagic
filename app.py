@@ -34,10 +34,12 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .counter.hits{background:gold;color:#1a1020;box-shadow:0 0 18px gold}
 .counter.miss{background:#2a2a34;box-shadow:0 0 12px #444}
 .game-header{font-size:1rem;font-weight:700;color:#ffb3ea;margin:16px 0 8px}
-.card{margin-bottom:16px;padding:18px;border-radius:22px;background:linear-gradient(165deg,#2e1a44 0%,#120c1a 70%);border:1px solid #ff4fd8;box-shadow:0 8px 28px #ff00cc33,inset 0 1px 0 #ffffff14}
+.card{margin-bottom:16px;padding:18px;border-radius:22px;background:linear-gradient(165deg,#1A1A22 0%,#14141A 70%);border:1px solid #FF4EC8;box-shadow:0 8px 28px #FF4EC833;transition:transform .25s ease,box-shadow .25s ease}
 .card:hover{transform:scale(1.015);box-shadow:0 0 22px #ff00cc88}
 .card.hit{border-color:gold;box-shadow:0 0 18px gold}
-.card.miss{border-color:#553333;opacity:.8;box-shadow:none}
+.card.miss{border-color:#3A3A42;opacity:.75;box-shadow:none}
+.card.take{animation:heartbeat 1.6s ease-in-out infinite}
+@keyframes heartbeat{0%,100%{box-shadow:0 8px 28px #FF4EC833}50%{box-shadow:0 8px 36px #FFD44766}}
 .card.wait{border-color:#6600ff;box-shadow:0 0 14px #6600ff66;animation:pulse 2.4s infinite}
 .player{font-weight:800;font-size:1.25rem;letter-spacing:-.01em}
 .prop{color:#ffd0f2;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:4px 0 8px}
@@ -777,6 +779,8 @@ def glow_card(c, result=None):
         cls += " miss"
     elif state in ("LOCKED", "WAITING", ""):
         cls += " wait"
+    if (tev or 0) >= 25:
+        cls += " take"
     tev = c.get("true_ev")
     gap = c.get("ev_gap")
     stat = c.get("player_stat")
