@@ -486,7 +486,7 @@ def grade_nfl(ledger, days=6, regrade=False):
                             row["receiving_yards"] = mapped.get("yds")
                         if "rushing" in name and "yds" in mapped:
                             row["rushing_yards"] = mapped.get("yds")
-                        if "td" in mapped and "pass" not in name:
+                        if "td" in mapped and ("rush" in name or "receiv" in name or "scor" in name):
                             row.setdefault("td_parts", []).append(mapped.get("td"))
             for rec in pending:
                 if rec.get("result") in ("HIT", "MISS", "N/A"):
