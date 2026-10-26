@@ -1253,37 +1253,22 @@ def main():
             if not graded:
                 st.info("Grade a slate and the charts fill in.")
             else:
-                chart_df = pd.DataFrame([{"book": BOOK_FULL.get(r.get("book"), r.get("book") or "?"), "result": r.get("result")} for r in graded])
-                hit_chart = alt.Chart(chart_df).mark_bar(size=26, cornerRadiusEnd=6).encode(
-                    x=alt.X("book:N", title="Sportsbook", sort="-y"),
-                    y=alt.Y("count():Q", title="Plays"),
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
-                    tooltip=["book", "result", "count()"],
-                ).properties(height=260, title="Who cashed — gold is a hit, gray is a miss")
-                st.altair_chart(hit_chart, use_container_width=True)
-                gap_df = pd.DataFrame([{"gap": r.get("ev_gap") or 0, "edge": r.get("true_ev") or 0, "result": r.get("result")} for r in graded])
-                scatter = alt.Chart(gap_df).mark_circle(size=70).encode(
-                    x=alt.X("gap:Q", title="Gap %"),
-                    y=alt.Y("edge:Q", title="Edge %"),
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#ff00cc"])),
-                    tooltip=["gap", "edge", "result"],
-                ).properties(height=260, title="Gap across, edge up. Top right is the loud one that also had juice")
-                st.altair_chart(scatter, use_container_width=True)
-                pie_df = pd.DataFrame([{"result": "HIT", "count": sum(r.get("result")=="HIT" for r in graded)}, {"result": "MISS", "count": sum(r.get("result")=="MISS" for r in graded)}])
-                pie = alt.Chart(pie_df).mark_arc(innerRadius=55).encode(
-                    theta="count:Q",
-                    color=alt.Color("result:N", scale=alt.Scale(domain=["HIT", "MISS"], range=["gold", "#555"])),
-                    tooltip=["result", "count"],
-                ).properties(height=260, title="The whole slate. Gold slice is she hit that")
-                st.altair_chart(pie, use_container_width=True)
-                prop_df = pd.DataFrame([{"prop": r.get("prop"), "result": r.get("result")} for r in graded])
-                heat = alt.Chart(prop_df).mark_rect().encode(
-                    x=alt.X("prop:N", title="Prop"),
-                    y=alt.Y("result:N", title=""),
-                    color=alt.Color("count():Q", scale=alt.Scale(scheme="plasma")),
-                    tooltip=["prop", "result", "count()"],
-                ).properties(height=140, title="Which props cash")
-                st.altair_chart(heat, use_container_width=True)
+                by_book = defaultdict(lambda: {"hit": 0, "miss": 0})
+                by_prop = defaultdict(lambda: {"hit": 0, "miss": 0})
+                for r in graded:
+                    bk = BOOK_FULL.get(r.get("book"), r.get("book") or "?")
+                    by_book[bk]["hit" if r.get("result") == "HIT" else "miss"] += 1
+                    by_prop[r.get("prop") or "?"]["hit" if r.get("result") == "HIT" else "miss"] += 1
+                st.markdown("**By book**")
+                for bk, s in sorted(by_book.items(), key=lambda z: -(z[1]["hit"])):
+                    total = s["hit"] + s["miss"]
+                    pct = round(s["hit"] / total * 100) if total else 0
+                    st.write(f"{bk}: {s['hit']} hit, {s['miss']} miss, {pct}%")
+                st.markdown("**By prop**")
+                for prop, s in sorted(by_prop.items(), key=lambda z: -(z[1]["hit"])):
+                    total = s["hit"] + s["miss"]
+                    pct = round(s["hit"] / total * 100) if total else 0
+                    st.write(f"{prop}: {s['hit']} hit, {s['miss']} miss, {pct}%")
         st.markdown("**What cashed**")
         all_books = ["DraftKings", "FanDuel", "BetMGM", "Caesars", "Bet365", "Fanatics", "Hard Rock", "theScore"]
         short_to_full = {"DK": "DraftKings", "FD": "FanDuel", "MGM": "BetMGM", "CZR": "Caesars", "365": "Bet365", "FAN": "Fanatics", "HR": "Hard Rock", "SCR": "theScore"}
