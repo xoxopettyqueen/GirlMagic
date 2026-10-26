@@ -962,7 +962,10 @@ def main():
                 data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                 if data:
                     plays.extend(parse_plays(data, sport))
+            pulled = datetime.now(timezone.utc).isoformat()
             cards = best_cards(plays, live)
+            for c in cards:
+                c["pulled_at"] = pulled
             sgo_key = secret("SGO_API_KEY")
             if sgo_key:
                 for c in cards:
@@ -1011,7 +1014,14 @@ def main():
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
-            filtered = [x for x in cards if x.get("sport") == sport and x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
+            now_ts = datetime.now(timezone.utc)
+            def fresh(x):
+                try:
+                    pulled = datetime.fromisoformat(x.get("pulled_at"))
+                    return (now_ts - pulled).total_seconds() <= 90
+                except Exception:
+                    return True
+            filtered = [x for x in cards if fresh(x) and x.get("sport") == sport and x.get("prop") in prop_filter and line_ok(x.get("prop"), x.get("line")) and (x.get("price") or 0) >= min_odds]
             if petty:
                 filtered = [x for x in filtered if x.get("petty_range_match")]
             if simple:
