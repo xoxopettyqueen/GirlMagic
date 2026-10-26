@@ -225,8 +225,6 @@ def card_score(true_ev, spike):
 def plain_reason(c):
     bk = c.get("book") or "A book"
     tev = c.get("true_ev")
-    if isinstance(tev, (int, float)) and tev > 18:
-        tev = 18
     tev_txt = f"{tev}%" if tev is not None else "n/a"
     gap = c.get("ev_gap")
     gap_txt = f"{gap}%" if gap is not None else "n/a"
@@ -662,10 +660,6 @@ def worth_locking(c):
         return False
     if not in_user_range(c.get("prop"), c.get("line")):
         return False
-    books = c.get("book_prices") or {}
-    long_ones = [px for px in books.values() if px and px >= (c.get("price") or 0) * 0.9]
-    if len(long_ones) > 2:
-        return False
     return True
 
 
@@ -798,8 +792,6 @@ def dvp_answer(player, prop, event, bdl_key):
 
 def glow_card(c, result=None):
     tev = c.get("true_ev")
-    if isinstance(tev, (int, float)) and tev > 18:
-        tev = 18
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
     ranked = sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
@@ -821,8 +813,6 @@ def glow_card(c, result=None):
     elif state in ("LOCKED", "WAITING", ""):
         cls += " wait"
     tev = c.get("true_ev")
-    if isinstance(tev, (int, float)) and tev > 18:
-        tev = 18
     if (tev or 0) >= 25:
         cls += " take"
     gap = c.get("ev_gap")
