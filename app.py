@@ -874,7 +874,7 @@ def glow_card(c, result=None):
     if both:
         tags.append("High Confidence")
         tag_txt = " · ".join(tags)
-    why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅{sgo_txt}{agree} {tag_txt}. {stake}"
+    why = f"{book} is hanging {price}. The pack is {market_txt}. That is the crack. {stake}"
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = ""
@@ -882,11 +882,11 @@ def glow_card(c, result=None):
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
-        f'<div><div class="player">{c.get("player")}</div>'
+        f'<div><div class="player" style="font-size:1.3rem">{c.get("player")}</div>'
         f'<div class="prop">{c.get("prop")} {line_txt}</div>'
         f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div>'
         f'<div style="text-align:right">'
-        f'<div style="font-size:1.9rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
+        f'<div style="font-size:2.2rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
         f'<div style="display:inline-block;margin-top:2px;background:{edge_color};color:#1a1020;font-weight:800;font-size:.68rem;padding:2px 8px;border-radius:999px">{book} BEST</div></div></div>'
         f'<div class="why" style="font-size:.88rem;margin:12px 0 8px;line-height:1.4">{why}</div>'
         f'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 12px">'
