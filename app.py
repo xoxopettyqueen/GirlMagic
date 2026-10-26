@@ -1278,15 +1278,19 @@ def main():
                     by_book[bk]["hit" if r.get("result") == "HIT" else "miss"] += 1
                     by_prop[r.get("prop") or "?"]["hit" if r.get("result") == "HIT" else "miss"] += 1
                 st.markdown("**By book**")
-                for bk, s in sorted(by_book.items(), key=lambda z: -(z[1]["hit"])):
+                cols = st.columns(4)
+                for i, (bk, s) in enumerate(sorted(by_book.items(), key=lambda z: -(z[1]["hit"]))):
                     total = s["hit"] + s["miss"]
-                    pct = round(s["hit"] / total * 100) if total else 0
-                    st.write(f"{bk}: {s['hit']} hit, {s['miss']} miss, {pct}%")
+                    pct = round(s["hit"] / total * 100, 1) if total else 0
+                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
+                    cols[i % 4].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1.3rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{bk}</div><div style="color:#cbb6e0;font-size:.75rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
                 st.markdown("**By prop**")
-                for prop, s in sorted(by_prop.items(), key=lambda z: -(z[1]["hit"])):
+                cols2 = st.columns(4)
+                for i, (prop, s) in enumerate(sorted(by_prop.items(), key=lambda z: -(z[1]["hit"]))):
                     total = s["hit"] + s["miss"]
-                    pct = round(s["hit"] / total * 100) if total else 0
-                    st.write(f"{prop}: {s['hit']} hit, {s['miss']} miss, {pct}%")
+                    pct = round(s["hit"] / total * 100, 1) if total else 0
+                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
+                    cols2[i % 4].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1.3rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{prop}</div><div style="color:#cbb6e0;font-size:.75rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
         st.markdown("**What cashed**")
         all_books = ["DraftKings", "FanDuel", "BetMGM", "Caesars", "Bet365", "Fanatics", "Hard Rock", "theScore"]
         short_to_full = {"DK": "DraftKings", "FD": "FanDuel", "MGM": "BetMGM", "CZR": "Caesars", "365": "Bet365", "FAN": "Fanatics", "HR": "Hard Rock", "SCR": "theScore"}
