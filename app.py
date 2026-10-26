@@ -506,7 +506,7 @@ def grade_nfl(ledger, days=6, regrade=False):
                             pass
                     rec["result"] = "HIT" if td > 0 else "MISS"
                     rec["player_stat"] = td
-                    rec["grade_note"] = f"touchdowns {td} · {' @ '.join(teams)}"
+                    rec["grade_note"] = f"touchdowns {td} from {hit.get('td_parts')} · {' @ '.join(teams)}"
                 elif rec.get("prop") == "Rec Yards":
                     raw = hit.get("receiving_yards")
                     if raw is None:
