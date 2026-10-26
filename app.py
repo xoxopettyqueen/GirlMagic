@@ -921,7 +921,7 @@ def glow_card(c, result=None):
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
-        f'<div style="display:flex;gap:10px;align-items:center"><img src="{player_photo(c.get("player"), secret("BALLDONTLIE_API_KEY"))}" style="width:48px;height:48px;border-radius:12px;object-fit:cover" onerror="this.remove()"><img src="{team_logo(c.get("event"), c.get("sport"))}" style="width:32px;height:32px;border-radius:50%;object-fit:contain" onerror="this.remove()">'
+        f'<div style="display:flex;gap:10px;align-items:center">'
         f'<div><div class="player" style="font-size:1.6rem;text-shadow:0 0 12px #FF4EC8">{c.get("player")}</div>'
         f'<div class="prop" style="color:#FFD447;font-weight:700">{c.get("prop")} {line_txt}</div>'
         f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div></div>'
