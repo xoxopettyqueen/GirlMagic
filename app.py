@@ -314,7 +314,7 @@ def event_matches(event, home, away):
     return (ht and ht in blob) or (at and at in blob)
 
 
-def grade_nba(ledger, bdl_key, days=6, regrade=False):
+def grade_nba(ledger, bdl_key, days=14, regrade=False):
     if not bdl_key:
         return ledger, "No BallDontLie key. Add BALLDONTLIE_API_KEY to secrets."
     if regrade:
@@ -447,7 +447,7 @@ def espn(url, params=None):
     return {}
 
 
-def grade_nfl(ledger, days=6, regrade=False):
+def grade_nfl(ledger, days=14, regrade=False):
     if regrade:
         for r in ledger:
             if r.get("sport") == "NFL":
