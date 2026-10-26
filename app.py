@@ -926,11 +926,6 @@ def main():
             lane_count = sum(1 for r in ledger if r.get("sport") == sport)
             ranked = sorted([c for c in cards if worth_locking(c)], key=lambda z: -(z.get("true_ev") or 0))
             for c in ranked:
-                if lane_count >= 300:
-                    break
-                pkey = (_norm_name(c["player"]), c["event"])
-                if per_player[pkey] >= 6:
-                    continue
                 key = (c["sport"], _norm_name(c["player"]), c["prop"], round(float(c["line"]), 1), c["event"])
                 if key in seen:
                     continue
