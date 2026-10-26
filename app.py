@@ -762,7 +762,7 @@ def glow_card(c, result=None):
     ranked = sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
     next_best = ranked[1] if len(ranked) > 1 else None
     boxes = "".join(
-        f'<div style="background:{"#ff4fd8" if bk == c.get("book") else "#1a1024"};border:1px solid {"#ffd0f2" if bk == c.get("book") else "#3a2450"};border-radius:12px;padding:8px;text-align:center">'
+        f'<div style="background:{("#ff4fd8" if bk == c.get("book") else "#1a1024")};border:2px solid {("#ffd0f2" if bk == c.get("book") else {"FD":"#1493ff","DK":"#53d337","MGM":"#b8972e","365":"#0a7a32","CZR":"#1a3a6b","FAN":"#e23b2f","SCR":"#6b6b6b","HR":"#c8102e"}.get(bk, "#3a2450"))};border-radius:12px;padding:8px;text-align:center">'
         f'<div style="font-size:.62rem;color:{"#1a1020" if bk == c.get("book") else "#cbb6e0"}">{BOOK_FULL.get(bk, bk)}</div>'
         f'<div style="font-weight:800;font-size:1rem;color:{"#1a1020" if bk == c.get("book") else "#fff"}">{fmt_price(px)}</div>'
         + (f'<div style="font-size:.55rem;color:#1a1020;font-weight:700">BEST</div>' if bk == c.get("book") else "")
@@ -901,6 +901,7 @@ def main():
                     plays.extend(parse_plays(data, sport))
             cards = best_cards(plays, live)
             update_auto_weights(update_sharpness(cards))
+            st.session_state["dvp_cache"] = {}
             st.session_state[f"cards_{sport}"] = cards
             st.session_state["fetched"] = datetime.now().strftime("%H:%M")
             st.session_state["last_sport"] = sport
