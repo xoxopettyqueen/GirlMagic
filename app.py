@@ -991,7 +991,7 @@ def main():
                 except Exception:
                     continue
             plays = []
-            for ev in (pregame or events)[:30]:
+            for ev in (pregame or events)[:20]:
                 data = fetch_odds(api_key, sport_key, ev.get("id"), markets)
                 if data:
                     plays.extend(parse_plays(data, sport))
