@@ -330,7 +330,6 @@ def grade_nba(ledger, bdl_key, days=6, regrade=False):
     ]
     if not pending:
         return ledger, "NBA: nothing left to grade."
-    pending = pending[:30]
     by_name = defaultdict(list)
     for row in pending:
         by_name[_norm_name(row.get("player"))].append(row)
@@ -462,7 +461,6 @@ def grade_nfl(ledger, days=6, regrade=False):
     ]
     if not pending:
         return ledger, "NFL: nothing left to grade."
-    pending = pending[:30]
     updated = 0
     for back in range(days):
         day = (datetime.now(timezone.utc) - timedelta(days=back)).strftime("%Y%m%d")
@@ -1096,6 +1094,7 @@ def main():
         upload = st.file_uploader("Upload lost receipts", type=["json", "csv"])
         do_restore = st.button("Restore this file")
         if upload is not None and do_restore:
+            st.write(f"File received: {upload.name}, {len(upload.getvalue())} bytes")
             raw = upload.getvalue().decode("utf-8", errors="ignore")
             incoming = []
             if upload.name.endswith(".json"):
