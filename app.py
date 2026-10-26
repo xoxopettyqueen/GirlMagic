@@ -1222,7 +1222,12 @@ def main():
                     seen.add(sig)
                     clean.append(r)
                 clean.sort(key=lambda z: -(z.get("ev_gap") or 0))
-                avg = sum((z.get("true_ev") or 0) for z in clean) / max(1, len(clean))
+                def num(v):
+                    try:
+                        return float(v)
+                    except Exception:
+                        return 0.0
+                avg = sum(num(z.get("true_ev")) for z in clean) / max(1, len(clean))
                 cards.append((avg, gkey, clean))
             cards.sort(key=lambda z: -z[0])
             page = st.number_input("Page", min_value=1, value=1, step=1, key=key)
