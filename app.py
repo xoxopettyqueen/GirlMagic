@@ -792,7 +792,7 @@ def dvp_answer(player, prop, event, bdl_key):
 
 
 NBA_ABBR = {"lakers":"lal","celtics":"bos","warriors":"gs","bucks":"mil","nets":"bkn","knicks":"ny","heat":"mia","bulls":"chi","mavs":"dal","mavericks":"dal","suns":"phx","nuggets":"den","clippers":"lac","76ers":"phi","sixers":"phi","raptors":"tor","hawks":"atl","hornets":"cha","cavaliers":"cle","cavs":"cle","pistons":"det","pacers":"ind","grizzlies":"mem","timberwolves":"min","wolves":"min","pelicans":"no","thunder":"okc","magic":"orl","trail blazers":"por","blazers":"por","kings":"sac","spurs":"sa","jazz":"utah","wizards":"wsh"}
-BOOK_LOGO = {"FD":"https://logo.clearbit.com/fanduel.com","DK":"https://logo.clearbit.com/draftkings.com","MGM":"https://logo.clearbit.com/betmgm.com","CZR":"https://logo.clearbit.com/caesars.com","HR":"https://logo.clearbit.com/hardrock.bet","365":"https://logo.clearbit.com/bet365.com","FAN":"https://logo.clearbit.com/fanatics.com","SCR":"https://logo.clearbit.com/thescore.bet"}
+BOOK_LOGO = {"FD":"https://www.fanduel.com/favicon.ico","DK":"https://www.draftkings.com/favicon.ico","MGM":"https://www.betmgm.com/favicon.ico","CZR":"https://www.caesars.com/favicon.ico","HR":"https://www.hardrock.bet/favicon.ico","365":"https://www.bet365.com/favicon.ico","FAN":"https://www.fanatics.com/favicon.ico","SCR":"https://www.thescore.bet/favicon.ico"}
 
 def team_logo(event, sport):
     parts = [x.strip().lower() for x in str(event or "").split("@")]
@@ -816,7 +816,7 @@ def glow_card(c, result=None):
     next_best = ranked[1] if len(ranked) > 1 else None
     boxes = "".join(
         f'<div style="background:{("#ff4fd8" if bk == c.get("book") else {"FD":"#1493ff22","DK":"#53d33722","MGM":"#b8972e22","365":"#0a7a3222","CZR":"#1a3a6b22","FAN":"#e23b2f22","SCR":"#6b6b6b22","HR":"#c8102e22"}.get(bk, "#1a1024"))};border:2px solid {("#ffd0f2" if bk == c.get("book") else {"FD":"#1493ff","DK":"#53d337","MGM":"#b8972e","365":"#0a7a32","CZR":"#1a3a6b","FAN":"#e23b2f","SCR":"#6b6b6b","HR":"#c8102e"}.get(bk, "#3a2450"))};border-radius:12px;padding:8px;text-align:center">'
-        f'<img src="{BOOK_LOGO.get(bk, "")}" style="height:16px;margin-bottom:2px" onerror="this.style.display="none""><div style="font-size:.62rem;color:{"#1a1020" if bk == c.get("book") else "#cbb6e0"}">{BOOK_FULL.get(bk, bk)}</div>'
+        f'<img src="{BOOK_LOGO.get(bk, "")}" style="height:18px;width:18px;border-radius:4px;margin-bottom:2px;object-fit:contain" onerror="this.remove()"><div style="font-size:.62rem;color:{"#1a1020" if bk == c.get("book") else "#cbb6e0"}">{BOOK_FULL.get(bk, bk)}</div>'
         f'<div style="font-weight:800;font-size:1rem;color:{"#1a1020" if bk == c.get("book") else "#fff"}">{fmt_price(px)}</div>'
         + (f'<div style="font-size:.55rem;color:#1a1020;font-weight:700">BEST</div>' if bk == c.get("book") else "")
         + '</div>'
@@ -902,7 +902,7 @@ def glow_card(c, result=None):
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
-        f'<div style="display:flex;gap:10px;align-items:center"><img src="{team_logo(c.get("event"), c.get("sport"))}" style="width:36px;height:36px;border-radius:50%;object-fit:contain" onerror="this.style.display="none"">'
+        f'<div style="display:flex;gap:10px;align-items:center"><img src="{team_logo(c.get("event"), c.get("sport"))}" style="width:36px;height:36px;border-radius:50%;object-fit:contain" onerror="this.remove()">'
         f'<div><div class="player" style="font-size:1.6rem;text-shadow:0 0 12px #FF4EC8">{c.get("player")}</div>'
         f'<div class="prop" style="color:#FFD447;font-weight:700">{c.get("prop")} {line_txt}</div>'
         f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div></div>'
