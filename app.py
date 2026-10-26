@@ -460,6 +460,7 @@ def grade_nfl(ledger, days=6, regrade=False):
     ]
     if not pending:
         return ledger, "NFL: nothing left to grade."
+    pending = pending[:30]
     updated = 0
     for back in range(days):
         day = (datetime.now(timezone.utc) - timedelta(days=back)).strftime("%Y%m%d")
@@ -763,8 +764,8 @@ def glow_card(c, result=None):
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
     boxes = "".join(
-        f'<span class="bk {"best" if bk == c.get("book") else ""}">{bk} {fmt_price(px)}</span>'
-        for bk, px in sorted(prices.items(), key=lambda z: -(z[1] or 0))
+        f'<span class="bk {"best" if bk == c.get("book") else ""}">{BOOK_FULL.get(bk, bk)} {fmt_price(px)}</span>'
+        for bk, px in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
     )
     state = (result or c.get("decision") or "").upper()
     cls = "card"
