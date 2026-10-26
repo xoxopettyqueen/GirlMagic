@@ -874,7 +874,7 @@ def glow_card(c, result=None):
     if both:
         tags.append("High Confidence")
         tag_txt = " · ".join(tags)
-    why = f"{book} rogue move 💋 {price} vs {market_txt}. {stake}"
+    why = f"{book} is hanging {price}. The pack is {market_txt}."
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = ""
@@ -893,12 +893,10 @@ def glow_card(c, result=None):
         f'<div><div style="font-size:2.6rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
         f'<div style="display:inline-block;margin-top:2px;background:{edge_color};color:#1a1020;font-weight:800;font-size:.68rem;padding:2px 8px;border-radius:999px">{book} BEST</div></div></div></div>'
         f'<div class="why" style="font-size:.88rem;margin:12px 0 8px;line-height:1.4">{why}</div>'
-        f'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 12px">'
-        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">FAIR</span><b style="font-size:1rem">{fair_txt}</b></div>'
-        f'{("<div style=background:#1a1024;border:1px solid #FFD447;border-radius:12px;padding:8px;text-align:center><span style=display:block;font-size:.58rem;color:#FFD447>SGO</span><b>" + str(int(c.get("sgo_fair"))) + "</b></div>") if isinstance(c.get("sgo_fair"), (int, float)) else ""}'
-        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">PACK</span><b style="font-size:1rem">{market_txt}</b></div>'
-        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">VS NEXT</span><b style="font-size:1rem">{vs_next}</b></div>'
-        f'<div style="background:#1a1024;border:1px solid {edge_color};border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:{edge_color}">EDGE</span><b style="font-size:1rem;color:{edge_color}">{tev if tev is not None else "—"}%</b></div></div>'
+        f'<div style="display:flex;gap:8px;margin:10px 0">'
+        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px 14px;text-align:center"><span style="display:block;font-size:.58rem;color:#cbb6e0">FAIR</span><b>{fair_txt}</b></div>'
+        f'<div style="background:#1a1024;border:1px solid {edge_color};border-radius:12px;padding:8px 14px;text-align:center"><span style="display:block;font-size:.58rem;color:{edge_color}">EDGE</span><b style="color:{edge_color}">{tev if tev is not None else "—"}%</b></div>'
+        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px 14px;text-align:center"><span style="display:block;font-size:.58rem;color:#cbb6e0">GAP</span><b>{gap if gap is not None else "—"}%</b></div></div>'
         f'<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:.65rem;color:#cbb6e0"><span>Fair {fair_txt}</span><span>Longest {price}</span></div><div style="height:8px;border-radius:999px;background:linear-gradient(90deg,#C07CFF,#FFD447);margin-top:3px"></div></div>'
         f'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">{boxes}</div>'
         f'{("<div class=why>Next best " + fmt_price(next_best[1]) + " at " + BOOK_FULL.get(next_best[0], next_best[0]) + ".</div>") if next_best else ""}'
