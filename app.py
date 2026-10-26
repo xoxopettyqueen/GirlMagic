@@ -1126,7 +1126,7 @@ def main():
                     "player": player, "prop": low.get("prop") or low.get("market") or low.get("stat"),
                     "line": low.get("line") or low.get("point"), "price": low.get("price") or low.get("odds"),
                     "book": MY_BOOKS.get(normalize_book(low.get("book") or low.get("sportsbook")), low.get("book") or low.get("sportsbook")), "event": low.get("event") or low.get("matchup") or low.get("game"),
-                    "sport": ("NFL" if "nfl" in str(low.get("sport") or low.get("league") or "").lower() or "football" in str(low.get("sport") or "").lower() else "NBA" if "nba" in str(low.get("sport") or low.get("league") or "").lower() or "basketball" in str(low.get("sport") or "").lower() else sport), "result": res,
+                    "sport": ("NFL" if "nfl" in str(low.get("sport") or low.get("league") or "").lower() or "football" in str(low.get("sport") or "").lower() else "NBA"), "result": res,
                     "true_ev": low.get("true_ev"), "ev_gap": low.get("ev_gap") or low.get("gap"),
                     "player_stat": low.get("player_stat") or low.get("actual"),
                 }
@@ -1150,6 +1150,7 @@ def main():
             names = sorted({str(r.get("player")) for r in merged if r.get("player")})
             st.success(f"File {len(incoming)} rows. Added {added_up}. Ledger {len(merged)} players {len(names)}.")
             st.write(", ".join(names[:40]))
+            st.rerun()
         regrade = st.checkbox("Regrade, clear old hits first")
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
