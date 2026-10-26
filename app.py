@@ -1120,7 +1120,7 @@ def main():
                 for i, x in enumerate(rows):
                     with cols[i % 2]:
                         st.markdown(glow_card(x), unsafe_allow_html=True)
-                        if st.button("LOCK THIS PLAY 💅", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
+                        if st.button(f"LOCK {x.get('price')} @ {BOOK_FULL.get(x.get('book'), x.get('book'))} 💅", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
                             ledger = load_ledger()
                             ledger.append({
                                 "ts": datetime.now().isoformat(timespec="minutes"), "sport": x["sport"],
