@@ -816,7 +816,7 @@ def glow_card(c, result=None):
     next_best = ranked[1] if len(ranked) > 1 else None
     boxes = "".join(
         f'<div style="background:{("#ff4fd8" if bk == c.get("book") else {"FD":"#1493ff22","DK":"#53d33722","MGM":"#b8972e22","365":"#0a7a3222","CZR":"#1a3a6b22","FAN":"#e23b2f22","SCR":"#6b6b6b22","HR":"#c8102e22"}.get(bk, "#1a1024"))};border:2px solid {("#ffd0f2" if bk == c.get("book") else {"FD":"#1493ff","DK":"#53d337","MGM":"#b8972e","365":"#0a7a32","CZR":"#1a3a6b","FAN":"#e23b2f","SCR":"#6b6b6b","HR":"#c8102e"}.get(bk, "#3a2450"))};border-radius:12px;padding:8px;text-align:center">'
-        f'<img src="{BOOK_LOGO.get(bk, "")}" style="height:18px;width:18px;border-radius:4px;margin-bottom:2px;object-fit:contain" onerror="this.remove()"><div style="font-size:.62rem;color:{"#1a1020" if bk == c.get("book") else "#cbb6e0"}">{BOOK_FULL.get(bk, bk)}</div>'
+        f'<div style="font-size:.7rem;font-weight:800;color:{"#1a1020" if bk == c.get("book") else "#fff"}">{BOOK_FULL.get(bk, bk)}</div>'
         f'<div style="font-weight:800;font-size:1rem;color:{"#1a1020" if bk == c.get("book") else "#fff"}">{fmt_price(px)}</div>'
         + (f'<div style="font-size:.55rem;color:#1a1020;font-weight:700">BEST</div>' if bk == c.get("book") else "")
         + '</div>'
