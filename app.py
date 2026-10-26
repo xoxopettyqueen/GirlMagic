@@ -759,6 +759,7 @@ def dvp_answer(player, prop, event, bdl_key):
 
 
 def glow_card(c, result=None):
+    tev = c.get("true_ev")
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
     ranked = sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
