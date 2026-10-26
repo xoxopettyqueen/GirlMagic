@@ -1330,6 +1330,29 @@ def main():
                     pct = round(s["hit"] / total * 100, 1) if total else 0
                     color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
                     cols[i % 4].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1.3rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{bk}</div><div style="color:#cbb6e0;font-size:.75rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
+                st.markdown("**Prop on book**")
+                combo = defaultdict(lambda: {"hit": 0, "miss": 0})
+                gaps = defaultdict(lambda: {"hit": 0, "miss": 0})
+                for r in graded:
+                    bk = BOOK_FULL.get(r.get("book"), r.get("book") or "?")
+                    combo[f"{r.get('prop')} · {bk}"]["hit" if r.get("result") == "HIT" else "miss"] += 1
+                    g = r.get("ev_gap") or 0
+                    band = "0–20" if g < 21 else "21–40" if g <= 40 else "41+"
+                    gaps[band]["hit" if r.get("result") == "HIT" else "miss"] += 1
+                cols3 = st.columns(3)
+                for i, (k, s) in enumerate(sorted(combo.items(), key=lambda z: -(z[1]["hit"]/(z[1]["hit"]+z[1]["miss"]) if z[1]["hit"]+z[1]["miss"] else 0))[:9]):
+                    total = s["hit"] + s["miss"]
+                    pct = round(s["hit"] / total * 100, 1) if total else 0
+                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
+                    cols3[i % 3].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:10px;text-align:center;margin-bottom:8px"><div style="font-size:1.1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff;font-size:.8rem">{k}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
+                st.markdown("**By gap**")
+                cols4 = st.columns(3)
+                for i, band in enumerate(["0–20", "21–40", "41+"]):
+                    s = gaps[band]
+                    total = s["hit"] + s["miss"]
+                    pct = round(s["hit"] / total * 100, 1) if total else 0
+                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
+                    cols4[i].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:10px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">Gap {band}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
                 st.markdown("**By prop**")
                 cols2 = st.columns(4)
                 for i, (prop, s) in enumerate(sorted(by_prop.items(), key=lambda z: -(z[1]["hit"]))):
