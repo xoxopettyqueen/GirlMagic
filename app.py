@@ -830,7 +830,7 @@ def glow_card(c, result=None):
             more = f"Pays {round((c.get('price') - market) / abs(market) * 100)}% more than the pack."
         except Exception:
             more = ""
-    why = f"{book} rogue move 💋 {price} vs pack {market_txt}. Gap {gap if gap is not None else '—'}% 🔥 Edge {tev if tev is not None else '—'}% 💖 Soft book energy 💅"
+    why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅"
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = f'<div class="why">DVP {c.get("dvp")}</div>' if c.get("dvp") and "allows" in str(c.get("dvp")) else ""
@@ -985,7 +985,7 @@ def main():
                         if dvp_on and sport == "NBA" and not x.get("dvp"):
                             x["dvp"] = dvp_answer(x.get("player"), x.get("prop"), x.get("event"), bdl_key)
                         st.markdown(glow_card(x), unsafe_allow_html=True)
-                        if st.button("Lock", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
+                        if st.button("LOCK THIS PLAY 💅", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
                             ledger = load_ledger()
                             ledger.append({
                                 "ts": datetime.now().isoformat(timespec="minutes"), "sport": x["sport"],
