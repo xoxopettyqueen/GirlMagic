@@ -832,7 +832,7 @@ def glow_card(c, result=None):
     ranked = sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
     next_best = ranked[1] if len(ranked) > 1 else None
     boxes = "".join(
-        f'<div style="background:{("#ff4fd8" if bk == c.get("book") else {"FD":"#1493ff22","DK":"#53d33722","MGM":"#b8972e22","365":"#0a7a3222","CZR":"#1a3a6b22","FAN":"#e23b2f22","SCR":"#6b6b6b22","HR":"#c8102e22"}.get(bk, "#1a1024"))};border:2px solid {("#ffd0f2" if bk == c.get("book") else {"FD":"#1493ff","DK":"#53d337","MGM":"#b8972e","365":"#0a7a32","CZR":"#1a3a6b","FAN":"#e23b2f","SCR":"#6b6b6b","HR":"#c8102e"}.get(bk, "#3a2450"))};border-radius:12px;padding:8px;text-align:center">'
+        f'<div style="background:{("#ff4fd8" if bk == c.get("book") else {"FD":"#1493ff22","DK":"#53d33722","MGM":"#FFD70022","365":"#1db95422","CZR":"#1a3a6b22","FAN":"#e23b2f22","SCR":"#20c99722","HR":"#7B2CBF22"}.get(bk, "#1a1024"))};border:2px solid {("#ffd0f2" if bk == c.get("book") else {"FD":"#1493ff","DK":"#53d337","MGM":"#FFD700","365":"#1db954","CZR":"#1a3a6b","FAN":"#e23b2f","SCR":"#20c997","HR":"#7B2CBF"}.get(bk, "#3a2450"))};border-radius:12px;padding:8px;text-align:center">'
         f'<div style="font-size:.7rem;font-weight:800;color:{"#1a1020" if bk == c.get("book") else "#fff"}">{BOOK_FULL.get(bk, bk)}</div>'
         f'<div style="font-weight:800;font-size:1rem;color:{"#1a1020" if bk == c.get("book") else "#fff"}">{fmt_price(px)}</div>'
         + (f'<div style="font-size:.55rem;color:#1a1020;font-weight:700">BEST</div>' if bk == c.get("book") else "")
@@ -1181,6 +1181,7 @@ def main():
             if gap_f == "41+":
                 return g >= 41
             return True
+        date_cut = st.selectbox("When", ["All", "Today", "Yesterday", "This week"])
         find = st.text_input("Find a player", placeholder="Kuzma, Ekholm, Gillespie")
         book_ok = set(book_f) | {BOOK_FULL.get(b, b) for b in book_f}
         view = [r for r in mine if (not prop_f or r.get("prop") in prop_f) and (not book_f or r.get("book") in book_ok) and gap_ok(r)]
