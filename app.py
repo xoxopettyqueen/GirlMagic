@@ -717,55 +717,57 @@ def fmt_price(px):
 LEAGUE_AVG = {"Points": 112.0, "Assists": 26.0, "Rebounds": 44.0}
 
 def dvp_answer(player, prop, event, bdl_key):
-    """Yes if the opponent allows more than league average. Always returns Yes or No."""
+    """Returns a real line: team allows X, Y% vs average."""
     if not bdl_key:
-        return "No"
+        return None
     cache = st.session_state.setdefault("dvp_cache", {})
     parts = [x.strip() for x in str(event or "").split("@")]
-    opp = parts[1] if len(parts) == 2 else ""
+    opp = parts[1] if len(parts) == 2 else (parts[0] if parts else "")
     key = (prop, opp)
     if key in cache:
         return cache[key]
     try:
         status, teams = bdl_get("teams", bdl_key, {"per_page": 50})
+        if status != 200:
+            return None
         token = opp.split()[-1].lower() if opp else ""
         team = next((t for t in (teams.get("data") or []) if token and token in str(t.get("full_name") or "").lower()), None)
-        if status != 200 or not team:
-            return "No"
+        if not team:
+            return None
         tid = team.get("id")
-        status, games = bdl_get("games", bdl_key, {"team_ids[]": tid, "per_page": 6})
+        abbr = team.get("abbreviation") or token.upper()
+        status, games = bdl_get("games", bdl_key, {"team_ids[]": tid, "per_page": 8})
         rows = [g for g in (games.get("data") or []) if g.get("home_team_score")][:5]
-        if not rows:
-            return "No"
-        if prop == "Points":
-            allowed = []
-            for g in rows:
-                score = g.get("visitor_team_score") if (g.get("home_team") or {}).get("id") == tid else g.get("home_team_score")
-                if score:
-                    allowed.append(float(score))
-            avg = sum(allowed) / len(allowed) if allowed else 0
-            answer = "Yes" if avg >= LEAGUE_AVG["Points"] else "No"
-        else:
-            # use points allowed as the matchup signal for assists and rebounds too
-            allowed = []
-            for g in rows:
-                score = g.get("visitor_team_score") if (g.get("home_team") or {}).get("id") == tid else g.get("home_team_score")
-                if score:
-                    allowed.append(float(score))
-            avg = sum(allowed) / len(allowed) if allowed else 0
-            answer = "Yes" if avg >= LEAGUE_AVG["Points"] else "No"
-        cache[key] = answer
-        return answer
+        allowed = []
+        for g in rows:
+            score = g.get("visitor_team_score") if (g.get("home_team") or {}).get("id") == tid else g.get("home_team_score")
+            if score:
+                allowed.append(float(score))
+        if not allowed:
+            return None
+        avg = sum(allowed) / len(allowed)
+        league = LEAGUE_AVG["Points"]
+        pct = round((avg - league) / league * 100)
+        word = "Yes" if avg >= league else "No"
+        line = f"{word}. {abbr} allows {avg:.0f} a game, {abs(pct)}% {'more' if pct >= 0 else 'less'} than average."
+        cache[key] = line
+        return line
     except Exception:
-        return "No"
+        return None
 
 
 def glow_card(c, result=None):
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
+    ranked = sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
+    next_best = ranked[1] if len(ranked) > 1 else None
     boxes = "".join(
-        f'<span class="bk {"best" if bk == c.get("book") else ""}">{BOOK_FULL.get(bk, bk)} {fmt_price(px)}</span>'
-        for bk, px in sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
+        f'<div style="background:{"#ff4fd8" if bk == c.get("book") else "#1a1024"};border:1px solid {"#ffd0f2" if bk == c.get("book") else "#3a2450"};border-radius:12px;padding:8px;text-align:center">'
+        f'<div style="font-size:.62rem;color:{"#1a1020" if bk == c.get("book") else "#cbb6e0"}">{BOOK_FULL.get(bk, bk)}</div>'
+        f'<div style="font-weight:800;font-size:1rem;color:{"#1a1020" if bk == c.get("book") else "#fff"}">{fmt_price(px)}</div>'
+        + (f'<div style="font-size:.55rem;color:#1a1020;font-weight:700">BEST</div>' if bk == c.get("book") else "")
+        + '</div>'
+        for bk, px in ranked
     )
     state = (result or c.get("decision") or "").upper()
     cls = "card"
@@ -818,7 +820,7 @@ def glow_card(c, result=None):
     why = f"{book} is hanging {price}. The pack is at {market_txt}. {more} That is the crack."
     dvp_line = ""
     if c.get("dvp"):
-        dvp_line = f'<div class="why">DVP {c.get("dvp")}. This defense {"allows" if c.get("dvp")=="Yes" else "does not allow"} it.</div>'
+        dvp_line = f'<div class="why">DVP {c.get("dvp")}</div>'
     edge_color = "#ffd84a" if (tev or 0) >= 25 else "#ff4fd8"
     return (
         f'<div class="{cls}">'
@@ -835,7 +837,8 @@ def glow_card(c, result=None):
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">PACK</span><b style="font-size:1rem">{market_txt}</b></div>'
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">VS NEXT</span><b style="font-size:1rem">{vs_next}</b></div>'
         f'<div style="background:#1a1024;border:1px solid {edge_color};border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:{edge_color}">EDGE</span><b style="font-size:1rem;color:{edge_color}">{tev if tev is not None else "—"}%</b></div></div>'
-        f'<div class="books">{boxes}</div>'
+        f'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px">{boxes}</div>'
+        f'{("<div class=why>Next best " + fmt_price(next_best[1]) + " at " + BOOK_FULL.get(next_best[0], next_best[0]) + ".</div>") if next_best else ""}'
         f'{dvp_line}'
         f'</div>'
     )
@@ -943,7 +946,7 @@ def main():
             a, b, c3 = st.columns(3)
             simple = a.toggle("TAKE only", value=True)
             petty = b.toggle("Petty ranges", value=True)
-            dvp_on = c3.toggle("DVP tag", value=False)
+            dvp_on = c3.toggle("DVP tag", value=True)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
