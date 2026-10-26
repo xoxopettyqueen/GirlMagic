@@ -821,10 +821,10 @@ def glow_card(c, result=None):
             more = f"Pays {round((c.get('price') - market) / abs(market) * 100)}% more than the pack."
         except Exception:
             more = ""
-    why = f"{book} is hanging {price}. The pack is at {market_txt}. {more} That is the crack."
+    why = f"{book} rogue move. {price} vs pack {market_txt}. Gap {gap if gap is not None else '—'}%. Edge {tev if tev is not None else '—'}%. Soft book energy."
     dvp_line = ""
     if c.get("dvp"):
-        dvp_line = f'<div class="why">DVP {c.get("dvp")}</div>'
+        dvp_line = f'<div class="why">DVP {c.get("dvp")}</div>' if c.get("dvp") and "allows" in str(c.get("dvp")) else ""
     edge_color = "#ffd84a" if (tev or 0) >= 25 else "#ff4fd8"
     return (
         f'<div class="{cls}">'
