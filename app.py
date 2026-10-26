@@ -34,7 +34,7 @@ h1{font-family:'Inter',sans-serif!important;font-weight:700!important;font-size:
 .counter.hits{background:gold;color:#1a1020;box-shadow:0 0 18px gold}
 .counter.miss{background:#2a2a34;box-shadow:0 0 12px #444}
 .game-header{font-size:1rem;font-weight:700;color:#ffb3ea;margin:16px 0 8px}
-.card{margin-bottom:14px;padding:16px 18px;border-radius:20px;background:linear-gradient(180deg,#2a1840,#140e1c);border:2px solid #ff4fd8;box-shadow:0 0 22px #ff00cc55;min-height:220px}
+.card{margin-bottom:16px;padding:18px;border-radius:22px;background:linear-gradient(165deg,#2e1a44 0%,#120c1a 70%);border:1px solid #ff4fd8;box-shadow:0 8px 28px #ff00cc33,inset 0 1px 0 #ffffff14}
 .card:hover{transform:scale(1.015);box-shadow:0 0 22px #ff00cc88}
 .card.hit{border-color:gold;box-shadow:0 0 18px gold}
 .card.miss{border-color:#553333;opacity:.8;box-shadow:none}
@@ -818,20 +818,22 @@ def glow_card(c, result=None):
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = f'<div class="why">DVP {c.get("dvp")}. This defense {"allows" if c.get("dvp")=="Yes" else "does not allow"} it.</div>'
+    edge_color = "#ffd84a" if (tev or 0) >= 25 else "#ff4fd8"
     return (
         f'<div class="{cls}">'
-        f'<div style="display:flex;justify-content:space-between;align-items:center">'
+        f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
         f'<div><div class="player">{c.get("player")}</div>'
         f'<div class="prop">{c.get("prop")} {line_txt}</div>'
-        f'<div style="color:#b9a8d4;font-size:.78rem">{c.get("event") or ""}</div></div>'
-        f'<div style="text-align:right"><div style="font-size:1.6rem;font-weight:800;color:#ffd0f2">{price}</div>'
-        f'<div style="font-size:.7rem;color:#cbb6e0">{book}</div></div></div>'
-        f'<div class="why" style="font-size:.9rem;margin:10px 0">{why}</div>'
-        f'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">'
-        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">FAIR</span><b>{fair_txt}</b></div>'
-        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">PACK</span><b>{market_txt}</b></div>'
-        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">VS NEXT</span><b>{vs_next}</b></div>'
-        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">EDGE</span><b>{tev if tev is not None else "—"}%</b></div></div>'
+        f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div>'
+        f'<div style="text-align:right">'
+        f'<div style="font-size:1.9rem;font-weight:800;color:#fff;text-shadow:0 0 16px {edge_color}">{price}</div>'
+        f'<div style="display:inline-block;margin-top:2px;background:{edge_color};color:#1a1020;font-weight:800;font-size:.68rem;padding:2px 8px;border-radius:999px">{book} BEST</div></div></div>'
+        f'<div class="why" style="font-size:.88rem;margin:12px 0 8px;line-height:1.4">{why}</div>'
+        f'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 12px">'
+        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">FAIR</span><b style="font-size:1rem">{fair_txt}</b></div>'
+        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">PACK</span><b style="font-size:1rem">{market_txt}</b></div>'
+        f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">VS NEXT</span><b style="font-size:1rem">{vs_next}</b></div>'
+        f'<div style="background:#1a1024;border:1px solid {edge_color};border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:{edge_color}">EDGE</span><b style="font-size:1rem;color:{edge_color}">{tev if tev is not None else "—"}%</b></div></div>'
         f'<div class="books">{boxes}</div>'
         f'{dvp_line}'
         f'</div>'
