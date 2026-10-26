@@ -1184,7 +1184,20 @@ def main():
         date_cut = st.selectbox("When", ["All", "Today", "Yesterday", "This week"])
         find = st.text_input("Find a player", placeholder="Kuzma, Ekholm, Gillespie")
         book_ok = set(book_f) | {BOOK_FULL.get(b, b) for b in book_f}
-        view = [r for r in mine if (not prop_f or r.get("prop") in prop_f) and (not book_f or r.get("book") in book_ok) and gap_ok(r)]
+        def date_ok(r):
+            if date_cut == "All":
+                return True
+            try:
+                ts = datetime.fromisoformat(str(r.get("graded_ts") or r.get("ts") or ""))
+            except Exception:
+                return False
+            now = datetime.now()
+            if date_cut == "Today":
+                return ts.date() == now.date()
+            if date_cut == "Yesterday":
+                return ts.date() == (now - timedelta(days=1)).date()
+            return ts.isocalendar()[:2] == now.isocalendar()[:2]
+        view = [r for r in mine if (not prop_f or r.get("prop") in prop_f) and (not book_f or r.get("book") in book_ok) and gap_ok(r) and date_ok(r)]
         if find:
             q = find.lower()
             view = [r for r in mine if q in str(r.get("player") or "").lower()]
