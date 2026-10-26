@@ -322,6 +322,29 @@ def event_matches(event, home, away):
     return (ht and ht in blob) or (at and at in blob)
 
 
+
+def first_basket(event):
+    """Who scored first. ESPN play-by-play."""
+    try:
+        parts = [x.strip() for x in str(event or "").split("@")]
+        if len(parts) != 2:
+            return None
+        day = datetime.now(timezone.utc).strftime("%Y%m%d")
+        board = espn("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", {"dates": day})
+        for ev in board.get("events") or []:
+            comp = (ev.get("competitions") or [{}])[0]
+            teams = [((c.get("team") or {}).get("displayName") or "") for c in comp.get("competitors") or []]
+            if not any(t and t.lower() in str(event).lower() for t in teams):
+                continue
+            eid = ev.get("id")
+            pbp = espn(f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary", {"event": eid})
+            for play in ((pbp.get("plays") or [])):
+                if play.get("scoringPlay") and play.get("scoreValue"):
+                    return ((play.get("participants") or [{}])[0].get("athlete") or {}).get("displayName")
+    except Exception:
+        return None
+    return None
+
 def grade_nba(ledger, bdl_key, days=14, regrade=False):
     if not bdl_key:
         return ledger, "No BallDontLie key. Add BALLDONTLIE_API_KEY to secrets."
@@ -1192,10 +1215,11 @@ def main():
         def date_ok(r):
             if date_cut == "All":
                 return True
+            raw = str(r.get("graded_ts") or r.get("ts") or "")[:19]
             try:
-                ts = datetime.fromisoformat(str(r.get("graded_ts") or r.get("ts") or ""))
+                ts = datetime.fromisoformat(raw)
             except Exception:
-                return False
+                return date_cut == "All"
             now = datetime.now()
             if date_cut == "Today":
                 return ts.date() == now.date()
