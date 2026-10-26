@@ -225,6 +225,8 @@ def card_score(true_ev, spike):
 def plain_reason(c):
     bk = c.get("book") or "A book"
     tev = c.get("true_ev")
+    if isinstance(tev, (int, float)) and tev > 18:
+        tev = 18
     tev_txt = f"{tev}%" if tev is not None else "n/a"
     gap = c.get("ev_gap")
     gap_txt = f"{gap}%" if gap is not None else "n/a"
@@ -768,6 +770,8 @@ def dvp_answer(player, prop, event, bdl_key):
 
 def glow_card(c, result=None):
     tev = c.get("true_ev")
+    if isinstance(tev, (int, float)) and tev > 18:
+        tev = 18
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
     prices = c.get("book_prices") or {c.get("book"): c.get("price")}
     ranked = sorted(prices.items(), key=lambda z: -(z[1] or 0))[:6]
@@ -789,6 +793,8 @@ def glow_card(c, result=None):
     elif state in ("LOCKED", "WAITING", ""):
         cls += " wait"
     tev = c.get("true_ev")
+    if isinstance(tev, (int, float)) and tev > 18:
+        tev = 18
     if (tev or 0) >= 25:
         cls += " take"
     gap = c.get("ev_gap")
@@ -954,7 +960,6 @@ def main():
             a, b, c3 = st.columns(3)
             simple = a.toggle("TAKE only", value=True)
             petty = b.toggle("Petty ranges", value=True)
-            dvp_on = c3.toggle("DVP tag", value=True)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", -200, 2000, 100, 25)
@@ -976,8 +981,6 @@ def main():
                 cols = st.columns(2)
                 for i, x in enumerate(rows):
                     with cols[i % 2]:
-                        if dvp_on and sport == "NBA" and not x.get("dvp"):
-                            x["dvp"] = dvp_answer(x.get("player"), x.get("prop"), x.get("event"), bdl_key)
                         st.markdown(glow_card(x), unsafe_allow_html=True)
                         if st.button("LOCK THIS PLAY 💅", key=f"lk_{sport}_{page}_{game}_{i}_{x['player']}_{x['line']}"):
                             ledger = load_ledger()
