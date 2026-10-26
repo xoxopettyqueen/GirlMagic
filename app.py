@@ -697,9 +697,9 @@ def worth_locking(c):
         return False
     if (c.get("price") or 0) < 500:
         return False
-    if (c.get("true_ev") or 0) < 8:
+    if (c.get("true_ev") or 0) < 12:
         return False
-    if (c.get("ev_gap") or 0) < 15:
+    if (c.get("ev_gap") or 0) < 25:
         return False
     if not in_user_range(c.get("prop"), c.get("line")):
         return False
