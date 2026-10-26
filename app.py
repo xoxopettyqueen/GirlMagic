@@ -105,7 +105,7 @@ def in_user_range(prop, line):
         return 8 <= line <= 15
     if prop == "Rebounds":
         return 4 <= line <= 10
-    return prop in ("DoubleDouble", "Anytime TD")
+    return prop in ("DoubleDouble", "TripleDouble", "FirstBasket", "Anytime TD")
 
 
 def line_ok(prop, line):
@@ -237,6 +237,10 @@ def plain_reason(c):
 
 def normalize_prop(name):
     n = str(name or "").lower().replace(" ", "").replace("_", "").replace("-", "")
+    if "triple" in n:
+        return "TripleDouble"
+    if "first" in n and "basket" in n:
+        return "FirstBasket"
     if "double" in n or n in ("dd",):
         return "DoubleDouble"
     if "assist" in n:
@@ -978,7 +982,7 @@ def main():
     if st.button("Pull the chaos board", type="primary", use_container_width=True):
         sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
         markets = (
-            "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double"
+            "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double,player_triple_double,player_first_basket"
             if sport == "NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
         )
         with st.spinner(f"Pulling {sport}…"):
@@ -1043,7 +1047,7 @@ def main():
             petty = b.toggle("Petty ranges", value=True)
             props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
-            min_odds = st.slider("Min odds", -200, 2000, 100, 25)
+            min_odds = st.slider("Min odds", 500, 12000, 500, 50)
             now_ts = datetime.now(timezone.utc)
             def fresh(x):
                 try:
