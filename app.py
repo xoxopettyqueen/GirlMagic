@@ -99,13 +99,15 @@ def in_user_range(prop, line):
         line = float(line)
     except Exception:
         return False
+    if prop == "Threes":
+        return 2 <= line <= 5
     if prop == "Assists":
         return 3 <= line <= 8
     if prop == "Points":
         return 8 <= line <= 15
     if prop == "Rebounds":
         return 4 <= line <= 10
-    return prop in ("DoubleDouble", "TripleDouble", "FirstBasket", "Anytime TD")
+    return prop in ("DoubleDouble", "TripleDouble", "FirstBasket", "Anytime TD", "Threes")
 
 
 def line_ok(prop, line):
@@ -237,6 +239,8 @@ def plain_reason(c):
 
 def normalize_prop(name):
     n = str(name or "").lower().replace(" ", "").replace("_", "").replace("-", "")
+    if "three" in n or "3pm" in n or "threepoint" in n:
+        return "Threes"
     if "triple" in n:
         return "TripleDouble"
     if "first" in n and "basket" in n:
@@ -982,7 +986,7 @@ def main():
     if st.button("Pull the chaos board", type="primary", use_container_width=True):
         sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
         markets = (
-            "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double,player_triple_double,player_first_basket"
+            "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_threes,player_threes_alternate,player_double_double,player_triple_double,player_first_basket"
             if sport == "NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
         )
         with st.spinner(f"Pulling {sport}…"):
