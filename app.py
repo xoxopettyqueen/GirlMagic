@@ -833,7 +833,7 @@ def glow_card(c, result=None):
     why = f"{book} rogue move 💋 — {price} vs pack {market_txt}. Gap screaming {gap if gap is not None else '—'}%. Edge queen {tev if tev is not None else '—'}%. Soft book energy 💅"
     dvp_line = ""
     if c.get("dvp"):
-        dvp_line = f'<div class="why">DVP {c.get("dvp")}</div>' if c.get("dvp") and "allows" in str(c.get("dvp")) else ""
+        dvp_line = ""
     edge_color = "#ffd84a" if (tev or 0) >= 25 else "#ff4fd8"
     return (
         f'<div class="{cls}">'
@@ -850,6 +850,7 @@ def glow_card(c, result=None):
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">PACK</span><b style="font-size:1rem">{market_txt}</b></div>'
         f'<div style="background:#1a1024;border:1px solid #3a2450;border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:#cbb6e0">VS NEXT</span><b style="font-size:1rem">{vs_next}</b></div>'
         f'<div style="background:#1a1024;border:1px solid {edge_color};border-radius:12px;padding:8px;text-align:center"><span style="display:block;font-size:.58rem;letter-spacing:.08em;color:{edge_color}">EDGE</span><b style="font-size:1rem;color:{edge_color}">{tev if tev is not None else "—"}%</b></div></div>'
+        f'<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:.65rem;color:#cbb6e0"><span>Fair {fair_txt}</span><span>Longest {price}</span></div><div style="height:8px;border-radius:999px;background:linear-gradient(90deg,#C07CFF,#FFD447);margin-top:3px"></div></div>'
         f'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px">{boxes}</div>'
         f'{("<div class=why>Next best " + fmt_price(next_best[1]) + " at " + BOOK_FULL.get(next_best[0], next_best[0]) + ".</div>") if next_best else ""}'
         f'{dvp_line}'
