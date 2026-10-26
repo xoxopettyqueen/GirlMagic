@@ -1066,8 +1066,8 @@ def main():
         f1, f2, f3 = st.columns(3)
         prop_opts = sorted({r.get("prop") for r in mine if r.get("prop")})
         book_opts = sorted({r.get("book") for r in mine if r.get("book")})
-        prop_f = f1.multiselect("Prop", prop_opts, default=prop_opts, key=f"track_prop_{sport}")
-        book_f = f2.multiselect("Book", book_opts, default=book_opts, key=f"track_book_{sport}")
+        prop_f = f1.multiselect("Prop", prop_opts)
+        book_f = f2.multiselect("Book", book_opts)
         gap_f = f3.selectbox("Gap", ["All", "0–20", "21–40", "41+"])
         def gap_ok(r):
             g = r.get("ev_gap") or 0
@@ -1080,7 +1080,7 @@ def main():
             return True
         find = st.text_input("Find a player", placeholder="Kuzma, Ekholm, Gillespie")
         book_ok = set(book_f) | {BOOK_FULL.get(b, b) for b in book_f}
-        view = [r for r in mine if r.get("prop") in prop_f and (r.get("book") in book_ok) and gap_ok(r)]
+        view = [r for r in mine if (not prop_f or r.get("prop") in prop_f) and (not book_f or r.get("book") in book_ok) and gap_ok(r)]
         if find:
             q = find.lower()
             view = [r for r in mine if q in str(r.get("player") or "").lower()]
