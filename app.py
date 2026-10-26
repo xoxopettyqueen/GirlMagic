@@ -741,14 +741,14 @@ def dvp_answer(player, prop, event, bdl_key):
             avg = sum(allowed) / len(allowed) if allowed else 0
             answer = "Yes" if avg >= LEAGUE_AVG["Points"] else "No"
         else:
-            ids = [g.get("id") for g in rows if g.get("id")]
-            status, stats = bdl_get("stats", bdl_key, {"game_ids[]": ids, "per_page": 100})
-            field = "ast" if prop == "Assists" else "reb"
-            total = sum(float(s.get(field) or 0) for s in (stats.get("data") or []) if ((s.get("team") or {}).get("id") != tid))
-            games_n = max(1, len(rows))
-            avg = total / games_n
-            bar = LEAGUE_AVG.get(prop, 25)
-            answer = "Yes" if avg >= bar else "No"
+            # use points allowed as the matchup signal for assists and rebounds too
+            allowed = []
+            for g in rows:
+                score = g.get("visitor_team_score") if (g.get("home_team") or {}).get("id") == tid else g.get("home_team_score")
+                if score:
+                    allowed.append(float(score))
+            avg = sum(allowed) / len(allowed) if allowed else 0
+            answer = "Yes" if avg >= LEAGUE_AVG["Points"] else "No"
         cache[key] = answer
         return answer
     except Exception:
@@ -786,33 +786,35 @@ def glow_card(c, result=None):
         f"Fair value {fair_txt}. Market {market_txt}. "
         f"Gap {gap if gap is not None else '—'}%. Edge {tev if tev is not None else '—'}%."
     )
-    play = f"{c.get('book') or 'A book'} is paying {fmt_price(c.get('price'))}. The pack is at {market_txt}. That gap is the crack. These books are cooked."
+    book = c.get("book") or "A book"
+    price = fmt_price(c.get("price"))
+    more = ""
+    if isinstance(market, (int, float)) and market and c.get("price"):
+        try:
+            more = f"Pays {round((c.get('price') - market) / abs(market) * 100)}% more than the pack."
+        except Exception:
+            more = ""
+    why = f"{book} is hanging {price}. The pack is at {market_txt}. {more} That is the crack."
+    dvp_line = ""
+    if c.get("dvp"):
+        dvp_line = f'<div class="why">DVP {c.get("dvp")}. This defense {"allows" if c.get("dvp")=="Yes" else "does not allow"} it.</div>'
     return (
         f'<div class="{cls}">'
-        f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+        f'<div style="display:flex;justify-content:space-between;align-items:center">'
         f'<div><div class="player">{c.get("player")}</div>'
-        f'<div class="prop">{c.get("prop")} {line_txt}{got}</div>'
-        f'<div style="color:#d4c4ea;font-size:.8rem">{c.get("event") or ""}</div></div>'
-        f'<div style="text-align:right"><span class="pill">{state or "TAKE"}</span>'
-        f'<div class="ev" style="font-size:1.3rem">{tev if tev is not None else "—"}%</div>'
-        f'<div style="color:#ffe27a;font-size:.75rem">edge</div></div></div>'
-        f'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0">'
-        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">BEST</span><b>{fmt_price(c.get("price"))}</b></div>'
+        f'<div class="prop">{c.get("prop")} {line_txt}</div>'
+        f'<div style="color:#b9a8d4;font-size:.78rem">{c.get("event") or ""}</div></div>'
+        f'<div style="text-align:right"><div style="font-size:1.6rem;font-weight:800;color:#ffd0f2">{price}</div>'
+        f'<div style="font-size:.7rem;color:#cbb6e0">{book}</div></div></div>'
+        f'<div class="why" style="font-size:.9rem;margin:10px 0">{why}</div>'
+        f'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">'
         f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">PACK</span><b>{market_txt}</b></div>'
         f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">GAP</span><b>{gap if gap is not None else "—"}%</b></div>'
-        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">FAIR</span><b>{fair_txt}</b></div></div>'
+        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">EDGE</span><b>{tev if tev is not None else "—"}%</b></div></div>'
         f'<div class="books">{boxes}</div>'
-        f'<div class="why" style="font-size:.85rem;margin-top:10px">{play}</div>'
-        + (f'<div class="why">DVP {c.get("dvp")}. The defense {"allows" if c.get("dvp")=="Yes" else "does not allow"} this.</div>' if c.get("dvp") else "")
-        + (f'<div class="why" style="color:#ffe27a">{note}</div>' if note else "")
-        + '</div>'
+        f'{dvp_line}'
+        f'</div>'
     )
-
-
-def chip(label, hits, n):
-    rate = round(100 * hits / n) if n else 0
-    hot = " hot" if n >= 8 and hits / n >= 0.15 else ""
-    return f'<div class="rate-chip{hot}"><b>{rate}%</b><span>{label}<br>{hits} of {n}</span></div>'
 
 
 def counters(locked, finished, hits, misses):
@@ -885,7 +887,7 @@ def main():
                 if lane_count >= 300:
                     break
                 pkey = (_norm_name(c["player"]), c["event"])
-                if per_player[pkey] >= 2:
+                if per_player[pkey] >= 6:
                     continue
                 key = (c["sport"], _norm_name(c["player"]), c["prop"], round(float(c["line"]), 1), c["event"])
                 if key in seen:
