@@ -819,7 +819,7 @@ def player_photo(player, bdl_key):
         status, found = bdl_get("players", bdl_key, {"search": str(player).split()[-1], "per_page": 5})
         me = next((p for p in (found.get("data") or []) if _norm_name(f"{p.get('first_name','')} {p.get('last_name','')}") == _norm_name(player)), None)
         if me and me.get("id"):
-            url = f"https://cdn.nba.com/headshots/nba/latest/260x190/{me['id']}.png"
+            url = f"https://a.espncdn.com/i/headshots/nba/players/full/{me['id']}.png"
             cache[player] = url
             return url
     except Exception:
