@@ -719,39 +719,47 @@ def fmt_price(px):
 LEAGUE_AVG = {"Points": 112.0, "Assists": 26.0, "Rebounds": 44.0}
 
 def dvp_answer(player, prop, event, bdl_key):
-    """Returns a real line: team allows X, Y% vs average."""
-    if not bdl_key:
+    """What this defense allows of this stat to this position."""
+    if not bdl_key or prop not in ("Points", "Rebounds", "Assists"):
         return None
     cache = st.session_state.setdefault("dvp_cache", {})
     parts = [x.strip() for x in str(event or "").split("@")]
-    opp = parts[1] if len(parts) == 2 else (parts[0] if parts else "")
-    key = (prop, opp)
+    opp = parts[1] if len(parts) == 2 else ""
+    key = (player, prop, opp)
     if key in cache:
         return cache[key]
+    field = {"Points": "pts", "Rebounds": "reb", "Assists": "ast"}[prop]
     try:
+        status, found = bdl_get("players", bdl_key, {"search": str(player).split()[-1], "per_page": 10})
+        me = next((p for p in (found.get("data") or []) if _norm_name(f"{p.get('first_name','')} {p.get('last_name','')}") == _norm_name(player)), None)
+        pos = (me or {}).get("position") or ""
+        pos = pos.split("-")[0].strip()
         status, teams = bdl_get("teams", bdl_key, {"per_page": 50})
-        if status != 200:
-            return None
         token = opp.split()[-1].lower() if opp else ""
         team = next((t for t in (teams.get("data") or []) if token and token in str(t.get("full_name") or "").lower()), None)
-        if not team:
+        if not team or not pos:
             return None
         tid = team.get("id")
         abbr = team.get("abbreviation") or token.upper()
-        status, games = bdl_get("games", bdl_key, {"team_ids[]": tid, "per_page": 8})
-        rows = [g for g in (games.get("data") or []) if g.get("home_team_score")][:5]
+        status, games = bdl_get("games", bdl_key, {"team_ids[]": tid, "per_page": 6})
+        ids = [g.get("id") for g in (games.get("data") or []) if g.get("home_team_score")][:4]
+        if not ids:
+            return None
+        status, stats = bdl_get("stats", bdl_key, {"game_ids[]": ids, "per_page": 100})
         allowed = []
-        for g in rows:
-            score = g.get("visitor_team_score") if (g.get("home_team") or {}).get("id") == tid else g.get("home_team_score")
-            if score:
-                allowed.append(float(score))
+        for s in stats.get("data") or []:
+            if ((s.get("team") or {}).get("id") == tid):
+                continue
+            s_pos = ((s.get("player") or {}).get("position") or "").split("-")[0].strip()
+            if s_pos == pos:
+                allowed.append(float(s.get(field) or 0))
         if not allowed:
             return None
-        avg = sum(allowed) / len(allowed)
-        league = LEAGUE_AVG["Points"]
-        pct = round((avg - league) / league * 100)
+        avg = sum(allowed) / max(1, len(ids))
+        league = {"Points": 15, "Rebounds": 6, "Assists": 4}.get(prop, 10)
+        pct = round((avg - league) / league * 100) if league else 0
         word = "Yes" if avg >= league else "No"
-        line = f"{word}. {abbr} allows {avg:.0f} a game, {abs(pct)}% {'more' if pct >= 0 else 'less'} than average."
+        line = f"{word}. {abbr} allows {avg:.1f} {prop.lower()} a game to {pos}, {abs(pct)}% {'more' if pct >= 0 else 'less'} than average."
         cache[key] = line
         return line
     except Exception:
