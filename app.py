@@ -187,10 +187,14 @@ def implied(price):
     return None
 
 
+SHARP = {"PIN", "CIR", "BM"}
+
 def weighted_fair_prob(book_prices, weights=None):
     weights = weights or load_auto_weights()
+    sharp_prices = {bk: px for bk, px in (book_prices or {}).items() if bk in SHARP}
+    source = sharp_prices if sharp_prices else (book_prices or {})
     weighted, total_w = [], 0.0
-    for bk, price in (book_prices or {}).items():
+    for bk, price in source.items():
         w = float(weights.get(bk, 1.0) or 1.0)
         imp = implied(price)
         if w > 0 and imp and 0 < imp < 1:
