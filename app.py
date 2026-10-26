@@ -1317,49 +1317,64 @@ def main():
             if not graded:
                 st.info("Grade a slate and the charts fill in.")
             else:
+                total_g = len(graded)
+                hits_g = sum(1 for r in graded if r.get("result") == "HIT")
+                st.markdown(f"**The receipts.** {total_g} graded. {hits_g} cashed. {total_g - hits_g} missed.")
+                def strength(n):
+                    if n < 5:
+                        return "Too early", "#6b6b6b"
+                    if n < 15:
+                        return "Developing", "#C07CFF"
+                    if n < 50:
+                        return "Getting real", "#FF4EC8"
+                    return "Proven", "#FFD447"
                 by_book = defaultdict(lambda: {"hit": 0, "miss": 0})
                 by_prop = defaultdict(lambda: {"hit": 0, "miss": 0})
+                combo = defaultdict(lambda: {"hit": 0, "miss": 0})
+                gaps = defaultdict(lambda: {"hit": 0, "miss": 0})
+                odds = defaultdict(lambda: {"hit": 0, "miss": 0})
                 for r in graded:
                     bk = BOOK_FULL.get(r.get("book"), r.get("book") or "?")
                     by_book[bk]["hit" if r.get("result") == "HIT" else "miss"] += 1
                     by_prop[r.get("prop") or "?"]["hit" if r.get("result") == "HIT" else "miss"] += 1
-                st.markdown("**By book**")
-                cols = st.columns(4)
-                for i, (bk, s) in enumerate(sorted(by_book.items(), key=lambda z: -(z[1]["hit"]))):
-                    total = s["hit"] + s["miss"]
-                    pct = round(s["hit"] / total * 100, 1) if total else 0
-                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
-                    cols[i % 4].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1.3rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{bk}</div><div style="color:#cbb6e0;font-size:.75rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
-                st.markdown("**Prop on book**")
-                combo = defaultdict(lambda: {"hit": 0, "miss": 0})
-                gaps = defaultdict(lambda: {"hit": 0, "miss": 0})
-                for r in graded:
-                    bk = BOOK_FULL.get(r.get("book"), r.get("book") or "?")
                     combo[f"{r.get('prop')} · {bk}"]["hit" if r.get("result") == "HIT" else "miss"] += 1
-                    g = r.get("ev_gap") or 0
-                    band = "0–20" if g < 21 else "21–40" if g <= 40 else "41+"
-                    gaps[band]["hit" if r.get("result") == "HIT" else "miss"] += 1
-                cols3 = st.columns(3)
-                for i, (k, s) in enumerate(sorted(combo.items(), key=lambda z: -(z[1]["hit"]/(z[1]["hit"]+z[1]["miss"]) if z[1]["hit"]+z[1]["miss"] else 0))[:9]):
+                    g = float(r.get("ev_gap") or 0)
+                    gaps["0–20" if g < 21 else "21–40" if g <= 40 else "41+"]["hit" if r.get("result") == "HIT" else "miss"] += 1
+                    px = float(r.get("price") or 0)
+                    band = "+500–749" if px < 750 else "+750–999" if px < 1000 else "+1000–1499" if px < 1500 else "+1500–2499" if px < 2500 else "+2500–3999" if px < 4000 else "+4000+"
+                    odds[band]["hit" if r.get("result") == "HIT" else "miss"] += 1
+                st.markdown("**What is working**")
+                ranked = sorted(by_book.items(), key=lambda z: -(z[1]["hit"]/(z[1]["hit"]+z[1]["miss"]) if z[1]["hit"]+z[1]["miss"] else 0))
+                cols = st.columns(4)
+                for i, (bk, s) in enumerate(ranked[:4]):
                     total = s["hit"] + s["miss"]
                     pct = round(s["hit"] / total * 100, 1) if total else 0
-                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
-                    cols3[i % 3].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:10px;text-align:center;margin-bottom:8px"><div style="font-size:1.1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff;font-size:.8rem">{k}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
+                    label, color = strength(total)
+                    cols[i].markdown(f'<div style="background:#14141A;border-left:4px solid {color};border-radius:12px;padding:12px;margin-bottom:8px"><div style="font-size:1.2rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{bk}</div><div style="color:#cbb6e0;font-size:.75rem">{s["hit"]} of {total}</div><div style="color:{color};font-size:.65rem">{label}</div></div>', unsafe_allow_html=True)
+                st.markdown("**Prop on book**")
+                cols2 = st.columns(3)
+                top_combo = sorted(combo.items(), key=lambda z: -(z[1]["hit"]/(z[1]["hit"]+z[1]["miss"]) if z[1]["hit"]+z[1]["miss"] else 0))[:6]
+                for i, (k, s) in enumerate(top_combo):
+                    total = s["hit"] + s["miss"]
+                    pct = round(s["hit"] / total * 100, 1) if total else 0
+                    label, color = strength(total)
+                    cols2[i % 3].markdown(f'<div style="background:#14141A;border-left:4px solid {color};border-radius:12px;padding:10px;margin-bottom:8px"><div style="font-size:1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff;font-size:.8rem">{k}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total} · {label}</div></div>', unsafe_allow_html=True)
                 st.markdown("**By gap**")
-                cols4 = st.columns(3)
+                cols3 = st.columns(3)
                 for i, band in enumerate(["0–20", "21–40", "41+"]):
                     s = gaps[band]
                     total = s["hit"] + s["miss"]
                     pct = round(s["hit"] / total * 100, 1) if total else 0
-                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
-                    cols4[i].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:10px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">Gap {band}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
-                st.markdown("**By prop**")
-                cols2 = st.columns(4)
-                for i, (prop, s) in enumerate(sorted(by_prop.items(), key=lambda z: -(z[1]["hit"]))):
+                    label, color = strength(total)
+                    cols3[i].markdown(f'<div style="background:#14141A;border-left:4px solid {color};border-radius:12px;padding:10px"><div style="font-size:1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">Gap {band}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total} · {label}</div></div>', unsafe_allow_html=True)
+                st.markdown("**By odds**")
+                cols4 = st.columns(3)
+                for i, band in enumerate(["+500–749", "+750–999", "+1000–1499", "+1500–2499", "+2500–3999", "+4000+"]):
+                    s = odds[band]
                     total = s["hit"] + s["miss"]
                     pct = round(s["hit"] / total * 100, 1) if total else 0
-                    color = "#FFD447" if pct >= 10 else "#FF4EC8" if pct > 0 else "#3a2450"
-                    cols2[i % 4].markdown(f'<div style="background:#14141A;border:2px solid {color};border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1.3rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{prop}</div><div style="color:#cbb6e0;font-size:.75rem">{s["hit"]} of {total}</div></div>', unsafe_allow_html=True)
+                    label, color = strength(total)
+                    cols4[i % 3].markdown(f'<div style="background:#14141A;border-left:4px solid {color};border-radius:12px;padding:10px;margin-bottom:8px"><div style="font-size:1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{band}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total} · {label}</div></div>', unsafe_allow_html=True)
         st.markdown("**What cashed**")
         all_books = ["DraftKings", "FanDuel", "BetMGM", "Caesars", "Bet365", "Fanatics", "Hard Rock", "theScore"]
         short_to_full = {"DK": "DraftKings", "FD": "FanDuel", "MGM": "BetMGM", "CZR": "Caesars", "365": "Bet365", "FAN": "Fanatics", "HR": "Hard Rock", "SCR": "theScore"}
