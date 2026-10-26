@@ -808,6 +808,25 @@ def team_logo(event, sport):
     league = "nba" if sport == "NBA" else "nfl"
     return f"https://a.espncdn.com/i/teamlogos/{league}/500/{abbr}.png"
 
+
+def player_photo(player, bdl_key):
+    if not bdl_key:
+        return ""
+    cache = st.session_state.setdefault("photo_cache", {})
+    if player in cache:
+        return cache[player]
+    try:
+        status, found = bdl_get("players", bdl_key, {"search": str(player).split()[-1], "per_page": 5})
+        me = next((p for p in (found.get("data") or []) if _norm_name(f"{p.get('first_name','')} {p.get('last_name','')}") == _norm_name(player)), None)
+        if me and me.get("id"):
+            url = f"https://cdn.nba.com/headshots/nba/latest/260x190/{me['id']}.png"
+            cache[player] = url
+            return url
+    except Exception:
+        pass
+    cache[player] = ""
+    return ""
+
 def glow_card(c, result=None):
     tev = c.get("true_ev")
     line_txt = "Yes" if c.get("prop") in ("DoubleDouble", "Anytime TD") else f"o{c.get('line')}"
@@ -902,7 +921,7 @@ def glow_card(c, result=None):
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
-        f'<div style="display:flex;gap:10px;align-items:center"><img src="{team_logo(c.get("event"), c.get("sport"))}" style="width:36px;height:36px;border-radius:50%;object-fit:contain" onerror="this.remove()">'
+        f'<div style="display:flex;gap:10px;align-items:center"><img src="{player_photo(c.get("player"), secret("BALLDONTLIE_API_KEY"))}" style="width:48px;height:48px;border-radius:12px;object-fit:cover" onerror="this.remove()"><img src="{team_logo(c.get("event"), c.get("sport"))}" style="width:32px;height:32px;border-radius:50%;object-fit:contain" onerror="this.remove()">'
         f'<div><div class="player" style="font-size:1.6rem;text-shadow:0 0 12px #FF4EC8">{c.get("player")}</div>'
         f'<div class="prop" style="color:#FFD447;font-weight:700">{c.get("prop")} {line_txt}</div>'
         f'<div style="color:#b9a8d4;font-size:.75rem">{c.get("event") or ""}</div></div></div>'
