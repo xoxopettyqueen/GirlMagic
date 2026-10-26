@@ -1001,8 +1001,7 @@ def counters(locked, finished, hits, misses):
 
 
 def main():
-    st.markdown("# ✨ Girl Magic Odds 2.0")
-    st.caption("Be a better bettor. Crack the code. These books are cooked.")
+    st.markdown("""<div style="padding:24px 0 8px"><div style="font-size:2.4rem;font-weight:800;background:linear-gradient(90deg,#FF4EC8,#C07CFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Girl Magic Odds 2.0</div><div style="color:#FFD447;font-weight:700;letter-spacing:.12em;font-size:.85rem">THE CHAOS ENGINE</div><div style="color:#cbb6e0;margin-top:4px">The odds already said it. We are just translating the disrespect.</div></div>""", unsafe_allow_html=True)
     st.markdown('<div class="pulse-bar"></div>', unsafe_allow_html=True)
     st.markdown('<div class="how-to">Be a better bettor. Crack the code. The long number is the tell. These books are cooked.</div>', unsafe_allow_html=True)
     api_key = secret("ODDS_API_KEY") or st.text_input("Odds API Key", type="password")
@@ -1250,7 +1249,7 @@ def main():
         if find:
             q = find.lower()
             view = [r for r in mine if q in str(r.get("player") or "").lower()]
-        tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "Read the Charts"])
+        tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "The Lab"])
 
         def show(rows, key):
             if not rows:
@@ -1294,7 +1293,7 @@ def main():
                         f'<b>{r.get("prop")} {r.get("line")}{got}</b> — {res}'
                         f'<div style="color:#ddd;font-size:.75rem;margin-top:4px">'
                         f'Locked {r.get("price")} at {r.get("book")}. Gap {r.get("ev_gap") or "—"}%. Edge {r.get("true_ev") or "—"}%.'
-                        f'</div><div style="color:#ffe27a;font-size:.72rem">{note or "Waiting on the box score."}</div></div>'
+                        f'</div><div style="color:#ffe27a;font-size:.72rem">{note or ("Still cooking." if r.get("result") not in ("HIT", "MISS") else "")}</div></div>'
                     )
                 with pair[n % 2]:
                     st.markdown(
