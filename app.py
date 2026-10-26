@@ -778,7 +778,23 @@ def glow_card(c, result=None):
     locked = c.get("ts") or "—"
     graded = c.get("graded_ts") or "—"
     fair = c.get("fair_prob")
-    fair_txt = f"{fair}%" if fair else "—"
+    def prob_to_american(pct):
+        try:
+            p = float(pct) / 100
+            if p <= 0 or p >= 1:
+                return None
+            return round(-100 * p / (1 - p)) if p >= 0.5 else round(100 * (1 - p) / p)
+        except Exception:
+            return None
+    fair_price = prob_to_american(fair)
+    fair_txt = f"{fair_price:+d}" if fair_price else "—"
+    vals = sorted([v for v in prices.values() if isinstance(v, (int, float))], reverse=True)
+    vs_next = "—"
+    if len(vals) >= 2 and vals[1]:
+        try:
+            vs_next = f"{round((vals[0] - vals[1]) / abs(vals[1]) * 100)}%"
+        except Exception:
+            vs_next = "—"
     market = c.get("median")
     market_txt = f"{int(market):+d}" if isinstance(market, (int, float)) else "—"
     desc = (
@@ -807,9 +823,10 @@ def glow_card(c, result=None):
         f'<div style="text-align:right"><div style="font-size:1.6rem;font-weight:800;color:#ffd0f2">{price}</div>'
         f'<div style="font-size:.7rem;color:#cbb6e0">{book}</div></div></div>'
         f'<div class="why" style="font-size:.9rem;margin:10px 0">{why}</div>'
-        f'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">'
+        f'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">'
+        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">FAIR</span><b>{fair_txt}</b></div>'
         f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">PACK</span><b>{market_txt}</b></div>'
-        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">GAP</span><b>{gap if gap is not None else "—"}%</b></div>'
+        f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">VS NEXT</span><b>{vs_next}</b></div>'
         f'<div style="background:#1c1228;border-radius:10px;padding:8px;text-align:center"><span style="display:block;font-size:.6rem;color:#cbb6e0">EDGE</span><b>{tev if tev is not None else "—"}%</b></div></div>'
         f'<div class="books">{boxes}</div>'
         f'{dvp_line}'
