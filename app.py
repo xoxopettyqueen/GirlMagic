@@ -779,9 +779,9 @@ def glow_card(c, result=None):
         cls += " miss"
     elif state in ("LOCKED", "WAITING", ""):
         cls += " wait"
+    tev = c.get("true_ev")
     if (tev or 0) >= 25:
         cls += " take"
-    tev = c.get("true_ev")
     gap = c.get("ev_gap")
     stat = c.get("player_stat")
     got = f" · got {stat}" if stat is not None else ""
