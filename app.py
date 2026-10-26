@@ -1249,7 +1249,7 @@ def main():
         if find:
             q = find.lower()
             view = [r for r in view if q in str(r.get("player") or "").lower()]
-        st.caption(f"{len(view)} match these filters.")
+        st.caption(f"{len(view)} match these filters." + (" The rest have no date, so they only show on All." if date_cut != "All" and not view else ""))
         tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "The Lab"])
 
         def show(rows, key):
