@@ -922,7 +922,6 @@ def main():
             ledger = load_ledger()
             seen = {(r.get("sport"), _norm_name(r.get("player")), r.get("prop"), round(float(r.get("line") or 0), 1), r.get("event")) for r in ledger}
             added = 0
-            per_player = defaultdict(int)
             lane_count = sum(1 for r in ledger if r.get("sport") == sport)
             ranked = sorted([c for c in cards if worth_locking(c)], key=lambda z: -(z.get("true_ev") or 0))
             for c in ranked:
@@ -937,7 +936,6 @@ def main():
                 })
                 seen.add(key)
                 added += 1
-                per_player[pkey] += 1
                 lane_count += 1
             save_ledger(ledger)
             st.toast(f"{sum(1 for c in cards if c.get('decision')=='TAKE')} TAKE · tracked {added}")
