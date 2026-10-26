@@ -957,13 +957,13 @@ def glow_card(c, result=None):
     if both:
         tags.append("High Confidence")
         tag_txt = " · ".join(tags)
-    why = f"{book} is hanging {price}. The pack is {market_txt}."
+    why = f"{book} is paying {price}. The pack is {market_txt}. Fair is {fair_txt}. That is the crack."
     dvp_line = ""
     if c.get("dvp"):
         dvp_line = ""
     edge_color = "#ffd84a" if (tev or 0) >= 25 else "#ff4fd8"
     take_score = min(100, round((tev or 0) * 2 + (gap or 0)))
-    gauge = f'<div style="width:64px;height:64px;border-radius:50%;background:conic-gradient(#FFD447 {take_score}%, #2a1a3a 0);display:flex;align-items:center;justify-content:center"><div style="width:48px;height:48px;border-radius:50%;background:#14141A;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#FFD447">{take_score}</div></div>'
+    gauge = f'<div style="text-align:center"><div style="width:64px;height:64px;border-radius:50%;background:conic-gradient(#FFD447 {take_score}%, #2a1a3a 0);display:flex;align-items:center;justify-content:center"><div style="width:48px;height:48px;border-radius:50%;background:#14141A;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#FFD447">{take_score}</div></div><div style="font-size:.55rem;color:#FFD447;margin-top:2px">LOUD</div></div>'
     return (
         f'<div class="{cls}">'
         f'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
