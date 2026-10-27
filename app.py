@@ -1023,7 +1023,7 @@ def main():
     if st.button("Pull the chaos board", type="primary", use_container_width=True):
         sport_key = "basketball_nba" if sport == "NBA" else "americanfootball_nfl"
         markets = (
-            "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_threes,player_threes_alternate,player_double_double,player_triple_double,player_first_basket"
+            "player_assists,player_assists_alternate,player_points,player_points_alternate,player_rebounds,player_rebounds_alternate,player_double_double"
             if sport == "NBA" else "player_anytime_td,player_reception_yds,player_reception_yds_alternate"
         )
         with st.spinner(f"Pulling {sport}…"):
@@ -1086,7 +1086,7 @@ def main():
             a, b, c3 = st.columns(3)
             simple = a.toggle("TAKE only", value=True)
             petty = b.toggle("Petty ranges", value=True)
-            props = ["Assists", "Points", "Rebounds", "Threes", "DoubleDouble", "TripleDouble", "FirstBasket"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
+            props = ["Assists", "Points", "Rebounds", "DoubleDouble"] if sport == "NBA" else ["Anytime TD", "Rec Yards"]
             prop_filter = st.multiselect("Prop", props, default=props, key=f"board_prop_{sport}")
             min_odds = st.slider("Min odds", 500, 12000, 500, 50)
             now_ts = datetime.now(timezone.utc)
