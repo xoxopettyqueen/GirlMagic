@@ -1210,8 +1210,8 @@ def main():
         regrade = st.checkbox("Regrade, clear old hits first")
         if st.button("Clear old ungraded"):
             led = load_ledger()
-            cut = datetime.now() - timedelta(days=1)
-            led = [r for r in led if r.get("result") in ("HIT", "MISS") or (datetime.fromisoformat(str(r.get("ts") or "2000-01-01")) > cut)]
+            today = datetime.now().date().isoformat()
+            led = [r for r in led if r.get("result") in ("HIT", "MISS") or str(r.get("ts") or "")[:10] >= today]
             save_ledger(led)
             st.success("Old ungraded plays cleared.")
             st.rerun()
