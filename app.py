@@ -319,7 +319,7 @@ def event_matches(event, home, away):
         parts = [w for w in str(name or "").lower().replace(".", "").split() if w not in ("the", "at")]
         return parts[-1] if parts else ""
     ht, at = token(home), token(away)
-    return (ht and ht in blob) or (at and at in blob)
+    return bool(ht and at and ht in blob and at in blob)
 
 
 
