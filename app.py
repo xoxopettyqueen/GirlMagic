@@ -1208,6 +1208,17 @@ def main():
             st.write(", ".join(names[:40]))
             st.rerun()
         regrade = st.checkbox("Regrade, clear old hits first")
+        if st.button("Clear bad dates"):
+            led = load_ledger()
+            for r in led:
+                if str(r.get("game_date") or "") < "2026-10-20":
+                    r.pop("game_date", None)
+                    r.pop("result", None)
+                    r.pop("player_stat", None)
+                    r.pop("grade_note", None)
+            save_ledger(led)
+            st.success("Bad dates cleared.")
+            st.rerun()
         if st.button("Clear old ungraded"):
             led = load_ledger()
             today = datetime.now().date().isoformat()
