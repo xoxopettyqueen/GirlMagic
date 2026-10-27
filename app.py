@@ -1278,7 +1278,7 @@ def main():
                     "Gap": r.get("ev_gap"),
                     "Edge": r.get("true_ev"),
                     "Event": r.get("event"),
-                    "Graded vs": r.get("grade_note"),
+                    "Graded vs": r.get("grade_note") if r.get("result") in ("HIT", "MISS") else "",
                     "Game": r.get("game_date") or "",
                     "Graded": str(r.get("graded_ts") or "")[:16],
                 })
