@@ -1208,6 +1208,13 @@ def main():
             st.write(", ".join(names[:40]))
             st.rerun()
         regrade = st.checkbox("Regrade, clear old hits first")
+        if st.button("Clear old ungraded"):
+            led = load_ledger()
+            cut = datetime.now() - timedelta(days=1)
+            led = [r for r in led if r.get("result") in ("HIT", "MISS") or (datetime.fromisoformat(str(r.get("ts") or "2000-01-01")) > cut)]
+            save_ledger(led)
+            st.success("Old ungraded plays cleared.")
+            st.rerun()
         if c2.button("Grade finals"):
             with st.spinner("Closing plays…"):
                 ledger, msg = grade_nba(ledger, bdl_key, regrade=regrade) if sport == "NBA" else grade_nfl(ledger, regrade=regrade)
@@ -1279,7 +1286,7 @@ def main():
                     "Edge": r.get("true_ev"),
                     "Event": r.get("event"),
                     "Graded vs": r.get("grade_note") if r.get("result") in ("HIT", "MISS") else "",
-                    "Game": r.get("game_date") or "",
+                    "Game": r.get("game_date") or str(r.get("ts") or "")[:10],
                     "Graded": str(r.get("graded_ts") or "")[:16],
                 })
             st.dataframe(pd.DataFrame(flat), use_container_width=True, hide_index=True)
