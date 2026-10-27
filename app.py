@@ -1256,59 +1256,24 @@ def main():
             if not rows:
                 st.caption("Nothing in this cut.")
                 return
-            grouped = {}
+            flat = []
             for r in rows:
-                gkey = (r.get("player"), r.get("sport"), r.get("event") or "")
-                grouped.setdefault(gkey, []).append(r)
-            cards = []
-            for gkey, props in grouped.items():
-                seen = set()
-                clean = []
-                for r in props:
-                    sig = (r.get("prop"), r.get("line"), r.get("book"))
-                    if sig in seen:
-                        continue
-                    seen.add(sig)
-                    clean.append(r)
-                clean.sort(key=lambda z: -(z.get("ev_gap") or 0))
-                def num(v):
-                    try:
-                        return float(v)
-                    except Exception:
-                        return 0.0
-                avg = sum(num(z.get("true_ev")) for z in clean) / max(1, len(clean))
-                cards.append((avg, gkey, clean))
-            cards.sort(key=lambda z: -z[0])
-            page = st.number_input("Page", min_value=1, value=1, step=1, key=key)
-            start = (int(page) - 1) * 8
-            pair = st.columns(2)
-            for n, (avg, (player, sport_name, event), props) in enumerate(cards[start:start + 8]):
-                rows_html = []
-                for r in props:
-                    res = r.get("result") or "LOCKED"
-                    color = "gold" if res == "HIT" else "#ff4d4d" if res == "MISS" else "#ff00cc"
-                    got = f" · got {r.get('player_stat')}" if r.get("player_stat") is not None else ""
-                    note = r.get("grade_note") or ""
-                    rows_html.append(
-                        f'<div style="margin-top:8px;padding:10px;border-radius:10px;background:{color}22;border:1px solid {color};box-shadow:0 0 10px {color}44">'
-                        f'<b>{r.get("prop")} {r.get("line")}{got}</b> — {res}'
-                        f'<div style="color:#ddd;font-size:.75rem;margin-top:4px">'
-                        f'Locked {r.get("price")} at {r.get("book")}. Gap {r.get("ev_gap") or "—"}%. Edge {r.get("true_ev") or "—"}%.'
-                        f'</div><div style="color:#ffe27a;font-size:.72rem">{note or ("Still cooking." if r.get("result") not in ("HIT", "MISS") else "")}</div></div>'
-                    )
-                with pair[n % 2]:
-                    st.markdown(
-                    f'<div style="margin-bottom:12px;padding:12px;border-radius:16px;background:#16101f;border:1px solid #ff00cc;box-shadow:0 0 14px #ff00cc44">'
-                    f'<div style="display:flex;justify-content:space-between;align-items:center">'
-                    f'<b style="color:#ff00cc;font-size:18px">{player}</b>'
-                    f'<span style="color:#aaa;font-size:13px">{sport_name} · {event}</span></div>'
-                    + "".join(rows_html) + "</div>",
-                    unsafe_allow_html=True,
-                )
-            st.caption(f"{len(cards)} players · {len(rows)} props · page {int(page)}")
-
-        with tab_all:
-            show(view, "pg_all")
+                flat.append({
+                    "Player": r.get("player"),
+                    "Prop": r.get("prop"),
+                    "Line": r.get("line"),
+                    "Got": r.get("player_stat"),
+                    "Result": r.get("result") or "LOCKED",
+                    "Price": r.get("price"),
+                    "Book": BOOK_FULL.get(r.get("book"), r.get("book")),
+                    "Gap": r.get("ev_gap"),
+                    "Edge": r.get("true_ev"),
+                    "Event": r.get("event"),
+                    "Graded vs": r.get("grade_note"),
+                    "Date": str(r.get("graded_ts") or r.get("ts") or "")[:16],
+                })
+            st.dataframe(pd.DataFrame(flat), use_container_width=True, hide_index=True)
+        show(view, "pg_all")
         with tab_hits:
             show([r for r in view if r.get("result") == "HIT"], "pg_hit")
         with tab_misses:
