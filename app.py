@@ -1243,7 +1243,7 @@ def main():
         def date_ok(r):
             if date_cut == "All":
                 return True
-            raw = str(r.get("graded_ts") or r.get("ts") or "")[:19]
+            raw = str(r.get("game_date") or r.get("graded_ts") or r.get("ts") or "")[:10]
             try:
                 ts = datetime.fromisoformat(raw)
             except Exception:
