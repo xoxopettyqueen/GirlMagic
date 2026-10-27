@@ -432,6 +432,7 @@ def grade_nba(ledger, bdl_key, days=14, regrade=False):
                 actual = float(actual)
                 row["result"] = "HIT" if actual >= line else "MISS"
                 row["player_stat"] = actual
+                row["game_date"] = day
                 row["grade_note"] = f"{prop} {actual} vs {line} · {away} @ {home}"
                 row["graded_ts"] = datetime.now().isoformat(timespec="minutes")
                 row["game_date"] = day
@@ -469,6 +470,7 @@ def grade_nba(ledger, bdl_key, days=14, regrade=False):
             continue
         actual = float(actual)
         row["result"] = "HIT" if actual >= line else "MISS"
+        row["game_date"] = day
         row["player_stat"] = actual
         row["grade_note"] = f"{prop} {actual} vs {line} · only game in window"
         row["graded_ts"] = datetime.now().isoformat(timespec="minutes")
@@ -549,6 +551,7 @@ def grade_nfl(ledger, days=14, regrade=False):
                         except Exception:
                             pass
                     rec["result"] = "HIT" if td > 0 else "MISS"
+                    rec["game_date"] = day
                     rec["player_stat"] = td
                     rec["grade_note"] = f"touchdowns {td} from {hit.get('td_parts')} · {' @ '.join(teams)}"
                 elif rec.get("prop") == "Rec Yards":
@@ -564,6 +567,7 @@ def grade_nfl(ledger, days=14, regrade=False):
                         rec["grade_note"] = "receiving_yards unreadable"
                         continue
                     rec["result"] = "HIT" if yds >= float(rec.get("line") or 0) else "MISS"
+                    rec["game_date"] = day
                     rec["player_stat"] = yds
                     rec["grade_note"] = f"receiving_yards {yds} vs {rec.get('line')} · {' @ '.join(teams)}"
                 rec["graded_ts"] = datetime.now().isoformat(timespec="minutes")
