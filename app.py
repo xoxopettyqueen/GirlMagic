@@ -1327,7 +1327,7 @@ def main():
                     pname = str(r.get("player") or "").upper()
                     for dvp_name, allow in dvp_players.items():
                         if dvp_name in pname or pname in dvp_name:
-                            matches.append({"Player": r.get("player"), "Prop": r.get("prop"), "Line": r.get("line"), "Price": r.get("price"), "Book": r.get("book"), "Gap": r.get("gap_pct"), "DVP Allows": allow})
+                            matches.append({"Player": r.get("player"), "Prop": r.get("prop"), "Line": r.get("line"), "Price": r.get("price"), "Book": r.get("book"), "Gap": r.get("ev_gap"), "DVP Allows": allow})
                             break
                 if matches:
                     st.markdown(f"**{len(matches)} gaps match a soft DVP.**")
