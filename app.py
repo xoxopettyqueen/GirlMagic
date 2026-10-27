@@ -1283,7 +1283,8 @@ def main():
                     "Graded": str(r.get("graded_ts") or "")[:16],
                 })
             st.dataframe(pd.DataFrame(flat), use_container_width=True, hide_index=True)
-        show(view, "pg_all")
+        with tab_all:
+            show(view, "pg_all")
         with tab_hits:
             show([r for r in view if r.get("result") == "HIT"], "pg_hit")
         with tab_misses:
@@ -1353,7 +1354,7 @@ def main():
                     pct = round(s["hit"] / total * 100, 1) if total else 0
                     label, color = strength(total)
                     cols4[i % 3].markdown(f'<div style="background:#14141A;border-left:4px solid {color};border-radius:12px;padding:10px;margin-bottom:8px"><div style="font-size:1rem;font-weight:800;color:{color}">{pct}%</div><div style="color:#fff">{band}</div><div style="color:#cbb6e0;font-size:.7rem">{s["hit"]} of {total} · {label}</div></div>', unsafe_allow_html=True)
-        st.markdown("**What cashed**")
+            st.markdown("**What cashed**")
         all_books = ["DraftKings", "FanDuel", "BetMGM", "Caesars", "Bet365", "Fanatics", "Hard Rock", "theScore"]
         short_to_full = {"DK": "DraftKings", "FD": "FanDuel", "MGM": "BetMGM", "CZR": "Caesars", "365": "Bet365", "FAN": "Fanatics", "HR": "Hard Rock", "SCR": "theScore"}
         book_stats = {b: {"hits": 0, "total": 0} for b in all_books}
