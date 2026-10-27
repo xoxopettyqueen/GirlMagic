@@ -434,6 +434,7 @@ def grade_nba(ledger, bdl_key, days=14, regrade=False):
                 row["player_stat"] = actual
                 row["grade_note"] = f"{prop} {actual} vs {line} · {away} @ {home}"
                 row["graded_ts"] = datetime.now().isoformat(timespec="minutes")
+                row["game_date"] = day
                 updated += 1
     leftover = [r for r in pending if r.get("result") in (None, "", "—")]
     by_player_stats = defaultdict(list)
@@ -1270,7 +1271,8 @@ def main():
                     "Edge": r.get("true_ev"),
                     "Event": r.get("event"),
                     "Graded vs": r.get("grade_note"),
-                    "Date": str(r.get("graded_ts") or r.get("ts") or "")[:16],
+                    "Game": r.get("game_date") or "",
+                    "Graded": str(r.get("graded_ts") or "")[:16],
                 })
             st.dataframe(pd.DataFrame(flat), use_container_width=True, hide_index=True)
         show(view, "pg_all")
