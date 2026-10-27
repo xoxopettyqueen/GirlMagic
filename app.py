@@ -1277,7 +1277,7 @@ def main():
             q = find.lower()
             view = [r for r in view if q in str(r.get("player") or "").lower()]
         st.caption(f"{len(view)} match these filters." + (" The rest have no date, so they only show on All." if date_cut != "All" and not view else ""))
-        tab_all, tab_hits, tab_misses, tab_locked, tab_charts = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "The Lab"])
+        tab_all, tab_hits, tab_misses, tab_locked, tab_charts, tab_dvp = st.tabs(["All Plays", "She Hit That", "Did Not Hit", "Still Cooking", "The Lab", "DVP"])
 
         def show(rows, key):
             if not rows:
@@ -1309,6 +1309,31 @@ def main():
             show([r for r in view if r.get("result") == "MISS"], "pg_miss")
         with tab_locked:
             show([r for r in view if r.get("result") not in ("HIT", "MISS")], "pg_lock")
+        with tab_dvp:
+            st.markdown("**DVP Cross-Reference**")
+            st.caption("Paste the DVP text. It matches player names against the board.")
+            dvp_text = st.text_area("Paste DVP sheet text", height=200, key="dvp_input")
+            if dvp_text.strip():
+                dvp_players = {}
+                for line in dvp_text.splitlines():
+                    if "→" in line or "->" in line:
+                        parts = re.split(r"→|->", line)
+                        if len(parts) == 2:
+                            name = parts[1].strip().upper()
+                            allow = parts[0].strip()
+                            dvp_players[name] = allow
+                matches = []
+                for r in view:
+                    pname = str(r.get("player") or "").upper()
+                    for dvp_name, allow in dvp_players.items():
+                        if dvp_name in pname or pname in dvp_name:
+                            matches.append({"Player": r.get("player"), "Prop": r.get("prop"), "Line": r.get("line"), "Price": r.get("price"), "Book": r.get("book"), "Gap": r.get("gap_pct"), "DVP Allows": allow})
+                            break
+                if matches:
+                    st.markdown(f"**{len(matches)} gaps match a soft DVP.**")
+                    st.dataframe(pd.DataFrame(matches), use_container_width=True, hide_index=True)
+                else:
+                    st.info("No board plays match the pasted DVP names.")
         with tab_charts:
             graded = [r for r in view if r.get("result") in ("HIT", "MISS")]
             if not graded:
